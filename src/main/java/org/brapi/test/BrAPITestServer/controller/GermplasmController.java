@@ -5,8 +5,8 @@ import java.util.List;
 import org.brapi.test.BrAPITestServer.model.Germplasm;
 import org.brapi.test.BrAPITestServer.model.MarkerprofileKeys;
 import org.brapi.test.BrAPITestServer.model.Pedigree;
-import org.brapi.test.BrAPITestServer.model.metadata.SearchResults;
-import org.brapi.test.BrAPITestServer.model.metadata.SearchResultsList;
+import org.brapi.test.BrAPITestServer.model.metadata.GenericResults;
+import org.brapi.test.BrAPITestServer.model.metadata.GenericResultsDataList;
 import org.brapi.test.BrAPITestServer.service.GermplasmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +27,7 @@ public class GermplasmController extends BrAPIController {
 	}
 
 	@RequestMapping(path = "germplasm-search", method = { RequestMethod.GET, RequestMethod.POST })
-	public SearchResults<SearchResultsList<Germplasm>> germplasmSearch(
+	public GenericResults<GenericResultsDataList<Germplasm>> germplasmSearch(
 			@RequestParam(value = "germplasmPUI") List<String> germplasmPUIs,
 			@RequestParam(value = "germplasmDbId") List<String> germplasmDbIds,
 			@RequestParam(value = "germplasmSpecies", required = false) List<String> germplasmSpecies,
@@ -39,29 +39,29 @@ public class GermplasmController extends BrAPIController {
 		List<Germplasm> germplasms = germplasmService.search(germplasmDbIds, germplasmGenus, germplasmNames,
 				germplasmPUIs, germplasmSpecies, page, pageSize);
 
-		return SearchResults.withList(germplasms).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(germplasms).withMetaData(mockMetaData(page, pageSize));
 	}
 
 	@RequestMapping(value = "germplasm/{germplasmDbId}", method = { RequestMethod.GET })
-	public SearchResults<Germplasm> germplasmSearchByDbId(@PathVariable(value = "germplasmDbId") String germplasmDbId) {
+	public GenericResults<Germplasm> germplasmSearchByDbId(@PathVariable(value = "germplasmDbId") String germplasmDbId) {
 		Germplasm germplasm = germplasmService.searchByDbId(germplasmDbId);
 
-		return SearchResults.withObject(germplasm).withMetaData(mockEmptyMetadata());
+		return GenericResults.withObject(germplasm).withMetaData(mockEmptyMetadata());
 	}
 
 	@RequestMapping(value = "germplasm/{germplasmDbId}/pedigree", method = { RequestMethod.GET })
-	public SearchResults<Pedigree> pedigreeByGermplasmDbId(@PathVariable(value = "germplasmDbId") String germplasmDbId,
+	public GenericResults<Pedigree> pedigreeByGermplasmDbId(@PathVariable(value = "germplasmDbId") String germplasmDbId,
 			@RequestParam(value = "notation") String notation) {
 		Pedigree pedigree = germplasmService.searchPedigreeByDbId(germplasmDbId, notation);
 
-		return SearchResults.withObject(pedigree).withMetaData(mockEmptyMetadata());
+		return GenericResults.withObject(pedigree).withMetaData(mockEmptyMetadata());
 	}
 
 	@RequestMapping(value = "germplasm/{germplasmDbId}/markerprofiles", method = { RequestMethod.GET })
-	public SearchResults<MarkerprofileKeys> markerprofilesByGermplasmDbId(
+	public GenericResults<MarkerprofileKeys> markerprofilesByGermplasmDbId(
 			@PathVariable("germplasmDbId") String germplasmDbId) {
 		MarkerprofileKeys markerprofile = germplasmService.searchMarkerprofilesByDbId(germplasmDbId);
 
-		return SearchResults.withObject(markerprofile).withMetaData(mockEmptyMetadata());
+		return GenericResults.withObject(markerprofile).withMetaData(mockEmptyMetadata());
 	}
 }

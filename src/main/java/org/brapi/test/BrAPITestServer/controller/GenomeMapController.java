@@ -7,8 +7,8 @@ import javax.websocket.server.PathParam;
 import org.brapi.test.BrAPITestServer.model.GenomeMapData;
 import org.brapi.test.BrAPITestServer.model.GenomeMapDetail;
 import org.brapi.test.BrAPITestServer.model.GenomeMapSummary;
-import org.brapi.test.BrAPITestServer.model.metadata.SearchResults;
-import org.brapi.test.BrAPITestServer.model.metadata.SearchResultsList;
+import org.brapi.test.BrAPITestServer.model.metadata.GenericResults;
+import org.brapi.test.BrAPITestServer.model.metadata.GenericResultsDataList;
 import org.brapi.test.BrAPITestServer.service.GenomeMapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,30 +26,30 @@ public class GenomeMapController  extends BrAPIController{
 	}
 	
 	@RequestMapping(value="maps", method= {RequestMethod.GET})
-	public SearchResults<SearchResultsList<GenomeMapSummary>> getMaps(
+	public GenericResults<GenericResultsDataList<GenomeMapSummary>> getMaps(
 			@RequestParam String speciesId,
 			@RequestParam String type,
 			@RequestParam(defaultValue="0") int page,
 			@RequestParam(defaultValue="1000") int pageSize){
 		List<GenomeMapSummary> summaries = genomeMapService.getMapSummaries(speciesId, type, page, pageSize);
 
-		return SearchResults
+		return GenericResults
 				.withList(summaries)
 				.withMetaData(mockMetaData(page, pageSize));
 	}
 	
 	@RequestMapping(value="map/{mapDbId}", method= {RequestMethod.GET})
-	public SearchResults<GenomeMapDetail> getMapDetail(
+	public GenericResults<GenomeMapDetail> getMapDetail(
 			@PathParam(value = "mapDbId") String mapDbId){
 		GenomeMapDetail detail = genomeMapService.getMapDetail(mapDbId);
 		
-		return SearchResults
+		return GenericResults
 				.withObject(detail)
 				.withMetaData(mockEmptyMetadata());
 	}
 
 	@RequestMapping(value="map/{mapDbId}/positions", method= {RequestMethod.GET})
-	public SearchResults<SearchResultsList<GenomeMapData>> getMapData(
+	public GenericResults<GenericResultsDataList<GenomeMapData>> getMapData(
 			@PathParam(value= "mapDbID") String mapDbId,
 			@RequestParam String linkageGroupId,
 			@RequestParam(value="min", defaultValue="0") int minPosition,
@@ -58,7 +58,7 @@ public class GenomeMapController  extends BrAPIController{
 			@RequestParam(defaultValue="1000") int pageSize){
 		List<GenomeMapData> genomeData = genomeMapService.getMapPositions(mapDbId, linkageGroupId, minPosition, maxPosition, page, pageSize);
 		
-		return SearchResults
+		return GenericResults
 				.withList(genomeData)
 				.withMetaData(mockMetaData(page, pageSize));
 	}

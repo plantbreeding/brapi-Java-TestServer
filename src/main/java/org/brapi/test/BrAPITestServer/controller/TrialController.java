@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.brapi.test.BrAPITestServer.model.TrialSummary;
 import org.brapi.test.BrAPITestServer.model.TrialSummaryWithContact;
-import org.brapi.test.BrAPITestServer.model.metadata.SearchResults;
-import org.brapi.test.BrAPITestServer.model.metadata.SearchResultsList;
+import org.brapi.test.BrAPITestServer.model.metadata.GenericResults;
+import org.brapi.test.BrAPITestServer.model.metadata.GenericResultsDataList;
 import org.brapi.test.BrAPITestServer.service.TrialService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,18 +24,18 @@ public class TrialController  extends BrAPIController{
 	
 
 	@RequestMapping(value="trials", method= {RequestMethod.GET})
-	public SearchResults<SearchResultsList<TrialSummary>> getTrialSummaries(
+	public GenericResults<GenericResultsDataList<TrialSummary>> getTrialSummaries(
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		List<TrialSummary> summaries = trialService.getTrialSummaries(page, pageSize);
 		
-		return SearchResults.withList(summaries).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(summaries).withMetaData(mockMetaData(page, pageSize));
 	}
 	
 	@RequestMapping(value="trials/{trialDbId}", method= {RequestMethod.GET})
-	public SearchResults<TrialSummaryWithContact> getTrialSummary(
+	public GenericResults<TrialSummaryWithContact> getTrialSummary(
 			@PathVariable(value="trialDbId") String trialDbId){
 		TrialSummaryWithContact trial = trialService.getTrialSummary(trialDbId);
-		return SearchResults.withObject(trial).withMetaData(mockEmptyMetadata());
+		return GenericResults.withObject(trial).withMetaData(mockEmptyMetadata());
 	}
 }

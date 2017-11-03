@@ -5,8 +5,8 @@ import org.brapi.test.BrAPITestServer.model.MarkerprofileDetails;
 import org.brapi.test.BrAPITestServer.model.MarkerprofileSummary;
 
 import java.util.List;
-import org.brapi.test.BrAPITestServer.model.metadata.SearchResults;
-import org.brapi.test.BrAPITestServer.model.metadata.SearchResultsList;
+import org.brapi.test.BrAPITestServer.model.metadata.GenericResults;
+import org.brapi.test.BrAPITestServer.model.metadata.GenericResultsDataList;
 import org.brapi.test.BrAPITestServer.service.MarkerprofileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +26,7 @@ public class MarkerprofileController extends BrAPIController {
 	}
 
 	@RequestMapping(value = "markerprofiles", method = { RequestMethod.GET })
-	public SearchResults<SearchResultsList<MarkerprofileSummary>> getMarkerprofiles(
+	public GenericResults<GenericResultsDataList<MarkerprofileSummary>> getMarkerprofiles(
 			@RequestParam String germplasmDbId,
 			@RequestParam String studyDbId, 
 			@RequestParam String sampleDbId, 
@@ -37,11 +37,11 @@ public class MarkerprofileController extends BrAPIController {
 		List<MarkerprofileSummary> markerprofileSummaries = markerprofileService.getMarkerprofileSummeries(
 				germplasmDbId, studyDbId, sampleDbId, extractDbId, methodDbId, page, pageSize);
 
-		return SearchResults.withList(markerprofileSummaries).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(markerprofileSummaries).withMetaData(mockMetaData(page, pageSize));
 	}
 
 	@RequestMapping(value = "markerprofiles/{markerprofileDbId}", method = { RequestMethod.GET })
-	public SearchResults<MarkerprofileDetails> getMarkerprofile(
+	public GenericResults<MarkerprofileDetails> getMarkerprofile(
 			@PathVariable(value="markerprofileDbId") String markerprofileDbId,
 			@RequestParam(defaultValue="false") boolean expandHomozygotes,
 			@RequestParam(defaultValue="-") String unknownString,
@@ -51,11 +51,11 @@ public class MarkerprofileController extends BrAPIController {
 			@RequestParam(value = "page", defaultValue = "1") int page) {
 		MarkerprofileDetails details = markerprofileService.getMarkerprofileDetails(markerprofileDbId, expandHomozygotes, unknownString, sepPhased, sepUnphased, page, pageSize);
 		
-		return SearchResults.withObject(details).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withObject(details).withMetaData(mockMetaData(page, pageSize));
 	}
 
 	@RequestMapping(value = "allelematrix-search", method = { RequestMethod.GET })
-	public SearchResults<SearchResultsList<List<String>>> getAlleleMatrix(
+	public GenericResults<GenericResultsDataList<List<String>>> getAlleleMatrix(
 			@RequestParam(defaultValue="false") String format,
 			@RequestParam(defaultValue="false") boolean expandHomozygotes,
 			@RequestParam(defaultValue="-") String unknownString,
@@ -65,14 +65,14 @@ public class MarkerprofileController extends BrAPIController {
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		List<List<String>> alleleMatrix = markerprofileService.getAlleleMatrix(format, expandHomozygotes, unknownString, sepPhased, sepUnphased, page, pageSize);
 		
-		return SearchResults.withList(alleleMatrix).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(alleleMatrix).withMetaData(mockMetaData(page, pageSize));
 	}
 
 	@RequestMapping(value = "allelematrix-search", method = { RequestMethod.POST })
-	public SearchResults<SearchResultsList<List<String>>> getAlleleMatrix(
+	public GenericResults<GenericResultsDataList<List<String>>> getAlleleMatrix(
 			@RequestBody AlleleMatrixSearchRequest request) {
 		List<List<String>> alleleMatrix = markerprofileService.getAlleleMatrix(request);
 		
-		return SearchResults.withList(alleleMatrix).withMetaData(mockMetaData(request.getPage(), request.getPageSize()));
+		return GenericResults.withList(alleleMatrix).withMetaData(mockMetaData(request.getPage(), request.getPageSize()));
 	}
 }

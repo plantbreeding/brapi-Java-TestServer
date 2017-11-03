@@ -14,7 +14,7 @@ import org.brapi.test.BrAPITestServer.model.StudyPlotLayout;
 import org.brapi.test.BrAPITestServer.model.StudySummary;
 import org.brapi.test.BrAPITestServer.model.StudySearchRequest;
 import org.brapi.test.BrAPITestServer.model.StudyType;
-import org.brapi.test.BrAPITestServer.model.metadata.SearchResults;
+import org.brapi.test.BrAPITestServer.model.metadata.GenericResults;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -78,7 +78,7 @@ public class StudyService {
 		return null;
 	}
 
-	public void saveStudyObservationUnitTable(SearchResults<StudyObservationUnitTable> request) {
+	public void saveStudyObservationUnitTable(GenericResults<StudyObservationUnitTable> request) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -14,8 +14,8 @@ import org.brapi.test.BrAPITestServer.model.StudyPlotLayout;
 import org.brapi.test.BrAPITestServer.model.StudySummary;
 import org.brapi.test.BrAPITestServer.model.StudySearchRequest;
 import org.brapi.test.BrAPITestServer.model.StudyType;
-import org.brapi.test.BrAPITestServer.model.metadata.SearchResults;
-import org.brapi.test.BrAPITestServer.model.metadata.SearchResultsList;
+import org.brapi.test.BrAPITestServer.model.metadata.GenericResults;
+import org.brapi.test.BrAPITestServer.model.metadata.GenericResultsDataList;
 import org.brapi.test.BrAPITestServer.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,25 +36,25 @@ public class StudyController  extends BrAPIController{
 	}
 	
 	@RequestMapping(value="seasons", method= {RequestMethod.GET})
-	public SearchResults<SearchResultsList<Season>> getSeasons(
+	public GenericResults<GenericResultsDataList<Season>> getSeasons(
 			@RequestParam int year,
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		List<Season> seasons = studyService.getSeasons(year, page, pageSize);
-		return SearchResults.withList(seasons).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(seasons).withMetaData(mockMetaData(page, pageSize));
 	}
 	
 	//TODO path lowercase
 	@RequestMapping(value="studyTypes", method= {RequestMethod.GET})
-	public SearchResults<SearchResultsList<StudyType>> getStudyTypes(
+	public GenericResults<GenericResultsDataList<StudyType>> getStudyTypes(
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		List<StudyType> studyTypes = studyService.getStudyTypes(page, pageSize);
-		return SearchResults.withList(studyTypes).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(studyTypes).withMetaData(mockMetaData(page, pageSize));
 	}
 	
 	@RequestMapping(value="studies-search", method= {RequestMethod.GET})
-	public SearchResults<SearchResultsList<StudySummary>> getStudies(
+	public GenericResults<GenericResultsDataList<StudySummary>> getStudies(
 			@RequestParam String studyType,
 			@RequestParam String programDbId,
 			@RequestParam String locationDbId,
@@ -67,56 +67,56 @@ public class StudyController  extends BrAPIController{
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		List<StudySummary> studies = studyService.getStudies(studyType, programDbId, locationDbId, seasonDbId, germplasmDbIds, observationVariableDbIds, active, sortBy, sortOrder, page, pageSize);
-		return SearchResults.withList(studies).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(studies).withMetaData(mockMetaData(page, pageSize));
 	}	
 	
 	@RequestMapping(value="studies-search", method= {RequestMethod.POST})
-	public SearchResults<SearchResultsList<StudySummary>> getStudies(
+	public GenericResults<GenericResultsDataList<StudySummary>> getStudies(
 			@RequestBody StudySearchRequest request) {
 		List<StudySummary> studies = studyService.getStudies(request);
-		return SearchResults.withList(studies).withMetaData(mockMetaData(request.getPage(), request.getPageSize()));
+		return GenericResults.withList(studies).withMetaData(mockMetaData(request.getPage(), request.getPageSize()));
 	}
 
 	@RequestMapping(value="studies/{studyDbId}", method= {RequestMethod.GET})
-	public SearchResults<Study> getStudy(
+	public GenericResults<Study> getStudy(
 			@PathVariable(value="studyDbId") String studyDbId) {
 		Study study = studyService.getStudy(studyDbId);
-		return SearchResults.withObject(study).withMetaData(mockEmptyMetadata());
+		return GenericResults.withObject(study).withMetaData(mockEmptyMetadata());
 	}
 	
 	@RequestMapping(value="studies/{studyDbId}/observationVariables", method= {RequestMethod.GET})
-	public SearchResults<StudyObservationVariable> getStudyObservationVariables(
+	public GenericResults<StudyObservationVariable> getStudyObservationVariables(
 			@PathVariable(value="studyDbId") String studyDbId) {
 		StudyObservationVariable variables = studyService.getStudyObservationVariables(studyDbId);
-		return SearchResults.withObject(variables).withMetaData(mockEmptyMetadata());
+		return GenericResults.withObject(variables).withMetaData(mockEmptyMetadata());
 	}
 	
 	@RequestMapping(value="studies/{studyDbId}/germplasm", method= {RequestMethod.GET})
-	public SearchResults<StudyGermplasm> getStudyGermplasm(
+	public GenericResults<StudyGermplasm> getStudyGermplasm(
 			@PathVariable(value="studyDbId") String studyDbId,
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		StudyGermplasm germplasms = studyService.getStudyGermplasm(studyDbId, page, pageSize);
-		return SearchResults.withObject(germplasms).withMetaData(mockEmptyMetadata());
+		return GenericResults.withObject(germplasms).withMetaData(mockEmptyMetadata());
 	}
 
 	//TODO path lowercase
 	@RequestMapping(value="observationLevels", method= {RequestMethod.GET})
-	public SearchResults<SearchResultsList<String>> getObservationLevels(
+	public GenericResults<GenericResultsDataList<String>> getObservationLevels(
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		List<String> levels = studyService.getObservationLevels(page, pageSize);
-		return SearchResults.withList(levels).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(levels).withMetaData(mockMetaData(page, pageSize));
 	}
 
 	@RequestMapping(value="studies/{studyDbId}/observationunits", method= {RequestMethod.GET})
-	public SearchResults<SearchResultsList<StudyObservation>> getObservationLevels(
+	public GenericResults<GenericResultsDataList<StudyObservation>> getObservationLevels(
 			@PathVariable(value="studyDbId") String studyDbId,
 			@RequestParam String observationLevel,
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		List<StudyObservation> observations = studyService.getStudyObservations(studyDbId, observationLevel, page, pageSize);
-		return SearchResults.withList(observations).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(observations).withMetaData(mockMetaData(page, pageSize));
 	}
 	
 	//TODO should be PUT not POST
@@ -129,34 +129,34 @@ public class StudyController  extends BrAPIController{
 	
 
 	@RequestMapping(value="studies/{studyDbId}/table", method= {RequestMethod.GET})
-	public SearchResults<StudyObservationUnitTable> getStudyObservationUnitTable(
+	public GenericResults<StudyObservationUnitTable> getStudyObservationUnitTable(
 			@PathVariable(value="studyDbId") String studyDbId,
 			@RequestParam String format){
 		StudyObservationUnitTable table = studyService.getStudyObservationUnitTable(studyDbId, format);
 		
-		return SearchResults.withObject(table).withMetaData(mockEmptyMetadata());
+		return GenericResults.withObject(table).withMetaData(mockEmptyMetadata());
 	}
 	
 	//TODO should be PUT not POST
 	@RequestMapping(value="studies/{studyDbId}/table", method= {RequestMethod.POST})
 	public void postStudyObservationUnitTable(
 			@PathVariable(value="studyDbId") String studyDbId,
-			@RequestBody SearchResults<StudyObservationUnitTable> request){
+			@RequestBody GenericResults<StudyObservationUnitTable> request){
 		studyService.saveStudyObservationUnitTable(request);
 	}
 	
 	@RequestMapping(value="studies/{studyDbId}/layout", method= {RequestMethod.GET})
-	public SearchResults<SearchResultsList<StudyPlotLayout>> getStudyPlotLayouts(
+	public GenericResults<GenericResultsDataList<StudyPlotLayout>> getStudyPlotLayouts(
 			@PathVariable(value="studyDbId") String studyDbId,
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		List<StudyPlotLayout> layouts = studyService.getStudyPlotLayouts(studyDbId, page, pageSize);
 		
-		return SearchResults.withList(layouts).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(layouts).withMetaData(mockMetaData(page, pageSize));
 	}
 	
 	@RequestMapping(value="studies/{studyDbId}/observations", method= {RequestMethod.GET})
-	public SearchResults<SearchResultsList<ObservationUnit>> getObservationUnits(
+	public GenericResults<GenericResultsDataList<ObservationUnit>> getObservationUnits(
 			@PathVariable(value="studyDbId") String studyDbId,
 			@RequestParam List<String> observationVariableDbIds,
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
@@ -164,6 +164,6 @@ public class StudyController  extends BrAPIController{
 		
 		List<ObservationUnit> units = studyService.getObservationUnits(studyDbId, observationVariableDbIds, page, pageSize);
 		
-		return SearchResults.withList(units).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(units).withMetaData(mockMetaData(page, pageSize));
 	}
 }

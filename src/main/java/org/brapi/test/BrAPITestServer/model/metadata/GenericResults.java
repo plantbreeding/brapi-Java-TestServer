@@ -2,7 +2,7 @@ package org.brapi.test.BrAPITestServer.model.metadata;
 
 import java.util.List;
 
-public class SearchResults<ReturnType> {
+public class GenericResults<ReturnType> {
 	private MetaData metadata;
 	private ReturnType results;
 	
@@ -18,19 +18,19 @@ public class SearchResults<ReturnType> {
 	public void setResults(ReturnType results) {
 		this.results = results;
 	}
-	public static <T> SearchResults<SearchResultsList<T>> withList(List<T> list) {
-		SearchResultsList<T> data = new SearchResultsList<T>();
+	public static <T> GenericResults<GenericResultsDataList<T>> withList(List<T> list) {
+		GenericResultsDataList<T> data = new GenericResultsDataList<T>();
 		data.setData(list);
-		SearchResults<SearchResultsList<T>> result = new SearchResults<SearchResultsList<T>>();
+		GenericResults<GenericResultsDataList<T>> result = new GenericResults<GenericResultsDataList<T>>();
 		result.setResults(data);
 		return result;
 	}
-	public  SearchResults<ReturnType> withMetaData(MetaData metadata) {
+	public  GenericResults<ReturnType> withMetaData(MetaData metadata) {
 		this.setMetadata(metadata);
 		return this;
 	}
-	public static <T> SearchResults<T> withObject(T obj) {
-		SearchResults<T> result = new SearchResults<T>();
+	public static <T> GenericResults<T> withObject(T obj) {
+		GenericResults<T> result = new GenericResults<T>();
 		result.setResults(obj);
 		return result;
 	}

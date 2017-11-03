@@ -3,7 +3,7 @@ package org.brapi.test.BrAPITestServer.controller;
 import org.brapi.test.BrAPITestServer.model.Sample;
 import org.brapi.test.BrAPITestServer.model.SampleDbIdWrapper;
 import org.brapi.test.BrAPITestServer.model.SampleDetail;
-import org.brapi.test.BrAPITestServer.model.metadata.SearchResults;
+import org.brapi.test.BrAPITestServer.model.metadata.GenericResults;
 import org.brapi.test.BrAPITestServer.service.SampleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,16 +23,16 @@ public class SampleController  extends BrAPIController{
 	}
 	
 	@RequestMapping(value="samples", method= {RequestMethod.PUT})
-	public SearchResults<SampleDbIdWrapper> putSample(
+	public GenericResults<SampleDbIdWrapper> putSample(
 			@RequestBody Sample sample){
 		SampleDbIdWrapper id = sampleService.saveSample(sample);
-		return SearchResults.withObject(id).withMetaData(null);
+		return GenericResults.withObject(id).withMetaData(null);
 	}
 	
 	@RequestMapping(value="samples/{sampleId}", method= {RequestMethod.GET})
-	public SearchResults<SampleDetail> getSample(
+	public GenericResults<SampleDetail> getSample(
 			@PathVariable(value="sampleId") String sampleId){
 		SampleDetail sample = sampleService.getSample(sampleId);
-		return SearchResults.withObject(sample).withMetaData(mockEmptyMetadata());
+		return GenericResults.withObject(sample).withMetaData(mockEmptyMetadata());
 	}
 }
