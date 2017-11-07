@@ -3,6 +3,7 @@ package org.brapi.test.BrAPITestServer.model;
 import org.brapi.test.BrAPITestServer.model.metadata.MetaData;
 
 public class StudyObservationUnitRequest {
+	//TODO why does a request need metadata
 	private MetaData metadata;
 	private StudyObservationUnitWrapper results;
 	public MetaData getMetadata() {
