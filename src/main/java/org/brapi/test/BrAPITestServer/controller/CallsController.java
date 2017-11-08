@@ -1,8 +1,11 @@
 package org.brapi.test.BrAPITestServer.controller;
 
-import org.brapi.test.BrAPITestServer.model.Call;
-import org.brapi.test.BrAPITestServer.model.metadata.GenericResults;
-import org.brapi.test.BrAPITestServer.model.metadata.GenericResultsDataList;
+import java.util.List;
+
+import org.brapi.test.BrAPITestServer.model.rest.Call;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.CallsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +30,11 @@ public class CallsController extends BrAPIController{
 			@RequestParam(value="pageSize", defaultValue="1000") int pageSize,
 			@RequestParam(value="page", defaultValue="0") int page){
 		
+		MetaData metadata = generateMetaDataTemplate(page, pageSize);
+		List<Call> calls = callService.getAvailableCalls(datatype, metadata);
+		
 		return GenericResults
-				.withList(callService.getAvailableCalls())
-				.withMetaData(mockMetaData(page, pageSize));
+				.withList(calls)
+				.withMetaData(metadata);
 	}
 }

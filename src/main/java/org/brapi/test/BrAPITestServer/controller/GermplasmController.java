@@ -2,11 +2,11 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.Germplasm;
-import org.brapi.test.BrAPITestServer.model.MarkerprofileKeys;
-import org.brapi.test.BrAPITestServer.model.Pedigree;
-import org.brapi.test.BrAPITestServer.model.metadata.GenericResults;
-import org.brapi.test.BrAPITestServer.model.metadata.GenericResultsDataList;
+import org.brapi.test.BrAPITestServer.model.rest.Germplasm;
+import org.brapi.test.BrAPITestServer.model.rest.MarkerprofileKeys;
+import org.brapi.test.BrAPITestServer.model.rest.Pedigree;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
 import org.brapi.test.BrAPITestServer.service.GermplasmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,14 +39,14 @@ public class GermplasmController extends BrAPIController {
 		List<Germplasm> germplasms = germplasmService.search(germplasmDbIds, germplasmGenus, germplasmNames,
 				germplasmPUIs, germplasmSpecies, page, pageSize);
 
-		return GenericResults.withList(germplasms).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(germplasms).withMetaData(generateMetaDataTemplate(page, pageSize));
 	}
 
 	@RequestMapping(value = "germplasm/{germplasmDbId}", method = { RequestMethod.GET })
 	public GenericResults<Germplasm> germplasmSearchByDbId(@PathVariable(value = "germplasmDbId") String germplasmDbId) {
 		Germplasm germplasm = germplasmService.searchByDbId(germplasmDbId);
 
-		return GenericResults.withObject(germplasm).withMetaData(mockEmptyMetadata());
+		return GenericResults.withObject(germplasm).withMetaData(generateEmptyMetadata());
 	}
 
 	@RequestMapping(value = "germplasm/{germplasmDbId}/pedigree", method = { RequestMethod.GET })
@@ -54,7 +54,7 @@ public class GermplasmController extends BrAPIController {
 			@RequestParam(value = "notation") String notation) {
 		Pedigree pedigree = germplasmService.searchPedigreeByDbId(germplasmDbId, notation);
 
-		return GenericResults.withObject(pedigree).withMetaData(mockEmptyMetadata());
+		return GenericResults.withObject(pedigree).withMetaData(generateEmptyMetadata());
 	}
 
 	@RequestMapping(value = "germplasm/{germplasmDbId}/markerprofiles", method = { RequestMethod.GET })
@@ -62,6 +62,6 @@ public class GermplasmController extends BrAPIController {
 			@PathVariable("germplasmDbId") String germplasmDbId) {
 		MarkerprofileKeys markerprofile = germplasmService.searchMarkerprofilesByDbId(germplasmDbId);
 
-		return GenericResults.withObject(markerprofile).withMetaData(mockEmptyMetadata());
+		return GenericResults.withObject(markerprofile).withMetaData(generateEmptyMetadata());
 	}
 }

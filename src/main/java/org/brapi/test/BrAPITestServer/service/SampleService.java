@@ -1,8 +1,8 @@
 package org.brapi.test.BrAPITestServer.service;
 
-import org.brapi.test.BrAPITestServer.model.Sample;
-import org.brapi.test.BrAPITestServer.model.SampleDbIdWrapper;
-import org.brapi.test.BrAPITestServer.model.SampleDetail;
+import org.brapi.test.BrAPITestServer.model.rest.Sample;
+import org.brapi.test.BrAPITestServer.model.rest.SampleDbIdWrapper;
+import org.brapi.test.BrAPITestServer.model.rest.SampleDetail;
 import org.springframework.stereotype.Service;
 
 @Service

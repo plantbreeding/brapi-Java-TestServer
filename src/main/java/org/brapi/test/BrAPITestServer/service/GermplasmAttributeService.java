@@ -2,9 +2,9 @@ package org.brapi.test.BrAPITestServer.service;
 
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.GermplasmAttribute;
-import org.brapi.test.BrAPITestServer.model.GermplasmAttributeCategory;
-import org.brapi.test.BrAPITestServer.model.GermplasmAttributeMasterWrapper;
+import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttribute;
+import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttributeCategory;
+import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttributeMasterWrapper;
 import org.springframework.stereotype.Service;
 
 @Service

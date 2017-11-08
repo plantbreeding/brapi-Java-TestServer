@@ -2,20 +2,20 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.ObservationUnit;
-import org.brapi.test.BrAPITestServer.model.Season;
-import org.brapi.test.BrAPITestServer.model.Study;
-import org.brapi.test.BrAPITestServer.model.StudyGermplasm;
-import org.brapi.test.BrAPITestServer.model.StudyObservation;
-import org.brapi.test.BrAPITestServer.model.StudyObservationUnitRequest;
-import org.brapi.test.BrAPITestServer.model.StudyObservationUnitTable;
-import org.brapi.test.BrAPITestServer.model.StudyObservationVariable;
-import org.brapi.test.BrAPITestServer.model.StudyPlotLayout;
-import org.brapi.test.BrAPITestServer.model.StudySummary;
-import org.brapi.test.BrAPITestServer.model.StudySearchRequest;
-import org.brapi.test.BrAPITestServer.model.StudyType;
-import org.brapi.test.BrAPITestServer.model.metadata.GenericResults;
-import org.brapi.test.BrAPITestServer.model.metadata.GenericResultsDataList;
+import org.brapi.test.BrAPITestServer.model.rest.ObservationUnit;
+import org.brapi.test.BrAPITestServer.model.rest.Season;
+import org.brapi.test.BrAPITestServer.model.rest.Study;
+import org.brapi.test.BrAPITestServer.model.rest.StudyGermplasm;
+import org.brapi.test.BrAPITestServer.model.rest.StudyObservation;
+import org.brapi.test.BrAPITestServer.model.rest.StudyObservationUnitRequest;
+import org.brapi.test.BrAPITestServer.model.rest.StudyObservationUnitTable;
+import org.brapi.test.BrAPITestServer.model.rest.StudyObservationVariable;
+import org.brapi.test.BrAPITestServer.model.rest.StudyPlotLayout;
+import org.brapi.test.BrAPITestServer.model.rest.StudySearchRequest;
+import org.brapi.test.BrAPITestServer.model.rest.StudySummary;
+import org.brapi.test.BrAPITestServer.model.rest.StudyType;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
 import org.brapi.test.BrAPITestServer.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,7 +41,7 @@ public class StudyController  extends BrAPIController{
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		List<Season> seasons = studyService.getSeasons(year, page, pageSize);
-		return GenericResults.withList(seasons).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(seasons).withMetaData(generateMetaDataTemplate(page, pageSize));
 	}
 	
 	//TODO path lowercase
@@ -50,7 +50,7 @@ public class StudyController  extends BrAPIController{
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		List<StudyType> studyTypes = studyService.getStudyTypes(page, pageSize);
-		return GenericResults.withList(studyTypes).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(studyTypes).withMetaData(generateMetaDataTemplate(page, pageSize));
 	}
 	
 	@RequestMapping(value="studies-search", method= {RequestMethod.GET})
@@ -67,28 +67,28 @@ public class StudyController  extends BrAPIController{
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		List<StudySummary> studies = studyService.getStudies(studyType, programDbId, locationDbId, seasonDbId, germplasmDbIds, observationVariableDbIds, active, sortBy, sortOrder, page, pageSize);
-		return GenericResults.withList(studies).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(studies).withMetaData(generateMetaDataTemplate(page, pageSize));
 	}	
 	
 	@RequestMapping(value="studies-search", method= {RequestMethod.POST})
 	public GenericResults<GenericResultsDataList<StudySummary>> getStudies(
 			@RequestBody StudySearchRequest request) {
 		List<StudySummary> studies = studyService.getStudies(request);
-		return GenericResults.withList(studies).withMetaData(mockMetaData(request.getPage(), request.getPageSize()));
+		return GenericResults.withList(studies).withMetaData(generateMetaDataTemplate(request.getPage(), request.getPageSize()));
 	}
 
 	@RequestMapping(value="studies/{studyDbId}", method= {RequestMethod.GET})
 	public GenericResults<Study> getStudy(
 			@PathVariable(value="studyDbId") String studyDbId) {
 		Study study = studyService.getStudy(studyDbId);
-		return GenericResults.withObject(study).withMetaData(mockEmptyMetadata());
+		return GenericResults.withObject(study).withMetaData(generateEmptyMetadata());
 	}
 	
 	@RequestMapping(value="studies/{studyDbId}/observationVariables", method= {RequestMethod.GET})
 	public GenericResults<StudyObservationVariable> getStudyObservationVariables(
 			@PathVariable(value="studyDbId") String studyDbId) {
 		StudyObservationVariable variables = studyService.getStudyObservationVariables(studyDbId);
-		return GenericResults.withObject(variables).withMetaData(mockEmptyMetadata());
+		return GenericResults.withObject(variables).withMetaData(generateEmptyMetadata());
 	}
 	
 	@RequestMapping(value="studies/{studyDbId}/germplasm", method= {RequestMethod.GET})
@@ -97,7 +97,7 @@ public class StudyController  extends BrAPIController{
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		StudyGermplasm germplasms = studyService.getStudyGermplasm(studyDbId, page, pageSize);
-		return GenericResults.withObject(germplasms).withMetaData(mockEmptyMetadata());
+		return GenericResults.withObject(germplasms).withMetaData(generateEmptyMetadata());
 	}
 
 	//TODO path lowercase
@@ -106,7 +106,7 @@ public class StudyController  extends BrAPIController{
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		List<String> levels = studyService.getObservationLevels(page, pageSize);
-		return GenericResults.withList(levels).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(levels).withMetaData(generateMetaDataTemplate(page, pageSize));
 	}
 
 	@RequestMapping(value="studies/{studyDbId}/observationunits", method= {RequestMethod.GET})
@@ -116,7 +116,7 @@ public class StudyController  extends BrAPIController{
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		List<StudyObservation> observations = studyService.getStudyObservations(studyDbId, observationLevel, page, pageSize);
-		return GenericResults.withList(observations).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(observations).withMetaData(generateMetaDataTemplate(page, pageSize));
 	}
 	
 	//TODO should be PUT not POST
@@ -134,7 +134,7 @@ public class StudyController  extends BrAPIController{
 			@RequestParam String format){
 		StudyObservationUnitTable table = studyService.getStudyObservationUnitTable(studyDbId, format);
 		
-		return GenericResults.withObject(table).withMetaData(mockEmptyMetadata());
+		return GenericResults.withObject(table).withMetaData(generateEmptyMetadata());
 	}
 	
 	//TODO should be PUT not POST
@@ -152,7 +152,7 @@ public class StudyController  extends BrAPIController{
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		List<StudyPlotLayout> layouts = studyService.getStudyPlotLayouts(studyDbId, page, pageSize);
 		
-		return GenericResults.withList(layouts).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(layouts).withMetaData(generateMetaDataTemplate(page, pageSize));
 	}
 	
 	@RequestMapping(value="studies/{studyDbId}/observations", method= {RequestMethod.GET})
@@ -164,6 +164,6 @@ public class StudyController  extends BrAPIController{
 		
 		List<ObservationUnit> units = studyService.getObservationUnits(studyDbId, observationVariableDbIds, page, pageSize);
 		
-		return GenericResults.withList(units).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(units).withMetaData(generateMetaDataTemplate(page, pageSize));
 	}
 }

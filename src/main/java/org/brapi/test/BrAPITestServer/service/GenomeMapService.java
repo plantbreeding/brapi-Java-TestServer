@@ -2,9 +2,9 @@ package org.brapi.test.BrAPITestServer.service;
 
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.GenomeMapData;
-import org.brapi.test.BrAPITestServer.model.GenomeMapDetail;
-import org.brapi.test.BrAPITestServer.model.GenomeMapSummary;
+import org.brapi.test.BrAPITestServer.model.rest.GenomeMapData;
+import org.brapi.test.BrAPITestServer.model.rest.GenomeMapDetail;
+import org.brapi.test.BrAPITestServer.model.rest.GenomeMapSummary;
 import org.springframework.stereotype.Service;
 
 @Service

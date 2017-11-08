@@ -2,9 +2,9 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.Location;
-import org.brapi.test.BrAPITestServer.model.metadata.GenericResults;
-import org.brapi.test.BrAPITestServer.model.metadata.GenericResultsDataList;
+import org.brapi.test.BrAPITestServer.model.rest.Location;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
 import org.brapi.test.BrAPITestServer.service.LocationService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +24,7 @@ public class LocationController  extends BrAPIController{
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		List<Location> locations = locationService.getLocations(locationType, page, pageSize);
 		
-		return GenericResults.withList(locations).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(locations).withMetaData(generateMetaDataTemplate(page, pageSize));
 		
 	}
 	
@@ -33,7 +33,7 @@ public class LocationController  extends BrAPIController{
 			@PathVariable(value="locationDbId") String locationDbId) {
 		Location location = locationService.getLocation(locationDbId);
 		
-		return GenericResults.withObject(location).withMetaData(mockEmptyMetadata());
+		return GenericResults.withObject(location).withMetaData(generateEmptyMetadata());
 		
 	}
 	

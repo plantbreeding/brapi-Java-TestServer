@@ -1,9 +1,9 @@
 package org.brapi.test.BrAPITestServer.controller;
 
-import org.brapi.test.BrAPITestServer.model.Sample;
-import org.brapi.test.BrAPITestServer.model.SampleDbIdWrapper;
-import org.brapi.test.BrAPITestServer.model.SampleDetail;
-import org.brapi.test.BrAPITestServer.model.metadata.GenericResults;
+import org.brapi.test.BrAPITestServer.model.rest.Sample;
+import org.brapi.test.BrAPITestServer.model.rest.SampleDbIdWrapper;
+import org.brapi.test.BrAPITestServer.model.rest.SampleDetail;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
 import org.brapi.test.BrAPITestServer.service.SampleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +33,6 @@ public class SampleController  extends BrAPIController{
 	public GenericResults<SampleDetail> getSample(
 			@PathVariable(value="sampleId") String sampleId){
 		SampleDetail sample = sampleService.getSample(sampleId);
-		return GenericResults.withObject(sample).withMetaData(mockEmptyMetadata());
+		return GenericResults.withObject(sample).withMetaData(generateEmptyMetadata());
 	}
 }

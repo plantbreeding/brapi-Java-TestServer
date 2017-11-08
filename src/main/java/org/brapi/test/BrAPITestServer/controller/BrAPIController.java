@@ -1,20 +1,17 @@
 package org.brapi.test.BrAPITestServer.controller;
 
-import org.brapi.test.BrAPITestServer.model.metadata.MetaData;
-import org.brapi.test.BrAPITestServer.model.metadata.MetaDataPagination;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaDataPagination;
 
 public class BrAPIController {
-	protected MetaData mockMetaData(int page, int pageSize) {
-		MetaData metaData = new MetaData();
-		metaData.setPagination(new MetaDataPagination());
+	protected MetaData generateMetaDataTemplate(int page, int pageSize) {
+		MetaData metaData = generateEmptyMetadata();
 		metaData.getPagination().setCurrentPage(page);
 		metaData.getPagination().setPageSize(pageSize);
-		metaData.getPagination().setTotalCount(7);
-		metaData.getPagination().setTotalPages(1);
 		return metaData;
 	}
 	
-	protected MetaData mockEmptyMetadata() {
+	protected MetaData generateEmptyMetadata() {
 		MetaData metaData = new MetaData();
 		metaData.setPagination(new MetaDataPagination());
 		metaData.getPagination().setCurrentPage(0);

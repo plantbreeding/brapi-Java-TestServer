@@ -2,9 +2,9 @@ package org.brapi.test.BrAPITestServer.service;
 
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.AlleleMatrixSearchRequest;
-import org.brapi.test.BrAPITestServer.model.MarkerprofileDetails;
-import org.brapi.test.BrAPITestServer.model.MarkerprofileSummary;
+import org.brapi.test.BrAPITestServer.model.rest.AlleleMatrixSearchRequest;
+import org.brapi.test.BrAPITestServer.model.rest.MarkerprofileDetails;
+import org.brapi.test.BrAPITestServer.model.rest.MarkerprofileSummary;
 import org.springframework.stereotype.Service;
 
 @Service

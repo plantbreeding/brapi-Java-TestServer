@@ -4,11 +4,11 @@ import java.util.List;
 
 import javax.websocket.server.PathParam;
 
-import org.brapi.test.BrAPITestServer.model.GenomeMapData;
-import org.brapi.test.BrAPITestServer.model.GenomeMapDetail;
-import org.brapi.test.BrAPITestServer.model.GenomeMapSummary;
-import org.brapi.test.BrAPITestServer.model.metadata.GenericResults;
-import org.brapi.test.BrAPITestServer.model.metadata.GenericResultsDataList;
+import org.brapi.test.BrAPITestServer.model.rest.GenomeMapData;
+import org.brapi.test.BrAPITestServer.model.rest.GenomeMapDetail;
+import org.brapi.test.BrAPITestServer.model.rest.GenomeMapSummary;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
 import org.brapi.test.BrAPITestServer.service.GenomeMapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +35,7 @@ public class GenomeMapController  extends BrAPIController{
 
 		return GenericResults
 				.withList(summaries)
-				.withMetaData(mockMetaData(page, pageSize));
+				.withMetaData(generateMetaDataTemplate(page, pageSize));
 	}
 	
 	@RequestMapping(value="map/{mapDbId}", method= {RequestMethod.GET})
@@ -45,7 +45,7 @@ public class GenomeMapController  extends BrAPIController{
 		
 		return GenericResults
 				.withObject(detail)
-				.withMetaData(mockEmptyMetadata());
+				.withMetaData(generateEmptyMetadata());
 	}
 
 	@RequestMapping(value="map/{mapDbId}/positions", method= {RequestMethod.GET})
@@ -60,7 +60,7 @@ public class GenomeMapController  extends BrAPIController{
 		
 		return GenericResults
 				.withList(genomeData)
-				.withMetaData(mockMetaData(page, pageSize));
+				.withMetaData(generateMetaDataTemplate(page, pageSize));
 	}
 	
 	

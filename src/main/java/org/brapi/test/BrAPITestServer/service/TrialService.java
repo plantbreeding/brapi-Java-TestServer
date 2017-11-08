@@ -2,8 +2,8 @@ package org.brapi.test.BrAPITestServer.service;
 
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.TrialSummary;
-import org.brapi.test.BrAPITestServer.model.TrialSummaryWithContact;
+import org.brapi.test.BrAPITestServer.model.rest.TrialSummary;
+import org.brapi.test.BrAPITestServer.model.rest.TrialSummaryWithContact;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -2,19 +2,19 @@ package org.brapi.test.BrAPITestServer.service;
 
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.ObservationUnit;
-import org.brapi.test.BrAPITestServer.model.Season;
-import org.brapi.test.BrAPITestServer.model.Study;
-import org.brapi.test.BrAPITestServer.model.StudyGermplasm;
-import org.brapi.test.BrAPITestServer.model.StudyObservation;
-import org.brapi.test.BrAPITestServer.model.StudyObservationUnitRequest;
-import org.brapi.test.BrAPITestServer.model.StudyObservationUnitTable;
-import org.brapi.test.BrAPITestServer.model.StudyObservationVariable;
-import org.brapi.test.BrAPITestServer.model.StudyPlotLayout;
-import org.brapi.test.BrAPITestServer.model.StudySummary;
-import org.brapi.test.BrAPITestServer.model.StudySearchRequest;
-import org.brapi.test.BrAPITestServer.model.StudyType;
-import org.brapi.test.BrAPITestServer.model.metadata.GenericResults;
+import org.brapi.test.BrAPITestServer.model.rest.ObservationUnit;
+import org.brapi.test.BrAPITestServer.model.rest.Season;
+import org.brapi.test.BrAPITestServer.model.rest.Study;
+import org.brapi.test.BrAPITestServer.model.rest.StudyGermplasm;
+import org.brapi.test.BrAPITestServer.model.rest.StudyObservation;
+import org.brapi.test.BrAPITestServer.model.rest.StudyObservationUnitRequest;
+import org.brapi.test.BrAPITestServer.model.rest.StudyObservationUnitTable;
+import org.brapi.test.BrAPITestServer.model.rest.StudyObservationVariable;
+import org.brapi.test.BrAPITestServer.model.rest.StudyPlotLayout;
+import org.brapi.test.BrAPITestServer.model.rest.StudySearchRequest;
+import org.brapi.test.BrAPITestServer.model.rest.StudySummary;
+import org.brapi.test.BrAPITestServer.model.rest.StudyType;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
 import org.springframework.stereotype.Service;
 
 @Service

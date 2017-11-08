@@ -2,11 +2,11 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.ObservationVariable;
-import org.brapi.test.BrAPITestServer.model.ObservationVariableSearchRequest;
-import org.brapi.test.BrAPITestServer.model.Ontology;
-import org.brapi.test.BrAPITestServer.model.metadata.GenericResults;
-import org.brapi.test.BrAPITestServer.model.metadata.GenericResultsDataList;
+import org.brapi.test.BrAPITestServer.model.rest.ObservationVariable;
+import org.brapi.test.BrAPITestServer.model.rest.ObservationVariableSearchRequest;
+import org.brapi.test.BrAPITestServer.model.rest.Ontology;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
 import org.brapi.test.BrAPITestServer.service.ObservationVariableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,21 +31,21 @@ public class ObservationVariableController  extends BrAPIController{
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		List<ObservationVariable> variables = observationVariableService.getVariables(traitClass, page, pageSize);
-		return GenericResults.withList(variables).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(variables).withMetaData(generateMetaDataTemplate(page, pageSize));
 	}
 	
 	@RequestMapping(value="variables-search", method= {RequestMethod.POST})
 	public GenericResults<GenericResultsDataList<ObservationVariable>> getVariables(
 			@RequestBody ObservationVariableSearchRequest request) {
 		List<ObservationVariable> variables = observationVariableService.getVariables(request);
-		return GenericResults.withList(variables).withMetaData(mockMetaData(request.getPage(), request.getPageSize()));
+		return GenericResults.withList(variables).withMetaData(generateMetaDataTemplate(request.getPage(), request.getPageSize()));
 	}
 	
 	@RequestMapping(value="variables/{observationVariableDbId}", method= {RequestMethod.GET})
 	public GenericResults<ObservationVariable> getVariable(
 			@PathVariable(value="observationVariableDbId") String observationVariableDbId) {
 		ObservationVariable variable = observationVariableService.getVariable(observationVariableDbId);
-		return GenericResults.withObject(variable).withMetaData(mockEmptyMetadata());
+		return GenericResults.withObject(variable).withMetaData(generateEmptyMetadata());
 	}
 	
 	@RequestMapping(value="variables/datatypes", method= {RequestMethod.GET})
@@ -53,7 +53,7 @@ public class ObservationVariableController  extends BrAPIController{
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		List<String> dataTypes = observationVariableService.getDataTypes(page, pageSize);
-		return GenericResults.withList(dataTypes).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(dataTypes).withMetaData(generateMetaDataTemplate(page, pageSize));
 	}
 	
 	@RequestMapping(value="ontologies", method= {RequestMethod.GET})
@@ -61,6 +61,6 @@ public class ObservationVariableController  extends BrAPIController{
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		List<Ontology> ontologies = observationVariableService.getOntologies(page, pageSize);
-		return GenericResults.withList(ontologies).withMetaData(mockMetaData(page, pageSize));
+		return GenericResults.withList(ontologies).withMetaData(generateMetaDataTemplate(page, pageSize));
 	}
 }

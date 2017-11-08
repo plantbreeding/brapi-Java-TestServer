@@ -2,7 +2,7 @@ package org.brapi.test.BrAPITestServer.service;
 
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.Program;
+import org.brapi.test.BrAPITestServer.model.rest.Program;
 import org.springframework.stereotype.Service;
 
 @Service

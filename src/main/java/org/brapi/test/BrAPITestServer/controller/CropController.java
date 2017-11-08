@@ -2,8 +2,9 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.metadata.GenericResults;
-import org.brapi.test.BrAPITestServer.model.metadata.GenericResultsDataList;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.CropService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,11 +25,13 @@ public class CropController  extends BrAPIController{
 	public GenericResults<GenericResultsDataList<String>> getCrops(
 			@RequestParam(value="pageSize", defaultValue="1000") int pageSize,
 			@RequestParam(value="page", defaultValue="0") int page){
-		List<String> crops = cropService.getCrops();
+		
+		MetaData metaData = generateMetaDataTemplate(page, pageSize);
+		List<String> crops = cropService.getCrops(metaData);
 
 		return GenericResults
 				.withList(crops)
-				.withMetaData(mockMetaData(page, pageSize));
+				.withMetaData(metaData);
 	}
 
 }

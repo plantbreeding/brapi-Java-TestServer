@@ -3,11 +3,11 @@ package org.brapi.test.BrAPITestServer.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.Donor;
-import org.brapi.test.BrAPITestServer.model.Germplasm;
-import org.brapi.test.BrAPITestServer.model.MarkerprofileKeys;
-import org.brapi.test.BrAPITestServer.model.Pedigree;
-import org.brapi.test.BrAPITestServer.model.TaxonID;
+import org.brapi.test.BrAPITestServer.model.rest.Donor;
+import org.brapi.test.BrAPITestServer.model.rest.Germplasm;
+import org.brapi.test.BrAPITestServer.model.rest.MarkerprofileKeys;
+import org.brapi.test.BrAPITestServer.model.rest.Pedigree;
+import org.brapi.test.BrAPITestServer.model.rest.TaxonID;
 import org.springframework.stereotype.Service;
 
 @Service

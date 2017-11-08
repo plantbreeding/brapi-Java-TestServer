@@ -2,9 +2,9 @@ package org.brapi.test.BrAPITestServer.service;
 
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.ObservationVariable;
-import org.brapi.test.BrAPITestServer.model.ObservationVariableSearchRequest;
-import org.brapi.test.BrAPITestServer.model.Ontology;
+import org.brapi.test.BrAPITestServer.model.rest.ObservationVariable;
+import org.brapi.test.BrAPITestServer.model.rest.ObservationVariableSearchRequest;
+import org.brapi.test.BrAPITestServer.model.rest.Ontology;
 import org.springframework.stereotype.Service;
 
 @Service
