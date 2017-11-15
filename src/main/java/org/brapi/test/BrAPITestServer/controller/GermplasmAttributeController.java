@@ -8,6 +8,7 @@ import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttributeMasterWrapper
 import org.brapi.test.BrAPITestServer.model.rest.MarkerprofileKeys;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.GermplasmAttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,22 +31,24 @@ public class GermplasmAttributeController extends BrAPIController{
 				@RequestParam String attributeCategoryDbId,
 				@RequestParam(defaultValue="0") int page,
 				@RequestParam(defaultValue="1000") int pageSize){
-		List<GermplasmAttribute> germplasmAttributes = germplasmAttributeService.getGermplasmAttributes(attributeCategoryDbId, page, pageSize);
+		MetaData metaData = generateMetaDataTemplate(page, pageSize);
+		List<GermplasmAttribute> germplasmAttributes = germplasmAttributeService.getGermplasmAttributes(attributeCategoryDbId,metaData);
 		
 		return GenericResults
 				.withList(germplasmAttributes)
-				.withMetaData(generateMetaDataTemplate(page, pageSize));
+				.withMetaData(metaData);
 	}
 	
 	@RequestMapping(value="attributes/categories", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<GermplasmAttributeCategory>> getGermplasmAttributeCategories(
 				@RequestParam(defaultValue="0") int page,
 				@RequestParam(defaultValue="1000") int pageSize){
-		
-		List<GermplasmAttributeCategory> germplasmAttributes = germplasmAttributeService.getGermplasmAttributeCategories(page, pageSize);
+
+		MetaData metaData = generateMetaDataTemplate(page, pageSize);
+		List<GermplasmAttributeCategory> germplasmAttributes = germplasmAttributeService.getGermplasmAttributeCategories(metaData);
 		return GenericResults
 				.withList(germplasmAttributes)
-				.withMetaData(generateMetaDataTemplate(page, pageSize));
+				.withMetaData(metaData);
 	}
 
 
@@ -55,9 +58,10 @@ public class GermplasmAttributeController extends BrAPIController{
 			@RequestParam List<String> attributeList, 
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
-		GermplasmAttributeMasterWrapper attribute = germplasmAttributeService.getGermplasmAttributes(germplasmDbId, attributeList, page, pageSize);
+		MetaData metaData = generateMetaDataTemplate(page, pageSize);
+		GermplasmAttributeMasterWrapper attribute = germplasmAttributeService.getGermplasmAttributes(germplasmDbId, attributeList,metaData);
 
-		return GenericResults.withObject(attribute).withMetaData(generateMetaDataTemplate(page, pageSize));
+		return GenericResults.withObject(attribute).withMetaData(metaData);
 	}
 	
 }

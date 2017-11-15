@@ -7,6 +7,7 @@ import org.brapi.test.BrAPITestServer.model.rest.MarkerprofileDetails;
 import org.brapi.test.BrAPITestServer.model.rest.MarkerprofileSummary;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.MarkerprofileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,10 +35,11 @@ public class MarkerprofileController extends BrAPIController {
 			@RequestParam String methodDbId, 
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
+		MetaData metaData = generateMetaDataTemplate(page, pageSize);
 		List<MarkerprofileSummary> markerprofileSummaries = markerprofileService.getMarkerprofileSummeries(
-				germplasmDbId, studyDbId, sampleDbId, extractDbId, methodDbId, page, pageSize);
+				germplasmDbId, studyDbId, sampleDbId, extractDbId, methodDbId, metaData);
 
-		return GenericResults.withList(markerprofileSummaries).withMetaData(generateMetaDataTemplate(page, pageSize));
+		return GenericResults.withList(markerprofileSummaries).withMetaData(metaData);
 	}
 
 	@RequestMapping(value = "markerprofiles/{markerprofileDbId}", method = { RequestMethod.GET })
@@ -49,9 +51,10 @@ public class MarkerprofileController extends BrAPIController {
 			@RequestParam(defaultValue="/") String sepUnphased,
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "1") int page) {
-		MarkerprofileDetails details = markerprofileService.getMarkerprofileDetails(markerprofileDbId, expandHomozygotes, unknownString, sepPhased, sepUnphased, page, pageSize);
+		MetaData metaData = generateMetaDataTemplate(page, pageSize);
+		MarkerprofileDetails details = markerprofileService.getMarkerprofileDetails(markerprofileDbId, expandHomozygotes, unknownString, sepPhased, sepUnphased, metaData);
 		
-		return GenericResults.withObject(details).withMetaData(generateMetaDataTemplate(page, pageSize));
+		return GenericResults.withObject(details).withMetaData(metaData);
 	}
 
 	@RequestMapping(value = "allelematrix-search", method = { RequestMethod.GET })
@@ -63,9 +66,10 @@ public class MarkerprofileController extends BrAPIController {
 			@RequestParam(defaultValue="/") String sepUnphased,
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
-		List<List<String>> alleleMatrix = markerprofileService.getAlleleMatrix(format, expandHomozygotes, unknownString, sepPhased, sepUnphased, page, pageSize);
+		MetaData metaData = generateMetaDataTemplate(page, pageSize);
+		List<List<String>> alleleMatrix = markerprofileService.getAlleleMatrix(format, expandHomozygotes, unknownString, sepPhased, sepUnphased, metaData);
 		
-		return GenericResults.withList(alleleMatrix).withMetaData(generateMetaDataTemplate(page, pageSize));
+		return GenericResults.withList(alleleMatrix).withMetaData(metaData);
 	}
 
 	@RequestMapping(value = "allelematrix-search", method = { RequestMethod.POST })

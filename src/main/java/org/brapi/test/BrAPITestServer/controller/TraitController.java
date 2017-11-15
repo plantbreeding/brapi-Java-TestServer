@@ -5,6 +5,7 @@ import java.util.List;
 import org.brapi.test.BrAPITestServer.model.rest.TraitSummary;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.TraitService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,10 +26,11 @@ public class TraitController  extends BrAPIController{
 	public GenericResults<GenericResultsDataList<TraitSummary>> getTraits(
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
+
+		MetaData metaData = generateMetaDataTemplate(page, pageSize);
+		List<TraitSummary> traits = traitService.getTraits(metaData);
 		
-		List<TraitSummary> traits = traitService.getTraits(page, pageSize);
-		
-		return GenericResults.withList(traits).withMetaData(generateMetaDataTemplate(page, pageSize));
+		return GenericResults.withList(traits).withMetaData(metaData);
 	}
 	
 	@RequestMapping(value="traits/{traitDbId}", method= {RequestMethod.GET})

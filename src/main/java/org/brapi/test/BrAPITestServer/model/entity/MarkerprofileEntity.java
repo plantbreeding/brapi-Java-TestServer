@@ -1,19 +1,25 @@
 package org.brapi.test.BrAPITestServer.model.entity;
 
-public class MarkerprofileSummary {
-	private String markerprofileDbId;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="markerprofile")
+public class MarkerprofileEntity extends BaseEntity {
+	@Column
 	private String germplasmDbId;
+	@Column
 	private String uniqueDisplayName;
+	@Column
 	private String sampleDbId;
+	@Column
 	private String extractDbId;
+	@Column
 	private String analysisMethod;
+	@Column
 	private int resultCount;
-	public String getMarkerprofileDbId() {
-		return markerprofileDbId;
-	}
-	public void setMarkerprofileDbId(String markerprofileDbId) {
-		this.markerprofileDbId = markerprofileDbId;
-	}
+	
 	public String getGermplasmDbId() {
 		return germplasmDbId;
 	}

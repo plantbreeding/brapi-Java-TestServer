@@ -5,17 +5,18 @@ import java.util.List;
 import org.brapi.test.BrAPITestServer.model.rest.ObservationVariable;
 import org.brapi.test.BrAPITestServer.model.rest.ObservationVariableSearchRequest;
 import org.brapi.test.BrAPITestServer.model.rest.Ontology;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ObservationVariableService {
 
-	public List<String> getDataTypes(int page, int pageSize) {
+	public List<String> getDataTypes(MetaData metaData) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<ObservationVariable> getVariables(String traitClass, int page, int pageSize) {
+	public List<ObservationVariable> getVariables(String traitClass, MetaData metaData) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -30,7 +31,7 @@ public class ObservationVariableService {
 		return null;
 	}
 
-	public List<Ontology> getOntologies(int page, int pageSize) {
+	public List<Ontology> getOntologies(MetaData metaData) {
 		// TODO Auto-generated method stub
 		return null;
 	}

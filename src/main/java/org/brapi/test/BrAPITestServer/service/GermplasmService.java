@@ -1,111 +1,144 @@
 package org.brapi.test.BrAPITestServer.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.brapi.test.BrAPITestServer.model.entity.GermplasmEntity;
+import org.brapi.test.BrAPITestServer.model.entity.GermplasmTypeStorageCodeEntity;
+import org.brapi.test.BrAPITestServer.model.entity.MarkerprofileEntity;
+import org.brapi.test.BrAPITestServer.model.entity.PedigreeEntity;
 import org.brapi.test.BrAPITestServer.model.rest.Donor;
 import org.brapi.test.BrAPITestServer.model.rest.Germplasm;
 import org.brapi.test.BrAPITestServer.model.rest.MarkerprofileKeys;
+import org.brapi.test.BrAPITestServer.model.rest.MarkerprofileSummary;
 import org.brapi.test.BrAPITestServer.model.rest.Pedigree;
 import org.brapi.test.BrAPITestServer.model.rest.TaxonID;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
+import org.brapi.test.BrAPITestServer.repository.GermplasmRepository;
+import org.brapi.test.BrAPITestServer.repository.MarkerprofileRepository;
+import org.brapi.test.BrAPITestServer.repository.PedigreeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GermplasmService {
 
-	public List<Germplasm> search(List<String> germplasmDbIds, List<String> germplasmGenus,
-			List<String> germplasmNames, List<String> germplasmPUIs, List<String> germplasmSpecies, int page,
-			int pageSize) {
+	private GermplasmRepository germplasmRepository;
+	private PedigreeRepository pedigreeRepository;
+	private MarkerprofileRepository markerprofileRepository;
 
-		List<Germplasm> results = new ArrayList<Germplasm>();
+	@Autowired
+	public GermplasmService(GermplasmRepository germplasmRepository, PedigreeRepository pedigreeRepository,
+			MarkerprofileRepository markerprofileRepository) {
+		this.germplasmRepository = germplasmRepository;
+		this.pedigreeRepository = pedigreeRepository;
+		this.markerprofileRepository = markerprofileRepository;
+	}
 
-		results.add(mockGermplasm(germplasmDbIds, germplasmGenus, germplasmNames, germplasmPUIs, germplasmSpecies));
+	public List<Germplasm> search(List<String> germplasmDbIds, List<String> germplasmGenus, List<String> germplasmNames,
+			List<String> germplasmPUIs, List<String> germplasmSpecies, List<String> accessionNumbers,
+			MetaData metaData) {
+		checkForEmptyList(germplasmDbIds);
+		checkForEmptyList(germplasmGenus);
+		checkForEmptyList(germplasmNames);
+		checkForEmptyList(germplasmPUIs);
+		checkForEmptyList(germplasmSpecies);
+		checkForEmptyList(accessionNumbers);
+
+		List<Germplasm> results = germplasmRepository
+				.findBySearch(germplasmDbIds, germplasmGenus, germplasmNames, germplasmPUIs, germplasmSpecies,
+						accessionNumbers, PagingUtility.getPageRequest(metaData))
+				.map(this::convertFromEntity).getContent();
+
+		PagingUtility.calculateMetaData(metaData);
 		return results;
 	}
 
+	private void checkForEmptyList(List<String> list) {
+		if(list == null || list.isEmpty()) {
+			// this is a necessary place holder based on how JPA works. JPQL doesn't like empty lists.
+			list.add("");
+		}
+	}
+
+	private Germplasm convertFromEntity(GermplasmEntity entity) {
+		Germplasm germ = new Germplasm();
+		germ.setAccessionNumber(entity.getAccessionNumber());
+		germ.setBiologicalStatusOfAccessionCode(entity.getBiologicalStatusOfAccessionCode());
+		germ.setCommonCropName(entity.getCommonCropName());
+		germ.setCountryOfOriginCode(entity.getCountryOfOriginCode());
+		germ.setDefaultDisplayName(entity.getDefaultDisplayName());
+		germ.setGenus(entity.getGenus());
+		germ.setGermplasmDbId(entity.getId());
+		germ.setGermplasmName(entity.getGermplasmName());
+		germ.setGermplasmPUI(entity.getGermplasmPUI());
+		germ.setGermplasmSeedSource(entity.getGermplasmSeedSource());
+		germ.setInstituteCode(entity.getInstituteCode());
+		germ.setPedigree(entity.getPedigree().getPedigree());
+		germ.setSpecies(entity.getSpecies());
+		germ.setSubtaxa(entity.getSubtaxa());
+		germ.setSubtaxaAuthority(entity.getSubtaxaAuthority());
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		germ.setAcquisitionDate(sdf.format(entity.getAcquisitionDate()));
+
+		germ.setSynonyms(Arrays.asList(entity.getSynonyms().split(" *, *")));
+
+		germ.setTaxonIds(entity.getTaxonIds().stream().map((t) -> {
+			TaxonID taxonId = new TaxonID();
+			if (t.getSourceName().equalsIgnoreCase("ncbiTaxon")) {
+				taxonId.setNcbiTaxon(t.getTaxonId());
+			} else if (t.getSourceName().equalsIgnoreCase("ciradTaxon")) {
+				taxonId.setCiradTaxon(t.getTaxonId());
+			}
+			return taxonId;
+		}).collect(Collectors.toList()));
+
+		germ.setTypeOfGermplasmStorageCode(entity.getTypeOfGermplasmStorageCode().stream()
+				.map(GermplasmTypeStorageCodeEntity::getStorageCode).collect(Collectors.toList()));
+
+		germ.setDonors(entity.getDonors().stream().map((d) -> {
+			Donor donor = new Donor();
+			donor.setDonorAccessionNumber(d.getDonorAccessionNumber());
+			donor.setDonorInstituteCode(d.getDonorInstituteCode());
+			donor.setGermplasmPUI(d.getGermplasmPUI());
+			return donor;
+		}).collect(Collectors.toList()));
+
+		return germ;
+	}
+
 	public Germplasm searchByDbId(String germplasmDbId) {
-		List<String> germplasmDbIds = new ArrayList<String>();
-		germplasmDbIds.add(germplasmDbId);
-		return mockGermplasm(germplasmDbIds, null, null, null, null);
+		Germplasm germplasm = convertFromEntity(
+				germplasmRepository.findById(germplasmDbId).orElse(new GermplasmEntity()));
+		return germplasm;
 	}
 
 	public Pedigree searchPedigreeByDbId(String germplasmDbId, String notation) {
-		return mockPedigree(germplasmDbId);
+		PedigreeEntity entity;
+		if (notation == null) {
+			entity = pedigreeRepository.findByGermplasm_Id(germplasmDbId);
+		} else {
+			entity = pedigreeRepository.findByGermplasm_IdAndNotation(germplasmDbId, notation);
+		}
+		Pedigree pedigree = new Pedigree();
+		pedigree.setDefaultDisplayName(entity.getDefaultDisplayName());
+		pedigree.setGermplasmDbId(germplasmDbId);
+		pedigree.setParent1Id(entity.getParent1Id());
+		pedigree.setParent2Id(entity.getParent2Id());
+		pedigree.setPedigree(entity.getPedigree());
+		return pedigree;
 	}
 
 	public MarkerprofileKeys searchMarkerprofilesByDbId(String germplasmDbId) {
-		return mockMarkerprofile(germplasmDbId);
-	}
-	
-	private MarkerprofileKeys mockMarkerprofile(String germplasmDbId) {
-		MarkerprofileKeys markerprofile = new MarkerprofileKeys();
-		markerprofile.setGermplasmDbId(germplasmDbId);
-		List<String> markerprofilesDbIds = new ArrayList<String>();
-		markerprofilesDbIds.add("3939");
-		markerprofilesDbIds.add("4484");
-		markerprofilesDbIds.add("3993");
-		markerprofile.setMarkerprofilesDbIds(markerprofilesDbIds);
-		
-		return markerprofile;
-	}
-
-	private Pedigree mockPedigree(String germplasmDbId) {
-		Pedigree pedigree = new Pedigree();
-		pedigree.setDefaultDisplayName("382");
-		pedigree.setGermplasmDbId(germplasmDbId);
-		pedigree.setParent1Id("166");
-		pedigree.setParent2Id("143");
-		pedigree.setPedigree("Cree / Bonanza");
-		
-		return pedigree;
-	}
-	
-	private Germplasm mockGermplasm(List<String> germplasmDbIds, List<String> germplasmGenus,
-			List<String> germplasmNames, List<String> germplasmPUIs, List<String> germplasmSpecies) {
-		Germplasm germplasm = new Germplasm();
-
-		germplasm.setAccessionNumber("ITC0609");
-		germplasm.setAcquisitionDate("19470131");
-		germplasm.setBiologicalStatusOfAccessionCode(412);
-		germplasm.setCommonCropName("banana");
-		germplasm.setCountryOfOriginCode("UNK");
-		germplasm.setDefaultDisplayName("Pahang");
-		List<Donor> donors = new ArrayList<Donor>();
-		germplasm.setDonors(donors);
-		germplasm.setGenus("Musa");
-		germplasm.setGermplasmDbId("01BEL084609");
-		germplasm.setGermplasmName("Pahang");
-		germplasm.setGermplasmPUI("http://www.crop-diversity.org/mgis/accession/01BEL084609");
-		germplasm.setGermplasmSeedSource("Female GID:4/Male GID:4");
-		germplasm.setInstituteCode("01BEL084");
-		germplasm.setInstituteName("ITC");
-		germplasm.setPedigree("TOBA97/SW90.1057");
-		germplasm.setSpecies("acuminata");
-		germplasm.setSpeciesAuthority("speciesAuthority");
-		germplasm.setSubtaxa("sp malaccensis var pahang");
-		germplasm.setSynonyms(new ArrayList<String>());
-		List<TaxonID> taxonIDs = new ArrayList<TaxonID>();
-		germplasm.setTaxonIds(taxonIDs);
-		germplasm.setTypeOfGermplasmStorageCode(new ArrayList<Integer>());
-		
-		if(germplasmDbIds != null && !germplasmDbIds.isEmpty()) {
-			germplasm.setGermplasmDbId(germplasmDbIds.get(0));
-		}
-		if(germplasmGenus != null && !germplasmGenus.isEmpty()) {
-			germplasm.setGenus(germplasmGenus.get(0));
-		}
-		if(germplasmNames != null && !germplasmNames.isEmpty()) {
-			germplasm.setGermplasmName(germplasmNames.get(0));
-		}
-		if(germplasmPUIs != null && !germplasmPUIs.isEmpty()) {
-			germplasm.setGermplasmPUI(germplasmPUIs.get(0));
-		}
-		if(germplasmSpecies != null && !germplasmSpecies.isEmpty()) {
-			germplasm.setSpecies(germplasmSpecies.get(0));
-		}
-		
-		
-		return germplasm;
+		MarkerprofileKeys keys = new MarkerprofileKeys();
+		keys.setGermplasmDbId(germplasmDbId);
+		keys.setMarkerprofilesDbIds(markerprofileRepository.findByGermplasmDbId(germplasmDbId).stream()
+				.map(MarkerprofileEntity::getId).collect(Collectors.toList()));
+		return keys;
 	}
 
 }

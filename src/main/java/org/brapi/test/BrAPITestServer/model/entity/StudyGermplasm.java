@@ -5,7 +5,7 @@ import java.util.List;
 public class StudyGermplasm {
 	private String studyDbId;
 	private String trialName;
-	private List<GermplasmSummary> data;
+	private List<GermplasmEntity> data;
 	public String getStudyDbId() {
 		return studyDbId;
 	}
@@ -18,10 +18,11 @@ public class StudyGermplasm {
 	public void setTrialName(String trialName) {
 		this.trialName = trialName;
 	}
-	public List<GermplasmSummary> getData() {
+	public List<GermplasmEntity> getData() {
 		return data;
 	}
-	public void setData(List<GermplasmSummary> data) {
+	public void setData(List<GermplasmEntity> data) {
 		this.data = data;
 	}
+
 }

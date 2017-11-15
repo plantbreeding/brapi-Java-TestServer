@@ -5,12 +5,13 @@ import java.util.List;
 import org.brapi.test.BrAPITestServer.model.rest.GenomeMapData;
 import org.brapi.test.BrAPITestServer.model.rest.GenomeMapDetail;
 import org.brapi.test.BrAPITestServer.model.rest.GenomeMapSummary;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GenomeMapService {
 
-	public List<GenomeMapSummary> getMapSummaries(String speciesId, String type, int page, int pageSize) {
+	public List<GenomeMapSummary> getMapSummaries(String speciesId, String type, MetaData metaData) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -20,7 +21,7 @@ public class GenomeMapService {
 		return null;
 	}
 
-	public List<GenomeMapData> getMapPositions(String mapDbId, String linkageGroupId, int minPosition, int maxPosition, int page, int pageSize) {
+	public List<GenomeMapData> getMapPositions(String mapDbId, String linkageGroupId, int minPosition, int maxPosition, MetaData metaData) {
 		// TODO Auto-generated method stub
 		return null;
 	}

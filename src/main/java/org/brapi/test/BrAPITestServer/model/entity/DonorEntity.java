@@ -1,9 +1,21 @@
 package org.brapi.test.BrAPITestServer.model.entity;
 
-public class Donor {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="donor")
+public class DonorEntity extends BaseEntity{
+	@Column
+	private String germplasmDbId;
+	@Column
 	private String donorAccessionNumber;
+	@Column
 	private String donorInstituteCode;
+	@Column
 	private String germplasmPUI;
+	
 	public String getDonorAccessionNumber() {
 		return donorAccessionNumber;
 	}
@@ -22,4 +34,11 @@ public class Donor {
 	public void setGermplasmPUI(String germplasmPUI) {
 		this.germplasmPUI = germplasmPUI;
 	}
+	public String getGermplasmDbId() {
+		return germplasmDbId;
+	}
+	public void setGermplasmDbId(String germplasmDbId) {
+		this.germplasmDbId = germplasmDbId;
+	}
+	
 }

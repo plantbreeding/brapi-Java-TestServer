@@ -5,13 +5,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 public class PagingUtility {
-	public static void calculateMetaData(MetaData metadata) {
-		int totalCount = metadata.getPagination().getTotalCount();
-		int pageSize = metadata.getPagination().getPageSize();
-		metadata.getPagination().setTotalPages(totalCount/pageSize);		
+	public static void calculateMetaData(MetaData metaData) {
+		int totalCount = metaData.getPagination().getTotalCount();
+		int pageSize = metaData.getPagination().getPageSize();
+		metaData.getPagination().setTotalPages(totalCount/pageSize);		
 	}
 	
-	public static Pageable getPageRequest(MetaData metadata) {
-		return PageRequest.of(metadata.getPagination().getCurrentPage(), metadata.getPagination().getPageSize());
+	public static Pageable getPageRequest(MetaData metaData) {
+		return PageRequest.of(metaData.getPagination().getCurrentPage(), metaData.getPagination().getPageSize());
 	}
 }

@@ -6,6 +6,7 @@ import org.brapi.test.BrAPITestServer.model.rest.TrialSummary;
 import org.brapi.test.BrAPITestServer.model.rest.TrialSummaryWithContact;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.TrialService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,9 +28,10 @@ public class TrialController  extends BrAPIController{
 	public GenericResults<GenericResultsDataList<TrialSummary>> getTrialSummaries(
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
-		List<TrialSummary> summaries = trialService.getTrialSummaries(page, pageSize);
+		MetaData metaData = generateMetaDataTemplate(page, pageSize);
+		List<TrialSummary> summaries = trialService.getTrialSummaries(metaData);
 		
-		return GenericResults.withList(summaries).withMetaData(generateMetaDataTemplate(page, pageSize));
+		return GenericResults.withList(summaries).withMetaData(metaData);
 	}
 	
 	@RequestMapping(value="trials/{trialDbId}", method= {RequestMethod.GET})

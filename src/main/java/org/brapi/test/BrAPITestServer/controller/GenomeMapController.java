@@ -9,6 +9,7 @@ import org.brapi.test.BrAPITestServer.model.rest.GenomeMapDetail;
 import org.brapi.test.BrAPITestServer.model.rest.GenomeMapSummary;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.GenomeMapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +32,8 @@ public class GenomeMapController  extends BrAPIController{
 			@RequestParam String type,
 			@RequestParam(defaultValue="0") int page,
 			@RequestParam(defaultValue="1000") int pageSize){
-		List<GenomeMapSummary> summaries = genomeMapService.getMapSummaries(speciesId, type, page, pageSize);
+		MetaData metaData = generateMetaDataTemplate(page, pageSize);
+		List<GenomeMapSummary> summaries = genomeMapService.getMapSummaries(speciesId, type, metaData);
 
 		return GenericResults
 				.withList(summaries)
@@ -56,7 +58,9 @@ public class GenomeMapController  extends BrAPIController{
 			@RequestParam(value="max", defaultValue="0") int maxPosition,
 			@RequestParam(defaultValue="0") int page,
 			@RequestParam(defaultValue="1000") int pageSize){
-		List<GenomeMapData> genomeData = genomeMapService.getMapPositions(mapDbId, linkageGroupId, minPosition, maxPosition, page, pageSize);
+
+		MetaData metaData = generateMetaDataTemplate(page, pageSize);
+		List<GenomeMapData> genomeData = genomeMapService.getMapPositions(mapDbId, linkageGroupId, minPosition, maxPosition, metaData);
 		
 		return GenericResults
 				.withList(genomeData)

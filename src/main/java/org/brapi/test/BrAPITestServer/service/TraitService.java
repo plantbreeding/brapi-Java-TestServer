@@ -3,12 +3,13 @@ package org.brapi.test.BrAPITestServer.service;
 import java.util.List;
 
 import org.brapi.test.BrAPITestServer.model.rest.TraitSummary;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TraitService {
 
-	public List<TraitSummary> getTraits(int page, int pageSize) {
+	public List<TraitSummary> getTraits(MetaData metaData) {
 		// TODO Auto-generated method stub
 		return null;
 	}

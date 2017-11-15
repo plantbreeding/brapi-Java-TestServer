@@ -1,17 +1,39 @@
 package org.brapi.test.BrAPITestServer.model.entity;
 
-public class Pedigree {
-    private String germplasmDbId;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="pedigree")
+public class PedigreeEntity extends BaseEntity{
+	@OneToMany
+    private List<GermplasmEntity> germplasm;
+	@Column
     private String defaultDisplayName;
+	@Column
     private String pedigree;
+	@Column
     private String parent1Id;
+	@Column
     private String parent2Id;
+	@Column
+	private String notation;
     
-	public String getGermplasmDbId() {
-		return germplasmDbId;
+	public List<GermplasmEntity> getGermplasm() {
+		return germplasm;
 	}
-	public void setGermplasmDbId(String germplasmDbId) {
-		this.germplasmDbId = germplasmDbId;
+	public void setGermplasm(List<GermplasmEntity> germplasm) {
+		this.germplasm = germplasm;
+	}
+	public String getNotation() {
+		return notation;
+	}
+	public void setNotation(String notation) {
+		this.notation = notation;
 	}
 	public String getDefaultDisplayName() {
 		return defaultDisplayName;
