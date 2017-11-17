@@ -15,7 +15,7 @@ private Date startDate;
 private Date endDate;
 private boolean active;
 private DatasetAuthorship datasetAuthorship;
-private List<Contact> contacts;
+private List<ContactEntity> contacts;
 private List<StudyIDWrapper> studies;
 private Map<String, String> additionalInfo;
 public String getTrialDbId() {
@@ -66,10 +66,10 @@ public DatasetAuthorship getDatasetAuthorship() {
 public void setDatasetAuthorship(DatasetAuthorship datasetAuthorship) {
 	this.datasetAuthorship = datasetAuthorship;
 }
-public List<Contact> getContacts() {
+public List<ContactEntity> getContacts() {
 	return contacts;
 }
-public void setContacts(List<Contact> contacts) {
+public void setContacts(List<ContactEntity> contacts) {
 	this.contacts = contacts;
 }
 public List<StudyIDWrapper> getStudies() {

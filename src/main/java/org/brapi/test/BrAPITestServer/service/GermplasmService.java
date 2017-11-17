@@ -1,24 +1,22 @@
 package org.brapi.test.BrAPITestServer.service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.brapi.test.BrAPITestServer.model.entity.GermplasmEntity;
 import org.brapi.test.BrAPITestServer.model.entity.GermplasmTypeStorageCodeEntity;
-import org.brapi.test.BrAPITestServer.model.entity.MarkerprofileEntity;
+import org.brapi.test.BrAPITestServer.model.entity.MarkerProfileEntity;
 import org.brapi.test.BrAPITestServer.model.entity.PedigreeEntity;
 import org.brapi.test.BrAPITestServer.model.rest.Donor;
 import org.brapi.test.BrAPITestServer.model.rest.Germplasm;
-import org.brapi.test.BrAPITestServer.model.rest.MarkerprofileKeys;
-import org.brapi.test.BrAPITestServer.model.rest.MarkerprofileSummary;
+import org.brapi.test.BrAPITestServer.model.rest.MarkerProfileKeys;
 import org.brapi.test.BrAPITestServer.model.rest.Pedigree;
 import org.brapi.test.BrAPITestServer.model.rest.TaxonID;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.repository.GermplasmRepository;
-import org.brapi.test.BrAPITestServer.repository.MarkerprofileRepository;
+import org.brapi.test.BrAPITestServer.repository.MarkerProfileRepository;
 import org.brapi.test.BrAPITestServer.repository.PedigreeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,14 +26,14 @@ public class GermplasmService {
 
 	private GermplasmRepository germplasmRepository;
 	private PedigreeRepository pedigreeRepository;
-	private MarkerprofileRepository markerprofileRepository;
+	private MarkerProfileRepository markerProfileRepository;
 
 	@Autowired
 	public GermplasmService(GermplasmRepository germplasmRepository, PedigreeRepository pedigreeRepository,
-			MarkerprofileRepository markerprofileRepository) {
+			MarkerProfileRepository markerProfileRepository) {
 		this.germplasmRepository = germplasmRepository;
 		this.pedigreeRepository = pedigreeRepository;
-		this.markerprofileRepository = markerprofileRepository;
+		this.markerProfileRepository = markerProfileRepository;
 	}
 
 	public List<Germplasm> search(List<String> germplasmDbIds, List<String> germplasmGenus, List<String> germplasmNames,
@@ -133,11 +131,11 @@ public class GermplasmService {
 		return pedigree;
 	}
 
-	public MarkerprofileKeys searchMarkerprofilesByDbId(String germplasmDbId) {
-		MarkerprofileKeys keys = new MarkerprofileKeys();
+	public MarkerProfileKeys searchMarkerProfilesByDbId(String germplasmDbId) {
+		MarkerProfileKeys keys = new MarkerProfileKeys();
 		keys.setGermplasmDbId(germplasmDbId);
-		keys.setMarkerprofilesDbIds(markerprofileRepository.findByGermplasmDbId(germplasmDbId).stream()
-				.map(MarkerprofileEntity::getId).collect(Collectors.toList()));
+		keys.setMarkerProfilesDbIds(markerProfileRepository.findByGermplasmDbId(germplasmDbId).stream()
+				.map(MarkerProfileEntity::getId).collect(Collectors.toList()));
 		return keys;
 	}
 

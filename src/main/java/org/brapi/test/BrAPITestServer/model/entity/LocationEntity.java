@@ -1,26 +1,38 @@
 package org.brapi.test.BrAPITestServer.model.entity;
 
-import java.util.Map;
+import java.util.List;
 
-public class Location {
-	private String locationDbId;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="location")
+public class LocationEntity extends BaseEntity{
+	@Column
 	private String locationType;
+	@Column
 	private String name;
+	@Column
 	private String abbreviation;
+	@Column
 	private String countryCode;
+	@Column
 	private String countryName;
+	@Column
 	private float latitude;
+	@Column
 	private float longitude;
+	@Column
 	private float altitude;
+	@Column
 	private String instituteName;
-	private String instituteAdress;
-	private Map<String, String> additionalInfo;
-	public String getLocationDbId() {
-		return locationDbId;
-	}
-	public void setLocationDbId(String locationDbId) {
-		this.locationDbId = locationDbId;
-	}
+	@Column
+	private String instituteAddress;
+	@OneToMany(mappedBy="locationDbId", targetEntity=LocationAdditionalInfoEntity.class)
+	private List<LocationAdditionalInfoEntity> additionalInfo;
+
 	public String getLocationType() {
 		return locationType;
 	}
@@ -75,16 +87,17 @@ public class Location {
 	public void setInstituteName(String instituteName) {
 		this.instituteName = instituteName;
 	}
-	public String getInstituteAdress() {
-		return instituteAdress;
+	public String getInstituteAddress() {
+		return instituteAddress;
 	}
-	public void setInstituteAdress(String instituteAdress) {
-		this.instituteAdress = instituteAdress;
+	public void setInstituteAddress(String instituteAddress) {
+		this.instituteAddress = instituteAddress;
 	}
-	public Map<String, String> getAdditionalInfo() {
+	public List<LocationAdditionalInfoEntity> getAdditionalInfo() {
 		return additionalInfo;
 	}
-	public void setAdditionalInfo(Map<String, String> additionalInfo) {
+	public void setAdditionalInfo(List<LocationAdditionalInfoEntity> additionalInfo) {
 		this.additionalInfo = additionalInfo;
 	}
+
 }

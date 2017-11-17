@@ -1,12 +1,19 @@
 package org.brapi.test.BrAPITestServer.model.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="markerprofile")
-public class MarkerprofileEntity extends BaseEntity {
+@Table(name="marker_profile")
+public class MarkerProfileEntity extends BaseEntity {
 	@Column
 	private String germplasmDbId;
 	@Column
@@ -17,8 +24,11 @@ public class MarkerprofileEntity extends BaseEntity {
 	private String extractDbId;
 	@Column
 	private String analysisMethod;
-	@Column
-	private int resultCount;
+	@OneToMany(mappedBy="markerProfileDbId", targetEntity=MarkerProfileAlleleEntity.class)
+	private List<MarkerProfileAlleleEntity> alleles;
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "study_marker_profile", joinColumns = { @JoinColumn(name = "marker_profile_db_id", referencedColumnName="id") }, inverseJoinColumns = { @JoinColumn(name = "study_db_id", referencedColumnName="id") })
+	private List<StudyEntity> studies;
 	
 	public String getGermplasmDbId() {
 		return germplasmDbId;
@@ -51,9 +61,13 @@ public class MarkerprofileEntity extends BaseEntity {
 		this.analysisMethod = analysisMethod;
 	}
 	public int getResultCount() {
-		return resultCount;
+		return alleles.size();
 	}
-	public void setResultCount(int resultCount) {
-		this.resultCount = resultCount;
+	public List<MarkerProfileAlleleEntity> getAlleles() {
+		return alleles;
 	}
+	public void setAlleles(List<MarkerProfileAlleleEntity> alleles) {
+		this.alleles = alleles;
+	}
+	
 }

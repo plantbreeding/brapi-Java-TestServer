@@ -5,6 +5,7 @@ import java.util.List;
 import org.brapi.test.BrAPITestServer.model.rest.Marker;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.MarkersService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,9 +25,10 @@ public class MarkerController  extends BrAPIController{
 			@RequestParam String synonyms,
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
-		List<Marker> markers = markersService.getMarkers(name, type, matchMethod, synonyms, page, pageSize);
+		MetaData metaData = generateMetaDataTemplate(page, pageSize);
+		List<Marker> markers = markersService.getMarkers(name, type, matchMethod, synonyms, metaData);
 		
-		return GenericResults.withList(markers).withMetaData(generateMetaDataTemplate(page, pageSize));
+		return GenericResults.withList(markers).withMetaData(metaData);
 	}
 	
 	@RequestMapping(value="markers/{markerDbId}", method= {RequestMethod.GET})

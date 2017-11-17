@@ -1,18 +1,20 @@
 package org.brapi.test.BrAPITestServer.model.rest;
 
-public class MarkerprofileSummary {
+import java.util.Map;
+
+public class MarkerProfileDetails {
 	private String markerprofileDbId;
 	private String germplasmDbId;
 	private String uniqueDisplayName;
-	private String sampleDbId;
+	// TODO why is this missing private String sampleDbId;
 	private String extractDbId;
 	private String analysisMethod;
-	private int resultCount;
-	public String getMarkerprofileDbId() {
+	private Map<String, String> data;
+	public String getMarkerProfileDbId() {
 		return markerprofileDbId;
 	}
-	public void setMarkerprofileDbId(String markerprofileDbId) {
-		this.markerprofileDbId = markerprofileDbId;
+	public void setMarkerProfileDbId(String markerProfileDbId) {
+		this.markerprofileDbId = markerProfileDbId;
 	}
 	public String getGermplasmDbId() {
 		return germplasmDbId;
@@ -26,12 +28,6 @@ public class MarkerprofileSummary {
 	public void setUniqueDisplayName(String uniqueDisplayName) {
 		this.uniqueDisplayName = uniqueDisplayName;
 	}
-	public String getSampleDbId() {
-		return sampleDbId;
-	}
-	public void setSampleDbId(String sampleDbId) {
-		this.sampleDbId = sampleDbId;
-	}
 	public String getExtractDbId() {
 		return extractDbId;
 	}
@@ -44,10 +40,10 @@ public class MarkerprofileSummary {
 	public void setAnalysisMethod(String analysisMethod) {
 		this.analysisMethod = analysisMethod;
 	}
-	public int getResultCount() {
-		return resultCount;
+	public Map<String, String> getData() {
+		return data;
 	}
-	public void setResultCount(int resultCount) {
-		this.resultCount = resultCount;
+	public void setData(Map<String, String> data) {
+		this.data = data;
 	}
 }

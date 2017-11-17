@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.brapi.test.BrAPITestServer.model.rest.Germplasm;
 import org.brapi.test.BrAPITestServer.model.rest.GermplasmSearchRequest;
-import org.brapi.test.BrAPITestServer.model.rest.MarkerprofileKeys;
+import org.brapi.test.BrAPITestServer.model.rest.MarkerProfileKeys;
 import org.brapi.test.BrAPITestServer.model.rest.Pedigree;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
@@ -73,11 +73,11 @@ public class GermplasmController extends BrAPIController {
 		return GenericResults.withObject(pedigree).withMetaData(generateEmptyMetadata());
 	}
 
-	@RequestMapping(value = "germplasm/{germplasmDbId}/markerprofiles", method = { RequestMethod.GET })
-	public GenericResults<MarkerprofileKeys> markerprofilesByGermplasmDbId(
+	@RequestMapping(value = "germplasm/{germplasmDbId}/markerProfiles", method = { RequestMethod.GET })
+	public GenericResults<MarkerProfileKeys> markerProfilesByGermplasmDbId(
 			@PathVariable("germplasmDbId") String germplasmDbId) {
-		MarkerprofileKeys markerprofile = germplasmService.searchMarkerprofilesByDbId(germplasmDbId);
+		MarkerProfileKeys markerProfile = germplasmService.searchMarkerProfilesByDbId(germplasmDbId);
 
-		return GenericResults.withObject(markerprofile).withMetaData(generateEmptyMetadata());
+		return GenericResults.withObject(markerProfile).withMetaData(generateEmptyMetadata());
 	}
 }

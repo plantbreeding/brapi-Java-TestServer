@@ -1,15 +1,17 @@
 package org.brapi.test.BrAPITestServer.model.entity;
 
-public class Season {
-	private String seasonDbId;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="season")
+public class SeasonEntity extends BaseEntity{
+	@Column
 	private String season;
+	@Column
 	private int year;
-	public String getSeasonDbId() {
-		return seasonDbId;
-	}
-	public void setSeasonDbId(String seasonDbId) {
-		this.seasonDbId = seasonDbId;
-	}
+
 	public String getSeason() {
 		return season;
 	}

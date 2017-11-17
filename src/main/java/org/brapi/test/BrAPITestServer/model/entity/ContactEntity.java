@@ -1,18 +1,30 @@
 package org.brapi.test.BrAPITestServer.model.entity;
 
-public class Contact {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-	private String contactDbId;
+@Entity
+@Table(name="contact")
+public class ContactEntity extends BaseEntity{
+	@Column
+	private String studyDbId;
+	@Column
 	private String name;
+	@Column
 	private String instituteName;
+	@Column
 	private String email;
+	@Column
 	private String type;
+	@Column
 	private String orcid;
-	public String getContactDbId() {
-		return contactDbId;
+	
+	public String getStudyDbId() {
+		return studyDbId;
 	}
-	public void setContactDbId(String contactDbId) {
-		this.contactDbId = contactDbId;
+	public void setStudyDbId(String studyDbId) {
+		this.studyDbId = studyDbId;
 	}
 	public String getName() {
 		return name;

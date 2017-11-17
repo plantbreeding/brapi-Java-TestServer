@@ -1,9 +1,21 @@
 package org.brapi.test.BrAPITestServer.model.entity;
 
-public class DataLink {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="data_link")
+public class DataLinkEntity extends BaseEntity{
+	@Column
+	private String studyDbId;
+	@Column
 	private String type;
+	@Column
 	private String name;
+	@Column
 	private String url;
+	
 	public String getType() {
 		return type;
 	}

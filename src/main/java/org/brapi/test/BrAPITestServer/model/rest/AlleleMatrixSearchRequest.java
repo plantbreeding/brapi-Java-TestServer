@@ -1,7 +1,7 @@
 package org.brapi.test.BrAPITestServer.model.rest;
 
 public class AlleleMatrixSearchRequest {
-	private String markerprofileDbId;
+	private String markerProfileDbId;
 	private String markerDbId;
 	private boolean expandHomozygotes;
 	private String unknownString;
@@ -10,11 +10,11 @@ public class AlleleMatrixSearchRequest {
 	private String format;
 	private int pageSize;
 	private int page;
-	public String getMarkerprofileDbId() {
-		return markerprofileDbId;
+	public String getMarkerProfileDbId() {
+		return markerProfileDbId;
 	}
-	public void setMarkerprofileDbId(String markerprofileDbId) {
-		this.markerprofileDbId = markerprofileDbId;
+	public void setMarkerProfileDbId(String markerProfileDbId) {
+		this.markerProfileDbId = markerProfileDbId;
 	}
 	public String getMarkerDbId() {
 		return markerDbId;

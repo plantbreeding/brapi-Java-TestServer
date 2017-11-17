@@ -69,15 +69,15 @@ public class GermplasmEntity extends BaseEntity{
 	@OneToMany(mappedBy="germplasmDbId", targetEntity=GermplasmAttributeEntity.class)
 	private List<GermplasmAttributeEntity> attributes;
 
-	@OneToMany(mappedBy="germplasmDbId", targetEntity=MarkerprofileEntity.class)
-	private List<MarkerprofileEntity> markerprofiles;
+	@OneToMany(mappedBy="germplasmDbId", targetEntity=MarkerProfileEntity.class)
+	private List<MarkerProfileEntity> markerProfiles;
 
-	public List<MarkerprofileEntity> getMarkerprofiles() {
-		return markerprofiles;
+	public List<MarkerProfileEntity> getMarkerProfiles() {
+		return markerProfiles;
 	}
 
-	public void setMarkerprofiles(List<MarkerprofileEntity> markerprofiles) {
-		this.markerprofiles = markerprofiles;
+	public void setMarkerProfiles(List<MarkerProfileEntity> markerProfiles) {
+		this.markerProfiles = markerProfiles;
 	}
 
 	public String getGermplasmPUI() {

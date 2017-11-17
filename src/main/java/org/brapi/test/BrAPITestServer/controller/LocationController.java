@@ -7,6 +7,7 @@ import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.LocationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,10 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class LocationController  extends BrAPIController{
 
 	private LocationService locationService;
+	
+	@Autowired
+	public LocationController(LocationService locationService) {
+		this.locationService = locationService;
+	}
 
 	@RequestMapping(value="locations", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<Location>> getLocations(
-			@RequestParam String locationType,
+			@RequestParam(required=false) String locationType,
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		MetaData metaData = generateMetaDataTemplate(page, pageSize);

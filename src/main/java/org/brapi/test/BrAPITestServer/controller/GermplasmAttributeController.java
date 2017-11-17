@@ -5,7 +5,7 @@ import java.util.List;
 import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttribute;
 import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttributeCategory;
 import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttributeMasterWrapper;
-import org.brapi.test.BrAPITestServer.model.rest.MarkerprofileKeys;
+import org.brapi.test.BrAPITestServer.model.rest.MarkerProfileKeys;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;

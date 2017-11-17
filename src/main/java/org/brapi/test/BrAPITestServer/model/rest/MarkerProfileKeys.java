@@ -2,7 +2,7 @@ package org.brapi.test.BrAPITestServer.model.rest;
 
 import java.util.List;
 
-public class MarkerprofileKeys {
+public class MarkerProfileKeys {
 	private String germplasmDbId;
 	private List<String> markerprofilesDbIds;
 	
@@ -12,10 +12,10 @@ public class MarkerprofileKeys {
 	public void setGermplasmDbId(String germplasmDbId) {
 		this.germplasmDbId = germplasmDbId;
 	}
-	public List<String> getMarkerprofilesDbIds() {
+	public List<String> getMarkerProfilesDbIds() {
 		return markerprofilesDbIds;
 	}
-	public void setMarkerprofilesDbIds(List<String> markerprofilesDbIds) {
-		this.markerprofilesDbIds = markerprofilesDbIds;
+	public void setMarkerProfilesDbIds(List<String> markerProfilesDbIds) {
+		this.markerprofilesDbIds = markerProfilesDbIds;
 	}
 }
