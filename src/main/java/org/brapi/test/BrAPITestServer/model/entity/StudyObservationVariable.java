@@ -5,7 +5,7 @@ import java.util.List;
 public class StudyObservationVariable {
 	private String studyDbId;
 	private String trialName;
-	private List<ObservationVariable> data;
+	private List<ObservationVariableEntity> data;
 	public String getStudyDbId() {
 		return studyDbId;
 	}
@@ -18,10 +18,10 @@ public class StudyObservationVariable {
 	public void setTrialName(String trialName) {
 		this.trialName = trialName;
 	}
-	public List<ObservationVariable> getData() {
+	public List<ObservationVariableEntity> getData() {
 		return data;
 	}
-	public void setData(List<ObservationVariable> data) {
+	public void setData(List<ObservationVariableEntity> data) {
 		this.data = data;
 	}
 }

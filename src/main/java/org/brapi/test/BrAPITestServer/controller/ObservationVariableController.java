@@ -39,8 +39,9 @@ public class ObservationVariableController  extends BrAPIController{
 	@RequestMapping(value="variables-search", method= {RequestMethod.POST})
 	public GenericResults<GenericResultsDataList<ObservationVariable>> getVariables(
 			@RequestBody ObservationVariableSearchRequest request) {
-		List<ObservationVariable> variables = observationVariableService.getVariables(request);
-		return GenericResults.withList(variables).withMetaData(generateMetaDataTemplate(request.getPage(), request.getPageSize()));
+		MetaData metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
+		List<ObservationVariable> variables = observationVariableService.getVariables(request, metaData);
+		return GenericResults.withList(variables).withMetaData(metaData);
 	}
 	
 	@RequestMapping(value="variables/{observationVariableDbId}", method= {RequestMethod.GET})

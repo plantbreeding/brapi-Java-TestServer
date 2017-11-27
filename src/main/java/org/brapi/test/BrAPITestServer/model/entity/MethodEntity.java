@@ -1,20 +1,35 @@
 package org.brapi.test.BrAPITestServer.model.entity;
 
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Method {
-	private String methodDbId;
+@Entity
+@Table(name="method")
+public class MethodEntity extends BaseEntity{
+	@Column
 	private String name;
-	@JsonProperty("class")
+	@Column
 	private String methodClass;
+	@Column
 	private String description;
+	@Column
 	private String formula;
+	@Column
 	private String reference;
-	public String getMethodDbId() {
-		return methodDbId;
+	@OneToMany(mappedBy="method")
+	private List<ObservationVariableEntity> observationVariables;
+
+	public List<ObservationVariableEntity> getObservationVariables() {
+		return observationVariables;
 	}
-	public void setMethodDbId(String methodDbId) {
-		this.methodDbId = methodDbId;
+	public void setObservationVariables(List<ObservationVariableEntity> observationVariables) {
+		this.observationVariables = observationVariables;
 	}
 	public String getName() {
 		return name;

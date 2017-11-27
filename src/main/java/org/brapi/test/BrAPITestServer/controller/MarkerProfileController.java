@@ -2,6 +2,7 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
+import org.brapi.test.BrAPITestServer.model.rest.AlleleFormatParams;
 import org.brapi.test.BrAPITestServer.model.rest.AlleleMatrixSearchRequest;
 import org.brapi.test.BrAPITestServer.model.rest.MarkerProfileDetails;
 import org.brapi.test.BrAPITestServer.model.rest.MarkerProfileSummary;
@@ -52,14 +53,19 @@ public class MarkerProfileController extends BrAPIController {
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "1") int page) {
 		MetaData metaData = generateMetaDataTemplate(page, pageSize);
-		MarkerProfileDetails details = markerProfileService.getMarkerProfileDetails(markerProfileDbId, expandHomozygotes, unknownString, sepPhased, sepUnphased, metaData);
+		AlleleFormatParams params = new AlleleFormatParams();
+		params.setExpandHomozygotes(expandHomozygotes);
+		params.setSepPhased(sepPhased);
+		params.setSepUnphased(sepUnphased);
+		params.setUnknownString(unknownString);
+		MarkerProfileDetails details = markerProfileService.getMarkerProfileDetails(markerProfileDbId, params, metaData);
 		
 		return GenericResults.withObject(details).withMetaData(metaData);
 	}
 
 	@RequestMapping(value = "allelematrix-search", method = { RequestMethod.GET })
 	public GenericResults<GenericResultsDataList<List<String>>> getAlleleMatrix(
-			@RequestParam(defaultValue="false") String format,
+			@RequestParam(defaultValue="csv") String format,
 			@RequestParam(defaultValue="false") boolean expandHomozygotes,
 			@RequestParam(defaultValue="-") String unknownString,
 			@RequestParam(defaultValue="|") String sepPhased,
@@ -67,7 +73,9 @@ public class MarkerProfileController extends BrAPIController {
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		MetaData metaData = generateMetaDataTemplate(page, pageSize);
-		List<List<String>> alleleMatrix = markerProfileService.getAlleleMatrix(format, expandHomozygotes, unknownString, sepPhased, sepUnphased, metaData);
+		AlleleFormatParams params = markerProfileService.buildFormatParams(expandHomozygotes, sepPhased, sepUnphased, unknownString);
+
+		List<List<String>> alleleMatrix = markerProfileService.getAlleleMatrix(format, params, metaData);
 		
 		return GenericResults.withList(alleleMatrix).withMetaData(metaData);
 	}
@@ -75,8 +83,9 @@ public class MarkerProfileController extends BrAPIController {
 	@RequestMapping(value = "allelematrix-search", method = { RequestMethod.POST })
 	public GenericResults<GenericResultsDataList<List<String>>> getAlleleMatrix(
 			@RequestBody AlleleMatrixSearchRequest request) {
-		List<List<String>> alleleMatrix = markerProfileService.getAlleleMatrix(request);
+		MetaData metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
+		List<List<String>> alleleMatrix = markerProfileService.getAlleleMatrix(request, metaData);
 		
-		return GenericResults.withList(alleleMatrix).withMetaData(generateMetaDataTemplate(request.getPage(), request.getPageSize()));
+		return GenericResults.withList(alleleMatrix).withMetaData(metaData);
 	}
 }

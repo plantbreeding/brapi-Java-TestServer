@@ -1,18 +1,43 @@
 package org.brapi.test.BrAPITestServer.model.entity;
 
-public class Ontology {
-	private String ontologyDbId;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="ontology")
+public class OntologyEntity extends BaseEntity {
+	@Column
 	private String ontologyName;
+	@Column
+	private String xref;
+	@Column
 	private String authors;
+	@Column
 	private String version;
+	@Column
 	private String description;
+	@Column
 	private String copyright;
+	@Column
 	private String licence;
-	public String getOntologyDbId() {
-		return ontologyDbId;
+	@OneToMany(mappedBy="ontology")
+	private List<ObservationVariableEntity> observationVariable;
+
+	public String getXref() {
+		return xref;
 	}
-	public void setOntologyDbId(String ontologyDbId) {
-		this.ontologyDbId = ontologyDbId;
+	public void setXref(String xref) {
+		this.xref = xref;
+	}
+	public List<ObservationVariableEntity> getObservationVariable() {
+		return observationVariable;
+	}
+	public void setObservationVariable(List<ObservationVariableEntity> observationVariable) {
+		this.observationVariable = observationVariable;
 	}
 	public String getOntologyName() {
 		return ontologyName;

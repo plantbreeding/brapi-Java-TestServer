@@ -1,23 +1,31 @@
 package org.brapi.test.BrAPITestServer.model.entity;
 
 import java.util.Date;
+import java.util.List;
 
-public class GenomeMapSummary {
-	private String mapDbId;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="genome_map")
+public class GenomeMapEntity extends BaseEntity{
+	@Column
 	private String name;
+	@Column
 	private String species;
+	@Column
 	private String type;
+	@Column
 	private String unit;
+	@Column
 	private Date publishedDate;
-	private int markerCount;
-	private int linkageGroupCount;
+	@Column
 	private String comments;
-	public String getMapDbId() {
-		return mapDbId;
-	}
-	public void setMapDbId(String mapDbId) {
-		this.mapDbId = mapDbId;
-	}
+	@OneToMany(mappedBy="genomeMapDbId")
+	private List<LinkageGroupEntity> linkageGroups;
+	
 	public String getName() {
 		return name;
 	}
@@ -48,22 +56,16 @@ public class GenomeMapSummary {
 	public void setPublishedDate(Date publishedDate) {
 		this.publishedDate = publishedDate;
 	}
-	public int getMarkerCount() {
-		return markerCount;
-	}
-	public void setMarkerCount(int markerCount) {
-		this.markerCount = markerCount;
-	}
-	public int getLinkageGroupCount() {
-		return linkageGroupCount;
-	}
-	public void setLinkageGroupCount(int linkageGroupCount) {
-		this.linkageGroupCount = linkageGroupCount;
-	}
 	public String getComments() {
 		return comments;
 	}
 	public void setComments(String comments) {
 		this.comments = comments;
+	}
+	public List<LinkageGroupEntity> getLinkageGroups() {
+		return linkageGroups;
+	}
+	public void setLinkageGroups(List<LinkageGroupEntity> linkageGroups) {
+		this.linkageGroups = linkageGroups;
 	}
 }

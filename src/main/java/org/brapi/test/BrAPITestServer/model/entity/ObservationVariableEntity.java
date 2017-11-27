@@ -3,60 +3,71 @@ package org.brapi.test.BrAPITestServer.model.entity;
 import java.util.Date;
 import java.util.List;
 
-public class ObservationVariable {
-	private String observationVariableDbId;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="observation_variable")
+public class ObservationVariableEntity extends BaseEntity{
+	@Column
 	private String name;
-	private String ontologyDbId;
-	private String ontologyName;
-	private List<String> synonyms;
-	private List<String> contextOfUse;
+	@Column
 	private String growthStage;
+	@Column
 	private String status;
+	@Column
 	private String xref;
+	@Column
 	private String institution;
+	@Column
 	private String scientist;
+	@Column
 	private Date submissionTimestamp;
+	@Column
 	private String language;
+	@Column
 	private String crop;
-	private Trait trait;
-	private Method method;
-	private Scale scale;
+	@Column
 	private String defaultValue;
-	public String getObservationVariableDbId() {
-		return observationVariableDbId;
+	@ManyToOne
+	private TraitEntity trait;
+	@ManyToOne
+	private MethodEntity method;
+	@ManyToOne
+	private ScaleEntity scale;
+	@ManyToOne
+	private OntologyEntity ontology;
+	@OneToMany(mappedBy="observationVariableDbId")
+	private List<ObservationVariableSynonymEntity> synonyms;
+	@OneToMany(mappedBy="observationVariableDbId")
+	private List<ObservationVariableContextEntity> contextOfUse;
+
+	public OntologyEntity getOntology() {
+		return ontology;
 	}
-	public void setObservationVariableDbId(String observationVariableDbId) {
-		this.observationVariableDbId = observationVariableDbId;
+	public void setOntology(OntologyEntity ontology) {
+		this.ontology = ontology;
+	}
+	public List<ObservationVariableSynonymEntity> getSynonyms() {
+		return synonyms;
+	}
+	public void setSynonyms(List<ObservationVariableSynonymEntity> synonyms) {
+		this.synonyms = synonyms;
+	}
+	public List<ObservationVariableContextEntity> getContextOfUse() {
+		return contextOfUse;
+	}
+	public void setContextOfUse(List<ObservationVariableContextEntity> contextOfUse) {
+		this.contextOfUse = contextOfUse;
 	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public String getOntologyDbId() {
-		return ontologyDbId;
-	}
-	public void setOntologyDbId(String ontologyDbId) {
-		this.ontologyDbId = ontologyDbId;
-	}
-	public String getOntologyName() {
-		return ontologyName;
-	}
-	public void setOntologyName(String ontologyName) {
-		this.ontologyName = ontologyName;
-	}
-	public List<String> getSynonyms() {
-		return synonyms;
-	}
-	public void setSynonyms(List<String> synonyms) {
-		this.synonyms = synonyms;
-	}
-	public List<String> getContextOfUse() {
-		return contextOfUse;
-	}
-	public void setContextOfUse(List<String> contextOfUse) {
-		this.contextOfUse = contextOfUse;
 	}
 	public String getGrowthStage() {
 		return growthStage;
@@ -106,22 +117,22 @@ public class ObservationVariable {
 	public void setCrop(String crop) {
 		this.crop = crop;
 	}
-	public Trait getTrait() {
+	public TraitEntity getTrait() {
 		return trait;
 	}
-	public void setTrait(Trait trait) {
+	public void setTrait(TraitEntity trait) {
 		this.trait = trait;
 	}
-	public Method getMethod() {
+	public MethodEntity getMethod() {
 		return method;
 	}
-	public void setMethod(Method method) {
+	public void setMethod(MethodEntity method) {
 		this.method = method;
 	}
-	public Scale getScale() {
+	public ScaleEntity getScale() {
 		return scale;
 	}
-	public void setScale(Scale scale) {
+	public void setScale(ScaleEntity scale) {
 		this.scale = scale;
 	}
 	public String getDefaultValue() {

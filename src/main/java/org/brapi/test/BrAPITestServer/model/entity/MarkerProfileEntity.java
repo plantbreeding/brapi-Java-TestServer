@@ -24,8 +24,8 @@ public class MarkerProfileEntity extends BaseEntity {
 	private String extractDbId;
 	@Column
 	private String analysisMethod;
-	@OneToMany(mappedBy="markerProfileDbId", targetEntity=MarkerProfileAlleleEntity.class)
-	private List<MarkerProfileAlleleEntity> alleles;
+	@OneToMany(mappedBy="markerProfileDbId", targetEntity=AlleleEntity.class)
+	private List<AlleleEntity> alleles;
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "study_marker_profile", joinColumns = { @JoinColumn(name = "marker_profile_db_id", referencedColumnName="id") }, inverseJoinColumns = { @JoinColumn(name = "study_db_id", referencedColumnName="id") })
 	private List<StudyEntity> studies;
@@ -63,10 +63,10 @@ public class MarkerProfileEntity extends BaseEntity {
 	public int getResultCount() {
 		return alleles.size();
 	}
-	public List<MarkerProfileAlleleEntity> getAlleles() {
+	public List<AlleleEntity> getAlleles() {
 		return alleles;
 	}
-	public void setAlleles(List<MarkerProfileAlleleEntity> alleles) {
+	public void setAlleles(List<AlleleEntity> alleles) {
 		this.alleles = alleles;
 	}
 	
