@@ -5,19 +5,20 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="study_addtional_info")
-public class StudyAddtionalInfoEntity extends BaseEntity{
+@Table(name="trial_additional_info")
+public class TrialAdditionalInfoEntity extends BaseEntity {
 	@Column
-	private String studyDbId;
+	private String trialDbId;
 	@Column
 	private String key;
 	@Column
 	private String value;
-	public String getStudyDbId() {
-		return studyDbId;
+
+	public String getTrialDbId() {
+		return trialDbId;
 	}
-	public void setStudyDbId(String studyDbId) {
-		this.studyDbId = studyDbId;
+	public void setTrialDbId(String trialDbId) {
+		this.trialDbId = trialDbId;
 	}
 	public String getKey() {
 		return key;
@@ -31,4 +32,5 @@ public class StudyAddtionalInfoEntity extends BaseEntity{
 	public void setValue(String value) {
 		this.value = value;
 	}
+	
 }

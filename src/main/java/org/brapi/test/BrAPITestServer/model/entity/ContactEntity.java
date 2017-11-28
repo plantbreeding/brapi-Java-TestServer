@@ -10,6 +10,8 @@ public class ContactEntity extends BaseEntity{
 	@Column
 	private String studyDbId;
 	@Column
+	private String trialDbId;
+	@Column
 	private String name;
 	@Column
 	private String instituteName;

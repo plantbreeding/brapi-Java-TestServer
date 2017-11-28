@@ -42,7 +42,7 @@ public class LocationService {
 		return convertFromEntity(entity);
 	}
 	
-	private Location convertFromEntity(LocationEntity locationEntity) {
+	public Location convertFromEntity(LocationEntity locationEntity) {
 		Location location = new Location();
 		location.setAbbreviation(locationEntity.getAbbreviation());
 		location.setAltitude(locationEntity.getAltitude());

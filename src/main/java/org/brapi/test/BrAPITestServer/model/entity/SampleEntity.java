@@ -2,14 +2,29 @@ package org.brapi.test.BrAPITestServer.model.entity;
 
 import java.util.Date;
 
-public class Sample {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="sample")
+public class SampleEntity extends BaseEntity{
+	//TODO not connected to any other entity
+	@Column
 	private String plotId;
+	@Column
 	private String plantId;
+	@Column
 	private String takenBy;
+	@Column
 	private Date sampleDate;
+	@Column
 	private String sampleType;
+	@Column
 	private String tissueType;
+	@Column
 	private String notes;
+	
 	public String getPlotId() {
 		return plotId;
 	}

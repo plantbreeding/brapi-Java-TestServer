@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -17,17 +18,13 @@ import javax.persistence.Table;
 public class StudyEntity extends BaseEntity{
 	@Column
 	private String studyName;
-	@Column
-	private String studyType;
+	@ManyToOne
+	private StudyTypeEntity studyType;
 	@Column
 	private String studyDescription;
 	@ManyToMany
 	@JoinTable(name = "study_season", joinColumns = { @JoinColumn(name = "study_db_id", referencedColumnName="id") }, inverseJoinColumns = { @JoinColumn(name = "season_db_id", referencedColumnName="id") })
 	private List<SeasonEntity> seasons;
-	@Column
-	private String trialDbId;
-	@Column
-	private String trialName;
 	@Column
 	private Date startDate;
 	@Column
@@ -40,6 +37,8 @@ public class StudyEntity extends BaseEntity{
 	private String version;
 	@Column
 	private Date timestamp;
+	@ManyToOne
+	private TrialEntity trial;
 	@OneToOne
 	private LocationEntity location;
 	@OneToMany(mappedBy="studyDbId", targetEntity=ContactEntity.class)
@@ -48,18 +47,20 @@ public class StudyEntity extends BaseEntity{
 	private List<DataLinkEntity> dataLinks;
 	@OneToMany(mappedBy="studyDbId", targetEntity=StudyAddtionalInfoEntity.class)
 	private List<StudyAddtionalInfoEntity> additionalInfo;
+	@OneToMany(mappedBy="studyDbId")
+	private List<ObservationUnitEntity> observationUnits;
 
+	public StudyTypeEntity getStudyType() {
+		return studyType;
+	}
+	public void setStudyType(StudyTypeEntity studyType) {
+		this.studyType = studyType;
+	}
 	public String getStudyName() {
 		return studyName;
 	}
 	public void setStudyName(String studyName) {
 		this.studyName = studyName;
-	}
-	public String getStudyType() {
-		return studyType;
-	}
-	public void setStudyType(String studyType) {
-		this.studyType = studyType;
 	}
 	public String getStudyDescription() {
 		return studyDescription;
@@ -73,17 +74,11 @@ public class StudyEntity extends BaseEntity{
 	public void setSeasons(List<SeasonEntity> seasons) {
 		this.seasons = seasons;
 	}
-	public String getTrialDbId() {
-		return trialDbId;
+	public TrialEntity getTrial() {
+		return trial;
 	}
-	public void setTrialDbId(String trialDbId) {
-		this.trialDbId = trialDbId;
-	}
-	public String getTrialName() {
-		return trialName;
-	}
-	public void setTrialName(String trialName) {
-		this.trialName = trialName;
+	public void setTrial(TrialEntity trial) {
+		this.trial = trial;
 	}
 	public Date getStartDate() {
 		return startDate;

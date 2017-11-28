@@ -1,17 +1,26 @@
 package org.brapi.test.BrAPITestServer.model.entity;
 
-public class Program {
-	private String programDbId;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="program")
+public class ProgramEntity extends BaseEntity{
+	@Column
 	private String name;
+	@Column
 	private String abbreviation;
+	@Column
 	private String objective;
+	@Column
 	private String leadPerson;
-	public String getProgramDbId() {
-		return programDbId;
-	}
-	public void setProgramDbId(String programDbId) {
-		this.programDbId = programDbId;
-	}
+	@OneToMany(mappedBy="program")
+	private List<TrialEntity> trials;
+
 	public String getName() {
 		return name;
 	}

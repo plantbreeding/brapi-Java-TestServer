@@ -23,8 +23,8 @@ public class Phenotype {
 	private String entryType;
 	private String entryNumber;
 	private List<Treatment> treatments;
-	private List<ObservationUnitXref> observationUnitXref;
-	private List<Observation> observations;
+	private List<ObservationUnitXrefEntity> observationUnitXref;
+	private List<ObservationEntity> observations;
 	public String getObservationUnitDbId() {
 		return observationUnitDbId;
 	}
@@ -145,16 +145,16 @@ public class Phenotype {
 	public void setTreatments(List<Treatment> treatments) {
 		this.treatments = treatments;
 	}
-	public List<ObservationUnitXref> getObservationUnitXref() {
+	public List<ObservationUnitXrefEntity> getObservationUnitXref() {
 		return observationUnitXref;
 	}
-	public void setObservationUnitXref(List<ObservationUnitXref> observationUnitXref) {
+	public void setObservationUnitXref(List<ObservationUnitXrefEntity> observationUnitXref) {
 		this.observationUnitXref = observationUnitXref;
 	}
-	public List<Observation> getObservations() {
+	public List<ObservationEntity> getObservations() {
 		return observations;
 	}
-	public void setObservations(List<Observation> observations) {
+	public void setObservations(List<ObservationEntity> observations) {
 		this.observations = observations;
 	}
 }

@@ -77,8 +77,9 @@ public class StudyController  extends BrAPIController{
 	@RequestMapping(value="studies-search", method= {RequestMethod.POST})
 	public GenericResults<GenericResultsDataList<StudySummary>> getStudies(
 			@RequestBody StudySearchRequest request) {
-		List<StudySummary> studies = studyService.getStudies(request);
-		return GenericResults.withList(studies).withMetaData(generateMetaDataTemplate(request.getPage(), request.getPageSize()));
+		MetaData metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
+		List<StudySummary> studies = studyService.getStudies(request, metaData);
+		return GenericResults.withList(studies).withMetaData(metaData);
 	}
 
 	@RequestMapping(value="studies/{studyDbId}", method= {RequestMethod.GET})

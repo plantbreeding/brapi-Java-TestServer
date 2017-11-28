@@ -185,4 +185,8 @@ public class ObservationVariableService {
 		return var;
 	}
 
+	public List<ObservationVariable> getVariablesForStudy(String studyDbId) {
+		return observationVariableRepository.findAllForStudy(studyDbId).map(this::convertFromEntity).getContent();
+	}
+
 }

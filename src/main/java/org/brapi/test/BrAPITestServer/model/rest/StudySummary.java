@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.model.rest;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -14,9 +15,9 @@ public class StudySummary {
 	private String locationName;
 	private String programDbId;
 	private String programName;
-	private String startDate;
-	private String endDate;
-	private String active;
+	private Date startDate;
+	private Date endDate;
+	private boolean active;
 	private Map<String, String> additionalInfo;
 	public String getStudyDbId() {
 		return studyDbId;
@@ -78,22 +79,22 @@ public class StudySummary {
 	public void setProgramName(String programName) {
 		this.programName = programName;
 	}
-	public String getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(String startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
-	public String getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(String endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	public String getActive() {
+	public boolean getActive() {
 		return active;
 	}
-	public void setActive(String active) {
+	public void setActive(boolean active) {
 		this.active = active;
 	}
 	public Map<String, String> getAdditionalInfo() {

@@ -44,7 +44,16 @@ public class ObservationVariableEntity extends BaseEntity{
 	private List<ObservationVariableSynonymEntity> synonyms;
 	@OneToMany(mappedBy="observationVariableDbId")
 	private List<ObservationVariableContextEntity> contextOfUse;
+	@OneToMany(mappedBy="observationVariable")
+	private List<ObservationEntity> observations;
+	
 
+	public List<ObservationEntity> getObservations() {
+		return observations;
+	}
+	public void setObservations(List<ObservationEntity> observations) {
+		this.observations = observations;
+	}
 	public OntologyEntity getOntology() {
 		return ontology;
 	}

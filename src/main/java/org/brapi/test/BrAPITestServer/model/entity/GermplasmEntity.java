@@ -71,6 +71,9 @@ public class GermplasmEntity extends BaseEntity{
 
 	@OneToMany(mappedBy="germplasmDbId", targetEntity=MarkerProfileEntity.class)
 	private List<MarkerProfileEntity> markerProfiles;
+	
+	@OneToMany(mappedBy="germplasm")
+	private List<ObservationUnitEntity> observationUnits;
 
 	public List<MarkerProfileEntity> getMarkerProfiles() {
 		return markerProfiles;
