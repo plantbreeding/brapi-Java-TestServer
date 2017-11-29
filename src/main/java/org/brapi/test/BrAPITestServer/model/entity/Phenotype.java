@@ -22,7 +22,7 @@ public class Phenotype {
 	private String Y;
 	private String entryType;
 	private String entryNumber;
-	private List<Treatment> treatments;
+	private List<TreatmentEntity> treatments;
 	private List<ObservationUnitXrefEntity> observationUnitXref;
 	private List<ObservationEntity> observations;
 	public String getObservationUnitDbId() {
@@ -139,10 +139,10 @@ public class Phenotype {
 	public void setEntryNumber(String entryNumber) {
 		this.entryNumber = entryNumber;
 	}
-	public List<Treatment> getTreatments() {
+	public List<TreatmentEntity> getTreatments() {
 		return treatments;
 	}
-	public void setTreatments(List<Treatment> treatments) {
+	public void setTreatments(List<TreatmentEntity> treatments) {
 		this.treatments = treatments;
 	}
 	public List<ObservationUnitXrefEntity> getObservationUnitXref() {

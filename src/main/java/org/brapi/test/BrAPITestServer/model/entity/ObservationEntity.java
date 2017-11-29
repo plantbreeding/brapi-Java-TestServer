@@ -24,6 +24,12 @@ public class ObservationEntity extends BaseEntity{
 	@ManyToOne
 	private SeasonEntity season;
 	
+	public ObservationUnitEntity getObservationUnit() {
+		return observationUnit;
+	}
+	public void setObservationUnit(ObservationUnitEntity observationUnit) {
+		this.observationUnit = observationUnit;
+	}
 	public Date getObservationTimeStamp() {
 		return observationTimeStamp;
 	}

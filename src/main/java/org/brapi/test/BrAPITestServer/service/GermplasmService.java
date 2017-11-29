@@ -125,8 +125,8 @@ public class GermplasmService {
 		Pedigree pedigree = new Pedigree();
 		pedigree.setDefaultDisplayName(entity.getDefaultDisplayName());
 		pedigree.setGermplasmDbId(germplasmDbId);
-		pedigree.setParent1Id(entity.getParent1Id());
-		pedigree.setParent2Id(entity.getParent2Id());
+		pedigree.setParent1Id(entity.getParent1().getId());
+		pedigree.setParent2Id(entity.getParent2().getId());
 		pedigree.setPedigree(entity.getPedigree());
 		return pedigree;
 	}

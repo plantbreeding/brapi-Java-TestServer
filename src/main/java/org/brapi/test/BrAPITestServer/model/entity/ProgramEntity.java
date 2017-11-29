@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -18,6 +19,8 @@ public class ProgramEntity extends BaseEntity{
 	private String objective;
 	@Column
 	private String leadPerson;
+	@ManyToOne
+	private CropEntity crop;
 	@OneToMany(mappedBy="program")
 	private List<TrialEntity> trials;
 

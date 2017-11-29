@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="taxon_id")
+@Table(name="taxon")
 public class TaxonEntity extends BaseEntity {
 	@Column
 	private String sourceName;

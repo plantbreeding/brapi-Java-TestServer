@@ -5,14 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="observation_unit_xref")
-public class ObservationUnitXrefEntity extends BaseEntity{
+@Table(name="treatment")
+public class TreatmentEntity extends BaseEntity{
 	@Column
 	private String observationUnitDbId;
 	@Column
-	private String source;
+	private String factor;
 	@Column
-	private String xref;
+	private String modality;
 	
 	public String getObservationUnitDbId() {
 		return observationUnitDbId;
@@ -20,16 +20,16 @@ public class ObservationUnitXrefEntity extends BaseEntity{
 	public void setObservationUnitDbId(String observationUnitDbId) {
 		this.observationUnitDbId = observationUnitDbId;
 	}
-	public String getXref() {
-		return xref;
+	public String getFactor() {
+		return factor;
 	}
-	public void setXref(String xref) {
-		this.xref = xref;
+	public void setFactor(String factor) {
+		this.factor = factor;
 	}
-	public String getSource() {
-		return source;
+	public String getModality() {
+		return modality;
 	}
-	public void setSource(String source) {
-		this.source = source;
+	public void setModality(String modality) {
+		this.modality = modality;
 	}
 }

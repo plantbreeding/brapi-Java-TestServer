@@ -46,6 +46,24 @@ public class ObservationUnitEntity extends BaseEntity {
 	@OneToMany(mappedBy="observationUnitDbId")	
 	private List<ObservationUnitXrefEntity> observationUnitXref;
 	
+	//TODO Specific fields for Phenotypes
+	@Column
+	private String observationLevels;
+	@OneToMany(mappedBy="observationUnitDbId")
+	private List<TreatmentEntity> treatments;
+	
+	public String getObservationLevels() {
+		return observationLevels;
+	}
+	public void setObservationLevels(String observationLevels) {
+		this.observationLevels = observationLevels;
+	}
+	public List<TreatmentEntity> getTreatments() {
+		return treatments;
+	}
+	public void setTreatments(List<TreatmentEntity> treatments) {
+		this.treatments = treatments;
+	}
 	public String getStudyDbId() {
 		return studyDbId;
 	}
