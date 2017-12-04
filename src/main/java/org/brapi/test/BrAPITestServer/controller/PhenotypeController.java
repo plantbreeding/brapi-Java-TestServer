@@ -6,6 +6,7 @@ import org.brapi.test.BrAPITestServer.model.rest.Phenotype;
 import org.brapi.test.BrAPITestServer.model.rest.PhenotypesSearchRequest;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.PhenotypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +27,8 @@ public class PhenotypeController  extends BrAPIController{
 	@RequestMapping(value="phenotypes-search", method= {RequestMethod.POST})
 	public GenericResults<GenericResultsDataList<Phenotype>> getPhenotypes(
 			@RequestBody PhenotypesSearchRequest request) {
-		List<Phenotype> phenotypes = phenotypeService.getPhenotypes(request);
-		return GenericResults.withList(phenotypes).withMetaData(generateMetaDataTemplate(request.getPage(), request.getPageSize()));
+		MetaData metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
+		List<Phenotype> phenotypes = phenotypeService.getPhenotypes(request, metaData);
+		return GenericResults.withList(phenotypes).withMetaData(metaData);
 	}
 }

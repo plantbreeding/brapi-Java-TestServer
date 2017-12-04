@@ -3,6 +3,7 @@ package org.brapi.test.BrAPITestServer.model.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -32,7 +33,7 @@ public class StudyEntity extends BaseEntity{
 	@Column
 	private boolean active;
 	@Column
-	private String license;
+	private String licence;
 	@Column
 	private String version;
 	@Column
@@ -41,13 +42,14 @@ public class StudyEntity extends BaseEntity{
 	private TrialEntity trial;
 	@OneToOne
 	private LocationEntity location;
-	@OneToMany(mappedBy="studyDbId", targetEntity=ContactEntity.class)
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "study_contact", joinColumns = { @JoinColumn(name = "study_db_id", referencedColumnName="id") }, inverseJoinColumns = { @JoinColumn(name = "contact_db_id", referencedColumnName="id") })
 	private List<ContactEntity> contacts;
-	@OneToMany(mappedBy="studyDbId", targetEntity=DataLinkEntity.class)
-	private List<DataLinkEntity> dataLinks;
-	@OneToMany(mappedBy="studyDbId", targetEntity=StudyAddtionalInfoEntity.class)
-	private List<StudyAddtionalInfoEntity> additionalInfo;
 	@OneToMany(mappedBy="studyDbId")
+	private List<DataLinkEntity> dataLinks;
+	@OneToMany(mappedBy="studyDbId")
+	private List<StudyAddtionalInfoEntity> additionalInfo;
+	@OneToMany(mappedBy="study")
 	private List<ObservationUnitEntity> observationUnits;
 
 	public StudyTypeEntity getStudyType() {
@@ -98,11 +100,11 @@ public class StudyEntity extends BaseEntity{
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-	public String getLicense() {
-		return license;
+	public String getLicence() {
+		return licence;
 	}
-	public void setLicense(String license) {
-		this.license = license;
+	public void setLicence(String licence) {
+		this.licence = licence;
 	}
 	public LocationEntity getLocation() {
 		return location;

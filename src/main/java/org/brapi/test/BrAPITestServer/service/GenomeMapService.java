@@ -9,7 +9,6 @@ import org.brapi.test.BrAPITestServer.model.rest.GenomeMapData;
 import org.brapi.test.BrAPITestServer.model.rest.GenomeMapDetail;
 import org.brapi.test.BrAPITestServer.model.rest.GenomeMapSummary;
 import org.brapi.test.BrAPITestServer.model.rest.LinkageGroup;
-import org.brapi.test.BrAPITestServer.model.rest.Marker;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.repository.GenomeMapRepository;
 import org.brapi.test.BrAPITestServer.repository.MarkerRepository;

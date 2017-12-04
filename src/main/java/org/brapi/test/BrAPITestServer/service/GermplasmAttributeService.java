@@ -3,7 +3,6 @@ package org.brapi.test.BrAPITestServer.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.brapi.test.BrAPITestServer.model.entity.GermplasmAttributeCategoryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.GermplasmAttributeEntity;
 import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttribute;
 import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttributeCategory;
@@ -12,7 +11,6 @@ import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttributeWrapper;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.repository.GermplasmAttributeCategoryRepository;
 import org.brapi.test.BrAPITestServer.repository.GermplasmAttributeRepository;
-import org.brapi.test.BrAPITestServer.repository.GermplasmRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

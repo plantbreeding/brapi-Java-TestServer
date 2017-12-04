@@ -12,8 +12,6 @@ import javax.persistence.Table;
 @Table(name = "observation_unit")
 public class ObservationUnitEntity extends BaseEntity {
 	@Column
-	private String studyDbId;
-	@Column
 	private String observationUnitName;
 	@Column
 	private String observationLevel;
@@ -38,6 +36,8 @@ public class ObservationUnitEntity extends BaseEntity {
 	@Column
 	private String replicate;
 	@ManyToOne
+	private StudyEntity study;
+	@ManyToOne
 	private GermplasmEntity germplasm;
 	@ManyToOne
 	private PedigreeEntity pedigree;
@@ -52,6 +52,12 @@ public class ObservationUnitEntity extends BaseEntity {
 	@OneToMany(mappedBy="observationUnitDbId")
 	private List<TreatmentEntity> treatments;
 	
+	public StudyEntity getStudy() {
+		return study;
+	}
+	public void setStudy(StudyEntity study) {
+		this.study = study;
+	}
 	public String getObservationLevels() {
 		return observationLevels;
 	}
@@ -63,12 +69,6 @@ public class ObservationUnitEntity extends BaseEntity {
 	}
 	public void setTreatments(List<TreatmentEntity> treatments) {
 		this.treatments = treatments;
-	}
-	public String getStudyDbId() {
-		return studyDbId;
-	}
-	public void setStudyDbId(String studyDbId) {
-		this.studyDbId = studyDbId;
 	}
 	public String getObservationUnitName() {
 		return observationUnitName;

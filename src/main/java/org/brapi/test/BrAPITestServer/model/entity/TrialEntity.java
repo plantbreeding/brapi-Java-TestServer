@@ -3,8 +3,12 @@ package org.brapi.test.BrAPITestServer.model.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -21,24 +25,25 @@ public class TrialEntity extends BaseEntity{
 	@Column
 	private boolean active;
 	@Column
-	private String datasetLicense;
+	private String datasetLicence;
 	@Column
 	private String datasetPUI;
 	@ManyToOne
 	private ProgramEntity program;
-	@OneToMany(mappedBy="trialDbId")
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "trial_contact", joinColumns = { @JoinColumn(name = "trial_db_id", referencedColumnName="id") }, inverseJoinColumns = { @JoinColumn(name = "contact_db_id", referencedColumnName="id") })
 	private List<ContactEntity> contacts;
 	@OneToMany(mappedBy="trial")
 	private List<StudyEntity> studies;
 	@OneToMany(mappedBy="trialDbId")
 	private List<TrialAdditionalInfoEntity> additionalInfo;
 
-	public String getDatasetLicense() {
-		return datasetLicense;
+	public String getDatasetLicence() {
+		return datasetLicence;
 	}
 
-	public void setDatasetLicense(String datasetLicense) {
-		this.datasetLicense = datasetLicense;
+	public void setDatasetLicence(String datasetLicence) {
+		this.datasetLicence = datasetLicence;
 	}
 
 	public String getDatasetPUI() {

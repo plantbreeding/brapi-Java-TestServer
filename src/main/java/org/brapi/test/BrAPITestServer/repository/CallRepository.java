@@ -1,8 +1,5 @@
 package org.brapi.test.BrAPITestServer.repository;
 
-import java.util.List;
-
-import org.brapi.test.BrAPITestServer.model.entity.CallDataTypeEntity;
 import org.brapi.test.BrAPITestServer.model.entity.CallEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

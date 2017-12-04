@@ -1,6 +1,5 @@
 package org.brapi.test.BrAPITestServer.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.brapi.test.BrAPITestServer.model.rest.Germplasm;

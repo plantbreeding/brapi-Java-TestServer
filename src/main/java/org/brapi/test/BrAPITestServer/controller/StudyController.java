@@ -150,7 +150,7 @@ public class StudyController  extends BrAPIController{
 	public void postStudyObservationUnitTable(
 			@PathVariable(value="studyDbId") String studyDbId,
 			@RequestBody GenericResults<StudyObservationUnitTable> request){
-		studyService.saveStudyObservationUnitTable(request);
+		studyService.saveStudyObservationUnitTable(request.getResults());
 	}
 	
 	@RequestMapping(value="studies/{studyDbId}/layout", method= {RequestMethod.GET})

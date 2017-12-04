@@ -14,8 +14,6 @@ import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.repository.MarkerProfileRepository;
 import org.springframework.stereotype.Service;
 
-import javassist.expr.NewArray;
-
 @Service
 public class MarkerProfileService {
 

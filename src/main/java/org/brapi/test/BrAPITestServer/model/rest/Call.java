@@ -2,10 +2,6 @@ package org.brapi.test.BrAPITestServer.model.rest;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
 public class Call {
 	private String call;
 	private List<String> dataTypes;

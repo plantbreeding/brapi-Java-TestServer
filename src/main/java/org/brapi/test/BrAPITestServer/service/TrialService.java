@@ -2,11 +2,11 @@ package org.brapi.test.BrAPITestServer.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.brapi.test.BrAPITestServer.model.entity.TrialAdditionalInfoEntity;
 import org.brapi.test.BrAPITestServer.model.entity.TrialEntity;
-import org.brapi.test.BrAPITestServer.model.rest.Contact;
 import org.brapi.test.BrAPITestServer.model.rest.DatasetAuthorship;
 import org.brapi.test.BrAPITestServer.model.rest.StudyIDWrapper;
 import org.brapi.test.BrAPITestServer.model.rest.TrialSummary;
@@ -34,12 +34,12 @@ public class TrialService {
 	}
 
 	public TrialSummaryWithContact getTrialSummary(String trialDbId) {
-		TrialEntity entity = trialRepository.findById(trialDbId).get();
-		// TODO should use the same return object and convertFromEntity()
+		Optional<TrialEntity> entityOption = trialRepository.findById(trialDbId);
+		if (entityOption.isPresent()) {
+			TrialEntity entity = entityOption.get();
+			// TODO should use the same return object and convertFromEntity()
 
-		TrialSummaryWithContact summary = null;
-		if (entity != null) {
-			summary = new TrialSummaryWithContact();
+			TrialSummaryWithContact summary = new TrialSummaryWithContact();
 			summary.setActive(entity.isActive());
 			summary.setEndDate(entity.getEndDate());
 			summary.setProgramDbId(entity.getProgram().getId());
@@ -50,9 +50,10 @@ public class TrialService {
 
 			summary.setDatasetAuthorship(new DatasetAuthorship());
 			summary.getDatasetAuthorship().setDatasetPUI(entity.getDatasetPUI());
-			summary.getDatasetAuthorship().setLicense(entity.getDatasetLicense());
+			summary.getDatasetAuthorship().setLicense(entity.getDatasetLicence());
 
-			summary.setContacts(entity.getContacts().stream().map(this.contactService::convertFromEntity).collect(Collectors.toList()));
+			summary.setContacts(entity.getContacts().stream().map(this.contactService::convertFromEntity)
+					.collect(Collectors.toList()));
 
 			summary.setStudies(entity.getStudies().stream().map((e) -> {
 				StudyIDWrapper id = new StudyIDWrapper();
@@ -64,11 +65,13 @@ public class TrialService {
 			}).collect(Collectors.toList()));
 
 			summary.setAdditionalInfo(new HashMap<>());
-			for(TrialAdditionalInfoEntity e : entity.getAdditionalInfo()) {
+			for (TrialAdditionalInfoEntity e : entity.getAdditionalInfo()) {
 				summary.getAdditionalInfo().put(e.getKey(), e.getValue());
 			}
+
+			return summary;
 		}
-		return summary;
+		return null;
 	}
 
 	private TrialSummary convertFromEntity(TrialEntity entity) {

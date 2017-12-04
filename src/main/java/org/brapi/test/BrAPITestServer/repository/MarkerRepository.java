@@ -3,9 +3,7 @@ package org.brapi.test.BrAPITestServer.repository;
 import org.brapi.test.BrAPITestServer.model.entity.MarkerEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.query.Param;
 
 public interface MarkerRepository extends PagingAndSortingRepository<MarkerEntity, String>{
 	public Page<MarkerEntity> findAllByLinkageGroup_IdAndLinkageGroup_GenomeMapDbId(String linkageGroupDbId, String mapDbId, Pageable pageReq);

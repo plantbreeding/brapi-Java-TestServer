@@ -1,6 +1,5 @@
 package org.brapi.test.BrAPITestServer.service;
 
-import org.brapi.test.BrAPITestServer.model.entity.BaseEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ContactEntity;
 import org.brapi.test.BrAPITestServer.model.rest.Contact;
 import org.springframework.stereotype.Service;
