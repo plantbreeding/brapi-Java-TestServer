@@ -1,6 +1,11 @@
 package org.brapi.test.BrAPITestServer.model.rest;
 
+import java.util.Date;
 import java.util.List;
+
+import org.brapi.test.BrAPITestServer.service.DateUtility;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Germplasm {
 	private String germplasmDbId;
@@ -24,7 +29,8 @@ public class Germplasm {
     private String subtaxa;
     private String subtaxaAuthority;
     private List<Donor> donors;
-    private String acquisitionDate;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Date acquisitionDate;
     
 	public String getGermplasmDbId() {
 		return germplasmDbId;
@@ -152,10 +158,10 @@ public class Germplasm {
 	public void setDonors(List<Donor> donors) {
 		this.donors = donors;
 	}
-	public String getAcquisitionDate() {
+	public Date getAcquisitionDate() {
 		return acquisitionDate;
 	}
-	public void setAcquisitionDate(String acquisitionDate) {
+	public void setAcquisitionDate(Date acquisitionDate) {
 		this.acquisitionDate = acquisitionDate;
 	}
     

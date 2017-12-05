@@ -35,12 +35,10 @@ public class CallsService {
 		Page<CallEntity> page;
 		if(datatype == null) {
 			page = callRepository.findAll(pageReq);
-			metadata.getPagination().setTotalCount((int) callRepository.count());
 		}else {
 			page = callRepository.findByDataTypes_DataType(datatype, pageReq);
-			metadata.getPagination().setTotalCount((int) callRepository.countByDataTypes_DataType(datatype));
 		}
-		PagingUtility.calculateMetaData(metadata);
+		PagingUtility.calculateMetaData(metadata, page);
 		return page.getContent();
 	}
 

@@ -28,8 +28,8 @@ public class PhenotypeService {
 	public List<Phenotype> getPhenotypes(PhenotypesSearchRequest request, MetaData metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 		
-		Date startDate = DateUtility.convertStringToDate(request.getObservationTimeStampRange().get(0));
-		Date endDate = DateUtility.convertStringToDate(request.getObservationTimeStampRange().get(1));
+		Date startDate = request.getObservationTimeStampRange().get(0);
+		Date endDate = request.getObservationTimeStampRange().get(1);
 		Page<ObservationUnitEntity> unitsPage = observationUnitRepository.findBySearch(request.getGermplasmDbIds(),
 				request.getObservationVariableDbIds(), request.getStudyDbIds(), request.getLocationDbIds(),
 				request.getProgramDbIds(), request.getSeasonDbIds(), request.getObservationLevel(), startDate, endDate,

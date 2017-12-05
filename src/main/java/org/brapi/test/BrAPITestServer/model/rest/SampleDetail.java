@@ -2,6 +2,8 @@ package org.brapi.test.BrAPITestServer.model.rest;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class SampleDetail {
 	private String studyDbId;
 	private String locationDbId;
@@ -9,6 +11,7 @@ public class SampleDetail {
 	private String plantId;
 	private String sampleId;
 	private String takenBy;
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ssXXX")
 	private Date sampleTimestamp;
 	private String sampleType;
 	private String tissueType;
@@ -19,7 +22,9 @@ public class SampleDetail {
 	private int entryNumber;
 	private int plotNumber;
 	private String germplasmDbId;
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ssXXX")
 	private Date plantingTimestamp;
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ssXXX")
 	private Date harvestTimestamp;
 	public String getStudyDbId() {
 		return studyDbId;

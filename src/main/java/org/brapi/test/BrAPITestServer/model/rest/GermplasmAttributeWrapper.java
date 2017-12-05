@@ -1,12 +1,17 @@
 package org.brapi.test.BrAPITestServer.model.rest;
 
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class GermplasmAttributeWrapper {
 	// TODO this is very similar to GermplasmAttribute and should be the sames
 	private String attributeDbId;
 	private String attributeName;
 	private String attributeCode;
 	private String value;
-	private String determinedDate;
+    @JsonFormat(pattern="yyyy-MM-dd")
+	private Date determinedDate;
 	public String getAttributeDbId() {
 		return attributeDbId;
 	}
@@ -31,10 +36,10 @@ public class GermplasmAttributeWrapper {
 	public void setValue(String value) {
 		this.value = value;
 	}
-	public String getDeterminedDate() {
+	public Date getDeterminedDate() {
 		return determinedDate;
 	}
-	public void setDeterminedDate(String determinedDate) {
+	public void setDeterminedDate(Date determinedDate) {
 		this.determinedDate = determinedDate;
 	}
 	

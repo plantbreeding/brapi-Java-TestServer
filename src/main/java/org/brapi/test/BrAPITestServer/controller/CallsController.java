@@ -24,7 +24,7 @@ public class CallsController extends BrAPIController{
 		this.callService = callService;
 	}
 
-	@RequestMapping(method=RequestMethod.GET)
+	@RequestMapping(path="calls", method=RequestMethod.GET)
 	public GenericResults<GenericResultsDataList<Call>> calls(
 			@RequestParam(value="datatype", defaultValue="json") String datatype,
 			@RequestParam(value="pageSize", defaultValue="1000") int pageSize,

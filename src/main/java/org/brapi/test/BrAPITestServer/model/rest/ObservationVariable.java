@@ -3,6 +3,8 @@ package org.brapi.test.BrAPITestServer.model.rest;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class ObservationVariable {
 	private String observationVariableDbId;
 	private String name;
@@ -15,6 +17,7 @@ public class ObservationVariable {
 	private String xref;
 	private String institution;
 	private String scientist;
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ssXXX")
 	private Date submissionTimestamp;
 	private String language;
 	private String crop;

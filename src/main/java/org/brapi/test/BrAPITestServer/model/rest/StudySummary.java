@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class StudySummary {
 	private String studyDbId;
 	private String name;
@@ -15,7 +17,9 @@ public class StudySummary {
 	private String locationName;
 	private String programDbId;
 	private String programName;
+    @JsonFormat(pattern="yyyy-MM-dd")
 	private Date startDate;
+    @JsonFormat(pattern="yyyy-MM-dd")
 	private Date endDate;
 	private boolean active;
 	private Map<String, String> additionalInfo;

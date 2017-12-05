@@ -2,12 +2,15 @@ package org.brapi.test.BrAPITestServer.model.rest;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class GenomeMapSummary {
 	private String mapDbId;
 	private String name;
 	private String species;
 	private String type;
 	private String unit;
+    @JsonFormat(pattern="yyyy-MM-dd")
 	private Date publishedDate;
 	private int markerCount;
 	private int linkageGroupCount;

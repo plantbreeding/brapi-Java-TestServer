@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class TrialSummaryWithContact {
 //TODO very similar to TrialSummary
 	
@@ -11,7 +13,9 @@ private String trialDbId;
 private String trialName;
 private String programDbId;
 private String programName;
+@JsonFormat(pattern="yyyy-MM-dd")
 private Date startDate;
+@JsonFormat(pattern="yyyy-MM-dd")
 private Date endDate;
 private boolean active;
 private DatasetAuthorship datasetAuthorship;

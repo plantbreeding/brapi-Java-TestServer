@@ -80,8 +80,7 @@ public class GermplasmService {
 		germ.setSubtaxa(entity.getSubtaxa());
 		germ.setSubtaxaAuthority(entity.getSubtaxaAuthority());
 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		germ.setAcquisitionDate(sdf.format(entity.getAcquisitionDate()));
+		germ.setAcquisitionDate(entity.getAcquisitionDate());
 
 		germ.setSynonyms(Arrays.asList(entity.getSynonyms().split(" *, *")));
 

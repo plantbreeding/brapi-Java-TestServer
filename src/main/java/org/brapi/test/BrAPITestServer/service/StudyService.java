@@ -199,8 +199,7 @@ public class StudyService {
 			study.setStudyName(entity.getStudyName());
 
 			study.setLastUpdate(new Update());
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-			study.getLastUpdate().setTimestamp(sdf.format(entity.getTimestamp()));
+			study.getLastUpdate().setTimestamp(entity.getTimestamp());
 			study.getLastUpdate().setVersion(entity.getVersion());
 
 			study.setContacts(entity.getContacts().stream().map(this.contactService::convertFromEntity)
