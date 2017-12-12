@@ -4,7 +4,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class GermplasmAttributeWrapper {
+public class GermplasmAttributeValue {
 	// TODO this is very similar to GermplasmAttribute and should be the sames
 	private String attributeDbId;
 	private String attributeName;

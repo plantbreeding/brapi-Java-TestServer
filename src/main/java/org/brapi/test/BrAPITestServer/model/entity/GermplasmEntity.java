@@ -65,8 +65,8 @@ public class GermplasmEntity extends BaseEntity{
 	@OneToMany(mappedBy="germplasmDbId", targetEntity=DonorEntity.class)
     private List<DonorEntity> donors;
 	
-	@OneToMany(mappedBy="germplasmDbId", targetEntity=GermplasmAttributeEntity.class)
-	private List<GermplasmAttributeEntity> attributes;
+	@OneToMany(mappedBy="germplasm", targetEntity=GermplasmAttributeValueEntity.class)
+	private List<GermplasmAttributeValueEntity> attributes;
 
 	@OneToMany(mappedBy="germplasmDbId", targetEntity=MarkerProfileEntity.class)
 	private List<MarkerProfileEntity> markerProfiles;
@@ -242,11 +242,11 @@ public class GermplasmEntity extends BaseEntity{
 		this.donors = donors;
 	}
 
-	public List<GermplasmAttributeEntity> getAttributes() {
+	public List<GermplasmAttributeValueEntity> getAttributes() {
 		return attributes;
 	}
 
-	public void setAttributes(List<GermplasmAttributeEntity> attributes) {
+	public void setAttributes(List<GermplasmAttributeValueEntity> attributes) {
 		this.attributes = attributes;
 	}
 

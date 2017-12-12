@@ -3,34 +3,40 @@ package org.brapi.test.BrAPITestServer.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.brapi.test.BrAPITestServer.model.entity.GermplasmAttributeEntity;
-import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttribute;
+import org.brapi.test.BrAPITestServer.model.entity.GermplasmAttributeDefinitionEntity;
+import org.brapi.test.BrAPITestServer.model.entity.GermplasmAttributeValueEntity;
+import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttributeDefinition;
 import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttributeCategory;
-import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttributeMasterWrapper;
-import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttributeWrapper;
+import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttributeValuesWrapper;
+import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttributeValue;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.repository.GermplasmAttributeCategoryRepository;
-import org.brapi.test.BrAPITestServer.repository.GermplasmAttributeRepository;
+import org.brapi.test.BrAPITestServer.repository.GermplasmAttributeDefinitionRepository;
+import org.brapi.test.BrAPITestServer.repository.GermplasmAttributeValueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GermplasmAttributeService {
 	
-	private GermplasmAttributeRepository attributeRepository;
+	private GermplasmAttributeDefinitionRepository attributeRepository;
 	private GermplasmAttributeCategoryRepository categoryRepository;
+	private GermplasmAttributeValueRepository attributeValueRepository;
 	
 	@Autowired
-	public GermplasmAttributeService(GermplasmAttributeRepository attributeRepository, 
-			GermplasmAttributeCategoryRepository categoryRepository) {
+	public GermplasmAttributeService(GermplasmAttributeDefinitionRepository attributeRepository, 
+			GermplasmAttributeCategoryRepository categoryRepository, GermplasmAttributeValueRepository attributeValueRepository) {
 		this.categoryRepository = categoryRepository;
 		this.attributeRepository = attributeRepository;
+		this.attributeValueRepository = attributeValueRepository;
 	}
 
-	public List<GermplasmAttribute> getGermplasmAttributes(String attributeCategoryDbId, MetaData metaData) {
-		List<GermplasmAttribute> attributes;
+	public List<GermplasmAttributeDefinition> getGermplasmAttributes(String attributeCategoryDbId, MetaData metaData) {
+		List<GermplasmAttributeDefinition> attributes;
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
+		
 		if(attributeCategoryDbId == null) {
 			attributes = attributeRepository
 					.findAll(pageReq)
@@ -47,8 +53,8 @@ public class GermplasmAttributeService {
 		return attributes;
 	}
 	
-	private GermplasmAttribute mapFromEntityToAttribute(GermplasmAttributeEntity entity) {
-		GermplasmAttribute attrib = new GermplasmAttribute();
+	private GermplasmAttributeDefinition mapFromEntityToAttribute(GermplasmAttributeDefinitionEntity entity) {
+		GermplasmAttributeDefinition attrib = new GermplasmAttributeDefinition();
 		attrib.setAttributeCategoryDbId(entity.getAttributeCategory().getId());
 		attrib.setCode(entity.getCode());
 		attrib.setDatatype(entity.getDatatype());
@@ -78,42 +84,33 @@ public class GermplasmAttributeService {
 		return categories;
 	}
 
-	public GermplasmAttributeMasterWrapper getGermplasmAttributes(String germplasmDbId, List<String> attributeList,
+	public GermplasmAttributeValuesWrapper getGermplasmAttributeValues(String germplasmDbId, List<String> attributeList,
 			MetaData metaData) {
-		List<GermplasmAttributeWrapper> attributes;
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
+		Page<GermplasmAttributeValueEntity> valuesPage;
 		if(attributeList == null || attributeList.isEmpty()) {
-			attributes = attributeRepository
-					.findByGermplasmDbId(germplasmDbId, pageReq)
-					.map(this::mapFromEntityToWrapper)
-					.getContent();
-			metaData.getPagination().setTotalCount((int) attributeRepository.countByGermplasmDbId(germplasmDbId));
+			valuesPage = attributeValueRepository.findByGermplasm_Id(germplasmDbId, pageReq);
 		}else {
-			attributes = attributeRepository
-					.findByGermplasmDbIdAndIdIsIn(germplasmDbId, attributeList, pageReq)
-					.map(this::mapFromEntityToWrapper)
-					.getContent();
-			metaData.getPagination().setTotalCount((int) attributeRepository.countByGermplasmDbIdAndIdIsIn(germplasmDbId, attributeList));
+			valuesPage = attributeValueRepository.findByGermplasm_IdAndGermplasmAttributeDefinition_IdIsIn(germplasmDbId, attributeList, pageReq);
 		}
 		
 		//TODO this wrapper is unnessesary
-		GermplasmAttributeMasterWrapper wrapper = new GermplasmAttributeMasterWrapper();
+		GermplasmAttributeValuesWrapper wrapper = new GermplasmAttributeValuesWrapper();
 		wrapper.setGermplasmDbId(germplasmDbId);
-		wrapper.setData(attributes);
+		wrapper.setData(valuesPage.map(this::mapFromEntityToValue).getContent());
 		
-		PagingUtility.calculateMetaData(metaData);
+		PagingUtility.calculateMetaData(metaData, valuesPage);
 		return wrapper;
 	}
 
 	
-	private GermplasmAttributeWrapper mapFromEntityToWrapper(GermplasmAttributeEntity entity) {
-		GermplasmAttributeWrapper attrib = new GermplasmAttributeWrapper();
-		attrib.setAttributeCode(entity.getCode());
-		attrib.setAttributeDbId(entity.getId());
-		attrib.setAttributeName(entity.getName());
-		//TODO This mapping is broken, where does this data come from
-//		attrib.setDeterminedDate(entity.getDeterminedDate());
-//		attrib.setValue(value);
+	private GermplasmAttributeValue mapFromEntityToValue(GermplasmAttributeValueEntity entity) {
+		GermplasmAttributeValue attrib = new GermplasmAttributeValue();
+		attrib.setAttributeCode(entity.getGermplasmAttributeDefinition().getCode());
+		attrib.setAttributeDbId(entity.getGermplasmAttributeDefinition().getId());
+		attrib.setAttributeName(entity.getGermplasmAttributeDefinition().getName());
+		attrib.setDeterminedDate(entity.getDeterminedDate());
+		attrib.setValue(entity.getValue());
 		return attrib;
 	}
 

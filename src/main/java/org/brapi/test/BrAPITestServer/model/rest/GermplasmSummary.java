@@ -2,7 +2,7 @@ package org.brapi.test.BrAPITestServer.model.rest;
 
 import java.util.List;
 
-public class GermplasmSummary {
+public class GermplasmSummary  implements BaseRestModel {
 	private String germplasmDbId;
 	private String entryNumber;
 	private String germplasmName;

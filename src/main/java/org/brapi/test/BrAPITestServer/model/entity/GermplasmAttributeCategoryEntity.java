@@ -13,8 +13,8 @@ public class GermplasmAttributeCategoryEntity extends BaseEntity{
 	@Column
 	private String name;
 	
-	@OneToMany(mappedBy="attributeCategory", targetEntity=GermplasmAttributeEntity.class)
-	private List<GermplasmAttributeEntity> germplasmAttributeEntities;
+	@OneToMany(mappedBy="attributeCategory", targetEntity=GermplasmAttributeDefinitionEntity.class)
+	private List<GermplasmAttributeDefinitionEntity> germplasmAttributeEntities;
 	
 	public String getName() {
 		return name;
@@ -22,10 +22,10 @@ public class GermplasmAttributeCategoryEntity extends BaseEntity{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public List<GermplasmAttributeEntity> getGermplasmAttributeEntities() {
+	public List<GermplasmAttributeDefinitionEntity> getGermplasmAttributeEntities() {
 		return germplasmAttributeEntities;
 	}
-	public void setGermplasmAttributeEntities(List<GermplasmAttributeEntity> germplasmAttributeEntities) {
+	public void setGermplasmAttributeEntities(List<GermplasmAttributeDefinitionEntity> germplasmAttributeEntities) {
 		this.germplasmAttributeEntities = germplasmAttributeEntities;
 	}
 	

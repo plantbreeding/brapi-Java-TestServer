@@ -2,9 +2,9 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttribute;
+import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttributeDefinition;
 import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttributeCategory;
-import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttributeMasterWrapper;
+import org.brapi.test.BrAPITestServer.model.rest.GermplasmAttributeValuesWrapper;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
@@ -26,12 +26,12 @@ public class GermplasmAttributeController extends BrAPIController{
 	}
 	
 	@RequestMapping(value="attributes", method= {RequestMethod.GET})
-	public GenericResults<GenericResultsDataList<GermplasmAttribute>> getGermplasmAttributes(
+	public GenericResults<GenericResultsDataList<GermplasmAttributeDefinition>> getGermplasmAttributes(
 				@RequestParam String attributeCategoryDbId,
 				@RequestParam(defaultValue="0") int page,
 				@RequestParam(defaultValue="1000") int pageSize){
 		MetaData metaData = generateMetaDataTemplate(page, pageSize);
-		List<GermplasmAttribute> germplasmAttributes = germplasmAttributeService.getGermplasmAttributes(attributeCategoryDbId,metaData);
+		List<GermplasmAttributeDefinition> germplasmAttributes = germplasmAttributeService.getGermplasmAttributes(attributeCategoryDbId,metaData);
 		
 		return GenericResults
 				.withList(germplasmAttributes)
@@ -52,13 +52,13 @@ public class GermplasmAttributeController extends BrAPIController{
 
 
 	@RequestMapping(value = "germplasm/{germplasmDbId}/attributes", method = { RequestMethod.GET })
-	public GenericResults<GermplasmAttributeMasterWrapper> getGermplasmAttributeByGermplasmDbId(
+	public GenericResults<GermplasmAttributeValuesWrapper> getGermplasmAttributeByGermplasmDbId(
 			@PathVariable("germplasmDbId") String germplasmDbId,
 			@RequestParam List<String> attributeList, 
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		MetaData metaData = generateMetaDataTemplate(page, pageSize);
-		GermplasmAttributeMasterWrapper attribute = germplasmAttributeService.getGermplasmAttributes(germplasmDbId, attributeList,metaData);
+		GermplasmAttributeValuesWrapper attribute = germplasmAttributeService.getGermplasmAttributeValues(germplasmDbId, attributeList,metaData);
 
 		return GenericResults.withObject(attribute).withMetaData(metaData);
 	}

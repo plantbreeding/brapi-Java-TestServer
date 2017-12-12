@@ -1,6 +1,6 @@
 package org.brapi.test.BrAPITestServer.model.rest;
 
-public class TaxonID {
+public class TaxonID implements BaseRestModel{
 	//TODO This class doesnt make sense to me, might be a product of loose typing
 	private String ncbiTaxon;
 	private String ciradTaxon;

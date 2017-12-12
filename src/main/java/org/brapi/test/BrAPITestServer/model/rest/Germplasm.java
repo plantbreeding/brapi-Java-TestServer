@@ -3,11 +3,9 @@ package org.brapi.test.BrAPITestServer.model.rest;
 import java.util.Date;
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.service.DateUtility;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class Germplasm {
+public class Germplasm  implements BaseRestModel {
 	private String germplasmDbId;
     private String defaultDisplayName;
     private String accessionNumber;

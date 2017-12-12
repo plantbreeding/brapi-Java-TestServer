@@ -9,12 +9,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="germplasm_attribute")
-public class GermplasmAttributeEntity extends BaseEntity{
+@Table(name="germplasm_attribute_definition")
+public class GermplasmAttributeDefinitionEntity extends BaseEntity{
 	@ManyToOne
 	private GermplasmAttributeCategoryEntity attributeCategory;
-	@Column(name="germplasm_dbid")
-	private String germplasmDbId;
 	@Column
 	private String code;
 	@Column
@@ -25,8 +23,10 @@ public class GermplasmAttributeEntity extends BaseEntity{
 	private String description;
 	@Column
 	private String datatype;
-	@OneToMany(mappedBy="germplasmAttributeDbId", targetEntity=GermplasmAttributeValueEntity.class)
+	@OneToMany(mappedBy="germplasmAttributeDefinition", targetEntity=GermplasmAttributeValueEntity.class)
 	private List<GermplasmAttributeValueEntity> values;
+	
+	
 	public GermplasmAttributeCategoryEntity getAttributeCategory() {
 		return attributeCategory;
 	}

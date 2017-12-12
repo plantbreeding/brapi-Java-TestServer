@@ -2,7 +2,7 @@ package org.brapi.test.BrAPITestServer.model.rest;
 
 import java.util.List;
 
-public class GermplasmAttribute {
+public class GermplasmAttributeDefinition {
 	private String attributeCategoryDbId;
 	private String code;
 	private String uri;
