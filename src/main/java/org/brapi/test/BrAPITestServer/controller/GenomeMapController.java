@@ -12,6 +12,7 @@ import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.GenomeMapService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,8 +29,8 @@ public class GenomeMapController  extends BrAPIController{
 	
 	@RequestMapping(value="maps", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<GenomeMapSummary>> getMaps(
-			@RequestParam String speciesId,
-			@RequestParam String type,
+			@RequestParam(required=false) String speciesId,
+			@RequestParam(required=false) String type,
 			@RequestParam(defaultValue="0") int page,
 			@RequestParam(defaultValue="1000") int pageSize){
 		MetaData metaData = generateMetaDataTemplate(page, pageSize);
@@ -40,9 +41,9 @@ public class GenomeMapController  extends BrAPIController{
 				.withMetaData(generateMetaDataTemplate(page, pageSize));
 	}
 	
-	@RequestMapping(value="map/{mapDbId}", method= {RequestMethod.GET})
+	@RequestMapping(value="maps/{mapDbId}", method= {RequestMethod.GET})
 	public GenericResults<GenomeMapDetail> getMapDetail(
-			@PathParam(value = "mapDbId") String mapDbId){
+			@PathVariable(value = "mapDbId") String mapDbId){
 		GenomeMapDetail detail = genomeMapService.getMapDetail(mapDbId);
 		
 		return GenericResults
@@ -50,10 +51,28 @@ public class GenomeMapController  extends BrAPIController{
 				.withMetaData(generateEmptyMetadata());
 	}
 
-	@RequestMapping(value="map/{mapDbId}/positions", method= {RequestMethod.GET})
+	@RequestMapping(value="maps/{mapDbId}/positions", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<GenomeMapData>> getMapData(
-			@PathParam(value= "mapDbID") String mapDbId,
-			@RequestParam String linkageGroupId,
+			@PathVariable(value= "mapDbId") String mapDbId,
+			@RequestParam(required=false) String linkageGroupId,
+			@RequestParam(value="min", defaultValue="0") int minPosition,
+			@RequestParam(value="max", defaultValue="0") int maxPosition,
+			@RequestParam(defaultValue="0") int page,
+			@RequestParam(defaultValue="1000") int pageSize){
+
+		MetaData metaData = generateMetaDataTemplate(page, pageSize);
+		List<GenomeMapData> genomeData = genomeMapService.getMapPositions(mapDbId, linkageGroupId, minPosition, maxPosition, metaData);
+		
+		return GenericResults
+				.withList(genomeData)
+				.withMetaData(generateMetaDataTemplate(page, pageSize));
+	}
+
+
+	@RequestMapping(value="maps/{mapDbId}/positions/{linkageGroupId}", method= {RequestMethod.GET})
+	public GenericResults<GenericResultsDataList<GenomeMapData>> getMapDataLinkageGroup(
+			@PathVariable(value= "mapDbId") String mapDbId,
+			@PathVariable(value= "linkageGroupId") String linkageGroupId,
 			@RequestParam(value="min", defaultValue="0") int minPosition,
 			@RequestParam(value="max", defaultValue="0") int maxPosition,
 			@RequestParam(defaultValue="0") int page,

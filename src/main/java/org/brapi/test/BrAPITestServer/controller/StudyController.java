@@ -38,7 +38,7 @@ public class StudyController  extends BrAPIController{
 	
 	@RequestMapping(value="seasons", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<Season>> getSeasons(
-			@RequestParam int year,
+			@RequestParam(required=false) Integer year,
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		MetaData metaData = generateMetaDataTemplate(page, pageSize);
@@ -58,15 +58,15 @@ public class StudyController  extends BrAPIController{
 	
 	@RequestMapping(value="studies-search", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<StudySummary>> getStudies(
-			@RequestParam String studyType,
-			@RequestParam String programDbId,
-			@RequestParam String locationDbId,
-			@RequestParam String seasonDbId,
-			@RequestParam List<String> germplasmDbIds,
-			@RequestParam List<String> observationVariableDbIds,
-			@RequestParam boolean active,
-			@RequestParam String sortBy,
-			@RequestParam String sortOrder,
+			@RequestParam(required=false) String studyType,
+			@RequestParam(required=false) String programDbId,
+			@RequestParam(required=false) String locationDbId,
+			@RequestParam(required=false) String seasonDbId,
+			@RequestParam(required=false) List<String> germplasmDbIds,
+			@RequestParam(required=false) List<String> observationVariableDbIds,
+			@RequestParam(required=false) boolean active,
+			@RequestParam(defaultValue="studyName") String sortBy,
+			@RequestParam(defaultValue="asc") String sortOrder,
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		MetaData metaData = generateMetaDataTemplate(page, pageSize);
@@ -119,7 +119,7 @@ public class StudyController  extends BrAPIController{
 	@RequestMapping(value="studies/{studyDbId}/observationunits", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<StudyObservation>> getObservationLevels(
 			@PathVariable(value="studyDbId") String studyDbId,
-			@RequestParam String observationLevel,
+			@RequestParam(required=false) String observationLevel,
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		MetaData metaData = generateMetaDataTemplate(page, pageSize);
@@ -139,7 +139,7 @@ public class StudyController  extends BrAPIController{
 	@RequestMapping(value="studies/{studyDbId}/table", method= {RequestMethod.GET})
 	public GenericResults<StudyObservationUnitTable> getStudyObservationUnitTable(
 			@PathVariable(value="studyDbId") String studyDbId,
-			@RequestParam String format){
+			@RequestParam(required=false) String format){
 		StudyObservationUnitTable table = studyService.getStudyObservationUnitTable(studyDbId, format);
 		
 		return GenericResults.withObject(table).withMetaData(generateEmptyMetadata());
@@ -167,7 +167,7 @@ public class StudyController  extends BrAPIController{
 	@RequestMapping(value="studies/{studyDbId}/observations", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<ObservationUnit>> getObservationUnits(
 			@PathVariable(value="studyDbId") String studyDbId,
-			@RequestParam List<String> observationVariableDbIds,
+			@RequestParam(required=false) List<String> observationVariableDbIds,
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 

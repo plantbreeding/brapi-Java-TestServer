@@ -12,9 +12,9 @@ import org.springframework.data.repository.query.Param;
 public interface MarkerProfileRepository extends PagingAndSortingRepository<MarkerProfileEntity, String> {
 	public List<MarkerProfileEntity> findByGermplasmDbId(String germplasmDbId);
 
-	@Query("select mp from MarkerProfileEntity mp"
+	@Query("select mp from MarkerProfileEntity mp join mp.studies study"
 			+ " where (:germplasmDbId is null OR mp.germplasmDbId = :germplasmDbId)"
-			+ " AND (:studyDbId is null OR :studyDbId in mp.studies)"
+			+ " AND (:studyDbId is null OR study.id = :studyDbId)"
 			+ " AND (:sampleDbId is null OR mp.sampleDbId = :sampleDbId)"
 			+ " AND (:extractDbId is null OR mp.extractDbId = :extractDbId)"
 			+ " AND (:analysisMethod is null OR mp.analysisMethod = :analysisMethod)")
@@ -25,17 +25,4 @@ public interface MarkerProfileRepository extends PagingAndSortingRepository<Mark
 			@Param("extractDbId") String extractDbId, 
 			@Param("analysisMethod") String analysisMethod,
 			Pageable pageReq);
-	
-	@Query("select count(mp) from MarkerProfileEntity mp"
-			+ " where (:germplasmDbId is null OR mp.germplasmDbId = :germplasmDbId)"
-			+ " AND (:studyDbId is null OR :studyDbId in mp.studies)"
-			+ " AND (:sampleDbId is null OR mp.sampleDbId = :sampleDbId)"
-			+ " AND (:extractDbId is null OR mp.extractDbId = :extractDbId)"
-			+ " AND (:analysisMethod is null OR mp.analysisMethod = :analysisMethod)")
-	public long countBySearchOptions(
-			@Param("germplasmDbId") String germplasmDbId, 
-			@Param("studyDbId") String studyDbId, 
-			@Param("sampleDbId") String sampleDbId, 
-			@Param("extractDbId") String extractDbId, 
-			@Param("analysisMethod") String analysisMethod);
 }

@@ -18,8 +18,6 @@ public interface ObservationVariableRepository extends PagingAndSortingRepositor
 	
 	public Page<ObservationVariableEntity> findAllByTrait_TraitClass(String traitClass, Pageable pageReq);
 
-	public long countByTrait_TraitClass(String traitClass);
-
 	@Query("select o from ObservationVariableEntity o "
 			+ "where ('' in :datatypes or o.scale.datatype in :datatypes) "
 			+ "and ('' in :methodDbIds or o.method.id in :methodDbIds) "

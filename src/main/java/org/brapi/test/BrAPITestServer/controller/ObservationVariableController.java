@@ -28,7 +28,7 @@ public class ObservationVariableController  extends BrAPIController{
 	
 	@RequestMapping(value="variables", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<ObservationVariable>> getVariables(
-			@RequestParam String traitClass,
+			@RequestParam(required=false) String traitClass,
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		MetaData metaData = generateMetaDataTemplate(page, pageSize);

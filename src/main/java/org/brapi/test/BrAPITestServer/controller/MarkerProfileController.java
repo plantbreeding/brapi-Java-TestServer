@@ -29,11 +29,11 @@ public class MarkerProfileController extends BrAPIController {
 
 	@RequestMapping(value = "markerProfiles", method = { RequestMethod.GET })
 	public GenericResults<GenericResultsDataList<MarkerProfileSummary>> getMarkerProfiles(
-			@RequestParam String germplasmDbId,
-			@RequestParam String studyDbId, 
-			@RequestParam String sampleDbId, 
-			@RequestParam String extractDbId,
-			@RequestParam(value = "methodDbId") String analysisMethod, 
+			@RequestParam(required=false) String germplasmDbId,
+			@RequestParam(required=false) String studyDbId, 
+			@RequestParam(required=false) String sampleDbId, 
+			@RequestParam(required=false) String extractDbId,
+			@RequestParam(value = "methodDbId", required=false) String analysisMethod, 
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		MetaData metaData = generateMetaDataTemplate(page, pageSize);

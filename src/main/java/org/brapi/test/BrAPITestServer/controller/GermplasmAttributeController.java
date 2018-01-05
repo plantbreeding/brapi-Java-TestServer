@@ -27,7 +27,7 @@ public class GermplasmAttributeController extends BrAPIController{
 	
 	@RequestMapping(value="attributes", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<GermplasmAttributeDefinition>> getGermplasmAttributes(
-				@RequestParam String attributeCategoryDbId,
+				@RequestParam(required=false) String attributeCategoryDbId,
 				@RequestParam(defaultValue="0") int page,
 				@RequestParam(defaultValue="1000") int pageSize){
 		MetaData metaData = generateMetaDataTemplate(page, pageSize);
@@ -54,7 +54,7 @@ public class GermplasmAttributeController extends BrAPIController{
 	@RequestMapping(value = "germplasm/{germplasmDbId}/attributes", method = { RequestMethod.GET })
 	public GenericResults<GermplasmAttributeValuesWrapper> getGermplasmAttributeByGermplasmDbId(
 			@PathVariable("germplasmDbId") String germplasmDbId,
-			@RequestParam List<String> attributeList, 
+			@RequestParam(required=false) List<String> attributeList, 
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		MetaData metaData = generateMetaDataTemplate(page, pageSize);

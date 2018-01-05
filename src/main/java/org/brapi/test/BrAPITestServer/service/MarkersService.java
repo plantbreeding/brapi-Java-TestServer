@@ -1,6 +1,7 @@
 package org.brapi.test.BrAPITestServer.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.brapi.test.BrAPITestServer.model.entity.MarkerEntity;
@@ -93,8 +94,11 @@ public class MarkersService {
 	}
 
 	public Marker getMarker(String markerDbId) {
-		MarkerEntity markerEntity = markerRepository.findById(markerDbId).get();
-		Marker marker = convertFromEntity(markerEntity, true);
+		Optional<MarkerEntity> markerEntity = markerRepository.findById(markerDbId);
+		Marker marker = null;
+		if (markerEntity.isPresent()) {
+			marker = convertFromEntity(markerEntity.get(), true);
+		}
 		return marker;
 	}
 

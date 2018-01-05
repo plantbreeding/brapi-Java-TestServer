@@ -11,5 +11,7 @@ public interface ObservationRepository extends PagingAndSortingRepository<Observ
 
 	Page<ObservationEntity> findAllByObservationUnit_Study_IdAndObservationVariable_IdIn(String studyDbId,
 			List<String> observationVariableDbIds, Pageable pageReq);
+	
+	Page<ObservationEntity> findAllByObservationUnit_Study_Id(String studyDbId, Pageable pageReq);
 
 }

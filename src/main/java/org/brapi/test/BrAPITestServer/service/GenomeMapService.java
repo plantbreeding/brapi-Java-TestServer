@@ -1,6 +1,7 @@
 package org.brapi.test.BrAPITestServer.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.brapi.test.BrAPITestServer.model.entity.GenomeMapEntity;
@@ -66,26 +67,30 @@ public class GenomeMapService {
 	}
 
 	public GenomeMapDetail getMapDetail(String mapDbId) {
-		GenomeMapEntity entity = genomeMapRepository.findById(mapDbId).get();
-		GenomeMapDetail detail = new GenomeMapDetail();
-		detail.setMapDbId(entity.getId());
-		detail.setName(entity.getName());
-		detail.setType(entity.getType());
-		detail.setUnit(entity.getUnit());
-		detail.setLinkageGroups(entity.getLinkageGroups().stream().map((linkageGroupEntity) -> {
-			LinkageGroup linkageGroup = new LinkageGroup();
-			linkageGroup.setLinkageGroupDbId(linkageGroupEntity.getLinkageGroupName());
-			linkageGroup.setMarkerCount(linkageGroupEntity.getMarkers().size());
-			int maxPosition = 0;
-			for (MarkerEntity marker : linkageGroupEntity.getMarkers()) {
-				int markerPos = Integer.parseInt(marker.getLocation());
-				if (markerPos > maxPosition) {
-					maxPosition = markerPos;
+		Optional<GenomeMapEntity> entityOption = genomeMapRepository.findById(mapDbId);
+		GenomeMapDetail detail = null;
+		if (entityOption.isPresent()) {
+			GenomeMapEntity entity = entityOption.get();
+			detail = new GenomeMapDetail();
+			detail.setMapDbId(entity.getId());
+			detail.setName(entity.getName());
+			detail.setType(entity.getType());
+			detail.setUnit(entity.getUnit());
+			detail.setLinkageGroups(entity.getLinkageGroups().stream().map((linkageGroupEntity) -> {
+				LinkageGroup linkageGroup = new LinkageGroup();
+				linkageGroup.setLinkageGroupDbId(linkageGroupEntity.getLinkageGroupName());
+				linkageGroup.setMarkerCount(linkageGroupEntity.getMarkers().size());
+				int maxPosition = 0;
+				for (MarkerEntity marker : linkageGroupEntity.getMarkers()) {
+					int markerPos = Integer.parseInt(marker.getLocation());
+					if (markerPos > maxPosition) {
+						maxPosition = markerPos;
+					}
 				}
-			}
-			linkageGroup.setMaxPosition(maxPosition);
-			return linkageGroup;
-		}).collect(Collectors.toList()));
+				linkageGroup.setMaxPosition(maxPosition);
+				return linkageGroup;
+			}).collect(Collectors.toList()));
+		}
 		return detail;
 	}
 
@@ -93,31 +98,23 @@ public class GenomeMapService {
 			MetaData metaData) {
 		List<GenomeMapData> data;
 		if (linkageGroupId == null) {
-			data = markerRepository.findAllByLinkageGroup_GenomeMapDbId(mapDbId,
-					PagingUtility.getPageRequest(metaData))
-					.stream()
-					.filter((entity) -> {
+			data = markerRepository.findAllByLinkageGroup_GenomeMapDbId(mapDbId, PagingUtility.getPageRequest(metaData))
+					.stream().filter((entity) -> {
 						int loc = Integer.parseInt(entity.getLocation());
-						if(loc > maxPosition || loc < minPosition) {
+						if (loc > maxPosition || loc < minPosition) {
 							return false;
 						}
 						return true;
-					})
-					.map(this::convertFromEntity)
-					.collect(Collectors.toList());
+					}).map(this::convertFromEntity).collect(Collectors.toList());
 		} else {
 			data = markerRepository.findAllByLinkageGroup_IdAndLinkageGroup_GenomeMapDbId(linkageGroupId, mapDbId,
-					PagingUtility.getPageRequest(metaData))
-					.stream()
-					.filter((entity) -> {
+					PagingUtility.getPageRequest(metaData)).stream().filter((entity) -> {
 						int loc = Integer.parseInt(entity.getLocation());
-						if(loc > maxPosition || loc < minPosition) {
+						if (loc > maxPosition || loc < minPosition) {
 							return false;
 						}
 						return true;
-					})
-					.map(this::convertFromEntity)
-					.collect(Collectors.toList());
+					}).map(this::convertFromEntity).collect(Collectors.toList());
 		}
 		return data;
 	}
@@ -130,6 +127,5 @@ public class GenomeMapService {
 		marker.setMarkerName(entity.getMarkerName());
 		return marker;
 	}
-	
 
 }

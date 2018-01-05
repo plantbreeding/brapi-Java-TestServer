@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.brapi.test.BrAPITestServer.model.entity.MarkerProfileEntity;
 import org.brapi.test.BrAPITestServer.model.rest.AlleleFormatParams;
@@ -12,6 +13,7 @@ import org.brapi.test.BrAPITestServer.model.rest.MarkerProfileDetails;
 import org.brapi.test.BrAPITestServer.model.rest.MarkerProfileSummary;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.repository.MarkerProfileRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,8 +28,10 @@ public class MarkerProfileService {
 	public List<MarkerProfileSummary> getMarkerProfileSummeries(String germplasmDbId, String studyDbId,
 			String sampleDbId, String extractDbId, String analysisMethod, MetaData metaData) {
 
-		List<MarkerProfileSummary> summaries = markerProfileRepository.findBySearchOptions(germplasmDbId, studyDbId,
-				sampleDbId, extractDbId, analysisMethod, PagingUtility.getPageRequest(metaData)).map((entity) -> {
+		Page<MarkerProfileEntity> profilePage = markerProfileRepository.findBySearchOptions(germplasmDbId, studyDbId,
+				sampleDbId, extractDbId, analysisMethod, PagingUtility.getPageRequest(metaData));
+		
+		List<MarkerProfileSummary> summaries = profilePage.map((entity) -> {
 					MarkerProfileSummary summary = new MarkerProfileSummary();
 					summary.setAnalysisMethod(entity.getAnalysisMethod());
 					summary.setExtractDbId(entity.getExtractDbId());
@@ -39,23 +43,24 @@ public class MarkerProfileService {
 					return summary;
 				}).getContent();
 
-		metaData.getPagination().setTotalCount((int) markerProfileRepository.countBySearchOptions(germplasmDbId,
-				studyDbId, sampleDbId, extractDbId, analysisMethod));
-
-		PagingUtility.calculateMetaData(metaData);
+		PagingUtility.calculateMetaData(metaData, profilePage);
 		return summaries;
 	}
 
 	public MarkerProfileDetails getMarkerProfileDetails(String markerProfileDbId, AlleleFormatParams params,
 			MetaData metaData) {
-		MarkerProfileEntity entity = markerProfileRepository.findById(markerProfileDbId).get();
-		MarkerProfileDetails markerProfile = new MarkerProfileDetails();
-		markerProfile.setAnalysisMethod(entity.getAnalysisMethod());
-		markerProfile.setData(buildAlleleDataMap(params, entity, metaData));
-		markerProfile.setExtractDbId(entity.getExtractDbId());
-		markerProfile.setGermplasmDbId(entity.getGermplasmDbId());
-		markerProfile.setMarkerProfileDbId(entity.getId());
-		markerProfile.setUniqueDisplayName(entity.getUniqueDisplayName());
+		Optional<MarkerProfileEntity> entity = markerProfileRepository.findById(markerProfileDbId);
+		MarkerProfileDetails markerProfile = null;
+		if (entity.isPresent()) {
+			markerProfile = new MarkerProfileDetails();
+			markerProfile.setAnalysisMethod(entity.get().getAnalysisMethod());
+			markerProfile.setData(buildAlleleDataMap(params, entity.get(), metaData));
+			markerProfile.setExtractDbId(entity.get().getExtractDbId());
+			markerProfile.setGermplasmDbId(entity.get().getGermplasmDbId());
+			markerProfile.setMarkerProfileDbId(entity.get().getId());
+			markerProfile.setUniqueDisplayName(entity.get().getUniqueDisplayName());
+		}
+
 		return markerProfile;
 	}
 

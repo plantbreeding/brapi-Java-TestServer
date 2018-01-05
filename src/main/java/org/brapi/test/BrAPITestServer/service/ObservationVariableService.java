@@ -2,9 +2,11 @@ package org.brapi.test.BrAPITestServer.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.brapi.test.BrAPITestServer.model.entity.ObservationVariableEntity;
+import org.brapi.test.BrAPITestServer.model.entity.TraitEntity;
 import org.brapi.test.BrAPITestServer.model.rest.Method;
 import org.brapi.test.BrAPITestServer.model.rest.ObservationVariable;
 import org.brapi.test.BrAPITestServer.model.rest.ObservationVariableSearchRequest;
@@ -16,6 +18,7 @@ import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.repository.ObservationVariableRepository;
 import org.brapi.test.BrAPITestServer.repository.OntologyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -34,10 +37,10 @@ public class ObservationVariableService {
 	public List<String> getDataTypes(MetaData metaData) {
 		// TODO why is this needed?
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-		
+
 		List<String> dataTypes = observationVariableRepository.findDistinctScale_DatatypeAll(pageReq).getContent();
-		metaData.getPagination().setTotalCount( (int) observationVariableRepository.countDistinctScale_DatatypeAll());
-		
+		metaData.getPagination().setTotalCount((int) observationVariableRepository.countDistinctScale_DatatypeAll());
+
 		PagingUtility.calculateMetaData(metaData);
 		return dataTypes;
 	}
@@ -45,16 +48,26 @@ public class ObservationVariableService {
 	public List<ObservationVariable> getVariables(String traitClass, MetaData metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 
-		List<ObservationVariable> variables = observationVariableRepository
-				.findAllByTrait_TraitClass(traitClass, pageReq).map(this::convertFromEntity).getContent();
-		metaData.getPagination().setTotalCount((int) observationVariableRepository.countByTrait_TraitClass(traitClass));
+		Page<ObservationVariableEntity> variablesPage;
+		if (traitClass == null) {
+			variablesPage = observationVariableRepository.findAll(pageReq);
+		} else {
+			variablesPage = observationVariableRepository.findAllByTrait_TraitClass(traitClass, pageReq);
+		}
+		List<ObservationVariable> variables = variablesPage.map(this::convertFromEntity).getContent();
+
+		PagingUtility.calculateMetaData(metaData, variablesPage);
 
 		return variables;
 	}
 
 	public ObservationVariable getVariable(String observationVariableDbId) {
-		ObservationVariableEntity entity = observationVariableRepository.findById(observationVariableDbId).get();
-		ObservationVariable var = convertFromEntity(entity);
+		Optional<ObservationVariableEntity> entityOption = observationVariableRepository
+				.findById(observationVariableDbId);
+		ObservationVariable var = null;
+		if (entityOption.isPresent()) {
+			var = convertFromEntity(entityOption.get());
+		}
 		return var;
 	}
 
@@ -62,7 +75,7 @@ public class ObservationVariableService {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 
 		request = fixReqestArrays(request);
-		
+
 		List<ObservationVariable> variables = observationVariableRepository
 				.findAllBySearch(request.getDatatypes(), request.getMethodDbIds(), request.getNames(),
 						request.getObservationVariableDbIds(), request.getOntologyDbIds(), request.getOntologyXrefs(),
@@ -80,28 +93,28 @@ public class ObservationVariableService {
 	private ObservationVariableSearchRequest fixReqestArrays(ObservationVariableSearchRequest request) {
 		List<String> emptyPlaceHolder = new ArrayList<>();
 		emptyPlaceHolder.add("");
-		if(request.getDatatypes() == null || request.getDatatypes().isEmpty()) {
+		if (request.getDatatypes() == null || request.getDatatypes().isEmpty()) {
 			request.setDatatypes(emptyPlaceHolder);
 		}
-		if(request.getMethodDbIds() == null || request.getMethodDbIds().isEmpty()) {
+		if (request.getMethodDbIds() == null || request.getMethodDbIds().isEmpty()) {
 			request.setMethodDbIds(emptyPlaceHolder);
 		}
-		if(request.getNames() == null || request.getNames().isEmpty()) {
+		if (request.getNames() == null || request.getNames().isEmpty()) {
 			request.setNames(emptyPlaceHolder);
 		}
-		if(request.getObservationVariableDbIds() == null || request.getObservationVariableDbIds().isEmpty()) {
+		if (request.getObservationVariableDbIds() == null || request.getObservationVariableDbIds().isEmpty()) {
 			request.setObservationVariableDbIds(emptyPlaceHolder);
 		}
-		if(request.getOntologyDbIds() == null || request.getOntologyDbIds().isEmpty()) {
+		if (request.getOntologyDbIds() == null || request.getOntologyDbIds().isEmpty()) {
 			request.setOntologyDbIds(emptyPlaceHolder);
 		}
-		if(request.getOntologyXrefs() == null || request.getOntologyXrefs().isEmpty()) {
+		if (request.getOntologyXrefs() == null || request.getOntologyXrefs().isEmpty()) {
 			request.setOntologyXrefs(emptyPlaceHolder);
 		}
-		if(request.getScaleDbIds() == null || request.getScaleDbIds().isEmpty()) {
+		if (request.getScaleDbIds() == null || request.getScaleDbIds().isEmpty()) {
 			request.setScaleDbIds(emptyPlaceHolder);
 		}
-		if(request.getTraitClasses() == null || request.getTraitClasses().isEmpty()) {
+		if (request.getTraitClasses() == null || request.getTraitClasses().isEmpty()) {
 			request.setTraitClasses(emptyPlaceHolder);
 		}
 		return request;
@@ -186,7 +199,8 @@ public class ObservationVariableService {
 	}
 
 	public List<ObservationVariable> getVariablesForStudy(String studyDbId) {
-		return observationVariableRepository.findAllForStudy(studyDbId).stream().map(this::convertFromEntity).collect(Collectors.toList());
+		return observationVariableRepository.findAllForStudy(studyDbId).stream().map(this::convertFromEntity)
+				.collect(Collectors.toList());
 	}
 
 	public ObservationVariableEntity getVariableEntity(String observationVariableDbId) {
