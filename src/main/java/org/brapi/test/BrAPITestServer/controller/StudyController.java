@@ -19,6 +19,7 @@ import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -129,6 +130,7 @@ public class StudyController  extends BrAPIController{
 	
 	//TODO should be PUT not POST
 	@RequestMapping(value="studies/{studyDbId}/observationunits", method= {RequestMethod.POST})
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public void postObservationUnit(
 			@PathVariable(value="studyDbId") String studyDbId,
 			@RequestBody StudyObservationUnitRequest request){
@@ -147,6 +149,7 @@ public class StudyController  extends BrAPIController{
 	
 	//TODO should be PUT not POST
 	@RequestMapping(value="studies/{studyDbId}/table", method= {RequestMethod.POST})
+	@PreAuthorize("hasAuthority('ADMIN')")
 	public void postStudyObservationUnitTable(
 			@PathVariable(value="studyDbId") String studyDbId,
 			@RequestBody GenericResults<StudyObservationUnitTable> request){
