@@ -1,19 +1,19 @@
 package org.brapi.test.BrAPITestServer.model.rest;
 
 public class TaxonID implements BaseRestModel{
-	//TODO This class doesnt make sense to me, might be a product of loose typing
-	private String ncbiTaxon;
-	private String ciradTaxon;
-	public String getNcbiTaxon() {
-		return ncbiTaxon;
+	private String sourceName;
+	private String taxonId;
+	
+	public String getSourceName() {
+		return sourceName;
 	}
-	public void setNcbiTaxon(String ncbiTaxon) {
-		this.ncbiTaxon = ncbiTaxon;
+	public void setSourceName(String sourceName) {
+		this.sourceName = sourceName;
 	}
-	public String getCiradTaxon() {
-		return ciradTaxon;
+	public String getTaxonId() {
+		return taxonId;
 	}
-	public void setCiradTaxon(String ciradTaxon) {
-		this.ciradTaxon = ciradTaxon;
+	public void setTaxonId(String taxonId) {
+		this.taxonId = taxonId;
 	}
 }

@@ -6,6 +6,8 @@ public class Pedigree {
     private String pedigree;
     private String parent1Id;
     private String parent2Id;
+    private String parent1DbId;
+    private String parent2DbId;
     
 	public String getGermplasmDbId() {
 		return germplasmDbId;
@@ -25,17 +27,29 @@ public class Pedigree {
 	public void setPedigree(String pedigree) {
 		this.pedigree = pedigree;
 	}
-	public String getParent1Id() {
+	public String getParent1Id_dep() {
 		return parent1Id;
 	}
-	public void setParent1Id(String parent1Id) {
+	public void setParent1Id_dep(String parent1Id) {
 		this.parent1Id = parent1Id;
 	}
-	public String getParent2Id() {
+	public String getParent2Id_dep() {
 		return parent2Id;
 	}
-	public void setParent2Id(String parent2Id) {
+	public void setParent2Id_dep(String parent2Id) {
 		this.parent2Id = parent2Id;
+	}
+	public String getParent1DbId() {
+		return parent1DbId;
+	}
+	public void setParent1DbId(String parent1DbId) {
+		this.parent1DbId = parent1DbId;
+	}
+	public String getParent2DbId() {
+		return parent2DbId;
+	}
+	public void setParent2DbId(String parent2DbId) {
+		this.parent2DbId = parent2DbId;
 	}
     
 }

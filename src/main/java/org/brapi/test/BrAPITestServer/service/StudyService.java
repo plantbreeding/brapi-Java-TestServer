@@ -20,6 +20,7 @@ import org.brapi.test.BrAPITestServer.model.rest.EntryType;
 import org.brapi.test.BrAPITestServer.model.rest.GermplasmSummary;
 import org.brapi.test.BrAPITestServer.model.rest.Observation;
 import org.brapi.test.BrAPITestServer.model.rest.ObservationUnit;
+import org.brapi.test.BrAPITestServer.model.rest.ObservationUnitDbIdListWrapper;
 import org.brapi.test.BrAPITestServer.model.rest.ObservationUnitXref;
 import org.brapi.test.BrAPITestServer.model.rest.ObservationVariable;
 import org.brapi.test.BrAPITestServer.model.rest.Season;
@@ -109,52 +110,44 @@ public class StudyService {
 		return studyTypes;
 	}
 
-	public List<StudySummary> getStudies(String studyType, String programDbId, String locationDbId, String seasonDbId,
+	public List<StudySummary> getStudies(String studyType, String programDbId, String trialDbId, String locationDbId, String seasonDbId,
 			List<String> germplasmDbIds, List<String> observationVariableDbIds, boolean active, String sortBy,
 			String sortOrder, MetaData metaData) {
 
-		return searchStudies(buildSearchParam(studyType), buildSearchParam(programDbId), buildSearchParam(null),
-				buildSearchParam(null), buildSearchParam(null), buildSearchParam(locationDbId),
-				buildSearchParam(seasonDbId), buildSearchParamList(germplasmDbIds),
-				buildSearchParamList(observationVariableDbIds), active, sortBy, sortOrder, metaData);
-	}
-
-	private List<String> buildSearchParam(String param) {
-		List<String> paramList = new ArrayList<>();
-		if (param == null) {
-			paramList.add("");
-		} else {
-			paramList.add(param);
-		}
-		return paramList;
-	}
-
-	private List<String> buildSearchParamList(List<String> params) {
-		List<String> paramList = new ArrayList<>();
-		if (params == null || params.isEmpty()) {
-			paramList.add("");
-		} else {
-			paramList = params;
-		}
-		return paramList;
+		return searchStudies(SearchUtility.buildSearchParam(studyType), 
+				SearchUtility.buildSearchParam(programDbId), 
+				SearchUtility.buildSearchParam(trialDbId), 
+				SearchUtility.buildSearchParam(""),
+				SearchUtility.buildSearchParam(""), 
+				SearchUtility.buildSearchParam(""), 
+				SearchUtility.buildSearchParam(locationDbId),
+				SearchUtility.buildSearchParam(seasonDbId), 
+				SearchUtility.buildSearchParam(germplasmDbIds),
+				SearchUtility.buildSearchParam(observationVariableDbIds), active, sortBy, sortOrder, metaData);
 	}
 
 	public List<StudySummary> getStudies(StudySearchRequest request, MetaData metaData) {
-		return searchStudies(buildSearchParam(request.getStudyType()), buildSearchParamList(null),
-				buildSearchParamList(request.getProgramNames()), buildSearchParamList(request.getStudyNames()),
-				buildSearchParamList(request.getStudyLocations()), buildSearchParamList(null),
-				buildSearchParamList(null), buildSearchParamList(request.getGermplasmDbIds()),
-				buildSearchParamList(request.getObservationVariableDbIds()), request.isActive(), request.getSortBy(),
+		return searchStudies(SearchUtility.buildSearchParam(request.getStudyType()), 
+				SearchUtility.buildSearchParam(""), 
+				SearchUtility.buildSearchParam(request.getTrialDbIds()),
+				SearchUtility.buildSearchParam(request.getProgramNames()), 
+				SearchUtility.buildSearchParam(request.getStudyNames()),
+				SearchUtility.buildSearchParam(request.getStudyLocations()), 
+				SearchUtility.buildSearchParam(""),
+				SearchUtility.buildSearchParam(""), 
+				SearchUtility.buildSearchParam(request.getGermplasmDbIds()),
+				SearchUtility.buildSearchParam(request.getObservationVariableDbIds()), 
+				request.isActive(), request.getSortBy(),
 				request.getSortOrder(), metaData);
 	}
 
-	private List<StudySummary> searchStudies(List<String> studyTypes, List<String> programDbIds,
+	private List<StudySummary> searchStudies(List<String> studyTypes, List<String> programDbIds, List<String> trialDbIds,
 			List<String> programNames, List<String> studyNames, List<String> studyLocations, List<String> locationDbIds,
 			List<String> seasonDbIds, List<String> germplasmDbIds, List<String> observationVariableDbIds,
 			boolean active, String sortBy, String sortOrder, MetaData metaData) {
 		Sort sort = Sort.by(Direction.fromString(sortOrder), sortBy);
 		Pageable pageReq = PagingUtility.getPageRequest(metaData, sort);
-		List<StudySummary> summaries = studyRepository.findBySearch(studyTypes, programDbIds, programNames, studyNames,
+		List<StudySummary> summaries = studyRepository.findBySearch(studyTypes, programDbIds, trialDbIds, programNames, studyNames,
 				studyLocations, locationDbIds, seasonDbIds, germplasmDbIds, observationVariableDbIds, active, pageReq)
 				.map((entity) -> {
 					StudySummary sum = new StudySummary();
@@ -328,7 +321,9 @@ public class StudyService {
 		return observations;
 	}
 
-	public void saveObservationUnits(StudyObservationUnitRequest request) {
+	public ObservationUnitDbIdListWrapper saveObservationUnits(StudyObservationUnitRequest request) {
+		ObservationUnitDbIdListWrapper storedUnits = new ObservationUnitDbIdListWrapper();
+		storedUnits.setObservationUnitDbIds(new ArrayList<>());
 		for (StudyObservationUnit unit : request.getResults().getData()) {
 			ObservationUnitEntity unitEntity = observationUnitRepository.findById(unit.getObservatioUnitDbId())
 					.orElse(new ObservationUnitEntity());
@@ -339,8 +334,10 @@ public class StudyService {
 				unitEntity.getObservations().add(observationEntity);
 			}
 
-			observationUnitRepository.save(unitEntity);
+			ObservationUnitEntity storedEntity = observationUnitRepository.save(unitEntity);
+			storedUnits.getObservationUnitDbIds().add(storedEntity.getId());
 		}
+		return storedUnits;
 	}
 
 	private ObservationEntity convertToEntity(Observation observation) {

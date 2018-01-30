@@ -2,18 +2,20 @@ package org.brapi.test.BrAPITestServer.model.rest;
 
 import java.util.List;
 
-public class StudySearchRequest {
+import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericRequest;
+
+public class StudySearchRequest extends GenericRequest{
 	private String studyType;
 	private List<String> studyNames;
 	private List<String> studyLocations;
 	private List<String> programNames;
+	private List<String> trialDbIds;
 	private List<String> germplasmDbIds;
 	private List<String> observationVariableDbIds;
 	private boolean active;
 	private String sortBy;
 	private String sortOrder;
-	private int pageSize;
-	private int page;
+	
 	public String getStudyType() {
 		return studyType;
 	}
@@ -68,16 +70,10 @@ public class StudySearchRequest {
 	public void setSortOrder(String sortOrder) {
 		this.sortOrder = sortOrder;
 	}
-	public int getPageSize() {
-		return pageSize;
+	public List<String> getTrialDbIds() {
+		return trialDbIds;
 	}
-	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
-	}
-	public int getPage() {
-		return page;
-	}
-	public void setPage(int page) {
-		this.page = page;
+	public void setTrialDbIds(List<String> trialDbIds) {
+		this.trialDbIds = trialDbIds;
 	}
 }

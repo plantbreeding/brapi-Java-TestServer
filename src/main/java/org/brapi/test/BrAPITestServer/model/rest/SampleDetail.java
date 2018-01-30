@@ -10,6 +10,9 @@ public class SampleDetail {
 	private String plotId;
 	private String plantId;
 	private String sampleId;
+	private String plotDbId;
+	private String plantDbId;
+	private String sampleDbId;
 	private String takenBy;
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ssXXX")
 	private Date sampleTimestamp;
@@ -26,6 +29,8 @@ public class SampleDetail {
 	private Date plantingTimestamp;
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ssXXX")
 	private Date harvestTimestamp;
+    
+    
 	public String getStudyDbId() {
 		return studyDbId;
 	}
@@ -38,23 +43,41 @@ public class SampleDetail {
 	public void setLocationDbId(String locationDbId) {
 		this.locationDbId = locationDbId;
 	}
-	public String getPlotId() {
+	public String getPlotId_dep() {
 		return plotId;
 	}
-	public void setPlotId(String plotId) {
+	public void setPlotId_dep(String plotId) {
 		this.plotId = plotId;
 	}
-	public String getPlantId() {
+	public String getPlantId_dep() {
 		return plantId;
 	}
-	public void setPlantId(String plantId) {
+	public void setPlantId_dep(String plantId) {
 		this.plantId = plantId;
 	}
-	public String getSampleId() {
+	public String getSampleId_dep() {
 		return sampleId;
 	}
-	public void setSampleId(String sampleId) {
+	public void setSampleId_dep(String sampleId) {
 		this.sampleId = sampleId;
+	}
+	public String getPlotDbId() {
+		return plotDbId;
+	}
+	public void setPlotDbId(String plotDbId) {
+		this.plotDbId = plotDbId;
+	}
+	public String getPlantDbId() {
+		return plantDbId;
+	}
+	public void setPlantDbId(String plantDbId) {
+		this.plantDbId = plantDbId;
+	}
+	public String getSampleDbId() {
+		return sampleDbId;
+	}
+	public void setSampleDbId(String sampleDbId) {
+		this.sampleDbId = sampleDbId;
 	}
 	public String getTakenBy() {
 		return takenBy;

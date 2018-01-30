@@ -3,6 +3,11 @@ package org.brapi.test.BrAPITestServer.model.rest.metadata;
 public class MetaDataStatus {
 	private String message;
 	private String code;
+	
+	public MetaDataStatus(String code, String message) {
+		setCode(code);
+		setMessage(message);
+	}
 	public String getMessage() {
 		return message;
 	}

@@ -1,6 +1,5 @@
 package org.brapi.test.BrAPITestServer.service;
 
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -86,11 +85,8 @@ public class GermplasmService {
 
 		germ.setTaxonIds(entity.getTaxonIds().stream().map((t) -> {
 			TaxonID taxonId = new TaxonID();
-			if (t.getSourceName().equalsIgnoreCase("ncbiTaxon")) {
-				taxonId.setNcbiTaxon(t.getTaxonId());
-			} else if (t.getSourceName().equalsIgnoreCase("ciradTaxon")) {
-				taxonId.setCiradTaxon(t.getTaxonId());
-			}
+			taxonId.setSourceName(t.getSourceName());
+			taxonId.setTaxonId(t.getTaxonId());
 			return taxonId;
 		}).collect(Collectors.toList()));
 
@@ -124,8 +120,10 @@ public class GermplasmService {
 		Pedigree pedigree = new Pedigree();
 		pedigree.setDefaultDisplayName(entity.getDefaultDisplayName());
 		pedigree.setGermplasmDbId(germplasmDbId);
-		pedigree.setParent1Id(entity.getParent1().getId());
-		pedigree.setParent2Id(entity.getParent2().getId());
+		pedigree.setParent1Id_dep(entity.getParent1().getId());
+		pedigree.setParent2Id_dep(entity.getParent2().getId());
+		pedigree.setParent1DbId(entity.getParent1().getId());
+		pedigree.setParent2DbId(entity.getParent2().getId());
 		pedigree.setPedigree(entity.getPedigree());
 		return pedigree;
 	}

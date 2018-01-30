@@ -10,15 +10,26 @@ public class PagingUtility {
 	public static void calculateMetaData(MetaData metaData) {
 		int totalCount = metaData.getPagination().getTotalCount();
 		int pageSize = metaData.getPagination().getPageSize();
-		metaData.getPagination().setTotalPages(totalCount/pageSize);		
+		metaData.getPagination().setTotalPages(totalCount / pageSize);
 	}
 
 	public static Pageable getPageRequest(MetaData metaData) {
-		return PageRequest.of(metaData.getPagination().getCurrentPage(), metaData.getPagination().getPageSize());
+		return getPageRequest(metaData, null);
 	}
-	
+
 	public static Pageable getPageRequest(MetaData metaData, Sort sort) {
-		return PageRequest.of(metaData.getPagination().getCurrentPage(), metaData.getPagination().getPageSize(), sort);
+		int page = metaData.getPagination().getCurrentPage();
+		if (page < 0) {
+			page = 0;
+		}
+		int pageSize = metaData.getPagination().getPageSize();
+		if (pageSize < 1) {
+			pageSize = 1000;
+		}
+		if (sort == null) {
+			return PageRequest.of(page, pageSize);
+		}
+		return PageRequest.of(page, pageSize, sort);
 	}
 
 	public static void calculateMetaData(MetaData metaData, Page<?> page) {

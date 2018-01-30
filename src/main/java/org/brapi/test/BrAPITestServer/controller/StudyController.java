@@ -3,6 +3,7 @@ package org.brapi.test.BrAPITestServer.controller;
 import java.util.List;
 
 import org.brapi.test.BrAPITestServer.model.rest.ObservationUnit;
+import org.brapi.test.BrAPITestServer.model.rest.ObservationUnitDbIdListWrapper;
 import org.brapi.test.BrAPITestServer.model.rest.Season;
 import org.brapi.test.BrAPITestServer.model.rest.Study;
 import org.brapi.test.BrAPITestServer.model.rest.StudyGermplasm;
@@ -17,6 +18,7 @@ import org.brapi.test.BrAPITestServer.model.rest.StudyType;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
+import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaDataStatus;
 import org.brapi.test.BrAPITestServer.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -47,8 +49,17 @@ public class StudyController  extends BrAPIController{
 		return GenericResults.withList(seasons).withMetaData(metaData);
 	}
 	
-	//TODO path lowercase
+	//Deprecated
 	@RequestMapping(value="studyTypes", method= {RequestMethod.GET})
+	public GenericResults<GenericResultsDataList<StudyType>> getStudyTypes_dep(
+			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
+			@RequestParam(value = "page", defaultValue = "0") int page) {
+		MetaData metaData = generateMetaDataTemplate(page, pageSize);
+		List<StudyType> studyTypes = studyService.getStudyTypes(metaData);
+		return GenericResults.withList(studyTypes).withMetaData(metaData);
+	}
+	
+	@RequestMapping(value="studytypes", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<StudyType>> getStudyTypes(
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
@@ -61,6 +72,7 @@ public class StudyController  extends BrAPIController{
 	public GenericResults<GenericResultsDataList<StudySummary>> getStudies(
 			@RequestParam(required=false) String studyType,
 			@RequestParam(required=false) String programDbId,
+			@RequestParam(required=false) String trialDbId,
 			@RequestParam(required=false) String locationDbId,
 			@RequestParam(required=false) String seasonDbId,
 			@RequestParam(required=false) List<String> germplasmDbIds,
@@ -71,14 +83,14 @@ public class StudyController  extends BrAPIController{
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		MetaData metaData = generateMetaDataTemplate(page, pageSize);
-		List<StudySummary> studies = studyService.getStudies(studyType, programDbId, locationDbId, seasonDbId, germplasmDbIds, observationVariableDbIds, active, sortBy, sortOrder, metaData);
+		List<StudySummary> studies = studyService.getStudies(studyType, programDbId, trialDbId, locationDbId, seasonDbId, germplasmDbIds, observationVariableDbIds, active, sortBy, sortOrder, metaData);
 		return GenericResults.withList(studies).withMetaData(metaData);
 	}	
 	
 	@RequestMapping(value="studies-search", method= {RequestMethod.POST})
 	public GenericResults<GenericResultsDataList<StudySummary>> getStudies(
 			@RequestBody StudySearchRequest request) {
-		MetaData metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
+		MetaData metaData = generateMetaDataTemplate(request);
 		List<StudySummary> studies = studyService.getStudies(request, metaData);
 		return GenericResults.withList(studies).withMetaData(metaData);
 	}
@@ -89,8 +101,16 @@ public class StudyController  extends BrAPIController{
 		Study study = studyService.getStudy(studyDbId);
 		return GenericResults.withObject(study).withMetaData(generateEmptyMetadata());
 	}
-	
+
+	//Deprecated
 	@RequestMapping(value="studies/{studyDbId}/observationVariables", method= {RequestMethod.GET})
+	public GenericResults<StudyObservationVariable> getStudyObservationVariables_dep(
+			@PathVariable(value="studyDbId") String studyDbId) {
+		StudyObservationVariable variables = studyService.getStudyObservationVariables(studyDbId);
+		return GenericResults.withObject(variables).withMetaData(generateEmptyMetadata());
+	}
+	
+	@RequestMapping(value="studies/{studyDbId}/observationvariables", method= {RequestMethod.GET})
 	public GenericResults<StudyObservationVariable> getStudyObservationVariables(
 			@PathVariable(value="studyDbId") String studyDbId) {
 		StudyObservationVariable variables = studyService.getStudyObservationVariables(studyDbId);
@@ -107,8 +127,17 @@ public class StudyController  extends BrAPIController{
 		return GenericResults.withObject(germplasms).withMetaData(generateEmptyMetadata());
 	}
 
-	//TODO path lowercase
+	//Deprecated
 	@RequestMapping(value="observationLevels", method= {RequestMethod.GET})
+	public GenericResults<GenericResultsDataList<String>> getObservationLevels_dep(
+			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
+			@RequestParam(value = "page", defaultValue = "0") int page) {
+		MetaData metaData = generateMetaDataTemplate(page, pageSize);
+		List<String> levels = studyService.getObservationLevels(metaData);
+		return GenericResults.withList(levels).withMetaData(metaData);
+	}
+	
+	@RequestMapping(value="observationlevels", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<String>> getObservationLevels(
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
@@ -127,14 +156,37 @@ public class StudyController  extends BrAPIController{
 		List<StudyObservation> observations = studyService.getStudyObservations(studyDbId, observationLevel, metaData);
 		return GenericResults.withList(observations).withMetaData(metaData);
 	}
-	
-	//TODO should be PUT not POST
+
+	//Deprecated
 	@RequestMapping(value="studies/{studyDbId}/observationunits", method= {RequestMethod.POST})
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public void postObservationUnit(
+	public void postObservationUnit_dep(
 			@PathVariable(value="studyDbId") String studyDbId,
 			@RequestBody StudyObservationUnitRequest request){
 		studyService.saveObservationUnits(request);
+	}
+
+	@RequestMapping(value="studies/{studyDbId}/observationunits", method= {RequestMethod.PUT})
+	@PreAuthorize("hasAuthority('ADMIN')")
+	public GenericResults<ObservationUnitDbIdListWrapper> postObservationUnit(
+			@PathVariable(value="studyDbId") String studyDbId,
+			@RequestBody StudyObservationUnitRequest request){
+		ObservationUnitDbIdListWrapper storedUnits = studyService.saveObservationUnits(request);
+		MetaData metadata = generateEmptyMetadata();
+		metadata.getStatus().add(new MetaDataStatus("200", "Upload Successful"));
+		return GenericResults.withObject(storedUnits).withMetaData(metadata);
+	}
+	
+	@RequestMapping(value="studies/{studyDbId}/observationunits/zip", method= {RequestMethod.PUT})
+	@PreAuthorize("hasAuthority('ADMIN')")
+	public GenericResults<ObservationUnitDbIdListWrapper> postObservationUnitZip(
+			@PathVariable(value="studyDbId") String studyDbId,
+			@RequestBody StudyObservationUnitRequest request){
+		//TODO read Zip file data
+		ObservationUnitDbIdListWrapper storedUnits = studyService.saveObservationUnits(request);
+		MetaData metadata = generateEmptyMetadata();
+		metadata.getStatus().add(new MetaDataStatus("200", "Upload Successful"));
+		return GenericResults.withObject(storedUnits).withMetaData(metadata);
 	}
 	
 

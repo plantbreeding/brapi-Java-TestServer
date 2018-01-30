@@ -14,6 +14,7 @@ public interface StudyRepository extends PagingAndSortingRepository<StudyEntity,
 	@Query("select s from StudyEntity s JOIN s.seasons season "
 			+ "where ('' IN :studyTypes OR s.studyType.name IN :studyTypes) "
 			+ "AND ('' IN :programDbIds OR s.trial.program.id IN :programDbIds) "
+			+ "AND ('' IN :trialDbIds OR s.trial.id IN :trialDbIds) "
 			+ "AND ('' IN :programNames OR s.trial.program.name IN :programNames) "
 			+ "AND ('' IN :studyNames OR s.studyName IN :studyNames) "
 			+ "AND ('' IN :studyLocations OR s.location.countryName IN :studyLocations) "
@@ -25,6 +26,7 @@ public interface StudyRepository extends PagingAndSortingRepository<StudyEntity,
 	public Page<StudyEntity> findBySearch(
 			@Param("studyTypes") List<String> studyTypes, 
 			@Param("programDbIds") List<String> programDbIds, 
+			@Param("trialDbIds") List<String> trialDbIds, 
 			@Param("programNames") List<String> programNames,
 			@Param("studyNames") List<String> studyNames, 
 			//TODO studylocation not a clear search param

@@ -4,50 +4,58 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="sample")
 public class SampleEntity extends BaseEntity{
-	//TODO not connected to any other entity
 	@Column
-	private String plotId;
+	private String plateDbId;
 	@Column
-	private String plantId;
+	private String plateIndex; 
 	@Column
 	private String takenBy;
 	@Column
-	private Date sampleDate;
+	private Date sampleTimestamp;
 	@Column
 	private String sampleType;
 	@Column
 	private String tissueType;
 	@Column
 	private String notes;
+	@ManyToOne
+	private ObservationUnitEntity observationUnit;
 	
-	public String getPlotId() {
-		return plotId;
+	public ObservationUnitEntity getObservationUnit() {
+		return observationUnit;
 	}
-	public void setPlotId(String plotId) {
-		this.plotId = plotId;
+	public void setObservationUnit(ObservationUnitEntity observationUnit) {
+		this.observationUnit = observationUnit;
 	}
-	public String getPlantId() {
-		return plantId;
+	public String getPlateDbId() {
+		return plateDbId;
 	}
-	public void setPlantId(String plantId) {
-		this.plantId = plantId;
+	public void setPlateDbId(String plateDbId) {
+		this.plateDbId = plateDbId;
+	}
+	public String getPlateIndex() {
+		return plateIndex;
+	}
+	public void setPlateIndex(String plateIndex) {
+		this.plateIndex = plateIndex;
+	}
+	public Date getSampleTimestamp() {
+		return sampleTimestamp;
+	}
+	public void setSampleTimestamp(Date sampleTimestamp) {
+		this.sampleTimestamp = sampleTimestamp;
 	}
 	public String getTakenBy() {
 		return takenBy;
 	}
 	public void setTakenBy(String takenBy) {
 		this.takenBy = takenBy;
-	}
-	public Date getSampleDate() {
-		return sampleDate;
-	}
-	public void setSampleDate(Date sampleDate) {
-		this.sampleDate = sampleDate;
 	}
 	public String getSampleType() {
 		return sampleType;

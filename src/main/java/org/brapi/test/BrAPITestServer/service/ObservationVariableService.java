@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.brapi.test.BrAPITestServer.model.entity.ObservationVariableEntity;
-import org.brapi.test.BrAPITestServer.model.entity.TraitEntity;
 import org.brapi.test.BrAPITestServer.model.rest.Method;
 import org.brapi.test.BrAPITestServer.model.rest.ObservationVariable;
 import org.brapi.test.BrAPITestServer.model.rest.ObservationVariableSearchRequest;

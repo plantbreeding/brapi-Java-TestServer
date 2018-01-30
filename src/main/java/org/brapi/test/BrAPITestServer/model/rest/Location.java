@@ -13,7 +13,9 @@ public class Location {
 	private float longitude;
 	private float altitude;
 	private String instituteName;
+	//Deprecated
 	private String instituteAdress;
+	private String instituteAddress;
 	private Map<String, String> additionalInfo;
 	public String getLocationDbId() {
 		return locationDbId;
@@ -75,10 +77,10 @@ public class Location {
 	public void setInstituteName(String instituteName) {
 		this.instituteName = instituteName;
 	}
-	public String getInstituteAdress() {
+	public String getInstituteAdress_dep() {
 		return instituteAdress;
 	}
-	public void setInstituteAdress(String instituteAdress) {
+	public void setInstituteAdress_dep(String instituteAdress) {
 		this.instituteAdress = instituteAdress;
 	}
 	public Map<String, String> getAdditionalInfo() {
@@ -86,5 +88,11 @@ public class Location {
 	}
 	public void setAdditionalInfo(Map<String, String> additionalInfo) {
 		this.additionalInfo = additionalInfo;
+	}
+	public String getInstituteAddress() {
+		return instituteAddress;
+	}
+	public void setInstituteAddress(String instituteAddress) {
+		this.instituteAddress = instituteAddress;
 	}
 }

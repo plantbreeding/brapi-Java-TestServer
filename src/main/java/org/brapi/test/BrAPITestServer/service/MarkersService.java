@@ -23,54 +23,55 @@ public class MarkersService {
 		this.markerRepository = markerRepository;
 	}
 
-	public List<Marker> getMarkers(String name, String type, String matchMethod, String synonyms, MetaData metaData) {
+	public List<Marker> getMarkers(String name, String type, List<String> markerDbIds, String matchMethod,
+			 boolean includeSynonyms, MetaData metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 
-		boolean includeSynonyms = synonyms.equalsIgnoreCase("synonyms");
 		boolean ignoreCase = !matchMethod.equalsIgnoreCase("exact");
 		String namePattern = generateNamePattern(name, matchMethod);
 
-		Page<MarkerEntity> entities;
-
-		if (namePattern != null && type != null) {
-			if (ignoreCase) {
-				entities = markerRepository.findAllByMarkerNameLikeIgnoreCaseOrSynonyms_SynonymLikeIgnoreCaseAndType(
-						namePattern, namePattern, type, pageReq);
-				metaData.getPagination()
-						.setTotalCount((int) markerRepository
-								.countByMarkerNameLikeIgnoreCaseOrSynonyms_SynonymLikeIgnoreCaseAndType(namePattern,
-										namePattern, type));
-			} else {
-				entities = markerRepository.findAllByMarkerNameOrSynonyms_SynonymAndType(namePattern, namePattern, type,
-						pageReq);
-				metaData.getPagination().setTotalCount((int) markerRepository
-						.countByMarkerNameOrSynonyms_SynonymAndType(namePattern, namePattern, type));
-			}
-		} else if (namePattern != null) {
-			if (ignoreCase) {
-				entities = markerRepository.findAllByMarkerNameLikeIgnoreCaseOrSynonyms_SynonymLikeIgnoreCase(
-						namePattern, namePattern, pageReq);
-				metaData.getPagination().setTotalCount((int) markerRepository
-						.countByMarkerNameLikeIgnoreCaseOrSynonyms_SynonymLikeIgnoreCase(namePattern, namePattern));
-			} else {
-				entities = markerRepository.findAllByMarkerNameOrSynonyms_Synonym(namePattern, namePattern, pageReq);
-				metaData.getPagination().setTotalCount(
-						(int) markerRepository.countByMarkerNameOrSynonyms_Synonym(namePattern, namePattern));
-			}
-		} else if (type != null) {
-			entities = markerRepository.findAllByType(type, pageReq);
-			metaData.getPagination().setTotalCount((int) markerRepository.countByType(type));
-		} else {
-			entities = markerRepository.findAll(pageReq);
-			metaData.getPagination().setTotalCount((int) markerRepository.count());
-		}
+		Page<MarkerEntity> entities = runAppropriateQuery(namePattern, type, markerDbIds, ignoreCase, includeSynonyms,
+				pageReq);
 
 		List<Marker> markers = entities.map((entity) -> {
 			return convertFromEntity(entity, includeSynonyms);
 		}).getContent();
 
-		PagingUtility.calculateMetaData(metaData);
+		PagingUtility.calculateMetaData(metaData, entities);
 		return markers;
+	}
+
+	private Page<MarkerEntity> runAppropriateQuery(String namePattern, String type, List<String> markerDbIds,
+			boolean ignoreCase, boolean includeSynonyms, Pageable pageReq) {
+		Page<MarkerEntity> entities = null;
+		if (markerDbIds == null || markerDbIds.isEmpty()) {
+			entities = markerRepository.findAllByIdIn(markerDbIds, pageReq);
+			//TODO: missing rare case when both name and ID list are used to search
+		} else {
+			if (namePattern != null && type != null) {
+				if (ignoreCase) {
+					entities = markerRepository
+							.findAllByMarkerNameLikeIgnoreCaseOrSynonyms_SynonymLikeIgnoreCaseAndType(namePattern,
+									namePattern, type, pageReq);
+				} else {
+					entities = markerRepository.findAllByMarkerNameOrSynonyms_SynonymAndType(namePattern, namePattern,
+							type, pageReq);
+				}
+			} else if (namePattern != null) {
+				if (ignoreCase) {
+					entities = markerRepository.findAllByMarkerNameLikeIgnoreCaseOrSynonyms_SynonymLikeIgnoreCase(
+							namePattern, namePattern, pageReq);
+				} else {
+					entities = markerRepository.findAllByMarkerNameOrSynonyms_Synonym(namePattern, namePattern,
+							pageReq);
+				}
+			} else if (type != null) {
+				entities = markerRepository.findAllByType(type, pageReq);
+			} else {
+				entities = markerRepository.findAll(pageReq);
+			}
+		}
+		return entities;
 	}
 
 	private String generateNamePattern(String name, String matchMethod) {

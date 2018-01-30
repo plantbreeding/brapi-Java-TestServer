@@ -43,6 +43,8 @@ public class ObservationUnitEntity extends BaseEntity {
 	private PedigreeEntity pedigree;
 	@OneToMany(mappedBy="observationUnit")
 	private List<ObservationEntity> observations;
+	@OneToMany(mappedBy="observationUnit")
+	private List<SampleEntity> samples;
 	@OneToMany(mappedBy="observationUnitDbId")	
 	private List<ObservationUnitXrefEntity> observationUnitXref;
 	

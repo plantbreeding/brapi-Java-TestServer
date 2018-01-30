@@ -76,7 +76,10 @@ public class GenomeMapService {
 			detail.setName(entity.getName());
 			detail.setType(entity.getType());
 			detail.setUnit(entity.getUnit());
-			detail.setLinkageGroups(entity.getLinkageGroups().stream().map((linkageGroupEntity) -> {
+			
+			List<LinkageGroup> groups = entity.getLinkageGroups()
+					.stream()
+					.map((linkageGroupEntity) -> {
 				LinkageGroup linkageGroup = new LinkageGroup();
 				linkageGroup.setLinkageGroupDbId(linkageGroupEntity.getLinkageGroupName());
 				linkageGroup.setMarkerCount(linkageGroupEntity.getMarkers().size());
@@ -89,15 +92,18 @@ public class GenomeMapService {
 				}
 				linkageGroup.setMaxPosition(maxPosition);
 				return linkageGroup;
-			}).collect(Collectors.toList()));
+			}).collect(Collectors.toList());
+
+			detail.setLinkageGroups_dep(groups);
+			detail.setData(groups);
 		}
 		return detail;
 	}
 
-	public List<GenomeMapData> getMapPositions(String mapDbId, String linkageGroupId, int minPosition, int maxPosition,
+	public List<GenomeMapData> getMapPositions(String mapDbId, String linkageGroupName, int minPosition, int maxPosition,
 			MetaData metaData) {
 		List<GenomeMapData> data;
-		if (linkageGroupId == null) {
+		if (linkageGroupName == null) {
 			data = markerRepository.findAllByLinkageGroup_GenomeMapDbId(mapDbId, PagingUtility.getPageRequest(metaData))
 					.stream().filter((entity) -> {
 						int loc = Integer.parseInt(entity.getLocation());
@@ -107,7 +113,7 @@ public class GenomeMapService {
 						return true;
 					}).map(this::convertFromEntity).collect(Collectors.toList());
 		} else {
-			data = markerRepository.findAllByLinkageGroup_IdAndLinkageGroup_GenomeMapDbId(linkageGroupId, mapDbId,
+			data = markerRepository.findAllByLinkageGroup_IdAndLinkageGroup_GenomeMapDbId(linkageGroupName, mapDbId,
 					PagingUtility.getPageRequest(metaData)).stream().filter((entity) -> {
 						int loc = Integer.parseInt(entity.getLocation());
 						if (loc > maxPosition || loc < minPosition) {

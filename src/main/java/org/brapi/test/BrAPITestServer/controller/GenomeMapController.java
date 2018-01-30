@@ -2,8 +2,6 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
-import javax.websocket.server.PathParam;
-
 import org.brapi.test.BrAPITestServer.model.rest.GenomeMapData;
 import org.brapi.test.BrAPITestServer.model.rest.GenomeMapDetail;
 import org.brapi.test.BrAPITestServer.model.rest.GenomeMapSummary;
@@ -43,7 +41,10 @@ public class GenomeMapController  extends BrAPIController{
 	
 	@RequestMapping(value="maps/{mapDbId}", method= {RequestMethod.GET})
 	public GenericResults<GenomeMapDetail> getMapDetail(
-			@PathVariable(value = "mapDbId") String mapDbId){
+			@PathVariable(value = "mapDbId") String mapDbId,
+			@RequestParam(defaultValue="0") int page,
+			@RequestParam(defaultValue="1000") int pageSize){
+		
 		GenomeMapDetail detail = genomeMapService.getMapDetail(mapDbId);
 		
 		return GenericResults
@@ -55,13 +56,15 @@ public class GenomeMapController  extends BrAPIController{
 	public GenericResults<GenericResultsDataList<GenomeMapData>> getMapData(
 			@PathVariable(value= "mapDbId") String mapDbId,
 			@RequestParam(required=false) String linkageGroupId,
+			@RequestParam(required=false) String linkageGroupName,
 			@RequestParam(value="min", defaultValue="0") int minPosition,
 			@RequestParam(value="max", defaultValue="0") int maxPosition,
 			@RequestParam(defaultValue="0") int page,
 			@RequestParam(defaultValue="1000") int pageSize){
 
 		MetaData metaData = generateMetaDataTemplate(page, pageSize);
-		List<GenomeMapData> genomeData = genomeMapService.getMapPositions(mapDbId, linkageGroupId, minPosition, maxPosition, metaData);
+		String linkageGroup = linkageGroupName == null ? linkageGroupId : linkageGroupName;
+		List<GenomeMapData> genomeData = genomeMapService.getMapPositions(mapDbId, linkageGroup, minPosition, maxPosition, metaData);
 		
 		return GenericResults
 				.withList(genomeData)
@@ -69,17 +72,17 @@ public class GenomeMapController  extends BrAPIController{
 	}
 
 
-	@RequestMapping(value="maps/{mapDbId}/positions/{linkageGroupId}", method= {RequestMethod.GET})
+	@RequestMapping(value="maps/{mapDbId}/positions/{linkageGroupName}", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<GenomeMapData>> getMapDataLinkageGroup(
 			@PathVariable(value= "mapDbId") String mapDbId,
-			@PathVariable(value= "linkageGroupId") String linkageGroupId,
+			@PathVariable(value= "linkageGroupName") String linkageGroupName,
 			@RequestParam(value="min", defaultValue="0") int minPosition,
 			@RequestParam(value="max", defaultValue="0") int maxPosition,
 			@RequestParam(defaultValue="0") int page,
 			@RequestParam(defaultValue="1000") int pageSize){
 
 		MetaData metaData = generateMetaDataTemplate(page, pageSize);
-		List<GenomeMapData> genomeData = genomeMapService.getMapPositions(mapDbId, linkageGroupId, minPosition, maxPosition, metaData);
+		List<GenomeMapData> genomeData = genomeMapService.getMapPositions(mapDbId, linkageGroupName, minPosition, maxPosition, metaData);
 		
 		return GenericResults
 				.withList(genomeData)
