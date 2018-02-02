@@ -1,14 +1,18 @@
 package org.brapi.test.BrAPITestServer.model.entity;
 
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+
+import org.hibernate.annotations.GenericGenerator;
 
 @MappedSuperclass
 public class BaseEntity {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
 	private String id;
 
 	public String getId() {

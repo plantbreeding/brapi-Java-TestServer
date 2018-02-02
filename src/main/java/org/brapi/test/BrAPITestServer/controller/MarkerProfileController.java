@@ -11,6 +11,7 @@ import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.MarkerProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ public class MarkerProfileController extends BrAPIController {
 		this.markerProfileService = markerProfileService;
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "markerProfiles", method = { RequestMethod.GET })
 	public GenericResults<GenericResultsDataList<MarkerProfileSummary>> getMarkerProfiles(
 			@RequestParam(required=false) String germplasmDbId,
@@ -43,6 +45,7 @@ public class MarkerProfileController extends BrAPIController {
 		return GenericResults.withList(markerProfileSummaries).withMetaData(metaData);
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "markerProfiles/{markerProfileDbId}", method = { RequestMethod.GET })
 	public GenericResults<MarkerProfileDetails> getMarkerProfile(
 			@PathVariable(value="markerProfileDbId") String markerProfileDbId,
@@ -63,6 +66,7 @@ public class MarkerProfileController extends BrAPIController {
 		return GenericResults.withObject(details).withMetaData(metaData);
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "allelematrix-search", method = { RequestMethod.GET })
 	public GenericResults<GenericResultsDataList<List<String>>> getAlleleMatrix(
 			@RequestParam(defaultValue="csv") String format,
@@ -80,6 +84,7 @@ public class MarkerProfileController extends BrAPIController {
 		return GenericResults.withList(alleleMatrix).withMetaData(metaData);
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "allelematrix-search", method = { RequestMethod.POST })
 	public GenericResults<GenericResultsDataList<List<String>>> getAlleleMatrix(
 			@RequestBody AlleleMatrixSearchRequest request) {

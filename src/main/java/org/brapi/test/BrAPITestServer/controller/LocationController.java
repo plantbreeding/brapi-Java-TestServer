@@ -8,6 +8,7 @@ import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +25,7 @@ public class LocationController  extends BrAPIController{
 		this.locationService = locationService;
 	}
 
+	@CrossOrigin
 	@RequestMapping(value="locations", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<Location>> getLocations(
 			@RequestParam(required=false) String locationType,
@@ -36,6 +38,7 @@ public class LocationController  extends BrAPIController{
 		
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="locations/{locationDbId}", method= {RequestMethod.GET})
 	public GenericResults<Location> getLocation(
 			@PathVariable(value="locationDbId") String locationDbId) {

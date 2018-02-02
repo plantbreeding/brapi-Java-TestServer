@@ -11,24 +11,24 @@ import javax.persistence.Table;
 @Table(name="scale_valid_value")
 public class ScaleValidValueEntity extends BaseEntity{
 	@Column
-	private int min;
+	private Integer min;
 	@Column
-	private int max;
+	private Integer max;
 	@OneToMany(mappedBy="scaleValidValueDbId")
 	private List<ScaleValidValueCategoryEntity> categories;
 	@OneToMany(mappedBy="validValue")
 	private List<ScaleEntity> scales;
 
-	public int getMin() {
+	public Integer getMin() {
 		return min;
 	}
-	public void setMin(int min) {
+	public void setMin(Integer min) {
 		this.min = min;
 	}
-	public int getMax() {
+	public Integer getMax() {
 		return max;
 	}
-	public void setMax(int max) {
+	public void setMax(Integer max) {
 		this.max = max;
 	}
 	public List<ScaleValidValueCategoryEntity> getCategories() {

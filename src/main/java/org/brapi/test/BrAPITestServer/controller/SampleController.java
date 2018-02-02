@@ -11,6 +11,7 @@ import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.SampleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,7 @@ public class SampleController extends BrAPIController {
 		this.sampleService = sampleService;
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "samples", method = { RequestMethod.PUT })
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public GenericResults<SampleDbIdWrapper> putSample(@RequestBody Sample sample) {
@@ -35,12 +37,14 @@ public class SampleController extends BrAPIController {
 		return GenericResults.withObject(id).withMetaData(null);
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "samples/{sampleId}", method = { RequestMethod.GET })
 	public GenericResults<Sample> getSample(@PathVariable(value = "sampleId") String sampleId) {
 		Sample sample = sampleService.getSample(sampleId);
 		return GenericResults.withObject(sample).withMetaData(generateEmptyMetadata());
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "samples-search", method = { RequestMethod.GET })
 	public GenericResults<GenericResultsDataList<Sample>> getSampleSearch(
 			@RequestParam(required = false) String sampleDbId,
@@ -55,6 +59,7 @@ public class SampleController extends BrAPIController {
 		return GenericResults.withList(samples).withMetaData(metaData);
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "samples-search", method = { RequestMethod.POST })
 	public GenericResults<GenericResultsDataList<Sample>> postSampleSearch(@RequestBody SampleSearchRequest request) {
 

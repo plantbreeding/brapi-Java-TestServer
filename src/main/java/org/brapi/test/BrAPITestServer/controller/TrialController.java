@@ -8,6 +8,7 @@ import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.TrialService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +25,7 @@ public class TrialController  extends BrAPIController{
 	}
 	
 
+	@CrossOrigin
 	@RequestMapping(value="trials", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<TrialSummary>> getTrialSummaries(
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
@@ -34,6 +36,7 @@ public class TrialController  extends BrAPIController{
 		return GenericResults.withList(summaries).withMetaData(metaData);
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="trials/{trialDbId}", method= {RequestMethod.GET})
 	public GenericResults<TrialSummaryWithContact> getTrialSummary(
 			@PathVariable(value="trialDbId") String trialDbId){

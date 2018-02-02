@@ -10,6 +10,7 @@ import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.GermplasmAttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +26,7 @@ public class GermplasmAttributeController extends BrAPIController{
 		this.germplasmAttributeService = germplasmAttributeService;
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="attributes", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<GermplasmAttributeDefinition>> getGermplasmAttributes(
 				@RequestParam(required=false) String attributeCategoryDbId,
@@ -38,6 +40,7 @@ public class GermplasmAttributeController extends BrAPIController{
 				.withMetaData(metaData);
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="attributes/categories", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<GermplasmAttributeCategory>> getGermplasmAttributeCategories(
 				@RequestParam(defaultValue="0") int page,
@@ -51,6 +54,7 @@ public class GermplasmAttributeController extends BrAPIController{
 	}
 
 
+	@CrossOrigin
 	@RequestMapping(value = "germplasm/{germplasmDbId}/attributes", method = { RequestMethod.GET })
 	public GenericResults<GermplasmAttributeValuesWrapper> getGermplasmAttributeByGermplasmDbId(
 			@PathVariable("germplasmDbId") String germplasmDbId,

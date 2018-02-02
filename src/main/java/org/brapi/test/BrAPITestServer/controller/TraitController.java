@@ -7,6 +7,7 @@ import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.TraitService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +23,7 @@ public class TraitController  extends BrAPIController{
 		this.traitService = traitService;
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="traits", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<TraitSummary>> getTraits(
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
@@ -33,6 +35,7 @@ public class TraitController  extends BrAPIController{
 		return GenericResults.withList(traits).withMetaData(metaData);
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="traits/{traitDbId}", method= {RequestMethod.GET})
 	public GenericResults<TraitSummary> getTrait(
 			@PathVariable(value="traitDbId") String traitDbId){

@@ -23,6 +23,5 @@ public class TaxonEntity extends BaseEntity {
 	}
 	public void setTaxonId(String taxonId) {
 		this.taxonId = taxonId;
-	}
-	
+	}	
 }

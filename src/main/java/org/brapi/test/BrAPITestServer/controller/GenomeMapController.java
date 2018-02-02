@@ -10,6 +10,7 @@ import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.GenomeMapService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +26,7 @@ public class GenomeMapController  extends BrAPIController{
 		this.genomeMapService = genomeMapService;
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="maps", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<GenomeMapSummary>> getMaps(
 			@RequestParam(required=false) String speciesId,
@@ -39,6 +41,7 @@ public class GenomeMapController  extends BrAPIController{
 				.withMetaData(generateMetaDataTemplate(page, pageSize));
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="maps/{mapDbId}", method= {RequestMethod.GET})
 	public GenericResults<GenomeMapDetail> getMapDetail(
 			@PathVariable(value = "mapDbId") String mapDbId,
@@ -52,6 +55,7 @@ public class GenomeMapController  extends BrAPIController{
 				.withMetaData(generateEmptyMetadata());
 	}
 
+	@CrossOrigin
 	@RequestMapping(value="maps/{mapDbId}/positions", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<GenomeMapData>> getMapData(
 			@PathVariable(value= "mapDbId") String mapDbId,
@@ -72,6 +76,7 @@ public class GenomeMapController  extends BrAPIController{
 	}
 
 
+	@CrossOrigin
 	@RequestMapping(value="maps/{mapDbId}/positions/{linkageGroupName}", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<GenomeMapData>> getMapDataLinkageGroup(
 			@PathVariable(value= "mapDbId") String mapDbId,

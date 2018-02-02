@@ -7,6 +7,7 @@ import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.CropService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,7 @@ public class CropController  extends BrAPIController{
 		this.cropService = cropService;
 	}
 
+	@CrossOrigin
 	@RequestMapping(path="crops", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<String>> getCrops(
 			@RequestParam(value="pageSize", defaultValue="1000") int pageSize,

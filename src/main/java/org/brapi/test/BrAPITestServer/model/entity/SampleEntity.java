@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -13,7 +14,7 @@ public class SampleEntity extends BaseEntity{
 	@Column
 	private String plateDbId;
 	@Column
-	private String plateIndex; 
+	private Integer plateIndex; 
 	@Column
 	private String takenBy;
 	@Column
@@ -24,9 +25,33 @@ public class SampleEntity extends BaseEntity{
 	private String tissueType;
 	@Column
 	private String notes;
+	@Column
+	private String concentration;
+	@Column
+	private String volume;
+	@OneToOne
+	private TaxonEntity taxonId;
 	@ManyToOne
 	private ObservationUnitEntity observationUnit;
 	
+	public String getConcentration() {
+		return concentration;
+	}
+	public void setConcentration(String concentration) {
+		this.concentration = concentration;
+	}
+	public String getVolume() {
+		return volume;
+	}
+	public void setVolume(String volume) {
+		this.volume = volume;
+	}
+	public TaxonEntity getTaxonId() {
+		return taxonId;
+	}
+	public void setTaxonId(TaxonEntity taxonId) {
+		this.taxonId = taxonId;
+	}
 	public ObservationUnitEntity getObservationUnit() {
 		return observationUnit;
 	}
@@ -39,10 +64,10 @@ public class SampleEntity extends BaseEntity{
 	public void setPlateDbId(String plateDbId) {
 		this.plateDbId = plateDbId;
 	}
-	public String getPlateIndex() {
+	public Integer getPlateIndex() {
 		return plateIndex;
 	}
-	public void setPlateIndex(String plateIndex) {
+	public void setPlateIndex(Integer plateIndex) {
 		this.plateIndex = plateIndex;
 	}
 	public Date getSampleTimestamp() {

@@ -22,6 +22,7 @@ import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaDataStatus;
 import org.brapi.test.BrAPITestServer.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +40,7 @@ public class StudyController  extends BrAPIController{
 		this.studyService = studyService;
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="seasons", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<Season>> getSeasons(
 			@RequestParam(required=false) Integer year,
@@ -50,6 +52,7 @@ public class StudyController  extends BrAPIController{
 	}
 	
 	//Deprecated
+	@CrossOrigin
 	@RequestMapping(value="studyTypes", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<StudyType>> getStudyTypes_dep(
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
@@ -59,6 +62,7 @@ public class StudyController  extends BrAPIController{
 		return GenericResults.withList(studyTypes).withMetaData(metaData);
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="studytypes", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<StudyType>> getStudyTypes(
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
@@ -68,6 +72,7 @@ public class StudyController  extends BrAPIController{
 		return GenericResults.withList(studyTypes).withMetaData(metaData);
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="studies-search", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<StudySummary>> getStudies(
 			@RequestParam(required=false) String studyType,
@@ -87,6 +92,7 @@ public class StudyController  extends BrAPIController{
 		return GenericResults.withList(studies).withMetaData(metaData);
 	}	
 	
+	@CrossOrigin
 	@RequestMapping(value="studies-search", method= {RequestMethod.POST})
 	public GenericResults<GenericResultsDataList<StudySummary>> getStudies(
 			@RequestBody StudySearchRequest request) {
@@ -95,6 +101,7 @@ public class StudyController  extends BrAPIController{
 		return GenericResults.withList(studies).withMetaData(metaData);
 	}
 
+	@CrossOrigin
 	@RequestMapping(value="studies/{studyDbId}", method= {RequestMethod.GET})
 	public GenericResults<Study> getStudy(
 			@PathVariable(value="studyDbId") String studyDbId) {
@@ -103,6 +110,7 @@ public class StudyController  extends BrAPIController{
 	}
 
 	//Deprecated
+	@CrossOrigin
 	@RequestMapping(value="studies/{studyDbId}/observationVariables", method= {RequestMethod.GET})
 	public GenericResults<StudyObservationVariable> getStudyObservationVariables_dep(
 			@PathVariable(value="studyDbId") String studyDbId) {
@@ -110,6 +118,7 @@ public class StudyController  extends BrAPIController{
 		return GenericResults.withObject(variables).withMetaData(generateEmptyMetadata());
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="studies/{studyDbId}/observationvariables", method= {RequestMethod.GET})
 	public GenericResults<StudyObservationVariable> getStudyObservationVariables(
 			@PathVariable(value="studyDbId") String studyDbId) {
@@ -117,6 +126,7 @@ public class StudyController  extends BrAPIController{
 		return GenericResults.withObject(variables).withMetaData(generateEmptyMetadata());
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="studies/{studyDbId}/germplasm", method= {RequestMethod.GET})
 	public GenericResults<StudyGermplasm> getStudyGermplasm(
 			@PathVariable(value="studyDbId") String studyDbId,
@@ -128,6 +138,7 @@ public class StudyController  extends BrAPIController{
 	}
 
 	//Deprecated
+	@CrossOrigin
 	@RequestMapping(value="observationLevels", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<String>> getObservationLevels_dep(
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
@@ -137,6 +148,7 @@ public class StudyController  extends BrAPIController{
 		return GenericResults.withList(levels).withMetaData(metaData);
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="observationlevels", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<String>> getObservationLevels(
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
@@ -146,6 +158,7 @@ public class StudyController  extends BrAPIController{
 		return GenericResults.withList(levels).withMetaData(metaData);
 	}
 
+	@CrossOrigin
 	@RequestMapping(value="studies/{studyDbId}/observationunits", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<StudyObservation>> getObservationLevels(
 			@PathVariable(value="studyDbId") String studyDbId,
@@ -158,6 +171,7 @@ public class StudyController  extends BrAPIController{
 	}
 
 	//Deprecated
+	@CrossOrigin
 	@RequestMapping(value="studies/{studyDbId}/observationunits", method= {RequestMethod.POST})
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public void postObservationUnit_dep(
@@ -166,6 +180,7 @@ public class StudyController  extends BrAPIController{
 		studyService.saveObservationUnits(request);
 	}
 
+	@CrossOrigin
 	@RequestMapping(value="studies/{studyDbId}/observationunits", method= {RequestMethod.PUT})
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public GenericResults<ObservationUnitDbIdListWrapper> postObservationUnit(
@@ -177,6 +192,7 @@ public class StudyController  extends BrAPIController{
 		return GenericResults.withObject(storedUnits).withMetaData(metadata);
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="studies/{studyDbId}/observationunits/zip", method= {RequestMethod.PUT})
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public GenericResults<ObservationUnitDbIdListWrapper> postObservationUnitZip(
@@ -190,6 +206,7 @@ public class StudyController  extends BrAPIController{
 	}
 	
 
+	@CrossOrigin
 	@RequestMapping(value="studies/{studyDbId}/table", method= {RequestMethod.GET})
 	public GenericResults<StudyObservationUnitTable> getStudyObservationUnitTable(
 			@PathVariable(value="studyDbId") String studyDbId,
@@ -200,6 +217,7 @@ public class StudyController  extends BrAPIController{
 	}
 	
 	//TODO should be PUT not POST
+	@CrossOrigin
 	@RequestMapping(value="studies/{studyDbId}/table", method= {RequestMethod.POST})
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public void postStudyObservationUnitTable(
@@ -208,6 +226,7 @@ public class StudyController  extends BrAPIController{
 		studyService.saveStudyObservationUnitTable(request.getResults());
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="studies/{studyDbId}/layout", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<StudyPlotLayout>> getStudyPlotLayouts(
 			@PathVariable(value="studyDbId") String studyDbId,
@@ -219,6 +238,7 @@ public class StudyController  extends BrAPIController{
 		return GenericResults.withList(layouts).withMetaData(metaData);
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="studies/{studyDbId}/observations", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<ObservationUnit>> getObservationUnits(
 			@PathVariable(value="studyDbId") String studyDbId,

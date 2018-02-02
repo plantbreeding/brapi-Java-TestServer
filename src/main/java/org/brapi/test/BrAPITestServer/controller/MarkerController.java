@@ -9,6 +9,7 @@ import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.MarkersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ public class MarkerController extends BrAPIController {
 	}
 
 	// Deprecated
+	@CrossOrigin
 	@RequestMapping(value = "markers", method = { RequestMethod.GET })
 	public GenericResults<GenericResultsDataList<Marker>> getMarkers(
 			@RequestParam(value = "name", required = false) String name,
@@ -41,6 +43,7 @@ public class MarkerController extends BrAPIController {
 		return GenericResults.withList(markers).withMetaData(metaData);
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "markers-search", method = { RequestMethod.GET })
 	public GenericResults<GenericResultsDataList<Marker>> getMarkersSearch(
 			@RequestParam(value = "name", required = false) String name,
@@ -58,6 +61,7 @@ public class MarkerController extends BrAPIController {
 		return GenericResults.withList(markers).withMetaData(metaData);
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "markers-search", method = { RequestMethod.POST })
 	public GenericResults<GenericResultsDataList<Marker>> postMarkersSearch(@RequestBody MarkersSearchRequest request) {
 
@@ -68,6 +72,7 @@ public class MarkerController extends BrAPIController {
 		return GenericResults.withList(markers).withMetaData(metaData);
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "markers/{markerDbId}", method = { RequestMethod.GET })
 	public GenericResults<Marker> getMarker(@PathVariable(value = "markerDbId") String markerDbId) {
 		Marker marker = markersService.getMarker(markerDbId);

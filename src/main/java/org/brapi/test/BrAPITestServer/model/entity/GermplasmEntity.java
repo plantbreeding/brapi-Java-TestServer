@@ -38,7 +38,7 @@ public class GermplasmEntity extends BaseEntity{
 	@Column
     private String instituteName;
 	@Column
-    private int biologicalStatusOfAccessionCode;
+    private Integer biologicalStatusOfAccessionCode;
 	@Column
     private String countryOfOriginCode;
 	@Column
@@ -154,11 +154,11 @@ public class GermplasmEntity extends BaseEntity{
 		this.instituteName = instituteName;
 	}
 
-	public int getBiologicalStatusOfAccessionCode() {
+	public Integer getBiologicalStatusOfAccessionCode() {
 		return biologicalStatusOfAccessionCode;
 	}
 
-	public void setBiologicalStatusOfAccessionCode(int biologicalStatusOfAccessionCode) {
+	public void setBiologicalStatusOfAccessionCode(Integer biologicalStatusOfAccessionCode) {
 		this.biologicalStatusOfAccessionCode = biologicalStatusOfAccessionCode;
 	}
 

@@ -24,11 +24,11 @@ public class ObservationUnitEntity extends BaseEntity {
 	@Column
 	private String entryType;
 	@Column
-	private int plotNumber;
+	private Integer plotNumber;
 	@Column
-	private int plantNumber;
+	private Integer plantNumber;
 	@Column
-	private int blockNumber;
+	private Integer blockNumber;
 	@Column
 	private String X;
 	@Column
@@ -108,22 +108,22 @@ public class ObservationUnitEntity extends BaseEntity {
 	public void setEntryType(String entryType) {
 		this.entryType = entryType;
 	}
-	public int getPlotNumber() {
+	public Integer getPlotNumber() {
 		return plotNumber;
 	}
-	public void setPlotNumber(int plotNumber) {
+	public void setPlotNumber(Integer plotNumber) {
 		this.plotNumber = plotNumber;
 	}
-	public int getPlantNumber() {
+	public Integer getPlantNumber() {
 		return plantNumber;
 	}
-	public void setPlantNumber(int plantNumber) {
+	public void setPlantNumber(Integer plantNumber) {
 		this.plantNumber = plantNumber;
 	}
-	public int getBlockNumber() {
+	public Integer getBlockNumber() {
 		return blockNumber;
 	}
-	public void setBlockNumber(int blockNumber) {
+	public void setBlockNumber(Integer blockNumber) {
 		this.blockNumber = blockNumber;
 	}
 	public String getX() {

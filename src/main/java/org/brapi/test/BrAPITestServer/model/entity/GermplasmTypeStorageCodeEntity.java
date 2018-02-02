@@ -8,13 +8,13 @@ import javax.persistence.Table;
 @Table(name="germplasm_type_storage_code")
 public class GermplasmTypeStorageCodeEntity extends BaseEntity{
 	@Column(name="storage_code")
-	private int storageCode;
+	private Integer storageCode;
 
-	public int getStorageCode() {
+	public Integer getStorageCode() {
 		return storageCode;
 	}
 
-	public void setStorageCode(int storageCode) {
+	public void setStorageCode(Integer storageCode) {
 		this.storageCode = storageCode;
 	}
 }

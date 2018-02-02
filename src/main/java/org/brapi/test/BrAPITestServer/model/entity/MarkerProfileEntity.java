@@ -60,7 +60,7 @@ public class MarkerProfileEntity extends BaseEntity {
 	public void setAnalysisMethod(String analysisMethod) {
 		this.analysisMethod = analysisMethod;
 	}
-	public int getResultCount() {
+	public Integer getResultCount() {
 		return alleles.size();
 	}
 	public List<AlleleEntity> getAlleles() {

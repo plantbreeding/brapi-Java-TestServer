@@ -7,6 +7,7 @@ import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.ProgramService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,7 @@ public class ProgramController  extends BrAPIController{
 		this.programService = programService;
 	}
 
+	@CrossOrigin
 	@RequestMapping(value="programs", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<Program>> getPrograms(
 			@RequestParam(required=false) String programName,

@@ -8,6 +8,7 @@ import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.CallsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +25,7 @@ public class CallsController extends BrAPIController{
 		this.callService = callService;
 	}
 
+	@CrossOrigin
 	@RequestMapping(path="calls", method=RequestMethod.GET)
 	public GenericResults<GenericResultsDataList<Call>> calls(
 			@RequestParam(value="datatype", defaultValue="json") String datatype,

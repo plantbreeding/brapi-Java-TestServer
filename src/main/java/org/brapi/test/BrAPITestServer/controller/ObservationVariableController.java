@@ -10,6 +10,7 @@ import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.ObservationVariableService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ public class ObservationVariableController  extends BrAPIController{
 		this.observationVariableService = observationVariableService;
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="variables", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<ObservationVariable>> getVariables(
 			@RequestParam(required=false) String traitClass,
@@ -36,6 +38,7 @@ public class ObservationVariableController  extends BrAPIController{
 		return GenericResults.withList(variables).withMetaData(metaData);
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="variables-search", method= {RequestMethod.POST})
 	public GenericResults<GenericResultsDataList<ObservationVariable>> getVariables(
 			@RequestBody ObservationVariableSearchRequest request) {
@@ -44,6 +47,7 @@ public class ObservationVariableController  extends BrAPIController{
 		return GenericResults.withList(variables).withMetaData(metaData);
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="variables/{observationVariableDbId}", method= {RequestMethod.GET})
 	public GenericResults<ObservationVariable> getVariable(
 			@PathVariable(value="observationVariableDbId") String observationVariableDbId) {
@@ -51,6 +55,7 @@ public class ObservationVariableController  extends BrAPIController{
 		return GenericResults.withObject(variable).withMetaData(generateEmptyMetadata());
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="variables/datatypes", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<String>> getVariableDataTypes(
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
@@ -60,6 +65,7 @@ public class ObservationVariableController  extends BrAPIController{
 		return GenericResults.withList(dataTypes).withMetaData(metaData);
 	}
 	
+	@CrossOrigin
 	@RequestMapping(value="ontologies", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<Ontology>> getOntologies(
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,

@@ -11,6 +11,7 @@ import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.service.GermplasmService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,6 +29,7 @@ public class GermplasmController extends BrAPIController {
 		this.germplasmService = germplasmService;
 	}
 
+	@CrossOrigin
 	@RequestMapping(path = "germplasm-search", method = { RequestMethod.GET })
 	public GenericResults<GenericResultsDataList<Germplasm>> germplasmSearch(
 			@RequestParam(value = "germplasmPUI", required = false, defaultValue="") List<String> germplasmPUIs,
@@ -46,6 +48,7 @@ public class GermplasmController extends BrAPIController {
 		return GenericResults.withList(germplasms).withMetaData(metaData);
 	}
 
+	@CrossOrigin
 	@RequestMapping(path = "germplasm-search", method = { RequestMethod.POST })
 	public GenericResults<GenericResultsDataList<Germplasm>> germplasmSearch(
 			GermplasmSearchRequest request) {
@@ -57,6 +60,7 @@ public class GermplasmController extends BrAPIController {
 		return GenericResults.withList(germplasms).withMetaData(metaData);
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "germplasm/{germplasmDbId}", method = { RequestMethod.GET })
 	public GenericResults<Germplasm> germplasmSearchByDbId(@PathVariable(value = "germplasmDbId") String germplasmDbId) {
 		Germplasm germplasm = germplasmService.searchByDbId(germplasmDbId);
@@ -64,6 +68,7 @@ public class GermplasmController extends BrAPIController {
 		return GenericResults.withObject(germplasm).withMetaData(generateEmptyMetadata());
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "germplasm/{germplasmDbId}/pedigree", method = { RequestMethod.GET })
 	public GenericResults<Pedigree> pedigreeByGermplasmDbId(@PathVariable(value = "germplasmDbId", required=true) String germplasmDbId,
 			@RequestParam(value = "notation", required=false) String notation) {
@@ -72,6 +77,7 @@ public class GermplasmController extends BrAPIController {
 		return GenericResults.withObject(pedigree).withMetaData(generateEmptyMetadata());
 	}
 
+	@CrossOrigin
 	@RequestMapping(value = "germplasm/{germplasmDbId}/markerProfiles", method = { RequestMethod.GET })
 	public GenericResults<MarkerProfileKeys> markerProfilesByGermplasmDbId(
 			@PathVariable("germplasmDbId") String germplasmDbId) {

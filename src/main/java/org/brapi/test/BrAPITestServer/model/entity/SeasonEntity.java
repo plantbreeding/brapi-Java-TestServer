@@ -13,7 +13,7 @@ public class SeasonEntity extends BaseEntity{
 	@Column
 	private String season;
 	@Column
-	private int year;
+	private Integer year;
 	@OneToMany(mappedBy="season")
 	private List<ObservationEntity> observations;
 
@@ -29,10 +29,10 @@ public class SeasonEntity extends BaseEntity{
 	public void setSeason(String season) {
 		this.season = season;
 	}
-	public int getYear() {
+	public Integer getYear() {
 		return year;
 	}
-	public void setYear(int year) {
+	public void setYear(Integer year) {
 		this.year = year;
 	}
 }
