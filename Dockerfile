@@ -4,7 +4,7 @@
 
 FROM nimmis/java-centos:oracle-8-jre
 
-EXPOSE 8081
+EXPOSE 8080
 
 RUN mkdir /home/brapi
 
