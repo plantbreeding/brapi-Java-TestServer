@@ -1,4 +1,4 @@
-# build image : `docker build -f .\Dockerfile -t brapicoordinatorselby/brapi-java-server ./`
+# build image : `docker build -t brapicoordinatorselby/brapi-java-server ./`
 # run container (dev): `docker run --name=brapi-test-server --network=bridge -p 8081:8081 -d brapicoordinatorselby/brapi-java-server`
 # run container (prod): `docker run --name=brapi-test-server --network=bridge -d brapicoordinatorselby/brapi-java-server`
 

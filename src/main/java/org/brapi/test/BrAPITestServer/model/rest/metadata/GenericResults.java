@@ -4,7 +4,7 @@ import java.util.List;
 
 public class GenericResults<ReturnType> {
 	private MetaData metadata;
-	private ReturnType results;
+	private ReturnType result;
 	
 	public MetaData getMetadata() {
 		return metadata;
@@ -12,17 +12,17 @@ public class GenericResults<ReturnType> {
 	public void setMetadata(MetaData metadata) {
 		this.metadata = metadata;
 	}
-	public ReturnType getResults() {
-		return results;
+	public ReturnType getResult() {
+		return result;
 	}
-	public void setResults(ReturnType results) {
-		this.results = results;
+	public void setResult(ReturnType results) {
+		this.result = results;
 	}
 	public static <T> GenericResults<GenericResultsDataList<T>> withList(List<T> list) {
 		GenericResultsDataList<T> data = new GenericResultsDataList<T>();
 		data.setData(list);
 		GenericResults<GenericResultsDataList<T>> result = new GenericResults<GenericResultsDataList<T>>();
-		result.setResults(data);
+		result.setResult(data);
 		return result;
 	}
 	public  GenericResults<ReturnType> withMetaData(MetaData metadata) {
@@ -31,7 +31,7 @@ public class GenericResults<ReturnType> {
 	}
 	public static <T> GenericResults<T> withObject(T obj) {
 		GenericResults<T> result = new GenericResults<T>();
-		result.setResults(obj);
+		result.setResult(obj);
 		return result;
 	}
 

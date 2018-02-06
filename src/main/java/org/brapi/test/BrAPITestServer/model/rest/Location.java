@@ -14,7 +14,7 @@ public class Location {
 	private float altitude;
 	private String instituteName;
 	//Deprecated
-	private String instituteAdress;
+	private String instituteAdress_dep;
 	private String instituteAddress;
 	private Map<String, String> additionalInfo;
 	public String getLocationDbId() {
@@ -77,11 +77,11 @@ public class Location {
 	public void setInstituteName(String instituteName) {
 		this.instituteName = instituteName;
 	}
-	public String getInstituteAdress_dep() {
-		return instituteAdress;
+	public String getInstituteAdress() {
+		return instituteAdress_dep;
 	}
-	public void setInstituteAdress_dep(String instituteAdress) {
-		this.instituteAdress = instituteAdress;
+	public void setInstituteAdress(String instituteAdress) {
+		this.instituteAdress_dep = instituteAdress;
 	}
 	public Map<String, String> getAdditionalInfo() {
 		return additionalInfo;

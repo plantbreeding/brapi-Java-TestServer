@@ -11,8 +11,8 @@ public class Sample {
     private String germplasmDbId;
     private String studyDbId;
     
-	private String plotId;
-	private String plantId;
+	private String plotId_dep;
+	private String plantId_dep;
 	private String plotDbId;
 	private String plantDbId;
 	
@@ -67,17 +67,17 @@ public class Sample {
 	public void setSampleTimestamp(Date sampleTimestamp) {
 		this.sampleTimestamp = sampleTimestamp;
 	}
-	public String getPlotId_dep() {
-		return plotId;
+	public String getPlotId() {
+		return plotId_dep;
 	}
-	public void setPlotId_dep(String plotId) {
-		this.plotId = plotId;
+	public void setPlotId(String plotId) {
+		this.plotId_dep = plotId;
 	}
-	public String getPlantId_dep() {
-		return plantId;
+	public String getPlantId() {
+		return plantId_dep;
 	}
-	public void setPlantId_dep(String plantId) {
-		this.plantId = plantId;
+	public void setPlantId(String plantId) {
+		this.plantId_dep = plantId;
 	}
 	public String getTakenBy() {
 		return takenBy;

@@ -7,7 +7,7 @@ public class GenomeMapDetail {
 	private String name;
 	private String type;
 	private String unit;
-	private List<LinkageGroup> linkageGroups;
+	private List<LinkageGroup> linkageGroups_dep;
 	private List<LinkageGroup> data;
 	public String getMapDbId() {
 		return mapDbId;
@@ -33,11 +33,11 @@ public class GenomeMapDetail {
 	public void setUnit(String unit) {
 		this.unit = unit;
 	}
-	public List<LinkageGroup> getLinkageGroups_dep() {
-		return linkageGroups;
+	public List<LinkageGroup> getLinkageGroups() {
+		return linkageGroups_dep;
 	}
-	public void setLinkageGroups_dep(List<LinkageGroup> linkageGroups) {
-		this.linkageGroups = linkageGroups;
+	public void setLinkageGroups(List<LinkageGroup> linkageGroups) {
+		this.linkageGroups_dep = linkageGroups;
 	}
 	public List<LinkageGroup> getData() {
 		return data;

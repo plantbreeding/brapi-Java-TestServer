@@ -44,7 +44,7 @@ public class SampleService {
 
 			entity = sampleRepository.save(entity);
 
-			id.setSampleId_dep(entity.getId());
+			id.setSampleId(entity.getId());
 			id.setSampleDbId(entity.getId());
 		}
 		return id;

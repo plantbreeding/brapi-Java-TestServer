@@ -48,7 +48,7 @@ public class LocationService {
 		location.setAltitude(locationEntity.getAltitude());
 		location.setCountryCode(locationEntity.getCountryCode());
 		location.setCountryName(locationEntity.getCountryName());
-		location.setInstituteAdress_dep(locationEntity.getInstituteAddress());
+		location.setInstituteAdress(locationEntity.getInstituteAddress());
 		location.setInstituteAddress(locationEntity.getInstituteAddress());
 		location.setInstituteName(locationEntity.getInstituteName());
 		location.setLatitude(locationEntity.getLatitude());

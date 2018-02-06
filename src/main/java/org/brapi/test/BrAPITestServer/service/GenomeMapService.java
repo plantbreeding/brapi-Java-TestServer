@@ -94,7 +94,7 @@ public class GenomeMapService {
 				return linkageGroup;
 			}).collect(Collectors.toList());
 
-			detail.setLinkageGroups_dep(groups);
+			detail.setLinkageGroups(groups);
 			detail.setData(groups);
 		}
 		return detail;

@@ -223,7 +223,7 @@ public class StudyController  extends BrAPIController{
 	public void postStudyObservationUnitTable(
 			@PathVariable(value="studyDbId") String studyDbId,
 			@RequestBody GenericResults<StudyObservationUnitTable> request){
-		studyService.saveStudyObservationUnitTable(request.getResults());
+		studyService.saveStudyObservationUnitTable(request.getResult());
 	}
 	
 	@CrossOrigin
