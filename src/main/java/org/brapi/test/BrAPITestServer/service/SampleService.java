@@ -85,9 +85,9 @@ public class SampleService {
 		sample.setObservationUnitDbId(entity.getObservationUnit().getId());
 		sample.setPlateDbId(entity.getPlateDbId());
 		sample.setPlateIndex(entity.getPlateIndex() + "");
-		sample.setPlantId_dep(entity.getObservationUnit().getPlantNumber() + "");
+		sample.setPlantId(entity.getObservationUnit().getPlantNumber() + "");
 		sample.setPlantDbId(entity.getObservationUnit().getPlantNumber() + "");
-		sample.setPlotId_dep(entity.getObservationUnit().getPlotNumber() + "");
+		sample.setPlotId(entity.getObservationUnit().getPlotNumber() + "");
 		sample.setPlotDbId(entity.getObservationUnit().getPlotNumber() + "");
 		sample.setSampleDbId(entity.getId());
 		sample.setSampleTimestamp(entity.getSampleTimestamp());

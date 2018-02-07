@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Call {
 	private String call;
-	private List<String> dataTypes;
+	private List<String> datatypes;
 	private List<String> methods;
 	
 	public String getCall() {
@@ -13,11 +13,11 @@ public class Call {
 	public void setCall(String call) {
 		this.call = call;
 	}
-	public List<String> getDataTypes() {
-		return dataTypes;
+	public List<String> getDatatypes() {
+		return datatypes;
 	}
-	public void setDataTypes(List<String> dataTypes) {
-		this.dataTypes = dataTypes;
+	public void setDatatypes(List<String> dataTypes) {
+		this.datatypes = dataTypes;
 	}
 	public List<String> getMethods() {
 		return methods;

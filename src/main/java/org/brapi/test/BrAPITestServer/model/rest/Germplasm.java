@@ -17,7 +17,7 @@ public class Germplasm  implements BaseRestModel {
     private String commonCropName;
     private String instituteCode;
     private String instituteName;
-    private int biologicalStatusOfAccessionCode;
+    private String biologicalStatusOfAccessionCode;
     private String countryOfOriginCode;
     private List<Integer> typeOfGermplasmStorageCode;
     private String genus;
@@ -96,10 +96,10 @@ public class Germplasm  implements BaseRestModel {
 	public void setInstituteName(String instituteName) {
 		this.instituteName = instituteName;
 	}
-	public int getBiologicalStatusOfAccessionCode() {
+	public String getBiologicalStatusOfAccessionCode() {
 		return biologicalStatusOfAccessionCode;
 	}
-	public void setBiologicalStatusOfAccessionCode(int biologicalStatusOfAccessionCode) {
+	public void setBiologicalStatusOfAccessionCode(String biologicalStatusOfAccessionCode) {
 		this.biologicalStatusOfAccessionCode = biologicalStatusOfAccessionCode;
 	}
 	public String getCountryOfOriginCode() {

@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ import org.brapi.test.BrAPITestServer.repository.GermplasmRepository;
 import org.brapi.test.BrAPITestServer.repository.MarkerProfileRepository;
 import org.brapi.test.BrAPITestServer.repository.PedigreeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -45,18 +47,19 @@ public class GermplasmService {
 		checkForEmptyList(germplasmSpecies);
 		checkForEmptyList(accessionNumbers);
 
-		List<Germplasm> results = germplasmRepository
+		Page<Germplasm> results = germplasmRepository
 				.findBySearch(germplasmDbIds, germplasmGenus, germplasmNames, germplasmPUIs, germplasmSpecies,
 						accessionNumbers, PagingUtility.getPageRequest(metaData))
-				.map(this::convertFromEntity).getContent();
+				.map(this::convertFromEntity);
 
-		PagingUtility.calculateMetaData(metaData);
-		return results;
+		PagingUtility.calculateMetaData(metaData, results);
+		return results.getContent();
 	}
 
 	private void checkForEmptyList(List<String> list) {
 		if(list == null || list.isEmpty()) {
 			// this is a necessary place holder based on how JPA works. JPQL doesn't like empty lists.
+			list = new ArrayList<String>();
 			list.add("");
 		}
 	}
@@ -74,7 +77,7 @@ public class GermplasmService {
 		germ.setGermplasmPUI(entity.getGermplasmPUI());
 		germ.setGermplasmSeedSource(entity.getGermplasmSeedSource());
 		germ.setInstituteCode(entity.getInstituteCode());
-		germ.setPedigree(entity.getPedigree().getPedigree());
+		germ.setPedigree(entity.getPedigree() == null ? null : entity.getPedigree().getPedigree());
 		germ.setSpecies(entity.getSpecies());
 		germ.setSubtaxa(entity.getSubtaxa());
 		germ.setSubtaxaAuthority(entity.getSubtaxaAuthority());

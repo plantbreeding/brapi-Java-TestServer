@@ -45,7 +45,7 @@ public class CallsService {
 	private Call convertToJSONModel(CallEntity callEntity) {
 		Call call = new Call();
 		call.setCall(callEntity.getCall());
-		call.setDataTypes(
+		call.setDatatypes(
 				callEntity.getDataTypes()
 				.stream()
 				.map(c -> {return c.getDataType();})

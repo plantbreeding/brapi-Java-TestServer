@@ -78,7 +78,7 @@ public class GermplasmController extends BrAPIController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "germplasm/{germplasmDbId}/markerProfiles", method = { RequestMethod.GET })
+	@RequestMapping(value = "germplasm/{germplasmDbId}/markerprofiles", method = { RequestMethod.GET })
 	public GenericResults<MarkerProfileKeys> markerProfilesByGermplasmDbId(
 			@PathVariable("germplasmDbId") String germplasmDbId) {
 		MarkerProfileKeys markerProfile = germplasmService.searchMarkerProfilesByDbId(germplasmDbId);
