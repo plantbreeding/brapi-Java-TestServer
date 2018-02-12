@@ -147,9 +147,10 @@ public class StudyService {
 			boolean active, String sortBy, String sortOrder, MetaData metaData) {
 		Sort sort = Sort.by(Direction.fromString(sortOrder), sortBy);
 		Pageable pageReq = PagingUtility.getPageRequest(metaData, sort);
-		List<StudySummary> summaries = studyRepository.findBySearch(studyTypes, programDbIds, trialDbIds, programNames, studyNames,
-				studyLocations, locationDbIds, seasonDbIds, germplasmDbIds, observationVariableDbIds, active, pageReq)
-				.map((entity) -> {
+		Page<StudyEntity> studiesPage = studyRepository.findBySearch(studyTypes, programDbIds, trialDbIds, programNames, studyNames,
+				studyLocations, locationDbIds, seasonDbIds, germplasmDbIds, observationVariableDbIds, active, pageReq);
+		PagingUtility.calculateMetaData(metaData, studiesPage);
+		List<StudySummary> summaries = studiesPage.map((entity) -> {
 					StudySummary sum = new StudySummary();
 					sum.setActive(String.valueOf(entity.isActive()));
 					sum.setEndDate(entity.getEndDate());
@@ -261,8 +262,6 @@ public class StudyService {
 			StudyEntity study = studyOption.get();
 			germplasms.setStudyDbId(study.getId());
 			germplasms.setTrialName(study.getTrial().getTrialName());
-
-			// TODO use Page.getTotalCount() instead of extra query
 		}
 		return germplasms;
 

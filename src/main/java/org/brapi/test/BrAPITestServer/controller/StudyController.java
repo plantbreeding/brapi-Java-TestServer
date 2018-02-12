@@ -82,7 +82,7 @@ public class StudyController  extends BrAPIController{
 			@RequestParam(required=false) String seasonDbId,
 			@RequestParam(required=false) List<String> germplasmDbIds,
 			@RequestParam(required=false) List<String> observationVariableDbIds,
-			@RequestParam(required=false) boolean active,
+			@RequestParam(required=false, defaultValue="true") boolean active,
 			@RequestParam(defaultValue="studyName") String sortBy,
 			@RequestParam(defaultValue="asc") String sortOrder,
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,

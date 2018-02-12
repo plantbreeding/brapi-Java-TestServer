@@ -11,7 +11,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 public interface StudyRepository extends PagingAndSortingRepository<StudyEntity, String> {
-	@Query("select s from StudyEntity s JOIN s.seasons season "
+	@Query("select distinct s from StudyEntity s JOIN s.seasons season "
 			+ "where ('' IN :studyTypes OR s.studyType.name IN :studyTypes) "
 			+ "AND ('' IN :programDbIds OR s.trial.program.id IN :programDbIds) "
 			+ "AND ('' IN :trialDbIds OR s.trial.id IN :trialDbIds) "
