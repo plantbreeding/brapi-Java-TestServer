@@ -89,7 +89,7 @@ public class StudyService {
 			Season season = new Season();
 			season.setSeason(entity.getSeason());
 			season.setSeasonDbId(entity.getId());
-			season.setYear(entity.getYear());
+			season.setYear(String.valueOf(entity.getYear()));
 			return season;
 		}).getContent();
 
@@ -151,7 +151,7 @@ public class StudyService {
 				studyLocations, locationDbIds, seasonDbIds, germplasmDbIds, observationVariableDbIds, active, pageReq)
 				.map((entity) -> {
 					StudySummary sum = new StudySummary();
-					sum.setActive(entity.isActive());
+					sum.setActive(String.valueOf(entity.isActive()));
 					sum.setEndDate(entity.getEndDate());
 					sum.setLocationDbId(entity.getLocation().getId());
 					sum.setLocationName(entity.getLocation().getName());
@@ -185,7 +185,7 @@ public class StudyService {
 			StudyEntity entity = entityOption.get();
 			study = new Study();
 
-			study.setActive(entity.isActive());
+			study.setActive(String.valueOf(entity.isActive()));
 			study.setEndDate(entity.getEndDate());
 			study.setStartDate(entity.getStartDate());
 			study.setStudyDbId(entity.getId());

@@ -27,27 +27,44 @@ public class PhenotypeService {
 
 	public List<Phenotype> getPhenotypes(PhenotypesSearchRequest request, MetaData metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-		
-		Date startDate = request.getObservationTimeStampRange().get(0);
-		Date endDate = request.getObservationTimeStampRange().get(1);
-		Page<ObservationUnitEntity> unitsPage = observationUnitRepository.findBySearch(request.getGermplasmDbIds(),
-				request.getObservationVariableDbIds(), request.getStudyDbIds(), request.getLocationDbIds(),
-				request.getProgramDbIds(), request.getSeasonDbIds(), request.getObservationLevel(), startDate, endDate,
-				pageReq);
-		
+
+		Page<ObservationUnitEntity> unitsPage;
+		if (request.getObservationTimeStampRange() != null && request.getObservationTimeStampRange().size() >= 2) {
+			Date startDate = request.getObservationTimeStampRange().get(0);
+			Date endDate = request.getObservationTimeStampRange().get(1);
+
+			unitsPage = observationUnitRepository.findBySearch_byDate(
+					SearchUtility.buildSearchParam(request.getGermplasmDbIds()),
+					SearchUtility.buildSearchParam(request.getObservationVariableDbIds()),
+					SearchUtility.buildSearchParam(request.getStudyDbIds()),
+					SearchUtility.buildSearchParam(request.getLocationDbIds()),
+					SearchUtility.buildSearchParam(request.getProgramDbIds()),
+					SearchUtility.buildSearchParam(request.getSeasonDbIds()),
+					SearchUtility.buildSearchParam(request.getObservationLevel()), startDate, endDate, pageReq);
+		} else {
+			unitsPage = observationUnitRepository.findBySearch(
+					SearchUtility.buildSearchParam(request.getGermplasmDbIds()),
+					SearchUtility.buildSearchParam(request.getObservationVariableDbIds()),
+					SearchUtility.buildSearchParam(request.getStudyDbIds()),
+					SearchUtility.buildSearchParam(request.getLocationDbIds()),
+					SearchUtility.buildSearchParam(request.getProgramDbIds()),
+					SearchUtility.buildSearchParam(request.getSeasonDbIds()),
+					SearchUtility.buildSearchParam(request.getObservationLevel()), pageReq);
+		}
+
 		PagingUtility.calculateMetaData(metaData, unitsPage);
-		
+
 		List<Phenotype> phenotypes = unitsPage.map(entity -> {
 			Phenotype pheno = new Phenotype();
-			pheno.setBlockNumber(entity.getBlockNumber() + "");
+			pheno.setBlockNumber(String.valueOf(entity.getBlockNumber()));
 			pheno.setEntryNumber(entity.getEntryNumber());
 			pheno.setEntryType(entity.getEntryType());
 			pheno.setGermplasmDbId(entity.getGermplasm().getId());
 			pheno.setGermplasmName(entity.getGermplasm().getGermplasmName());
 			pheno.setObservationUnitDbId(entity.getId());
 			pheno.setObservationUnitName(entity.getObservationUnitName());
-			pheno.setPlantNumber(entity.getPlantNumber() + "");
-			pheno.setPlotNumber(entity.getPlotNumber() + "");
+			pheno.setPlantNumber(String.valueOf(entity.getPlantNumber()));
+			pheno.setPlotNumber(String.valueOf(entity.getPlotNumber()));
 			pheno.setReplicate(entity.getReplicate());
 			pheno.setX(entity.getX());
 			pheno.setY(entity.getY());

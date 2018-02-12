@@ -57,8 +57,8 @@ public class SampleService {
 			ObservationUnitEntity unit = unitOpt.get();
 			valid = valid && isNullEmptyOrEqual(sample.getGermplasmDbId(), unit.getGermplasm().getId());
 			valid = valid && isNullEmptyOrEqual(sample.getStudyDbId(), unit.getStudy().getId());
-			valid = valid && isNullEmptyOrEqual(sample.getPlotDbId(), unit.getPlotNumber() + "");
-			valid = valid && isNullEmptyOrEqual(sample.getPlantDbId(), unit.getPlantNumber() + "");
+			valid = valid && isNullEmptyOrEqual(sample.getPlotDbId(), String.valueOf(unit.getPlotNumber()));
+			valid = valid && isNullEmptyOrEqual(sample.getPlantDbId(), String.valueOf(unit.getPlantNumber()));
 		}
 		return valid;
 	}
@@ -84,11 +84,11 @@ public class SampleService {
 		sample.setNotes(entity.getNotes());
 		sample.setObservationUnitDbId(entity.getObservationUnit().getId());
 		sample.setPlateDbId(entity.getPlateDbId());
-		sample.setPlateIndex(entity.getPlateIndex() + "");
-		sample.setPlantId(entity.getObservationUnit().getPlantNumber() + "");
-		sample.setPlantDbId(entity.getObservationUnit().getPlantNumber() + "");
-		sample.setPlotId(entity.getObservationUnit().getPlotNumber() + "");
-		sample.setPlotDbId(entity.getObservationUnit().getPlotNumber() + "");
+		sample.setPlateIndex(String.valueOf(entity.getPlateIndex()));
+		sample.setPlantId(String.valueOf(entity.getObservationUnit().getPlantNumber()));
+		sample.setPlantDbId(String.valueOf(entity.getObservationUnit().getPlantNumber()));
+		sample.setPlotId(String.valueOf(entity.getObservationUnit().getPlotNumber()));
+		sample.setPlotDbId(String.valueOf(entity.getObservationUnit().getPlotNumber()));
 		sample.setSampleDbId(entity.getId());
 		sample.setSampleTimestamp(entity.getSampleTimestamp());
 		sample.setSampleType(entity.getSampleType());

@@ -18,7 +18,7 @@ public class Study {
 	private Date startDate;
     @JsonFormat(pattern="yyyy-MM-dd")
 	private Date endDate;
-	private boolean active;
+	private String active;
 	private String license;
 	private Location location;
 	private List<Contact> contacts;
@@ -79,10 +79,10 @@ public class Study {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	public boolean isActive() {
+	public String getActive() {
 		return active;
 	}
-	public void setActive(boolean active) {
+	public void setActive(String active) {
 		this.active = active;
 	}
 	public String getLicense() {

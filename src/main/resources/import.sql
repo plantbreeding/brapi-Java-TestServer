@@ -375,9 +375,11 @@ INSERT INTO contact (id, name, email, type, orcid, institute_name) VALUES ('3', 
 INSERT INTO contact (id, name, email, type, orcid, institute_name) VALUES ('4', 'B. Technician', 'b.technician@brapi.org', 'Technician', '0000-0002-0607-8732', 'Plant Science Institute');
 
 INSERT INTO scale_valid_value(id, max, min)	VALUES ('1', '0', '99999');
+insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('1', '1', '1');
 INSERT INTO scale (id, datatype, decimal_places, name, xref, valid_value_id)	VALUES ('1', 'integer', 0, 'Centimeter', 'xref', '1');
 INSERT INTO method(id, description, formula, method_class, name, reference)	VALUES ('1', 'Used for finding the lengths of the sides of a right triangle', 'a^2 + b^2 = c^2', 'classy', 'pythagorean theorem', 'google.com');
 INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref) VALUES ('1', 'height', '0', 'height', 'entity', 'H', 'Height', 'active', 'Int', 'xref');
+INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref) VALUES ('2', 'weight', '0', 'weight', 'entity', 'H', 'Weight', 'active', 'Int', 'xref');
 
 INSERT INTO program (crop_id, id, name, abbreviation, objective, lead_person) VALUES ('1', '1', 'P1', 'G. Leader', 'Global Population Improvement', 'Program 1');
 INSERT INTO program (crop_id, id, name, abbreviation, objective, lead_person) VALUES ('1', '2', 'P2', 'M. Breeder', 'XYZ', 'Program 2');
@@ -428,6 +430,13 @@ INSERT INTO study_type (id, name, description) VALUES ('3', 'Genotype', 'Descrip
 INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('101', '1', '2', '1001', 'Study 1', 'Field yield phenotyping study', '1/1/2013', '1/1/2014', true, 'https://creativecommons.org/licenses/by/4.0', '1.1', '01/01/15');
 INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('101', '1', '2', '1002', 'Study 2', 'Field yield phenotyping study', '1/1/2014', '1/1/2015', true, 'https://creativecommons.org/licenses/by/4.0', '2.3', '01/01/16');
 INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('102', '2', '1', '1003', 'Study 3', 'Nursery study description', '1/1/2011', '1/1/2012', false, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
+INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('103', '2', '1', '1004', 'Study 4', 'Nursery study description', '1/1/2011', '1/1/2012', false, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
+INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('104', '2', '1', '1005', 'Study 5', 'Bobs study description', '1/1/2011', '1/1/2012', false, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
+INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('105', '2', '1', '1006', 'Study 6', 'Daves study description', '1/1/2011', '1/1/2012', false, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
+INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('106', '2', '1', '1007', 'Study 7', 'Example study description', '1/1/2011', '1/1/2012', false, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
+INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('107', '2', '1', '1008', 'Study 8', 'Nursery study description', '1/1/2011', '1/1/2012', false, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
+INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('108', '2', '1', '1009', 'Study 9', 'Nursery study description', '1/1/2011', '1/1/2012', false, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
+INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('109', '2', '1', '1010', 'Study 10', 'Nursery study description', '1/1/2011', '1/1/2012', false, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
 
 INSERT INTO study_contact (study_db_id, contact_db_id) VALUES ('1001', '1');
 INSERT INTO study_contact (study_db_id, contact_db_id) VALUES ('1001', '2');

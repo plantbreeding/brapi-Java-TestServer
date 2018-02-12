@@ -16,7 +16,7 @@ public class ScaleEntity extends BaseEntity {
 	@Column
 	private String datatype;
 	@Column
-	private String decimalPlaces;
+	private Integer decimalPlaces;
 	@Column
 	private String xref;
 	@ManyToOne
@@ -48,11 +48,11 @@ public class ScaleEntity extends BaseEntity {
 		this.datatype = datatype;
 	}
 
-	public String getDecimalPlaces() {
+	public Integer getDecimalPlaces() {
 		return decimalPlaces;
 	}
 
-	public void setDecimalPlaces(String decimalPlaces) {
+	public void setDecimalPlaces(Integer decimalPlaces) {
 		this.decimalPlaces = decimalPlaces;
 	}
 

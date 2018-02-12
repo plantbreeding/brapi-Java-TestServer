@@ -22,7 +22,7 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler{
 	}
 	
 	private ResponseEntity<Object> buildErrorResponse(HttpStatus code, String message){
-	    MetaDataStatus statusRes = new MetaDataStatus(code.value() + "", message);
+	    MetaDataStatus statusRes = new MetaDataStatus(String.valueOf(code.value()), message);
 	    
 	    MetaData apiError = new MetaData();
 	    apiError.setStatus(new ArrayList<>());

@@ -114,13 +114,13 @@ public class VendorSampleService {
 
 		plate.setSamples(entity.getSamples().stream().map((sampleEntity) -> {
 			VendorSample sample = new VendorSample();
-			sample.setColumn((sampleEntity.getPlateIndex() % 12) + "");
+			sample.setColumn(String.valueOf(sampleEntity.getPlateIndex() % 12));
 			sample.setConcentration(sampleEntity.getConcentration());
-			sample.setRow((sampleEntity.getPlateIndex() / 12) + "");
+			sample.setRow(String.valueOf(sampleEntity.getPlateIndex() / 12));
 			sample.setSampleDbId(sampleEntity.getId());
 			sample.setTissueType(sampleEntity.getTissueType());
 			sample.setVolume(sampleEntity.getVolume());
-			sample.setWell(sampleEntity.getPlateIndex() + "");
+			sample.setWell(String.valueOf(sampleEntity.getPlateIndex()));
 
 			TaxonID taxon = new TaxonID();
 			taxon.setSourceName(sampleEntity.getTaxonId().getSourceName());

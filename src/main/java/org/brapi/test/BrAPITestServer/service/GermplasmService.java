@@ -40,28 +40,16 @@ public class GermplasmService {
 	public List<Germplasm> search(List<String> germplasmDbIds, List<String> germplasmGenus, List<String> germplasmNames,
 			List<String> germplasmPUIs, List<String> germplasmSpecies, List<String> accessionNumbers,
 			MetaData metaData) {
-		checkForEmptyList(germplasmDbIds);
-		checkForEmptyList(germplasmGenus);
-		checkForEmptyList(germplasmNames);
-		checkForEmptyList(germplasmPUIs);
-		checkForEmptyList(germplasmSpecies);
-		checkForEmptyList(accessionNumbers);
 
 		Page<Germplasm> results = germplasmRepository
-				.findBySearch(germplasmDbIds, germplasmGenus, germplasmNames, germplasmPUIs, germplasmSpecies,
-						accessionNumbers, PagingUtility.getPageRequest(metaData))
+				.findBySearch(SearchUtility.buildSearchParam(germplasmDbIds),
+						SearchUtility.buildSearchParam(germplasmGenus), SearchUtility.buildSearchParam(germplasmNames),
+						SearchUtility.buildSearchParam(germplasmPUIs), SearchUtility.buildSearchParam(germplasmSpecies),
+						SearchUtility.buildSearchParam(accessionNumbers), PagingUtility.getPageRequest(metaData))
 				.map(this::convertFromEntity);
 
 		PagingUtility.calculateMetaData(metaData, results);
 		return results.getContent();
-	}
-
-	private void checkForEmptyList(List<String> list) {
-		if(list == null || list.isEmpty()) {
-			// this is a necessary place holder based on how JPA works. JPQL doesn't like empty lists.
-			list = new ArrayList<String>();
-			list.add("");
-		}
 	}
 
 	private Germplasm convertFromEntity(GermplasmEntity entity) {
@@ -84,25 +72,33 @@ public class GermplasmService {
 
 		germ.setAcquisitionDate(entity.getAcquisitionDate());
 
-		germ.setSynonyms(Arrays.asList(entity.getSynonyms().split(" *, *")));
+		List<String> synonyms = entity.getSynonyms() == null ? null
+				: Arrays.asList(entity.getSynonyms().split(" *, *"));
+		germ.setSynonyms(synonyms);
 
-		germ.setTaxonIds(entity.getTaxonIds().stream().map((t) -> {
-			TaxonID taxonId = new TaxonID();
-			taxonId.setSourceName(t.getSourceName());
-			taxonId.setTaxonId(t.getTaxonId());
-			return taxonId;
-		}).collect(Collectors.toList()));
+		if (entity.getTaxonIds() != null) {
+			germ.setTaxonIds(entity.getTaxonIds().stream().map((t) -> {
+				TaxonID taxonId = new TaxonID();
+				taxonId.setSourceName(t.getSourceName());
+				taxonId.setTaxonId(t.getTaxonId());
+				return taxonId;
+			}).collect(Collectors.toList()));
+		}
 
-		germ.setTypeOfGermplasmStorageCode(entity.getTypeOfGermplasmStorageCode().stream()
-				.map(GermplasmTypeStorageCodeEntity::getStorageCode).collect(Collectors.toList()));
+		if (entity.getTypeOfGermplasmStorageCode() != null) {
+			germ.setTypeOfGermplasmStorageCode(entity.getTypeOfGermplasmStorageCode().stream()
+					.map(GermplasmTypeStorageCodeEntity::getStorageCode).collect(Collectors.toList()));
+		}
 
-		germ.setDonors(entity.getDonors().stream().map((d) -> {
-			Donor donor = new Donor();
-			donor.setDonorAccessionNumber(d.getDonorAccessionNumber());
-			donor.setDonorInstituteCode(d.getDonorInstituteCode());
-			donor.setGermplasmPUI(d.getGermplasmPUI());
-			return donor;
-		}).collect(Collectors.toList()));
+		if (entity.getDonors() != null) {
+			germ.setDonors(entity.getDonors().stream().map((d) -> {
+				Donor donor = new Donor();
+				donor.setDonorAccessionNumber(d.getDonorAccessionNumber());
+				donor.setDonorInstituteCode(d.getDonorInstituteCode());
+				donor.setGermplasmPUI(d.getGermplasmPUI());
+				return donor;
+			}).collect(Collectors.toList()));
+		}
 
 		return germ;
 	}

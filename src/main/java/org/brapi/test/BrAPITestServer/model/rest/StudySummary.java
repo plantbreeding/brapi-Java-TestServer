@@ -21,7 +21,7 @@ public class StudySummary {
 	private Date startDate;
     @JsonFormat(pattern="yyyy-MM-dd")
 	private Date endDate;
-	private boolean active;
+	private String active;
 	private Map<String, String> additionalInfo;
 	public String getStudyDbId() {
 		return studyDbId;
@@ -95,10 +95,10 @@ public class StudySummary {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	public boolean getActive() {
+	public String getActive() {
 		return active;
 	}
-	public void setActive(boolean active) {
+	public void setActive(String active) {
 		this.active = active;
 	}
 	public Map<String, String> getAdditionalInfo() {

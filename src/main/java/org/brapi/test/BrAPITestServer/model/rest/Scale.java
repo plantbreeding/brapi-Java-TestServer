@@ -5,7 +5,7 @@ public class Scale {
 	private String scaleDbId;
 	private String name;
 	private String datatype;
-	private String decimalPlaces;
+	private Integer decimalPlaces;
 	private String xref;
 	private ValidValue validValues;
 
@@ -33,11 +33,11 @@ public class Scale {
 		this.datatype = datatype;
 	}
 
-	public String getDecimalPlaces() {
+	public Integer getDecimalPlaces() {
 		return decimalPlaces;
 	}
 
-	public void setDecimalPlaces(String decimalPlaces) {
+	public void setDecimalPlaces(Integer decimalPlaces) {
 		this.decimalPlaces = decimalPlaces;
 	}
 

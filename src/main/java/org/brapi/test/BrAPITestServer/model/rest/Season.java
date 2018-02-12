@@ -3,7 +3,7 @@ package org.brapi.test.BrAPITestServer.model.rest;
 public class Season {
 	private String seasonDbId;
 	private String season;
-	private int year;
+	private String year;
 	public String getSeasonDbId() {
 		return seasonDbId;
 	}
@@ -16,10 +16,10 @@ public class Season {
 	public void setSeason(String season) {
 		this.season = season;
 	}
-	public int getYear() {
+	public String getYear() {
 		return year;
 	}
-	public void setYear(int year) {
+	public void setYear(String year) {
 		this.year = year;
 	}
 }
