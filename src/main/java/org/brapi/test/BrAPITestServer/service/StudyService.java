@@ -276,12 +276,17 @@ public class StudyService {
 
 	public List<StudyObservation> getStudyObservations(String studyDbId, String observationLevel, MetaData metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-		Page<ObservationUnitEntity> unitsPage = observationUnitRepository
-				.findAllByStudy_IdAndObservationLevel(studyDbId, observationLevel, pageReq);
+		Page<ObservationUnitEntity> unitsPage;
+		if(observationLevel == null) {
+			unitsPage = observationUnitRepository.findAllByStudy_Id(studyDbId, pageReq);
+		}else {
+			unitsPage = observationUnitRepository
+					.findAllByStudy_IdAndObservationLevel(studyDbId, observationLevel, pageReq);
+		}
 		PagingUtility.calculateMetaData(metaData, unitsPage);
 		List<StudyObservation> observations = unitsPage.map((entity) -> {
 			StudyObservation observation = new StudyObservation();
-			observation.setBlockNumber(entity.getBlockNumber());
+			observation.setBlockNumber(entity.getBlockNumber() == null ? null : entity.getBlockNumber().toString());
 			observation.setEntryNumber(entity.getEntryNumber());
 			observation.setEntryType(entity.getEntryType());
 			observation.setGermplasmDbId(entity.getGermplasm().getId());
@@ -289,11 +294,11 @@ public class StudyService {
 			observation.setObservationUnitDbId(entity.getId());
 			observation.setObservationUnitName(entity.getObservationUnitName());
 			observation.setPedigree(entity.getPedigree().getPedigree());
-			observation.setPlantNumber(entity.getPlantNumber());
-			observation.setPlotNumber(entity.getPlotNumber());
+			observation.setPlantNumber(entity.getPlantNumber() == null ? null : entity.getPlantNumber().toString());
+			observation.setPlotNumber(entity.getPlotNumber() == null ? null : entity.getPlotNumber().toString());
 			observation.setReplicate(entity.getReplicate());
-			observation.setX(entity.getX());
-			observation.setY(entity.getY());
+			observation.setxCoordinate(entity.getX());
+			observation.setyCoordinate(entity.getY());
 
 			observation.setObservations(entity.getObservations().stream().map(e -> {
 				Observation ob = new Observation();
@@ -440,7 +445,7 @@ public class StudyService {
 		PagingUtility.calculateMetaData(metaData, unitsPage);
 		List<StudyPlotLayout> plots = unitsPage.map(entity -> {
 			StudyPlotLayout plot = new StudyPlotLayout();
-			plot.setBlockNumber(entity.getBlockNumber());
+			plot.setBlockNumber(entity.getBlockNumber() == null ? null : entity.getBlockNumber().toString());
 			plot.setEntryType(EntryType.valueOf(entity.getEntryType()));
 			plot.setGermplasmDbId(entity.getGermplasm().getId());
 			plot.setGermplasmName(entity.getGermplasm().getGermplasmName());
@@ -449,8 +454,8 @@ public class StudyService {
 			plot.setObservationUnitName(entity.getObservationUnitName());
 			plot.setReplicate(entity.getReplicate());
 			plot.setStudyDbId(entity.getStudy().getId());
-			plot.setX(entity.getX());
-			plot.setY(entity.getY());
+			plot.setxCoordinate(Integer.parseInt(entity.getX()));
+			plot.setyCoordinate(Integer.parseInt(entity.getY()));
 
 			// TODO not sure where to get this additional info
 			plot.setAdditionalInfo(null);

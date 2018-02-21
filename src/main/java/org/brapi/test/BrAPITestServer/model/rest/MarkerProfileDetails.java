@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.model.rest;
 
+import java.util.List;
 import java.util.Map;
 
 public class MarkerProfileDetails {
@@ -9,12 +10,13 @@ public class MarkerProfileDetails {
 	// TODO why is this missing private String sampleDbId;
 	private String extractDbId;
 	private String analysisMethod;
-	private Map<String, String> data;
-	public String getMarkerProfileDbId() {
+	private List<Map<String, String>> data;
+	
+	public String getMarkerprofileDbId() {
 		return markerprofileDbId;
 	}
-	public void setMarkerProfileDbId(String markerProfileDbId) {
-		this.markerprofileDbId = markerProfileDbId;
+	public void setMarkerprofileDbId(String markerprofileDbId) {
+		this.markerprofileDbId = markerprofileDbId;
 	}
 	public String getGermplasmDbId() {
 		return germplasmDbId;
@@ -40,10 +42,10 @@ public class MarkerProfileDetails {
 	public void setAnalysisMethod(String analysisMethod) {
 		this.analysisMethod = analysisMethod;
 	}
-	public Map<String, String> getData() {
+	public List<Map<String, String>> getData() {
 		return data;
 	}
-	public void setData(Map<String, String> data) {
+	public void setData(List<Map<String, String>> data) {
 		this.data = data;
 	}
 }

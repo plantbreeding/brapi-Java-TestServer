@@ -2,6 +2,10 @@ package org.brapi.test.BrAPITestServer.model.rest;
 
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(value=Include.NON_NULL)
 public class Location {
 	private String locationDbId;
 	private String locationType;

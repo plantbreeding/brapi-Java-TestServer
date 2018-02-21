@@ -36,7 +36,7 @@ public class SampleService {
 			entity.setNotes(sample.getNotes());
 			entity.setObservationUnit(unit);
 			entity.setPlateDbId(sample.getPlateDbId());
-			entity.setPlateIndex(Integer.parseInt(sample.getPlateIndex()));
+			entity.setPlateIndex(sample.getPlateIndex());
 			entity.setSampleTimestamp(sample.getSampleTimestamp());
 			entity.setSampleType(sample.getSampleType());
 			entity.setTakenBy(sample.getTakenBy());
@@ -84,10 +84,8 @@ public class SampleService {
 		sample.setNotes(entity.getNotes());
 		sample.setObservationUnitDbId(entity.getObservationUnit().getId());
 		sample.setPlateDbId(entity.getPlateDbId());
-		sample.setPlateIndex(String.valueOf(entity.getPlateIndex()));
-		sample.setPlantId(String.valueOf(entity.getObservationUnit().getPlantNumber()));
+		sample.setPlateIndex(entity.getPlateIndex());
 		sample.setPlantDbId(String.valueOf(entity.getObservationUnit().getPlantNumber()));
-		sample.setPlotId(String.valueOf(entity.getObservationUnit().getPlotNumber()));
 		sample.setPlotDbId(String.valueOf(entity.getObservationUnit().getPlotNumber()));
 		sample.setSampleDbId(entity.getId());
 		sample.setSampleTimestamp(entity.getSampleTimestamp());

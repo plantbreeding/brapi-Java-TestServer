@@ -1,6 +1,7 @@
 package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.brapi.test.BrAPITestServer.model.rest.ObservationUnit;
 import org.brapi.test.BrAPITestServer.model.rest.ObservationUnitDbIdListWrapper;
@@ -106,6 +107,9 @@ public class StudyController  extends BrAPIController{
 	public GenericResults<Study> getStudy(
 			@PathVariable(value="studyDbId") String studyDbId) {
 		Study study = studyService.getStudy(studyDbId);
+		
+		//TODO Hack because BrAPI is inconsistent (issue #205)
+		study.getLocation().setLocationType(null);
 		return GenericResults.withObject(study).withMetaData(generateEmptyMetadata());
 	}
 
@@ -115,6 +119,9 @@ public class StudyController  extends BrAPIController{
 	public GenericResults<StudyObservationVariable> getStudyObservationVariables_dep(
 			@PathVariable(value="studyDbId") String studyDbId) {
 		StudyObservationVariable variables = studyService.getStudyObservationVariables(studyDbId);
+		
+		//TODO Hack because BrAPI is inconsistent (issue #206)
+		variables.getData().stream().map((obs) -> {obs.setSubmissionTimestamp(null); return obs;}).collect(Collectors.toList());
 		return GenericResults.withObject(variables).withMetaData(generateEmptyMetadata());
 	}
 	
@@ -123,6 +130,9 @@ public class StudyController  extends BrAPIController{
 	public GenericResults<StudyObservationVariable> getStudyObservationVariables(
 			@PathVariable(value="studyDbId") String studyDbId) {
 		StudyObservationVariable variables = studyService.getStudyObservationVariables(studyDbId);
+		
+		//TODO Hack because BrAPI is inconsistent (issue #206)
+		variables.getData().stream().map((obs) -> {obs.setSubmissionTimestamp(null); return obs;}).collect(Collectors.toList());
 		return GenericResults.withObject(variables).withMetaData(generateEmptyMetadata());
 	}
 	
@@ -167,6 +177,15 @@ public class StudyController  extends BrAPIController{
 			@RequestParam(value = "page", defaultValue = "0") int page) {
 		MetaData metaData = generateMetaDataTemplate(page, pageSize);
 		List<StudyObservation> observations = studyService.getStudyObservations(studyDbId, observationLevel, metaData);
+		
+		//TODO Hack because BrAPI is inconsistent (issue #207)
+		observations.stream()
+		.forEach((obsUnit) -> {
+			obsUnit.getObservations()
+			.stream()
+			.map((obs) -> {obs.setSeason(null); return obs;})
+			.collect(Collectors.toList());
+		});
 		return GenericResults.withList(observations).withMetaData(metaData);
 	}
 

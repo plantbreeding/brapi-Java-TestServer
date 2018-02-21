@@ -1,14 +1,15 @@
 package org.brapi.test.BrAPITestServer.model.rest;
 
 public class LinkageGroup {
-	private String linkageGroupDbId;
+	private String linkageGroupName;
 	private int markerCount;
 	private int maxPosition;
-	public String getLinkageGroupDbId() {
-		return linkageGroupDbId;
+	
+	public String getLinkageGroupName() {
+		return linkageGroupName;
 	}
-	public void setLinkageGroupDbId(String linkageGroupDbId) {
-		this.linkageGroupDbId = linkageGroupDbId;
+	public void setLinkageGroupName(String linkageGroupName) {
+		this.linkageGroupName = linkageGroupName;
 	}
 	public int getMarkerCount() {
 		return markerCount;

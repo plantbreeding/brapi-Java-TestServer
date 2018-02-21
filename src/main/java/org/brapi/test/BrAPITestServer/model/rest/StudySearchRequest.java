@@ -12,9 +12,9 @@ public class StudySearchRequest extends GenericRequest{
 	private List<String> trialDbIds;
 	private List<String> germplasmDbIds;
 	private List<String> observationVariableDbIds;
-	private boolean active;
-	private String sortBy;
-	private String sortOrder;
+	private boolean active = true;
+	private String sortBy = "asc";
+	private String sortOrder = "studyName";
 	
 	public String getStudyType() {
 		return studyType;

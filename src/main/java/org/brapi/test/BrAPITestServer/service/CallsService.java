@@ -10,6 +10,8 @@ import org.brapi.test.BrAPITestServer.repository.CallRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,7 +33,8 @@ public class CallsService {
 	}
 	
 	private List<CallEntity> findCalls(String datatype, MetaData metadata) {
-		Pageable pageReq = PagingUtility.getPageRequest(metadata);
+		Sort sort = Sort.by(Direction.fromString("asc"), "call");
+		Pageable pageReq = PagingUtility.getPageRequest(metadata, sort);
 		Page<CallEntity> page;
 		if(datatype == null) {
 			page = callRepository.findAll(pageReq);

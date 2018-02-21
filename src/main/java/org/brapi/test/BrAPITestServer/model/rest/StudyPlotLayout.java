@@ -2,6 +2,8 @@ package org.brapi.test.BrAPITestServer.model.rest;
 
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class StudyPlotLayout {
 	private String studyDbId;
 	private String observationUnitDbId;
@@ -10,9 +12,11 @@ public class StudyPlotLayout {
 	private String replicate;
 	private String germplasmDbId;
 	private String germplasmName;
-	private int blockNumber;
-	private String X;
-	private String Y;
+	private String blockNumber;
+	@JsonProperty("X")
+	private Integer xCoordinate;
+	@JsonProperty("Y")
+	private Integer yCoordinate;
 	private EntryType entryType;
 	private Map<String, String> additionalInfo;
 	public String getStudyDbId() {
@@ -57,24 +61,6 @@ public class StudyPlotLayout {
 	public void setGermplasmName(String germplasmName) {
 		this.germplasmName = germplasmName;
 	}
-	public int getBlockNumber() {
-		return blockNumber;
-	}
-	public void setBlockNumber(int blockNumber) {
-		this.blockNumber = blockNumber;
-	}
-	public String getX() {
-		return X;
-	}
-	public void setX(String x) {
-		X = x;
-	}
-	public String getY() {
-		return Y;
-	}
-	public void setY(String y) {
-		Y = y;
-	}
 	public EntryType getEntryType() {
 		return entryType;
 	}
@@ -86,5 +72,23 @@ public class StudyPlotLayout {
 	}
 	public void setAdditionalInfo(Map<String, String> additionalInfo) {
 		this.additionalInfo = additionalInfo;
+	}
+	public String getBlockNumber() {
+		return blockNumber;
+	}
+	public void setBlockNumber(String blockNumber) {
+		this.blockNumber = blockNumber;
+	}
+	public Integer getxCoordinate() {
+		return xCoordinate;
+	}
+	public void setxCoordinate(Integer xCoordinate) {
+		this.xCoordinate = xCoordinate;
+	}
+	public Integer getyCoordinate() {
+		return yCoordinate;
+	}
+	public void setyCoordinate(Integer yCoordinate) {
+		this.yCoordinate = yCoordinate;
 	}
 }

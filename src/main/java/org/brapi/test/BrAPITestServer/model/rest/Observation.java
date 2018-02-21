@@ -3,7 +3,10 @@ package org.brapi.test.BrAPITestServer.model.rest;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+@JsonInclude(value=Include.NON_NULL)
 public class Observation {
 	private String observationDbId;
 	private String observationVariableDbId;

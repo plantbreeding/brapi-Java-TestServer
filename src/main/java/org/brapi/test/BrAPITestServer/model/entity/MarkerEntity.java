@@ -15,8 +15,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name="marker")
 public class MarkerEntity extends BaseEntity{
-	@Column
-	private String markerProfileDbId;
 	@ManyToOne
 	private LinkageGroupEntity linkageGroup;
 	@Column
@@ -33,12 +31,6 @@ public class MarkerEntity extends BaseEntity{
 	@JoinTable(name = "marker_marker_analysis_method", joinColumns = { @JoinColumn(name = "marker_db_id", referencedColumnName="id") }, inverseJoinColumns = { @JoinColumn(name = "marker_analysis_method_db_id", referencedColumnName="id") })
 	private List<MarkerAnalysisMethodEntity> analysisMethods;
 	
-	public String getMarkerProfileDbId() {
-		return markerProfileDbId;
-	}
-	public void setMarkerProfileDbId(String markerProfileDbId) {
-		this.markerProfileDbId = markerProfileDbId;
-	}
 	public String getMarkerName() {
 		return markerName;
 	}

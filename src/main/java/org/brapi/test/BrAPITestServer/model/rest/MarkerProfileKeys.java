@@ -4,7 +4,7 @@ import java.util.List;
 
 public class MarkerProfileKeys {
 	private String germplasmDbId;
-	private List<String> markerprofilesDbIds;
+	private List<String> markerprofileDbIds;
 	
 	public String getGermplasmDbId() {
 		return germplasmDbId;
@@ -12,10 +12,10 @@ public class MarkerProfileKeys {
 	public void setGermplasmDbId(String germplasmDbId) {
 		this.germplasmDbId = germplasmDbId;
 	}
-	public List<String> getMarkerProfilesDbIds() {
-		return markerprofilesDbIds;
+	public List<String> getMarkerprofileDbIds() {
+		return markerprofileDbIds;
 	}
-	public void setMarkerProfilesDbIds(List<String> markerProfilesDbIds) {
-		this.markerprofilesDbIds = markerProfilesDbIds;
+	public void setMarkerprofileDbIds(List<String> markerprofileDbIds) {
+		this.markerprofileDbIds = markerprofileDbIds;
 	}
 }

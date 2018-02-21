@@ -8,5 +8,4 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface CallRepository extends PagingAndSortingRepository<CallEntity, String>{
 	
 	Page<CallEntity> findByDataTypes_DataType(String dataType, Pageable page);
-	long countByDataTypes_DataType(String dataType);
 }

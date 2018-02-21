@@ -130,7 +130,7 @@ public class GermplasmService {
 	public MarkerProfileKeys searchMarkerProfilesByDbId(String germplasmDbId) {
 		MarkerProfileKeys keys = new MarkerProfileKeys();
 		keys.setGermplasmDbId(germplasmDbId);
-		keys.setMarkerProfilesDbIds(markerProfileRepository.findByGermplasmDbId(germplasmDbId).stream()
+		keys.setMarkerprofileDbIds(markerProfileRepository.findByGermplasmDbId(germplasmDbId).stream()
 				.map(MarkerProfileEntity::getId).collect(Collectors.toList()));
 		return keys;
 	}

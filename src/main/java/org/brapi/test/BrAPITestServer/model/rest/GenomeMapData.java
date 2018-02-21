@@ -1,10 +1,14 @@
 package org.brapi.test.BrAPITestServer.model.rest;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(value=Include.NON_NULL)
 public class GenomeMapData {
 	private String markerDbId;
 	private String markerName;
 	private String location;
-	private String linkageGroup;
+	private String linkageGroupName;
 	public String getMarkerDbId() {
 		return markerDbId;
 	}
@@ -23,10 +27,10 @@ public class GenomeMapData {
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	public String getLinkageGroup() {
-		return linkageGroup;
+	public String getLinkageGroupName() {
+		return linkageGroupName;
 	}
-	public void setLinkageGroup(String linkageGroup) {
-		this.linkageGroup = linkageGroup;
+	public void setLinkageGroupName(String linkageGroupName) {
+		this.linkageGroupName = linkageGroupName;
 	}
 }

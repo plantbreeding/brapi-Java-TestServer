@@ -2,6 +2,8 @@ package org.brapi.test.BrAPITestServer.model.rest;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class StudyObservation {
 	// TODO very similar to Phenotypes
 
@@ -12,14 +14,30 @@ public class StudyObservation {
 	private String pedigree;
 	private String entryNumber;
 	private String entryType;
-	private int plotNumber;
-	private int plantNumber;
-	private int blockNumber;
-	private String X;
-	private String Y;
+	private String plotNumber;
+	private String plantNumber;
+	private String blockNumber;
+	@JsonProperty("X")
+	private String xCoordinate;
+	@JsonProperty("Y")
+	private String yCoordinate;
 	private String replicate;
 	private List<ObservationUnitXref> observationUnitXref;
 	private List<Observation> observations;
+	
+
+	public String getxCoordinate() {
+		return xCoordinate;
+	}
+	public void setxCoordinate(String xCoordinate) {
+		this.xCoordinate = xCoordinate;
+	}
+	public String getyCoordinate() {
+		return yCoordinate;
+	}
+	public void setyCoordinate(String yCoordinate) {
+		this.yCoordinate = yCoordinate;
+	}
 	public String getObservationUnitDbId() {
 		return observationUnitDbId;
 	}
@@ -62,35 +80,23 @@ public class StudyObservation {
 	public void setEntryType(String entryType) {
 		this.entryType = entryType;
 	}
-	public int getPlotNumber() {
+	public String getPlotNumber() {
 		return plotNumber;
 	}
-	public void setPlotNumber(int plotNumber) {
+	public void setPlotNumber(String plotNumber) {
 		this.plotNumber = plotNumber;
 	}
-	public int getPlantNumber() {
+	public String getPlantNumber() {
 		return plantNumber;
 	}
-	public void setPlantNumber(int plantNumber) {
+	public void setPlantNumber(String plantNumber) {
 		this.plantNumber = plantNumber;
 	}
-	public int getBlockNumber() {
+	public String getBlockNumber() {
 		return blockNumber;
 	}
-	public void setBlockNumber(int blockNumber) {
+	public void setBlockNumber(String blockNumber) {
 		this.blockNumber = blockNumber;
-	}
-	public String getX() {
-		return X;
-	}
-	public void setX(String x) {
-		X = x;
-	}
-	public String getY() {
-		return Y;
-	}
-	public void setY(String y) {
-		Y = y;
 	}
 	public String getReplicate() {
 		return replicate;

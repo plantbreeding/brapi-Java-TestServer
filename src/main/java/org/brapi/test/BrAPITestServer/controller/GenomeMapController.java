@@ -1,6 +1,7 @@
 package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.brapi.test.BrAPITestServer.model.rest.GenomeMapData;
 import org.brapi.test.BrAPITestServer.model.rest.GenomeMapDetail;
@@ -61,8 +62,8 @@ public class GenomeMapController  extends BrAPIController{
 			@PathVariable(value= "mapDbId") String mapDbId,
 			@RequestParam(required=false) String linkageGroupId,
 			@RequestParam(required=false) String linkageGroupName,
-			@RequestParam(value="min", defaultValue="0") int minPosition,
-			@RequestParam(value="max", defaultValue="0") int maxPosition,
+			@RequestParam(value="min", defaultValue="-1") int minPosition,
+			@RequestParam(value="max", defaultValue="-1") int maxPosition,
 			@RequestParam(defaultValue="0") int page,
 			@RequestParam(defaultValue="1000") int pageSize){
 
@@ -81,17 +82,22 @@ public class GenomeMapController  extends BrAPIController{
 	public GenericResults<GenericResultsDataList<GenomeMapData>> getMapDataLinkageGroup(
 			@PathVariable(value= "mapDbId") String mapDbId,
 			@PathVariable(value= "linkageGroupName") String linkageGroupName,
-			@RequestParam(value="min", defaultValue="0") int minPosition,
-			@RequestParam(value="max", defaultValue="0") int maxPosition,
+			@RequestParam(value="min", defaultValue="-1") int minPosition,
+			@RequestParam(value="max", defaultValue="-1") int maxPosition,
 			@RequestParam(defaultValue="0") int page,
 			@RequestParam(defaultValue="1000") int pageSize){
 
 		MetaData metaData = generateMetaDataTemplate(page, pageSize);
 		List<GenomeMapData> genomeData = genomeMapService.getMapPositions(mapDbId, linkageGroupName, minPosition, maxPosition, metaData);
+		//TODO Hack because BrAPI is inconsistent
+		genomeData = genomeData.stream().map((marker) -> {
+			marker.setLinkageGroupName(null);
+			return marker;
+			}).collect(Collectors.toList());
 		
 		return GenericResults
 				.withList(genomeData)
-				.withMetaData(generateMetaDataTemplate(page, pageSize));
+				.withMetaData(metaData);
 	}
 	
 	

@@ -1,18 +1,18 @@
 package org.brapi.test.BrAPITestServer.model.rest;
 
 public class MarkerProfileSummary {
-	private String markerProfileDbId;
+	private String markerprofileDbId;
 	private String germplasmDbId;
 	private String uniqueDisplayName;
 	private String sampleDbId;
 	private String extractDbId;
 	private String analysisMethod;
 	private int resultCount;
-	public String getMarkerProfileDbId() {
-		return markerProfileDbId;
+	public String getMarkerprofileDbId() {
+		return markerprofileDbId;
 	}
-	public void setMarkerProfileDbId(String markerProfileDbId) {
-		this.markerProfileDbId = markerProfileDbId;
+	public void setMarkerprofileDbId(String markerprofileDbId) {
+		this.markerprofileDbId = markerprofileDbId;
 	}
 	public String getGermplasmDbId() {
 		return germplasmDbId;

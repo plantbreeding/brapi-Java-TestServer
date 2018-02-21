@@ -66,8 +66,8 @@ public class PhenotypeService {
 			pheno.setPlantNumber(String.valueOf(entity.getPlantNumber()));
 			pheno.setPlotNumber(String.valueOf(entity.getPlotNumber()));
 			pheno.setReplicate(entity.getReplicate());
-			pheno.setX(entity.getX());
-			pheno.setY(entity.getY());
+			pheno.setxCoordinate(entity.getX());
+			pheno.setyCoordinate(entity.getY());
 			pheno.setObservationLevel(entity.getObservationLevel());
 			pheno.setObservationLevels(entity.getObservationLevels());
 			pheno.setProgramName(entity.getStudy().getTrial().getProgram().getName());

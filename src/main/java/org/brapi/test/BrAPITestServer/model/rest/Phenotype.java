@@ -2,6 +2,8 @@ package org.brapi.test.BrAPITestServer.model.rest;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Phenotype {
 	private String observationUnitDbId;
 	private String observationLevel;
@@ -18,8 +20,10 @@ public class Phenotype {
 	private String studyLocationDbId;
 	private String studyLocation;
 	private String programName;
-	private String X;
-	private String Y;
+	@JsonProperty("X")
+	private String xCoordinate;
+	@JsonProperty("Y")
+	private String yCoordinate;
 	private String entryType;
 	private String entryNumber;
 	private List<Treatment> treatments;
@@ -115,17 +119,17 @@ public class Phenotype {
 	public void setProgramName(String programName) {
 		this.programName = programName;
 	}
-	public String getX() {
-		return X;
+	public String getxCoordinate() {
+		return xCoordinate;
 	}
-	public void setX(String x) {
-		X = x;
+	public void setxCoordinate(String xCoordinate) {
+		this.xCoordinate = xCoordinate;
 	}
-	public String getY() {
-		return Y;
+	public String getyCoordinate() {
+		return yCoordinate;
 	}
-	public void setY(String y) {
-		Y = y;
+	public void setyCoordinate(String yCoordinate) {
+		this.yCoordinate = yCoordinate;
 	}
 	public String getEntryType() {
 		return entryType;

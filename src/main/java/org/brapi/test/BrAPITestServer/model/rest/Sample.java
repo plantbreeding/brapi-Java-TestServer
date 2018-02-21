@@ -11,13 +11,11 @@ public class Sample {
     private String germplasmDbId;
     private String studyDbId;
     
-	private String plotId_dep;
-	private String plantId_dep;
 	private String plotDbId;
 	private String plantDbId;
 	
 	private String plateDbId;
-	private String plateIndex; 
+	private Integer plateIndex; 
 	private String takenBy;
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ssXXX")
 	private Date sampleTimestamp;
@@ -55,10 +53,10 @@ public class Sample {
 	public void setPlateDbId(String plateDbId) {
 		this.plateDbId = plateDbId;
 	}
-	public String getPlateIndex() {
+	public Integer getPlateIndex() {
 		return plateIndex;
 	}
-	public void setPlateIndex(String plateIndex) {
+	public void setPlateIndex(Integer plateIndex) {
 		this.plateIndex = plateIndex;
 	}
 	public Date getSampleTimestamp() {
@@ -66,18 +64,6 @@ public class Sample {
 	}
 	public void setSampleTimestamp(Date sampleTimestamp) {
 		this.sampleTimestamp = sampleTimestamp;
-	}
-	public String getPlotId() {
-		return plotId_dep;
-	}
-	public void setPlotId(String plotId) {
-		this.plotId_dep = plotId;
-	}
-	public String getPlantId() {
-		return plantId_dep;
-	}
-	public void setPlantId(String plantId) {
-		this.plantId_dep = plantId;
 	}
 	public String getTakenBy() {
 		return takenBy;

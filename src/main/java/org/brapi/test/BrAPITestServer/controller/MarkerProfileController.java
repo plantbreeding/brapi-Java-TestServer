@@ -54,7 +54,7 @@ public class MarkerProfileController extends BrAPIController {
 			@RequestParam(defaultValue="|") String sepPhased,
 			@RequestParam(defaultValue="/") String sepUnphased,
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
-			@RequestParam(value = "page", defaultValue = "1") int page) {
+			@RequestParam(value = "page", defaultValue = "0") int page) {
 		MetaData metaData = generateMetaDataTemplate(page, pageSize);
 		AlleleFormatParams params = new AlleleFormatParams();
 		params.setExpandHomozygotes(expandHomozygotes);

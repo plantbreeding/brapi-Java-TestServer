@@ -12,6 +12,13 @@ public class MarkersSearchRequest {
 	private int pageSize;
 	private int page;
 	
+	public MarkersSearchRequest() {
+		// set defaults
+		setMatchMethod("exact");
+		setIncludeSynonyms(true);
+		setPageSize(1000);
+		setPage(0);
+	}
 	public String getName() {
 		return name;
 	}

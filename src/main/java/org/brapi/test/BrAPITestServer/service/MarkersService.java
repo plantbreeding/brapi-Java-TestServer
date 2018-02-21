@@ -44,7 +44,7 @@ public class MarkersService {
 	private Page<MarkerEntity> runAppropriateQuery(String namePattern, String type, List<String> markerDbIds,
 			boolean ignoreCase, boolean includeSynonyms, Pageable pageReq) {
 		Page<MarkerEntity> entities = null;
-		if (markerDbIds == null || markerDbIds.isEmpty()) {
+		if (markerDbIds != null && !markerDbIds.isEmpty()) {
 			entities = markerRepository.findAllByIdIn(markerDbIds, pageReq);
 			//TODO: missing rare case when both name and ID list are used to search
 		} else {

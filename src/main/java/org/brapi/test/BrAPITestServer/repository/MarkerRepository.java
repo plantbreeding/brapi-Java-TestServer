@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface MarkerRepository extends PagingAndSortingRepository<MarkerEntity, String>{
-	public Page<MarkerEntity> findAllByLinkageGroup_IdAndLinkageGroup_GenomeMapDbId(String linkageGroupDbId, String mapDbId, Pageable pageReq);
+	public Page<MarkerEntity> findAllByLinkageGroup_LinkageGroupNameAndLinkageGroup_GenomeMapDbId(String linkageGroupName, String mapDbId, Pageable pageReq);
 
 	public Page<MarkerEntity> findAllByLinkageGroup_GenomeMapDbId(String mapDbId, Pageable pageRequest);
 

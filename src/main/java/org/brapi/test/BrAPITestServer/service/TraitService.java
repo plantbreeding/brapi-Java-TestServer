@@ -8,6 +8,7 @@ import org.brapi.test.BrAPITestServer.model.rest.TraitSummary;
 import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.repository.TraitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +23,9 @@ public class TraitService {
 
 	public List<TraitSummary> getTraits(MetaData metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-		List<TraitSummary> traits = traitRepository.findAll(pageReq).map(this::convertFromEntity).getContent();
-		metaData.getPagination().setTotalCount((int) traitRepository.count());
-		PagingUtility.calculateMetaData(metaData);
-		return traits;
+		Page<TraitSummary> traits = traitRepository.findAll(pageReq).map(this::convertFromEntity);
+		PagingUtility.calculateMetaData(metaData, traits);
+		return traits.getContent();
 	}
 
 	public TraitSummary getTrait(String traitDbId) {
