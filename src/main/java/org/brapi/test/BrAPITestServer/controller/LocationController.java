@@ -26,7 +26,7 @@ public class LocationController  extends BrAPIController{
 	}
 
 	@CrossOrigin
-	@RequestMapping(value="locations", method= {RequestMethod.GET})
+	@RequestMapping(path="brapi/v1/locations", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<Location>> getLocations(
 			@RequestParam(required=false) String locationType,
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
@@ -39,7 +39,7 @@ public class LocationController  extends BrAPIController{
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value="locations/{locationDbId}", method= {RequestMethod.GET})
+	@RequestMapping(path="brapi/v1/locations/{locationDbId}", method= {RequestMethod.GET})
 	public GenericResults<Location> getLocation(
 			@PathVariable(value="locationDbId") String locationDbId) {
 		Location location = locationService.getLocation(locationDbId);

@@ -23,7 +23,7 @@ public class CropController  extends BrAPIController{
 	}
 
 	@CrossOrigin
-	@RequestMapping(path="crops", method= {RequestMethod.GET})
+	@RequestMapping(path="brapi/v1/crops", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<String>> getCrops(
 			@RequestParam(value="pageSize", defaultValue="1000") int pageSize,
 			@RequestParam(value="page", defaultValue="0") int page){

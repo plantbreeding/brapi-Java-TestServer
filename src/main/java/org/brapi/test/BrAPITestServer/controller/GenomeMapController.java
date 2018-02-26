@@ -28,7 +28,7 @@ public class GenomeMapController  extends BrAPIController{
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value="maps", method= {RequestMethod.GET})
+	@RequestMapping(path="brapi/v1/maps", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<GenomeMapSummary>> getMaps(
 			@RequestParam(required=false) String speciesId,
 			@RequestParam(required=false) String type,
@@ -43,7 +43,7 @@ public class GenomeMapController  extends BrAPIController{
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value="maps/{mapDbId}", method= {RequestMethod.GET})
+	@RequestMapping(path="brapi/v1/maps/{mapDbId}", method= {RequestMethod.GET})
 	public GenericResults<GenomeMapDetail> getMapDetail(
 			@PathVariable(value = "mapDbId") String mapDbId,
 			@RequestParam(defaultValue="0") int page,
@@ -57,7 +57,7 @@ public class GenomeMapController  extends BrAPIController{
 	}
 
 	@CrossOrigin
-	@RequestMapping(value="maps/{mapDbId}/positions", method= {RequestMethod.GET})
+	@RequestMapping(path="brapi/v1/maps/{mapDbId}/positions", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<GenomeMapData>> getMapData(
 			@PathVariable(value= "mapDbId") String mapDbId,
 			@RequestParam(required=false) String linkageGroupId,
@@ -78,7 +78,7 @@ public class GenomeMapController  extends BrAPIController{
 
 
 	@CrossOrigin
-	@RequestMapping(value="maps/{mapDbId}/positions/{linkageGroupName}", method= {RequestMethod.GET})
+	@RequestMapping(path="brapi/v1/maps/{mapDbId}/positions/{linkageGroupName}", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<GenomeMapData>> getMapDataLinkageGroup(
 			@PathVariable(value= "mapDbId") String mapDbId,
 			@PathVariable(value= "linkageGroupName") String linkageGroupName,

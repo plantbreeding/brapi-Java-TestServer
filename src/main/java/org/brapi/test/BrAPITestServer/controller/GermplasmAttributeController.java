@@ -27,7 +27,7 @@ public class GermplasmAttributeController extends BrAPIController{
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value="attributes", method= {RequestMethod.GET})
+	@RequestMapping(path="brapi/v1/attributes", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<GermplasmAttributeDefinition>> getGermplasmAttributes(
 				@RequestParam(required=false) String attributeCategoryDbId,
 				@RequestParam(defaultValue="0") int page,
@@ -41,7 +41,7 @@ public class GermplasmAttributeController extends BrAPIController{
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value="attributes/categories", method= {RequestMethod.GET})
+	@RequestMapping(path="brapi/v1/attributes/categories", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<GermplasmAttributeCategory>> getGermplasmAttributeCategories(
 				@RequestParam(defaultValue="0") int page,
 				@RequestParam(defaultValue="1000") int pageSize){
@@ -55,7 +55,7 @@ public class GermplasmAttributeController extends BrAPIController{
 
 
 	@CrossOrigin
-	@RequestMapping(value = "germplasm/{germplasmDbId}/attributes", method = { RequestMethod.GET })
+	@RequestMapping(path="brapi/v1/germplasm/{germplasmDbId}/attributes", method = { RequestMethod.GET })
 	public GenericResults<GermplasmAttributeValuesWrapper> getGermplasmAttributeByGermplasmDbId(
 			@PathVariable("germplasmDbId") String germplasmDbId,
 			@RequestParam(required=false) List<String> attributeList, 

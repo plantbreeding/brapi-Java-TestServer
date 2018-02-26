@@ -30,7 +30,7 @@ public class SampleController extends BrAPIController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "samples", method = { RequestMethod.PUT })
+	@RequestMapping(path="brapi/v1/samples", method = { RequestMethod.PUT })
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public GenericResults<SampleDbIdWrapper> putSample(@RequestBody Sample sample) {
 		SampleDbIdWrapper id = sampleService.saveSample(sample);
@@ -38,14 +38,14 @@ public class SampleController extends BrAPIController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "samples/{sampleId}", method = { RequestMethod.GET })
+	@RequestMapping(path="brapi/v1/samples/{sampleId}", method = { RequestMethod.GET })
 	public GenericResults<Sample> getSample(@PathVariable(value = "sampleId") String sampleId) {
 		Sample sample = sampleService.getSample(sampleId);
 		return GenericResults.withObject(sample).withMetaData(generateEmptyMetadata());
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "samples-search", method = { RequestMethod.GET })
+	@RequestMapping(path="brapi/v1/samples-search", method = { RequestMethod.GET })
 	public GenericResults<GenericResultsDataList<Sample>> getSampleSearch(
 			@RequestParam(required = false) String sampleDbId,
 			@RequestParam(required = false) String observationUnitDbId,
@@ -60,7 +60,7 @@ public class SampleController extends BrAPIController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "samples-search", method = { RequestMethod.POST })
+	@RequestMapping(path="brapi/v1/samples-search", method = { RequestMethod.POST })
 	public GenericResults<GenericResultsDataList<Sample>> postSampleSearch(@RequestBody SampleSearchRequest request) {
 
 		MetaData metaData = generateMetaDataTemplate(request);

@@ -31,14 +31,14 @@ public class VendorSampleController extends BrAPIController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "vendor/plate/{vendorPlateDbId}", method = { RequestMethod.GET })
+	@RequestMapping(path="brapi/v1/vendor/plate/{vendorPlateDbId}", method = { RequestMethod.GET })
 	public GenericResults<VendorPlate> getPlateDetails(@PathVariable("vendorPlateDbId") String vendorPlateDbId) {
 		VendorPlate vendorPlate = vendorSampleService.getPlate(vendorPlateDbId);
 		return GenericResults.withObject(vendorPlate).withMetaData(generateEmptyMetadata());
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "vendor/plates", method = { RequestMethod.POST })
+	@RequestMapping(path="brapi/v1/vendor/plates", method = { RequestMethod.POST })
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public GenericResults<GenericResultsDataList<VendorPlate>> postPlateDetails(@RequestBody VendorPlateRequestList request) {
 		List<VendorPlate> vendorPlate = vendorSampleService.savePlates(request);
@@ -46,7 +46,7 @@ public class VendorSampleController extends BrAPIController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "vendor/plate-search", method = { RequestMethod.GET })
+	@RequestMapping(path="brapi/v1/vendor/plate-search", method = { RequestMethod.GET })
 	public GenericResults<GenericResultsDataList<VendorPlate>> getPlateSearch(
 			@RequestParam(required = false) String vendorProjectDbId,
 			@RequestParam(required = false) String vendorPlateDbId,
@@ -61,7 +61,7 @@ public class VendorSampleController extends BrAPIController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "vendor/plate-search", method = { RequestMethod.POST })
+	@RequestMapping(path="brapi/v1/vendor/plate-search", method = { RequestMethod.POST })
 	public GenericResults<GenericResultsDataList<VendorPlate>> postPlateSearch(@RequestBody VendorPlateSearchRequest request) {
 
 		MetaData metadata = generateMetaDataTemplate(request);
@@ -70,7 +70,7 @@ public class VendorSampleController extends BrAPIController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "vendor/specifications", method = { RequestMethod.GET })
+	@RequestMapping(path="brapi/v1/vendor/specifications", method = { RequestMethod.GET })
 	public GenericResults<VendorSpec> getVendorSpecs() {
 		VendorSpec vendorSpec = vendorSampleService.getVendorSpec();
 		return GenericResults.withObject(vendorSpec).withMetaData(generateEmptyMetadata());

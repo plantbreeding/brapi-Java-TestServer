@@ -28,7 +28,7 @@ public class MarkerController extends BrAPIController {
 
 	// Deprecated
 	@CrossOrigin
-	@RequestMapping(value = "markers", method = { RequestMethod.GET })
+	@RequestMapping(path="brapi/v1/markers", method = { RequestMethod.GET })
 	public GenericResults<GenericResultsDataList<Marker>> getMarkers(
 			@RequestParam(value = "name", required = false) String name,
 			@RequestParam(value = "type", required = false) String type,
@@ -44,7 +44,7 @@ public class MarkerController extends BrAPIController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "markers-search", method = { RequestMethod.GET })
+	@RequestMapping(path="brapi/v1/markers-search", method = { RequestMethod.GET })
 	public GenericResults<GenericResultsDataList<Marker>> getMarkersSearch(
 			@RequestParam(value = "name", required = false) String name,
 			@RequestParam(value = "type", required = false) String type,
@@ -62,7 +62,7 @@ public class MarkerController extends BrAPIController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "markers-search", method = { RequestMethod.POST })
+	@RequestMapping(path="brapi/v1/markers-search", method = { RequestMethod.POST })
 	public GenericResults<GenericResultsDataList<Marker>> postMarkersSearch(@RequestBody MarkersSearchRequest request) {
 
 		MetaData metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
@@ -73,7 +73,7 @@ public class MarkerController extends BrAPIController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "markers/{markerDbId}", method = { RequestMethod.GET })
+	@RequestMapping(path="brapi/v1/markers/{markerDbId}", method = { RequestMethod.GET })
 	public GenericResults<Marker> getMarker(@PathVariable(value = "markerDbId") String markerDbId) {
 		Marker marker = markersService.getMarker(markerDbId);
 

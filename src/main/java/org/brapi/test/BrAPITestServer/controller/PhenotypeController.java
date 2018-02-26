@@ -26,7 +26,7 @@ public class PhenotypeController  extends BrAPIController{
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value="phenotypes-search", method= {RequestMethod.POST})
+	@RequestMapping(path="brapi/v1/phenotypes-search", method= {RequestMethod.POST})
 	public GenericResults<GenericResultsDataList<Phenotype>> getPhenotypes(
 			@RequestBody PhenotypesSearchRequest request) {
 		MetaData metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());

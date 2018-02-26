@@ -24,7 +24,7 @@ public class TraitController  extends BrAPIController{
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value="traits", method= {RequestMethod.GET})
+	@RequestMapping(path="brapi/v1/traits", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<TraitSummary>> getTraits(
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
@@ -36,7 +36,7 @@ public class TraitController  extends BrAPIController{
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value="traits/{traitDbId}", method= {RequestMethod.GET})
+	@RequestMapping(path="brapi/v1/traits/{traitDbId}", method= {RequestMethod.GET})
 	public GenericResults<TraitSummary> getTrait(
 			@PathVariable(value="traitDbId") String traitDbId){
 		TraitSummary trait = traitService.getTrait(traitDbId);

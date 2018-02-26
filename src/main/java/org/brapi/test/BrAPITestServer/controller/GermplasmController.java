@@ -30,7 +30,7 @@ public class GermplasmController extends BrAPIController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(path = "germplasm-search", method = { RequestMethod.GET })
+	@RequestMapping(path="brapi/v1/germplasm-search", method = { RequestMethod.GET })
 	public GenericResults<GenericResultsDataList<Germplasm>> germplasmSearch(
 			@RequestParam(value = "germplasmPUI", required = false, defaultValue="") List<String> germplasmPUIs,
 			@RequestParam(value = "germplasmDbId", required = false, defaultValue="") List<String> germplasmDbIds,
@@ -49,7 +49,7 @@ public class GermplasmController extends BrAPIController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(path = "germplasm-search", method = { RequestMethod.POST })
+	@RequestMapping(path="brapi/v1/germplasm-search", method = { RequestMethod.POST })
 	public GenericResults<GenericResultsDataList<Germplasm>> germplasmSearch(
 			GermplasmSearchRequest request) {
 		
@@ -61,7 +61,7 @@ public class GermplasmController extends BrAPIController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "germplasm/{germplasmDbId}", method = { RequestMethod.GET })
+	@RequestMapping(path="brapi/v1/germplasm/{germplasmDbId}", method = { RequestMethod.GET })
 	public GenericResults<Germplasm> germplasmSearchByDbId(@PathVariable(value = "germplasmDbId") String germplasmDbId) {
 		Germplasm germplasm = germplasmService.searchByDbId(germplasmDbId);
 
@@ -69,7 +69,7 @@ public class GermplasmController extends BrAPIController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "germplasm/{germplasmDbId}/pedigree", method = { RequestMethod.GET })
+	@RequestMapping(path="brapi/v1/germplasm/{germplasmDbId}/pedigree", method = { RequestMethod.GET })
 	public GenericResults<Pedigree> pedigreeByGermplasmDbId(@PathVariable(value = "germplasmDbId", required=true) String germplasmDbId,
 			@RequestParam(value = "notation", required=false) String notation) {
 		Pedigree pedigree = germplasmService.searchPedigreeByDbId(germplasmDbId, notation);
@@ -78,7 +78,7 @@ public class GermplasmController extends BrAPIController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "germplasm/{germplasmDbId}/markerprofiles", method = { RequestMethod.GET })
+	@RequestMapping(path="brapi/v1/germplasm/{germplasmDbId}/markerprofiles", method = { RequestMethod.GET })
 	public GenericResults<MarkerProfileKeys> markerProfilesByGermplasmDbId(
 			@PathVariable("germplasmDbId") String germplasmDbId) {
 		MarkerProfileKeys markerProfile = germplasmService.searchMarkerProfilesByDbId(germplasmDbId);

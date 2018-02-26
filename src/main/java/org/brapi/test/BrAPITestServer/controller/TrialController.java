@@ -26,7 +26,7 @@ public class TrialController  extends BrAPIController{
 	
 
 	@CrossOrigin
-	@RequestMapping(value="trials", method= {RequestMethod.GET})
+	@RequestMapping(path="brapi/v1/trials", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<TrialSummary>> getTrialSummaries(
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
@@ -37,7 +37,7 @@ public class TrialController  extends BrAPIController{
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value="trials/{trialDbId}", method= {RequestMethod.GET})
+	@RequestMapping(path="brapi/v1/trials/{trialDbId}", method= {RequestMethod.GET})
 	public GenericResults<TrialSummaryWithContact> getTrialSummary(
 			@PathVariable(value="trialDbId") String trialDbId){
 		TrialSummaryWithContact trial = trialService.getTrialSummary(trialDbId);

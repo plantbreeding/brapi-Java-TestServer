@@ -29,7 +29,7 @@ public class MarkerProfileController extends BrAPIController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "markerprofiles", method = { RequestMethod.GET })
+	@RequestMapping(path="brapi/v1/markerprofiles", method = { RequestMethod.GET })
 	public GenericResults<GenericResultsDataList<MarkerProfileSummary>> getMarkerProfiles(
 			@RequestParam(required=false) String germplasmDbId,
 			@RequestParam(required=false) String studyDbId, 
@@ -46,7 +46,7 @@ public class MarkerProfileController extends BrAPIController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "markerprofiles/{markerProfileDbId}", method = { RequestMethod.GET })
+	@RequestMapping(path="brapi/v1/markerprofiles/{markerProfileDbId}", method = { RequestMethod.GET })
 	public GenericResults<MarkerProfileDetails> getMarkerProfile(
 			@PathVariable(value="markerProfileDbId") String markerProfileDbId,
 			@RequestParam(defaultValue="false") boolean expandHomozygotes,
@@ -67,7 +67,7 @@ public class MarkerProfileController extends BrAPIController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "allelematrix-search", method = { RequestMethod.GET })
+	@RequestMapping(path="brapi/v1/allelematrix-search", method = { RequestMethod.GET })
 	public GenericResults<GenericResultsDataList<List<String>>> getAlleleMatrix(
 			@RequestParam(defaultValue="csv") String format,
 			@RequestParam(defaultValue="false") boolean expandHomozygotes,
@@ -85,7 +85,7 @@ public class MarkerProfileController extends BrAPIController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "allelematrix-search", method = { RequestMethod.POST })
+	@RequestMapping(path="brapi/v1/allelematrix-search", method = { RequestMethod.POST })
 	public GenericResults<GenericResultsDataList<List<String>>> getAlleleMatrix(
 			@RequestBody AlleleMatrixSearchRequest request) {
 		MetaData metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());

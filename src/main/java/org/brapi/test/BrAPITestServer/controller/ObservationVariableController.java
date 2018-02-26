@@ -28,7 +28,7 @@ public class ObservationVariableController  extends BrAPIController{
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value="variables", method= {RequestMethod.GET})
+	@RequestMapping(path="brapi/v1/variables", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<ObservationVariable>> getVariables(
 			@RequestParam(required=false) String traitClass,
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
@@ -39,7 +39,7 @@ public class ObservationVariableController  extends BrAPIController{
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value="variables-search", method= {RequestMethod.POST})
+	@RequestMapping(path="brapi/v1/variables-search", method= {RequestMethod.POST})
 	public GenericResults<GenericResultsDataList<ObservationVariable>> getVariables(
 			@RequestBody ObservationVariableSearchRequest request) {
 		MetaData metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
@@ -48,7 +48,7 @@ public class ObservationVariableController  extends BrAPIController{
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value="variables/{observationVariableDbId}", method= {RequestMethod.GET})
+	@RequestMapping(path="brapi/v1/variables/{observationVariableDbId}", method= {RequestMethod.GET})
 	public GenericResults<ObservationVariable> getVariable(
 			@PathVariable(value="observationVariableDbId") String observationVariableDbId) {
 		ObservationVariable variable = observationVariableService.getVariable(observationVariableDbId);
@@ -56,7 +56,7 @@ public class ObservationVariableController  extends BrAPIController{
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value="variables/datatypes", method= {RequestMethod.GET})
+	@RequestMapping(path="brapi/v1/variables/datatypes", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<String>> getVariableDataTypes(
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
@@ -66,7 +66,7 @@ public class ObservationVariableController  extends BrAPIController{
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value="ontologies", method= {RequestMethod.GET})
+	@RequestMapping(path="brapi/v1/ontologies", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<Ontology>> getOntologies(
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {

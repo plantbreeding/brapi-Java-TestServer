@@ -23,7 +23,7 @@ public class ProgramController  extends BrAPIController{
 	}
 
 	@CrossOrigin
-	@RequestMapping(value="programs", method= {RequestMethod.GET})
+	@RequestMapping(path="brapi/v1/programs", method= {RequestMethod.GET})
 	public GenericResults<GenericResultsDataList<Program>> getPrograms(
 			@RequestParam(required=false) String programName,
 			@RequestParam(required=false) String abbreviation,
