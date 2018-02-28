@@ -12,6 +12,30 @@ public class GermplasmAttributeValue {
 	private String value;
     @JsonFormat(pattern="yyyy-MM-dd")
 	private Date determinedDate;
+        
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((attributeDbId == null) ? 0 : attributeDbId.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GermplasmAttributeValue other = (GermplasmAttributeValue) obj;
+		if (attributeDbId == null) {
+			if (other.attributeDbId != null)
+				return false;
+		} else if (!attributeDbId.equals(other.attributeDbId))
+			return false;
+		return true;
+	}
 	public String getAttributeDbId() {
 		return attributeDbId;
 	}
