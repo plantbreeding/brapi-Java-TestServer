@@ -14,7 +14,7 @@ public class ScaleEntity extends BaseEntity {
 	@Column
 	private String name;
 	@Column
-	private String datatype;
+	private String dataType;
 	@Column
 	private Integer decimalPlaces;
 	@Column
@@ -40,12 +40,12 @@ public class ScaleEntity extends BaseEntity {
 		this.name = name;
 	}
 
-	public String getDatatype() {
-		return datatype;
+	public String getDataType() {
+		return dataType;
 	}
 
-	public void setDatatype(String datatype) {
-		this.datatype = datatype;
+	public void setDataType(String dataType) {
+		this.dataType = dataType;
 	}
 
 	public Integer getDecimalPlaces() {

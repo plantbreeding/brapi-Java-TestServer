@@ -4,7 +4,7 @@ public class Scale {
 
 	private String scaleDbId;
 	private String name;
-	private String datatype;
+	private String dataType;
 	private Integer decimalPlaces;
 	private String xref;
 	private ValidValue validValues;
@@ -25,12 +25,12 @@ public class Scale {
 		this.name = name;
 	}
 
-	public String getDatatype() {
-		return datatype;
+	public String getDataType() {
+		return dataType;
 	}
 
-	public void setDatatype(String datatype) {
-		this.datatype = datatype;
+	public void setDataType(String dataType) {
+		this.dataType = dataType;
 	}
 
 	public Integer getDecimalPlaces() {

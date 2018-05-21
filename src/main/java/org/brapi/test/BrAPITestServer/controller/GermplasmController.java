@@ -13,6 +13,7 @@ import org.brapi.test.BrAPITestServer.service.GermplasmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,7 +52,7 @@ public class GermplasmController extends BrAPIController {
 	@CrossOrigin
 	@RequestMapping(path="brapi/v1/germplasm-search", method = { RequestMethod.POST })
 	public GenericResults<GenericResultsDataList<Germplasm>> germplasmSearch(
-			GermplasmSearchRequest request) {
+			@RequestBody GermplasmSearchRequest request) {
 		
 		MetaData metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		List<Germplasm> germplasms = germplasmService.search(request.getGermplasmDbIds(), request.getGermplasmGenus(), request.getGermplasmNames(),

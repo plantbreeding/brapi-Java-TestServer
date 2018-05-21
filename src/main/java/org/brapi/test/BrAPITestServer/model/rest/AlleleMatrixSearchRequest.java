@@ -1,8 +1,11 @@
 package org.brapi.test.BrAPITestServer.model.rest;
 
+import java.util.List;
+
 public class AlleleMatrixSearchRequest {
-	private String markerProfileDbId;
-	private String markerDbId;
+	private List<String> markerProfileDbIds;
+	private List<String> markerDbIds;
+	private List<String> matrixDbIds;
 	private boolean expandHomozygotes;
 	private String unknownString;
 	private String sepPhased;
@@ -10,17 +13,25 @@ public class AlleleMatrixSearchRequest {
 	private String format;
 	private int pageSize;
 	private int page;
-	public String getMarkerProfileDbId() {
-		return markerProfileDbId;
+
+
+	public List<String> getMarkerProfileDbIds() {
+		return markerProfileDbIds;
 	}
-	public void setMarkerProfileDbId(String markerProfileDbId) {
-		this.markerProfileDbId = markerProfileDbId;
+	public void setMarkerProfileDbIds(List<String> markerProfileDbIds) {
+		this.markerProfileDbIds = markerProfileDbIds;
 	}
-	public String getMarkerDbId() {
-		return markerDbId;
+	public List<String> getMarkerDbIds() {
+		return markerDbIds;
 	}
-	public void setMarkerDbId(String markerDbId) {
-		this.markerDbId = markerDbId;
+	public void setMarkerDbIds(List<String> markerDbIds) {
+		this.markerDbIds = markerDbIds;
+	}
+	public List<String> getMatrixDbIds() {
+		return matrixDbIds;
+	}
+	public void setMatrixDbIds(List<String> matrixDbIds) {
+		this.matrixDbIds = matrixDbIds;
 	}
 	public boolean isExpandHomozygotes() {
 		return expandHomozygotes;

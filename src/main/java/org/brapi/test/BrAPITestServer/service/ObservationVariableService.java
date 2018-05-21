@@ -164,7 +164,7 @@ public class ObservationVariableService {
 		var.setMethod(method);
 
 		Scale scale = new Scale();
-		scale.setDatatype(entity.getScale().getDatatype());
+		scale.setDataType(entity.getScale().getDataType());
 		scale.setDecimalPlaces(entity.getScale().getDecimalPlaces());
 		scale.setName(entity.getScale().getName());
 		scale.setScaleDbId(entity.getScale().getId());

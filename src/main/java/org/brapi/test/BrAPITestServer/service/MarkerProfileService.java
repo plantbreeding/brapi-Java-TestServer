@@ -97,40 +97,6 @@ public class MarkerProfileService {
 		return value;
 	}
 
-	public List<List<String>> getAlleleMatrix(String format, AlleleFormatParams params, MetaData metaData) {
-		List<List<String>> matrix = new ArrayList<>();
-
-		markerProfileRepository.findAll(PagingUtility.getPageRequest(metaData)).forEach((profile) -> {
-			profile.getAlleles().forEach((allele) -> {
-				List<String> alleleEntry = new ArrayList<>();
-				alleleEntry.add(profile.getId());
-				alleleEntry.add(allele.getMarker().getId());
-				alleleEntry.add(applyAlleleFormattingRules(allele.getAlleleCode(), params));
-				matrix.add(alleleEntry);
-			});
-		});
-
-		return matrix;
-	}
-
-	public List<List<String>> getAlleleMatrix(AlleleMatrixSearchRequest request, MetaData metaData) {
-		AlleleFormatParams params = buildFormatParams(request.isExpandHomozygotes(), request.getSepPhased(),
-				request.getSepUnphased(), request.getUnknownString());
-		List<List<String>> matrix = new ArrayList<>();
-
-		markerProfileRepository.findAll(PagingUtility.getPageRequest(metaData)).forEach((profile) -> {
-			profile.getAlleles().forEach((allele) -> {
-				List<String> alleleEntry = new ArrayList<>();
-				alleleEntry.add(profile.getId());
-				alleleEntry.add(allele.getMarker().getId());
-				alleleEntry.add(applyAlleleFormattingRules(allele.getAlleleCode(), params));
-				matrix.add(alleleEntry);
-			});
-		});
-
-		return matrix;
-	}
-
 	public AlleleFormatParams buildFormatParams(boolean expandHomozygotes, String sepPhased, String sepUnphased,
 			String unknownString) {
 		AlleleFormatParams params = new AlleleFormatParams();
@@ -139,6 +105,36 @@ public class MarkerProfileService {
 		params.setSepUnphased(sepUnphased);
 		params.setUnknownString(unknownString);
 		return params;
+	}
+
+	public List<List<String>> getAlleleMatrix(List<String> markerProfileDbIds, List<String> markerDbIds,
+			List<String> matrixDbIds, AlleleFormatParams params, MetaData metaData) {
+
+		Pageable pageReq = PagingUtility.getPageRequest(metaData);
+		List<List<String>> matrix = new ArrayList<>();
+		Page<AlleleEntity> allelePage;
+
+		if(markerProfileDbIds != null && !markerProfileDbIds.isEmpty()) {
+			allelePage = alleleRepository.findAllByMarkerProfileDbIdIn(markerProfileDbIds, pageReq);
+		}else if(markerDbIds != null && !markerDbIds.isEmpty()) {
+			allelePage = alleleRepository.findAllByMarker_IdIn(markerDbIds, pageReq);
+		}else if(matrixDbIds != null && !matrixDbIds.isEmpty()) {
+			allelePage = alleleRepository.findAllByMarkerProfileDbIdIn(matrixDbIds, pageReq);
+		}else {
+			allelePage = alleleRepository.findAll(pageReq);
+		}
+		
+		allelePage.forEach((allele) -> {
+			List<String> alleleEntry = new ArrayList<>();
+			alleleEntry.add(allele.getMarker().getId());
+			alleleEntry.add(allele.getMarkerProfileDbId());
+			alleleEntry.add(applyAlleleFormattingRules(allele.getAlleleCode(), params));
+			matrix.add(alleleEntry);
+		});
+
+		PagingUtility.calculateMetaData(metaData, allelePage);
+		
+		return matrix;
 	}
 
 }

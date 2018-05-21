@@ -69,6 +69,9 @@ public class MarkerProfileController extends BrAPIController {
 	@CrossOrigin
 	@RequestMapping(path="brapi/v1/allelematrix-search", method = { RequestMethod.GET })
 	public GenericResults<GenericResultsDataList<List<String>>> getAlleleMatrix(
+			@RequestParam(value="markerprofileDbId", defaultValue="") List<String> markerProfileDbIds,
+			@RequestParam(value="markerDbId", defaultValue="") List<String> markerDbIds,
+			@RequestParam(value="matrixDbId", defaultValue="") List<String> matrixDbIds,
 			@RequestParam(defaultValue="csv") String format,
 			@RequestParam(defaultValue="false") boolean expandHomozygotes,
 			@RequestParam(defaultValue="-") String unknownString,
@@ -76,10 +79,11 @@ public class MarkerProfileController extends BrAPIController {
 			@RequestParam(defaultValue="/") String sepUnphased,
 			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
 			@RequestParam(value = "page", defaultValue = "0") int page) {
+		
 		MetaData metaData = generateMetaDataTemplate(page, pageSize);
 		AlleleFormatParams params = markerProfileService.buildFormatParams(expandHomozygotes, sepPhased, sepUnphased, unknownString);
 
-		List<List<String>> alleleMatrix = markerProfileService.getAlleleMatrix(format, params, metaData);
+		List<List<String>> alleleMatrix = markerProfileService.getAlleleMatrix(markerProfileDbIds, markerDbIds, matrixDbIds, params, metaData);
 		
 		return GenericResults.withList(alleleMatrix).withMetaData(metaData);
 	}
@@ -88,8 +92,11 @@ public class MarkerProfileController extends BrAPIController {
 	@RequestMapping(path="brapi/v1/allelematrix-search", method = { RequestMethod.POST })
 	public GenericResults<GenericResultsDataList<List<String>>> getAlleleMatrix(
 			@RequestBody AlleleMatrixSearchRequest request) {
+		
 		MetaData metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
-		List<List<String>> alleleMatrix = markerProfileService.getAlleleMatrix(request, metaData);
+		AlleleFormatParams params = markerProfileService.buildFormatParams(request.isExpandHomozygotes(), request.getSepPhased(), request.getSepUnphased(), request.getUnknownString());
+
+		List<List<String>> alleleMatrix = markerProfileService.getAlleleMatrix(request.getMarkerProfileDbIds(), request.getMarkerDbIds(), request.getMatrixDbIds(), params, metaData);
 		
 		return GenericResults.withList(alleleMatrix).withMetaData(metaData);
 	}
