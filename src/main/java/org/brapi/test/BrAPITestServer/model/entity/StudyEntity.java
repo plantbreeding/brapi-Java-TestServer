@@ -51,6 +51,8 @@ public class StudyEntity extends BaseEntity{
 	private List<StudyAddtionalInfoEntity> additionalInfo;
 	@OneToMany(mappedBy="study")
 	private List<ObservationUnitEntity> observationUnits;
+	@OneToMany(mappedBy="study")
+	private List<AlleleMatrixEntity> alleleMatricies;
 
 	public StudyTypeEntity getStudyType() {
 		return studyType;

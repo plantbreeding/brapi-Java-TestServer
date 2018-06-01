@@ -2,20 +2,23 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.rest.Call;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
+import javax.validation.Valid;
+
 import org.brapi.test.BrAPITestServer.service.CallsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.api.CallsApi;
+import io.swagger.model.Call;
+import io.swagger.model.CallsResponse;
+import io.swagger.model.CallsResponseResult;
+import io.swagger.model.Metadata;
+
 @RestController
-public class CallsController extends BrAPIController{
+public class CallsController extends BrAPIController implements CallsApi{
 	
 	CallsService callService;
 	
@@ -26,17 +29,19 @@ public class CallsController extends BrAPIController{
 	}
 
 	@CrossOrigin
-	@RequestMapping(path="brapi/v1/calls", method=RequestMethod.GET)
-	public GenericResults<GenericResultsDataList<Call>> calls(
-			@RequestParam(value="datatype", defaultValue="json") String datatype,
-			@RequestParam(value="pageSize", defaultValue="1000") int pageSize,
-			@RequestParam(value="page", defaultValue="0") int page){
+	@Override
+	public ResponseEntity<CallsResponse> callsGet(@Valid String datatype, @Valid Integer pageSize,
+			@Valid Integer page) {
 		
-		MetaData metadata = generateMetaDataTemplate(page, pageSize);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<Call> calls = callService.getAvailableCalls(datatype, metadata);
 		
-		return GenericResults
-				.withList(calls)
-				.withMetaData(metadata);
+		CallsResponseResult result = new CallsResponseResult();
+		result.setData(calls);
+		CallsResponse response = new CallsResponse();
+		response.setMetadata(metadata);
+		response.setResult(result);
+		return new ResponseEntity<CallsResponse>(response, HttpStatus.OK);
 	}
+
 }

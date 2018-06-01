@@ -5,16 +5,17 @@ import java.util.Optional;
 
 import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.SampleEntity;
-import org.brapi.test.BrAPITestServer.model.rest.Sample;
-import org.brapi.test.BrAPITestServer.model.rest.SampleDbIdWrapper;
-import org.brapi.test.BrAPITestServer.model.rest.SampleSearchRequest;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.repository.ObservationUnitRepository;
 import org.brapi.test.BrAPITestServer.repository.SampleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import io.swagger.model.Metadata;
+import io.swagger.model.NewSampleDbIdResult;
+import io.swagger.model.Sample;
+import io.swagger.model.SampleSearchRequest;
 
 @Service
 public class SampleService {
@@ -27,9 +28,9 @@ public class SampleService {
 		this.observationUnitRepository = observationUnitRepository;
 	}
 
-	public SampleDbIdWrapper saveSample(Sample sample) {
+	public NewSampleDbIdResult saveSample(Sample sample) {
 		Optional<ObservationUnitEntity> unitOpt = this.observationUnitRepository.findById(sample.getObservationUnitDbId());
-		SampleDbIdWrapper id = new SampleDbIdWrapper();
+		NewSampleDbIdResult id = new NewSampleDbIdResult();
 		if (validateInput(sample, unitOpt)) {
 			ObservationUnitEntity unit = unitOpt.get();
 			SampleEntity entity = new SampleEntity();
@@ -37,7 +38,7 @@ public class SampleService {
 			entity.setObservationUnit(unit);
 			entity.setPlateDbId(sample.getPlateDbId());
 			entity.setPlateIndex(sample.getPlateIndex());
-			entity.setSampleTimestamp(sample.getSampleTimestamp());
+			entity.setSampleTimestamp(DateUtility.toDate(sample.getSampleTimestamp()));
 			entity.setSampleType(sample.getSampleType());
 			entity.setTakenBy(sample.getTakenBy());
 			entity.setTissueType(sample.getTissueType());
@@ -88,7 +89,7 @@ public class SampleService {
 		sample.setPlantDbId(String.valueOf(entity.getObservationUnit().getPlantNumber()));
 		sample.setPlotDbId(String.valueOf(entity.getObservationUnit().getPlotNumber()));
 		sample.setSampleDbId(entity.getId());
-		sample.setSampleTimestamp(entity.getSampleTimestamp());
+		sample.setSampleTimestamp(DateUtility.toOffsetDateTime(entity.getSampleTimestamp()));
 		sample.setSampleType(entity.getSampleType());
 		sample.setStudyDbId(entity.getObservationUnit().getStudy().getId());
 		sample.setTakenBy(entity.getTakenBy());
@@ -98,7 +99,7 @@ public class SampleService {
 	}
 	
 	public List<Sample> getSampleSearch(String sampleDbId, String observationUnitDbId, String plateDbId,
-			String germplasmDbId, MetaData metaData) {
+			String germplasmDbId, Metadata metaData) {
 		return searchSamples(SearchUtility.buildSearchParam(sampleDbId),
 				SearchUtility.buildSearchParam(observationUnitDbId),
 				SearchUtility.buildSearchParam(plateDbId),
@@ -106,7 +107,7 @@ public class SampleService {
 				metaData);
 	}
 
-	public List<Sample> getSampleSearch(SampleSearchRequest request, MetaData metaData) {
+	public List<Sample> getSampleSearch(SampleSearchRequest request, Metadata metaData) {
 		return searchSamples(SearchUtility.buildSearchParam(request.getSampleDbId()),
 				SearchUtility.buildSearchParam(request.getObservationUnitDbId()),
 				SearchUtility.buildSearchParam(request.getPlateDbId()),
@@ -115,7 +116,7 @@ public class SampleService {
 	}
 
 	private List<Sample> searchSamples(List<String> sampleDbIds, List<String> observationUnitDbIds,
-			List<String> plateDbIds, List<String> germplasmDbIds, MetaData metaData) {
+			List<String> plateDbIds, List<String> germplasmDbIds, Metadata metaData) {
 		
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 		Page<SampleEntity> entitiesPage = sampleRepository.findBySearch(sampleDbIds, observationUnitDbIds, plateDbIds, germplasmDbIds, pageReq);

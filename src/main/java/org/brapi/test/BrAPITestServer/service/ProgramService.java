@@ -3,12 +3,14 @@ package org.brapi.test.BrAPITestServer.service;
 import java.util.List;
 
 import org.brapi.test.BrAPITestServer.model.entity.ProgramEntity;
-import org.brapi.test.BrAPITestServer.model.rest.Program;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.repository.ProgramRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import io.swagger.model.Metadata;
+import io.swagger.model.Program;
 
 @Service
 public class ProgramService {
@@ -19,25 +21,15 @@ public class ProgramService {
 		this.programRepository = programRepository;
 	}
 
-	public List<Program> getPrograms(String programName, String abbreviation, MetaData metaData) {
+	public List<Program> searchPrograms(String abbreviation, String leadPerson, String name,
+			String objective, String programDbId, Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 
-		List<Program> programs;
-		if (programName != null && abbreviation != null) {
-			programs = programRepository.findAllByNameAndAbbreviation(programName, abbreviation, pageReq).map(this::convertFromEntity).getContent();
-			metaData.getPagination().setTotalCount((int) programRepository.countByNameAndAbbreviation(programName, abbreviation));
-		} else if (abbreviation != null) {
-			programs = programRepository.findAllByAbbreviation(abbreviation, pageReq).map(this::convertFromEntity).getContent();
-			metaData.getPagination().setTotalCount((int) programRepository.countByAbbreviation(abbreviation));
-		} else if (programName != null) {
-			programs = programRepository.findAllByName(programName, pageReq).map(this::convertFromEntity).getContent();
-			metaData.getPagination().setTotalCount((int) programRepository.countByName(programName));
-		} else {
-			programs = programRepository.findAll(pageReq).map(this::convertFromEntity).getContent();
-			metaData.getPagination().setTotalCount((int) programRepository.count());
-		}
+		Page<ProgramEntity> page = programRepository.findAllBySearch(abbreviation, leadPerson, name,
+				objective, programDbId, pageReq);
+		List<Program> programs = page.map(this::convertFromEntity).getContent();
 
-		PagingUtility.calculateMetaData(metaData);
+		PagingUtility.calculateMetaData(metaData, page);
 		return programs;
 	}
 	
@@ -51,5 +43,4 @@ public class ProgramService {
 		
 		return program;
 	}
-
 }

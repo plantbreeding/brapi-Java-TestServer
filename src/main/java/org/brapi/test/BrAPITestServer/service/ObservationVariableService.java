@@ -6,20 +6,21 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.brapi.test.BrAPITestServer.model.entity.ObservationVariableEntity;
-import org.brapi.test.BrAPITestServer.model.rest.Method;
-import org.brapi.test.BrAPITestServer.model.rest.ObservationVariable;
-import org.brapi.test.BrAPITestServer.model.rest.ObservationVariableSearchRequest;
-import org.brapi.test.BrAPITestServer.model.rest.Ontology;
-import org.brapi.test.BrAPITestServer.model.rest.Scale;
-import org.brapi.test.BrAPITestServer.model.rest.Trait;
-import org.brapi.test.BrAPITestServer.model.rest.ValidValue;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.repository.ObservationVariableRepository;
 import org.brapi.test.BrAPITestServer.repository.OntologyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import io.swagger.model.Metadata;
+import io.swagger.model.Method;
+import io.swagger.model.ObservationVariable;
+import io.swagger.model.ObservationVariableSearchRequest;
+import io.swagger.model.Ontology;
+import io.swagger.model.Scale;
+import io.swagger.model.Trait;
+import io.swagger.model.ValidValues;
 
 @Service
 public class ObservationVariableService {
@@ -33,7 +34,7 @@ public class ObservationVariableService {
 		this.ontologyRepository = ontologyRepository;
 	}
 
-	public List<String> getDataTypes(MetaData metaData) {
+	public List<String> getDataTypes(Metadata metaData) {
 		// TODO why is this needed?
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 
@@ -44,7 +45,7 @@ public class ObservationVariableService {
 		return dataTypes;
 	}
 
-	public List<ObservationVariable> getVariables(String traitClass, MetaData metaData) {
+	public List<ObservationVariable> getVariables(String traitClass, Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 
 		Page<ObservationVariableEntity> variablesPage;
@@ -70,7 +71,7 @@ public class ObservationVariableService {
 		return var;
 	}
 
-	public List<ObservationVariable> getVariables(ObservationVariableSearchRequest request, MetaData metaData) {
+	public List<ObservationVariable> getVariables(ObservationVariableSearchRequest request, Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 
 		request = fixReqestArrays(request);
@@ -119,7 +120,7 @@ public class ObservationVariableService {
 		return request;
 	}
 
-	public List<Ontology> getOntologies(MetaData metaData) {
+	public List<Ontology> getOntologies(Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 		List<Ontology> ontologies = ontologyRepository.findAll(pageReq).map((entity) -> {
 			Ontology ontology = new Ontology();
@@ -150,14 +151,14 @@ public class ObservationVariableService {
 		var.setOntologyName(entity.getOntology().getOntologyName());
 		var.setScientist(entity.getScientist());
 		var.setStatus(entity.getStatus());
-		var.setSubmissionTimestamp(entity.getSubmissionTimestamp());
+		var.setSubmissionTimeStamp(DateUtility.toOffsetDateTime(entity.getSubmissionTimestamp()));
 		var.setSynonyms(entity.getSynonyms().stream().map(e -> e.getSynonym()).collect(Collectors.toList()));
 		var.setXref(entity.getXref());
 
 		Method method = new Method();
 		method.setDescription(entity.getMethod().getDescription());
 		method.setFormula(entity.getMethod().getFormula());
-		method.setMethodClass(entity.getMethod().getMethodClass());
+		method.setPropertyClass(entity.getMethod().getMethodClass());
 		method.setMethodDbId(entity.getMethod().getId());
 		method.setName(entity.getMethod().getName());
 		method.setReference(entity.getMethod().getReference());
@@ -170,7 +171,7 @@ public class ObservationVariableService {
 		scale.setScaleDbId(entity.getScale().getId());
 		scale.setXref(entity.getScale().getXref());
 
-		ValidValue validValues = new ValidValue();
+		ValidValues validValues = new ValidValues();
 		validValues.setMax(entity.getScale().getValidValues().getMax());
 		validValues.setMin(entity.getScale().getValidValues().getMin());
 		validValues.setCategories(entity.getScale().getValidValues().getCategories().stream().map(e -> e.getCategory())
@@ -189,7 +190,7 @@ public class ObservationVariableService {
 		trait.setStatus(entity.getTrait().getStatus());
 		trait.setSynonyms(
 				entity.getTrait().getSynonyms().stream().map(e -> e.getSynonym()).collect(Collectors.toList()));
-		trait.setTraitClass(entity.getTrait().getTraitClass());
+		trait.setPropertyClass(entity.getTrait().getTraitClass());
 		trait.setTraitDbId(entity.getTrait().getId());
 		trait.setXref(entity.getTrait().getXref());
 		var.setTrait(trait);

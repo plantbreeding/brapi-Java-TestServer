@@ -1,16 +1,19 @@
 package org.brapi.test.BrAPITestServer.service;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.brapi.test.BrAPITestServer.model.entity.LocationEntity;
-import org.brapi.test.BrAPITestServer.model.rest.Location;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import io.swagger.model.Location;
+import io.swagger.model.Metadata;
 
 @Service
 public class LocationService {
@@ -22,18 +25,17 @@ public class LocationService {
 		this.locationRepository = locationRepository;
 	}
 	
-	public List<Location> getLocations(String locationType, MetaData metaData) {
+	public List<Location> getLocations(String locationType, Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-		List<Location> locations;
+		Page<LocationEntity> locationsPage;
 		if(locationType == null) {
-			locations = locationRepository.findAll(pageReq).map(this::convertFromEntity).getContent();
-			metaData.getPagination().setTotalCount((int) locationRepository.count());
+			locationsPage = locationRepository.findAll(pageReq);
 		}else {
-			locations = locationRepository.findByLocationType(locationType, pageReq).map(this::convertFromEntity).getContent();
-			metaData.getPagination().setTotalCount((int) locationRepository.countByLocationType(locationType));
+			locationsPage = locationRepository.findByLocationType(locationType, pageReq);
 		}
 		
-		PagingUtility.calculateMetaData(metaData);
+		List<Location> locations = locationsPage.map(this::convertFromEntity).getContent();
+		PagingUtility.calculateMetaData(metaData, locationsPage);
 		return locations;
 	}
 
@@ -45,16 +47,16 @@ public class LocationService {
 	public Location convertFromEntity(LocationEntity locationEntity) {
 		Location location = new Location();
 		location.setAbbreviation(locationEntity.getAbbreviation());
-		location.setAltitude(locationEntity.getAltitude());
+		location.setAltitude(new BigDecimal(locationEntity.getAltitude()));
 		location.setCountryCode(locationEntity.getCountryCode());
 		location.setCountryName(locationEntity.getCountryName());
 		location.setInstituteAdress(locationEntity.getInstituteAddress());
 		location.setInstituteAddress(locationEntity.getInstituteAddress());
 		location.setInstituteName(locationEntity.getInstituteName());
-		location.setLatitude(locationEntity.getLatitude());
+		location.setLatitude(new BigDecimal(locationEntity.getLatitude()));
 		location.setLocationDbId(locationEntity.getId());
 		location.setLocationType(locationEntity.getLocationType());
-		location.setLongitude(locationEntity.getLongitude());
+		location.setLongitude(new BigDecimal(locationEntity.getLongitude()));
 		location.setName(locationEntity.getName());
 		
 		Map<String, String> additionalInfo = new HashMap<>();

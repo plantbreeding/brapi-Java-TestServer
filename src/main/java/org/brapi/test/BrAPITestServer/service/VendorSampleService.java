@@ -10,21 +10,6 @@ import org.brapi.test.BrAPITestServer.model.entity.SampleEntity;
 import org.brapi.test.BrAPITestServer.model.entity.TaxonEntity;
 import org.brapi.test.BrAPITestServer.model.entity.vendor.VendorSpecEntity;
 import org.brapi.test.BrAPITestServer.model.entity.vendor.VendorSpecStandardRequirementEntity;
-import org.brapi.test.BrAPITestServer.model.rest.TaxonID;
-import org.brapi.test.BrAPITestServer.model.rest.VendorPlate;
-import org.brapi.test.BrAPITestServer.model.rest.VendorPlateFile;
-import org.brapi.test.BrAPITestServer.model.rest.VendorPlateRequest;
-import org.brapi.test.BrAPITestServer.model.rest.VendorPlateRequestList;
-import org.brapi.test.BrAPITestServer.model.rest.VendorPlateSearchRequest;
-import org.brapi.test.BrAPITestServer.model.rest.VendorSample;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
-import org.brapi.test.BrAPITestServer.model.rest.vendor.VendorSpec;
-import org.brapi.test.BrAPITestServer.model.rest.vendor.VendorSpecBlankWell;
-import org.brapi.test.BrAPITestServer.model.rest.vendor.VendorSpecDeliverable;
-import org.brapi.test.BrAPITestServer.model.rest.vendor.VendorSpecPlatform;
-import org.brapi.test.BrAPITestServer.model.rest.vendor.VendorSpecReferenceSystem;
-import org.brapi.test.BrAPITestServer.model.rest.vendor.VendorSpecStandardRequirement;
-import org.brapi.test.BrAPITestServer.model.rest.vendor.VendorSpecStatus;
 import org.brapi.test.BrAPITestServer.repository.SampleRepository;
 import org.brapi.test.BrAPITestServer.repository.TaxonRepository;
 import org.brapi.test.BrAPITestServer.repository.VendorSampleRepository;
@@ -33,6 +18,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import io.swagger.model.Metadata;
+import io.swagger.model.TaxonID;
+import io.swagger.model.VendorPlate;
+import io.swagger.model.VendorPlateFile;
+import io.swagger.model.VendorPlateRequest;
+import io.swagger.model.VendorPlateRequestPlates;
+import io.swagger.model.VendorPlateRequestSamples;
+import io.swagger.model.VendorPlateSearchRequest;
+import io.swagger.model.VendorSample;
+import io.swagger.model.VendorSpecification;
+import io.swagger.model.VendorSpecificationPlatform;
+import io.swagger.model.VendorSpecificationPlatformDeliverables;
+import io.swagger.model.VendorSpecificationPlatformStatuses;
+import io.swagger.model.VendorSpecificationReferenceSystem;
+import io.swagger.model.VendorSpecificationStandardRequirement;
+import io.swagger.model.VendorSpecificationStandardRequirementBlankWellPosition;
 
 @Service
 public class VendorSampleService {
@@ -59,9 +61,9 @@ public class VendorSampleService {
 		return plate;
 	}
 
-	public List<VendorPlate> savePlates(VendorPlateRequestList request) {
+	public List<VendorPlate> savePlates(VendorPlateRequest request) {
 		List<VendorPlate> storedPlates = new ArrayList<VendorPlate>();
-		for (VendorPlateRequest newPlate : request.getPlates()) {
+		for (VendorPlateRequestPlates newPlate : request.getPlates()) {
 			PlateEntity plateEntity = convertToEntity(newPlate);
 			PlateEntity storedPlateEntity = vendorSampleRepository.save(plateEntity);
 			
@@ -74,9 +76,9 @@ public class VendorSampleService {
 		return storedPlates;
 	}
 
-	private List<SampleEntity> saveVendorSamples(List<VendorSample> samples, String vendorPlateDbId) {
+	private List<SampleEntity> saveVendorSamples(List<VendorPlateRequestSamples> samples, String vendorPlateDbId) {
 		List<SampleEntity> storedSamples = new ArrayList<>();
-		for (VendorSample newSample : samples) {
+		for (VendorPlateRequestSamples newSample : samples) {
 
 			TaxonEntity taxon = new TaxonEntity();
 			taxon.setSourceName(newSample.getTaxonId().getSourceName());
@@ -91,7 +93,7 @@ public class VendorSampleService {
 		return storedSamples;
 	}
 
-	private SampleEntity convertToEntity(VendorSample newSample) {
+	private SampleEntity convertToEntity(VendorPlateRequestSamples newSample) {
 		SampleEntity sampleEntity = new SampleEntity();
 		sampleEntity.setConcentration(newSample.getConcentration());
 		sampleEntity.setPlateIndex(Integer.parseInt(newSample.getWell()));
@@ -106,7 +108,7 @@ public class VendorSampleService {
 		plate.setPlateFormat(entity.getPlateFormat());
 		plate.setSampleType(entity.getSampleType());
 		plate.setStatus(entity.getStatus());
-		plate.setStatusTimeStamp(entity.getStatusTimeStamp());
+		plate.setStatusTimeStamp(DateUtility.toOffsetDateTime(entity.getStatusTimeStamp()));
 		plate.setVendorBarcode(entity.getVendorBarcode());
 		plate.setVendorBarcodeImageURL(entity.getVendorBarcodeImageURL());
 		plate.setVendorPlateDbId(entity.getId());
@@ -147,7 +149,7 @@ public class VendorSampleService {
 		return plate;
 	}
 
-	private PlateEntity convertToEntity(VendorPlateRequest newPlate) {
+	private PlateEntity convertToEntity(VendorPlateRequestPlates newPlate) {
 		PlateEntity plateEntity = new PlateEntity();
 		plateEntity.setClientPlateDbId(newPlate.getClientPlateDbId());
 		plateEntity.setPlateFormat(newPlate.getPlateFormat());
@@ -157,7 +159,7 @@ public class VendorSampleService {
 	}
 
 	public List<VendorPlate> searchPlates(String vendorProjectDbId, String vendorPlateDbId, String clientPlateDbId,
-			boolean sampleInfo, MetaData metadata) {
+			boolean sampleInfo, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		Page<PlateEntity> plates = vendorSampleRepository.findBySearch(
 				SearchUtility.buildSearchParam(vendorProjectDbId),
@@ -173,7 +175,7 @@ public class VendorSampleService {
 		}).map(this :: convertFromEntity).getContent();
 	}
 
-	public List<VendorPlate> searchPlates(VendorPlateSearchRequest request, MetaData metadata) {
+	public List<VendorPlate> searchPlates(VendorPlateSearchRequest request, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		Page<PlateEntity> plates = vendorSampleRepository.findBySearch(
 				SearchUtility.buildSearchParam(request.getVendorProjectDbIds()),
@@ -189,17 +191,17 @@ public class VendorSampleService {
 		}).map(this :: convertFromEntity).getContent();
 	}
 
-	public VendorSpec getVendorSpec() {
+	public VendorSpecification getVendorSpec() {
 		Optional<VendorSpecEntity> vendorSpecOpt = vendorSpecRepository.findById("1");
-		VendorSpec spec = null;
+		VendorSpecification spec = null;
 		if(vendorSpecOpt.isPresent()) {
 			spec = convertFromEntity(vendorSpecOpt.get());
 		}
 		return spec;
 	}
 
-	private VendorSpec convertFromEntity(VendorSpecEntity specEntity) {
-		VendorSpec spec = new VendorSpec();
+	private VendorSpecification convertFromEntity(VendorSpecEntity specEntity) {
+		VendorSpecification spec = new VendorSpecification();
 		spec.setAdditionalInfo(null);
 		spec.setContactName(specEntity.getContactName());
 		spec.setVendorAddress(specEntity.getVendorAddress());
@@ -212,7 +214,7 @@ public class VendorSampleService {
 		spec.setVendorURL(specEntity.getVendorURL());
 		
 		spec.setPlatforms(specEntity.getPlatforms().stream().map((platformEntity) -> {
-			VendorSpecPlatform platform = new VendorSpecPlatform();
+			VendorSpecificationPlatform platform = new VendorSpecificationPlatform();
 			platform.setContactEmail(platformEntity.getContactEmail());
 			platform.setContactName(platformEntity.getContactName());
 			platform.setContactPhone(platformEntity.getContactPhone());
@@ -223,7 +225,7 @@ public class VendorSampleService {
 			platform.setSpecificRequirements(null);
 			
 			platform.setDeliverables(platformEntity.getDeliverables().stream().map((deliverableEntity) -> {
-				VendorSpecDeliverable deliverable = new VendorSpecDeliverable();
+				VendorSpecificationPlatformDeliverables deliverable = new VendorSpecificationPlatformDeliverables();
 				deliverable.setDescription(deliverableEntity.getDescription());
 				deliverable.setFormat(deliverableEntity.getFormat());
 				deliverable.setName(deliverableEntity.getName());
@@ -231,13 +233,13 @@ public class VendorSampleService {
 			}).collect(Collectors.toList()));
 
 			platform.setStatuses(platformEntity.getStatuses().stream().map((statusEntity) -> {
-				VendorSpecStatus status = new VendorSpecStatus();
+				VendorSpecificationPlatformStatuses status = new VendorSpecificationPlatformStatuses();
 				status.setStatusDescription(statusEntity.getStatusDescription());
 				status.setStatusName(statusEntity.getStatusName());
 				return status;
 			}).collect(Collectors.toList()));
 			
-			VendorSpecStandardRequirement requirement = new VendorSpecStandardRequirement();
+			VendorSpecificationStandardRequirement requirement = new VendorSpecificationStandardRequirement();
 			VendorSpecStandardRequirementEntity requirementEntity = platformEntity.getStandardRequirements();
 			requirement.setInputFormatDetails(requirementEntity.getInputFormatDetails());
 			requirement.setMaxConcentration(requirementEntity.getMaxConcentration());
@@ -247,7 +249,7 @@ public class VendorSampleService {
 			requirement.setMinVolume(requirementEntity.getMinVolume());
 			requirement.setPlateOrientation(requirementEntity.getPlateOrientation());
 			requirement.setSampleTypeDetails(requirementEntity.getSampleTypeDetails());
-			VendorSpecBlankWell blankWell = new VendorSpecBlankWell();
+			VendorSpecificationStandardRequirementBlankWellPosition blankWell = new VendorSpecificationStandardRequirementBlankWellPosition();
 			blankWell.setNumberOfBlanksPerPlate(requirementEntity.getNumberOfBlanksPerPlate());
 			blankWell.setPositions(requirementEntity.getBlankWellPositions().stream()
 					.map((e) -> {return e.getPosition();})
@@ -261,10 +263,10 @@ public class VendorSampleService {
 					.collect(Collectors.toList()));
 			platform.setStandardRequirements(requirement);
 			
-			platform.setTaxonomyIdSystem(new VendorSpecReferenceSystem());
+			platform.setTaxonomyIdSystem(new VendorSpecificationReferenceSystem());
 			platform.getTaxonomyIdSystem().setName(platformEntity.getTaxonomyIdSystemName());
 			platform.getTaxonomyIdSystem().setURI(platformEntity.getTaxonomyIdSystemURI());
-			platform.setTissueIdSystem(new VendorSpecReferenceSystem());
+			platform.setTissueIdSystem(new VendorSpecificationReferenceSystem());
 			platform.getTissueIdSystem().setName(platformEntity.getTissueIdSystemName());
 			platform.getTissueIdSystem().setURI(platformEntity.getTissueIdSystemURI());
 

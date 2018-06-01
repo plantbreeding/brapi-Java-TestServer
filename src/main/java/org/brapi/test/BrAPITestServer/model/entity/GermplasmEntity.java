@@ -8,8 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
 
@@ -27,7 +27,7 @@ public class GermplasmEntity extends BaseEntity{
 	private String commonCropName;
 	@Column
     private String accessionNumber;
-	@ManyToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade=CascadeType.ALL, mappedBy="gemrplasm")
     private PedigreeEntity pedigree;
 	@Column
     private String germplasmSeedSource;

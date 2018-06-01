@@ -2,8 +2,6 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.ArrayList;
 
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaDataStatus;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +9,9 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import io.swagger.model.Metadata;
+import io.swagger.model.Status;
 
 @ControllerAdvice
 public class ExceptionHandler extends ResponseEntityExceptionHandler{
@@ -22,9 +23,11 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler{
 	}
 	
 	private ResponseEntity<Object> buildErrorResponse(HttpStatus code, String message){
-	    MetaDataStatus statusRes = new MetaDataStatus(String.valueOf(code.value()), message);
+	    Status statusRes = new Status();
+	    statusRes.setCode(String.valueOf(code.value()));
+	    statusRes.setMessage(message);
 	    
-	    MetaData apiError = new MetaData();
+	    Metadata apiError = new Metadata();
 	    apiError.setStatus(new ArrayList<>());
 	    apiError.getStatus().add(statusRes);
 	    

@@ -2,24 +2,32 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.rest.ObservationVariable;
-import org.brapi.test.BrAPITestServer.model.rest.ObservationVariableSearchRequest;
-import org.brapi.test.BrAPITestServer.model.rest.Ontology;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
+import javax.validation.Valid;
+
 import org.brapi.test.BrAPITestServer.service.ObservationVariableService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.api.OntologiesApi;
+import io.swagger.api.VariablesApi;
+import io.swagger.api.VariablesSearchApi;
+import io.swagger.model.DataTypesResponse;
+import io.swagger.model.DataTypesResponseResult;
+import io.swagger.model.Metadata;
+import io.swagger.model.ObservationVariable;
+import io.swagger.model.ObservationVariableResponse;
+import io.swagger.model.ObservationVariableSearchRequest;
+import io.swagger.model.ObservationVariablesResponse;
+import io.swagger.model.ObservationVariablesResponseResult;
+import io.swagger.model.OntologiesResponse;
+import io.swagger.model.OntologiesResponseResult;
+import io.swagger.model.Ontology;
+
 @RestController
-public class ObservationVariableController  extends BrAPIController{
+public class ObservationVariableController extends BrAPIController implements VariablesApi, VariablesSearchApi, OntologiesApi{
 	private ObservationVariableService observationVariableService;
 	
 	@Autowired
@@ -28,50 +36,73 @@ public class ObservationVariableController  extends BrAPIController{
 	}
 	
 	@CrossOrigin
-	@RequestMapping(path="brapi/v1/variables", method= {RequestMethod.GET})
-	public GenericResults<GenericResultsDataList<ObservationVariable>> getVariables(
-			@RequestParam(required=false) String traitClass,
-			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
-			@RequestParam(value = "page", defaultValue = "0") int page) {
-		MetaData metaData = generateMetaDataTemplate(page, pageSize);
-		List<ObservationVariable> variables = observationVariableService.getVariables(traitClass, metaData);
-		return GenericResults.withList(variables).withMetaData(metaData);
+	@Override
+	public ResponseEntity<OntologiesResponse> ontologiesGet(@Valid Integer pageSize, @Valid Integer page) {
+		Metadata metaData = generateMetaDataTemplate(page, pageSize);
+		List<Ontology> data = observationVariableService.getOntologies(metaData);
+		
+		OntologiesResponseResult result = new OntologiesResponseResult();
+		result.setData(data);
+		OntologiesResponse response = new OntologiesResponse();
+		response.setMetadata(metaData);
+		response.setResult(result);
+		return new ResponseEntity<OntologiesResponse>(response, HttpStatus.OK);
 	}
-	
+
 	@CrossOrigin
-	@RequestMapping(path="brapi/v1/variables-search", method= {RequestMethod.POST})
-	public GenericResults<GenericResultsDataList<ObservationVariable>> getVariables(
-			@RequestBody ObservationVariableSearchRequest request) {
-		MetaData metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
-		List<ObservationVariable> variables = observationVariableService.getVariables(request, metaData);
-		return GenericResults.withList(variables).withMetaData(metaData);
+	@Override
+	public ResponseEntity<ObservationVariablesResponse> variablesSearchPost(@Valid ObservationVariableSearchRequest request) {
+
+		Metadata metaData = generateMetaDataTemplate(request.getPage().intValue(), request.getPageSize().intValue());
+		List<ObservationVariable> data = observationVariableService.getVariables(request, metaData);
+		
+		ObservationVariablesResponseResult result = new ObservationVariablesResponseResult();
+		result.setData(data);
+		ObservationVariablesResponse response = new ObservationVariablesResponse();
+		response.setMetadata(metaData);
+		response.setResult(result);
+		return new ResponseEntity<ObservationVariablesResponse>(response, HttpStatus.OK);
 	}
-	
+
 	@CrossOrigin
-	@RequestMapping(path="brapi/v1/variables/{observationVariableDbId}", method= {RequestMethod.GET})
-	public GenericResults<ObservationVariable> getVariable(
-			@PathVariable(value="observationVariableDbId") String observationVariableDbId) {
-		ObservationVariable variable = observationVariableService.getVariable(observationVariableDbId);
-		return GenericResults.withObject(variable).withMetaData(generateEmptyMetadata());
+	@Override
+	public ResponseEntity<DataTypesResponse> variablesDatatypesGet(@Valid Integer pageSize, @Valid Integer page) {
+
+		Metadata metaData = generateMetaDataTemplate(page, pageSize);
+		List<String> data = observationVariableService.getDataTypes(metaData);
+		
+		DataTypesResponseResult result = new DataTypesResponseResult();
+		result.setData(data);
+		DataTypesResponse response = new DataTypesResponse();
+		response.setMetadata(metaData);
+		response.setResult(result);
+		return new ResponseEntity<DataTypesResponse>(response, HttpStatus.OK);
 	}
-	
+
 	@CrossOrigin
-	@RequestMapping(path="brapi/v1/variables/datatypes", method= {RequestMethod.GET})
-	public GenericResults<GenericResultsDataList<String>> getVariableDataTypes(
-			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
-			@RequestParam(value = "page", defaultValue = "0") int page) {
-		MetaData metaData = generateMetaDataTemplate(page, pageSize);
-		List<String> dataTypes = observationVariableService.getDataTypes(metaData);
-		return GenericResults.withList(dataTypes).withMetaData(metaData);
+	@Override
+	public ResponseEntity<ObservationVariablesResponse> variablesGet(@Valid Integer pageSize, @Valid Integer page,
+			@Valid String traitClass) {
+		Metadata metaData = generateMetaDataTemplate(page, pageSize);
+		List<ObservationVariable> data = observationVariableService.getVariables(traitClass, metaData);
+		
+		ObservationVariablesResponseResult result = new ObservationVariablesResponseResult();
+		result.setData(data);
+		ObservationVariablesResponse response = new ObservationVariablesResponse();
+		response.setMetadata(metaData);
+		response.setResult(result);
+		return new ResponseEntity<ObservationVariablesResponse>(response, HttpStatus.OK);
 	}
-	
+
 	@CrossOrigin
-	@RequestMapping(path="brapi/v1/ontologies", method= {RequestMethod.GET})
-	public GenericResults<GenericResultsDataList<Ontology>> getOntologies(
-			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
-			@RequestParam(value = "page", defaultValue = "0") int page) {
-		MetaData metaData = generateMetaDataTemplate(page, pageSize);
-		List<Ontology> ontologies = observationVariableService.getOntologies(metaData);
-		return GenericResults.withList(ontologies).withMetaData(metaData);
+	@Override
+	public ResponseEntity<ObservationVariableResponse> variablesObservationVariableDbIdGet(
+			String observationVariableDbId) {
+		ObservationVariable result = observationVariableService.getVariable(observationVariableDbId);
+		
+		ObservationVariableResponse response = new ObservationVariableResponse();
+		response.setMetadata(generateEmptyMetadata());
+		response.setResult(result);
+		return new ResponseEntity<ObservationVariableResponse>(response, HttpStatus.OK);
 	}
 }

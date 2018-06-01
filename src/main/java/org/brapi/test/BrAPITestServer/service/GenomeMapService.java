@@ -5,33 +5,39 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.brapi.test.BrAPITestServer.model.entity.GenomeMapEntity;
+import org.brapi.test.BrAPITestServer.model.entity.LinkageGroupEntity;
 import org.brapi.test.BrAPITestServer.model.entity.MarkerEntity;
-import org.brapi.test.BrAPITestServer.model.rest.GenomeMapData;
-import org.brapi.test.BrAPITestServer.model.rest.GenomeMapDetail;
-import org.brapi.test.BrAPITestServer.model.rest.GenomeMapSummary;
-import org.brapi.test.BrAPITestServer.model.rest.LinkageGroup;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.repository.GenomeMapRepository;
+import org.brapi.test.BrAPITestServer.repository.LinkageGroupRepository;
 import org.brapi.test.BrAPITestServer.repository.MarkerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import io.swagger.model.GenomeMap;
+import io.swagger.model.LinkageGroup;
+import io.swagger.model.MapDetails;
+import io.swagger.model.MarkerSummaryLinkageGroup;
+import io.swagger.model.MarkerSummaryMap;
+import io.swagger.model.Metadata;
+
 @Service
 public class GenomeMapService {
 
 	private GenomeMapRepository genomeMapRepository;
+	private LinkageGroupRepository linkageGroupRepository;
 	private MarkerRepository markerRepository;
 
 	@Autowired
-	public GenomeMapService(GenomeMapRepository genomeMapRepository, MarkerRepository markerRepository) {
+	public GenomeMapService(GenomeMapRepository genomeMapRepository, LinkageGroupRepository linkageGroupRepository, MarkerRepository markerRepository) {
 		this.genomeMapRepository = genomeMapRepository;
+		this.linkageGroupRepository = linkageGroupRepository;
 		this.markerRepository = markerRepository;
 	}
 
-	public List<GenomeMapSummary> getMapSummaries(String speciesId, String type, MetaData metaData) {
-		Page<GenomeMapSummary> summaries;
+	public List<GenomeMap> getMapSummaries(String speciesId, String type, Metadata metaData) {
+		Page<GenomeMap> summaries;
 		if (speciesId != null && type != null) {
 			summaries = genomeMapRepository
 					.findBySpeciesAndType(speciesId, type, PagingUtility.getPageRequest(metaData))
@@ -51,12 +57,12 @@ public class GenomeMapService {
 
 	}
 
-	private GenomeMapSummary convertFromEntity(GenomeMapEntity entity) {
-		GenomeMapSummary summary = new GenomeMapSummary();
+	private GenomeMap convertFromEntity(GenomeMapEntity entity) {
+		GenomeMap summary = new GenomeMap();
 		summary.setComments(entity.getComments());
 		summary.setMapDbId(entity.getId());
 		summary.setName(entity.getName());
-		summary.setPublishedDate(entity.getPublishedDate());
+		summary.setPublishedDate(DateUtility.toLocalDate(entity.getPublishedDate()));
 		summary.setSpecies(entity.getSpecies());
 		summary.setType(entity.getType());
 		summary.setUnit(entity.getUnit());
@@ -68,56 +74,79 @@ public class GenomeMapService {
 		return summary;
 	}
 
-	public GenomeMapDetail getMapDetail(String mapDbId) {
+	public MapDetails getMapDetail(Metadata metaData, String mapDbId) {
 		Optional<GenomeMapEntity> entityOption = genomeMapRepository.findById(mapDbId);
-		GenomeMapDetail detail = null;
+		MapDetails detail = null;
 		if (entityOption.isPresent()) {
 			GenomeMapEntity entity = entityOption.get();
-			detail = new GenomeMapDetail();
+			detail = new MapDetails();
 			detail.setMapDbId(entity.getId());
 			detail.setName(entity.getName());
 			detail.setType(entity.getType());
 			detail.setUnit(entity.getUnit());
-			
-			List<LinkageGroup> groups = entity.getLinkageGroups()
+
+			Pageable pageReq = PagingUtility.getPageRequest(metaData);
+			Page<LinkageGroupEntity> page = linkageGroupRepository.findAllByGenomeMapDbId(mapDbId, pageReq);
+			PagingUtility.calculateMetaData(metaData, page);
+				
+			List<LinkageGroup> groups = page
 					.stream()
 					.map((linkageGroupEntity) -> {
 				LinkageGroup linkageGroup = new LinkageGroup();
 				linkageGroup.setLinkageGroupName(linkageGroupEntity.getLinkageGroupName());
 				linkageGroup.setMarkerCount(linkageGroupEntity.getMarkers().size());
-				int maxPosition = 0;
-				for (MarkerEntity marker : linkageGroupEntity.getMarkers()) {
-					int markerPos = Integer.parseInt(marker.getLocation());
-					if (markerPos > maxPosition) {
-						maxPosition = markerPos;
-					}
-				}
-				linkageGroup.setMaxPosition(maxPosition);
+				linkageGroup.setMaxPosition(linkageGroupEntity.getMaxMarkerPosition());
 				return linkageGroup;
 			}).collect(Collectors.toList());
 
 			detail.setLinkageGroups(groups);
-			detail.setData(groups);
+			//TODO fix this in Swagger spec
+			//detail.setData(groups);
 		}
 		return detail;
 	}
 
-	public List<GenomeMapData> getMapPositions(String mapDbId, String linkageGroupName, int minPosition, int maxPosition,
-			MetaData metaData) {
-		Page<MarkerEntity> page;
+	public List<MarkerSummaryMap> getMapPositions(String mapDbId, String linkageGroupName, Metadata metaData) {
+		return getMapPositionEntities(mapDbId, linkageGroupName, null, null, metaData).stream()
+				.map(this::convertFromEntityToSummaryMap)
+				.collect(Collectors.toList());
+	}
+
+	public List<MarkerSummaryLinkageGroup> getMapPositions(String mapDbId, String linkageGroupName, Integer min, Integer max, Metadata metaData) {
+		return getMapPositionEntities(mapDbId, linkageGroupName, min, max, metaData).stream()
+				.filter((entity) -> { 
+					return positionFilter(entity.getLocation(), min, max);
+				})
+				.map(this::convertFromEntityToSummaryLinkageGroup)
+				.collect(Collectors.toList());
+	}
+
+	private Page<MarkerEntity> getMapPositionEntities(String mapDbId, String linkageGroupName, Integer min, Integer max, Metadata metaData) {
+		Page<MarkerEntity> page = null;
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-		if (linkageGroupName == null) {
+		
+		boolean nameb = linkageGroupName != null;
+		boolean minb = min != null;
+		boolean maxb = max != null;
+		if (nameb && minb && maxb) {
+			page = markerRepository.findAllByLinkageGroup_GenomeMapDbIdAndLinkageGroup_LinkageGroupNameAndLocationGreaterThanEqualAndLocationLessThanEqual(mapDbId, linkageGroupName, min, max, pageReq);
+		}else if (nameb && minb && !maxb) {
+			page = markerRepository.findAllByLinkageGroup_GenomeMapDbIdAndLinkageGroup_LinkageGroupNameAndLocationGreaterThanEqual(mapDbId, linkageGroupName, min, pageReq);
+		}else if (nameb && !minb && maxb) {
+			page = markerRepository.findAllByLinkageGroup_GenomeMapDbIdAndLinkageGroup_LinkageGroupNameAndLocationLessThanEqual(mapDbId, linkageGroupName, max, pageReq);
+		}else if (nameb && !minb && !maxb) {
+			page = markerRepository.findAllByLinkageGroup_GenomeMapDbIdAndLinkageGroup_LinkageGroupName(linkageGroupName, mapDbId, pageReq);
+		}else if (!nameb && minb && maxb) {
+			page = markerRepository.findAllByLinkageGroup_GenomeMapDbIdAndLocationGreaterThanEqualAndLocationLessThanEqual(mapDbId, min, max, pageReq);
+		}else if (!nameb && minb && !maxb) {
+			page = markerRepository.findAllByLinkageGroup_GenomeMapDbIdAndLocationGreaterThanEqual(mapDbId, min, pageReq);
+		}else if (!nameb && !minb && maxb) {
+			page = markerRepository.findAllByLinkageGroup_GenomeMapDbIdAndLocationLessThanEqual(mapDbId, max, pageReq);
+		}else if (!nameb && !minb && !maxb) {
 			page = markerRepository.findAllByLinkageGroup_GenomeMapDbId(mapDbId, pageReq);
-		} else {
-			page = markerRepository.findAllByLinkageGroup_LinkageGroupNameAndLinkageGroup_GenomeMapDbId(linkageGroupName, mapDbId, pageReq);
 		}
 		PagingUtility.calculateMetaData(metaData, page);
-		return page.stream()
-				.filter((entity) -> { 
-					return positionFilter(entity.getLocation(), minPosition, maxPosition);
-				})
-				.map(this::convertFromEntity)
-				.collect(Collectors.toList());
+		return page;
 	}
 
 	private boolean positionFilter(String location, int minPosition, int maxPosition) {
@@ -125,9 +154,16 @@ public class GenomeMapService {
 		return ((loc <= maxPosition || maxPosition < 0) && (loc >= minPosition || minPosition < 0));
 	}
 
-	private GenomeMapData convertFromEntity(MarkerEntity entity) {
-		GenomeMapData marker = new GenomeMapData();
+	private MarkerSummaryMap convertFromEntityToSummaryMap(MarkerEntity entity) {
+		MarkerSummaryMap marker = new MarkerSummaryMap();
 		marker.setLinkageGroupName(entity.getLinkageGroup().getLinkageGroupName());
+		marker.setLocation(entity.getLocation());
+		marker.setMarkerDbId(entity.getId());
+		marker.setMarkerName(entity.getMarkerName());
+		return marker;
+	}
+	private MarkerSummaryLinkageGroup convertFromEntityToSummaryLinkageGroup(MarkerEntity entity) {
+		MarkerSummaryLinkageGroup marker = new MarkerSummaryLinkageGroup();
 		marker.setLocation(entity.getLocation());
 		marker.setMarkerDbId(entity.getId());
 		marker.setMarkerName(entity.getMarkerName());

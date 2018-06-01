@@ -9,18 +9,17 @@ import javax.persistence.Table;
 @Entity
 @Table(name="allele")
 public class AlleleEntity extends BaseEntity{
-	@Column
-	private String markerProfileDbId;
+	@ManyToOne(cascade=CascadeType.DETACH)
+	private MarkerProfileEntity markerProfile;
 	@ManyToOne(cascade=CascadeType.DETACH)
 	private MarkerEntity marker;
+	@ManyToOne(cascade=CascadeType.DETACH)
+	private SampleEntity sample;
+	@ManyToOne(cascade=CascadeType.DETACH)
+	private AlleleMatrixEntity matrix;
 	@Column
 	private String alleleCode;
-	public String getMarkerProfileDbId() {
-		return markerProfileDbId;
-	}
-	public void setMarkerProfileDbId(String markerProfileDbId) {
-		this.markerProfileDbId = markerProfileDbId;
-	}
+
 	public String getAlleleCode() {
 		return alleleCode;
 	}
@@ -32,5 +31,17 @@ public class AlleleEntity extends BaseEntity{
 	}
 	public void setMarker(MarkerEntity marker) {
 		this.marker = marker;
+	}
+	public MarkerProfileEntity getMarkerProfile() {
+		return markerProfile;
+	}
+	public void setMarkerProfile(MarkerProfileEntity markerProfile) {
+		this.markerProfile = markerProfile;
+	}
+	public SampleEntity getSample() {
+		return sample;
+	}
+	public void setSample(SampleEntity sample) {
+		this.sample = sample;
 	}
 }

@@ -2,12 +2,12 @@ package org.brapi.test.BrAPITestServer.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.model.entity.GermplasmEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationEntity;
@@ -15,29 +15,6 @@ import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.SeasonEntity;
 import org.brapi.test.BrAPITestServer.model.entity.StudyAddtionalInfoEntity;
 import org.brapi.test.BrAPITestServer.model.entity.StudyEntity;
-import org.brapi.test.BrAPITestServer.model.rest.DataLink;
-import org.brapi.test.BrAPITestServer.model.rest.EntryType;
-import org.brapi.test.BrAPITestServer.model.rest.GermplasmSummary;
-import org.brapi.test.BrAPITestServer.model.rest.Observation;
-import org.brapi.test.BrAPITestServer.model.rest.ObservationUnit;
-import org.brapi.test.BrAPITestServer.model.rest.ObservationUnitDbIdListWrapper;
-import org.brapi.test.BrAPITestServer.model.rest.ObservationUnitXref;
-import org.brapi.test.BrAPITestServer.model.rest.ObservationVariable;
-import org.brapi.test.BrAPITestServer.model.rest.Season;
-import org.brapi.test.BrAPITestServer.model.rest.Study;
-import org.brapi.test.BrAPITestServer.model.rest.StudyGermplasm;
-import org.brapi.test.BrAPITestServer.model.rest.StudyObservation;
-import org.brapi.test.BrAPITestServer.model.rest.StudyObservationUnit;
-import org.brapi.test.BrAPITestServer.model.rest.StudyObservationUnitRequest;
-import org.brapi.test.BrAPITestServer.model.rest.StudyObservationUnitTable;
-import org.brapi.test.BrAPITestServer.model.rest.StudyObservationUnitWrapper;
-import org.brapi.test.BrAPITestServer.model.rest.StudyObservationVariable;
-import org.brapi.test.BrAPITestServer.model.rest.StudyPlotLayout;
-import org.brapi.test.BrAPITestServer.model.rest.StudySearchRequest;
-import org.brapi.test.BrAPITestServer.model.rest.StudySummary;
-import org.brapi.test.BrAPITestServer.model.rest.StudyType;
-import org.brapi.test.BrAPITestServer.model.rest.Update;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.repository.ObservationRepository;
 import org.brapi.test.BrAPITestServer.repository.ObservationUnitRepository;
 import org.brapi.test.BrAPITestServer.repository.SeasonRepository;
@@ -49,6 +26,37 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+
+import io.swagger.model.DataLink;
+import io.swagger.model.GermplasmSummary;
+import io.swagger.model.GermplasmSummaryList;
+import io.swagger.model.Metadata;
+import io.swagger.model.NewObservationDbIds;
+import io.swagger.model.NewObservationUnitDbIds;
+import io.swagger.model.NewObservationUnitRequest;
+import io.swagger.model.NewObservationsRequest;
+import io.swagger.model.NewObservationsRequestDeprecatedData;
+import io.swagger.model.NewObservationsRequestObservations;
+import io.swagger.model.NewObservationsRequestWrapperDeprecated;
+import io.swagger.model.NewObservationsTableRequest;
+import io.swagger.model.Observation;
+import io.swagger.model.ObservationSummary;
+import io.swagger.model.ObservationUnitPosition;
+import io.swagger.model.ObservationUnitStudy;
+import io.swagger.model.ObservationUnitXref;
+import io.swagger.model.ObservationVariable;
+import io.swagger.model.ObservationsTable;
+import io.swagger.model.ObservationUnitPosition.EntryTypeEnum;
+import io.swagger.model.Season;
+import io.swagger.model.Study;
+import io.swagger.model.StudyLastUpdate;
+import io.swagger.model.StudyLayoutRequest;
+import io.swagger.model.StudyObservationVariablesResponseResult;
+import io.swagger.model.StudySearchRequest;
+import io.swagger.model.StudySummary;
+import io.swagger.model.StudyType;
+import io.swagger.model.StudySearchRequest.SortByEnum;
+import io.swagger.model.StudySearchRequest.SortOrderEnum;
 
 @Service
 public class StudyService {
@@ -77,13 +85,13 @@ public class StudyService {
 		this.contactService = contactService;
 	}
 
-	public List<Season> getSeasons(Integer year, MetaData metaData) {
+	public List<Season> getSeasons(String year, Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 		Page<SeasonEntity> seasonPage;
 		if (year == null) {
 			seasonPage = seasonRepository.findAll(pageReq);
 		} else {
-			seasonPage = seasonRepository.findAllByYear(year, pageReq);
+			seasonPage = seasonRepository.findAllByYear(Integer.parseInt(year), pageReq);
 		}
 		List<Season> seasons = seasonPage.map((entity) -> {
 			Season season = new Season();
@@ -97,7 +105,7 @@ public class StudyService {
 		return seasons;
 	}
 
-	public List<StudyType> getStudyTypes(MetaData metaData) {
+	public List<StudyType> getStudyTypes(Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 		List<StudyType> studyTypes = studyTypeRepository.findAll(pageReq).map((entity) -> {
 			StudyType studyType = new StudyType();
@@ -110,72 +118,85 @@ public class StudyService {
 		return studyTypes;
 	}
 
-	public List<StudySummary> getStudies(String studyType, String programDbId, String trialDbId, String locationDbId, String seasonDbId,
-			List<String> germplasmDbIds, List<String> observationVariableDbIds, boolean active, String sortBy,
-			String sortOrder, MetaData metaData) {
+	public List<StudySummary> getStudies(String studyType, String programDbId, String trialDbId, String studyDbId,
+			String locationDbId, String seasonDbId, List<String> germplasmDbIds, List<String> observationVariableDbIds,
+			boolean active, String sortBy, String sortOrder, Metadata metaData) {
 
-		return searchStudies(SearchUtility.buildSearchParam(studyType), 
-				SearchUtility.buildSearchParam(programDbId), 
+		return searchStudies(SearchUtility.buildSearchParam(studyType),
+				SearchUtility.buildSearchParam(programDbId),
 				SearchUtility.buildSearchParam(trialDbId), 
-				SearchUtility.buildSearchParam(""),
+				SearchUtility.buildSearchParam(studyDbId),
 				SearchUtility.buildSearchParam(""), 
+				SearchUtility.buildSearchParam(""),
 				SearchUtility.buildSearchParam(""), 
 				SearchUtility.buildSearchParam(locationDbId),
 				SearchUtility.buildSearchParam(seasonDbId), 
 				SearchUtility.buildSearchParam(germplasmDbIds),
-				SearchUtility.buildSearchParam(observationVariableDbIds), active, sortBy, sortOrder, metaData);
+				SearchUtility.buildSearchParam(observationVariableDbIds), 
+				active, SortByEnum.fromValue(sortBy), SortOrderEnum.fromValue(sortOrder), metaData);
 	}
 
-	public List<StudySummary> getStudies(StudySearchRequest request, MetaData metaData) {
-		return searchStudies(SearchUtility.buildSearchParam(request.getStudyType()), 
-				SearchUtility.buildSearchParam(""), 
+	public List<StudySummary> getStudies(StudySearchRequest request, Metadata metaData) {
+		return searchStudies(SearchUtility.buildSearchParam(request.getStudyType()),
+				SearchUtility.buildSearchParam(request.getProgramDbIds()),
 				SearchUtility.buildSearchParam(request.getTrialDbIds()),
-				SearchUtility.buildSearchParam(request.getProgramNames()), 
+				SearchUtility.buildSearchParam(request.getStudyDbIds()),
+				SearchUtility.buildSearchParam(request.getProgramNames()),
 				SearchUtility.buildSearchParam(request.getStudyNames()),
-				SearchUtility.buildSearchParam(request.getStudyLocations()), 
-				SearchUtility.buildSearchParam(""),
-				SearchUtility.buildSearchParam(""), 
+				SearchUtility.buildSearchParam(request.getStudyLocations()),
+				SearchUtility.buildSearchParam(request.getLocationDbIds()),
+				SearchUtility.buildSearchParam(request.getSeasonDbId()),
 				SearchUtility.buildSearchParam(request.getGermplasmDbIds()),
 				SearchUtility.buildSearchParam(request.getObservationVariableDbIds()), 
-				request.isActive(), request.getSortBy(),
-				request.getSortOrder(), metaData);
+				request.isActive().booleanValue(), request.getSortBy(), request.getSortOrder(), metaData);
 	}
 
-	private List<StudySummary> searchStudies(List<String> studyTypes, List<String> programDbIds, List<String> trialDbIds,
-			List<String> programNames, List<String> studyNames, List<String> studyLocations, List<String> locationDbIds,
-			List<String> seasonDbIds, List<String> germplasmDbIds, List<String> observationVariableDbIds,
-			boolean active, String sortBy, String sortOrder, MetaData metaData) {
-		Sort sort = Sort.by(Direction.fromString(sortOrder), sortBy);
+	private List<StudySummary> searchStudies(List<String> studyTypes, 
+			List<String> programDbIds,
+			List<String> trialDbIds, 
+			List<String> studyDbIds, 
+			List<String> programNames, 
+			List<String> studyNames,
+			List<String> studyLocations, 
+			List<String> locationDbIds, 
+			List<String> seasonDbIds,
+			List<String> germplasmDbIds, 
+			List<String> observationVariableDbIds, 
+			boolean active, SortByEnum sortBy, SortOrderEnum sortOrder, Metadata metaData) {
+
+		Sort sort = Sort.by(Direction.fromString(sortOrder.toString()), sortBy.toString());
 		Pageable pageReq = PagingUtility.getPageRequest(metaData, sort);
-		Page<StudyEntity> studiesPage = studyRepository.findBySearch(studyTypes, programDbIds, trialDbIds, programNames, studyNames,
-				studyLocations, locationDbIds, seasonDbIds, germplasmDbIds, observationVariableDbIds, active, pageReq);
+		Page<StudyEntity> studiesPage = studyRepository.findBySearch(studyTypes, programDbIds, trialDbIds, studyDbIds,
+				programNames, studyNames, studyLocations, locationDbIds, seasonDbIds, germplasmDbIds,
+				observationVariableDbIds, active, pageReq);
 		PagingUtility.calculateMetaData(metaData, studiesPage);
+
 		List<StudySummary> summaries = studiesPage.map((entity) -> {
-					StudySummary sum = new StudySummary();
-					sum.setActive(String.valueOf(entity.isActive()));
-					sum.setEndDate(entity.getEndDate());
-					sum.setLocationDbId(entity.getLocation().getId());
-					sum.setLocationName(entity.getLocation().getName());
-					sum.setName(entity.getStudyName());
-					sum.setProgramDbId(entity.getTrial().getProgram().getId());
-					sum.setProgramName(entity.getTrial().getProgram().getName());
-					sum.setStartDate(entity.getStartDate());
-					sum.setStudyDbId(entity.getId());
-					sum.setStudyType(entity.getStudyType().getName());
-					sum.setTrialDbId(entity.getTrial().getId());
-					sum.setTrialName(entity.getTrial().getTrialName());
+			StudySummary sum = new StudySummary();
+			sum.setActive(entity.isActive());
+			sum.setEndDate(DateUtility.toLocalDate(entity.getEndDate()));
+			sum.setLocationDbId(entity.getLocation().getId());
+			sum.setLocationName(entity.getLocation().getName());
+			sum.setName(entity.getStudyName());
+			sum.setProgramDbId(entity.getTrial().getProgram().getId());
+			sum.setProgramName(entity.getTrial().getProgram().getName());
+			sum.setStartDate(DateUtility.toLocalDate(entity.getStartDate()));
+			sum.setStudyDbId(entity.getId());
+			sum.setStudyType(entity.getStudyType().getName());
+			sum.setTrialDbId(entity.getTrial().getId());
+			sum.setTrialName(entity.getTrial().getTrialName());
 
-					sum.setSeasons(entity.getSeasons().stream().map(e -> {
-						return e.getSeason() + " " + e.getYear();
-					}).collect(Collectors.toList()));
+			sum.setSeasons(entity.getSeasons().stream().map(e -> {
+				return e.getSeason() + " " + e.getYear();
+			}).collect(Collectors.toList()));
 
-					sum.setAdditionalInfo(new HashMap<>());
-					for (StudyAddtionalInfoEntity e : entity.getAdditionalInfo()) {
-						sum.getAdditionalInfo().put(e.getKey(), e.getValue());
-					}
+			sum.setAdditionalInfo(new HashMap<>());
+			for (StudyAddtionalInfoEntity e : entity.getAdditionalInfo()) {
+				sum.getAdditionalInfo().put(e.getKey(), e.getValue());
+			}
 
-					return sum;
-				}).getContent();
+			return sum;
+		}).getContent();
 		return summaries;
 	}
 
@@ -186,9 +207,9 @@ public class StudyService {
 			StudyEntity entity = entityOption.get();
 			study = new Study();
 
-			study.setActive(String.valueOf(entity.isActive()));
-			study.setEndDate(entity.getEndDate());
-			study.setStartDate(entity.getStartDate());
+			study.setActive(entity.isActive());
+			study.setEndDate(DateUtility.toLocalDate(entity.getEndDate()));
+			study.setStartDate(DateUtility.toLocalDate(entity.getStartDate()));
 			study.setStudyDbId(entity.getId());
 			study.setStudyType(entity.getStudyType().getName());
 			study.setTrialDbId(entity.getTrial().getId());
@@ -198,8 +219,8 @@ public class StudyService {
 			study.setStudyDescription(entity.getStudyDescription());
 			study.setStudyName(entity.getStudyName());
 
-			study.setLastUpdate(new Update());
-			study.getLastUpdate().setTimestamp(entity.getTimestamp());
+			study.setLastUpdate(new StudyLastUpdate());
+			study.getLastUpdate().setTimestamp(DateUtility.toOffsetDateTime(entity.getTimestamp()));
 			study.getLastUpdate().setVersion(entity.getVersion());
 
 			study.setContacts(entity.getContacts().stream().map(this.contactService::convertFromEntity)
@@ -225,11 +246,11 @@ public class StudyService {
 		return study;
 	}
 
-	public StudyObservationVariable getStudyObservationVariables(String studyDbId) {
+	public StudyObservationVariablesResponseResult getStudyObservationVariables(String studyDbId) {
 		Study study = getStudy(studyDbId);
-		StudyObservationVariable wrapper = null;
+		StudyObservationVariablesResponseResult wrapper = null;
 		if (study != null) {
-			wrapper = new StudyObservationVariable();
+			wrapper = new StudyObservationVariablesResponseResult();
 			wrapper.setData(observationVariableService.getVariablesForStudy(studyDbId));
 			wrapper.setStudyDbId(study.getStudyDbId());
 			wrapper.setTrialName(study.getTrialName());
@@ -237,15 +258,15 @@ public class StudyService {
 		return wrapper;
 	}
 
-	public StudyGermplasm getStudyGermplasm(String studyDbId, MetaData metaData) {
+	public GermplasmSummaryList getStudyGermplasm(String studyDbId, Metadata metaData) {
 		Optional<StudyEntity> studyOption = studyRepository.findById(studyDbId);
-		StudyGermplasm germplasms = null;
+		GermplasmSummaryList germplasms = null;
 		if (studyOption.isPresent()) {
 			Pageable pageReq = PagingUtility.getPageRequest(metaData);
 			Page<GermplasmEntity> germplasmPage = studyRepository.findGermplasmsByStudy(studyDbId, pageReq);
 			PagingUtility.calculateMetaData(metaData, germplasmPage);
 
-			germplasms = new StudyGermplasm();
+			germplasms = new GermplasmSummaryList();
 			germplasms.setData(germplasmPage.map((entity) -> {
 				GermplasmSummary germplasm = new GermplasmSummary();
 				germplasm.setAccessionNumber(entity.getAccessionNumber());
@@ -267,25 +288,25 @@ public class StudyService {
 
 	}
 
-	public List<String> getObservationLevels(MetaData metaData) {
+	public List<String> getObservationLevels(Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 		Page<String> levelsPage = observationUnitRepository.findObservationLevels(pageReq);
 		PagingUtility.calculateMetaData(metaData, levelsPage);
 		return levelsPage.getContent();
 	}
 
-	public List<StudyObservation> getStudyObservations(String studyDbId, String observationLevel, MetaData metaData) {
+	public List<ObservationUnitStudy> getStudyObservations(String studyDbId, String observationLevel, Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 		Page<ObservationUnitEntity> unitsPage;
-		if(observationLevel == null) {
+		if (observationLevel == null) {
 			unitsPage = observationUnitRepository.findAllByStudy_Id(studyDbId, pageReq);
-		}else {
-			unitsPage = observationUnitRepository
-					.findAllByStudy_IdAndObservationLevel(studyDbId, observationLevel, pageReq);
+		} else {
+			unitsPage = observationUnitRepository.findAllByStudy_IdAndObservationLevel(studyDbId, observationLevel,
+					pageReq);
 		}
 		PagingUtility.calculateMetaData(metaData, unitsPage);
-		List<StudyObservation> observations = unitsPage.map((entity) -> {
-			StudyObservation observation = new StudyObservation();
+		List<ObservationUnitStudy> observations = unitsPage.map((entity) -> {
+			ObservationUnitStudy observation = new ObservationUnitStudy();
 			observation.setBlockNumber(entity.getBlockNumber() == null ? null : entity.getBlockNumber().toString());
 			observation.setEntryNumber(entity.getEntryNumber());
 			observation.setEntryType(entity.getEntryType());
@@ -297,17 +318,16 @@ public class StudyService {
 			observation.setPlantNumber(entity.getPlantNumber() == null ? null : entity.getPlantNumber().toString());
 			observation.setPlotNumber(entity.getPlotNumber() == null ? null : entity.getPlotNumber().toString());
 			observation.setReplicate(entity.getReplicate());
-			observation.setxCoordinate(entity.getX());
-			observation.setyCoordinate(entity.getY());
+			observation.setX(entity.getX());
+			observation.setY(entity.getY());
 
 			observation.setObservations(entity.getObservations().stream().map(e -> {
-				Observation ob = new Observation();
+				ObservationSummary ob = new ObservationSummary();
 				ob.setCollector(e.getCollector());
 				ob.setObservationDbId(e.getId());
-				ob.setObservationTimeStamp(e.getObservationTimeStamp());
+				ob.setObservationTimeStamp(DateUtility.toOffsetDateTime(e.getObservationTimeStamp()));
 				ob.setObservationVariableDbId(e.getObservationVariable().getId());
 				ob.setObservationVariableName(e.getObservationVariable().getName());
-				ob.setSeason(e.getSeason().getSeason() + " " + e.getSeason().getYear());
 				ob.setValue(e.getValue());
 				return ob;
 			}).collect(Collectors.toList()));
@@ -325,40 +345,45 @@ public class StudyService {
 		return observations;
 	}
 
-	public ObservationUnitDbIdListWrapper saveObservationUnits(StudyObservationUnitRequest request) {
-		ObservationUnitDbIdListWrapper storedUnits = new ObservationUnitDbIdListWrapper();
-		storedUnits.setObservationUnitDbIds(new ArrayList<>());
-		for (StudyObservationUnit unit : request.getResults().getData()) {
+	public void saveObservationUnits(NewObservationsRequestWrapperDeprecated request) {
+		for (NewObservationsRequestDeprecatedData unit : request.getResult().getData()) {
 			ObservationUnitEntity unitEntity = observationUnitRepository.findById(unit.getObservatioUnitDbId())
 					.orElse(new ObservationUnitEntity());
 			unitEntity.setObservations(new ArrayList<>());
 
-			for (Observation observation : unit.getObservations()) {
+			for (NewObservationsRequestObservations observation : unit.getObservations()) {
 				ObservationEntity observationEntity = convertToEntity(observation);
 				unitEntity.getObservations().add(observationEntity);
 			}
 
-			ObservationUnitEntity storedEntity = observationUnitRepository.save(unitEntity);
-			storedUnits.getObservationUnitDbIds().add(storedEntity.getId());
+			observationUnitRepository.save(unitEntity);
 		}
-		return storedUnits;
 	}
 
 	private ObservationEntity convertToEntity(Observation observation) {
 		ObservationEntity obe = observationRepository.findById(observation.getObservationDbId())
 				.orElse(new ObservationEntity());
-		obe.setCollector(observation.getCollector());
-		obe.setObservationTimeStamp(observation.getObservationTimeStamp());
+		obe.setCollector(observation.getOperator());
+		obe.setObservationTimeStamp(DateUtility.toDate(observation.getObservationTimeStamp()));
 		obe.setValue(observation.getValue());
 		obe.setObservationVariable(
 				observationVariableService.getVariableEntity(observation.getObservationVariableDbId()));
-		// TODO high probability this wont work
-		obe.setSeason(seasonRepository.findById(observation.getSeason()).get());
 		return obe;
 	}
 
-	public StudyObservationUnitTable getStudyObservationUnitTable(String studyDbId, String format) {
-		StudyObservationUnitTable tableWrapper = new StudyObservationUnitTable();
+	private ObservationEntity convertToEntity(NewObservationsRequestObservations observation) {
+		ObservationEntity obe = observationRepository.findById(observation.getObservationDbId())
+				.orElse(new ObservationEntity());
+		obe.setCollector(observation.getCollector());
+		obe.setObservationTimeStamp(DateUtility.toDate(observation.getObservationTimeStamp()));
+		obe.setValue(observation.getValue());
+		obe.setObservationVariable(
+				observationVariableService.getVariableEntity(observation.getObservationVariableDbId()));
+		return obe;
+	}
+
+	public ObservationsTable getStudyObservationUnitTable(String studyDbId, String format) {
+		ObservationsTable tableWrapper = new ObservationsTable();
 		tableWrapper.setHeaderRow(buildHeaderRow());
 		List<ObservationVariable> variables = observationVariableService.getVariablesForStudy(studyDbId);
 		tableWrapper.setObservationVariableDbIds(
@@ -377,22 +402,22 @@ public class StudyService {
 		return Arrays.asList(headerRow);
 	}
 
-	private List<List<Object>> buildDataMatrix(List<ObservationUnitEntity> units) {
-		List<List<Object>> data = new ArrayList<>();
+	private List<List<String>> buildDataMatrix(List<ObservationUnitEntity> units) {
+		List<List<String>> data = new ArrayList<>();
 		for (ObservationUnitEntity unit : units) {
 			for (ObservationEntity observation : unit.getObservations()) {
-				List<Object> row = new ArrayList<>();
-				row.add(observation.getSeason().getYear());
+				List<String> row = new ArrayList<>();
+				row.add(observation.getSeason().getYear().toString());
 				row.add(unit.getStudy().getId());
 				row.add(unit.getStudy().getStudyName());
 				row.add(unit.getStudy().getLocation().getCountryName());
 				row.add(unit.getGermplasm().getId());
 				row.add(unit.getGermplasm().getGermplasmName());
 				row.add(unit.getId());
-				row.add(unit.getPlotNumber());
+				row.add(unit.getPlotNumber().toString());
 				row.add(unit.getReplicate());
-				row.add(unit.getBlockNumber());
-				row.add(observation.getObservationTimeStamp());
+				row.add(unit.getBlockNumber().toString());
+				row.add(DateUtility.toTimeString(observation.getObservationTimeStamp()));
 				row.add(unit.getEntryType());
 				row.add(unit.getX());
 				row.add(unit.getY());
@@ -403,50 +428,14 @@ public class StudyService {
 		return data;
 	}
 
-	public void saveStudyObservationUnitTable(StudyObservationUnitTable studyObservationUnitTable) {
-		StudyObservationUnitRequest request = new StudyObservationUnitRequest();
-		request.setResults(new StudyObservationUnitWrapper());
-		request.getResults().setData(buildObservationUnits(studyObservationUnitTable));
-		saveObservationUnits(request);
-	}
-
-	private List<StudyObservationUnit> buildObservationUnits(StudyObservationUnitTable studyObservationUnitTable) {
-		Map<String, StudyObservationUnit> unitsMap = new HashMap<>();
-		for (List<Object> row : studyObservationUnitTable.getData()) {
-			String observatioUnitDbId = (String) row.get(0);
-			String collector = (String) row.get(1);
-			Date observationTimeStamp = DateUtility.convertStringToDate((String) row.get(2));
-
-			StudyObservationUnit unit;
-			if (unitsMap.containsKey(observatioUnitDbId)) {
-				unit = unitsMap.get(observatioUnitDbId);
-			} else {
-				unit = new StudyObservationUnit();
-				unit.setObservatioUnitDbId(observatioUnitDbId);
-				unitsMap.put(observatioUnitDbId, unit);
-				unit.setObservations(new ArrayList<>());
-			}
-
-			for (int i = 3; i < row.size(); i++) {
-				Observation observation = new Observation();
-				observation.setCollector(collector);
-				observation.setObservationTimeStamp(observationTimeStamp);
-				observation.setObservationVariableDbId(studyObservationUnitTable.getHeaderRow().get(i));
-				observation.setValue((String) row.get(i));
-				unit.getObservations().add(observation);
-			}
-		}
-		return new ArrayList<>(unitsMap.values());
-	}
-
-	public List<StudyPlotLayout> getStudyPlotLayouts(String studyDbId, MetaData metaData) {
+	public List<ObservationUnitPosition> getStudyPlotLayouts(String studyDbId, Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 		Page<ObservationUnitEntity> unitsPage = observationUnitRepository.findAllByStudy_Id(studyDbId, pageReq);
 		PagingUtility.calculateMetaData(metaData, unitsPage);
-		List<StudyPlotLayout> plots = unitsPage.map(entity -> {
-			StudyPlotLayout plot = new StudyPlotLayout();
+		List<ObservationUnitPosition> plots = unitsPage.map(entity -> {
+			ObservationUnitPosition plot = new ObservationUnitPosition();
 			plot.setBlockNumber(entity.getBlockNumber() == null ? null : entity.getBlockNumber().toString());
-			plot.setEntryType(EntryType.valueOf(entity.getEntryType()));
+			plot.setEntryType(EntryTypeEnum.valueOf(entity.getEntryType()));
 			plot.setGermplasmDbId(entity.getGermplasm().getId());
 			plot.setGermplasmName(entity.getGermplasm().getGermplasmName());
 			plot.setObservationLevel(entity.getObservationLevel());
@@ -454,18 +443,16 @@ public class StudyService {
 			plot.setObservationUnitName(entity.getObservationUnitName());
 			plot.setReplicate(entity.getReplicate());
 			plot.setStudyDbId(entity.getStudy().getId());
-			plot.setxCoordinate(Integer.parseInt(entity.getX()));
-			plot.setyCoordinate(Integer.parseInt(entity.getY()));
-
-			// TODO not sure where to get this additional info
-			plot.setAdditionalInfo(null);
+			plot.setX(entity.getX());
+			plot.setY(entity.getY());
+			plot.setAdditionalInfo(new HashMap<>());
 			return plot;
 		}).getContent();
 		return plots;
 	}
 
-	public List<ObservationUnit> getObservationUnits(String studyDbId, List<String> observationVariableDbIds,
-			MetaData metaData) {
+	public List<Observation> getObservationUnits(String studyDbId, List<String> observationVariableDbIds,
+			Metadata metaData) {
 		// TODO This call doesnt make sense
 		// it is a mix of ObservationUnits and Observations
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
@@ -477,13 +464,13 @@ public class StudyService {
 					studyDbId, observationVariableDbIds, pageReq);
 		}
 		PagingUtility.calculateMetaData(metaData, observationsPage);
-		List<ObservationUnit> units = observationsPage.map(entity -> {
-			ObservationUnit unit = new ObservationUnit();
+		List<Observation> units = observationsPage.map(entity -> {
+			Observation unit = new Observation();
 			unit.setGermplasmDbId(entity.getObservationUnit().getGermplasm().getId());
 			unit.setGermplasmName(entity.getObservationUnit().getGermplasm().getGermplasmName());
-			unit.setObserationDbId(entity.getId());
+			unit.setObservationDbId(entity.getId());
 			unit.setObservationLevel(entity.getObservationUnit().getObservationLevel());
-			unit.setObservationTimestamp(entity.getObservationTimeStamp());
+			unit.setObservationTimeStamp(DateUtility.toOffsetDateTime(entity.getObservationTimeStamp()));
 			unit.setObservationUnitDbId(entity.getObservationUnit().getId());
 			unit.setObservationUnitName(entity.getObservationUnit().getObservationUnitName());
 			unit.setObservationVariableDbId(entity.getObservationVariable().getId());
@@ -497,6 +484,42 @@ public class StudyService {
 		}).getContent();
 
 		return units;
+	}
+
+	public NewObservationUnitDbIds saveObservationUnit(@Valid List<NewObservationUnitRequest> request) {
+		NewObservationUnitDbIds response = new NewObservationUnitDbIds();
+		for (NewObservationUnitRequest unit : request) {
+			ObservationUnitEntity unitEntity = observationUnitRepository.findById(unit.getObservationUnitDbId())
+					.orElse(new ObservationUnitEntity());
+			unitEntity.setObservations(new ArrayList<>());
+
+			for (Observation observation : unit.getObservations()) {
+				ObservationEntity observationEntity = convertToEntity(observation);
+				unitEntity.getObservations().add(observationEntity);
+			}
+
+			ObservationUnitEntity storedEntity = observationUnitRepository.save(unitEntity);
+
+			response.addObservationUnitDbIdsItem(storedEntity.getId());
+		}
+		return response;
+	}
+
+	public NewObservationDbIds saveStudyObservationUnitsTable(String studyDbId,
+			@Valid NewObservationsTableRequest request) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<ObservationUnitPosition> saveStudyPlotLayout(String studyDbId,
+			@Valid StudyLayoutRequest studyLayoutRequest) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public NewObservationDbIds saveObservations(@Valid NewObservationsRequest newObservations) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

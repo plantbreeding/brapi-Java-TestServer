@@ -14,8 +14,17 @@ public class LinkageGroupEntity extends BaseEntity{
 	private String genomeMapDbId;
 	@Column
 	private String linkageGroupName; 
+	@Column
+	private Integer maxMarkerPosition;
 	@OneToMany(mappedBy="linkageGroup")
 	private List<MarkerEntity> markers;
+	
+	public Integer getMaxMarkerPosition() {
+		return maxMarkerPosition;
+	}
+	public void setMaxMarkerPosition(Integer maxMarkerPosition) {
+		this.maxMarkerPosition = maxMarkerPosition;
+	}
 	public String getGenomeMapDbId() {
 		return genomeMapDbId;
 	}

@@ -2,19 +2,23 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
+import javax.validation.Valid;
+
 import org.brapi.test.BrAPITestServer.service.CropService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.api.CommonCropNamesApi;
+import io.swagger.api.CropsApi;
+import io.swagger.model.CommonCropNamesResponse;
+import io.swagger.model.CommonCropNamesResponseResult;
+import io.swagger.model.Metadata;
+
 @RestController
-public class CropController  extends BrAPIController{
+public class CropController  extends BrAPIController implements CropsApi, CommonCropNamesApi{
 	CropService cropService;
 	
 	@Autowired
@@ -23,17 +27,34 @@ public class CropController  extends BrAPIController{
 	}
 
 	@CrossOrigin
-	@RequestMapping(path="brapi/v1/crops", method= {RequestMethod.GET})
-	public GenericResults<GenericResultsDataList<String>> getCrops(
-			@RequestParam(value="pageSize", defaultValue="1000") int pageSize,
-			@RequestParam(value="page", defaultValue="0") int page){
-		
-		MetaData metaData = generateMetaDataTemplate(page, pageSize);
+	@Override
+	public ResponseEntity<CommonCropNamesResponse> cropsGet(@Valid Integer pageSize, @Valid Integer page) {
+
+		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<String> crops = cropService.getCrops(metaData);
 
-		return GenericResults
-				.withList(crops)
-				.withMetaData(metaData);
+		CommonCropNamesResponseResult result = new CommonCropNamesResponseResult();
+		result.setData(crops);
+		CommonCropNamesResponse response = new CommonCropNamesResponse();
+		response.setMetadata(metaData);
+		response.setResult(result);
+		
+		return new ResponseEntity<CommonCropNamesResponse>(response, HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<CommonCropNamesResponse> commonCropNamesGet(@Valid Integer pageSize, @Valid Integer page) {
+
+		Metadata metaData = generateMetaDataTemplate(page, pageSize);
+		List<String> crops = cropService.getCrops(metaData);
+
+		CommonCropNamesResponseResult result = new CommonCropNamesResponseResult();
+		result.setData(crops);
+		CommonCropNamesResponse response = new CommonCropNamesResponse();
+		response.setMetadata(metaData);
+		response.setResult(result);
+		
+		return new ResponseEntity<CommonCropNamesResponse>(response, HttpStatus.OK);
 	}
 
 }

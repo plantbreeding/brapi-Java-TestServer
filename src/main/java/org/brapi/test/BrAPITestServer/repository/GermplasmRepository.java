@@ -13,6 +13,7 @@ public interface GermplasmRepository extends PagingAndSortingRepository<Germplas
 	@Query("SELECT g FROM GermplasmEntity g "
 			+ "where ('' in :germplasmDbIds or g.id in :germplasmDbIds) "
 			+ "AND ('' in :genus or g.genus in :genus) "
+			+ "AND ('' in :commonCropName or g.commonCropName in :commonCropName) "
 			+ "AND ('' in :names or g.germplasmName in :names) "
 			+ "AND ('' in :puis or g.germplasmPUI in :puis) "
 			+ "AND ('' in :species or g.species in :species) "
@@ -20,6 +21,7 @@ public interface GermplasmRepository extends PagingAndSortingRepository<Germplas
 	public Page<GermplasmEntity> findBySearch(
 			@Param("germplasmDbIds") List<String> germplasmDbIds, 
 			@Param("genus") List<String> germplasmGenus, 
+			@Param("commonCropName") List<String> commonCropName, 
 			@Param("names") List<String> germplasmNames,
 			@Param("puis") List<String> germplasmPUIs, 
 			@Param("species") List<String> germplasmSpecies, 

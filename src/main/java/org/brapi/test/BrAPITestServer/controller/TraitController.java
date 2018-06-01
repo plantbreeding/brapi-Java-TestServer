@@ -2,45 +2,54 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.rest.TraitSummary;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
+import javax.validation.Valid;
+
 import org.brapi.test.BrAPITestServer.service.TraitService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.api.TraitsApi;
+import io.swagger.model.Metadata;
+import io.swagger.model.TraitResponse;
+import io.swagger.model.TraitSummary;
+import io.swagger.model.TraitsResponse;
+import io.swagger.model.TraitsResponseResult;
+
 @RestController
-public class TraitController  extends BrAPIController{
+public class TraitController extends BrAPIController implements TraitsApi {
 
 	private TraitService traitService;
 	
 	public TraitController(TraitService traitService) {
 		this.traitService = traitService;
 	}
-	
-	@CrossOrigin
-	@RequestMapping(path="brapi/v1/traits", method= {RequestMethod.GET})
-	public GenericResults<GenericResultsDataList<TraitSummary>> getTraits(
-			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
-			@RequestParam(value = "page", defaultValue = "0") int page) {
 
-		MetaData metaData = generateMetaDataTemplate(page, pageSize);
-		List<TraitSummary> traits = traitService.getTraits(metaData);
-		
-		return GenericResults.withList(traits).withMetaData(metaData);
-	}
-	
 	@CrossOrigin
-	@RequestMapping(path="brapi/v1/traits/{traitDbId}", method= {RequestMethod.GET})
-	public GenericResults<TraitSummary> getTrait(
-			@PathVariable(value="traitDbId") String traitDbId){
-		TraitSummary trait = traitService.getTrait(traitDbId);
+	@Override
+	public ResponseEntity<TraitsResponse> traitsGet(@Valid Integer pageSize, @Valid Integer page) {
+
+		Metadata metaData = generateMetaDataTemplate(page, pageSize);
+		List<TraitSummary> data = traitService.getTraits(metaData);
 		
-		return GenericResults.withObject(trait).withMetaData(generateEmptyMetadata());
+		TraitsResponseResult result = new TraitsResponseResult();
+		result.setData(data);
+		TraitsResponse response = new TraitsResponse();
+		response.setMetadata(metaData);
+		response.setResult(result);
+		return new ResponseEntity<TraitsResponse>(response, HttpStatus.OK);
+	}
+
+	@CrossOrigin
+	@Override
+	public ResponseEntity<TraitResponse> traitsTraitDbIdGet(String traitDbId) {
+
+		TraitSummary result = traitService.getTrait(traitDbId);
+
+		TraitResponse response = new TraitResponse();
+		response.setMetadata(generateEmptyMetadata());
+		response.setResult(result);
+		return new ResponseEntity<TraitResponse>(response, HttpStatus.OK);
 	}
 }

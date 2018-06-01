@@ -7,14 +7,15 @@ import java.util.stream.Collectors;
 
 import org.brapi.test.BrAPITestServer.model.entity.TrialAdditionalInfoEntity;
 import org.brapi.test.BrAPITestServer.model.entity.TrialEntity;
-import org.brapi.test.BrAPITestServer.model.rest.DatasetAuthorship;
-import org.brapi.test.BrAPITestServer.model.rest.StudyIDWrapper;
-import org.brapi.test.BrAPITestServer.model.rest.TrialSummary;
-import org.brapi.test.BrAPITestServer.model.rest.TrialSummaryWithContact;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.repository.TrialRepository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import io.swagger.model.Metadata;
+import io.swagger.model.Trial;
+import io.swagger.model.TrialDatasetAuthorship;
+import io.swagger.model.TrialStudies;
+import io.swagger.model.TrialSummary;
 
 @Service
 public class TrialService {
@@ -26,29 +27,29 @@ public class TrialService {
 		this.contactService = contactService;
 	}
 
-	public List<TrialSummary> getTrialSummaries(MetaData metaData) {
+	public List<TrialSummary> getTrialSummaries(Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 		List<TrialSummary> summaries = trialRepository.findAll(pageReq).map(this::convertFromEntity).getContent();
 		metaData.getPagination().setTotalCount((int) trialRepository.count());
 		return summaries;
 	}
 
-	public TrialSummaryWithContact getTrialSummary(String trialDbId) {
+	public Trial getTrialSummary(String trialDbId) {
 		Optional<TrialEntity> entityOption = trialRepository.findById(trialDbId);
 		if (entityOption.isPresent()) {
 			TrialEntity entity = entityOption.get();
 			// TODO should use the same return object and convertFromEntity()
 
-			TrialSummaryWithContact summary = new TrialSummaryWithContact();
+			Trial summary = new Trial();
 			summary.setActive(entity.isActive());
-			summary.setEndDate(entity.getEndDate());
+			summary.setEndDate(DateUtility.toLocalDate(entity.getEndDate()));
 			summary.setProgramDbId(entity.getProgram().getId());
 			summary.setProgramName(entity.getProgram().getName());
-			summary.setStartDate(entity.getStartDate());
+			summary.setStartDate(DateUtility.toLocalDate(entity.getStartDate()));
 			summary.setTrialDbId(entity.getId());
 			summary.setTrialName(entity.getTrialName());
 
-			summary.setDatasetAuthorship(new DatasetAuthorship());
+			summary.setDatasetAuthorship(new TrialDatasetAuthorship());
 			summary.getDatasetAuthorship().setDatasetPUI(entity.getDatasetPUI());
 			summary.getDatasetAuthorship().setLicense(entity.getDatasetLicence());
 
@@ -56,7 +57,7 @@ public class TrialService {
 					.collect(Collectors.toList()));
 
 			summary.setStudies(entity.getStudies().stream().map((e) -> {
-				StudyIDWrapper id = new StudyIDWrapper();
+				TrialStudies id = new TrialStudies();
 				id.setLocationDbId(e.getLocation().getId());
 				id.setLocationName(e.getLocation().getName());
 				id.setStudyDbId(e.getId());
@@ -77,15 +78,15 @@ public class TrialService {
 	private TrialSummary convertFromEntity(TrialEntity entity) {
 		TrialSummary summary = new TrialSummary();
 		summary.setActive(entity.isActive());
-		summary.setEndDate(entity.getEndDate());
+		summary.setEndDate(DateUtility.toLocalDate(entity.getEndDate()));
 		summary.setProgramDbId(entity.getProgram().getId());
 		summary.setProgramName(entity.getProgram().getName());
-		summary.setStartDate(entity.getStartDate());
+		summary.setStartDate(DateUtility.toLocalDate(entity.getStartDate()));
 		summary.setTrialDbId(entity.getId());
 		summary.setTrialName(entity.getTrialName());
 
 		summary.setStudies(entity.getStudies().stream().map((e) -> {
-			StudyIDWrapper id = new StudyIDWrapper();
+			TrialStudies id = new TrialStudies();
 			id.setLocationDbId(e.getLocation().getId());
 			id.setLocationName(e.getLocation().getName());
 			id.setStudyDbId(e.getId());

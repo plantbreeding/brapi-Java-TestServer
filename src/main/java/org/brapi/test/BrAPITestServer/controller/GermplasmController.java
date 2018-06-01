@@ -2,88 +2,139 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.rest.Germplasm;
-import org.brapi.test.BrAPITestServer.model.rest.GermplasmSearchRequest;
-import org.brapi.test.BrAPITestServer.model.rest.MarkerProfileKeys;
-import org.brapi.test.BrAPITestServer.model.rest.Pedigree;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
+import javax.validation.Valid;
+
+import org.brapi.test.BrAPITestServer.service.GermplasmAttributeService;
 import org.brapi.test.BrAPITestServer.service.GermplasmService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-public class GermplasmController extends BrAPIController {
+import io.swagger.api.GermplasmApi;
+import io.swagger.api.GermplasmSearchApi;
+import io.swagger.model.Germplasm;
+import io.swagger.model.GermplasmAttribute;
+import io.swagger.model.GermplasmAttributeList;
+import io.swagger.model.GermplasmAttributeListResponse;
+import io.swagger.model.GermplasmMarkerprofilesList;
+import io.swagger.model.GermplasmMarkerprofilesListResponse;
+import io.swagger.model.GermplasmResponse;
+import io.swagger.model.GermplasmResponse1;
+import io.swagger.model.GermplasmResponseResult;
+import io.swagger.model.GermplasmSearchRequest;
+import io.swagger.model.Metadata;
+import io.swagger.model.Pedigree;
+import io.swagger.model.PedigreeResponse;
+import io.swagger.model.Progeny;
+import io.swagger.model.ProgenyResponse;
 
-	GermplasmService germplasmService;
+@RestController
+public class GermplasmController extends BrAPIController implements GermplasmApi, GermplasmSearchApi{
+
+	private GermplasmService germplasmService;
+	private GermplasmAttributeService germplasmAttributeService;
 
 	@Autowired
-	public GermplasmController(GermplasmService germplasmService) {
+	public GermplasmController(GermplasmService germplasmService, GermplasmAttributeService germplasmAttributeService) {
 		super();
 		this.germplasmService = germplasmService;
+		this.germplasmAttributeService = germplasmAttributeService;
 	}
 
 	@CrossOrigin
-	@RequestMapping(path="brapi/v1/germplasm-search", method = { RequestMethod.GET })
-	public GenericResults<GenericResultsDataList<Germplasm>> germplasmSearch(
-			@RequestParam(value = "germplasmPUI", required = false, defaultValue="") List<String> germplasmPUIs,
-			@RequestParam(value = "germplasmDbId", required = false, defaultValue="") List<String> germplasmDbIds,
-			@RequestParam(value = "germplasmSpecies", required = false, defaultValue="") List<String> germplasmSpecies,
-			@RequestParam(value = "germplasmGenus", required = false, defaultValue="") List<String> germplasmGenus,
-			@RequestParam(value = "germplasmNames", required = false, defaultValue="") List<String> germplasmNames,
-			@RequestParam(value = "accessionNumbers", required = false, defaultValue="") List<String> accessionNumbers,
-			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
-			@RequestParam(value = "page", defaultValue = "0") int page) {
-		
-		MetaData metaData = generateMetaDataTemplate(page, pageSize);
-		List<Germplasm> germplasms = germplasmService.search(germplasmDbIds, germplasmGenus, germplasmNames,
-				germplasmPUIs, germplasmSpecies, accessionNumbers, metaData);
+	@Override
+	public ResponseEntity<GermplasmResponse> germplasmSearchGet(@Valid String germplasmPUI, @Valid String germplasmDbId,
+			@Valid String germplasmName, @Valid String commonCropName, @Valid Integer pageSize, @Valid Integer page) {
 
-		return GenericResults.withList(germplasms).withMetaData(metaData);
+		Metadata metaData = generateMetaDataTemplate(page, pageSize);
+		List<Germplasm> data = germplasmService.search(germplasmPUI, germplasmDbId, germplasmName, commonCropName, metaData);
+
+		GermplasmResponseResult result = new GermplasmResponseResult();
+		result.setData(data);
+		GermplasmResponse response = new GermplasmResponse();
+		response.setMetadata(metaData);
+		response.setResult(result);				
+		return new ResponseEntity<GermplasmResponse>(response, HttpStatus.OK);
 	}
 
 	@CrossOrigin
-	@RequestMapping(path="brapi/v1/germplasm-search", method = { RequestMethod.POST })
-	public GenericResults<GenericResultsDataList<Germplasm>> germplasmSearch(
-			@RequestBody GermplasmSearchRequest request) {
-		
-		MetaData metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
-		List<Germplasm> germplasms = germplasmService.search(request.getGermplasmDbIds(), request.getGermplasmGenus(), request.getGermplasmNames(),
+	@Override
+	public ResponseEntity<GermplasmResponse> germplasmSearchPost(@Valid GermplasmSearchRequest request) {
+
+		Metadata metaData = generateMetaDataTemplate(request.getPage().intValue(), request.getPageSize().intValue());
+		List<Germplasm> data = germplasmService.search(request.getGermplasmDbIds(), request.getGermplasmGenus(), request.getCommonCropNames(), request.getGermplasmNames(),
 				request.getGermplasmPUIs(), request.getGermplasmSpecies(), request.getAccessionNumbers(), metaData);
 
-		return GenericResults.withList(germplasms).withMetaData(metaData);
+		GermplasmResponseResult result = new GermplasmResponseResult();
+		result.setData(data);
+		GermplasmResponse response = new GermplasmResponse();
+		response.setMetadata(metaData);
+		response.setResult(result);				
+		return new ResponseEntity<GermplasmResponse>(response, HttpStatus.OK);
 	}
 
 	@CrossOrigin
-	@RequestMapping(path="brapi/v1/germplasm/{germplasmDbId}", method = { RequestMethod.GET })
-	public GenericResults<Germplasm> germplasmSearchByDbId(@PathVariable(value = "germplasmDbId") String germplasmDbId) {
-		Germplasm germplasm = germplasmService.searchByDbId(germplasmDbId);
-
-		return GenericResults.withObject(germplasm).withMetaData(generateEmptyMetadata());
+	@Override
+	public ResponseEntity<GermplasmAttributeListResponse> germplasmGermplasmDbIdAttributesGet(String germplasmDbId,
+			@Valid List<String> attributeDbIds, @Valid List<String> attributeList, @Valid Integer pageSize,
+			@Valid Integer page) {
+		
+		Metadata metaData = generateMetaDataTemplate(page, pageSize);
+		List<GermplasmAttribute> data = germplasmAttributeService.getGermplasmAttributeValues(germplasmDbId, attributeList,metaData);
+		
+		GermplasmAttributeList result = new GermplasmAttributeList();
+		result.setData(data);
+		GermplasmAttributeListResponse response = new GermplasmAttributeListResponse();
+		response.setMetadata(metaData);
+		response.setResult(result);				
+		return new ResponseEntity<GermplasmAttributeListResponse>(response, HttpStatus.OK);
 	}
 
 	@CrossOrigin
-	@RequestMapping(path="brapi/v1/germplasm/{germplasmDbId}/pedigree", method = { RequestMethod.GET })
-	public GenericResults<Pedigree> pedigreeByGermplasmDbId(@PathVariable(value = "germplasmDbId", required=true) String germplasmDbId,
-			@RequestParam(value = "notation", required=false) String notation) {
-		Pedigree pedigree = germplasmService.searchPedigreeByDbId(germplasmDbId, notation);
+	@Override
+	public ResponseEntity<GermplasmResponse1> germplasmGermplasmDbIdGet(String germplasmDbId) {
+		Germplasm result = germplasmService.searchByDbId(germplasmDbId);
 
-		return GenericResults.withObject(pedigree).withMetaData(generateEmptyMetadata());
+		GermplasmResponse1 response = new GermplasmResponse1();
+		response.setMetadata(generateEmptyMetadata());
+		response.setResult(result);				
+		return new ResponseEntity<GermplasmResponse1>(response, HttpStatus.OK);
 	}
 
 	@CrossOrigin
-	@RequestMapping(path="brapi/v1/germplasm/{germplasmDbId}/markerprofiles", method = { RequestMethod.GET })
-	public GenericResults<MarkerProfileKeys> markerProfilesByGermplasmDbId(
-			@PathVariable("germplasmDbId") String germplasmDbId) {
-		MarkerProfileKeys markerProfile = germplasmService.searchMarkerProfilesByDbId(germplasmDbId);
+	@Override
+	public ResponseEntity<GermplasmMarkerprofilesListResponse> germplasmGermplasmDbIdMarkerprofilesGet(
+			String germplasmDbId) {
+		GermplasmMarkerprofilesList result = germplasmService.searchMarkerProfilesByDbId(germplasmDbId);
 
-		return GenericResults.withObject(markerProfile).withMetaData(generateEmptyMetadata());
+		GermplasmMarkerprofilesListResponse response = new GermplasmMarkerprofilesListResponse();
+		response.setMetadata(generateEmptyMetadata());
+		response.setResult(result);				
+		return new ResponseEntity<GermplasmMarkerprofilesListResponse>(response, HttpStatus.OK);
+	}
+
+	@CrossOrigin
+	@Override
+	public ResponseEntity<PedigreeResponse> germplasmGermplasmDbIdPedigreeGet(String germplasmDbId,
+			@Valid String notation, @Valid Boolean includeSiblings) {
+		Pedigree result = germplasmService.searchPedigreeByDbId(germplasmDbId, notation, includeSiblings);
+
+		PedigreeResponse response = new PedigreeResponse();
+		response.setMetadata(generateEmptyMetadata());
+		response.setResult(result);				
+		return new ResponseEntity<PedigreeResponse>(response, HttpStatus.OK);
+	}
+
+	@CrossOrigin
+	@Override
+	public ResponseEntity<ProgenyResponse> germplasmGermplasmDbIdProgenyGet(String germplasmDbId) {
+		Progeny result = germplasmService.searchProgenyByDbId(germplasmDbId);
+
+		ProgenyResponse response = new ProgenyResponse();
+		response.setMetadata(generateEmptyMetadata());
+		response.setResult(result);				
+		return new ResponseEntity<ProgenyResponse>(response, HttpStatus.OK);
 	}
 }

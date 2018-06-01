@@ -3,9 +3,12 @@ package org.brapi.test.BrAPITestServer.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
+import org.brapi.test.BrAPITestServer.model.entity.CropEntity;
 import org.brapi.test.BrAPITestServer.repository.CropRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+
+import io.swagger.model.Metadata;
 
 @Service
 public class CropService {
@@ -16,16 +19,14 @@ public class CropService {
 		this.cropRepository = cropRepository;
 	}
 
-	public List<String> getCrops(MetaData metaData) {
+	public List<String> getCrops(Metadata metaData) {
 		
-		List<String> crops = cropRepository
-				.findAll(PagingUtility.getPageRequest(metaData))
-				.stream()
+		Page<CropEntity> cropsPage = cropRepository.findAll(PagingUtility.getPageRequest(metaData));
+		List<String> crops = cropsPage.stream()
 				.map(c -> {return c.getCropName();})
 				.collect(Collectors.toList());
 		
-		metaData.getPagination().setTotalCount((int) cropRepository.count());
-		PagingUtility.calculateMetaData(metaData);
+		PagingUtility.calculateMetaData(metaData, cropsPage);
 		return crops;
 	}
 

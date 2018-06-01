@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.brapi.test.BrAPITestServer.model.entity.CallEntity;
-import org.brapi.test.BrAPITestServer.model.rest.Call;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.repository.CallRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+
+import io.swagger.model.Call;
+import io.swagger.model.Metadata;
 
 @Service
 public class CallsService {
@@ -23,7 +24,7 @@ public class CallsService {
         this.callRepository = callRepository;
     }
     
-	public List<Call> getAvailableCalls(String datatype, MetaData metadata) {
+	public List<Call> getAvailableCalls(String datatype, Metadata metadata) {
 		List<Call> calls = findCalls(datatype, metadata)
 				.stream()
 				.map(ce -> {return convertToJSONModel(ce);})
@@ -32,7 +33,7 @@ public class CallsService {
 		return calls;
 	}
 	
-	private List<CallEntity> findCalls(String datatype, MetaData metadata) {
+	private List<CallEntity> findCalls(String datatype, Metadata metadata) {
 		Sort sort = Sort.by(Direction.fromString("asc"), "call");
 		Pageable pageReq = PagingUtility.getPageRequest(metadata, sort);
 		Page<CallEntity> page;

@@ -4,13 +4,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.brapi.test.BrAPITestServer.model.entity.TraitEntity;
-import org.brapi.test.BrAPITestServer.model.rest.TraitSummary;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.repository.TraitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import io.swagger.model.Metadata;
+import io.swagger.model.TraitSummary;
 
 @Service
 public class TraitService {
@@ -21,7 +22,7 @@ public class TraitService {
 		this.traitRepository = traitRepository;
 	}
 
-	public List<TraitSummary> getTraits(MetaData metaData) {
+	public List<TraitSummary> getTraits(Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 		Page<TraitSummary> traits = traitRepository.findAll(pageReq).map(this::convertFromEntity);
 		PagingUtility.calculateMetaData(metaData, traits);

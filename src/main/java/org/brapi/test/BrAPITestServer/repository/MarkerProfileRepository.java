@@ -16,13 +16,11 @@ public interface MarkerProfileRepository extends PagingAndSortingRepository<Mark
 			+ " where (:germplasmDbId is null OR mp.germplasmDbId = :germplasmDbId)"
 			+ " AND (:studyDbId is null OR study.id = :studyDbId)"
 			+ " AND (:sampleDbId is null OR mp.sampleDbId = :sampleDbId)"
-			+ " AND (:extractDbId is null OR mp.extractDbId = :extractDbId)"
-			+ " AND (:analysisMethod is null OR mp.analysisMethod = :analysisMethod)")
+			+ " AND (:extractDbId is null OR mp.extractDbId = :extractDbId)")
 	public Page<MarkerProfileEntity> findBySearchOptions(
 			@Param("germplasmDbId") String germplasmDbId, 
 			@Param("studyDbId") String studyDbId, 
 			@Param("sampleDbId") String sampleDbId, 
 			@Param("extractDbId") String extractDbId, 
-			@Param("analysisMethod") String analysisMethod,
 			Pageable pageReq);
 }

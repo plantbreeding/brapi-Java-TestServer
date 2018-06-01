@@ -2,26 +2,29 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.rest.VendorPlate;
-import org.brapi.test.BrAPITestServer.model.rest.VendorPlateRequestList;
-import org.brapi.test.BrAPITestServer.model.rest.VendorPlateSearchRequest;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
-import org.brapi.test.BrAPITestServer.model.rest.vendor.VendorSpec;
+import javax.validation.Valid;
+
 import org.brapi.test.BrAPITestServer.service.VendorSampleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.api.VendorApi;
+import io.swagger.model.Metadata;
+import io.swagger.model.VendorPlate;
+import io.swagger.model.VendorPlateRequest;
+import io.swagger.model.VendorPlateResponse;
+import io.swagger.model.VendorPlateSearchRequest;
+import io.swagger.model.VendorPlatesResponse;
+import io.swagger.model.VendorPlatesResponseResult;
+import io.swagger.model.VendorSpecification;
+import io.swagger.model.VendorSpecificationResponse;
+
 @RestController
-public class VendorSampleController extends BrAPIController {
+public class VendorSampleController extends BrAPIController implements VendorApi{
 
 	private VendorSampleService vendorSampleService;
 
@@ -31,48 +34,68 @@ public class VendorSampleController extends BrAPIController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(path="brapi/v1/vendor/plate/{vendorPlateDbId}", method = { RequestMethod.GET })
-	public GenericResults<VendorPlate> getPlateDetails(@PathVariable("vendorPlateDbId") String vendorPlateDbId) {
-		VendorPlate vendorPlate = vendorSampleService.getPlate(vendorPlateDbId);
-		return GenericResults.withObject(vendorPlate).withMetaData(generateEmptyMetadata());
-	}
-
-	@CrossOrigin
-	@RequestMapping(path="brapi/v1/vendor/plates", method = { RequestMethod.POST })
 	@PreAuthorize("hasAuthority('ADMIN')")
-	public GenericResults<GenericResultsDataList<VendorPlate>> postPlateDetails(@RequestBody VendorPlateRequestList request) {
-		List<VendorPlate> vendorPlate = vendorSampleService.savePlates(request);
-		return GenericResults.withList(vendorPlate).withMetaData(generateEmptyMetadata());
+	@Override
+	public ResponseEntity<VendorPlatesResponse> vendorPlatesPost(@Valid VendorPlateRequest request) {
+		List<VendorPlate> plates = vendorSampleService.savePlates(request);
+		
+		VendorPlatesResponseResult result = new VendorPlatesResponseResult();
+		result.setPlates(plates);
+		VendorPlatesResponse response = new VendorPlatesResponse();
+		response.setMetadata(generateEmptyMetadata());
+		response.setResult(result);
+		return new ResponseEntity<VendorPlatesResponse>(response, HttpStatus.OK);
 	}
 
 	@CrossOrigin
-	@RequestMapping(path="brapi/v1/vendor/plate-search", method = { RequestMethod.GET })
-	public GenericResults<GenericResultsDataList<VendorPlate>> getPlateSearch(
-			@RequestParam(required = false) String vendorProjectDbId,
-			@RequestParam(required = false) String vendorPlateDbId,
-			@RequestParam(required = false) String clientPlateDbId, 
-			@RequestParam(required = false) boolean sampleInfo,
-			@RequestParam(defaultValue = "0") int page, 
-			@RequestParam(defaultValue = "1000") int pageSize) {
-
-		MetaData metadata = generateMetaDataTemplate(page, pageSize);
+	@Override
+	public ResponseEntity<VendorPlatesResponse> vendorPlatesSearchGet(@Valid String vendorProjectDbId,
+			@Valid String vendorPlateDbId, @Valid String clientPlateDbId, @Valid Boolean sampleInfo,
+			@Valid Integer pageSize, @Valid Integer page) {
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<VendorPlate> plates = vendorSampleService.searchPlates(vendorProjectDbId, vendorPlateDbId, clientPlateDbId, sampleInfo, metadata);
-		return GenericResults.withList(plates).withMetaData(metadata);
+		
+		VendorPlatesResponseResult result = new VendorPlatesResponseResult();
+		result.setPlates(plates);
+		VendorPlatesResponse response = new VendorPlatesResponse();
+		response.setMetadata(generateEmptyMetadata());
+		response.setResult(result);
+		return new ResponseEntity<VendorPlatesResponse>(response, HttpStatus.OK);
 	}
 
 	@CrossOrigin
-	@RequestMapping(path="brapi/v1/vendor/plate-search", method = { RequestMethod.POST })
-	public GenericResults<GenericResultsDataList<VendorPlate>> postPlateSearch(@RequestBody VendorPlateSearchRequest request) {
-
-		MetaData metadata = generateMetaDataTemplate(request);
-		List<VendorPlate> vendorPlate = vendorSampleService.searchPlates(request, metadata);
-		return GenericResults.withList(vendorPlate).withMetaData(metadata);
+	@Override
+	public ResponseEntity<VendorPlatesResponse> vendorPlatesSearchPost(@Valid VendorPlateSearchRequest request) {
+		Metadata metadata = generateMetaDataTemplate(request.getPage().intValue(), request.getPageSize().intValue());
+		List<VendorPlate> plates = vendorSampleService.searchPlates(request, metadata);
+		
+		VendorPlatesResponseResult result = new VendorPlatesResponseResult();
+		result.setPlates(plates);
+		VendorPlatesResponse response = new VendorPlatesResponse();
+		response.setMetadata(generateEmptyMetadata());
+		response.setResult(result);
+		return new ResponseEntity<VendorPlatesResponse>(response, HttpStatus.OK);
 	}
 
 	@CrossOrigin
-	@RequestMapping(path="brapi/v1/vendor/specifications", method = { RequestMethod.GET })
-	public GenericResults<VendorSpec> getVendorSpecs() {
-		VendorSpec vendorSpec = vendorSampleService.getVendorSpec();
-		return GenericResults.withObject(vendorSpec).withMetaData(generateEmptyMetadata());
+	@Override
+	public ResponseEntity<VendorPlateResponse> vendorPlatesVendorPlateDbIdGet(String vendorPlateDbId) {
+		VendorPlate result = vendorSampleService.getPlate(vendorPlateDbId);
+		
+		VendorPlateResponse response = new VendorPlateResponse();
+		response.setMetadata(generateEmptyMetadata());
+		response.setResult(result);
+		return new ResponseEntity<VendorPlateResponse>(response, HttpStatus.OK);
+	}
+
+	@CrossOrigin
+	@Override
+	public ResponseEntity<VendorSpecificationResponse> vendorSpecificationsGet() {
+		VendorSpecification result = vendorSampleService.getVendorSpec();
+		
+		VendorSpecificationResponse response = new VendorSpecificationResponse();
+		response.setMetadata(generateEmptyMetadata());
+		response.setResult(result);
+		return new ResponseEntity<VendorSpecificationResponse>(response, HttpStatus.OK);
 	}
 }

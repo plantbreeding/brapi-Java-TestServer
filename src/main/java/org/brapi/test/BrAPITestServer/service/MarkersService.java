@@ -5,13 +5,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.brapi.test.BrAPITestServer.model.entity.MarkerEntity;
-import org.brapi.test.BrAPITestServer.model.rest.Marker;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
 import org.brapi.test.BrAPITestServer.repository.MarkerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import io.swagger.model.Marker;
+import io.swagger.model.Metadata;
 
 @Service
 public class MarkersService {
@@ -24,7 +25,7 @@ public class MarkersService {
 	}
 
 	public List<Marker> getMarkers(String name, String type, List<String> markerDbIds, String matchMethod,
-			 boolean includeSynonyms, MetaData metaData) {
+			 boolean includeSynonyms, Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 
 		boolean ignoreCase = !matchMethod.equalsIgnoreCase("exact");

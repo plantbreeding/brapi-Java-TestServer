@@ -1,7 +1,6 @@
 package org.brapi.test.BrAPITestServer.model.entity;
 
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 

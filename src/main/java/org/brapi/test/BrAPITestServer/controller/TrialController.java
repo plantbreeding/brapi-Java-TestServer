@@ -2,45 +2,56 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.rest.TrialSummary;
-import org.brapi.test.BrAPITestServer.model.rest.TrialSummaryWithContact;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
+import javax.validation.Valid;
+
 import org.brapi.test.BrAPITestServer.service.TrialService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.api.TrialsApi;
+import io.swagger.model.Metadata;
+import io.swagger.model.Trial;
+import io.swagger.model.TrialResponse;
+import io.swagger.model.TrialSummary;
+import io.swagger.model.TrialsResponse;
+import io.swagger.model.TrialsResponseResult;
+
 @RestController
-public class TrialController  extends BrAPIController{
+public class TrialController extends BrAPIController implements TrialsApi{
 
 	private TrialService trialService;
 	
 	public TrialController(TrialService trialService) {
 		this.trialService = trialService;
 	}
-	
 
 	@CrossOrigin
-	@RequestMapping(path="brapi/v1/trials", method= {RequestMethod.GET})
-	public GenericResults<GenericResultsDataList<TrialSummary>> getTrialSummaries(
-			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
-			@RequestParam(value = "page", defaultValue = "0") int page) {
-		MetaData metaData = generateMetaDataTemplate(page, pageSize);
-		List<TrialSummary> summaries = trialService.getTrialSummaries(metaData);
+	@Override
+	public ResponseEntity<TrialsResponse> trialsGet(@Valid String programDbId, @Valid String locationDbId,
+			@Valid Integer pageSize, @Valid Integer page, @Valid Boolean active, @Valid String sortBy,
+			@Valid String sortOrder) {
+		Metadata metaData = generateMetaDataTemplate(page, pageSize);
+		List<TrialSummary> data = trialService.getTrialSummaries(metaData);
 		
-		return GenericResults.withList(summaries).withMetaData(metaData);
+		TrialsResponseResult result = new TrialsResponseResult();
+		result.setData(data);
+		TrialsResponse response = new TrialsResponse();
+		response.setMetadata(metaData);
+		response.setResult(result);
+		return new ResponseEntity<TrialsResponse>(response, HttpStatus.OK);
 	}
-	
+
 	@CrossOrigin
-	@RequestMapping(path="brapi/v1/trials/{trialDbId}", method= {RequestMethod.GET})
-	public GenericResults<TrialSummaryWithContact> getTrialSummary(
-			@PathVariable(value="trialDbId") String trialDbId){
-		TrialSummaryWithContact trial = trialService.getTrialSummary(trialDbId);
-		return GenericResults.withObject(trial).withMetaData(generateEmptyMetadata());
+	@Override
+	public ResponseEntity<TrialResponse> trialsTrialDbIdGet(String trialDbId) {
+
+		Trial result = trialService.getTrialSummary(trialDbId);
+		
+		TrialResponse response = new TrialResponse();
+		response.setMetadata(generateEmptyMetadata());
+		response.setResult(result);
+		return new ResponseEntity<TrialResponse>(response, HttpStatus.OK);
 	}
 }

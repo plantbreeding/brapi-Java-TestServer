@@ -2,21 +2,24 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
-import org.brapi.test.BrAPITestServer.model.rest.Location;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResults;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.GenericResultsDataList;
-import org.brapi.test.BrAPITestServer.model.rest.metadata.MetaData;
+import javax.validation.Valid;
+
 import org.brapi.test.BrAPITestServer.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.api.LocationsApi;
+import io.swagger.model.Location;
+import io.swagger.model.LocationResponse;
+import io.swagger.model.LocationsResponse;
+import io.swagger.model.LocationsResponseResult;
+import io.swagger.model.Metadata;
+
 @RestController
-public class LocationController  extends BrAPIController{
+public class LocationController extends BrAPIController implements LocationsApi{
 
 	private LocationService locationService;
 	
@@ -26,27 +29,31 @@ public class LocationController  extends BrAPIController{
 	}
 
 	@CrossOrigin
-	@RequestMapping(path="brapi/v1/locations", method= {RequestMethod.GET})
-	public GenericResults<GenericResultsDataList<Location>> getLocations(
-			@RequestParam(required=false) String locationType,
-			@RequestParam(value = "pageSize", defaultValue = "1000") int pageSize,
-			@RequestParam(value = "page", defaultValue = "0") int page) {
-		MetaData metaData = generateMetaDataTemplate(page, pageSize);
-		List<Location> locations = locationService.getLocations(locationType, metaData);
+	@Override
+	public ResponseEntity<LocationsResponse> locationsGet(@Valid String locationType, @Valid Integer pageSize,
+			@Valid Integer page) {
 		
-		return GenericResults.withList(locations).withMetaData(metaData);
+		Metadata metaData = generateMetaDataTemplate(page, pageSize);
+		List<Location> data = locationService.getLocations(locationType, metaData);
 		
+		LocationsResponseResult result = new LocationsResponseResult();
+		result.setData(data);
+		LocationsResponse response = new LocationsResponse();
+		response.setMetadata(metaData);
+		response.setResult(result);
+		return new ResponseEntity<LocationsResponse>(response, HttpStatus.OK);
 	}
-	
+
 	@CrossOrigin
-	@RequestMapping(path="brapi/v1/locations/{locationDbId}", method= {RequestMethod.GET})
-	public GenericResults<Location> getLocation(
-			@PathVariable(value="locationDbId") String locationDbId) {
-		Location location = locationService.getLocation(locationDbId);
+	@Override
+	public ResponseEntity<LocationResponse> locationsLocationDbIdGet(String locationDbId) {
+
+		Location result = locationService.getLocation(locationDbId);
 		
-		return GenericResults.withObject(location).withMetaData(generateEmptyMetadata());
-		
+		LocationResponse response = new LocationResponse();
+		response.setMetadata(generateEmptyMetadata());
+		response.setResult(result);
+		return new ResponseEntity<LocationResponse>(response, HttpStatus.OK);
 	}
-	
 	
 }
