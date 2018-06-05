@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.api.VendorApi;
@@ -58,14 +60,14 @@ public class VendorSampleController extends BrAPIController implements VendorApi
 		VendorPlatesResponseResult result = new VendorPlatesResponseResult();
 		result.setPlates(plates);
 		VendorPlatesResponse response = new VendorPlatesResponse();
-		response.setMetadata(generateEmptyMetadata());
+		response.setMetadata(metadata);
 		response.setResult(result);
 		return new ResponseEntity<VendorPlatesResponse>(response, HttpStatus.OK);
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<VendorPlatesResponse> vendorPlatesSearchPost(@Valid VendorPlateSearchRequest request) {
+	public ResponseEntity<VendorPlatesResponse> vendorPlatesSearchPost(@Valid @RequestBody VendorPlateSearchRequest request) {
 		Metadata metadata = generateMetaDataTemplate(request.getPage().intValue(), request.getPageSize().intValue());
 		List<VendorPlate> plates = vendorSampleService.searchPlates(request, metadata);
 		
@@ -79,7 +81,7 @@ public class VendorSampleController extends BrAPIController implements VendorApi
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<VendorPlateResponse> vendorPlatesVendorPlateDbIdGet(String vendorPlateDbId) {
+	public ResponseEntity<VendorPlateResponse> vendorPlatesVendorPlateDbIdGet( @PathVariable("vendorPlateDbId") String vendorPlateDbId) {
 		VendorPlate result = vendorSampleService.getPlate(vendorPlateDbId);
 		
 		VendorPlateResponse response = new VendorPlateResponse();

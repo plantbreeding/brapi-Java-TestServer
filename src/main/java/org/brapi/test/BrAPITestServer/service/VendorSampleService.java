@@ -159,7 +159,7 @@ public class VendorSampleService {
 	}
 
 	public List<VendorPlate> searchPlates(String vendorProjectDbId, String vendorPlateDbId, String clientPlateDbId,
-			boolean sampleInfo, Metadata metadata) {
+			Boolean sampleInfo, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		Page<PlateEntity> plates = vendorSampleRepository.findBySearch(
 				SearchUtility.buildSearchParam(vendorProjectDbId),
@@ -168,7 +168,7 @@ public class VendorSampleService {
 				pageReq);
 		PagingUtility.calculateMetaData(metadata, plates);
 		return plates.map((entity) -> {
-			if(!sampleInfo) {
+			if(sampleInfo == null || !sampleInfo) {
 				entity.getSamples().clear();
 			}
 			return entity;

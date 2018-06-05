@@ -6,6 +6,8 @@
 package io.swagger.api;
 
 import io.swagger.model.GermplasmSummaryListResponse;
+
+import java.util.ArrayList;
 import java.util.List;
 import io.swagger.model.NewObservationDbIdsResponse;
 import io.swagger.model.NewObservationUnitDbIdsResponse;
@@ -22,14 +24,20 @@ import io.swagger.model.StudyResponse;
 import io.swagger.model.StudyobservationsTableResponse;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-01T19:24:22.162Z")
+import java.util.List;
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
 
 @Api(value = "studies", description = "the studies API")
 public interface StudiesApi {
@@ -82,7 +90,7 @@ public interface StudiesApi {
         @ApiResponse(code = 200, message = "OK", response = ObservationsResponse.class) })
     @RequestMapping(value = "/studies/{studyDbId}/observations",
         method = RequestMethod.GET)
-    ResponseEntity<ObservationsResponse> studiesStudyDbIdObservationsGet(@ApiParam(value = "Identifier of the study. Usually a number, could be alphanumeric.",required=true) @PathVariable("studyDbId") String studyDbId,@ApiParam(value = "Numeric `id` of that variable (combination of trait, unit and method)") @Valid @RequestParam(value = "observationVariableDbIds", required = false) List<String> observationVariableDbIds,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page);
+    ResponseEntity<ObservationsResponse> studiesStudyDbIdObservationsGet(@ApiParam(value = "Identifier of the study. Usually a number, could be alphanumeric.",required=true) @PathVariable("studyDbId") String studyDbId,@ApiParam(value = "Numeric `id` of that variable (combination of trait, unit and method)") @Valid @RequestParam(value = "observationVariableDbIds", required = false) ArrayList<String> observationVariableDbIds,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page);
 
 
     @ApiOperation(value = "Get Observation Units by observation variable ids", nickname = "studiesStudyDbIdObservationsPut", notes = " Implementation Guidelines: + If an `observationDbId` is \"null\" or an empty string in the request, a NEW observation should be created for the given study and observationUnit + If an `observationDbId` is populated but not found in the database, a NEW observation should be created for the given study and observationUnit AND an NEW `observationDbId` should be assigned to it. A warning should be returned to the client. + If an `observationDbId` is populated and found in the database, but the existing entry is not associated with the given study or observationUnit, a NEW observation should be created for the given study and observationUnit AND an NEW `observationDbId` should be assigned to it. A warning should be returned to the client. + If an `observationDbId` is populated and found in the database and is associated with the given study and observationUnit, then it should be updated with the new data given. <a href=\"https://test-server.brapi.org/brapi/v1/studies\"> test-server.brapi.org/brapi/v1/studies/{studyDbId}/observations</a>", response = NewObservationDbIdsResponse.class, tags={ "Studies","Observations", })
@@ -119,7 +127,7 @@ public interface StudiesApi {
     @RequestMapping(value = "/studies/{studyDbId}/observationunits",
         produces = { "application/json" }, 
         method = RequestMethod.PUT)
-    ResponseEntity<NewObservationUnitDbIdsResponse> studiesStudyDbIdObservationunitsPut(@ApiParam(value = "The study these observation units are related to.",required=true) @PathVariable("studyDbId") String studyDbId,@ApiParam(value = ""  )  @Valid @RequestBody List<NewObservationUnitRequest> newObservationUnitRequest);
+    ResponseEntity<NewObservationUnitDbIdsResponse> studiesStudyDbIdObservationunitsPut(@ApiParam(value = "The study these observation units are related to.",required=true) @PathVariable("studyDbId") String studyDbId,@ApiParam(value = ""  )  @Valid @RequestBody ArrayList<NewObservationUnitRequest> newObservationUnitRequest);
 
 
     @ApiOperation(value = "Use this call for uploading new Observations as a Batched Zip File to a system.", nickname = "studiesStudyDbIdObservationunitsZipPost", notes = "Note: If 'observationUnitDbId' or 'observationDbId' is populated, they should be considered updates to existing records. If an existing record of that DbId is not found, the document should be treated as new records and assigned new DbIds. If 'observationUnitDbId' or 'observationDbId' is un-populated (empty string or null) the document should be treated as new records and assigned new DbIds.", response = NewObservationUnitDbIdsResponse.class, tags={ "Observations","Studies", })

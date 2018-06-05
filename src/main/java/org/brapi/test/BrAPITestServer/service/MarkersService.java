@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Marker;
+import io.swagger.model.MarkersSearchRequest.MatchMethodEnum;
 import io.swagger.model.Metadata;
 
 @Service
@@ -24,18 +25,19 @@ public class MarkersService {
 		this.markerRepository = markerRepository;
 	}
 
-	public List<Marker> getMarkers(String name, String type, List<String> markerDbIds, String matchMethod,
-			 boolean includeSynonyms, Metadata metaData) {
+	public List<Marker> getMarkers(String name, String type, List<String> markerDbIds, MatchMethodEnum matchMethod,
+			 Boolean includeSynonyms, Metadata metaData) {
+		boolean includeSynonym = includeSynonyms != null && includeSynonyms;
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 
-		boolean ignoreCase = !matchMethod.equalsIgnoreCase("exact");
+		boolean ignoreCase = MatchMethodEnum.EXACT != matchMethod;
 		String namePattern = generateNamePattern(name, matchMethod);
 
-		Page<MarkerEntity> entities = runAppropriateQuery(namePattern, type, markerDbIds, ignoreCase, includeSynonyms,
+		Page<MarkerEntity> entities = runAppropriateQuery(namePattern, type, markerDbIds, ignoreCase, includeSynonym,
 				pageReq);
 
 		List<Marker> markers = entities.map((entity) -> {
-			return convertFromEntity(entity, includeSynonyms);
+			return convertFromEntity(entity, includeSynonym);
 		}).getContent();
 
 		PagingUtility.calculateMetaData(metaData, entities);
@@ -75,19 +77,19 @@ public class MarkersService {
 		return entities;
 	}
 
-	private String generateNamePattern(String name, String matchMethod) {
+	private String generateNamePattern(String name, MatchMethodEnum matchMethod) {
 		String namePattern;
 		if (name == null) {
 			namePattern = null;
 		} else {
 			namePattern = name;
 			switch (matchMethod) {
-			case "wildcard":
+			case WILDCARD:
 				namePattern = namePattern.replaceAll("[\\*\\%]", "%");
 				namePattern = namePattern.replaceAll("\\?", "_");
 				break;
-			case "exact":
-			case "case_insensitive":
+			case EXACT:
+			case CASE_INSENSITIVE:
 			default:
 				break;
 			}

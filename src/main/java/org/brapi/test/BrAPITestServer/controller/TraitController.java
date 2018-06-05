@@ -8,6 +8,7 @@ import org.brapi.test.BrAPITestServer.service.TraitService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.api.TraitsApi;
@@ -43,7 +44,7 @@ public class TraitController extends BrAPIController implements TraitsApi {
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<TraitResponse> traitsTraitDbIdGet(String traitDbId) {
+	public ResponseEntity<TraitResponse> traitsTraitDbIdGet(@PathVariable("traitDbId") String traitDbId) {
 
 		TraitSummary result = traitService.getTrait(traitDbId);
 

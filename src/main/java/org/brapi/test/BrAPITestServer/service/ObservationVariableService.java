@@ -11,6 +11,7 @@ import org.brapi.test.BrAPITestServer.repository.OntologyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Metadata;
@@ -38,11 +39,10 @@ public class ObservationVariableService {
 		// TODO why is this needed?
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 
-		List<String> dataTypes = observationVariableRepository.findDistinctScale_DatatypeAll(pageReq).getContent();
-		metaData.getPagination().setTotalCount((int) observationVariableRepository.countDistinctScale_DatatypeAll());
+		Page<String> dataTypesPage = observationVariableRepository.findDistinctScale_DatatypeAll(pageReq);
 
-		PagingUtility.calculateMetaData(metaData);
-		return dataTypes;
+		PagingUtility.calculateMetaData(metaData, dataTypesPage);
+		return dataTypesPage.getContent();
 	}
 
 	public List<ObservationVariable> getVariables(String traitClass, Metadata metaData) {
@@ -76,18 +76,13 @@ public class ObservationVariableService {
 
 		request = fixReqestArrays(request);
 
-		List<ObservationVariable> variables = observationVariableRepository
+		Page<ObservationVariableEntity> variablesPage = observationVariableRepository
 				.findAllBySearch(request.getDatatypes(), request.getMethodDbIds(), request.getNames(),
 						request.getObservationVariableDbIds(), request.getOntologyDbIds(), request.getOntologyXrefs(),
-						request.getScaleDbIds(), request.getTraitClasses(), pageReq)
-				.map(this::convertFromEntity).getContent();
-		metaData.getPagination()
-				.setTotalCount((int) observationVariableRepository.countBySearch(request.getDatatypes(),
-						request.getMethodDbIds(), request.getNames(), request.getObservationVariableDbIds(),
-						request.getOntologyDbIds(), request.getOntologyXrefs(), request.getScaleDbIds(),
-						request.getTraitClasses()));
+						request.getScaleDbIds(), request.getTraitClasses(), pageReq);
 
-		return variables;
+		PagingUtility.calculateMetaData(metaData, variablesPage);
+		return variablesPage.map(this::convertFromEntity).getContent();
 	}
 
 	private ObservationVariableSearchRequest fixReqestArrays(ObservationVariableSearchRequest request) {

@@ -3,18 +3,23 @@ package org.brapi.test.BrAPITestServer.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.brapi.test.BrAPITestServer.model.entity.BreedingMethodEntity;
 import org.brapi.test.BrAPITestServer.model.entity.GermplasmEntity;
 import org.brapi.test.BrAPITestServer.model.entity.MarkerProfileEntity;
 import org.brapi.test.BrAPITestServer.model.entity.PedigreeEntity;
+import org.brapi.test.BrAPITestServer.repository.BreedingMethodRepository;
 import org.brapi.test.BrAPITestServer.repository.GermplasmRepository;
 import org.brapi.test.BrAPITestServer.repository.MarkerProfileRepository;
 import org.brapi.test.BrAPITestServer.repository.PedigreeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import io.swagger.model.BreedingMethod;
 import io.swagger.model.Germplasm;
 import io.swagger.model.GermplasmDonors;
 import io.swagger.model.GermplasmMarkerprofilesList;
@@ -34,13 +39,15 @@ public class GermplasmService {
 	private GermplasmRepository germplasmRepository;
 	private PedigreeRepository pedigreeRepository;
 	private MarkerProfileRepository markerProfileRepository;
+	private BreedingMethodRepository breedingMethodRepository;
 
 	@Autowired
 	public GermplasmService(GermplasmRepository germplasmRepository, PedigreeRepository pedigreeRepository,
-			MarkerProfileRepository markerProfileRepository) {
+			MarkerProfileRepository markerProfileRepository, BreedingMethodRepository breedingMethodRepository) {
 		this.germplasmRepository = germplasmRepository;
 		this.pedigreeRepository = pedigreeRepository;
 		this.markerProfileRepository = markerProfileRepository;
+		this.breedingMethodRepository = breedingMethodRepository;
 	}
 
 	public List<Germplasm> search(String germplasmPUI, String germplasmDbId, String germplasmName,
@@ -79,6 +86,7 @@ public class GermplasmService {
 		germ.setBiologicalStatusOfAccessionCode(Integer.decode(entity.getBiologicalStatusOfAccessionCode()));
 		germ.setCommonCropName(entity.getCommonCropName());
 		germ.setCountryOfOriginCode(entity.getCountryOfOriginCode());
+		germ.setBreedingMethodDbId(entity.getBreedingMethod().getId());
 		germ.setDefaultDisplayName(entity.getDefaultDisplayName());
 		germ.setGenus(entity.getGenus());
 		germ.setGermplasmDbId(entity.getId());
@@ -141,7 +149,7 @@ public class GermplasmService {
 		Pedigree pedigree = new Pedigree();
 		pedigree.setCrossingPlan(entity.getCrossingPlan());
 		pedigree.setCrossingYear(entity.getCrossingYear().toString());
-		pedigree.setDefaultDisplayName(entity.getDefaultDisplayName());
+		pedigree.setDefaultDisplayName(entity.getGermplasm().getDefaultDisplayName());
 		pedigree.setFamilyCode(entity.getFamilyCode());
 		pedigree.setGermplasmDbId(germplasmDbId);
 		pedigree.setParent1Id(entity.getParent1().getGermplasm().getId());
@@ -153,13 +161,13 @@ public class GermplasmService {
 		pedigree.setParent2Name(entity.getParent2().getGermplasm().getDefaultDisplayName());
 		pedigree.setParent2Type(Parent2TypeEnum.fromValue(entity.getParent2Type()));
 		pedigree.setPedigree(entity.getPedigree());
-		if (includeSiblings) {
-			Page<PedigreeEntity> siblingsPage = pedigreeRepository.findSiblings(entity.getParent1().getId(),
+		if (includeSiblings != null && includeSiblings) {
+			List<PedigreeEntity> siblingsPage = pedigreeRepository.findSiblings(entity.getParent1().getId(),
 					entity.getParent2().getId());
 			for (PedigreeEntity sibEntity : siblingsPage) {
 				if (sibEntity.getId() != entity.getId()) {
 					PedigreeSiblings siblingsItem = new PedigreeSiblings();
-					siblingsItem.setDefaultDisplayName(sibEntity.getDefaultDisplayName());
+					siblingsItem.setDefaultDisplayName(sibEntity.getGermplasm().getDefaultDisplayName());
 					siblingsItem.setGermplasmDbId(sibEntity.getGermplasm().getId());
 					pedigree.addSiblingsItem(siblingsItem);
 				}
@@ -169,14 +177,14 @@ public class GermplasmService {
 	}
 
 	public Progeny searchProgenyByDbId(String germplasmDbId) {
-		Page<PedigreeEntity> progenyPage = pedigreeRepository.findByParent1_IdOrParent2_Id(germplasmDbId,
+		List<PedigreeEntity> progenyPage = pedigreeRepository.findByParent1_IdOrParent2_Id(germplasmDbId,
 				germplasmDbId);
 		Progeny result = new Progeny();
 		result.setProgeny(new ArrayList<>());
 		result.setGermplasmDbId(germplasmDbId);
 		progenyPage.forEach(entity -> {
 			ProgenyProgeny progeny = new ProgenyProgeny();
-			progeny.setDefaultDisplayName(entity.getDefaultDisplayName());
+			progeny.setDefaultDisplayName(entity.getGermplasm().getDefaultDisplayName());
 			progeny.setGermplasmDbId(entity.getGermplasm().getId());
 			if (entity.getParent1().getGermplasm().getId() == germplasmDbId) {
 				progeny.setParentType(ParentTypeEnum.fromValue(entity.getParent1Type()));
@@ -198,4 +206,25 @@ public class GermplasmService {
 		return result;
 	}
 
+	public BreedingMethod getBreedingMethod(String breedingMethodDbId) {
+		Optional<BreedingMethodEntity> entityOp = breedingMethodRepository.findById(breedingMethodDbId);
+		
+		return convertFromEntity(entityOp.orElse(new BreedingMethodEntity()));
+	}
+
+	public List<BreedingMethod> getBreedingMethods(Metadata metadata) {
+		Pageable pageReq = PagingUtility.getPageRequest(metadata);
+		Page<BreedingMethodEntity> page = breedingMethodRepository.findAll(pageReq);
+		PagingUtility.calculateMetaData(metadata, page);
+		return page.map(this::convertFromEntity).getContent();
+	}
+
+	private BreedingMethod convertFromEntity(BreedingMethodEntity entity) {
+		BreedingMethod bm = new BreedingMethod();
+		bm.setAbbreviation(entity.getAbbreviation());
+		bm.setBreedingMethodDbId(entity.getId());
+		bm.setDescription(entity.getDescription());
+		bm.setName(entity.getName());
+		return bm;
+	}
 }

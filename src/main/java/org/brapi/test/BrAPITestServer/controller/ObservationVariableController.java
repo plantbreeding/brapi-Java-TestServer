@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.api.OntologiesApi;
@@ -51,7 +53,7 @@ public class ObservationVariableController extends BrAPIController implements Va
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ObservationVariablesResponse> variablesSearchPost(@Valid ObservationVariableSearchRequest request) {
+	public ResponseEntity<ObservationVariablesResponse> variablesSearchPost(@Valid @RequestBody ObservationVariableSearchRequest request) {
 
 		Metadata metaData = generateMetaDataTemplate(request.getPage().intValue(), request.getPageSize().intValue());
 		List<ObservationVariable> data = observationVariableService.getVariables(request, metaData);
@@ -97,7 +99,7 @@ public class ObservationVariableController extends BrAPIController implements Va
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ObservationVariableResponse> variablesObservationVariableDbIdGet(
-			String observationVariableDbId) {
+			@PathVariable("observationVariableDbId") String observationVariableDbId) {
 		ObservationVariable result = observationVariableService.getVariable(observationVariableDbId);
 		
 		ObservationVariableResponse response = new ObservationVariableResponse();

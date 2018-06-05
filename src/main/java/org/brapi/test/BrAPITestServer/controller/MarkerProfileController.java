@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.api.AllelematricesApi;
@@ -41,8 +43,8 @@ public class MarkerProfileController extends BrAPIController implements Markerpr
 	//Deprecated
 	@CrossOrigin
 	@Override
-	public ResponseEntity<AlleleMatrixValuesResponse> allelematrixSearchGet(@Valid List<String> markerprofileDbId,
-			@Valid List<String> markerDbId, @Valid List<String> matrixDbId, @Valid String format,
+	public ResponseEntity<AlleleMatrixValuesResponse> allelematrixSearchGet(@Valid ArrayList<String> markerprofileDbId,
+			@Valid ArrayList<String> markerDbId, @Valid ArrayList<String> matrixDbId, @Valid String format,
 			@Valid Boolean expandHomozygotes, @Valid String unknownString, @Valid String sepPhased,
 			@Valid String sepUnphased, @Valid Integer pageSize, @Valid Integer page) {
 		
@@ -79,8 +81,8 @@ public class MarkerProfileController extends BrAPIController implements Markerpr
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<AlleleMatrixValuesResponse> allelematricesSearchGet(@Valid List<String> markerprofileDbId,
-			@Valid List<String> markerDbId, @Valid List<String> matrixDbId, @Valid String format,
+	public ResponseEntity<AlleleMatrixValuesResponse> allelematricesSearchGet(@Valid ArrayList<String> markerprofileDbId,
+			@Valid ArrayList<String> markerDbId, @Valid ArrayList<String> matrixDbId, @Valid String format,
 			@Valid Boolean expandHomozygotes, @Valid String unknownString, @Valid String sepPhased,
 			@Valid String sepUnphased, @Valid Integer pageSize, @Valid Integer page) {
 
@@ -149,7 +151,7 @@ public class MarkerProfileController extends BrAPIController implements Markerpr
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<MarkerProfilesResponse> markerprofilesMarkerprofileDbIdGet(String markerprofileDbId,
+	public ResponseEntity<MarkerProfilesResponse> markerprofilesMarkerprofileDbIdGet(@PathVariable("markerprofileDbId") String markerprofileDbId,
 			@Valid Boolean expandHomozygotes, @Valid String unknownString, @Valid String sepPhased,
 			@Valid String sepUnphased, @Valid Integer pageSize, @Valid Integer page) {
 

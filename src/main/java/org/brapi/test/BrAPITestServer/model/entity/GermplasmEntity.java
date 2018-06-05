@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -16,7 +17,6 @@ import javax.persistence.JoinColumn;
 @Entity
 @Table(name="germplasm")
 public class GermplasmEntity extends BaseEntity{
-
 	@Column
     private String germplasmPUI;
 	@Column
@@ -27,8 +27,10 @@ public class GermplasmEntity extends BaseEntity{
 	private String commonCropName;
 	@Column
     private String accessionNumber;
-	@OneToOne(cascade=CascadeType.ALL, mappedBy="gemrplasm")
+	@OneToOne(cascade=CascadeType.ALL, mappedBy="germplasm")
     private PedigreeEntity pedigree;
+	@ManyToOne(cascade=CascadeType.DETACH)
+    private BreedingMethodEntity breedingMethod;
 	@Column
     private String germplasmSeedSource;
 	@Column
@@ -73,6 +75,22 @@ public class GermplasmEntity extends BaseEntity{
 	
 	@OneToMany(mappedBy="germplasm")
 	private List<ObservationUnitEntity> observationUnits;
+
+	public BreedingMethodEntity getBreedingMethod() {
+		return breedingMethod;
+	}
+
+	public void setBreedingMethod(BreedingMethodEntity breedingMethod) {
+		this.breedingMethod = breedingMethod;
+	}
+
+	public List<ObservationUnitEntity> getObservationUnits() {
+		return observationUnits;
+	}
+
+	public void setObservationUnits(List<ObservationUnitEntity> observationUnits) {
+		this.observationUnits = observationUnits;
+	}
 
 	public List<MarkerProfileEntity> getMarkerProfiles() {
 		return markerProfiles;

@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.api.MarkersApi;
@@ -18,6 +20,7 @@ import io.swagger.model.MarkerResponse;
 import io.swagger.model.MarkersResponse2;
 import io.swagger.model.MarkersResponse2Result;
 import io.swagger.model.MarkersSearchRequest;
+import io.swagger.model.MarkersSearchRequest.MatchMethodEnum;
 import io.swagger.model.Metadata;
 
 @RestController
@@ -31,12 +34,12 @@ public class MarkerController extends BrAPIController implements MarkersApi, Mar
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<MarkersResponse2> markersSearchGet(@Valid List<String> markerDbIds, @Valid String name,
+	public ResponseEntity<MarkersResponse2> markersSearchGet(@Valid ArrayList<String> markerDbIds, @Valid String name,
 			@Valid String matchMethod, @Valid Boolean includeSynonyms, @Valid String type, @Valid Integer pageSize,
 			@Valid Integer page) {
 		
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
-		List<Marker> data = markersService.getMarkers(name, type, markerDbIds, matchMethod, includeSynonyms,
+		List<Marker> data = markersService.getMarkers(name, type, markerDbIds, MatchMethodEnum.fromValue(matchMethod), includeSynonyms,
 				metaData);
 		
 		MarkersResponse2Result result = new MarkersResponse2Result();
@@ -53,7 +56,7 @@ public class MarkerController extends BrAPIController implements MarkersApi, Mar
 
 		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		List<Marker> data = markersService.getMarkers(request.getName(), request.getType(), request.getMarkerDbIds(),
-				request.getMatchMethod().name(), request.isIncludeSynonyms(), metaData);
+				request.getMatchMethod(), request.isIncludeSynonyms(), metaData);
 		
 		MarkersResponse2Result result = new MarkersResponse2Result();
 		result.setData(data);
@@ -70,8 +73,8 @@ public class MarkerController extends BrAPIController implements MarkersApi, Mar
 			@Valid String include, @Valid String type, @Valid Integer pageSize, @Valid Integer page) {
 		
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
-		List<Marker> data = markersService.getMarkers(name, type, null, matchMethod,
-				include.equalsIgnoreCase("synonyms"), metaData);
+		List<Marker> data = markersService.getMarkers(name, type, null, MatchMethodEnum.fromValue(matchMethod),
+				"synonyms".equals(include), metaData);
 		
 		MarkersResponse2Result result = new MarkersResponse2Result();
 		result.setData(data);
@@ -83,7 +86,7 @@ public class MarkerController extends BrAPIController implements MarkersApi, Mar
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<MarkerResponse> markersMarkerDbIdGet(String markerDbId) {
+	public ResponseEntity<MarkerResponse> markersMarkerDbIdGet(@PathVariable("markerDbId") String markerDbId) {
 		Marker result = markersService.getMarker(markerDbId);
 
 		MarkerResponse response = new MarkerResponse();

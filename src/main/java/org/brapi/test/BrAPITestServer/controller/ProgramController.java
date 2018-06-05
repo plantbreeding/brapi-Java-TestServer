@@ -31,7 +31,7 @@ public class ProgramController  extends BrAPIController implements ProgramsApi, 
 	@Override
 	public ResponseEntity<ProgramsResponse> programsSearchPost(@Valid ProgramsSearchRequest request) {
 		
-		Metadata metaData = generateMetaDataTemplate(request.getPage().intValue(), request.getPageSize().intValue());
+		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		List<Program> data = programService.searchPrograms(
 				request.getAbbreviation(), 
 				request.getLeadPerson(), 

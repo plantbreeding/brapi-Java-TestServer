@@ -11,7 +11,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 public interface StudyRepository extends PagingAndSortingRepository<StudyEntity, String> {
-	@Query("select distinct s from StudyEntity s JOIN s.seasons season JOIN s.observationUnits observationUnit JOIN observationUnits.observations observation "
+	@Query("select distinct s from StudyEntity s JOIN s.seasons season JOIN s.observationUnits ou JOIN ou.observations observation "
 			+ "where ('' IN :studyTypes OR s.studyType.name IN :studyTypes) "
 			+ "AND ('' IN :programDbIds OR s.trial.program.id IN :programDbIds) "
 			+ "AND ('' IN :trialDbIds OR s.trial.id IN :trialDbIds) "
@@ -21,7 +21,7 @@ public interface StudyRepository extends PagingAndSortingRepository<StudyEntity,
 			+ "AND ('' IN :studyLocations OR s.location.countryName IN :studyLocations) "
 			+ "AND ('' IN :locationDbIds OR s.location.id IN :locationDbIds) "
 			+ "AND ('' IN :seasonDbIds OR season.id IN :seasonDbIds) "
-			+ "AND ('' IN :germplasmDbIds OR observationUnit.germplasm.id IN :germplasmDbIds) "
+			+ "AND ('' IN :germplasmDbIds OR ou.germplasm.id IN :germplasmDbIds) "
 			+ "AND ('' IN :observationVariableDbIds OR observation.observationVariable.id IN :observationVariableDbIds) "
 			+ "AND s.active = :active ")
 	public Page<StudyEntity> findBySearch(

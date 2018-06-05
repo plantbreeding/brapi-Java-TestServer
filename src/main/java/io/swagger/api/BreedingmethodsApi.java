@@ -5,33 +5,43 @@
  */
 package io.swagger.api;
 
+import io.swagger.model.BreedingMethodResponse;
+import io.swagger.model.BreedingMethodResponse1;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.Valid;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-01T19:24:22.162Z")
+import javax.validation.constraints.*;
+import java.util.List;
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
 
 @Api(value = "breedingmethods", description = "the breedingmethods API")
 public interface BreedingmethodsApi {
 
-    @ApiOperation(value = "GET specific breeding method details", nickname = "breedingmethodsBreedingMethodDbIdGet", notes = "  <a>example.com/brapi/v1/breedingmethods/{breedingMethodDbId}</a>", tags={ "Germplasm", })
+    @ApiOperation(value = "GET specific breeding method details", nickname = "breedingmethodsBreedingMethodDbIdGet", notes = "  <a>example.com/brapi/v1/breedingmethods/{breedingMethodDbId}</a>", response = BreedingMethodResponse1.class, tags={ "Germplasm", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK") })
+        @ApiResponse(code = 200, message = "OK", response = BreedingMethodResponse1.class) })
     @RequestMapping(value = "/breedingmethods/{breedingMethodDbId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Void> breedingmethodsBreedingMethodDbIdGet(@ApiParam(value = "Internal database identifier for a breeding method",required=true) @PathVariable("breedingMethodDbId") String breedingMethodDbId);
+    ResponseEntity<BreedingMethodResponse1> breedingmethodsBreedingMethodDbIdGet(@ApiParam(value = "Internal database identifier for a breeding method",required=true) @PathVariable("breedingMethodDbId") String breedingMethodDbId);
 
 
-    @ApiOperation(value = "GET List of Breeding Methods", nickname = "breedingmethodsGet", notes = " Scope: Germplasm Get the list of germplasm breeding methods available in a system. <a>example.com/brapi/v1/breedingmethods</a>", tags={ "Germplasm", })
+    @ApiOperation(value = "GET List of Breeding Methods", nickname = "breedingmethodsGet", notes = " Scope: Germplasm Get the list of germplasm breeding methods available in a system. <a>example.com/brapi/v1/breedingmethods</a>", response = BreedingMethodResponse.class, tags={ "Germplasm", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK") })
+        @ApiResponse(code = 200, message = "OK", response = BreedingMethodResponse.class) })
     @RequestMapping(value = "/breedingmethods",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<Void> breedingmethodsGet(@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page);
+    ResponseEntity<BreedingMethodResponse> breedingmethodsGet(@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page);
 
 }

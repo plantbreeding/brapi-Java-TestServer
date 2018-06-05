@@ -7,6 +7,13 @@ import io.swagger.model.MetadataPagination;
 
 public class BrAPIController {
 	protected Metadata generateMetaDataTemplate(Integer page, Integer pageSize) {
+		//defaults
+		if(page == null) {
+			page = 0;
+		}
+		if(pageSize == null) {
+			pageSize = 1000;
+		}
 		Metadata metaData = generateEmptyMetadata();
 		metaData.getPagination().setCurrentPage(page);
 		metaData.getPagination().setPageSize(pageSize);

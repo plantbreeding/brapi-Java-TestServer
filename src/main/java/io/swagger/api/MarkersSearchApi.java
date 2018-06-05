@@ -9,13 +9,22 @@ import io.swagger.model.MarkersResponse2;
 import io.swagger.model.MarkersSearchRequest;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.Valid;
+import javax.validation.constraints.*;
+
+import java.util.ArrayList;
 import java.util.List;
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-01T19:24:22.162Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
 
 @Api(value = "markers-search", description = "the markers-search API")
 public interface MarkersSearchApi {
@@ -26,7 +35,7 @@ public interface MarkersSearchApi {
     @RequestMapping(value = "/markers-search",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<MarkersResponse2> markersSearchGet(@ApiParam(value = "The database IDs of the markers to search for") @Valid @RequestParam(value = "markerDbIds", required = false) List<String> markerDbIds,@ApiParam(value = "The search pattern for a marker name or synonym. Examples: \"11_10002\" \"11_1%\" \"11_1*\" \"11_10?02\"") @Valid @RequestParam(value = "name", required = false) String name,@ApiParam(value = "Possible values are 'case_insensitive', 'exact' (case sensitive), 'wildcard' (which is case insensitive). Wildcard uses both '*' and '%' for any number of characters and '?' for one character matching. Default is exact.") @Valid @RequestParam(value = "matchMethod", required = false) String matchMethod,@ApiParam(value = "Whether to include synonyms in the output.") @Valid @RequestParam(value = "includeSynonyms", required = false) Boolean includeSynonyms,@ApiParam(value = "The type of the marker.") @Valid @RequestParam(value = "type", required = false) String type,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page);
+    ResponseEntity<MarkersResponse2> markersSearchGet(@ApiParam(value = "The database IDs of the markers to search for") @Valid @RequestParam(value = "markerDbIds", required = false) ArrayList<String> markerDbIds,@ApiParam(value = "The search pattern for a marker name or synonym. Examples: \"11_10002\" \"11_1%\" \"11_1*\" \"11_10?02\"") @Valid @RequestParam(value = "name", required = false) String name,@ApiParam(value = "Possible values are 'case_insensitive', 'exact' (case sensitive), 'wildcard' (which is case insensitive). Wildcard uses both '*' and '%' for any number of characters and '?' for one character matching. Default is exact.") @Valid @RequestParam(value = "matchMethod", required = false) String matchMethod,@ApiParam(value = "Whether to include synonyms in the output.") @Valid @RequestParam(value = "includeSynonyms", required = false) Boolean includeSynonyms,@ApiParam(value = "The type of the marker.") @Valid @RequestParam(value = "type", required = false) String type,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page);
 
 
     @ApiOperation(value = "Markers Search (POST)", nickname = "markersSearchPost", notes = " Scope: CORE.  Status: ACCEPTED. Implemented by: Germinate See <a href=\"#introduction/search-services\">Search Services</a> for additional implementation details. Other service requests use the servers internal `markerDbId`. This service returns marker records that provide the markerDbId. For the requested name or synonym, returns an array (possibly empty) of marker records that match the search criteria. - If there is none, an empty array is returned. - If there is one or more than one match, returns an array of all marker records that match the search criteria. ", response = MarkersResponse2.class, tags={ "Markers", })

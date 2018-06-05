@@ -13,7 +13,7 @@ public interface ProgramRepository extends PagingAndSortingRepository<ProgramEnt
 			+ "and (:leadPerson is null OR p.leadPerson = :leadPerson) "
 			+ "and (:name is null OR p.name = :name) "
 			+ "and (:objective is null OR p.objective = :objective) "
-			+ "and (:programDbId is null OR p.Id = :programDbId) ")
+			+ "and (:programDbId is null OR p.id = :programDbId) ")
 	public Page<ProgramEntity> findAllBySearch(
 			@Param("abbreviation") String abbreviation, 
 			@Param("leadPerson") String leadPerson, 

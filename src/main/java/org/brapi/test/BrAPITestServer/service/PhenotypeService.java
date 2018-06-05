@@ -50,20 +50,13 @@ public class PhenotypeService {
 		request.setObservationTimeStampRangeEnd(observationTimeStampRangeEnd);
 		request.setObservationTimeStampRangeStart(observationTimeStampRangeStart);
 		
-		request.setGermplasmDbIds(new ArrayList<>());
-		request.getGermplasmDbIds().add(germplasmDbId);
-		request.setLocationDbIds(new ArrayList<>());
-		request.getLocationDbIds().add(locationDbId);
-		request.setObservationVariableDbIds(new ArrayList<>());
-		request.getObservationVariableDbIds().add(observationVariableDbId);
-		request.setProgramDbIds(new ArrayList<>());
-		request.getProgramDbIds().add(programDbId);
-		request.setSeasonDbIds(new ArrayList<>());
-		request.getSeasonDbIds().add(seasonDbId);
-		request.setStudyDbIds(new ArrayList<>());
-		request.getStudyDbIds().add(studyDbId);
-		request.setTrialDbIds(new ArrayList<>());
-		request.getTrialDbIds().add(trialDbId);
+		request.setGermplasmDbIds(SearchUtility.buildSearchParam(germplasmDbId));
+		request.setLocationDbIds(SearchUtility.buildSearchParam(locationDbId));
+		request.setObservationVariableDbIds(SearchUtility.buildSearchParam(observationVariableDbId));
+		request.setProgramDbIds(SearchUtility.buildSearchParam(programDbId));
+		request.setSeasonDbIds(SearchUtility.buildSearchParam(seasonDbId));
+		request.setStudyDbIds(SearchUtility.buildSearchParam(studyDbId));
+		request.setTrialDbIds(SearchUtility.buildSearchParam(trialDbId));
 		
 		Page<ObservationUnitEntity> unitsPage = searchPhenotypes(request, metaData);
 		List<ObservationUnitPhenotype> phenotypes = unitsPage.map(this::convertFromEntity).getContent();

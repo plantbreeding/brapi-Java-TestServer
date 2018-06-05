@@ -120,7 +120,7 @@ public class StudyService {
 
 	public List<StudySummary> getStudies(String studyType, String programDbId, String trialDbId, String studyDbId,
 			String locationDbId, String seasonDbId, List<String> germplasmDbIds, List<String> observationVariableDbIds,
-			boolean active, String sortBy, String sortOrder, Metadata metaData) {
+			Boolean active, String sortBy, String sortOrder, Metadata metaData) {
 
 		return searchStudies(SearchUtility.buildSearchParam(studyType),
 				SearchUtility.buildSearchParam(programDbId),
@@ -148,7 +148,7 @@ public class StudyService {
 				SearchUtility.buildSearchParam(request.getSeasonDbId()),
 				SearchUtility.buildSearchParam(request.getGermplasmDbIds()),
 				SearchUtility.buildSearchParam(request.getObservationVariableDbIds()), 
-				request.isActive().booleanValue(), request.getSortBy(), request.getSortOrder(), metaData);
+				request.isActive(), request.getSortBy(), request.getSortOrder(), metaData);
 	}
 
 	private List<StudySummary> searchStudies(List<String> studyTypes, 
@@ -162,8 +162,11 @@ public class StudyService {
 			List<String> seasonDbIds,
 			List<String> germplasmDbIds, 
 			List<String> observationVariableDbIds, 
-			boolean active, SortByEnum sortBy, SortOrderEnum sortOrder, Metadata metaData) {
+			Boolean active, SortByEnum sortBy, SortOrderEnum sortOrder, Metadata metaData) {
 
+		active = active != null && active;
+		sortOrder = sortOrder == null ? SortOrderEnum.ASC : sortOrder;
+		sortBy = sortBy == null ? SortByEnum.STUDYNAME : sortBy;
 		Sort sort = Sort.by(Direction.fromString(sortOrder.toString()), sortBy.toString());
 		Pageable pageReq = PagingUtility.getPageRequest(metaData, sort);
 		Page<StudyEntity> studiesPage = studyRepository.findBySearch(studyTypes, programDbIds, trialDbIds, studyDbIds,

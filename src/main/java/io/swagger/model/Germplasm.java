@@ -2,6 +2,8 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.GermplasmDonors;
 import io.swagger.model.TaxonID;
@@ -10,12 +12,13 @@ import java.util.List;
 import org.threeten.bp.LocalDate;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * Germplasm
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-01T19:24:22.162Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
 
 public class Germplasm   {
   @JsonProperty("accessionNumber")
@@ -26,6 +29,9 @@ public class Germplasm   {
 
   @JsonProperty("biologicalStatusOfAccessionCode")
   private Integer biologicalStatusOfAccessionCode = null;
+
+  @JsonProperty("breedingMethodDbId")
+  private String breedingMethodDbId = null;
 
   @JsonProperty("commonCropName")
   private String commonCropName = null;
@@ -147,6 +153,26 @@ public class Germplasm   {
 
   public void setBiologicalStatusOfAccessionCode(Integer biologicalStatusOfAccessionCode) {
     this.biologicalStatusOfAccessionCode = biologicalStatusOfAccessionCode;
+  }
+
+  public Germplasm breedingMethodDbId(String breedingMethodDbId) {
+    this.breedingMethodDbId = breedingMethodDbId;
+    return this;
+  }
+
+   /**
+   * The unique identifier for the breeding method used to create this germplasm
+   * @return breedingMethodDbId
+  **/
+  @ApiModelProperty(value = "The unique identifier for the breeding method used to create this germplasm")
+
+
+  public String getBreedingMethodDbId() {
+    return breedingMethodDbId;
+  }
+
+  public void setBreedingMethodDbId(String breedingMethodDbId) {
+    this.breedingMethodDbId = breedingMethodDbId;
   }
 
   public Germplasm commonCropName(String commonCropName) {
@@ -576,6 +602,7 @@ public class Germplasm   {
     return Objects.equals(this.accessionNumber, germplasm.accessionNumber) &&
         Objects.equals(this.acquisitionDate, germplasm.acquisitionDate) &&
         Objects.equals(this.biologicalStatusOfAccessionCode, germplasm.biologicalStatusOfAccessionCode) &&
+        Objects.equals(this.breedingMethodDbId, germplasm.breedingMethodDbId) &&
         Objects.equals(this.commonCropName, germplasm.commonCropName) &&
         Objects.equals(this.countryOfOriginCode, germplasm.countryOfOriginCode) &&
         Objects.equals(this.defaultDisplayName, germplasm.defaultDisplayName) &&
@@ -599,7 +626,7 @@ public class Germplasm   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(accessionNumber, acquisitionDate, biologicalStatusOfAccessionCode, commonCropName, countryOfOriginCode, defaultDisplayName, donors, genus, germplasmDbId, germplasmName, germplasmPUI, instituteCode, instituteName, pedigree, seedSource, species, speciesAuthority, subtaxa, subtaxaAuthority, synonyms, taxonIds, typeOfGermplasmStorageCode);
+    return Objects.hash(accessionNumber, acquisitionDate, biologicalStatusOfAccessionCode, breedingMethodDbId, commonCropName, countryOfOriginCode, defaultDisplayName, donors, genus, germplasmDbId, germplasmName, germplasmPUI, instituteCode, instituteName, pedigree, seedSource, species, speciesAuthority, subtaxa, subtaxaAuthority, synonyms, taxonIds, typeOfGermplasmStorageCode);
   }
 
   @Override
@@ -610,6 +637,7 @@ public class Germplasm   {
     sb.append("    accessionNumber: ").append(toIndentedString(accessionNumber)).append("\n");
     sb.append("    acquisitionDate: ").append(toIndentedString(acquisitionDate)).append("\n");
     sb.append("    biologicalStatusOfAccessionCode: ").append(toIndentedString(biologicalStatusOfAccessionCode)).append("\n");
+    sb.append("    breedingMethodDbId: ").append(toIndentedString(breedingMethodDbId)).append("\n");
     sb.append("    commonCropName: ").append(toIndentedString(commonCropName)).append("\n");
     sb.append("    countryOfOriginCode: ").append(toIndentedString(countryOfOriginCode)).append("\n");
     sb.append("    defaultDisplayName: ").append(toIndentedString(defaultDisplayName)).append("\n");

@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.api.SamplesApi;
@@ -79,7 +80,7 @@ public class SampleController extends BrAPIController implements SamplesApi, Sam
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<SampleResponse> samplesSampleDbIdGet(String sampleDbId) {
+	public ResponseEntity<SampleResponse> samplesSampleDbIdGet(@PathVariable("sampleDbId") String sampleDbId) {
 		Sample result = sampleService.getSample(sampleDbId);
 		
 		SampleResponse response = new SampleResponse();

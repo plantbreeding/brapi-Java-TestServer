@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.api.MapsApi;
@@ -52,7 +53,7 @@ public class GenomeMapController  extends BrAPIController implements MapsApi{
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<MapDetailsResponse> mapsMapDbIdGet(String mapDbId, @Valid Integer pageSize,
+	public ResponseEntity<MapDetailsResponse> mapsMapDbIdGet(@PathVariable("mapDbId") String mapDbId, @Valid Integer pageSize,
 			@Valid Integer page) {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		MapDetails result = genomeMapService.getMapDetail(metaData, mapDbId);
@@ -65,7 +66,7 @@ public class GenomeMapController  extends BrAPIController implements MapsApi{
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<MarkersResponse> mapsMapDbIdPositionsGet(String mapDbId, @Valid String linkageGroupId,
+	public ResponseEntity<MarkersResponse> mapsMapDbIdPositionsGet(@PathVariable("mapDbId") String mapDbId, @Valid String linkageGroupId,
 			@Valid String linkageGroupName, @Valid Integer pageSize, @Valid Integer page) {
 
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
@@ -82,8 +83,8 @@ public class GenomeMapController  extends BrAPIController implements MapsApi{
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<MarkersResponse1> mapsMapDbIdPositionsLinkageGroupNameGet(String mapDbId,
-			String linkageGroupName, @Valid Integer min, @Valid Integer max, @Valid Integer pageSize,
+	public ResponseEntity<MarkersResponse1> mapsMapDbIdPositionsLinkageGroupNameGet(@PathVariable("mapDbId") String mapDbId,
+			@PathVariable("linkageGroupName") String linkageGroupName, @Valid Integer min, @Valid Integer max, @Valid Integer pageSize,
 			@Valid Integer page) {
 
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);

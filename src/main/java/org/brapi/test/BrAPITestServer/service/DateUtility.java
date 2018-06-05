@@ -40,7 +40,7 @@ public class DateUtility {
 	}
 
 	public static LocalDate toLocalDate(Date date) {
-		return LocalDate.ofEpochDay(date.getTime());
+		return LocalDate.parse(toDateString(date));
 	}
 
 	public static OffsetDateTime toOffsetDateTime(Date date) {
@@ -48,6 +48,8 @@ public class DateUtility {
 	}
 	
 	public static OffsetDateTime toOffsetDateTime(String date) {
+		if(date == null || date.equals(""))
+			return null;
 		return  OffsetDateTime.parse(date);
 	}
 }

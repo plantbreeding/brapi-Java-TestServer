@@ -69,6 +69,9 @@ public class GenomeMapService {
 
 		summary.setLinkageGroupCount(entity.getLinkageGroups().size());
 		entity.getLinkageGroups().forEach((group) -> {
+			if(summary.getMarkerCount() == null) {
+				summary.setMarkerCount(0);
+			}
 			summary.setMarkerCount(summary.getMarkerCount() + group.getMarkers().size());
 		});
 		return summary;

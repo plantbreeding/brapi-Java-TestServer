@@ -102,10 +102,10 @@ public class MarkerProfileService {
 		return value;
 	}
 
-	public AlleleFormatParams buildFormatParams(boolean expandHomozygotes, String sepPhased, String sepUnphased,
+	public AlleleFormatParams buildFormatParams(Boolean expandHomozygotes, String sepPhased, String sepUnphased,
 			String unknownString) {
 		AlleleFormatParams params = new AlleleFormatParams();
-		params.setExpandHomozygotes(expandHomozygotes);
+		params.setExpandHomozygotes(expandHomozygotes != null && expandHomozygotes);
 		params.setSepPhased(sepPhased);
 		params.setSepUnphased(sepUnphased);
 		params.setUnknownString(unknownString);

@@ -8,6 +8,7 @@ import org.brapi.test.BrAPITestServer.service.TrialService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.api.TrialsApi;
@@ -45,7 +46,7 @@ public class TrialController extends BrAPIController implements TrialsApi{
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<TrialResponse> trialsTrialDbIdGet(String trialDbId) {
+	public ResponseEntity<TrialResponse> trialsTrialDbIdGet(@PathVariable("trialDbId") String trialDbId) {
 
 		Trial result = trialService.getTrialSummary(trialDbId);
 		
