@@ -164,14 +164,14 @@ public class StudyService {
 			List<String> observationVariableDbIds, 
 			Boolean active, SortByEnum sortBy, SortOrderEnum sortOrder, Metadata metaData) {
 
-		active = active != null && active;
+		boolean act = active == null ? true : active;
 		sortOrder = sortOrder == null ? SortOrderEnum.ASC : sortOrder;
 		sortBy = sortBy == null ? SortByEnum.STUDYNAME : sortBy;
 		Sort sort = Sort.by(Direction.fromString(sortOrder.toString()), sortBy.toString());
 		Pageable pageReq = PagingUtility.getPageRequest(metaData, sort);
 		Page<StudyEntity> studiesPage = studyRepository.findBySearch(studyTypes, programDbIds, trialDbIds, studyDbIds,
 				programNames, studyNames, studyLocations, locationDbIds, seasonDbIds, germplasmDbIds,
-				observationVariableDbIds, active, pageReq);
+				observationVariableDbIds, act, pageReq);
 		PagingUtility.calculateMetaData(metaData, studiesPage);
 
 		List<StudySummary> summaries = studiesPage.map((entity) -> {

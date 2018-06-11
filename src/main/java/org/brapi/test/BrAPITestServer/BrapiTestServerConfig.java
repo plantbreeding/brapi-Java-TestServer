@@ -12,6 +12,8 @@ import org.threeten.bp.ZonedDateTime;
 
 import com.fasterxml.jackson.datatype.threetenbp.ThreeTenModule;
 
+import io.swagger.model.ObservationUnitPosition;
+
 @Configuration
 @EnableJpaRepositories("org.brapi.test.BrAPITestServer.repository")
 @PropertySource(value = "classpath:application.properties")
@@ -26,6 +28,7 @@ public class BrapiTestServerConfig {
 
 		module.addSerializer(OffsetDateTime.class, new CustomTimeStampSerializer());
 		module.addSerializer(LocalDate.class, new CustomDateSerializer());
+		module.addSerializer(ObservationUnitPosition.class, new CustomObservationUnitPositionSerializer());
 		return module;
 	}
 
