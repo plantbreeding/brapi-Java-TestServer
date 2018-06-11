@@ -152,15 +152,21 @@ public class GermplasmService {
 		pedigree.setDefaultDisplayName(entity.getGermplasm().getDefaultDisplayName());
 		pedigree.setFamilyCode(entity.getFamilyCode());
 		pedigree.setGermplasmDbId(germplasmDbId);
-		pedigree.setParent1Id(entity.getParent1().getGermplasm().getId());
-		pedigree.setParent1DbId(entity.getParent1().getGermplasm().getId());
-		pedigree.setParent1Name(entity.getParent1().getGermplasm().getDefaultDisplayName());
-		pedigree.setParent1Type(Parent1TypeEnum.fromValue(entity.getParent1Type()));
-		pedigree.setParent2Id(entity.getParent2().getGermplasm().getId());
-		pedigree.setParent2DbId(entity.getParent2().getGermplasm().getId());
-		pedigree.setParent2Name(entity.getParent2().getGermplasm().getDefaultDisplayName());
-		pedigree.setParent2Type(Parent2TypeEnum.fromValue(entity.getParent2Type()));
 		pedigree.setPedigree(entity.getPedigree());
+		
+		if(entity.getParent1() != null) {
+			pedigree.setParent1Id(entity.getParent1().getGermplasm().getId());
+			pedigree.setParent1DbId(entity.getParent1().getGermplasm().getId());
+			pedigree.setParent1Name(entity.getParent1().getGermplasm().getDefaultDisplayName());
+			pedigree.setParent1Type(Parent1TypeEnum.fromValue(entity.getParent1Type()));
+		}
+		if(entity.getParent2() != null) {
+			pedigree.setParent2Id(entity.getParent2().getGermplasm().getId());
+			pedigree.setParent2DbId(entity.getParent2().getGermplasm().getId());
+			pedigree.setParent2Name(entity.getParent2().getGermplasm().getDefaultDisplayName());
+			pedigree.setParent2Type(Parent2TypeEnum.fromValue(entity.getParent2Type()));
+		}
+		
 		if (includeSiblings != null && includeSiblings) {
 			List<PedigreeEntity> siblingsPage = pedigreeRepository.findSiblings(entity.getParent1().getId(),
 					entity.getParent2().getId());

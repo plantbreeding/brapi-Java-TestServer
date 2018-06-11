@@ -34,8 +34,7 @@ public class VendorSpecStandardRequirementEntity extends BaseEntity {
     private String plateOrientation;
 	@OneToMany(mappedBy="vendorSpecStandardRequirementDbId")
     private List<VendorSpecWellPositionEntity> blankWellPositions;
-	@Column
-    private Integer numberOfBlanksPerPlate;
+	
 	public String getMinConcentration() {
 		return minConcentration;
 	}
@@ -101,11 +100,5 @@ public class VendorSpecStandardRequirementEntity extends BaseEntity {
 	}
 	public void setBlankWellPositions(List<VendorSpecWellPositionEntity> blankWellPositions) {
 		this.blankWellPositions = blankWellPositions;
-	}
-	public Integer getNumberOfBlanksPerPlate() {
-		return numberOfBlanksPerPlate;
-	}
-	public void setNumberOfBlanksPerPlate(Integer numberOfBlanksPerPlate) {
-		this.numberOfBlanksPerPlate = numberOfBlanksPerPlate;
 	}
 }

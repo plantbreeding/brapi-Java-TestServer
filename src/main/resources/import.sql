@@ -539,9 +539,9 @@ INSERT INTO marker_synonym (id, marker_db_id, synonym) VALUES('ms22', 'mr22', 'i
 
 INSERT INTO plate (id, client_plate_db_id, plate_format, sample_type, status, status_time_stamp, vendor_barcode, vendor_barcode_imageurl, vendor_project_db_id) VALUES('pl1', 'cl1', 'Plate_96', 'DNA', 'Submitted', '2018-01-01 00:00:00', '12345', 'https://brapi.org/assets/images/code.jpg', 'vp1');
 
-INSERT INTO sample (id, concentration, notes, plate_db_id, plate_index, sample_timestamp, sample_type, taken_by, tissue_type, volume, observation_unit_id, taxon_id_id) VALUES('sam1', '20', 'Example Sample', 'pl1', 0, '2018-01-01 00:00:00', 'DNA', 'Bob', 'Leaf', '100', '1', '0');
-INSERT INTO sample (id, concentration, notes, plate_db_id, plate_index, sample_timestamp, sample_type, taken_by, tissue_type, volume, observation_unit_id, taxon_id_id) VALUES('sam2', '19', 'Example Sample', 'pl1', 1, '2018-01-01 00:00:00', 'DNA', 'Bob', 'Leaf', '100', '2', '0');
-INSERT INTO sample (id, concentration, notes, plate_db_id, plate_index, sample_timestamp, sample_type, taken_by, tissue_type, volume, observation_unit_id, taxon_id_id) VALUES('sam3', '23', 'Example Sample', 'pl1', 2, '2018-01-01 00:00:00', 'DNA', 'Bob', 'Leaf', '100', '3', '0');
+INSERT INTO sample (id, concentration, notes, plate_id, plate_index, sample_timestamp, sample_type, taken_by, tissue_type, volume, observation_unit_id, taxon_id_id) VALUES('sam1', '20', 'Example Sample', 'pl1', 0, '2018-01-01 00:00:00', 'DNA', 'Bob', 'Leaf', '100', '1', '0');
+INSERT INTO sample (id, concentration, notes, plate_id, plate_index, sample_timestamp, sample_type, taken_by, tissue_type, volume, observation_unit_id, taxon_id_id) VALUES('sam2', '19', 'Example Sample', 'pl1', 1, '2018-01-01 00:00:00', 'DNA', 'Bob', 'Leaf', '100', '2', '0');
+INSERT INTO sample (id, concentration, notes, plate_id, plate_index, sample_timestamp, sample_type, taken_by, tissue_type, volume, observation_unit_id, taxon_id_id) VALUES('sam3', '23', 'Example Sample', 'pl1', 2, '2018-01-01 00:00:00', 'DNA', 'Bob', 'Leaf', '100', '3', '0');
 
 INSERT INTO marker_profile (id, analysis_method, extract_db_id, germplasm_db_id, sample_db_id, unique_display_name) VALUES('mp1', 'GBS', 'extract1', '1', 'sam1', 'My Fancy Germplasm');
 INSERT INTO marker_profile (id, analysis_method, extract_db_id, germplasm_db_id, sample_db_id, unique_display_name) VALUES('mp2', 'GoldenGate', 'extract2', '1', 'sam2', 'My Fancy Germplasm');
@@ -619,6 +619,27 @@ INSERT INTO allele (id, allele_code, marker_id, marker_profile_id, matrix_id, sa
 INSERT INTO allele (id, allele_code, marker_id, marker_profile_id, matrix_id, sample_id) VALUES('al63', '1', 'mr19', 'mp3', 'mat1', 'sam3');
 INSERT INTO allele (id, allele_code, marker_id, marker_profile_id, matrix_id, sample_id) VALUES('al64', '0', 'mr20', 'mp3', 'mat1', 'sam3');
 INSERT INTO allele (id, allele_code, marker_id, marker_profile_id, matrix_id, sample_id) VALUES('al65', '1', 'mr21', 'mp3', 'mat1', 'sam3');
+
+INSERT INTO vendor_spec (id, additional_info, contact_name, vendor_address, vendor_city, vendor_country, vendor_description, vendor_email, vendor_name, vendor_phone, vendorurl) VALUES('1', NULL, 'Bob Smith', '123 Street Ave', 'Townsville', 'USA', 'Example vendor used for testing', 'bsmith@brapi.org', 'Bobs Vendor', '+12345678910', 'https://brapi.org');
+
+INSERT INTO vendor_spec_requirement (id, input_format_details, max_concentration, max_volume, min_concentration, min_sample_number, min_volume, plate_orientation, sample_type_details) VALUES('vsr1', 'https://brapi.org', '1000ppm', '50ml', '20ppm', '1', '2ml', 'rowFirst', 'https://brapi.org');
+INSERT INTO vendor_spec_input_format (id, input_format, vendor_spec_standard_requirement_db_id) VALUES('vsf1', 'Plate_96', 'vsr1');
+INSERT INTO vendor_spec_input_format (id, input_format, vendor_spec_standard_requirement_db_id) VALUES('vsf2', 'Tubes', 'vsr1');
+INSERT INTO vendor_spec_sample_type (id, sample_type, vendor_spec_standard_requirement_db_id) VALUES('vssam1', 'LEAF', 'vsr1');
+INSERT INTO vendor_spec_sample_type (id, sample_type, vendor_spec_standard_requirement_db_id) VALUES('vssam2', 'STEM', 'vsr1');
+INSERT INTO vendor_spec_sample_type (id, sample_type, vendor_spec_standard_requirement_db_id) VALUES('vssam3', 'ROOT', 'vsr1');
+INSERT INTO vendor_spec_well_position (id, "position", vendor_spec_standard_requirement_db_id) VALUES('vswp1', 'random', 'vsr1');
+INSERT INTO vendor_spec_well_position (id, "position", vendor_spec_standard_requirement_db_id) VALUES('vswp2', 'A01', 'vsr1');
+INSERT INTO vendor_spec_well_position (id, "position", vendor_spec_standard_requirement_db_id) VALUES('vswp3', 'H12', 'vsr1');
+
+
+INSERT INTO vendor_spec_platform (id, contact_email, contact_name, contact_phone, platform_description, platform_name, platformurl, shipping_address, specific_requirements, taxonomy_id_system_name, taxonomy_id_systemuri, tissue_id_system_name, tissue_id_systemuri, vendor_spec_db_id, standard_requirements_id) VALUES('vsp1', 'plat1@brapi.org', 'Bob Smith', '+12345678910', 'This is an example platform', 'Example Platform', 'https://brapi.org', '123 Street Ave, Townsville, USA', NULL, 'NCBITaxonomyId', 'https://ncbi.org', 'TIS', 'https://tis.org', '1', 'vsr1');
+INSERT INTO vendor_spec_deliverable (id, description, format, "name", vendor_spec_platform_db_id) VALUES('vsd1', 'An Example Deliverable', 'CSV', 'Example Deliverable', 'vsp1');
+INSERT INTO vendor_spec_status (id, status_description, status_name, vendor_spec_platform_db_id) VALUES('vssta1', 'Samples have been recored, but not recieved', 'Created', 'vsp1');
+INSERT INTO vendor_spec_status (id, status_description, status_name, vendor_spec_platform_db_id) VALUES('vssta2', 'Physical samples have been received', 'Received', 'vsp1');
+INSERT INTO vendor_spec_status (id, status_description, status_name, vendor_spec_platform_db_id) VALUES('vssta3', 'Sample submission has been rejected by the vendor', 'Rejected', 'vsp1');
+INSERT INTO vendor_spec_status (id, status_description, status_name, vendor_spec_platform_db_id) VALUES('vssta4', 'Vendor has begun to process the samples', 'Processing', 'vsp1');
+INSERT INTO vendor_spec_status (id, status_description, status_name, vendor_spec_platform_db_id) VALUES('vssta5', 'Processing is complete, data is ready to download', 'Completed', 'vsp1');
 
 
 

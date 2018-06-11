@@ -86,7 +86,8 @@ public class VendorSampleService {
 			TaxonEntity storedTaxon = taxonRepository.save(taxon);
 			
 			SampleEntity sampleEntity = convertToEntity(newSample);
-			sampleEntity.setPlateDbId(vendorPlateDbId);
+			PlateEntity plate = vendorSampleRepository.findById(vendorPlateDbId).orElse(new PlateEntity());
+			sampleEntity.setPlate(plate);
 			sampleEntity.setTaxonId(storedTaxon);
 			storedSamples.add(sampleRepository.save(sampleEntity));
 		}
@@ -113,7 +114,6 @@ public class VendorSampleService {
 		plate.setVendorBarcodeImageURL(entity.getVendorBarcodeImageURL());
 		plate.setVendorPlateDbId(entity.getId());
 		plate.setVendorProjectDbId(entity.getVendorProjectDbId());
-
 		plate.setSamples(entity.getSamples().stream().map((sampleEntity) -> {
 			VendorSample sample = new VendorSample();
 			sample.setColumn(String.valueOf(sampleEntity.getPlateIndex() % 12));
@@ -250,7 +250,7 @@ public class VendorSampleService {
 			requirement.setPlateOrientation(requirementEntity.getPlateOrientation());
 			requirement.setSampleTypeDetails(requirementEntity.getSampleTypeDetails());
 			VendorSpecificationStandardRequirementBlankWellPosition blankWell = new VendorSpecificationStandardRequirementBlankWellPosition();
-			blankWell.setNumberOfBlanksPerPlate(requirementEntity.getNumberOfBlanksPerPlate());
+			blankWell.setNumberOfBlanksPerPlate(requirementEntity.getBlankWellPositions().size());
 			blankWell.setPositions(requirementEntity.getBlankWellPositions().stream()
 					.map((e) -> {return e.getPosition();})
 					.collect(Collectors.toList()));

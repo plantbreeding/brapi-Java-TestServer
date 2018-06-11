@@ -13,7 +13,7 @@ public interface SampleRepository extends PagingAndSortingRepository<SampleEntit
 	@Query("select s from SampleEntity s "
 			+ "where ('' IN :sampleDbIds OR s.id IN :sampleDbIds) "
 			+ "AND ('' IN :observationUnitDbIds OR s.observationUnit.id IN :observationUnitDbIds) "
-			+ "AND ('' IN :plateDbIds OR s.plateDbId IN :plateDbIds) "
+			+ "AND ('' IN :plateDbIds OR s.plate.id IN :plateDbIds) "
 			+ "AND ('' IN :germplasmDbIds OR s.observationUnit.germplasm.id IN :germplasmDbIds) ")
 	Page<SampleEntity> findBySearch(
 			@Param("sampleDbIds") List<String> sampleDbIds, 

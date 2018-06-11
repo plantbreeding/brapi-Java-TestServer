@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitEntity;
+import org.brapi.test.BrAPITestServer.model.entity.PlateEntity;
 import org.brapi.test.BrAPITestServer.model.entity.SampleEntity;
 import org.brapi.test.BrAPITestServer.repository.ObservationUnitRepository;
 import org.brapi.test.BrAPITestServer.repository.SampleRepository;
@@ -36,7 +37,8 @@ public class SampleService {
 			SampleEntity entity = new SampleEntity();
 			entity.setNotes(sample.getNotes());
 			entity.setObservationUnit(unit);
-			entity.setPlateDbId(sample.getPlateDbId());
+			entity.setPlate(new PlateEntity());
+			entity.getPlate().setId(sample.getPlateDbId());
 			entity.setPlateIndex(sample.getPlateIndex());
 			entity.setSampleTimestamp(DateUtility.toDate(sample.getSampleTimestamp()));
 			entity.setSampleType(sample.getSampleType());
@@ -84,7 +86,7 @@ public class SampleService {
 		sample.setGermplasmDbId(entity.getObservationUnit().getGermplasm().getId());
 		sample.setNotes(entity.getNotes());
 		sample.setObservationUnitDbId(entity.getObservationUnit().getId());
-		sample.setPlateDbId(entity.getPlateDbId());
+		sample.setPlateDbId(entity.getPlate().getId());
 		sample.setPlateIndex(entity.getPlateIndex());
 		sample.setPlantDbId(String.valueOf(entity.getObservationUnit().getPlantNumber()));
 		sample.setPlotDbId(String.valueOf(entity.getObservationUnit().getPlotNumber()));

@@ -10,7 +10,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 public interface VendorSampleRepository extends PagingAndSortingRepository<PlateEntity, String> {
-	@Query("select p from PlateEntity p "
+	@Query("select p from PlateEntity p join p.samples s "
 			+ "where ('' IN :vendorProjectDbIds OR p.vendorProjectDbId IN :vendorProjectDbIds) "
 			+ "AND ('' IN :vendorPlateDbIds OR p.id IN :vendorPlateDbIds) "
 			+ "AND ('' IN :clientPlateDbIds OR p.clientPlateDbId IN :clientPlateDbIds) ")

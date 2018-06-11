@@ -82,16 +82,12 @@ public class PedigreeEntity extends BaseEntity{
 		this.pedigree = pedigree;
 	}
 	public PedigreeEntity getParent1() {
-		if(this.parent1 == null)
-			return this;
 		return parent1;
 	}
 	public void setParent1(PedigreeEntity parent1) {
 		this.parent1 = parent1;
 	}
 	public PedigreeEntity getParent2() {
-		if(this.parent2 == null)
-			return this;
 		return parent2;
 	}
 	public void setParent2(PedigreeEntity parent2) {

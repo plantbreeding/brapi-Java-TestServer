@@ -3,8 +3,10 @@ package org.brapi.test.BrAPITestServer.model.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -29,7 +31,7 @@ public class PlateEntity extends BaseEntity{
     private String status;
 	@Column
     private Date statusTimeStamp;
-	@OneToMany(mappedBy="plateDbId")
+	@OneToMany(mappedBy="plate", cascade = CascadeType.ALL)
     private List<SampleEntity> samples;
 	@OneToMany(mappedBy="plateDbId")
 	private List<VendorFileEntity> files;

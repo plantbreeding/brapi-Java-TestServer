@@ -11,8 +11,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name="sample")
 public class SampleEntity extends BaseEntity{
-	@Column
-	private String plateDbId;
+	@ManyToOne
+	private PlateEntity plate;
 	@Column
 	private Integer plateIndex; 
 	@Column
@@ -58,11 +58,11 @@ public class SampleEntity extends BaseEntity{
 	public void setObservationUnit(ObservationUnitEntity observationUnit) {
 		this.observationUnit = observationUnit;
 	}
-	public String getPlateDbId() {
-		return plateDbId;
+	public PlateEntity getPlate() {
+		return plate;
 	}
-	public void setPlateDbId(String plateDbId) {
-		this.plateDbId = plateDbId;
+	public void setPlate(PlateEntity plate) {
+		this.plate = plate;
 	}
 	public Integer getPlateIndex() {
 		return plateIndex;
