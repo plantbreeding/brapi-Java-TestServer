@@ -52,6 +52,7 @@ public class GermplasmAttributeService {
 	private GermplasmAttributeDef mapFromEntityToAttribute(GermplasmAttributeDefinitionEntity entity) {
 		GermplasmAttributeDef attrib = new GermplasmAttributeDef();
 		attrib.setAttributeCategoryDbId(entity.getAttributeCategory().getId());
+		attrib.setAttributeDbId(entity.getId());
 		attrib.setCode(entity.getCode());
 		attrib.setDatatype(entity.getDatatype());
 		attrib.setDescription(entity.getDescription());

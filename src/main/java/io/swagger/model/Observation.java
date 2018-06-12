@@ -29,7 +29,7 @@ public class Observation   {
   @JsonProperty("observationLevel")
   private String observationLevel = null;
 
-  @JsonProperty("observationTimeStamp")
+  @JsonProperty("observationTimestamp")
   private OffsetDateTime observationTimeStamp = null;
 
   @JsonProperty("observationUnitDbId")

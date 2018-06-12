@@ -19,7 +19,7 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
 
 public class VendorPlatesResponseResult   {
-  @JsonProperty("plates")
+  @JsonProperty("data")
   @Valid
   private List<VendorPlate> plates = null;
 

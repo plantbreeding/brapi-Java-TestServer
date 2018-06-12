@@ -194,8 +194,10 @@ public class GermplasmService {
 			progeny.setGermplasmDbId(entity.getGermplasm().getId());
 			if (entity.getParent1().getGermplasm().getId() == germplasmDbId) {
 				progeny.setParentType(ParentTypeEnum.fromValue(entity.getParent1Type()));
+				result.setDefaultDisplayName(entity.getParent1().getGermplasm().getDefaultDisplayName());
 			} else {
 				progeny.setParentType(ParentTypeEnum.fromValue(entity.getParent2Type()));
+				result.setDefaultDisplayName(entity.getParent2().getGermplasm().getDefaultDisplayName());
 			}
 			result.getProgeny().add(progeny);
 		});

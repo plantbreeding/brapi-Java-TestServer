@@ -176,7 +176,7 @@ public class StudyService {
 
 		List<StudySummary> summaries = studiesPage.map((entity) -> {
 			StudySummary sum = new StudySummary();
-			sum.setActive(entity.isActive());
+			sum.setActive(String.valueOf(entity.isActive()));
 			sum.setEndDate(DateUtility.toLocalDate(entity.getEndDate()));
 			sum.setLocationDbId(entity.getLocation().getId());
 			sum.setLocationName(entity.getLocation().getName());
@@ -210,7 +210,7 @@ public class StudyService {
 			StudyEntity entity = entityOption.get();
 			study = new Study();
 
-			study.setActive(entity.isActive());
+			study.setActive(String.valueOf(entity.isActive()));
 			study.setEndDate(DateUtility.toLocalDate(entity.getEndDate()));
 			study.setStartDate(DateUtility.toLocalDate(entity.getStartDate()));
 			study.setStudyDbId(entity.getId());

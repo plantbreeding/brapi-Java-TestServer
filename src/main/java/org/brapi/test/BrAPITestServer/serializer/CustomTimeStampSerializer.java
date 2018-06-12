@@ -1,4 +1,4 @@
-package org.brapi.test.BrAPITestServer;
+package org.brapi.test.BrAPITestServer.serializer;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;

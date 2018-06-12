@@ -93,6 +93,7 @@ public class GermplasmController extends BrAPIController implements GermplasmApi
 		
 		GermplasmAttributeList result = new GermplasmAttributeList();
 		result.setData(data);
+		result.setGermplasmDbId(germplasmDbId);
 		GermplasmAttributeListResponse response = new GermplasmAttributeListResponse();
 		response.setMetadata(metaData);
 		response.setResult(result);				

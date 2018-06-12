@@ -103,8 +103,7 @@ public class GenomeMapService {
 			}).collect(Collectors.toList());
 
 			detail.setLinkageGroups(groups);
-			//TODO fix this in Swagger spec
-			//detail.setData(groups);
+			detail.setData(groups);
 		}
 		return detail;
 	}
@@ -116,12 +115,17 @@ public class GenomeMapService {
 	}
 
 	public List<MarkerSummaryLinkageGroup> getMapPositions(String mapDbId, String linkageGroupName, Integer min, Integer max, Metadata metaData) {
-		return getMapPositionEntities(mapDbId, linkageGroupName, min, max, metaData).stream()
+		int minPosition = min == null ? -1 : min;
+		int maxPosition = max == null ? -1 : max;
+		Page<MarkerEntity> page = getMapPositionEntities(mapDbId, linkageGroupName, min, max, metaData);
+		PagingUtility.calculateMetaData(metaData, page);
+		List<MarkerSummaryLinkageGroup> data = page.stream()
 				.filter((entity) -> { 
-					return positionFilter(entity.getLocation(), min, max);
+					return positionFilter(entity.getLocation(), minPosition, maxPosition);
 				})
 				.map(this::convertFromEntityToSummaryLinkageGroup)
 				.collect(Collectors.toList());
+		return data;
 	}
 
 	private Page<MarkerEntity> getMapPositionEntities(String mapDbId, String linkageGroupName, Integer min, Integer max, Metadata metaData) {
@@ -138,7 +142,7 @@ public class GenomeMapService {
 		}else if (nameb && !minb && maxb) {
 			page = markerRepository.findAllByLinkageGroup_GenomeMapDbIdAndLinkageGroup_LinkageGroupNameAndLocationLessThanEqual(mapDbId, linkageGroupName, max, pageReq);
 		}else if (nameb && !minb && !maxb) {
-			page = markerRepository.findAllByLinkageGroup_GenomeMapDbIdAndLinkageGroup_LinkageGroupName(linkageGroupName, mapDbId, pageReq);
+			page = markerRepository.findAllByLinkageGroup_GenomeMapDbIdAndLinkageGroup_LinkageGroupName(mapDbId, linkageGroupName, pageReq);
 		}else if (!nameb && minb && maxb) {
 			page = markerRepository.findAllByLinkageGroup_GenomeMapDbIdAndLocationGreaterThanEqualAndLocationLessThanEqual(mapDbId, min, max, pageReq);
 		}else if (!nameb && minb && !maxb) {

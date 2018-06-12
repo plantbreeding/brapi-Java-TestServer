@@ -68,7 +68,7 @@ public class ObservationVariable   {
   @JsonProperty("status")
   private String status = null;
 
-  @JsonProperty("submissionTimeStamp")
+  @JsonProperty("submissionTimestamp")
   private OffsetDateTime submissionTimeStamp = null;
 
   @JsonProperty("synonyms")

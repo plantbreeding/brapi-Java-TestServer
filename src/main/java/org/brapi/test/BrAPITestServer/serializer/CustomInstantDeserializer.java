@@ -1,4 +1,4 @@
-package org.brapi.test.BrAPITestServer;
+package org.brapi.test.BrAPITestServer.serializer;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonTokenId;

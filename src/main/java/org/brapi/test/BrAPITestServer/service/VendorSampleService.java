@@ -1,6 +1,7 @@
 package org.brapi.test.BrAPITestServer.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -183,12 +184,15 @@ public class VendorSampleService {
 				SearchUtility.buildSearchParam(request.getClientPlateDbIds()),
 				pageReq);
 		PagingUtility.calculateMetaData(metadata, plates);
-		return plates.map((entity) -> {
-			if(! request.isSampleInfo()) {
+		boolean includeSampleList = request.isSampleInfo() == null ? true : request.isSampleInfo();
+		List<VendorPlate> data = plates.map((entity) -> {
+			if(! includeSampleList) {
 				entity.getSamples().clear();
 			}
 			return entity;
 		}).map(this :: convertFromEntity).getContent();
+		
+		return data;
 	}
 
 	public VendorSpecification getVendorSpec() {
@@ -202,7 +206,7 @@ public class VendorSampleService {
 
 	private VendorSpecification convertFromEntity(VendorSpecEntity specEntity) {
 		VendorSpecification spec = new VendorSpecification();
-		spec.setAdditionalInfo(null);
+		spec.setAdditionalInfo(new HashMap<>());
 		spec.setContactName(specEntity.getContactName());
 		spec.setVendorAddress(specEntity.getVendorAddress());
 		spec.setVendorCity(specEntity.getVendorCity());
@@ -222,7 +226,7 @@ public class VendorSampleService {
 			platform.setPlatformName(platformEntity.getPlatformName());
 			platform.setPlatformURL(platformEntity.getPlatformURL());
 			platform.setShippingAddress(platformEntity.getShippingAddress());
-			platform.setSpecificRequirements(null);
+			platform.setSpecificRequirements(new HashMap<>());
 			
 			platform.setDeliverables(platformEntity.getDeliverables().stream().map((deliverableEntity) -> {
 				VendorSpecificationPlatformDeliverables deliverable = new VendorSpecificationPlatformDeliverables();

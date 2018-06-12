@@ -2,6 +2,7 @@ INSERT INTO crop (id, crop_name) VALUES ('1', 'Tomatillo');
 INSERT INTO crop (id, crop_name) VALUES ('2', 'Paw Paw');
 
 INSERT INTO breeding_method (id, abbreviation, description, "name") VALUES('bm1', 'MBCR', 'Backcross to recover a specific gene.', 'Male Backcross');
+INSERT INTO breeding_method (id, abbreviation, description, "name") VALUES('bm2', 'FBCR', 'Backcross to recover a specific gene.', 'Female Backcross');
 
 INSERT INTO germplasm (id, accession_number, acquisition_date, biological_status_of_accession_code, common_crop_name, country_of_origin_code, default_display_name, genus, germplasm_name, germplasmpui, germplasm_seed_source, institute_code, institute_name, species, species_authority, subtaxa, subtaxa_authority, synonyms, breeding_method_id) VALUES ('1', 'A000001', '19840101', '300', 'G000001', 'COUNTRY1', 'G000001', 'Fructus', 'Name001', 'http://pui.per/accession/A000001', 'open pollination', 'PER001', 'INST1', 'novus', 'L', 'subtaxa', 'N', 'landrace 1', 'bm1');
 INSERT INTO germplasm (id, accession_number, acquisition_date, biological_status_of_accession_code, common_crop_name, country_of_origin_code, default_display_name, genus, germplasm_name, germplasmpui, germplasm_seed_source, institute_code, institute_name, species, species_authority, subtaxa, subtaxa_authority, synonyms, breeding_method_id) VALUES ('2', 'A000002', '19840101', '300', 'G000002', 'COUNTRY1', 'G000002', 'Fructus', 'Name002', 'http://pui.per/accession/A000002', 'open pollination', 'PER001', 'INST1', 'novus', 'L', 'subtaxa', 'N', 'landrace 2', 'bm1');
@@ -432,9 +433,9 @@ INSERT INTO germplasm_taxon (taxon_dbid, germplasm_dbid) VALUES ('2', '9');
 
 INSERT INTO genome_map (id, comments, "name", published_date, species, "type", unit) VALUES('gm1', 'comments', 'Genome Map 1', '01-01-2018', 'novus', 'Genetic', 'cM');
 
-INSERT INTO linkage_group (id, genome_map_db_id, linkage_group_name) VALUES('lg1', 'gm1', '1');
-INSERT INTO linkage_group (id, genome_map_db_id, linkage_group_name) VALUES('lg2', 'gm1', '2');
-INSERT INTO linkage_group (id, genome_map_db_id, linkage_group_name) VALUES('lg3', 'gm1', '3');
+INSERT INTO linkage_group (id, genome_map_db_id, linkage_group_name, max_marker_position) VALUES('lg1', 'gm1', '1', 1110);
+INSERT INTO linkage_group (id, genome_map_db_id, linkage_group_name, max_marker_position) VALUES('lg2', 'gm1', '2', 5050);
+INSERT INTO linkage_group (id, genome_map_db_id, linkage_group_name, max_marker_position) VALUES('lg3', 'gm1', '3', 5110);
 
 INSERT INTO marker (id, location, marker_name, "type", linkage_group_id) VALUES('mr1', '1000', 'marker1-1', 'marker', 'lg1');
 INSERT INTO marker (id, location, marker_name, "type", linkage_group_id) VALUES('mr2', '1020', 'marker1-2', 'marker', 'lg1');

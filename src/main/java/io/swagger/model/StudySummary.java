@@ -22,7 +22,7 @@ import javax.validation.constraints.*;
 
 public class StudySummary   {
   @JsonProperty("active")
-  private Boolean active = null;
+  private String active = null;
 
   @JsonProperty("additionalInfo")
   @Valid
@@ -65,27 +65,16 @@ public class StudySummary   {
   @JsonProperty("trialName")
   private String trialName = null;
 
-  public StudySummary active(Boolean active) {
-    this.active = active;
-    return this;
-  }
 
-   /**
-   * Is this study currently active
-   * @return active
-  **/
-  @ApiModelProperty(value = "Is this study currently active")
+  public String getActive() {
+	return active;
+}
 
+public void setActive(String active) {
+	this.active = active;
+}
 
-  public Boolean isActive() {
-    return active;
-  }
-
-  public void setActive(Boolean active) {
-    this.active = active;
-  }
-
-  public StudySummary additionalInfo(Map<String, String> additionalInfo) {
+public StudySummary additionalInfo(Map<String, String> additionalInfo) {
     this.additionalInfo = additionalInfo;
     return this;
   }

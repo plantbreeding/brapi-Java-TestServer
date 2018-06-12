@@ -68,7 +68,7 @@ public class VendorSampleController extends BrAPIController implements VendorApi
 	@CrossOrigin
 	@Override
 	public ResponseEntity<VendorPlatesResponse> vendorPlatesSearchPost(@Valid @RequestBody VendorPlateSearchRequest request) {
-		Metadata metadata = generateMetaDataTemplate(request.getPage().intValue(), request.getPageSize().intValue());
+		Metadata metadata = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		List<VendorPlate> plates = vendorSampleService.searchPlates(request, metadata);
 		
 		VendorPlatesResponseResult result = new VendorPlatesResponseResult();
