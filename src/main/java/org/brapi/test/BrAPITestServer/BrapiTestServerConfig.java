@@ -24,7 +24,7 @@ import io.swagger.model.ObservationUnitStudy;
 
 @Configuration
 @EnableJpaRepositories("org.brapi.test.BrAPITestServer.repository")
-@PropertySource(value = "classpath:application.properties")
+@PropertySource(value = "classpath:properties/application.properties")
 public class BrapiTestServerConfig {
 	@Bean
 	@ConditionalOnMissingBean(ThreeTenModule.class)
