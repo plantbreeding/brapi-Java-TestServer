@@ -250,12 +250,12 @@ INSERT INTO method(id, description, formula, method_class, name, reference)	VALU
 INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref) VALUES ('1', 'height', '0', 'height', 'entity', 'H', 'Height', 'active', 'Int', 'xref');
 INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref) VALUES ('2', 'weight', '0', 'weight', 'entity', 'H', 'Weight', 'active', 'Int', 'xref');
 
-INSERT INTO program (crop_id, id, name, abbreviation, objective, lead_person) VALUES ('1', '1', 'P1', 'G. Leader', 'Global Population Improvement', 'Program 1');
-INSERT INTO program (crop_id, id, name, abbreviation, objective, lead_person) VALUES ('1', '2', 'P2', 'M. Breeder', 'XYZ', 'Program 2');
-INSERT INTO program (crop_id, id, name, abbreviation, objective, lead_person) VALUES ('1', '3', 'P3', 'W. Select', 'XYZ', 'Program 3');
-INSERT INTO program (crop_id, id, name, abbreviation, objective, lead_person) VALUES ('1', '4', 'P4', 'G. Gain', 'ABC', 'Program 4');
-INSERT INTO program (crop_id, id, name, abbreviation, objective, lead_person) VALUES ('1', '5', 'P5', 'C. Improvement', 'Processing', 'Program 5');
-INSERT INTO program (crop_id, id, name, abbreviation, objective, lead_person) VALUES ('1', '6', 'P6', 'A. Test', 'Demo', 'Program 6');
+INSERT INTO program (crop_id, id, abbreviation, lead_person, objective, name) VALUES ('1', '1', 'P1', 'G. Leader', 'Global Population Improvement', 'Program 1');
+INSERT INTO program (crop_id, id, abbreviation, lead_person, objective, name) VALUES ('1', '2', 'P2', 'M. Breeder', 'XYZ', 'Program 2');
+INSERT INTO program (crop_id, id, abbreviation, lead_person, objective, name) VALUES ('1', '3', 'P3', 'W. Select', 'XYZ', 'Program 3');
+INSERT INTO program (crop_id, id, abbreviation, lead_person, objective, name) VALUES ('1', '4', 'P4', 'G. Gain', 'ABC', 'Program 4');
+INSERT INTO program (crop_id, id, abbreviation, lead_person, objective, name) VALUES ('1', '5', 'P5', 'C. Improvement', 'Processing', 'Program 5');
+INSERT INTO program (crop_id, id, abbreviation, lead_person, objective, name) VALUES ('1', '6', 'P6', 'A. Test', 'Demo', 'Program 6');
 	
 INSERT INTO trial (program_id, id, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('1', '101', 'Peru Yield Trial 1', '1/1/2013', '7/5/2013', false, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/312953986E3');
 INSERT INTO trial (program_id, id, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('1', '102', 'Peru Yield Trial 2', '6/1/2014', '1/15/2015', false, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/1234992349');

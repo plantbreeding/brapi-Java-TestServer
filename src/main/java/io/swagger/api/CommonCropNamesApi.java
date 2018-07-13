@@ -29,7 +29,7 @@ public interface CommonCropNamesApi {
     @ApiOperation(value = "List supported crops", nickname = "commonCropNamesGet", notes = "List the common crop names for the crops available in a database server.   This call is **required** for multi-crop systems where data from multiple crops may be stored in the same database server. A distinct database server is defined by everything in the URL before \"/brapi/v1\", including host name and base path.    This call is recommended for single crop systems to be compatible with multi-crop clients. For a single crop system the response should contain an array with exactly 1 element.   The common crop name can be used as a search parameter for Programs, Studies, and Germplasm.  <a href=\"https://test-server.brapi.org/brapi/v1/commonCropNames\"> test-server.brapi.org/brapi/v1/commonCropNames</a>", response = CommonCropNamesResponse.class, tags={ "Crops", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = CommonCropNamesResponse.class) })
-    @RequestMapping(value = "/commonCropNames",
+    @RequestMapping(value = "/commoncropnames",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
     ResponseEntity<CommonCropNamesResponse> commonCropNamesGet(@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page);

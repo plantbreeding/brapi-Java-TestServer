@@ -51,9 +51,9 @@ public class CallsService {
 		calls.add("{ \"call\": \"ontologies\", 									\"datatypes\": [ \"json\" ], \"methods\": [ \"GET\" ], 						\"versions\": [ \"1.0\", \"1.1\", \"1.2\" ] }");
 		calls.add("{ \"call\": \"phenotypes\", 									\"datatypes\": [ \"json\" ], \"methods\": [ \"POST\" ], 					\"versions\": [ \"1.0\", \"1.1\", \"1.2\" ] }");
 		calls.add("{ \"call\": \"phenotypes-search\", 							\"datatypes\": [ \"json\" ], \"methods\": [ \"GET\", \"POST\" ], 			\"versions\": [ \"1.0\", \"1.1\", \"1.2\" ] }");
-		calls.add("{ \"call\": \"phenotypes-search/csv\", 						\"datatypes\": [ \"json\" ], \"methods\": [ \"POST\" ], 					\"versions\": [ \"1.0\", \"1.1\", \"1.2\" ] }");
+		calls.add("{ \"call\": \"phenotypes-search/csv\", 						\"datatypes\": [ \"csv\" ],  \"methods\": [ \"POST\" ], 						\"versions\": [ \"1.0\", \"1.1\", \"1.2\" ] }");
 		calls.add("{ \"call\": \"phenotypes-search/table\", 					\"datatypes\": [ \"json\" ], \"methods\": [ \"POST\" ], 					\"versions\": [ \"1.0\", \"1.1\", \"1.2\" ] }");
-		calls.add("{ \"call\": \"phenotypes-search/tsv\", 						\"datatypes\": [ \"json\" ], \"methods\": [ \"POST\" ], 					\"versions\": [ \"1.0\", \"1.1\", \"1.2\" ] }");
+		calls.add("{ \"call\": \"phenotypes-search/tsv\", 						\"datatypes\": [ \"tsv\" ],  \"methods\": [ \"POST\" ], 						\"versions\": [ \"1.0\", \"1.1\", \"1.2\" ] }");
 		calls.add("{ \"call\": \"programs\", 									\"datatypes\": [ \"json\" ], \"methods\": [ \"GET\" ], 						\"versions\": [ \"1.0\", \"1.1\", \"1.2\" ] }");
 		calls.add("{ \"call\": \"programs-search\", 							\"datatypes\": [ \"json\" ], \"methods\": [ \"POST\" ], 					\"versions\": [ \"1.0\", \"1.1\", \"1.2\" ] }");
 		calls.add("{ \"call\": \"samples\", 									\"datatypes\": [ \"json\" ], \"methods\": [ \"PUT\" ], 						\"versions\": [ \"1.0\", \"1.1\", \"1.2\" ] }");
@@ -120,8 +120,11 @@ public class CallsService {
 			filteredCalls = calls;
 		}
 		
-		int fromIndex = page * pageSize;
-		int toIndex = fromIndex + pageSize > filteredCalls.size() ? filteredCalls.size() : fromIndex + pageSize;
+		int fromIndex = 0, toIndex = 0;
+		if(page * pageSize < filteredCalls.size()) {
+			fromIndex = page * pageSize;
+			toIndex = fromIndex + pageSize > filteredCalls.size() ? filteredCalls.size() : fromIndex + pageSize;
+		}
 		return filteredCalls.subList(fromIndex, toIndex);
 	}
 }

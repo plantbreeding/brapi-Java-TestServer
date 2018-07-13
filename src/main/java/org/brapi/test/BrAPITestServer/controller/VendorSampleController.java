@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.ApiParam;
 import io.swagger.api.VendorApi;
 import io.swagger.model.Metadata;
 import io.swagger.model.VendorPlate;
@@ -38,7 +39,7 @@ public class VendorSampleController extends BrAPIController implements VendorApi
 	@CrossOrigin
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
-	public ResponseEntity<VendorPlatesResponse> vendorPlatesPost(@Valid VendorPlateRequest request) {
+	public ResponseEntity<VendorPlatesResponse> vendorPlatesPost(@ApiParam(value = "")  @Valid @RequestBody VendorPlateRequest request) {
 		List<VendorPlate> plates = vendorSampleService.savePlates(request);
 		
 		VendorPlatesResponseResult result = new VendorPlatesResponseResult();

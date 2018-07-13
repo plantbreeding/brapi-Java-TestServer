@@ -109,8 +109,14 @@ public class VendorSampleService {
 		plate.setClientPlateDbId(entity.getClientPlateDbId());
 		plate.setPlateFormat(entity.getPlateFormat());
 		plate.setSampleType(entity.getSampleType());
-		plate.setStatus(entity.getStatus());
-		plate.setStatusTimeStamp(DateUtility.toOffsetDateTime(entity.getStatusTimeStamp()));
+		
+		if(entity.getStatus() != null) {
+			plate.setStatus(entity.getStatus());
+			if(entity.getStatusTimeStamp() != null) {
+				plate.setStatusTimeStamp(DateUtility.toOffsetDateTime(entity.getStatusTimeStamp()));
+			}
+		}
+		
 		plate.setVendorBarcode(entity.getVendorBarcode());
 		plate.setVendorBarcodeImageURL(entity.getVendorBarcodeImageURL());
 		plate.setVendorPlateDbId(entity.getId());
@@ -133,19 +139,21 @@ public class VendorSampleService {
 			return sample;
 		}).collect(Collectors.toList()));
 		
-		plate.setFiles(entity.getFiles().stream().map((fileEntity) -> {
-			VendorPlateFile file = new VendorPlateFile();
-			file.setAdditionalInfo(null);
-			file.setFilename(fileEntity.getFilename());
-			file.setFileType(fileEntity.getFileType());
-			file.setMd5sum(fileEntity.getMd5sum());
-			file.setSampleDbIds(fileEntity.getSamples().stream()
-					.map((e) -> {return e.getId();})
-					.collect(Collectors.toList()));
-			file.setURL(fileEntity.getURL());
-			
-			return file;
-		}).collect(Collectors.toList()));
+		if(entity.getFiles() != null) {
+			plate.setFiles(entity.getFiles().stream().map((fileEntity) -> {
+				VendorPlateFile file = new VendorPlateFile();
+				file.setAdditionalInfo(null);
+				file.setFilename(fileEntity.getFilename());
+				file.setFileType(fileEntity.getFileType());
+				file.setMd5sum(fileEntity.getMd5sum());
+				file.setSampleDbIds(fileEntity.getSamples().stream()
+						.map((e) -> {return e.getId();})
+						.collect(Collectors.toList()));
+				file.setURL(fileEntity.getURL());
+				
+				return file;
+			}).collect(Collectors.toList()));
+		}
 
 		return plate;
 	}
