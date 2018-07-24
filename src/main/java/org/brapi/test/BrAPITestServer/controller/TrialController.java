@@ -34,7 +34,7 @@ public class TrialController extends BrAPIController implements TrialsApi{
 			@Valid Integer pageSize, @Valid Integer page, @Valid Boolean active, @Valid String sortBy,
 			@Valid String sortOrder) {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
-		List<TrialSummary> data = trialService.getTrialSummaries(metaData);
+		List<TrialSummary> data = trialService.getTrialSummaries(programDbId, locationDbId, active, sortBy, sortOrder, metaData);
 		
 		TrialsResponseResult result = new TrialsResponseResult();
 		result.setData(data);

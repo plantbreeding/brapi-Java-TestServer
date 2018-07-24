@@ -5,11 +5,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.brapi.test.BrAPITestServer.model.entity.TrialAdditionalInfoEntity;
 import org.brapi.test.BrAPITestServer.model.entity.TrialEntity;
 import org.brapi.test.BrAPITestServer.repository.TrialRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.threeten.bp.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.model.Metadata;
 import io.swagger.model.Trial;
@@ -27,11 +35,63 @@ public class TrialService {
 		this.contactService = contactService;
 	}
 
-	public List<TrialSummary> getTrialSummaries(Metadata metaData) {
-		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-		List<TrialSummary> summaries = trialRepository.findAll(pageReq).map(this::convertFromEntity).getContent();
-		metaData.getPagination().setTotalCount((int) trialRepository.count());
+	public List<TrialSummary> getTrialSummaries(String programDbId, String locationDbId, Boolean active, String sortBy,
+			String sortOrder, Metadata metaData) {
+		Sort sort = buildSort(sortBy, sortOrder);
+		Pageable pageReq = PagingUtility.getPageRequest(metaData, sort);
+
+		boolean applyActiveFilter = true;
+		if(active == null) {
+			applyActiveFilter = false;
+			active = Boolean.TRUE;
+		}
+		programDbId = null == programDbId ? "" : programDbId;
+		locationDbId = null == locationDbId ? "" : locationDbId;
+		
+		Page<TrialEntity> trialsPage = trialRepository.findBySearch(programDbId, locationDbId, applyActiveFilter, active, pageReq);
+
+		List<TrialSummary> summaries = trialsPage.map(this::convertFromEntity).getContent();
+
+		PagingUtility.calculateMetaData(metaData, trialsPage);
 		return summaries;
+	}
+
+	private Sort buildSort(String sortBy, String sortOrder) {
+		sortOrder = null == sortOrder ? "asc" : sortOrder;
+		switch (sortOrder) {
+		case "desc":
+		case "DESC":
+			sortOrder = "desc";			
+			break;
+		case "asc":
+		case "ASC":
+		default:
+			sortOrder = "asc";			
+			break;
+		}
+		
+		sortBy = null == sortBy ? "id" : sortBy;
+		switch (sortBy) {
+		case "startDate":
+		case "endDate":
+		case "trialName":
+		case "active":
+			break;
+		case "trialDbId":
+			sortBy = "id";
+			break;
+		case "programDbId":
+			sortBy = "program.id";
+			break;
+		case "programName":
+			sortBy = "program.name";
+			break;
+		default:
+			sortBy = "id";
+			break;
+		}
+		
+		return Sort.by(Direction.fromString(sortOrder), sortBy);
 	}
 
 	public Trial getTrialSummary(String trialDbId) {
