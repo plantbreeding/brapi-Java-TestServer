@@ -164,14 +164,18 @@ public class StudyService {
 			List<String> observationVariableDbIds, 
 			Boolean active, SortByEnum sortBy, SortOrderEnum sortOrder, Metadata metaData) {
 
-		boolean act = active == null ? true : active;
+		boolean applyActiveFilter = true;
+		if(active == null) {
+			applyActiveFilter = false;
+			active = Boolean.TRUE;
+		}
 		sortOrder = sortOrder == null ? SortOrderEnum.ASC : sortOrder;
 		sortBy = sortBy == null ? SortByEnum.STUDYNAME : sortBy;
 		Sort sort = Sort.by(Direction.fromString(sortOrder.toString()), sortBy.toString());
 		Pageable pageReq = PagingUtility.getPageRequest(metaData, sort);
 		Page<StudyEntity> studiesPage = studyRepository.findBySearch(studyTypes, programDbIds, trialDbIds, studyDbIds,
 				programNames, studyNames, studyLocations, locationDbIds, seasonDbIds, germplasmDbIds,
-				observationVariableDbIds, act, pageReq);
+				observationVariableDbIds, applyActiveFilter, active, pageReq);
 		PagingUtility.calculateMetaData(metaData, studiesPage);
 
 		List<StudySummary> summaries = studiesPage.map((entity) -> {
@@ -387,13 +391,16 @@ public class StudyService {
 
 	public ObservationsTable getStudyObservationUnitTable(String studyDbId, String format) {
 		ObservationsTable tableWrapper = new ObservationsTable();
+		
 		tableWrapper.setHeaderRow(buildHeaderRow());
+		
 		List<ObservationVariable> variables = observationVariableService.getVariablesForStudy(studyDbId);
 		tableWrapper.setObservationVariableDbIds(
 				variables.stream().map(e -> e.getObservationVariableDbId()).collect(Collectors.toList()));
 		tableWrapper.setObservationVariableNames(variables.stream().map(e -> e.getName()).collect(Collectors.toList()));
+		
 		List<ObservationUnitEntity> units = observationUnitRepository.findAllByStudy_Id(studyDbId);
-		tableWrapper.setData(buildDataMatrix(units));
+		tableWrapper.setData(buildDataMatrix(units, variables));
 
 		return tableWrapper;
 	}
@@ -405,28 +412,38 @@ public class StudyService {
 		return Arrays.asList(headerRow);
 	}
 
-	private List<List<String>> buildDataMatrix(List<ObservationUnitEntity> units) {
+	private List<List<String>> buildDataMatrix(List<ObservationUnitEntity> units, List<ObservationVariable> variables) {
 		List<List<String>> data = new ArrayList<>();
 		for (ObservationUnitEntity unit : units) {
-			for (ObservationEntity observation : unit.getObservations()) {
-				List<String> row = new ArrayList<>();
-				row.add(observation.getSeason().getYear().toString());
-				row.add(unit.getStudy().getId());
-				row.add(unit.getStudy().getStudyName());
-				row.add(unit.getStudy().getLocation().getCountryName());
-				row.add(unit.getGermplasm().getId());
-				row.add(unit.getGermplasm().getGermplasmName());
-				row.add(unit.getId());
-				row.add(unit.getPlotNumber().toString());
-				row.add(unit.getReplicate());
-				row.add(unit.getBlockNumber().toString());
-				row.add(DateUtility.toTimeString(observation.getObservationTimeStamp()));
-				row.add(unit.getEntryType());
-				row.add(unit.getX());
-				row.add(unit.getY());
+			List<String> row = new ArrayList<>();
+			row.add(unit.getObservations().get(0).getSeason().getYear().toString());
+			row.add(unit.getStudy().getId());
+			row.add(unit.getStudy().getStudyName());
+			row.add(unit.getStudy().getLocation().getId());
+			row.add(unit.getStudy().getLocation().getCountryName());
+			row.add(unit.getGermplasm().getId());
+			row.add(unit.getGermplasm().getGermplasmName());
+			row.add(unit.getId());
+			row.add(unit.getPlotNumber().toString());
+			row.add(unit.getReplicate());
+			row.add(unit.getBlockNumber().toString());
+			row.add(DateUtility.toTimeString(unit.getObservations().get(0).getObservationTimeStamp()));
+			row.add(unit.getEntryType());
+			row.add(unit.getX());
+			row.add(unit.getY());
 
-				data.add(row);
+			for(ObservationVariable var : variables) {
+				Optional<ObservationEntity> obsOption = unit.getObservations().stream()
+						.filter((obs) -> {
+							return obs.getObservationVariable().getId() == var.getObservationVariableDbId();
+						}).findFirst();
+				if(obsOption.isPresent()) {
+					row.add(obsOption.get().getValue());
+				}else {
+					row.add("");
+				}
 			}
+			data.add(row);
 		}
 		return data;
 	}

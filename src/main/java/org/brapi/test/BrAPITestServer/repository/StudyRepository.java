@@ -23,7 +23,7 @@ public interface StudyRepository extends PagingAndSortingRepository<StudyEntity,
 			+ "AND ('' IN :seasonDbIds OR season.id IN :seasonDbIds) "
 			+ "AND ('' IN :germplasmDbIds OR ou.germplasm.id IN :germplasmDbIds) "
 			+ "AND ('' IN :observationVariableDbIds OR observation.observationVariable.id IN :observationVariableDbIds) "
-			+ "AND s.active = :active ")
+			+ "AND (:applyActiveFilter = false OR :active = s.active) ")
 	public Page<StudyEntity> findBySearch(
 			@Param("studyTypes") List<String> studyTypes, 
 			@Param("programDbIds") List<String> programDbIds, 
@@ -37,7 +37,7 @@ public interface StudyRepository extends PagingAndSortingRepository<StudyEntity,
 			@Param("seasonDbIds") List<String> seasonDbIds,
 			@Param("germplasmDbIds") List<String> germplasmDbIds, 
 			@Param("observationVariableDbIds") List<String> observationVariableDbIds, 
-			@Param("active") boolean active, Pageable pageReq);
+			@Param("applyActiveFilter") boolean applyActiveFilter, @Param("active") boolean active, Pageable pageReq);
 
 	@Query("select unit.germplasm from StudyEntity s JOIN s.observationUnits unit where s.id = :studyDbId")
 	public Page<GermplasmEntity> findGermplasmsByStudy(@Param("studyDbId") String studyDbId, Pageable pageReq);

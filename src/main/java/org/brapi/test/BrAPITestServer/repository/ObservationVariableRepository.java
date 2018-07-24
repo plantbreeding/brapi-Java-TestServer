@@ -34,7 +34,7 @@ public interface ObservationVariableRepository extends PagingAndSortingRepositor
 			@Param("scaleDbIds") List<String> scaleDbIds, 
 			@Param("traitClasses") List<String> traitClasses, Pageable pageReq);
 	
-	@Query("select o.observationVariable from ObservationEntity o "
+	@Query("select distinct o.observationVariable from ObservationEntity o "
 			+ "where o.observationUnit.study.id = :studyDbId")
 	public List<ObservationVariableEntity> findAllForStudy(@Param("studyDbId") String studyDbId);
 }

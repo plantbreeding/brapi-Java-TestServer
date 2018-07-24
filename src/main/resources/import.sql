@@ -244,8 +244,14 @@ INSERT INTO contact (id, name, email, type, orcid, institute_name) VALUES ('3', 
 INSERT INTO contact (id, name, email, type, orcid, institute_name) VALUES ('4', 'B. Technician', 'b.technician@brapi.org', 'Technician', '0000-0002-0607-8732', 'Plant Science Institute');
 
 INSERT INTO scale_valid_value(id, max, min)	VALUES ('1', '0', '99999');
-insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('1', '1', '1');
-INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_id)	VALUES ('1', 'integer', 0, 'Centimeter', 'xref', '1');
+INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_id)	VALUES ('1', 'Numerical', 1, 'Centimeter', 'xref', '1');
+INSERT INTO scale_valid_value(id, max, min)	VALUES ('2', '0', '0');
+insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('1', '2', 'dark red');
+insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('2', '2', 'red');
+insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('3', '2', 'dark blue');
+insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('4', '2', 'blue');
+insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('5', '2', 'black');
+INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_id)	VALUES ('2', 'Categorical', 0, 'Color', 'xref', '1');
 INSERT INTO method(id, description, formula, method_class, name, reference)	VALUES ('1', 'Used for finding the lengths of the sides of a right triangle', 'a^2 + b^2 = c^2', 'classy', 'pythagorean theorem', 'google.com');
 INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref) VALUES ('1', 'height', '0', 'height', 'entity', 'H', 'Height', 'active', 'Int', 'xref');
 INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref) VALUES ('2', 'weight', '0', 'weight', 'entity', 'H', 'Weight', 'active', 'Int', 'xref');
@@ -381,33 +387,33 @@ INSERT INTO treatment (id, observation_unit_db_id, factor, modality) VALUES ('8'
 INSERT INTO ontology(id, authors, copyright, description, licence, ontology_name, version, xref)	VALUES ('MO_123', 'Bob', '2017 Ontology.org', 'Ontology.org', 'Apache', 'Ontology.org', '17', 'https://ontology.org');
 
 INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100002', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100002', 'Plant height', '1', '1', '1');
-INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100003', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100006', 'Carotenoid', '1', '1', '1');
-INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100004', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100003', 'Root weight', '1', '1', '1');
-INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100005', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100004', 'Root color', '2', '1', '1');
-INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100006', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100005', 'Virus susceptibility', '2', '1', '1');
+INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100003', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100003', 'Carotenoid', '1', '1', '1');
+INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100004', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100004', 'Root weight', '1', '1', '1');
+INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100005', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100005', 'Root color', '2', '1', '2');
+INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100006', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100006', 'Virus susceptibility', '2', '1', '1');
 
 INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('1', 'MO_123:100002', '1', '2013-06-14T22:03:51Z', '1', 'A. Technician', '1.2');
 INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('1', 'MO_123:100006', '2', '2013-06-14T22:04:51Z', '1', 'A. Technician', '4.5');
 INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('2', 'MO_123:100002', '3', '2013-06-14T22:05:51Z', '1', 'A. Technician', '1.1');
 INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('2', 'MO_123:100006', '4', '2013-06-14T22:06:51Z', '1', 'A. Technician', '5.1');
 INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('3', 'MO_123:100003', '5', '2013-06-14T22:07:51Z', '4', 'A. Technician', '2.1');
-INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('3', 'MO_123:100004', '6', '2013-06-14T22:08:51Z', '4', 'A. Technician', 'dark blue');
+INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('3', 'MO_123:100005', '6', '2013-06-14T22:08:51Z', '4', 'A. Technician', 'dark blue');
 INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('4', 'MO_123:100003', '7', '2013-06-14T22:09:51Z', '5', 'A. Technician', '1.8');
-INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('4', 'MO_123:100004', '8', '2013-06-14T22:10:51Z', '5', 'A. Technician', 'blue');
+INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('4', 'MO_123:100005', '8', '2013-06-14T22:10:51Z', '5', 'A. Technician', 'blue');
 INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('5', 'MO_123:100002', '9', '2013-06-14T22:11:51Z', '3', 'A. Technician', '2.1');
 INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('6', 'MO_123:100006', '10', '2013-06-14T22:12:51Z', '3', 'A. Technician', '4.5');
 INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('7', 'MO_123:100003', '11', '2013-06-14T22:13:51Z', '3', 'A. Technician', '1.4');
-INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('8', 'MO_123:100004', '12', '2013-06-14T22:14:51Z', '3', 'A. Technician', 'red');
+INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('8', 'MO_123:100005', '12', '2013-06-14T22:14:51Z', '3', 'A. Technician', 'red');
 INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('9', 'MO_123:100002', '13', '2011-06-14T22:03:51Z', '2', 'B. Tech', '10');
 INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('9', 'MO_123:100003', '14', '2011-06-14T22:04:51Z', '2', 'B. Tech', '20');
-INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('9', 'MO_123:100004', '15', '2011-06-14T22:05:51Z', '2', 'B. Tech', 'red');
+INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('9', 'MO_123:100005', '15', '2011-06-14T22:05:51Z', '2', 'B. Tech', 'red');
 INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('10', 'MO_123:100002', '16', '2011-06-14T22:06:51Z', '2', 'B. Tech', '100');
 INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('10', 'MO_123:100003', '17', '2011-06-14T22:07:51Z', '2', 'B. Tech', '9');
-INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('10', 'MO_123:100005', '18', '2011-06-14T22:08:51Z', '2', 'B. Tech', '2');
+INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('10', 'MO_123:100004', '18', '2011-06-14T22:08:51Z', '2', 'B. Tech', '2');
 INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('11', 'MO_123:100002', '19', '2011-06-14T22:09:51Z', '2', 'B. Tech', '11');
 INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('11', 'MO_123:100003', '20', '2011-06-14T22:10:51Z', '2', 'B. Tech', '12');
-INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('11', 'MO_123:100004', '21', '2011-06-14T22:11:51Z', '2', 'B. Tech', 'black');
-INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('11', 'MO_123:100005', '22', '2011-06-14T22:12:51Z', '2', 'B. Tech', '5');
+INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('11', 'MO_123:100005', '21', '2011-06-14T22:11:51Z', '2', 'B. Tech', 'black');
+INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('11', 'MO_123:100004', '22', '2011-06-14T22:12:51Z', '2', 'B. Tech', '5');
 
 INSERT INTO taxon (id, taxon_id, source_name) VALUES ('0', '2340', 'ncbiTaxon');
 INSERT INTO taxon (id, taxon_id, source_name) VALUES ('2', 'E312', 'ciradTaxon');

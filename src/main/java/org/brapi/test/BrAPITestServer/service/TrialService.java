@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.validation.Valid;
-
 import org.brapi.test.BrAPITestServer.model.entity.TrialAdditionalInfoEntity;
 import org.brapi.test.BrAPITestServer.model.entity.TrialEntity;
 import org.brapi.test.BrAPITestServer.repository.TrialRepository;
@@ -15,10 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
-import org.threeten.bp.LocalDate;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import io.swagger.model.Metadata;
 import io.swagger.model.Trial;
 import io.swagger.model.TrialDatasetAuthorship;
