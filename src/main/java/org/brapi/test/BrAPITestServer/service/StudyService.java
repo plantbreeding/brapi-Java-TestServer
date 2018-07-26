@@ -169,10 +169,7 @@ public class StudyService {
 			applyActiveFilter = false;
 			active = Boolean.TRUE;
 		}
-		sortOrder = sortOrder == null ? SortOrderEnum.ASC : sortOrder;
-		sortBy = sortBy == null ? SortByEnum.STUDYNAME : sortBy;
-		Sort sort = Sort.by(Direction.fromString(sortOrder.toString()), sortBy.toString());
-		Pageable pageReq = PagingUtility.getPageRequest(metaData, sort);
+		Pageable pageReq = PagingUtility.getPageRequest(metaData, buildSort(sortOrder, sortBy));
 		Page<StudyEntity> studiesPage = studyRepository.findBySearch(studyTypes, programDbIds, trialDbIds, studyDbIds,
 				programNames, studyNames, studyLocations, locationDbIds, seasonDbIds, germplasmDbIds,
 				observationVariableDbIds, applyActiveFilter, active, pageReq);
@@ -205,6 +202,66 @@ public class StudyService {
 			return sum;
 		}).getContent();
 		return summaries;
+	}
+
+	private Sort buildSort(SortOrderEnum sortOrder, SortByEnum sortBy) {
+		String sortOrderStr = "asc";
+		if (sortOrder != null) {
+			switch (sortOrder) {
+			case DESC:
+				sortOrderStr = "desc";
+				break;
+			case ASC:
+			default:
+				sortOrderStr = "asc";
+				break;
+			}
+		}
+		
+		
+		String sortByStr = "";
+		if(sortBy != null) {
+			switch (sortBy) {
+			case GERMPLASMDBID:
+				sortByStr = "ou.germplasm.id";
+				break;
+			case LOCATIONDBID:
+				sortByStr = "location.id";
+				break;
+			case OBSERVATIONVARIABLEDBID:
+				sortByStr = "observation.observationVariable.id";
+				break;
+			case PROGRAMDBID:
+				sortByStr = "trial.program.id";
+				break;
+			case PROGRAMNAME:
+				sortByStr = "trial.program.name";
+				break;
+			case SEASONDBID:
+				sortByStr = "season.id";
+				break;
+			case STUDYDBID:
+				sortByStr = "id";
+				break;
+			case STUDYLOCATION:
+				sortByStr = "location.id";
+				break;
+			case STUDYTYPE:
+				sortByStr = "studyType.name";
+				break;
+			case TRIALDBID:
+				sortByStr = "trial.id ";
+				break;
+			case STUDYNAME:
+			default:
+				sortByStr = "studyName";
+				break;
+			}
+		}
+		
+		Sort sort = Sort.by(Direction.fromString(sortOrderStr), sortByStr);
+		
+		return sort;
 	}
 
 	public Study getStudy(String studyDbId) {

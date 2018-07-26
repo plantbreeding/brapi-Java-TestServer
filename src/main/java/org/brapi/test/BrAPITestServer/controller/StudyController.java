@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -96,7 +97,7 @@ public class StudyController extends BrAPIController
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<StudiesResponse> studiesSearchPost(@Valid StudySearchRequest request) {
+	public ResponseEntity<StudiesResponse> studiesSearchPost(@Valid @RequestBody StudySearchRequest request) {
 		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		List<StudySummary> data = studyService.getStudies(request, metaData);
 		
