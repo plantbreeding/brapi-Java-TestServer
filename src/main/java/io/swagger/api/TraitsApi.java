@@ -8,6 +8,8 @@ package io.swagger.api;
 import io.swagger.model.TraitResponse;
 import io.swagger.model.TraitsResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +35,7 @@ public interface TraitsApi {
     @RequestMapping(value = "/traits",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<TraitsResponse> traitsGet(@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page);
+    ResponseEntity<TraitsResponse> traitsGet(@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page) throws BrAPIServerException;
 
 
     @ApiOperation(value = "Retrieve trait details by id", nickname = "traitsTraitDbIdGet", notes = " Scope: CORE. Status: ACCEPTED. Implemented by: Germinate Retrieve the variables associated to a trait <a href=\"https://test-server.brapi.org/brapi/v1/traits\"> test-server.brapi.org/brapi/v1/traits/{traitDbId}</a>", response = TraitResponse.class, tags={ "Observation Variables", })

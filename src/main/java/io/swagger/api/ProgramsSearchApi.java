@@ -8,6 +8,8 @@ package io.swagger.api;
 import io.swagger.model.ProgramsResponse;
 import io.swagger.model.ProgramsSearchRequest;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +35,6 @@ public interface ProgramsSearchApi {
     @RequestMapping(value = "/programs-search",
         produces = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<ProgramsResponse> programsSearchPost(@ApiParam(value = ""  )  @Valid @RequestBody ProgramsSearchRequest body);
+    ResponseEntity<ProgramsResponse> programsSearchPost(@ApiParam(value = ""  )  @Valid @RequestBody ProgramsSearchRequest body) throws BrAPIServerException;
 
 }

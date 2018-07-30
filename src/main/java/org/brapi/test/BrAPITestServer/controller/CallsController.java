@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.CallsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,10 +19,10 @@ import io.swagger.model.CallsResponseResult;
 import io.swagger.model.Metadata;
 
 @RestController
-public class CallsController extends BrAPIController implements CallsApi{
-	
+public class CallsController extends BrAPIController implements CallsApi {
+
 	CallsService callService;
-	
+
 	@Autowired
 	public CallsController(CallsService callService) {
 		super();
@@ -31,17 +32,17 @@ public class CallsController extends BrAPIController implements CallsApi{
 	@CrossOrigin
 	@Override
 	public ResponseEntity<CallsResponse> callsGet(@Valid String datatype, @Valid Integer pageSize,
-			@Valid Integer page) {
-		
-		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<Call> calls = callService.getAvailableCalls(datatype, metadata);
-		
-		CallsResponseResult result = new CallsResponseResult();
-		result.setData(calls);
-		CallsResponse response = new CallsResponse();
-		response.setMetadata(metadata);
-		response.setResult(result);
-		return new ResponseEntity<CallsResponse>(response, HttpStatus.OK);
-	}
+			@Valid Integer page) throws BrAPIServerException {
 
+			Metadata metadata = generateMetaDataTemplate(page, pageSize);
+			List<Call> calls = callService.getAvailableCalls(datatype, metadata);
+
+			CallsResponseResult result = new CallsResponseResult();
+			result.setData(calls);
+			CallsResponse response = new CallsResponse();
+			response.setMetadata(metadata);
+			response.setResult(result);
+			return new ResponseEntity<CallsResponse>(response, HttpStatus.OK);
+
+	}
 }

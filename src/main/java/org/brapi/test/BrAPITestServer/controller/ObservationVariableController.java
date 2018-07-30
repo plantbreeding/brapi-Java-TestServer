@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.ObservationVariableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,7 @@ public class ObservationVariableController extends BrAPIController implements Va
 	
 	@CrossOrigin
 	@Override
-	public ResponseEntity<OntologiesResponse> ontologiesGet(@Valid Integer pageSize, @Valid Integer page) {
+	public ResponseEntity<OntologiesResponse> ontologiesGet(@Valid Integer pageSize, @Valid Integer page) throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<Ontology> data = observationVariableService.getOntologies(metaData);
 		
@@ -53,7 +54,7 @@ public class ObservationVariableController extends BrAPIController implements Va
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ObservationVariablesResponse> variablesSearchPost(@Valid @RequestBody ObservationVariableSearchRequest request) {
+	public ResponseEntity<ObservationVariablesResponse> variablesSearchPost(@Valid @RequestBody ObservationVariableSearchRequest request) throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(request.getPage().intValue(), request.getPageSize().intValue());
 		List<ObservationVariable> data = observationVariableService.getVariables(request, metaData);
@@ -68,7 +69,7 @@ public class ObservationVariableController extends BrAPIController implements Va
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<DataTypesResponse> variablesDatatypesGet(@Valid Integer pageSize, @Valid Integer page) {
+	public ResponseEntity<DataTypesResponse> variablesDatatypesGet(@Valid Integer pageSize, @Valid Integer page) throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<String> data = observationVariableService.getDataTypes(metaData);
@@ -84,7 +85,7 @@ public class ObservationVariableController extends BrAPIController implements Va
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ObservationVariablesResponse> variablesGet(@Valid Integer pageSize, @Valid Integer page,
-			@Valid String traitClass) {
+			@Valid String traitClass) throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<ObservationVariable> data = observationVariableService.getVariables(traitClass, metaData);
 		

@@ -2,6 +2,7 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.ArrayList;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,12 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler{
 	    String error = ex.getParameterName() + " parameter is missing";
 	    
 	    return buildErrorResponse(HttpStatus.BAD_REQUEST, error);
+	}
+	
+	@org.springframework.web.bind.annotation.ExceptionHandler(value = {BrAPIServerException.class})
+	protected ResponseEntity<Object> handleBrAPIException(BrAPIServerException ex, WebRequest request){
+		String message = ex.getResponseMessage().replaceAll("\"", "\'");
+	    return new ResponseEntity<Object>("\"" + message + "\"", HttpStatus.BAD_REQUEST);		
 	}
 	
 	private ResponseEntity<Object> buildErrorResponse(HttpStatus code, String message){

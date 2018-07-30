@@ -219,7 +219,7 @@ public class StudyService {
 		}
 		
 		
-		String sortByStr = "";
+		String sortByStr = "id";
 		if(sortBy != null) {
 			switch (sortBy) {
 			case GERMPLASMDBID:

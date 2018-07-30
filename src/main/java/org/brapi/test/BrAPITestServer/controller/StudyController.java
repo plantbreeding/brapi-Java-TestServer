@@ -10,6 +10,7 @@ import java.util.zip.ZipInputStream;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -71,8 +72,8 @@ import io.swagger.model.StudyTypesResponseResult;
 import io.swagger.model.StudyobservationsTableResponse;
 
 @RestController
-public class StudyController extends BrAPIController
-		implements SeasonsApi, ObservationlevelsApi, ObservationLevelsApi_dep, StudiesApi, StudiesSearchApi, StudytypesApi, StudyTypesApi_dep {
+public class StudyController extends BrAPIController implements SeasonsApi, ObservationlevelsApi,
+		ObservationLevelsApi_dep, StudiesApi, StudiesSearchApi, StudytypesApi, StudyTypesApi_dep {
 
 	private StudyService studyService;
 
@@ -80,13 +81,14 @@ public class StudyController extends BrAPIController
 	public StudyController(StudyService studyService) {
 		this.studyService = studyService;
 	}
-	
+
 	@CrossOrigin
 	@Override
-	public ResponseEntity<StudyTypesResponse> studytypesGet(@Valid Integer pageSize, @Valid Integer page) {
+	public ResponseEntity<StudyTypesResponse> studytypesGet(@Valid Integer pageSize, @Valid Integer page)
+			throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<StudyType> data = studyService.getStudyTypes(metaData);
-		
+
 		StudyTypesResponseResult result = new StudyTypesResponseResult();
 		result.setData(data);
 		StudyTypesResponse response = new StudyTypesResponse();
@@ -97,10 +99,11 @@ public class StudyController extends BrAPIController
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<StudiesResponse> studiesSearchPost(@Valid @RequestBody StudySearchRequest request) {
+	public ResponseEntity<StudiesResponse> studiesSearchPost(@Valid @RequestBody StudySearchRequest request)
+			throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		List<StudySummary> data = studyService.getStudies(request, metaData);
-		
+
 		StudiesResponseResult result = new StudiesResponseResult();
 		result.setData(data);
 		StudiesResponse response = new StudiesResponse();
@@ -111,11 +114,12 @@ public class StudyController extends BrAPIController
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<GermplasmSummaryListResponse> studiesStudyDbIdGermplasmGet(@PathVariable("studyDbId") String studyDbId,
-			@Valid Integer pageSize, @Valid Integer page) {
+	public ResponseEntity<GermplasmSummaryListResponse> studiesStudyDbIdGermplasmGet(
+			@PathVariable("studyDbId") String studyDbId, @Valid Integer pageSize, @Valid Integer page)
+			throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		GermplasmSummaryList result = studyService.getStudyGermplasm(studyDbId, metaData);
-		
+
 		GermplasmSummaryListResponse response = new GermplasmSummaryListResponse();
 		response.setMetadata(metaData);
 		response.setResult(result);
@@ -126,17 +130,18 @@ public class StudyController extends BrAPIController
 	@Override
 	public ResponseEntity<StudyResponse> studiesStudyDbIdGet(@PathVariable("studyDbId") String studyDbId) {
 		Study result = studyService.getStudy(studyDbId);
-		
+
 		StudyResponse response = new StudyResponse();
 		response.setMetadata(generateEmptyMetadata());
 		response.setResult(result);
 		return new ResponseEntity<StudyResponse>(response, HttpStatus.OK);
 	}
-	
+
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ObservationUnitPositionsResponse> studiesStudyDbIdLayoutGet(@PathVariable("studyDbId") String studyDbId,
-			@Valid Integer pageSize, @Valid Integer page) {
+	public ResponseEntity<ObservationUnitPositionsResponse> studiesStudyDbIdLayoutGet(
+			@PathVariable("studyDbId") String studyDbId, @Valid Integer pageSize, @Valid Integer page)
+			throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<ObservationUnitPosition> data = studyService.getStudyPlotLayouts(studyDbId, metaData);
 
@@ -150,8 +155,8 @@ public class StudyController extends BrAPIController
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ObservationUnitPositionsResponse> studiesStudyDbIdLayoutPut(@PathVariable("studyDbId") String studyDbId,
-			@Valid StudyLayoutRequest studyLayoutRequest) {
+	public ResponseEntity<ObservationUnitPositionsResponse> studiesStudyDbIdLayoutPut(
+			@PathVariable("studyDbId") String studyDbId, @Valid StudyLayoutRequest studyLayoutRequest) {
 		List<ObservationUnitPosition> data = studyService.saveStudyPlotLayout(studyDbId, studyLayoutRequest);
 
 		ObservationUnitPositionsResponseResult result = new ObservationUnitPositionsResponseResult();
@@ -164,8 +169,9 @@ public class StudyController extends BrAPIController
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ObservationsResponse> studiesStudyDbIdObservationsGet(@PathVariable("studyDbId") String studyDbId,
-			@Valid ArrayList<String> observationVariableDbIds, @Valid Integer pageSize, @Valid Integer page) {
+	public ResponseEntity<ObservationsResponse> studiesStudyDbIdObservationsGet(
+			@PathVariable("studyDbId") String studyDbId, @Valid ArrayList<String> observationVariableDbIds,
+			@Valid Integer pageSize, @Valid Integer page) throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<Observation> data = studyService.getObservationUnits(studyDbId, observationVariableDbIds, metaData);
 
@@ -179,23 +185,24 @@ public class StudyController extends BrAPIController
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<NewObservationDbIdsResponse> studiesStudyDbIdObservationsPut(@PathVariable("studyDbId") String studyDbId,
-			@Valid NewObservationsRequest newObservations) {
+	public ResponseEntity<NewObservationDbIdsResponse> studiesStudyDbIdObservationsPut(
+			@PathVariable("studyDbId") String studyDbId, @Valid NewObservationsRequest newObservations) {
 		NewObservationDbIds result = studyService.saveObservations(newObservations);
-		
+
 		NewObservationDbIdsResponse response = new NewObservationDbIdsResponse();
 		response.setMetadata(generateEmptyMetadata());
 		response.setResult(result);
 		return new ResponseEntity<NewObservationDbIdsResponse>(response, HttpStatus.OK);
 	}
-	
+
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ObservationUnitsResponse1> studiesStudyDbIdObservationunitsGet(@PathVariable("studyDbId") String studyDbId,
-			@Valid String observationLevel, @Valid Integer pageSize, @Valid Integer page) {
+	public ResponseEntity<ObservationUnitsResponse1> studiesStudyDbIdObservationunitsGet(
+			@PathVariable("studyDbId") String studyDbId, @Valid String observationLevel, @Valid Integer pageSize,
+			@Valid Integer page) throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<ObservationUnitStudy> data = studyService.getStudyObservations(studyDbId, observationLevel, metaData);
-		
+
 		ObservationUnitsResponse1Result result = new ObservationUnitsResponse1Result();
 		result.setData(data);
 		ObservationUnitsResponse1 response = new ObservationUnitsResponse1();
@@ -204,12 +211,12 @@ public class StudyController extends BrAPIController
 		return new ResponseEntity<ObservationUnitsResponse1>(response, HttpStatus.OK);
 	}
 
-	//deprecated
+	// deprecated
 	@CrossOrigin
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
-	public ResponseEntity<Void> studiesStudyDbIdObservationunitsPost(@PathVariable("studyDbId") String studyDbId, @NotNull @Valid String format,
-			@Valid NewObservationsRequestWrapperDeprecated request) {
+	public ResponseEntity<Void> studiesStudyDbIdObservationunitsPost(@PathVariable("studyDbId") String studyDbId,
+			@NotNull @Valid String format, @Valid NewObservationsRequestWrapperDeprecated request) {
 		studyService.saveObservationUnits(request);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
@@ -217,15 +224,15 @@ public class StudyController extends BrAPIController
 	@CrossOrigin
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
-	public ResponseEntity<NewObservationUnitDbIdsResponse> studiesStudyDbIdObservationunitsPut(@PathVariable("studyDbId") String studyDbId,
-			@Valid ArrayList<NewObservationUnitRequest> request) {
+	public ResponseEntity<NewObservationUnitDbIdsResponse> studiesStudyDbIdObservationunitsPut(
+			@PathVariable("studyDbId") String studyDbId, @Valid ArrayList<NewObservationUnitRequest> request) {
 		NewObservationUnitDbIds result = studyService.saveObservationUnit(request);
 		Metadata metadata = generateEmptyMetadata();
 		Status status = new Status();
 		status.setCode("200");
 		status.setMessage("Upload Successful");
 		metadata.getStatus().add(status);
-		
+
 		NewObservationUnitDbIdsResponse response = new NewObservationUnitDbIdsResponse();
 		response.setMetadata(metadata);
 		response.setResult(result);
@@ -235,12 +242,13 @@ public class StudyController extends BrAPIController
 	@CrossOrigin
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
-	public ResponseEntity<NewObservationUnitDbIdsResponse> studiesStudyDbIdObservationunitsZipPost(@PathVariable("studyDbId") String studyDbId,
-			@Valid byte[] zipRequest) {
+	public ResponseEntity<NewObservationUnitDbIdsResponse> studiesStudyDbIdObservationunitsZipPost(
+			@PathVariable("studyDbId") String studyDbId, @Valid byte[] zipRequest) {
 
 		NewObservationUnitRequest request = null;
 		try {
-			ZipInputStream zis = new ZipInputStream(new BufferedInputStream(new ByteArrayInputStream(zipRequest), 8192));
+			ZipInputStream zis = new ZipInputStream(
+					new BufferedInputStream(new ByteArrayInputStream(zipRequest), 8192));
 			zis.getNextEntry();
 			byte[] extractRaw = new byte[8192];
 			zis.read(extractRaw);
@@ -257,8 +265,8 @@ public class StudyController extends BrAPIController
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<StudyobservationsTableResponse> studiesStudyDbIdTableGet(@PathVariable("studyDbId") String studyDbId,
-			@Valid String format) {
+	public ResponseEntity<StudyobservationsTableResponse> studiesStudyDbIdTableGet(
+			@PathVariable("studyDbId") String studyDbId, @Valid String format) {
 		ObservationsTable result = studyService.getStudyObservationUnitTable(studyDbId, format);
 
 		StudyobservationsTableResponse response = new StudyobservationsTableResponse();
@@ -270,10 +278,10 @@ public class StudyController extends BrAPIController
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<NewObservationDbIdsResponse> studiesStudyDbIdTablePost(@PathVariable("studyDbId") String studyDbId,
-			@Valid NewObservationsTableRequest request) {
+	public ResponseEntity<NewObservationDbIdsResponse> studiesStudyDbIdTablePost(
+			@PathVariable("studyDbId") String studyDbId, @Valid NewObservationsTableRequest request) {
 		NewObservationDbIds result = studyService.saveStudyObservationUnitsTable(studyDbId, request);
-		
+
 		NewObservationDbIdsResponse response = new NewObservationDbIdsResponse();
 		response.setMetadata(generateEmptyMetadata());
 		response.setResult(result);
@@ -282,8 +290,8 @@ public class StudyController extends BrAPIController
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ObservationLevelsResponse> observationlevelsGet(@Valid Integer pageSize,
-			@Valid Integer page) {
+	public ResponseEntity<ObservationLevelsResponse> observationlevelsGet(@Valid Integer pageSize, @Valid Integer page)
+			throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<String> data = studyService.getObservationLevels(metaData);
 
@@ -297,8 +305,8 @@ public class StudyController extends BrAPIController
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<SeasonsResponse> seasonsGet(@Valid String year, @Valid Integer pageSize,
-			@Valid Integer page) {
+	public ResponseEntity<SeasonsResponse> seasonsGet(@Valid String year, @Valid Integer pageSize, @Valid Integer page)
+			throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<Season> data = studyService.getSeasons(year, metaData);
 
@@ -313,11 +321,12 @@ public class StudyController extends BrAPIController
 	// Deprecated
 	@CrossOrigin
 	@Override
-	public ResponseEntity<StudyTypesResponse> studyTypesGet(@Valid Integer pageSize, @Valid Integer page) {
+	public ResponseEntity<StudyTypesResponse> studyTypesGet(@Valid Integer pageSize, @Valid Integer page)
+			throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<StudyType> data = studyService.getStudyTypes(metaData);
-		
+
 		StudyTypesResponseResult result = new StudyTypesResponseResult();
 		result.setData(data);
 		StudyTypesResponse response = new StudyTypesResponse();
@@ -330,13 +339,14 @@ public class StudyController extends BrAPIController
 	@Override
 	public ResponseEntity<StudiesResponse> studiesSearchGet(@Valid String studyType, @Valid String programDbId,
 			@Valid String locationDbId, @Valid String seasonDbId, @Valid String trialDbId, @Valid String studyDbId,
-			@Valid ArrayList<String> germplasmDbIds, @Valid ArrayList<String> observationVariableDbIds, @Valid Integer pageSize,
-			@Valid Integer page, @Valid Boolean active, @Valid String sortBy, @Valid String sortOrder) {
-		
+			@Valid ArrayList<String> germplasmDbIds, @Valid ArrayList<String> observationVariableDbIds,
+			@Valid Integer pageSize, @Valid Integer page, @Valid Boolean active, @Valid String sortBy,
+			@Valid String sortOrder) throws BrAPIServerException {
+
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<StudySummary> data = studyService.getStudies(studyType, programDbId, trialDbId, studyDbId, locationDbId,
 				seasonDbId, germplasmDbIds, observationVariableDbIds, active, sortBy, sortOrder, metaData);
-		
+
 		StudiesResponseResult result = new StudiesResponseResult();
 		result.setData(data);
 		StudiesResponse response = new StudiesResponse();
@@ -347,8 +357,9 @@ public class StudyController extends BrAPIController
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<StudyObservationVariablesResponse> studiesStudyDbIdObservationvariablesGet(@PathVariable("studyDbId") String studyDbId,
-			@Valid Integer pageSize, @Valid Integer page) {
+	public ResponseEntity<StudyObservationVariablesResponse> studiesStudyDbIdObservationvariablesGet(
+			@PathVariable("studyDbId") String studyDbId, @Valid Integer pageSize, @Valid Integer page)
+			throws BrAPIServerException {
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		StudyObservationVariablesResponseResult result = studyService.getStudyObservationVariables(studyDbId);
 
@@ -361,7 +372,8 @@ public class StudyController extends BrAPIController
 	// Deprecated
 	@CrossOrigin
 	@Override
-	public ResponseEntity<StudyObservationVariablesResponse> studiesStudyDbIdObservationVariablesGet(@PathVariable("studyDbId") String studyDbId) {
+	public ResponseEntity<StudyObservationVariablesResponse> studiesStudyDbIdObservationVariablesGet(
+			@PathVariable("studyDbId") String studyDbId) {
 		StudyObservationVariablesResponseResult result = studyService.getStudyObservationVariables(studyDbId);
 
 		StudyObservationVariablesResponse response = new StudyObservationVariablesResponse();
@@ -373,8 +385,8 @@ public class StudyController extends BrAPIController
 	// Deprecated
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ObservationLevelsResponse> observationLevelsGet(@Valid Integer pageSize,
-			@Valid Integer page) {
+	public ResponseEntity<ObservationLevelsResponse> observationLevelsGet(@Valid Integer pageSize, @Valid Integer page)
+			throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<String> data = studyService.getObservationLevels(metaData);

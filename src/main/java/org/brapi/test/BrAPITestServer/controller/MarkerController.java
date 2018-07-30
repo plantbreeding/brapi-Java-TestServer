@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.MarkersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,7 @@ public class MarkerController extends BrAPIController implements MarkersApi, Mar
 	@Override
 	public ResponseEntity<MarkersResponse2> markersSearchGet(@Valid ArrayList<String> markerDbIds, @Valid String name,
 			@Valid String matchMethod, @Valid Boolean includeSynonyms, @Valid String type, @Valid Integer pageSize,
-			@Valid Integer page) {
+			@Valid Integer page) throws BrAPIServerException {
 		
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<Marker> data = markersService.getMarkers(name, type, markerDbIds, MatchMethodEnum.fromValue(matchMethod), includeSynonyms,
@@ -52,7 +53,7 @@ public class MarkerController extends BrAPIController implements MarkersApi, Mar
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<MarkersResponse2> markersSearchPost(@Valid MarkersSearchRequest request) {
+	public ResponseEntity<MarkersResponse2> markersSearchPost(@Valid MarkersSearchRequest request) throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		List<Marker> data = markersService.getMarkers(request.getName(), request.getType(), request.getMarkerDbIds(),
@@ -70,7 +71,7 @@ public class MarkerController extends BrAPIController implements MarkersApi, Mar
 	@CrossOrigin
 	@Override
 	public ResponseEntity<MarkersResponse2> markersGet(@Valid String name, @Valid String matchMethod,
-			@Valid String include, @Valid String type, @Valid Integer pageSize, @Valid Integer page) {
+			@Valid String include, @Valid String type, @Valid Integer pageSize, @Valid Integer page) throws BrAPIServerException {
 		
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<Marker> data = markersService.getMarkers(name, type, null, MatchMethodEnum.fromValue(matchMethod),

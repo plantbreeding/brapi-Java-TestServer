@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.VendorSampleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ import io.swagger.model.VendorSpecification;
 import io.swagger.model.VendorSpecificationResponse;
 
 @RestController
-public class VendorSampleController extends BrAPIController implements VendorApi{
+public class VendorSampleController extends BrAPIController implements VendorApi {
 
 	private VendorSampleService vendorSampleService;
 
@@ -39,9 +40,10 @@ public class VendorSampleController extends BrAPIController implements VendorApi
 	@CrossOrigin
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
-	public ResponseEntity<VendorPlatesResponse> vendorPlatesPost(@ApiParam(value = "")  @Valid @RequestBody VendorPlateRequest request) {
+	public ResponseEntity<VendorPlatesResponse> vendorPlatesPost(
+			@ApiParam(value = "") @Valid @RequestBody VendorPlateRequest request) {
 		List<VendorPlate> plates = vendorSampleService.savePlates(request);
-		
+
 		VendorPlatesResponseResult result = new VendorPlatesResponseResult();
 		result.setPlates(plates);
 		VendorPlatesResponse response = new VendorPlatesResponse();
@@ -54,10 +56,11 @@ public class VendorSampleController extends BrAPIController implements VendorApi
 	@Override
 	public ResponseEntity<VendorPlatesResponse> vendorPlatesSearchGet(@Valid String vendorProjectDbId,
 			@Valid String vendorPlateDbId, @Valid String clientPlateDbId, @Valid Boolean sampleInfo,
-			@Valid Integer pageSize, @Valid Integer page) {
+			@Valid Integer pageSize, @Valid Integer page) throws BrAPIServerException {
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<VendorPlate> plates = vendorSampleService.searchPlates(vendorProjectDbId, vendorPlateDbId, clientPlateDbId, sampleInfo, metadata);
-		
+		List<VendorPlate> plates = vendorSampleService.searchPlates(vendorProjectDbId, vendorPlateDbId, clientPlateDbId,
+				sampleInfo, metadata);
+
 		VendorPlatesResponseResult result = new VendorPlatesResponseResult();
 		result.setPlates(plates);
 		VendorPlatesResponse response = new VendorPlatesResponse();
@@ -68,10 +71,11 @@ public class VendorSampleController extends BrAPIController implements VendorApi
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<VendorPlatesResponse> vendorPlatesSearchPost(@Valid @RequestBody VendorPlateSearchRequest request) {
+	public ResponseEntity<VendorPlatesResponse> vendorPlatesSearchPost(
+			@Valid @RequestBody VendorPlateSearchRequest request) throws BrAPIServerException {
 		Metadata metadata = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		List<VendorPlate> plates = vendorSampleService.searchPlates(request, metadata);
-		
+
 		VendorPlatesResponseResult result = new VendorPlatesResponseResult();
 		result.setPlates(plates);
 		VendorPlatesResponse response = new VendorPlatesResponse();
@@ -82,9 +86,10 @@ public class VendorSampleController extends BrAPIController implements VendorApi
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<VendorPlateResponse> vendorPlatesVendorPlateDbIdGet( @PathVariable("vendorPlateDbId") String vendorPlateDbId) {
+	public ResponseEntity<VendorPlateResponse> vendorPlatesVendorPlateDbIdGet(
+			@PathVariable("vendorPlateDbId") String vendorPlateDbId) {
 		VendorPlate result = vendorSampleService.getPlate(vendorPlateDbId);
-		
+
 		VendorPlateResponse response = new VendorPlateResponse();
 		response.setMetadata(generateEmptyMetadata());
 		response.setResult(result);
@@ -95,7 +100,7 @@ public class VendorSampleController extends BrAPIController implements VendorApi
 	@Override
 	public ResponseEntity<VendorSpecificationResponse> vendorSpecificationsGet() {
 		VendorSpecification result = vendorSampleService.getVendorSpec();
-		
+
 		VendorSpecificationResponse response = new VendorSpecificationResponse();
 		response.setMetadata(generateEmptyMetadata());
 		response.setResult(result);

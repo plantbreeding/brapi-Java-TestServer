@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.SampleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ import io.swagger.model.SamplesResponse;
 import io.swagger.model.SamplesResponseResult;
 
 @RestController
-public class SampleController extends BrAPIController implements SamplesApi, SamplesSearchApi{
+public class SampleController extends BrAPIController implements SamplesApi, SamplesSearchApi {
 
 	private SampleService sampleService;
 
@@ -37,12 +38,13 @@ public class SampleController extends BrAPIController implements SamplesApi, Sam
 	@CrossOrigin
 	@Override
 	public ResponseEntity<SamplesResponse> samplesSearchGet(@Valid String sampleDbId, @Valid String observationUnitDbId,
-			@Valid String plateDbId, @Valid String germplasmDbId, @Valid Integer pageSize, @Valid Integer page) {
+			@Valid String plateDbId, @Valid String germplasmDbId, @Valid Integer pageSize, @Valid Integer page)
+			throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<Sample> data = sampleService.getSampleSearch(sampleDbId, observationUnitDbId, plateDbId, germplasmDbId,
 				metaData);
-		
+
 		SamplesResponseResult result = new SamplesResponseResult();
 		result.setData(data);
 		SamplesResponse response = new SamplesResponse();
@@ -53,9 +55,10 @@ public class SampleController extends BrAPIController implements SamplesApi, Sam
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<SamplesResponse> samplesSearchPost(@Valid SampleSearchRequest request) {
+	public ResponseEntity<SamplesResponse> samplesSearchPost(@Valid SampleSearchRequest request)
+			throws BrAPIServerException {
 
-		Metadata metaData = generateMetaDataTemplate(0, 1000);
+		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		List<Sample> data = sampleService.getSampleSearch(request, metaData);
 
 		SamplesResponseResult result = new SamplesResponseResult();
@@ -71,7 +74,7 @@ public class SampleController extends BrAPIController implements SamplesApi, Sam
 	@Override
 	public ResponseEntity<NewSampleDbId> samplesPut(@Valid Sample sample) {
 		NewSampleDbIdResult result = sampleService.saveSample(sample);
-		
+
 		NewSampleDbId response = new NewSampleDbId();
 		response.setMetadata(generateEmptyMetadata());
 		response.setResult(result);
@@ -82,7 +85,7 @@ public class SampleController extends BrAPIController implements SamplesApi, Sam
 	@Override
 	public ResponseEntity<SampleResponse> samplesSampleDbIdGet(@PathVariable("sampleDbId") String sampleDbId) {
 		Sample result = sampleService.getSample(sampleDbId);
-		
+
 		SampleResponse response = new SampleResponse();
 		response.setMetadata(generateEmptyMetadata());
 		response.setResult(result);

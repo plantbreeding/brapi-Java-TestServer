@@ -8,6 +8,8 @@ package io.swagger.api;
 import io.swagger.model.GermplasmResponse;
 import io.swagger.model.GermplasmSearchRequest;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +35,7 @@ public interface GermplasmSearchApi {
     @RequestMapping(value = "/germplasm-search",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<GermplasmResponse> germplasmSearchGet(@ApiParam(value = "Permanent unique identifier (DOI, URI, etc.)") @Valid @RequestParam(value = "germplasmPUI", required = false) String germplasmPUI,@ApiParam(value = "Internal database identifier") @Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,@ApiParam(value = "Name of the germplasm") @Valid @RequestParam(value = "germplasmName", required = false) String germplasmName,@ApiParam(value = "The common crop name related to this germplasm") @Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page);
+    ResponseEntity<GermplasmResponse> germplasmSearchGet(@ApiParam(value = "Permanent unique identifier (DOI, URI, etc.)") @Valid @RequestParam(value = "germplasmPUI", required = false) String germplasmPUI,@ApiParam(value = "Internal database identifier") @Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,@ApiParam(value = "Name of the germplasm") @Valid @RequestParam(value = "germplasmName", required = false) String germplasmName,@ApiParam(value = "The common crop name related to this germplasm") @Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page) throws BrAPIServerException;
 
 
     @ApiOperation(value = "Germplasm search through POST", nickname = "germplasmSearchPost", notes = " Implemented by: GnpIS, Germinate (GET only) See <a href=\"#introduction/search-services\">Search Services</a> for additional implementation details. Notes: The germplasm and germplasm MCPD calls were merged.  The MCPD fields are optional and indicated as such with the [MCPD] prefix in the description field of the \"Response data types\" table. Please use the \"features\" hash of the \"calls\" call to communicate with clients as to whether MCPD is supported by your implementation. Addresses these needs: 1. General germplasm search mechanism that accepts POST for complex queries 2. possibility to search germplasm by more parameters than those allowed by the existing germplasm search 3. possibility to get MCPD details by PUID rather than dbId Use POST for large queries (>2K bytes). ", response = GermplasmResponse.class, tags={ "Germplasm","Search Services", })
@@ -42,6 +44,6 @@ public interface GermplasmSearchApi {
     @RequestMapping(value = "/germplasm-search",
         produces = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<GermplasmResponse> germplasmSearchPost(@ApiParam(value = ""  )  @Valid @RequestBody GermplasmSearchRequest body);
+    ResponseEntity<GermplasmResponse> germplasmSearchPost(@ApiParam(value = ""  )  @Valid @RequestBody GermplasmSearchRequest body) throws BrAPIServerException;
 
 }

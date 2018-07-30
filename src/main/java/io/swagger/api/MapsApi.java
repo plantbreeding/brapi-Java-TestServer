@@ -10,6 +10,8 @@ import io.swagger.model.MapDetailsResponse;
 import io.swagger.model.MarkersResponse;
 import io.swagger.model.MarkersResponse1;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +37,7 @@ public interface MapsApi {
     @RequestMapping(value = "/maps",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<GenomeMapsResponse> mapsGet(@ApiParam(value = "Species name") @Valid @RequestParam(value = "species", required = false) String species,@ApiParam(value = "Type of map") @Valid @RequestParam(value = "type", required = false) String type,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page);
+    ResponseEntity<GenomeMapsResponse> mapsGet(@ApiParam(value = "Species name") @Valid @RequestParam(value = "species", required = false) String species,@ApiParam(value = "Type of map") @Valid @RequestParam(value = "type", required = false) String type,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page) throws BrAPIServerException;
 
 
     @ApiOperation(value = "Get map details", nickname = "mapsMapDbIdGet", notes = "Provides the number of markers on each linkageGroup and the max position on the linkageGroup <br> <strong>Status:</strong> ACCEPTED <strong>Implemented by:</strong> Germinate, Cassavabase <strong>Used by:</strong> Flapjack", response = MapDetailsResponse.class, tags={ "Genome Maps", })
@@ -44,7 +46,7 @@ public interface MapsApi {
     @RequestMapping(value = "/maps/{mapDbId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<MapDetailsResponse> mapsMapDbIdGet(@ApiParam(value = "The internal db id of a selected map",required=true) @PathVariable("mapDbId") String mapDbId,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page);
+    ResponseEntity<MapDetailsResponse> mapsMapDbIdGet(@ApiParam(value = "The internal db id of a selected map",required=true) @PathVariable("mapDbId") String mapDbId,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page) throws BrAPIServerException;
 
 
     @ApiOperation(value = "Get map data", nickname = "mapsMapDbIdPositionsGet", notes = "markers ordered by linkageGroup and position <br> <strong>Status:</strong> ACCEPTED. <strong>Implemented by:</strong> Germinate, Cassavabase <strong>Used by:</strong> Flapjack", response = MarkersResponse.class, tags={ "Genome Maps", })
@@ -53,7 +55,7 @@ public interface MapsApi {
     @RequestMapping(value = "/maps/{mapDbId}/positions",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<MarkersResponse> mapsMapDbIdPositionsGet(@ApiParam(value = "unique id of the map",required=true) @PathVariable("mapDbId") String mapDbId,@ApiParam(value = "<strong>Deprecated</strong> Use linkageGroupName instead") @Valid @RequestParam(value = "linkageGroupId", required = false) String linkageGroupId,@ApiParam(value = "The chromosome identifier or the generic linkage group identifier if the chromosome is not applicable.") @Valid @RequestParam(value = "linkageGroupName", required = false) String linkageGroupName,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page);
+    ResponseEntity<MarkersResponse> mapsMapDbIdPositionsGet(@ApiParam(value = "unique id of the map",required=true) @PathVariable("mapDbId") String mapDbId,@ApiParam(value = "<strong>Deprecated</strong> Use linkageGroupName instead") @Valid @RequestParam(value = "linkageGroupId", required = false) String linkageGroupId,@ApiParam(value = "The chromosome identifier or the generic linkage group identifier if the chromosome is not applicable.") @Valid @RequestParam(value = "linkageGroupName", required = false) String linkageGroupName,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page) throws BrAPIServerException;
 
 
     @ApiOperation(value = "Get map data by range on linkageGroup", nickname = "mapsMapDbIdPositionsLinkageGroupNameGet", notes = "markers ordered by linkageGroup and position", response = MarkersResponse1.class, tags={ "Genome Maps", })
@@ -62,6 +64,6 @@ public interface MapsApi {
     @RequestMapping(value = "/maps/{mapDbId}/positions/{linkageGroupName}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<MarkersResponse1> mapsMapDbIdPositionsLinkageGroupNameGet(@ApiParam(value = "unique id of the map",required=true) @PathVariable("mapDbId") String mapDbId,@ApiParam(value = "The chromosome identifier or the generic linkage group identifier if the chromosome is not applicable.",required=true) @PathVariable("linkageGroupName") String linkageGroupName,@ApiParam(value = "minimum position on linkage group") @Valid @RequestParam(value = "min", required = false) Integer min,@ApiParam(value = "maximum position on linkage group") @Valid @RequestParam(value = "max", required = false) Integer max,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page);
+    ResponseEntity<MarkersResponse1> mapsMapDbIdPositionsLinkageGroupNameGet(@ApiParam(value = "unique id of the map",required=true) @PathVariable("mapDbId") String mapDbId,@ApiParam(value = "The chromosome identifier or the generic linkage group identifier if the chromosome is not applicable.",required=true) @PathVariable("linkageGroupName") String linkageGroupName,@ApiParam(value = "minimum position on linkage group") @Valid @RequestParam(value = "min", required = false) Integer min,@ApiParam(value = "maximum position on linkage group") @Valid @RequestParam(value = "max", required = false) Integer max,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page) throws BrAPIServerException;
 
 }

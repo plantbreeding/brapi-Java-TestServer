@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.DateUtility;
 import org.brapi.test.BrAPITestServer.service.PhenotypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class PhenotypeController extends BrAPIController implements PhenotypesAp
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<String> phenotypesSearchCsvPost(@Valid PhenotypesSearchRequest request) {
+	public ResponseEntity<String> phenotypesSearchCsvPost(@Valid PhenotypesSearchRequest request) throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		String response = phenotypeService.getPhenotypesCsv(request, metaData);
 
@@ -67,7 +68,7 @@ public class PhenotypeController extends BrAPIController implements PhenotypesAp
 			@Valid String observationVariableDbId, @Valid String studyDbId, @Valid String locationDbId,
 			@Valid String trialDbId, @Valid String programDbId, @Valid String seasonDbId,
 			@Valid String observationLevel, @Valid String observationTimeStampRangeStart,
-			@Valid String observationTimeStampRangeEnd, @Valid Integer pageSize, @Valid Integer page) {
+			@Valid String observationTimeStampRangeEnd, @Valid Integer pageSize, @Valid Integer page) throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<ObservationUnitPhenotype> data = phenotypeService.getPhenotypes(germplasmDbId, observationVariableDbId,
 				studyDbId, locationDbId, trialDbId, programDbId, seasonDbId, observationLevel,
@@ -84,7 +85,7 @@ public class PhenotypeController extends BrAPIController implements PhenotypesAp
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ObservationUnitsResponse> phenotypesSearchPost(@Valid PhenotypesSearchRequest request) {
+	public ResponseEntity<ObservationUnitsResponse> phenotypesSearchPost(@Valid PhenotypesSearchRequest request) throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		List<ObservationUnitPhenotype> data = phenotypeService.getPhenotypes(request, metaData);
 
@@ -99,7 +100,7 @@ public class PhenotypeController extends BrAPIController implements PhenotypesAp
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ObservationUnitsTableResponse1> phenotypesSearchTablePost(
-			@Valid PhenotypesSearchRequest request) {
+			@Valid PhenotypesSearchRequest request) throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		ObservationUnitsTableResponse result = phenotypeService.getPhenotypesTable(request, metaData);
 
@@ -111,7 +112,7 @@ public class PhenotypeController extends BrAPIController implements PhenotypesAp
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<String> phenotypesSearchTsvPost(@Valid PhenotypesSearchRequest request) {
+	public ResponseEntity<String> phenotypesSearchTsvPost(@Valid PhenotypesSearchRequest request) throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		String response = phenotypeService.getPhenotypesTsv(request, metaData);
 

@@ -9,6 +9,8 @@ import io.swagger.model.DataTypesResponse;
 import io.swagger.model.ObservationVariableResponse;
 import io.swagger.model.ObservationVariablesResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +36,7 @@ public interface VariablesApi {
     @RequestMapping(value = "/variables/datatypes",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<DataTypesResponse> variablesDatatypesGet(@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page);
+    ResponseEntity<DataTypesResponse> variablesDatatypesGet(@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page) throws BrAPIServerException;
 
 
     @ApiOperation(value = "Variable list", nickname = "variablesGet", notes = "Call to retrieve a list of observationVariables available in the system. <br> <strong>Scope:</strong> CORE. <strong>Status:</strong> ACCEPTED.", response = ObservationVariablesResponse.class, tags={ "Observation Variables", })
@@ -43,7 +45,7 @@ public interface VariablesApi {
     @RequestMapping(value = "/variables",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<ObservationVariablesResponse> variablesGet(@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "Variable's trait class (phenological, physiological, morphological, etc.)") @Valid @RequestParam(value = "traitClass", required = false) String traitClass);
+    ResponseEntity<ObservationVariablesResponse> variablesGet(@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "Variable's trait class (phenological, physiological, morphological, etc.)") @Valid @RequestParam(value = "traitClass", required = false) String traitClass) throws BrAPIServerException;
 
 
     @ApiOperation(value = "Variable details by id", nickname = "variablesObservationVariableDbIdGet", notes = "Retrieve variable details <br> <strong>Scope:</strong> CORE <strong>Status:</strong> ACCEPTED", response = ObservationVariableResponse.class, tags={ "Observation Variables", })

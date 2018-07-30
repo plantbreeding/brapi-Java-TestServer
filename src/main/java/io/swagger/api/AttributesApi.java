@@ -8,6 +8,8 @@ package io.swagger.api;
 import io.swagger.model.GermplasmAttributeCategoriesResponse;
 import io.swagger.model.GermplasmAttributeDefsResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +34,7 @@ public interface AttributesApi {
         @ApiResponse(code = 200, message = "OK", response = GermplasmAttributeCategoriesResponse.class) })
     @RequestMapping(value = "/attributes/categories",
         method = RequestMethod.GET)
-    ResponseEntity<GermplasmAttributeCategoriesResponse> attributesCategoriesGet(@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page);
+    ResponseEntity<GermplasmAttributeCategoriesResponse> attributesCategoriesGet(@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page) throws BrAPIServerException;
 
 
     @ApiOperation(value = "Attributes by attributeCategoryDbId", nickname = "attributesGet", notes = " List available attributes. <a href=\"https://test-server.brapi.org/brapi/v1/attributes\"> test-server.brapi.org/brapi/v1/attributes</a> ", response = GermplasmAttributeDefsResponse.class, tags={ "Germplasm Attributes", })
@@ -41,6 +43,6 @@ public interface AttributesApi {
     @RequestMapping(value = "/attributes",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<GermplasmAttributeDefsResponse> attributesGet(@ApiParam(value = "filter for kind of attributes") @Valid @RequestParam(value = "attributeCategoryDbId", required = false) String attributeCategoryDbId,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page);
+    ResponseEntity<GermplasmAttributeDefsResponse> attributesGet(@ApiParam(value = "filter for kind of attributes") @Valid @RequestParam(value = "attributeCategoryDbId", required = false) String attributeCategoryDbId,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page) throws BrAPIServerException;
 
 }

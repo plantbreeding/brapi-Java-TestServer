@@ -11,6 +11,8 @@ import io.swagger.model.VendorPlateSearchRequest;
 import io.swagger.model.VendorPlatesResponse;
 import io.swagger.model.VendorSpecificationResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,7 +45,7 @@ public interface VendorApi {
         @ApiResponse(code = 200, message = "OK", response = VendorPlatesResponse.class) })
     @RequestMapping(value = "/vendor/plates-search",
         method = RequestMethod.GET)
-    ResponseEntity<VendorPlatesResponse> vendorPlatesSearchGet(@ApiParam(value = "") @Valid @RequestParam(value = "vendorProjectDbId", required = false) String vendorProjectDbId,@ApiParam(value = "") @Valid @RequestParam(value = "vendorPlateDbId", required = false) String vendorPlateDbId,@ApiParam(value = "") @Valid @RequestParam(value = "clientPlateDbId", required = false) String clientPlateDbId,@ApiParam(value = "") @Valid @RequestParam(value = "sampleInfo", required = false) Boolean sampleInfo,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page);
+    ResponseEntity<VendorPlatesResponse> vendorPlatesSearchGet(@ApiParam(value = "") @Valid @RequestParam(value = "vendorProjectDbId", required = false) String vendorProjectDbId,@ApiParam(value = "") @Valid @RequestParam(value = "vendorPlateDbId", required = false) String vendorPlateDbId,@ApiParam(value = "") @Valid @RequestParam(value = "clientPlateDbId", required = false) String clientPlateDbId,@ApiParam(value = "") @Valid @RequestParam(value = "sampleInfo", required = false) Boolean sampleInfo,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page) throws BrAPIServerException;
 
 
     @ApiOperation(value = "Search for plates", nickname = "vendorPlatesSearchPost", notes = "Search for plates in the database.  <a href=\"https://test-server.brapi.org/brapi/v1/vendor\"> test-server.brapi.org/brapi/v1/vendor/plate-search</a>", response = VendorPlatesResponse.class, tags={ "Vendor Samples","Search Services", })
@@ -51,7 +53,7 @@ public interface VendorApi {
         @ApiResponse(code = 200, message = "OK", response = VendorPlatesResponse.class) })
     @RequestMapping(value = "/vendor/plates-search",
         method = RequestMethod.POST)
-    ResponseEntity<VendorPlatesResponse> vendorPlatesSearchPost(@ApiParam(value = ""  )  @Valid @RequestBody VendorPlateSearchRequest body);
+    ResponseEntity<VendorPlatesResponse> vendorPlatesSearchPost(@ApiParam(value = ""  )  @Valid @RequestBody VendorPlateSearchRequest body) throws BrAPIServerException;
 
 
     @ApiOperation(value = "Plate Details by vendorPlateId", nickname = "vendorPlatesVendorPlateDbIdGet", notes = " Response data types   <table> <thead> <tr> <th>Variable</th> <th>Datatype</th> <th>Description</th> <th>Required</th> </tr> </thead> <tbody> <tr> <td>metadata</td> <td>object</td> <td>pagination, status</td> <td>Y</td> </tr> <tr> <td>pagination</td> <td>object</td> <td>pageSize, currentPage, totalCount, totalPages</td> <td>Y</td> </tr> <tr> <td>status</td> <td>list</td> <td>code, message</td> <td>Y</td> </tr> <tr> <td>result</td> <td>Object</td> <td>Object containing MCPD data</td> <td>Y</td> </tr> <tr> <td>vendorProjectDbId</td> <td>string</td> <td>the name or identifier given to a project by the vendor</td> <td>Y</td> </tr> <tr> <td>vendorPlateDbId</td> <td>string</td> <td>the name or identifier of the plate, given by the vendor</td> <td>Y</td> </tr> <tr> <td>clientPlateDbId</td> <td>string</td> <td>the name of the plate, given by the client</td> <td>Y</td> </tr> <tr> <td>barcode</td> <td>string</td> <td>a string that can be represented as a barcode, identifying this plate</td> <td>N</td> </tr> <tr> <td>plateFormat</td> <td>string</td> <td>defines that plate format, usually Plate_96 or tubes for plateless format</td> <td>Y</td> </tr> <tr> <td>sampleType</td> <td>string</td> <td>DNA or RNA or Tissue, etc.</td> <td>Y</td> </tr> <tr> <td>status</td> <td>string</td> <td>The status of the plate in the processing pipeline. Typically,  &quot;Received&quot;, &quot;Processing&quot;, &quot;QC_passed&quot;, QC_failed&quot;, &quot;Completed&quot; (as per vendor-requirements call)</td> <td>Y</td> </tr> <tr> <td>samples</td> <td>Array</td> <td>list of samples in the plate</td> <td>Y</td> </tr> </tbody> </table>  <a href=\"https://test-server.brapi.org/brapi/v1/vendor\"> test-server.brapi.org/brapi/v1/vendor/plate/{vendorPlateDbId}</a>", response = VendorPlateResponse.class, tags={ "Vendor Samples", })

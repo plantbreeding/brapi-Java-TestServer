@@ -8,6 +8,8 @@ package io.swagger.api;
 import io.swagger.model.TrialResponse;
 import io.swagger.model.TrialsResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +35,7 @@ public interface TrialsApi {
     @RequestMapping(value = "/trials",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<TrialsResponse> trialsGet(@ApiParam(value = "Program filter to only return trials associated with given program id.") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,@ApiParam(value = "Filter by location") @Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "Filter active status true/false.") @Valid @RequestParam(value = "active", required = false) Boolean active,@ApiParam(value = "Sort order. Name of the field to sorty by.") @Valid @RequestParam(value = "sortBy", required = false) String sortBy,@ApiParam(value = "Sort order direction: asc/desc") @Valid @RequestParam(value = "sortOrder", required = false) String sortOrder);
+    ResponseEntity<TrialsResponse> trialsGet(@ApiParam(value = "Program filter to only return trials associated with given program id.") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,@ApiParam(value = "Filter by location") @Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "Filter active status true/false.") @Valid @RequestParam(value = "active", required = false) Boolean active,@ApiParam(value = "Sort order. Name of the field to sorty by.") @Valid @RequestParam(value = "sortBy", required = false) String sortBy,@ApiParam(value = "Sort order direction: asc/desc") @Valid @RequestParam(value = "sortOrder", required = false) String sortOrder) throws BrAPIServerException;
 
 
     @ApiOperation(value = "Get trial by Id", nickname = "trialsTrialDbIdGet", notes = " Scope: PHENOTYPING. Status: ACCEPTED. Implementation target date: PAG2016. Get trial by id. <a href=\"https://test-server.brapi.org/brapi/v1/trials\"> test-server.brapi.org/brapi/v1/trials/{trialDbId}</a>", response = TrialResponse.class, tags={ "Trials", })

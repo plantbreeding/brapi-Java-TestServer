@@ -88,10 +88,11 @@ public class CallsService {
     
 	public List<Call> getAvailableCalls(String datatype, Metadata metadata) {
 		List<Call> calls = buildCalls();
-		List<Call> response = filterCalls(calls, datatype, metadata.getPagination().getCurrentPage(), metadata.getPagination().getPageSize());
-		metadata.getPagination().setTotalPages((int) Math.ceil((double)calls.size() / (double)metadata.getPagination().getPageSize()));
-		metadata.getPagination().setPageSize(response.size());
-		metadata.getPagination().setTotalCount(calls.size());
+		List<Call> filtered = filterCalls(calls, datatype);
+		List<Call> response = paginateCalls(filtered, metadata.getPagination().getCurrentPage(), metadata.getPagination().getPageSize());
+		
+		metadata.getPagination().setTotalPages((int) Math.ceil((double)filtered.size() / (double)metadata.getPagination().getPageSize()));
+		metadata.getPagination().setTotalCount(filtered.size());
 
 		return response;
 	}
@@ -110,7 +111,7 @@ public class CallsService {
 		return calls;
 	}
 
-	private List<Call> filterCalls(List<Call> calls, String datatype, Integer page, Integer pageSize) {
+	private List<Call> filterCalls(List<Call> calls, String datatype) {
 		List<Call> filteredCalls;
 		if(datatype != null && !datatype.equals("")) {
 			filteredCalls = calls.stream().filter((call) -> {
@@ -119,12 +120,16 @@ public class CallsService {
 		}else {
 			filteredCalls = calls;
 		}
-		
+		return filteredCalls;
+	}
+	
+
+	private List<Call> paginateCalls(List<Call> calls, Integer page, Integer pageSize) {
 		int fromIndex = 0, toIndex = 0;
-		if(page * pageSize < filteredCalls.size()) {
+		if(page * pageSize < calls.size()) {
 			fromIndex = page * pageSize;
-			toIndex = fromIndex + pageSize > filteredCalls.size() ? filteredCalls.size() : fromIndex + pageSize;
+			toIndex = fromIndex + pageSize > calls.size() ? calls.size() : fromIndex + pageSize;
 		}
-		return filteredCalls.subList(fromIndex, toIndex);
+		return calls.subList(fromIndex, toIndex);
 	}
 }

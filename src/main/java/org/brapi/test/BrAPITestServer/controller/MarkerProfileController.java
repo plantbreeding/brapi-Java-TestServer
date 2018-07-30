@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.AlleleFormatParams;
 import org.brapi.test.BrAPITestServer.service.MarkerProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class MarkerProfileController extends BrAPIController implements Markerpr
 	public ResponseEntity<AlleleMatrixValuesResponse> allelematrixSearchGet(@Valid ArrayList<String> markerprofileDbId,
 			@Valid ArrayList<String> markerDbId, @Valid ArrayList<String> matrixDbId, @Valid String format,
 			@Valid Boolean expandHomozygotes, @Valid String unknownString, @Valid String sepPhased,
-			@Valid String sepUnphased, @Valid Integer pageSize, @Valid Integer page) {
+			@Valid String sepUnphased, @Valid Integer pageSize, @Valid Integer page) throws BrAPIServerException {
 		
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		AlleleFormatParams params = markerProfileService.buildFormatParams(expandHomozygotes, sepPhased, sepUnphased, unknownString);
@@ -64,7 +65,7 @@ public class MarkerProfileController extends BrAPIController implements Markerpr
 	//Deprecated
 	@CrossOrigin
 	@Override
-	public ResponseEntity<AlleleMatrixValuesResponse> allelematrixSearchPost(@Valid AlleleMatrixSearchRequest request) {
+	public ResponseEntity<AlleleMatrixValuesResponse> allelematrixSearchPost(@Valid AlleleMatrixSearchRequest request) throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		AlleleFormatParams params = markerProfileService.buildFormatParams(request.isExpandHomozygotes(), request.getSepPhased(), request.getSepUnphased(), request.getUnknownString());
@@ -84,7 +85,7 @@ public class MarkerProfileController extends BrAPIController implements Markerpr
 	public ResponseEntity<AlleleMatrixValuesResponse> allelematricesSearchGet(@Valid ArrayList<String> markerprofileDbId,
 			@Valid ArrayList<String> markerDbId, @Valid ArrayList<String> matrixDbId, @Valid String format,
 			@Valid Boolean expandHomozygotes, @Valid String unknownString, @Valid String sepPhased,
-			@Valid String sepUnphased, @Valid Integer pageSize, @Valid Integer page) {
+			@Valid String sepUnphased, @Valid Integer pageSize, @Valid Integer page) throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		AlleleFormatParams params = markerProfileService.buildFormatParams(expandHomozygotes, sepPhased, sepUnphased, unknownString);
@@ -102,7 +103,7 @@ public class MarkerProfileController extends BrAPIController implements Markerpr
 	@CrossOrigin
 	@Override
 	public ResponseEntity<AlleleMatrixValuesResponse> allelematricesSearchPost(
-			io.swagger.model.@Valid AlleleMatrixSearchRequest request) {
+			io.swagger.model.@Valid AlleleMatrixSearchRequest request) throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		AlleleFormatParams params = markerProfileService.buildFormatParams(request.isExpandHomozygotes(), request.getSepPhased(), request.getSepUnphased(), request.getUnknownString());
@@ -120,9 +121,9 @@ public class MarkerProfileController extends BrAPIController implements Markerpr
 	@CrossOrigin
 	@Override
 	public ResponseEntity<AlleleMatrixDetailsResponse> allelematricesGet(@NotNull @Valid String studyDbId,
-			@Valid Integer pageSize, @Valid Integer page) {
+			@Valid Integer pageSize, @Valid Integer page) throws BrAPIServerException {
 
-		Metadata metaData = generateMetaDataTemplate(0, 1000);
+		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<AlleleMatrixDetails> result = markerProfileService.getAlleleMatrixDetailsByStudyDbId(studyDbId, metaData);
 		
 		AlleleMatrixDetailsResponse response = new AlleleMatrixDetailsResponse();
@@ -135,7 +136,7 @@ public class MarkerProfileController extends BrAPIController implements Markerpr
 	@Override
 	public ResponseEntity<MarkerProfileDescriptionsResponse> markerprofilesGet(@Valid String germplasmDbId,
 			@Valid String studyDbId, @Valid String sampleDbId, @Valid String extractDbId, @Valid Integer pageSize,
-			@Valid Integer page) {
+			@Valid Integer page) throws BrAPIServerException {
 		
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<MarkerProfileDescription> data = markerProfileService.getMarkerProfileSummeries(
@@ -153,7 +154,7 @@ public class MarkerProfileController extends BrAPIController implements Markerpr
 	@Override
 	public ResponseEntity<MarkerProfilesResponse> markerprofilesMarkerprofileDbIdGet(@PathVariable("markerprofileDbId") String markerprofileDbId,
 			@Valid Boolean expandHomozygotes, @Valid String unknownString, @Valid String sepPhased,
-			@Valid String sepUnphased, @Valid Integer pageSize, @Valid Integer page) {
+			@Valid String sepUnphased, @Valid Integer pageSize, @Valid Integer page) throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		AlleleFormatParams params = markerProfileService.buildFormatParams(expandHomozygotes, sepPhased, sepUnphased, unknownString);

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.ProgramService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,27 +20,23 @@ import io.swagger.model.ProgramsResponseResult;
 import io.swagger.model.ProgramsSearchRequest;
 
 @RestController
-public class ProgramController  extends BrAPIController implements ProgramsApi, ProgramsSearchApi{
+public class ProgramController extends BrAPIController implements ProgramsApi, ProgramsSearchApi {
 
 	private ProgramService programService;
-	
+
 	public ProgramController(ProgramService programService) {
 		this.programService = programService;
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ProgramsResponse> programsSearchPost(@Valid ProgramsSearchRequest request) {
-		
+	public ResponseEntity<ProgramsResponse> programsSearchPost(@Valid ProgramsSearchRequest request)
+			throws BrAPIServerException {
+
 		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
-		List<Program> data = programService.searchPrograms(
-				request.getAbbreviation(), 
-				request.getLeadPerson(), 
-				request.getName(), 
-				request.getObjective(), 
-				request.getProgramDbId(), 
-				metaData);
-		
+		List<Program> data = programService.searchPrograms(request.getAbbreviation(), request.getLeadPerson(),
+				request.getName(), request.getObjective(), request.getProgramDbId(), metaData);
+
 		ProgramsResponseResult result = new ProgramsResponseResult();
 		result.setData(data);
 		ProgramsResponse response = new ProgramsResponse();
@@ -51,17 +48,11 @@ public class ProgramController  extends BrAPIController implements ProgramsApi, 
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ProgramsResponse> programsGet(@Valid String programName, @Valid String abbreviation,
-			@Valid Integer pageSize, @Valid Integer page) {
+			@Valid Integer pageSize, @Valid Integer page) throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
-		List<Program> data = programService.searchPrograms(
-				abbreviation, 
-				null, 
-				programName, 
-				null, 
-				null, 
-				metaData);
-		
+		List<Program> data = programService.searchPrograms(abbreviation, null, programName, null, null, metaData);
+
 		ProgramsResponseResult result = new ProgramsResponseResult();
 		result.setData(data);
 		ProgramsResponse response = new ProgramsResponse();

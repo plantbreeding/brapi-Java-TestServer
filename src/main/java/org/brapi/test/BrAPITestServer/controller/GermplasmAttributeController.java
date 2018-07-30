@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.GermplasmAttributeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,9 +22,9 @@ import io.swagger.model.GermplasmAttributeDefsResponseResult;
 import io.swagger.model.Metadata;
 
 @RestController
-public class GermplasmAttributeController extends BrAPIController implements AttributesApi{
+public class GermplasmAttributeController extends BrAPIController implements AttributesApi {
 	private GermplasmAttributeService germplasmAttributeService;
-	
+
 	@Autowired
 	public GermplasmAttributeController(GermplasmAttributeService germplasmAttributeService) {
 		this.germplasmAttributeService = germplasmAttributeService;
@@ -32,33 +33,36 @@ public class GermplasmAttributeController extends BrAPIController implements Att
 	@CrossOrigin
 	@Override
 	public ResponseEntity<GermplasmAttributeCategoriesResponse> attributesCategoriesGet(@Valid Integer pageSize,
-			@Valid Integer page) {
-		
-		Metadata metaData = generateMetaDataTemplate(page, pageSize);
-		List<GermplasmAttributeCategory> data = germplasmAttributeService.getGermplasmAttributeCategories(metaData);
+			@Valid Integer page) throws BrAPIServerException {
 
-		GermplasmAttributeCategoriesResponseResult result = new GermplasmAttributeCategoriesResponseResult();
-		result.setData(data);
-		GermplasmAttributeCategoriesResponse response = new GermplasmAttributeCategoriesResponse();
-		response.setMetadata(metaData);
-		response.setResult(result);				
-		return new ResponseEntity<GermplasmAttributeCategoriesResponse>(response, HttpStatus.OK);
+			Metadata metaData = generateMetaDataTemplate(page, pageSize);
+			List<GermplasmAttributeCategory> data = germplasmAttributeService.getGermplasmAttributeCategories(metaData);
+
+			GermplasmAttributeCategoriesResponseResult result = new GermplasmAttributeCategoriesResponseResult();
+			result.setData(data);
+			GermplasmAttributeCategoriesResponse response = new GermplasmAttributeCategoriesResponse();
+			response.setMetadata(metaData);
+			response.setResult(result);
+			return new ResponseEntity<GermplasmAttributeCategoriesResponse>(response, HttpStatus.OK);
+		
 	}
 
 	@CrossOrigin
 	@Override
 	public ResponseEntity<GermplasmAttributeDefsResponse> attributesGet(@Valid String attributeCategoryDbId,
-			@Valid Integer pageSize, @Valid Integer page) {
+			@Valid Integer pageSize, @Valid Integer page) throws BrAPIServerException {
 
-		Metadata metaData = generateMetaDataTemplate(page, pageSize);
-		List<GermplasmAttributeDef> data = germplasmAttributeService.getGermplasmAttributes(attributeCategoryDbId,metaData);
+			Metadata metaData = generateMetaDataTemplate(page, pageSize);
+			List<GermplasmAttributeDef> data = germplasmAttributeService.getGermplasmAttributes(attributeCategoryDbId,
+					metaData);
+
+			GermplasmAttributeDefsResponseResult result = new GermplasmAttributeDefsResponseResult();
+			result.setData(data);
+			GermplasmAttributeDefsResponse response = new GermplasmAttributeDefsResponse();
+			response.setMetadata(metaData);
+			response.setResult(result);
+			return new ResponseEntity<GermplasmAttributeDefsResponse>(response, HttpStatus.OK);
 		
-		GermplasmAttributeDefsResponseResult result = new GermplasmAttributeDefsResponseResult();
-		result.setData(data);
-		GermplasmAttributeDefsResponse response = new GermplasmAttributeDefsResponse();
-		response.setMetadata(metaData);
-		response.setResult(result);				
-		return new ResponseEntity<GermplasmAttributeDefsResponse>(response, HttpStatus.OK);
 	}
-	
+
 }

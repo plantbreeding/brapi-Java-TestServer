@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.GermplasmAttributeService;
 import org.brapi.test.BrAPITestServer.service.GermplasmService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.api.BreedingmethodsApi;
@@ -38,7 +40,8 @@ import io.swagger.model.Progeny;
 import io.swagger.model.ProgenyResponse;
 
 @RestController
-public class GermplasmController extends BrAPIController implements GermplasmApi, GermplasmSearchApi, BreedingmethodsApi{
+public class GermplasmController extends BrAPIController
+		implements GermplasmApi, GermplasmSearchApi, BreedingmethodsApi {
 
 	private GermplasmService germplasmService;
 	private GermplasmAttributeService germplasmAttributeService;
@@ -53,61 +56,71 @@ public class GermplasmController extends BrAPIController implements GermplasmApi
 	@CrossOrigin
 	@Override
 	public ResponseEntity<GermplasmResponse> germplasmSearchGet(@Valid String germplasmPUI, @Valid String germplasmDbId,
-			@Valid String germplasmName, @Valid String commonCropName, @Valid Integer pageSize, @Valid Integer page) {
+			@Valid String germplasmName, @Valid String commonCropName, @Valid Integer pageSize, @Valid Integer page)
+			throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
-		List<Germplasm> data = germplasmService.search(germplasmPUI, germplasmDbId, germplasmName, commonCropName, metaData);
+		List<Germplasm> data = germplasmService.search(germplasmPUI, germplasmDbId, germplasmName, commonCropName,
+				metaData);
 
 		GermplasmResponseResult result = new GermplasmResponseResult();
 		result.setData(data);
 		GermplasmResponse response = new GermplasmResponse();
 		response.setMetadata(metaData);
-		response.setResult(result);				
+		response.setResult(result);
 		return new ResponseEntity<GermplasmResponse>(response, HttpStatus.OK);
+
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<GermplasmResponse> germplasmSearchPost(@Valid GermplasmSearchRequest request) {
+	public ResponseEntity<GermplasmResponse> germplasmSearchPost(@Valid @RequestBody GermplasmSearchRequest request)
+			throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
-		List<Germplasm> data = germplasmService.search(request.getGermplasmDbIds(), request.getGermplasmGenus(), request.getCommonCropNames(), request.getGermplasmNames(),
-				request.getGermplasmPUIs(), request.getGermplasmSpecies(), request.getAccessionNumbers(), metaData);
+		List<Germplasm> data = germplasmService.search(request.getGermplasmDbIds(), request.getGermplasmGenus(),
+				request.getCommonCropNames(), request.getGermplasmNames(), request.getGermplasmPUIs(),
+				request.getGermplasmSpecies(), request.getAccessionNumbers(), metaData);
 
 		GermplasmResponseResult result = new GermplasmResponseResult();
 		result.setData(data);
 		GermplasmResponse response = new GermplasmResponse();
 		response.setMetadata(metaData);
-		response.setResult(result);				
+		response.setResult(result);
 		return new ResponseEntity<GermplasmResponse>(response, HttpStatus.OK);
+
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<GermplasmAttributeListResponse> germplasmGermplasmDbIdAttributesGet(@PathVariable("germplasmDbId") String germplasmDbId,
-			@Valid ArrayList<String> attributeDbIds, @Valid ArrayList<String> attributeList, @Valid Integer pageSize,
-			@Valid Integer page) {
-		
+	public ResponseEntity<GermplasmAttributeListResponse> germplasmGermplasmDbIdAttributesGet(
+			@PathVariable("germplasmDbId") String germplasmDbId, @Valid ArrayList<String> attributeDbIds,
+			@Valid ArrayList<String> attributeList, @Valid Integer pageSize, @Valid Integer page)
+			throws BrAPIServerException {
+
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
-		List<GermplasmAttribute> data = germplasmAttributeService.getGermplasmAttributeValues(germplasmDbId, attributeList,metaData);
-		
+		List<GermplasmAttribute> data = germplasmAttributeService.getGermplasmAttributeValues(germplasmDbId,
+				attributeList, metaData);
+
 		GermplasmAttributeList result = new GermplasmAttributeList();
 		result.setData(data);
 		result.setGermplasmDbId(germplasmDbId);
 		GermplasmAttributeListResponse response = new GermplasmAttributeListResponse();
 		response.setMetadata(metaData);
-		response.setResult(result);				
+		response.setResult(result);
 		return new ResponseEntity<GermplasmAttributeListResponse>(response, HttpStatus.OK);
+
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<GermplasmResponse1> germplasmGermplasmDbIdGet(@PathVariable("germplasmDbId") String germplasmDbId) {
+	public ResponseEntity<GermplasmResponse1> germplasmGermplasmDbIdGet(
+			@PathVariable("germplasmDbId") String germplasmDbId) {
 		Germplasm result = germplasmService.searchByDbId(germplasmDbId);
 
 		GermplasmResponse1 response = new GermplasmResponse1();
 		response.setMetadata(generateEmptyMetadata());
-		response.setResult(result);				
+		response.setResult(result);
 		return new ResponseEntity<GermplasmResponse1>(response, HttpStatus.OK);
 	}
 
@@ -119,35 +132,38 @@ public class GermplasmController extends BrAPIController implements GermplasmApi
 
 		GermplasmMarkerprofilesListResponse response = new GermplasmMarkerprofilesListResponse();
 		response.setMetadata(generateEmptyMetadata());
-		response.setResult(result);				
+		response.setResult(result);
 		return new ResponseEntity<GermplasmMarkerprofilesListResponse>(response, HttpStatus.OK);
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<PedigreeResponse> germplasmGermplasmDbIdPedigreeGet(@PathVariable("germplasmDbId") String germplasmDbId,
-			@Valid String notation, @Valid Boolean includeSiblings) {
+	public ResponseEntity<PedigreeResponse> germplasmGermplasmDbIdPedigreeGet(
+			@PathVariable("germplasmDbId") String germplasmDbId, @Valid String notation,
+			@Valid Boolean includeSiblings) {
 		Pedigree result = germplasmService.searchPedigreeByDbId(germplasmDbId, notation, includeSiblings);
 
 		PedigreeResponse response = new PedigreeResponse();
 		response.setMetadata(generateEmptyMetadata());
-		response.setResult(result);				
+		response.setResult(result);
 		return new ResponseEntity<PedigreeResponse>(response, HttpStatus.OK);
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ProgenyResponse> germplasmGermplasmDbIdProgenyGet(@PathVariable("germplasmDbId") String germplasmDbId) {
+	public ResponseEntity<ProgenyResponse> germplasmGermplasmDbIdProgenyGet(
+			@PathVariable("germplasmDbId") String germplasmDbId) {
 		Progeny result = germplasmService.searchProgenyByDbId(germplasmDbId);
 
 		ProgenyResponse response = new ProgenyResponse();
 		response.setMetadata(generateEmptyMetadata());
-		response.setResult(result);				
+		response.setResult(result);
 		return new ResponseEntity<ProgenyResponse>(response, HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<BreedingMethodResponse1> breedingmethodsBreedingMethodDbIdGet(@PathVariable("breedingMethodDbId") String breedingMethodDbId) {
+	public ResponseEntity<BreedingMethodResponse1> breedingmethodsBreedingMethodDbIdGet(
+			@PathVariable("breedingMethodDbId") String breedingMethodDbId) {
 		BreedingMethod result = germplasmService.getBreedingMethod(breedingMethodDbId);
 
 		BreedingMethodResponse1 response = new BreedingMethodResponse1();
@@ -157,15 +173,17 @@ public class GermplasmController extends BrAPIController implements GermplasmApi
 	}
 
 	@Override
-	public ResponseEntity<BreedingMethodResponse> breedingmethodsGet(@Valid Integer pageSize, @Valid Integer page) {
+	public ResponseEntity<BreedingMethodResponse> breedingmethodsGet(@Valid Integer pageSize, @Valid Integer page)
+			throws BrAPIServerException {
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<BreedingMethod> data = germplasmService.getBreedingMethods(metadata);
-		
+
 		BreedingMethodResponseResult result = new BreedingMethodResponseResult();
 		result.setData(data);
 		BreedingMethodResponse response = new BreedingMethodResponse();
 		response.setMetadata(metadata);
 		response.setResult(result);
 		return new ResponseEntity<BreedingMethodResponse>(response, HttpStatus.OK);
+
 	}
 }

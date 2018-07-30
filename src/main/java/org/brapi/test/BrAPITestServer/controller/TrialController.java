@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.TrialService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +21,10 @@ import io.swagger.model.TrialsResponse;
 import io.swagger.model.TrialsResponseResult;
 
 @RestController
-public class TrialController extends BrAPIController implements TrialsApi{
+public class TrialController extends BrAPIController implements TrialsApi {
 
 	private TrialService trialService;
-	
+
 	public TrialController(TrialService trialService) {
 		this.trialService = trialService;
 	}
@@ -32,10 +33,11 @@ public class TrialController extends BrAPIController implements TrialsApi{
 	@Override
 	public ResponseEntity<TrialsResponse> trialsGet(@Valid String programDbId, @Valid String locationDbId,
 			@Valid Integer pageSize, @Valid Integer page, @Valid Boolean active, @Valid String sortBy,
-			@Valid String sortOrder) {
+			@Valid String sortOrder) throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
-		List<TrialSummary> data = trialService.getTrialSummaries(programDbId, locationDbId, active, sortBy, sortOrder, metaData);
-		
+		List<TrialSummary> data = trialService.getTrialSummaries(programDbId, locationDbId, active, sortBy, sortOrder,
+				metaData);
+
 		TrialsResponseResult result = new TrialsResponseResult();
 		result.setData(data);
 		TrialsResponse response = new TrialsResponse();
@@ -49,7 +51,7 @@ public class TrialController extends BrAPIController implements TrialsApi{
 	public ResponseEntity<TrialResponse> trialsTrialDbIdGet(@PathVariable("trialDbId") String trialDbId) {
 
 		Trial result = trialService.getTrialSummary(trialDbId);
-		
+
 		TrialResponse response = new TrialResponse();
 		response.setMetadata(generateEmptyMetadata());
 		response.setResult(result);

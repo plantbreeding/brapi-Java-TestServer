@@ -7,6 +7,8 @@ package io.swagger.api;
 
 import io.swagger.model.CallsResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +34,6 @@ public interface CallsApi {
     @RequestMapping(value = "/calls",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<CallsResponse> callsGet(@ApiParam(value = "The data format supported by the call. Example: `json`") @Valid @RequestParam(value = "datatype", required = false) String datatype,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page);
+    ResponseEntity<CallsResponse> callsGet(@ApiParam(value = "The data format supported by the call. Example: `json`") @Valid @RequestParam(value = "datatype", required = false) String datatype,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page) throws BrAPIServerException;
 
 }

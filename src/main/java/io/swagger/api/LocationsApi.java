@@ -8,6 +8,8 @@ package io.swagger.api;
 import io.swagger.model.LocationResponse;
 import io.swagger.model.LocationsResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +35,7 @@ public interface LocationsApi {
     @RequestMapping(value = "/locations",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<LocationsResponse> locationsGet(@ApiParam(value = "Filter by location type specified.") @Valid @RequestParam(value = "locationType", required = false) String locationType,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page);
+    ResponseEntity<LocationsResponse> locationsGet(@ApiParam(value = "Filter by location type specified.") @Valid @RequestParam(value = "locationType", required = false) String locationType,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page) throws BrAPIServerException;
 
 
     @ApiOperation(value = "The internal DB id for a location", nickname = "locationsLocationDbIdGet", notes = " <strong>Implemented by:</strong>  GnpIS Get details for a location. * The `countryCode` is as per [ISO_3166-1_alpha-3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) spec. * `altitude` is in meters. ", response = LocationResponse.class, tags={ "Locations", })

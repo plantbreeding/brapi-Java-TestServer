@@ -8,6 +8,8 @@ package io.swagger.api;
 import io.swagger.model.SampleSearchRequest;
 import io.swagger.model.SamplesResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +35,7 @@ public interface SamplesSearchApi {
     @RequestMapping(value = "/samples-search",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<SamplesResponse> samplesSearchGet(@ApiParam(value = "the internal DB id for a sample") @Valid @RequestParam(value = "sampleDbId", required = false) String sampleDbId,@ApiParam(value = "the internal DB id for an observation unit where a sample was taken from") @Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,@ApiParam(value = "the internal DB id for a plate of samples") @Valid @RequestParam(value = "plateDbId", required = false) String plateDbId,@ApiParam(value = "the internal DB id for a germplasm") @Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,@ApiParam(value = "The size of the pages to be returned. Default is 1000.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is 0.") @Valid @RequestParam(value = "page", required = false) Integer page);
+    ResponseEntity<SamplesResponse> samplesSearchGet(@ApiParam(value = "the internal DB id for a sample") @Valid @RequestParam(value = "sampleDbId", required = false) String sampleDbId,@ApiParam(value = "the internal DB id for an observation unit where a sample was taken from") @Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,@ApiParam(value = "the internal DB id for a plate of samples") @Valid @RequestParam(value = "plateDbId", required = false) String plateDbId,@ApiParam(value = "the internal DB id for a germplasm") @Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,@ApiParam(value = "The size of the pages to be returned. Default is 1000.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is 0.") @Valid @RequestParam(value = "page", required = false) Integer page) throws BrAPIServerException;
 
 
     @ApiOperation(value = "Post Sample Search", nickname = "samplesSearchPost", notes = " Used to retrieve list of Samples from a Sample Tracking system based on some search criteria. <a href=\"https://test-server.brapi.org/brapi/v1/samples\"> test-server.brapi.org/brapi/v1/samples-search</a>", response = SamplesResponse.class, tags={ "Samples","Search Services", })
@@ -42,6 +44,6 @@ public interface SamplesSearchApi {
     @RequestMapping(value = "/samples-search",
         produces = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<SamplesResponse> samplesSearchPost(@ApiParam(value = ""  )  @Valid @RequestBody SampleSearchRequest sampleSearch);
+    ResponseEntity<SamplesResponse> samplesSearchPost(@ApiParam(value = ""  )  @Valid @RequestBody SampleSearchRequest sampleSearch) throws BrAPIServerException;
 
 }

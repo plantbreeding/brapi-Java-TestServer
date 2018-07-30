@@ -8,6 +8,8 @@ package io.swagger.api;
 import io.swagger.model.MarkerResponse;
 import io.swagger.model.MarkersResponse2;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +35,7 @@ public interface MarkersApi {
     @RequestMapping(value = "/markers",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<MarkersResponse2> markersGet(@ApiParam(value = "The name or synonym.") @Valid @RequestParam(value = "name", required = false) String name,@ApiParam(value = "Possible values are 'case_insensitive', 'exact' (case sensitive), 'wildcard' (which is case insensitive). Wildcard uses both '*' and '%' for any number of characters and '?' for one character matching. Default is exact.") @Valid @RequestParam(value = "matchMethod", required = false) String matchMethod,@ApiParam(value = "Whether to include synonyms in the output.") @Valid @RequestParam(value = "include", required = false) String include,@ApiParam(value = "The type of the marker.") @Valid @RequestParam(value = "type", required = false) String type,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page);
+    ResponseEntity<MarkersResponse2> markersGet(@ApiParam(value = "The name or synonym.") @Valid @RequestParam(value = "name", required = false) String name,@ApiParam(value = "Possible values are 'case_insensitive', 'exact' (case sensitive), 'wildcard' (which is case insensitive). Wildcard uses both '*' and '%' for any number of characters and '?' for one character matching. Default is exact.") @Valid @RequestParam(value = "matchMethod", required = false) String matchMethod,@ApiParam(value = "Whether to include synonyms in the output.") @Valid @RequestParam(value = "include", required = false) String include,@ApiParam(value = "The type of the marker.") @Valid @RequestParam(value = "type", required = false) String type,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page) throws BrAPIServerException;
 
 
     @ApiOperation(value = "Marker Details by id", nickname = "markersMarkerDbIdGet", notes = "<strong>Status</strong>: ACCEPTED  <strong>Implemented By</strong>:", response = MarkerResponse.class, tags={ "Markers", })

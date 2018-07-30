@@ -8,6 +8,8 @@ package io.swagger.api;
 import io.swagger.model.ObservationVariableSearchRequest;
 import io.swagger.model.ObservationVariablesResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +35,6 @@ public interface VariablesSearchApi {
     @RequestMapping(value = "/variables-search",
         produces = { "application/json" }, 
         method = RequestMethod.POST)
-    ResponseEntity<ObservationVariablesResponse> variablesSearchPost(@ApiParam(value = ""  )  @Valid @RequestBody ObservationVariableSearchRequest body);
+    ResponseEntity<ObservationVariablesResponse> variablesSearchPost(@ApiParam(value = ""  )  @Valid @RequestBody ObservationVariableSearchRequest body) throws BrAPIServerException;
 
 }

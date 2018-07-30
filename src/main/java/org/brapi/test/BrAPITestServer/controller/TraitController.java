@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.TraitService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,18 +23,19 @@ import io.swagger.model.TraitsResponseResult;
 public class TraitController extends BrAPIController implements TraitsApi {
 
 	private TraitService traitService;
-	
+
 	public TraitController(TraitService traitService) {
 		this.traitService = traitService;
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<TraitsResponse> traitsGet(@Valid Integer pageSize, @Valid Integer page) {
+	public ResponseEntity<TraitsResponse> traitsGet(@Valid Integer pageSize, @Valid Integer page)
+			throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<TraitSummary> data = traitService.getTraits(metaData);
-		
+
 		TraitsResponseResult result = new TraitsResponseResult();
 		result.setData(data);
 		TraitsResponse response = new TraitsResponse();

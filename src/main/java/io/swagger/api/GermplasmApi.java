@@ -11,6 +11,8 @@ import io.swagger.model.GermplasmResponse1;
 import io.swagger.model.PedigreeResponse;
 import io.swagger.model.ProgenyResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +40,7 @@ public interface GermplasmApi {
     @RequestMapping(value = "/germplasm/{germplasmDbId}/attributes",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<GermplasmAttributeListResponse> germplasmGermplasmDbIdAttributesGet(@ApiParam(value = "The germplasm characterized",required=true) @PathVariable("germplasmDbId") String germplasmDbId,@ApiParam(value = "Restrict the response to only the listed attributeDbIds.") @Valid @RequestParam(value = "attributeDbIds", required = false) ArrayList<String> attributeDbIds,@ApiParam(value = "**Deprecated** Use \"attributeDbIds\" instead") @Valid @RequestParam(value = "attributeList", required = false) ArrayList<String> attributeList,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page);
+    ResponseEntity<GermplasmAttributeListResponse> germplasmGermplasmDbIdAttributesGet(@ApiParam(value = "The germplasm characterized",required=true) @PathVariable("germplasmDbId") String germplasmDbId,@ApiParam(value = "Restrict the response to only the listed attributeDbIds.") @Valid @RequestParam(value = "attributeDbIds", required = false) ArrayList<String> attributeDbIds,@ApiParam(value = "**Deprecated** Use \"attributeDbIds\" instead") @Valid @RequestParam(value = "attributeList", required = false) ArrayList<String> attributeList,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page) throws BrAPIServerException;
 
 
     @ApiOperation(value = "Germplasm search by germplasmDbId", nickname = "germplasmGermplasmDbIdGet", notes = " Scope: CORE. Status: ACCEPTED. Implementation target date: PAG2016 Implemented by: Tripal Brapi module, Germinate, Cassavabase Note: Germplasm Details by germplasmDbId was merged with Germplasm Multi Crop Passport Data. The MCPD fields are optional and marked with the prefix [MCPD]. <a href=\"https://test-server.brapi.org/brapi/v1/germplasm\"> test-server.brapi.org/brapi/v1/germplasm/{germplasmDbId}</a> ", response = GermplasmResponse1.class, tags={ "Germplasm", })
