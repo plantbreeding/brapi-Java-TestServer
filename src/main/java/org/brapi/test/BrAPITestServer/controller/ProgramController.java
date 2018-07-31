@@ -9,6 +9,7 @@ import org.brapi.test.BrAPITestServer.service.ProgramService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.api.ProgramsApi;
@@ -30,7 +31,7 @@ public class ProgramController extends BrAPIController implements ProgramsApi, P
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ProgramsResponse> programsSearchPost(@Valid ProgramsSearchRequest request)
+	public ResponseEntity<ProgramsResponse> programsSearchPost(@Valid @RequestBody ProgramsSearchRequest request)
 			throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
