@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -328,14 +329,16 @@ public class StudyService {
 		if (studyOption.isPresent()) {
 			Pageable pageReq = PagingUtility.getPageRequest(metaData);
 			Page<GermplasmEntity> germplasmPage = studyRepository.findGermplasmsByStudy(studyDbId, pageReq);
+			List<ObservationUnitEntity> observationUnitsPage = observationUnitRepository.findAllByStudy_Id(studyDbId);
 			PagingUtility.calculateMetaData(metaData, germplasmPage);
 
+			Map<String, String> entryMap = buildEntryMap(observationUnitsPage);
+			
 			germplasms = new GermplasmSummaryList();
 			germplasms.setData(germplasmPage.map((entity) -> {
 				GermplasmSummary germplasm = new GermplasmSummary();
 				germplasm.setAccessionNumber(entity.getAccessionNumber());
-				// TODO unknown data
-				// germplasm.setEntryNumber(entity.get);
+				germplasm.setEntryNumber(entryMap.get(entity.getId()));
 				germplasm.setGermplasmDbId(entity.getId());
 				germplasm.setGermplasmName(entity.getGermplasmName());
 				germplasm.setGermplasmPUI(entity.getGermplasmPUI());
@@ -350,6 +353,14 @@ public class StudyService {
 		}
 		return germplasms;
 
+	}
+
+	private Map<String, String> buildEntryMap(List<ObservationUnitEntity> observationUnitsPage) {
+		Map<String, String> entryMap = new HashMap<>();
+		for(ObservationUnitEntity obs: observationUnitsPage) {
+			entryMap.put(obs.getGermplasm().getId(), obs.getEntryNumber());
+		}
+		return entryMap;
 	}
 
 	public List<String> getObservationLevels(Metadata metaData) {
@@ -371,7 +382,7 @@ public class StudyService {
 		PagingUtility.calculateMetaData(metaData, unitsPage);
 		List<ObservationUnitStudy> observations = unitsPage.map((entity) -> {
 			ObservationUnitStudy observation = new ObservationUnitStudy();
-			observation.setBlockNumber(entity.getBlockNumber() == null ? null : entity.getBlockNumber().toString());
+			observation.setBlockNumber(entity.getBlockNumber() == null ? "0" : entity.getBlockNumber().toString());
 			observation.setEntryNumber(entity.getEntryNumber());
 			observation.setEntryType(entity.getEntryType());
 			observation.setGermplasmDbId(entity.getGermplasm().getId());
@@ -379,8 +390,8 @@ public class StudyService {
 			observation.setObservationUnitDbId(entity.getId());
 			observation.setObservationUnitName(entity.getObservationUnitName());
 			observation.setPedigree(entity.getPedigree().getPedigree());
-			observation.setPlantNumber(entity.getPlantNumber() == null ? null : entity.getPlantNumber().toString());
-			observation.setPlotNumber(entity.getPlotNumber() == null ? null : entity.getPlotNumber().toString());
+			observation.setPlantNumber(entity.getPlantNumber() == null ? "0" : entity.getPlantNumber().toString());
+			observation.setPlotNumber(entity.getPlotNumber() == null ? "0" : entity.getPlotNumber().toString());
 			observation.setReplicate(entity.getReplicate());
 			observation.setX(entity.getX());
 			observation.setY(entity.getY());

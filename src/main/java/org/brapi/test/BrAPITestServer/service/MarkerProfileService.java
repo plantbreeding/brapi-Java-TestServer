@@ -144,7 +144,13 @@ public class MarkerProfileService {
 
 	public List<AlleleMatrixDetails> getAlleleMatrixDetailsByStudyDbId(String studyDbId, Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-		Page<AlleleMatrixEntity> page = alleleMatrixRepository.findAllByStudy_Id(studyDbId, pageReq);
+		Page<AlleleMatrixEntity> page;
+		if(studyDbId == null || studyDbId.isEmpty()) {
+			page = alleleMatrixRepository.findAll(pageReq);
+		}else {
+			page = alleleMatrixRepository.findAllByStudy_Id(studyDbId, pageReq);
+		}
+		
 		List<AlleleMatrixDetails> details = page.map((entity) -> {
 			AlleleMatrixDetails detail = new AlleleMatrixDetails();
 			detail.setDescription(entity.getDescription());

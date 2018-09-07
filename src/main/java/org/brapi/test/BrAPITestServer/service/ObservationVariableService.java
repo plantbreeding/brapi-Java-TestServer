@@ -1,6 +1,7 @@
 package org.brapi.test.BrAPITestServer.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -136,6 +137,7 @@ public class ObservationVariableService {
 		ObservationVariable var = new ObservationVariable();
 		var.setContextOfUse(entity.getContextOfUse().stream().map(e -> e.getContext()).collect(Collectors.toList()));
 		var.setCrop(entity.getCrop());
+		var.setDate(DateUtility.toDateString(new Date()));
 		var.setDefaultValue(entity.getDefaultValue());
 		var.setGrowthStage(entity.getGrowthStage());
 		var.setInstitution(entity.getGrowthStage());

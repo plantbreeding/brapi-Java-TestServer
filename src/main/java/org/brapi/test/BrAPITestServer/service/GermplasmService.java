@@ -94,8 +94,10 @@ public class GermplasmService {
 		germ.setGermplasmPUI(entity.getGermplasmPUI());
 		germ.setSeedSource(entity.getGermplasmSeedSource());
 		germ.setInstituteCode(entity.getInstituteCode());
+		germ.setInstituteName(entity.getInstituteName());
 		germ.setPedigree(entity.getPedigree() == null ? null : entity.getPedigree().getPedigree());
 		germ.setSpecies(entity.getSpecies());
+		germ.setSpeciesAuthority(entity.getSpeciesAuthority());
 		germ.setSubtaxa(entity.getSubtaxa());
 		germ.setSubtaxaAuthority(entity.getSubtaxaAuthority());
 
@@ -167,7 +169,8 @@ public class GermplasmService {
 			pedigree.setParent2Type(Parent2TypeEnum.fromValue(entity.getParent2Type()));
 		}
 		
-		if (includeSiblings != null && includeSiblings) {
+		pedigree.setSiblings(new ArrayList<>());
+		if (includeSiblings != null && includeSiblings && entity.getParent1() != null && entity.getParent2() != null) {
 			List<PedigreeEntity> siblingsPage = pedigreeRepository.findSiblings(entity.getParent1().getId(),
 					entity.getParent2().getId());
 			for (PedigreeEntity sibEntity : siblingsPage) {

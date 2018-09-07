@@ -22,6 +22,7 @@ import io.swagger.api.AllelematrixSearchApi;
 import io.swagger.api.MarkerprofilesApi;
 import io.swagger.model.AlleleMatrixDetails;
 import io.swagger.model.AlleleMatrixDetailsResponse;
+import io.swagger.model.AlleleMatrixDetailsResponseResult;
 import io.swagger.model.AlleleMatrixSearchRequest;
 import io.swagger.model.AlleleMatrixValues;
 import io.swagger.model.AlleleMatrixValuesResponse;
@@ -124,8 +125,10 @@ public class MarkerProfileController extends BrAPIController implements Markerpr
 			@Valid Integer pageSize, @Valid Integer page) throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
-		List<AlleleMatrixDetails> result = markerProfileService.getAlleleMatrixDetailsByStudyDbId(studyDbId, metaData);
+		List<AlleleMatrixDetails> data = markerProfileService.getAlleleMatrixDetailsByStudyDbId(studyDbId, metaData);
 		
+		AlleleMatrixDetailsResponseResult result = new AlleleMatrixDetailsResponseResult();
+		result.setData(data);
 		AlleleMatrixDetailsResponse response = new AlleleMatrixDetailsResponse();
 		response.setMetadata(generateEmptyMetadata());
 		response.setResult(result);

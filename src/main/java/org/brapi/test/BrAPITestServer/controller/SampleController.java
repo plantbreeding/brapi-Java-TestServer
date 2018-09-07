@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.api.SamplesApi;
 import io.swagger.api.SamplesSearchApi;
 import io.swagger.model.Metadata;
 import io.swagger.model.NewSampleDbId;
@@ -24,6 +23,7 @@ import io.swagger.model.SampleResponse;
 import io.swagger.model.SampleSearchRequest;
 import io.swagger.model.SamplesResponse;
 import io.swagger.model.SamplesResponseResult;
+import io.swagger.api.SamplesApi;
 
 @RestController
 public class SampleController extends BrAPIController implements SamplesApi, SamplesSearchApi {

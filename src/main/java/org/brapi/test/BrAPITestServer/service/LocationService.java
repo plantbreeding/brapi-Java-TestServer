@@ -47,6 +47,7 @@ public class LocationService {
 	public Location convertFromEntity(LocationEntity locationEntity) {
 		Location location = new Location();
 		location.setAbbreviation(locationEntity.getAbbreviation());
+		location.setAbreviation(locationEntity.getAbbreviation());
 		location.setAltitude(new BigDecimal(locationEntity.getAltitude()));
 		location.setCountryCode(locationEntity.getCountryCode());
 		location.setCountryName(locationEntity.getCountryName());

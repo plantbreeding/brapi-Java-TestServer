@@ -19,37 +19,21 @@ import javax.validation.constraints.*;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
 
-public class AlleleMatrixDetailsResponse   {
-  @JsonProperty("metadata")
-  private Metadata metadata = null;
-
-  @JsonProperty("result")
+public class AlleleMatrixDetailsResponseResult   {
+  @JsonProperty("data")
   @Valid
-  private AlleleMatrixDetailsResponseResult result = null;
+  private List<AlleleMatrixDetails> data = null;
 
-  public AlleleMatrixDetailsResponse metadata(Metadata metadata) {
-    this.metadata = metadata;
+  public AlleleMatrixDetailsResponseResult result(List<AlleleMatrixDetails> result) {
+    this.data = result;
     return this;
   }
 
-   /**
-   * Get metadata
-   * @return metadata
-  **/
-  @ApiModelProperty(value = "")
-
-  @Valid
-
-  public Metadata getMetadata() {
-    return metadata;
-  }
-
-  public void setMetadata(Metadata metadata) {
-    this.metadata = metadata;
-  }
-
-  public AlleleMatrixDetailsResponse result(AlleleMatrixDetailsResponseResult result) {
-    this.result = result;
+  public AlleleMatrixDetailsResponseResult addResultItem(AlleleMatrixDetails resultItem) {
+    if (this.data == null) {
+      this.data = new ArrayList<AlleleMatrixDetails>();
+    }
+    this.data.add(resultItem);
     return this;
   }
 
@@ -61,12 +45,12 @@ public class AlleleMatrixDetailsResponse   {
 
   @Valid
 
-  public AlleleMatrixDetailsResponseResult getResult() {
-    return result;
+  public List<AlleleMatrixDetails> getResult() {
+    return data;
   }
 
-  public void setResult(AlleleMatrixDetailsResponseResult result) {
-    this.result = result;
+  public void setData(List<AlleleMatrixDetails> result) {
+    this.data = result;
   }
 
 
@@ -78,14 +62,13 @@ public class AlleleMatrixDetailsResponse   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    AlleleMatrixDetailsResponse alleleMatrixDetailsResponse = (AlleleMatrixDetailsResponse) o;
-    return Objects.equals(this.metadata, alleleMatrixDetailsResponse.metadata) &&
-        Objects.equals(this.result, alleleMatrixDetailsResponse.result);
+    AlleleMatrixDetailsResponseResult alleleMatrixDetailsResponse = (AlleleMatrixDetailsResponseResult) o;
+    return Objects.equals(this.data, alleleMatrixDetailsResponse.data);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(metadata, result);
+    return Objects.hash(data);
   }
 
   @Override
@@ -93,8 +76,7 @@ public class AlleleMatrixDetailsResponse   {
     StringBuilder sb = new StringBuilder();
     sb.append("class AlleleMatrixDetailsResponse {\n");
     
-    sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    sb.append("    result: ").append(toIndentedString(result)).append("\n");
+    sb.append("    result: ").append(toIndentedString(data)).append("\n");
     sb.append("}");
     return sb.toString();
   }

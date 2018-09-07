@@ -56,7 +56,7 @@ public class ObservationVariableController extends BrAPIController implements Va
 	@Override
 	public ResponseEntity<ObservationVariablesResponse> variablesSearchPost(@Valid @RequestBody ObservationVariableSearchRequest request) throws BrAPIServerException {
 
-		Metadata metaData = generateMetaDataTemplate(request.getPage().intValue(), request.getPageSize().intValue());
+		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		List<ObservationVariable> data = observationVariableService.getVariables(request, metaData);
 		
 		ObservationVariablesResponseResult result = new ObservationVariablesResponseResult();

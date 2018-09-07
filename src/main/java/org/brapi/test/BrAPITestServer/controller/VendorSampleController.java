@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiParam;
-import io.swagger.api.VendorApi;
 import io.swagger.model.Metadata;
 import io.swagger.model.VendorPlate;
 import io.swagger.model.VendorPlateRequest;
@@ -26,6 +25,7 @@ import io.swagger.model.VendorPlatesResponse;
 import io.swagger.model.VendorPlatesResponseResult;
 import io.swagger.model.VendorSpecification;
 import io.swagger.model.VendorSpecificationResponse;
+import io.swagger.api.VendorApi;
 
 @RestController
 public class VendorSampleController extends BrAPIController implements VendorApi {
