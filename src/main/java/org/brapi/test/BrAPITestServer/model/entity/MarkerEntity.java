@@ -22,7 +22,7 @@ public class MarkerEntity extends BaseEntity{
 	@Column	
 	private String type;
 	@Column
-	private String location;
+	private Integer location;
 	@OneToMany(mappedBy="markerDbId")
 	private List<MarkerSynonymEntity> synonyms;
 	@OneToMany(mappedBy="markerDbId")
@@ -43,10 +43,10 @@ public class MarkerEntity extends BaseEntity{
 	public void setType(String type) {
 		this.type = type;
 	}
-	public String getLocation() {
+	public Integer getLocation() {
 		return location;
 	}
-	public void setLocation(String location) {
+	public void setLocation(Integer location) {
 		this.location = location;
 	}
 	public List<MarkerSynonymEntity> getSynonyms() {

@@ -121,7 +121,7 @@ public class GenomeMapService {
 		PagingUtility.calculateMetaData(metaData, page);
 		List<MarkerSummaryLinkageGroup> data = page.stream()
 				.filter((entity) -> { 
-					return positionFilter(entity.getLocation(), minPosition, maxPosition);
+					return positionFilter(entity.getLocation().toString(), minPosition, maxPosition);
 				})
 				.map(this::convertFromEntityToSummaryLinkageGroup)
 				.collect(Collectors.toList());
@@ -164,14 +164,14 @@ public class GenomeMapService {
 	private MarkerSummaryMap convertFromEntityToSummaryMap(MarkerEntity entity) {
 		MarkerSummaryMap marker = new MarkerSummaryMap();
 		marker.setLinkageGroupName(entity.getLinkageGroup().getLinkageGroupName());
-		marker.setLocation(entity.getLocation());
+		marker.setLocation(entity.getLocation().toString());
 		marker.setMarkerDbId(entity.getId());
 		marker.setMarkerName(entity.getMarkerName());
 		return marker;
 	}
 	private MarkerSummaryLinkageGroup convertFromEntityToSummaryLinkageGroup(MarkerEntity entity) {
 		MarkerSummaryLinkageGroup marker = new MarkerSummaryLinkageGroup();
-		marker.setLocation(entity.getLocation());
+		marker.setLocation(entity.getLocation().toString());
 		marker.setMarkerDbId(entity.getId());
 		marker.setMarkerName(entity.getMarkerName());
 		return marker;
