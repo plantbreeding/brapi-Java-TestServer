@@ -457,7 +457,7 @@ public class StudyService {
 		return obe;
 	}
 
-	public ObservationsTable getStudyObservationUnitTable(String studyDbId, String format) {
+	public ObservationsTable getStudyObservationUnitTable(String studyDbId) {
 		ObservationsTable tableWrapper = new ObservationsTable();
 		
 		tableWrapper.setHeaderRow(buildHeaderRow());
@@ -610,4 +610,36 @@ public class StudyService {
 		return null;
 	}
 
+	public String getStudyObservationUnitTableText(String studyDbId, String sep) {
+		ObservationsTable table = getStudyObservationUnitTable(studyDbId);
+		StringBuilder responseBuilder = new StringBuilder();
+		
+		for(String header: table.getHeaderRow()) {
+			responseBuilder.append("\"" + header + "\"");
+			responseBuilder.append(sep);
+		}
+		int i = 1;
+		for(String header: table.getObservationVariableDbIds()) {
+			responseBuilder.append("\"" + header + "\"");
+			if (i < table.getObservationVariableDbIds().size()) {
+				responseBuilder.append(sep);
+			}
+			i++;
+		}
+		responseBuilder.append("\n");
+		
+		for(List<String> row : table.getData()) {
+			int j = 1;
+			for(String item: row) {
+				responseBuilder.append("\"" + item + "\"");
+				if (j < row.size()) {
+					responseBuilder.append(sep);
+				}
+				j++;
+			}
+			responseBuilder.append("\n");
+		}
+		
+		return responseBuilder.toString();
+	}
 }

@@ -151,6 +151,8 @@ public class MarkerProfileService {
 			page = alleleMatrixRepository.findAllByStudy_Id(studyDbId, pageReq);
 		}
 		
+		PagingUtility.calculateMetaData(metaData, page);
+		
 		List<AlleleMatrixDetails> details = page.map((entity) -> {
 			AlleleMatrixDetails detail = new AlleleMatrixDetails();
 			detail.setDescription(entity.getDescription());

@@ -24,16 +24,16 @@ public class AlleleMatrixDetailsResponseResult   {
   @Valid
   private List<AlleleMatrixDetails> data = null;
 
-  public AlleleMatrixDetailsResponseResult result(List<AlleleMatrixDetails> result) {
-    this.data = result;
+  public AlleleMatrixDetailsResponseResult data(List<AlleleMatrixDetails> data) {
+    this.data = data;
     return this;
   }
 
-  public AlleleMatrixDetailsResponseResult addResultItem(AlleleMatrixDetails resultItem) {
+  public AlleleMatrixDetailsResponseResult addDataItem(AlleleMatrixDetails dataItem) {
     if (this.data == null) {
       this.data = new ArrayList<AlleleMatrixDetails>();
     }
-    this.data.add(resultItem);
+    this.data.add(dataItem);
     return this;
   }
 
@@ -45,7 +45,7 @@ public class AlleleMatrixDetailsResponseResult   {
 
   @Valid
 
-  public List<AlleleMatrixDetails> getResult() {
+  public List<AlleleMatrixDetails> getData() {
     return data;
   }
 

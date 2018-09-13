@@ -130,7 +130,7 @@ public class MarkerProfileController extends BrAPIController implements Markerpr
 		AlleleMatrixDetailsResponseResult result = new AlleleMatrixDetailsResponseResult();
 		result.setData(data);
 		AlleleMatrixDetailsResponse response = new AlleleMatrixDetailsResponse();
-		response.setMetadata(generateEmptyMetadata());
+		response.setMetadata(metaData);
 		response.setResult(result);
 		return new ResponseEntity<AlleleMatrixDetailsResponse>(response, HttpStatus.OK);
 	}

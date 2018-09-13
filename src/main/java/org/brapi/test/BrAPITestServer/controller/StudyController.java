@@ -14,14 +14,18 @@ import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.api.client.http.HttpHeaders;
 
 import io.swagger.api.ObservationLevelsApi_dep;
 import io.swagger.api.ObservationlevelsApi;
@@ -170,7 +174,8 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ObservationsResponse> studiesStudyDbIdObservationsGet(
-			@PathVariable("studyDbId") String studyDbId, @Valid ArrayList<String> observationVariableDbIds,
+			@PathVariable("studyDbId") String studyDbId, 
+			@Valid @RequestParam(value = "observationVariableDbIds", required = false) ArrayList<String> observationVariableDbIds,
 			@Valid Integer pageSize, @Valid Integer page) throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<Observation> data = studyService.getObservationUnits(studyDbId, observationVariableDbIds, metaData);
@@ -265,14 +270,30 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<StudyobservationsTableResponse> studiesStudyDbIdTableGet(
+	public ResponseEntity studiesStudyDbIdTableGet(
 			@PathVariable("studyDbId") String studyDbId, @Valid String format) {
-		ObservationsTable result = studyService.getStudyObservationUnitTable(studyDbId, format);
+	 
+		if ("csv".equals(format) || "CSV".equals(format)) {
+			String result = studyService.getStudyObservationUnitTableText(studyDbId, ",");
 
-		StudyobservationsTableResponse response = new StudyobservationsTableResponse();
-		response.setMetadata(generateEmptyMetadata());
-		response.setResult(result);
-		return new ResponseEntity<StudyobservationsTableResponse>(response, HttpStatus.OK);
+		    return ResponseEntity.ok()
+			      .contentType(MediaType.TEXT_PLAIN)
+			      .body(result);
+		}else if("tsv".equals(format) || "TSV".equals(format)) {
+			String result = studyService.getStudyObservationUnitTableText(studyDbId, "\t");
+
+		    return ResponseEntity.ok()
+		    		.contentType(MediaType.TEXT_PLAIN)
+		    		.body(result);
+		}else {
+			ObservationsTable result = studyService.getStudyObservationUnitTable(studyDbId);
+			StudyobservationsTableResponse response = new StudyobservationsTableResponse();
+			response.setMetadata(generateEmptyMetadata());
+			response.setResult(result);
+		    return ResponseEntity.ok()
+		    		.contentType(MediaType.APPLICATION_JSON)
+		    		.body(response);
+		}
 
 	}
 
