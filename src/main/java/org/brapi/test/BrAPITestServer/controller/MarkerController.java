@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.api.MarkersApi;
@@ -53,7 +54,7 @@ public class MarkerController extends BrAPIController implements MarkersApi, Mar
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<MarkersResponse2> markersSearchPost(@Valid MarkersSearchRequest request) throws BrAPIServerException {
+	public ResponseEntity<MarkersResponse2> markersSearchPost(@Valid @RequestBody MarkersSearchRequest request) throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		List<Marker> data = markersService.getMarkers(request.getName(), request.getType(), request.getMarkerDbIds(),

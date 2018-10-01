@@ -243,18 +243,29 @@ INSERT INTO contact (id, name, email, type, orcid, institute_name) VALUES ('2', 
 INSERT INTO contact (id, name, email, type, orcid, institute_name) VALUES ('3', 'A. Technician', 'a.technician@brapi.org', 'Technician', '0000-0002-0607-8731', 'Plant Science Institute');
 INSERT INTO contact (id, name, email, type, orcid, institute_name) VALUES ('4', 'B. Technician', 'b.technician@brapi.org', 'Technician', '0000-0002-0607-8732', 'Plant Science Institute');
 
-INSERT INTO scale_valid_value(id, max, min)	VALUES ('1', '0', '99999');
-INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_id)	VALUES ('1', 'Numerical', 1, 'Centimeter', 'xref', '1');
-INSERT INTO scale_valid_value(id, max, min)	VALUES ('2', '0', '0');
-insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('1', '2', 'dark red');
-insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('2', '2', 'red');
-insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('3', '2', 'dark blue');
-insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('4', '2', 'blue');
-insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('5', '2', 'black');
-INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_id)	VALUES ('2', 'Categorical', 0, 'Color', 'xref', '1');
-INSERT INTO method(id, description, formula, method_class, name, reference)	VALUES ('1', 'Used for finding the lengths of the sides of a right triangle', 'a^2 + b^2 = c^2', 'classy', 'pythagorean theorem', 'google.com');
-INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref) VALUES ('1', 'height', '0', 'height', 'entity', 'H', 'Height', 'active', 'Int', 'xref');
-INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref) VALUES ('2', 'weight', '0', 'weight', 'entity', 'H', 'Weight', 'active', 'Int', 'xref');
+INSERT INTO scale_valid_value(id, max, min)	VALUES ('svv1', '99999', '0');
+INSERT INTO scale_valid_value(id, max, min)	VALUES ('svv2', '0', '0');
+INSERT INTO scale_valid_value(id, max, min)	VALUES ('svv3', '100', '0');
+insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('color1', 'svv2', 'dark red');
+insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('color2', 'svv2', 'red');
+insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('color3', 'svv2', 'dark blue');
+insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('color4', 'svv2', 'blue');
+insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('color5', 'svv2', 'black');
+INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_id)	VALUES ('s1', 'Numerical', 1, 'Centimeter', 'xref', 'svv1');
+INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_id)	VALUES ('s2', 'Numerical', 3, 'Kilogram', 'xref', 'svv1');
+INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_id)	VALUES ('s3', 'Categorical', 0, 'Color', 'xref', 'svv2');
+INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_id)	VALUES ('s4', 'Percentage', 0, 'Percentage', 'xref', 'svv3');
+
+INSERT INTO method(id, description, formula, method_class, name, reference)	VALUES ('m1', 'Standard rolled measuring tape', 'a^2 + b^2 = c^2', 'Numeric', 'Tape Measure', 'google.com');
+INSERT INTO method(id, description, formula, method_class, name, reference)	VALUES ('m2', 'Dried sample on electric scale', 'NA', 'Numeric', 'Dry Electric Scale', 'google.com');
+INSERT INTO method(id, description, formula, method_class, name, reference)	VALUES ('m3', 'Comparing sample color to standard color palette', 'NA', 'Categorical', 'Standard Color Palette', 'google.com');
+INSERT INTO method(id, description, formula, method_class, name, reference)	VALUES ('m4', 'Image analysis of sample photo', 'Bobs Color Threshold Tool', 'Percentage', 'Image analysis', 'https://bobsimageanalysis.com');
+
+INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref) VALUES ('t1', 'plant height', '0', 'plant height', 'entity', 'H', 'Plant Height', 'active', 'Numeric', 'xref');
+INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref) VALUES ('t2', 'root weight', '0', 'root weight', 'entity', 'RW', 'Root Weight', 'active', 'Numeric', 'xref');
+INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref) VALUES ('t3', 'leaf color', '0', 'color of leaf sample', 'entity', 'LC', 'Leaf Color', 'active', 'Categorical', 'xref');
+INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref) VALUES ('t4', 'root color', '0', 'color of root sample', 'entity', 'RC', 'Root Color', 'active', 'Categorical', 'xref');
+INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref) VALUES ('t5', 'Virus severity', '0', 'Percentage of contaminated sample', 'entity', 'LC', 'Virus severity', 'active', 'Percentage', 'xref');
 
 INSERT INTO program (crop_id, id, abbreviation, lead_person, objective, name) VALUES ('1', '1', 'P1', 'G. Leader', 'Global Population Improvement', 'Program 1');
 INSERT INTO program (crop_id, id, abbreviation, lead_person, objective, name) VALUES ('1', '2', 'P2', 'M. Breeder', 'XYZ', 'Program 2');
@@ -386,11 +397,11 @@ INSERT INTO treatment (id, observation_unit_db_id, factor, modality) VALUES ('8'
 
 INSERT INTO ontology(id, authors, copyright, description, licence, ontology_name, version, xref)	VALUES ('MO_123', 'Bob', '2017 Ontology.org', 'Ontology.org', 'Apache', 'Ontology.org', '17', 'https://ontology.org');
 
-INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100002', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100002', 'Plant height', '1', '1', '1');
-INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100003', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100003', 'Carotenoid', '1', '1', '1');
-INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100004', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100004', 'Root weight', '1', '1', '1');
-INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100005', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100005', 'Root color', '2', '1', '2');
-INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100006', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100006', 'Virus susceptibility', '2', '1', '1');
+INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100002', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100002', 'Plant height', 't1', 'm1', 's1');
+INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100003', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100003', 'Carotenoid', 't3', 'm3', 's3');
+INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100004', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100004', 'Root weight', 't2', 'm2', 's2');
+INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100005', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100005', 'Root color', 't4', 'm3', 's3');
+INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100006', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100006', 'Virus severity', 't5', 'm4', 's4');
 
 INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('1', 'MO_123:100002', '1', '2013-06-14T22:03:51Z', '1', 'A. Technician', '1.2');
 INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('1', 'MO_123:100006', '2', '2013-06-14T22:04:51Z', '1', 'A. Technician', '4.5');

@@ -4,14 +4,23 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitEntity;
+import org.brapi.test.BrAPITestServer.model.entity.ObservationVariableEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SeasonEntity;
+import org.brapi.test.BrAPITestServer.repository.ObservationRepository;
 import org.brapi.test.BrAPITestServer.repository.ObservationUnitRepository;
+import org.brapi.test.BrAPITestServer.repository.ObservationVariableRepository;
+import org.brapi.test.BrAPITestServer.repository.SeasonRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.threeten.bp.OffsetDateTime;
@@ -24,15 +33,25 @@ import io.swagger.model.ObservationUnitPhenotype;
 import io.swagger.model.ObservationUnitXref;
 import io.swagger.model.ObservationUnitsTableResponse;
 import io.swagger.model.PhenotypesRequest;
+import io.swagger.model.PhenotypesRequestData;
+import io.swagger.model.PhenotypesRequestObservation;
 import io.swagger.model.PhenotypesSearchRequest;
 
 @Service
 public class PhenotypeService {
 
 	private ObservationUnitRepository observationUnitRepository;
+	private ObservationRepository observationRepository;
+	private ObservationVariableRepository observationVariableRepository;
+	private SeasonRepository seasonRepository;
 
-	public PhenotypeService(ObservationUnitRepository observationUnitRepository) {
+	public PhenotypeService(ObservationUnitRepository observationUnitRepository,
+			ObservationRepository observationRepository, ObservationVariableRepository observationVariableRepository,
+			SeasonRepository seasonRepository) {
 		this.observationUnitRepository = observationUnitRepository;
+		this.observationRepository = observationRepository;
+		this.observationVariableRepository = observationVariableRepository;
+		this.seasonRepository = seasonRepository;
 	}
 
 	public List<ObservationUnitPhenotype> getPhenotypes(PhenotypesSearchRequest request, Metadata metaData) {
@@ -43,13 +62,13 @@ public class PhenotypeService {
 
 	public List<ObservationUnitPhenotype> getPhenotypes(String germplasmDbId, String observationVariableDbId,
 			String studyDbId, String locationDbId, String trialDbId, String programDbId, String seasonDbId,
-			String observationLevel, OffsetDateTime observationTimeStampRangeStart, OffsetDateTime observationTimeStampRangeEnd,
-			Metadata metaData) {
+			String observationLevel, OffsetDateTime observationTimeStampRangeStart,
+			OffsetDateTime observationTimeStampRangeEnd, Metadata metaData) {
 		PhenotypesSearchRequest request = new PhenotypesSearchRequest();
 		request.setObservationLevel(observationLevel);
 		request.setObservationTimeStampRangeEnd(observationTimeStampRangeEnd);
 		request.setObservationTimeStampRangeStart(observationTimeStampRangeStart);
-		
+
 		request.setGermplasmDbIds(SearchUtility.buildSearchParam(germplasmDbId));
 		request.setLocationDbIds(SearchUtility.buildSearchParam(locationDbId));
 		request.setObservationVariableDbIds(SearchUtility.buildSearchParam(observationVariableDbId));
@@ -57,15 +76,52 @@ public class PhenotypeService {
 		request.setSeasonDbIds(SearchUtility.buildSearchParam(seasonDbId));
 		request.setStudyDbIds(SearchUtility.buildSearchParam(studyDbId));
 		request.setTrialDbIds(SearchUtility.buildSearchParam(trialDbId));
-		
+
 		Page<ObservationUnitEntity> unitsPage = searchPhenotypes(request, metaData);
 		List<ObservationUnitPhenotype> phenotypes = unitsPage.map(this::convertFromEntity).getContent();
 		return phenotypes;
 	}
 
 	public List<NewObservationDbIdsObservations> savePhenotypes(@Valid PhenotypesRequest request) {
-		// TODO Auto-generated method stub
-		return null;
+		List<NewObservationDbIdsObservations> newObservations = new ArrayList<>();
+		for (PhenotypesRequestData observationUnit : request.getData()) {
+			Optional<ObservationUnitEntity> unitEntityOption = observationUnitRepository
+					.findById(observationUnit.getObservatioUnitDbId());
+			if (unitEntityOption.isPresent()) {
+				ObservationUnitEntity unitEntity = unitEntityOption.get();
+				for (PhenotypesRequestObservation observation : observationUnit.getObservations()) {
+					ObservationEntity obsEntity = convertToEntity(observation, unitEntity);
+					ObservationEntity newObsEntity = observationRepository.save(obsEntity);
+					
+					newObservations.add(new NewObservationDbIdsObservations()
+					.observationDbId(newObsEntity.getId())
+					.observationUnitDbId(newObsEntity.getObservationUnit().getId())
+					.observationVariableDbId(newObsEntity.getObservationVariable().getId()));
+					
+				}
+			}
+		}
+		
+		return newObservations;
+	}
+
+	private ObservationEntity convertToEntity(PhenotypesRequestObservation observation, ObservationUnitEntity unitEntity) {
+		Optional<ObservationVariableEntity> variableEntityOption = observationVariableRepository.findById(observation.getObservationVariableDbId());
+		String[] seasonArr = observation.getSeason().split(" ", 2);
+		List<SeasonEntity> seasonEntityOption = seasonRepository.findAllByYearAndSeason(NumberUtils.toInt(seasonArr[1]), seasonArr[0], PageRequest.of(0, 1)).getContent();		
+		
+		ObservationEntity entity = new ObservationEntity();
+		entity.setCollector(observation.getCollector());
+		entity.setObservationTimeStamp(DateUtility.toDate(observation.getObservationTimeStamp()));
+		entity.setValue(observation.getValue());
+		entity.setObservationUnit(unitEntity);
+		if(variableEntityOption.isPresent()) {
+			entity.setObservationVariable(variableEntityOption.get());
+		}
+		if(seasonEntityOption.size() > 0) {
+			entity.setSeason(seasonEntityOption.get(0));
+		}
+		return entity;
 	}
 
 	public String getPhenotypesCsv(@Valid PhenotypesSearchRequest request, Metadata metaData) {
@@ -138,7 +194,7 @@ public class PhenotypeService {
 		PagingUtility.calculateMetaData(metaData, unitsPage);
 		return unitsPage;
 	}
-	
+
 	private ObservationUnitPhenotype convertFromEntity(ObservationUnitEntity entity) {
 		ObservationUnitPhenotype pheno = new ObservationUnitPhenotype();
 		pheno.setBlockNumber(String.valueOf(entity.getBlockNumber()));
@@ -173,10 +229,15 @@ public class PhenotypeService {
 			ob.setCollector(e.getCollector());
 			ob.setObservationDbId(e.getId());
 			ob.setObservationTimeStamp(DateUtility.toOffsetDateTime(e.getObservationTimeStamp()));
-			ob.setObservationVariableDbId(e.getObservationVariable().getId());
-			ob.setObservationVariableName(e.getObservationVariable().getName());
-			ob.setSeason(e.getSeason().getSeason() + " " + e.getSeason().getYear());
 			ob.setValue(e.getValue());
+			
+			if(e.getObservationVariable() != null) {
+				ob.setObservationVariableDbId(e.getObservationVariable().getId());
+				ob.setObservationVariableName(e.getObservationVariable().getName());
+			}
+			if(e.getSeason() != null) {
+				ob.setSeason(e.getSeason().getSeason() + " " + e.getSeason().getYear());
+			}
 			return ob;
 		}).collect(Collectors.toList()));
 
@@ -189,7 +250,7 @@ public class PhenotypeService {
 
 		return pheno;
 	}
-	
+
 	private String buildRowString(String separator, List<String> variableDbIds, ObservationUnitEntity entity) {
 		List<String> rowArray = buildRecordArray(entity, variableDbIds, new ArrayList<>());
 		StringBuilder row = new StringBuilder();

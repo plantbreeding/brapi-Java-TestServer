@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.zip.ZipInputStream;
 
@@ -160,7 +161,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ObservationUnitPositionsResponse> studiesStudyDbIdLayoutPut(
-			@PathVariable("studyDbId") String studyDbId, @Valid StudyLayoutRequest studyLayoutRequest) {
+			@PathVariable("studyDbId") String studyDbId, @Valid @RequestBody StudyLayoutRequest studyLayoutRequest) {
 		List<ObservationUnitPosition> data = studyService.saveStudyPlotLayout(studyDbId, studyLayoutRequest);
 
 		ObservationUnitPositionsResponseResult result = new ObservationUnitPositionsResponseResult();
@@ -230,7 +231,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
 	public ResponseEntity<NewObservationUnitDbIdsResponse> studiesStudyDbIdObservationunitsPut(
-			@PathVariable("studyDbId") String studyDbId, @Valid ArrayList<NewObservationUnitRequest> request) {
+			@PathVariable("studyDbId") String studyDbId, @Valid @RequestBody ArrayList<NewObservationUnitRequest> request) {
 		NewObservationUnitDbIds result = studyService.saveObservationUnit(request);
 		Metadata metadata = generateEmptyMetadata();
 		Status status = new Status();
@@ -263,9 +264,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 			e.printStackTrace();
 		}
 
-		ArrayList<NewObservationUnitRequest> requests = new ArrayList<>();
-		requests.add(request);
-		return studiesStudyDbIdObservationunitsPut(studyDbId, requests);
+		return studiesStudyDbIdObservationunitsPut(studyDbId, (@Valid ArrayList<NewObservationUnitRequest>) Arrays.asList(request));
 	}
 
 	@CrossOrigin

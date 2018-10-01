@@ -26,6 +26,8 @@ public class DateUtility {
 	}
 
 	public static Date toDate(OffsetDateTime offsetDateTime) {
+		if(offsetDateTime == null)
+			return null;
 		return new Date(offsetDateTime.toEpochSecond());
 	}
 	
@@ -44,6 +46,8 @@ public class DateUtility {
 	}
 
 	public static OffsetDateTime toOffsetDateTime(Date date) {
+		if(date == null)
+			return null;
 		return  OffsetDateTime.parse(toTimeString(date));
 	}
 	

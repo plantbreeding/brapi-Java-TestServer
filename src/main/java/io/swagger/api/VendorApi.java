@@ -37,7 +37,7 @@ public interface VendorApi {
         @ApiResponse(code = 200, message = "OK", response = VendorPlatesResponse.class) })
     @RequestMapping(value = "/vendor/plates",
         method = RequestMethod.POST)
-    ResponseEntity<VendorPlatesResponse> vendorPlatesPost(@ApiParam(value = ""  )  @Valid @RequestBody VendorPlateRequest body);
+    ResponseEntity vendorPlatesPost(@ApiParam(value = ""  )  @Valid @RequestBody VendorPlateRequest body);
 
 
     @ApiOperation(value = "Search for plates", nickname = "vendorPlatesSearchGet", notes = "Search for plates in the database.  <a href=\"https://test-server.brapi.org/brapi/v1/vendor/plates-search\"> test-server.brapi.org/brapi/v1/vendor/plates-search</a>", response = VendorPlatesResponse.class, tags={ "Vendor Samples","Search Services", })

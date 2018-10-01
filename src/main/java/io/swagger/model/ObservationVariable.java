@@ -50,6 +50,9 @@ public class ObservationVariable   {
   @JsonProperty("name")
   private String name = null;
 
+  @JsonProperty("observationVariableName")
+  private String observationVariableName = null;
+
   @JsonProperty("observationVariableDbId")
   private String observationVariableDbId = null;
 
@@ -271,6 +274,27 @@ public class ObservationVariable   {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public ObservationVariable observationVariableName(String observationVariableName) {
+    this.observationVariableName = observationVariableName;
+    return this;
+  }
+
+   /**
+   * Variable unique identifier
+   * @return observationVariableDbId
+  **/
+  @ApiModelProperty(required = true, value = "Variable unique identifier")
+  @NotNull
+
+
+  public String getObservationVariableName() {
+    return observationVariableName;
+  }
+
+  public void setObservationVariableName(String observationVariableName) {
+    this.observationVariableName = observationVariableName;
   }
 
   public ObservationVariable observationVariableDbId(String observationVariableDbId) {

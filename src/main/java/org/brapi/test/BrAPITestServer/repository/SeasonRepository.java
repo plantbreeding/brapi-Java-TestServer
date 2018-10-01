@@ -7,5 +7,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface SeasonRepository extends PagingAndSortingRepository<SeasonEntity, String>{
 	public Page<SeasonEntity> findAllByYear(int year, Pageable pageReq);
-	public long countByYear(int year);
+	public Page<SeasonEntity> findAllByYearAndSeason(int year, String season, Pageable pageReq);
+	
 }

@@ -7,6 +7,7 @@ import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.PlateEntity;
 import org.brapi.test.BrAPITestServer.model.entity.SampleEntity;
 import org.brapi.test.BrAPITestServer.repository.ObservationUnitRepository;
+import org.brapi.test.BrAPITestServer.repository.PlateRepository;
 import org.brapi.test.BrAPITestServer.repository.SampleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,28 +23,34 @@ import io.swagger.model.SampleSearchRequest;
 public class SampleService {
 	private SampleRepository sampleRepository;
 	private ObservationUnitRepository observationUnitRepository;
+	private PlateRepository plateRepository;
 
 	@Autowired
-	public SampleService(SampleRepository sampleRepository, ObservationUnitRepository observationUnitRepository) {
+	public SampleService(SampleRepository sampleRepository, ObservationUnitRepository observationUnitRepository,
+			PlateRepository plateRepository) {
 		this.sampleRepository = sampleRepository;
 		this.observationUnitRepository = observationUnitRepository;
+		this.plateRepository = plateRepository;
 	}
 
 	public NewSampleDbIdResult saveSample(Sample sample) {
-		Optional<ObservationUnitEntity> unitOpt = this.observationUnitRepository.findById(sample.getObservationUnitDbId());
+		Optional<ObservationUnitEntity> unitOpt = this.observationUnitRepository
+				.findById(sample.getObservationUnitDbId());
+		Optional<PlateEntity> plateOpt = plateRepository.findById(sample.getPlateDbId());
 		NewSampleDbIdResult id = new NewSampleDbIdResult();
 		if (validateInput(sample, unitOpt)) {
 			ObservationUnitEntity unit = unitOpt.get();
 			SampleEntity entity = new SampleEntity();
 			entity.setNotes(sample.getNotes());
 			entity.setObservationUnit(unit);
-			entity.setPlate(new PlateEntity());
-			entity.getPlate().setId(sample.getPlateDbId());
 			entity.setPlateIndex(sample.getPlateIndex());
 			entity.setSampleTimestamp(DateUtility.toDate(sample.getSampleTimestamp()));
 			entity.setSampleType(sample.getSampleType());
 			entity.setTakenBy(sample.getTakenBy());
 			entity.setTissueType(sample.getTissueType());
+			if (plateOpt.isPresent()) {
+				entity.setPlate(plateOpt.get());
+			}
 
 			entity = sampleRepository.save(entity);
 
@@ -56,7 +63,7 @@ public class SampleService {
 
 	private boolean validateInput(Sample sample, Optional<ObservationUnitEntity> unitOpt) {
 		boolean valid = unitOpt.isPresent();
-		if(valid) {
+		if (valid) {
 			ObservationUnitEntity unit = unitOpt.get();
 			valid = valid && isNullEmptyOrEqual(sample.getGermplasmDbId(), unit.getGermplasm().getId());
 			valid = valid && isNullEmptyOrEqual(sample.getStudyDbId(), unit.getStudy().getId());
@@ -83,49 +90,55 @@ public class SampleService {
 
 	private Sample convertFromEntity(SampleEntity entity) {
 		Sample sample = new Sample();
-		sample.setGermplasmDbId(entity.getObservationUnit().getGermplasm().getId());
+		if (entity.getObservationUnit() != null) {
+			ObservationUnitEntity unit = entity.getObservationUnit();
+			sample.setObservationUnitDbId(unit.getId());
+			sample.setPlantDbId(String.valueOf(unit.getPlantNumber()));
+			sample.setPlotDbId(String.valueOf(unit.getPlotNumber()));
+
+			if (unit.getGermplasm() != null) {
+				sample.setGermplasmDbId(unit.getGermplasm().getId());
+			}
+			if (unit.getStudy() != null) {
+				sample.setStudyDbId(unit.getStudy().getId());
+			}
+		}
+		sample.setPlateDbId(entity.getPlate() == null ? "" : entity.getPlate().getId());
 		sample.setNotes(entity.getNotes());
-		sample.setObservationUnitDbId(entity.getObservationUnit().getId());
-		sample.setPlateDbId(entity.getPlate().getId());
 		sample.setPlateIndex(entity.getPlateIndex());
-		sample.setPlantDbId(String.valueOf(entity.getObservationUnit().getPlantNumber()));
-		sample.setPlotDbId(String.valueOf(entity.getObservationUnit().getPlotNumber()));
 		sample.setSampleDbId(entity.getId());
 		sample.setSampleTimestamp(DateUtility.toOffsetDateTime(entity.getSampleTimestamp()));
 		sample.setSampleType(entity.getSampleType());
-		sample.setStudyDbId(entity.getObservationUnit().getStudy().getId());
 		sample.setTakenBy(entity.getTakenBy());
 		sample.setTissueType(entity.getTissueType());
-		
+
 		return sample;
 	}
-	
+
 	public List<Sample> getSampleSearch(String sampleDbId, String observationUnitDbId, String plateDbId,
 			String germplasmDbId, Metadata metaData) {
 		return searchSamples(SearchUtility.buildSearchParam(sampleDbId),
-				SearchUtility.buildSearchParam(observationUnitDbId),
-				SearchUtility.buildSearchParam(plateDbId),
-				SearchUtility.buildSearchParam(germplasmDbId),
-				metaData);
+				SearchUtility.buildSearchParam(observationUnitDbId), SearchUtility.buildSearchParam(plateDbId),
+				SearchUtility.buildSearchParam(germplasmDbId), metaData);
 	}
 
 	public List<Sample> getSampleSearch(SampleSearchRequest request, Metadata metaData) {
 		return searchSamples(SearchUtility.buildSearchParam(request.getSampleDbId()),
 				SearchUtility.buildSearchParam(request.getObservationUnitDbId()),
 				SearchUtility.buildSearchParam(request.getPlateDbId()),
-				SearchUtility.buildSearchParam(request.getGermplasmDbId()),
-				metaData);
+				SearchUtility.buildSearchParam(request.getGermplasmDbId()), metaData);
 	}
 
 	private List<Sample> searchSamples(List<String> sampleDbIds, List<String> observationUnitDbIds,
 			List<String> plateDbIds, List<String> germplasmDbIds, Metadata metaData) {
-		
+
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-		Page<SampleEntity> entitiesPage = sampleRepository.findBySearch(sampleDbIds, observationUnitDbIds, plateDbIds, germplasmDbIds, pageReq);
-		
+		Page<SampleEntity> entitiesPage = sampleRepository.findBySearch(sampleDbIds, observationUnitDbIds, plateDbIds,
+				germplasmDbIds, pageReq);
+
 		PagingUtility.calculateMetaData(metaData, entitiesPage);
-		
-		return entitiesPage.map(this :: convertFromEntity).getContent();
+
+		return entitiesPage.map(this::convertFromEntity).getContent();
 	}
 
 }

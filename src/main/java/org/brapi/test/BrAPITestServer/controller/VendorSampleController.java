@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -40,9 +41,15 @@ public class VendorSampleController extends BrAPIController implements VendorApi
 	@CrossOrigin
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
-	public ResponseEntity<VendorPlatesResponse> vendorPlatesPost(
+	public ResponseEntity vendorPlatesPost(
 			@ApiParam(value = "") @Valid @RequestBody VendorPlateRequest request) {
-		List<VendorPlate> plates = vendorSampleService.savePlates(request);
+		
+		List<VendorPlate> plates = new ArrayList<>();
+		try {
+			plates = vendorSampleService.savePlates(request);
+		} catch (BrAPIServerException e) {
+			return ResponseEntity.badRequest().body(e.getResponseMessage());
+		}
 
 		VendorPlatesResponseResult result = new VendorPlatesResponseResult();
 		result.setPlates(plates);

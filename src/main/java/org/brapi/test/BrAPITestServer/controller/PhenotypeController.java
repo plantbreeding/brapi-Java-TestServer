@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.threeten.bp.OffsetDateTime;
 
@@ -42,7 +43,7 @@ public class PhenotypeController extends BrAPIController implements PhenotypesAp
 	@CrossOrigin
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
-	public ResponseEntity<NewObservationDbIdsResponse> phenotypesPost(@Valid String format,	@Valid PhenotypesRequest request) {
+	public ResponseEntity<NewObservationDbIdsResponse> phenotypesPost(@Valid String format,	@Valid @RequestBody PhenotypesRequest request) {
 		List<NewObservationDbIdsObservations> data = phenotypeService.savePhenotypes(request);
 		
 		NewObservationDbIds result = new NewObservationDbIds();

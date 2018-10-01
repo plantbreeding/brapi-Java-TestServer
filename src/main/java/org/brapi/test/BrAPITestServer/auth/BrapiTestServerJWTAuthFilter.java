@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import javax.servlet.FilterChain;
@@ -29,6 +30,9 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
 	private static final JsonFactory jacksonFactory = new JacksonFactory();
 
+	private static final List<String> USER_IDS = Arrays.asList("dummy", "dummyAdmin", "113212610256718182401");
+	private static final List<String> ADMIN_IDS = Arrays.asList("dummyAdmin", "113212610256718182401");
+	
 	public BrapiTestServerJWTAuthFilter(AuthenticationManager authManager) {
 		super(authManager);
 	}
@@ -59,12 +63,22 @@ public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
 		chain.doFilter(req, res);
 	}
 
+	private String checkAuthentication(HttpServletRequest req) throws FileNotFoundException, IOException, GeneralSecurityException {
+		String userId = checkDummyAuthentication(req);
+		if (userId == null) {
+			checkGoogleAuthentication(req);
+		}
+		return userId;
+	}
+
 	private List<GrantedAuthority> getAuthorities(String userId) {
 		List<GrantedAuthority> auth = new ArrayList<>();
 		if (userId != null) {
-			GrantedAuthority user = new SimpleGrantedAuthority("USER");
-			auth.add(user);
-			if (userId.equals("113212610256718182401")) {
+			if(USER_IDS.contains(userId)) {
+				GrantedAuthority user = new SimpleGrantedAuthority("USER");
+				auth.add(user);
+			}
+			if (ADMIN_IDS.contains(userId)) {
 				GrantedAuthority admin = new SimpleGrantedAuthority("ADMIN");
 				auth.add(admin);
 			}
@@ -72,7 +86,7 @@ public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
 		return auth;
 	}
 
-	private String checkAuthentication(HttpServletRequest request)
+	private String checkGoogleAuthentication(HttpServletRequest request)
 			throws FileNotFoundException, IOException, GeneralSecurityException {
 		String token = request.getHeader("Authorization");
 		if (token != null) {
@@ -92,6 +106,19 @@ public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
 				String userId = payload.getSubject();
 				System.out.println("User ID: " + userId);
 				return userId;
+			}
+			return null;
+		}
+		return null;
+	}
+	
+	private String checkDummyAuthentication(HttpServletRequest request) {
+		String token = request.getHeader("Authorization");
+		if (token != null) {
+			if(token.equals("Bearer XXXX")) {
+				return "dummy";
+			}else if(token.equals("Bearer YYYY")) {
+				return "dummyAdmin";
 			}
 			return null;
 		}

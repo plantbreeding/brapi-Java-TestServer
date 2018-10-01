@@ -2,6 +2,7 @@ package org.brapi.test.BrAPITestServer.model.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -45,13 +46,13 @@ public class ObservationUnitEntity extends BaseEntity {
 	private List<ObservationEntity> observations;
 	@OneToMany(mappedBy="observationUnit")
 	private List<SampleEntity> samples;
-	@OneToMany(mappedBy="observationUnitDbId")	
+	@OneToMany(mappedBy="observationUnitDbId", cascade=CascadeType.ALL)	
 	private List<ObservationUnitXrefEntity> observationUnitXref;
 	
 	//TODO Specific fields for Phenotypes
 	@Column
 	private String observationLevels;
-	@OneToMany(mappedBy="observationUnitDbId")
+	@OneToMany(mappedBy="observationUnitDbId", cascade=CascadeType.ALL)
 	private List<TreatmentEntity> treatments;
 	
 	public StudyEntity getStudy() {
