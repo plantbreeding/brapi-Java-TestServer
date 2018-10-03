@@ -3,8 +3,10 @@ package org.brapi.test.BrAPITestServer.service;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -92,49 +94,39 @@ public class PhenotypeService {
 				for (PhenotypesRequestObservation observation : observationUnit.getObservations()) {
 					ObservationEntity obsEntity = convertToEntity(observation, unitEntity);
 					ObservationEntity newObsEntity = observationRepository.save(obsEntity);
-					
-					newObservations.add(new NewObservationDbIdsObservations()
-					.observationDbId(newObsEntity.getId())
-					.observationUnitDbId(newObsEntity.getObservationUnit().getId())
-					.observationVariableDbId(newObsEntity.getObservationVariable().getId()));
-					
+
+					newObservations.add(new NewObservationDbIdsObservations().observationDbId(newObsEntity.getId())
+							.observationUnitDbId(newObsEntity.getObservationUnit().getId())
+							.observationVariableDbId(newObsEntity.getObservationVariable().getId()));
+
 				}
 			}
 		}
-		
+
 		return newObservations;
 	}
 
-	private ObservationEntity convertToEntity(PhenotypesRequestObservation observation, ObservationUnitEntity unitEntity) {
-		Optional<ObservationVariableEntity> variableEntityOption = observationVariableRepository.findById(observation.getObservationVariableDbId());
+	private ObservationEntity convertToEntity(PhenotypesRequestObservation observation,
+			ObservationUnitEntity unitEntity) {
+		Optional<ObservationVariableEntity> variableEntityOption = observationVariableRepository
+				.findById(observation.getObservationVariableDbId());
 		String[] seasonArr = observation.getSeason().split(" ", 2);
-		List<SeasonEntity> seasonEntityOption = seasonRepository.findAllByYearAndSeason(NumberUtils.toInt(seasonArr[1]), seasonArr[0], PageRequest.of(0, 1)).getContent();		
-		
+		List<SeasonEntity> seasonEntityOption = seasonRepository
+				.findAllByYearAndSeason(NumberUtils.toInt(seasonArr[1]), seasonArr[0], PageRequest.of(0, 1))
+				.getContent();
+
 		ObservationEntity entity = new ObservationEntity();
 		entity.setCollector(observation.getCollector());
 		entity.setObservationTimeStamp(DateUtility.toDate(observation.getObservationTimeStamp()));
 		entity.setValue(observation.getValue());
 		entity.setObservationUnit(unitEntity);
-		if(variableEntityOption.isPresent()) {
+		if (variableEntityOption.isPresent()) {
 			entity.setObservationVariable(variableEntityOption.get());
 		}
-		if(seasonEntityOption.size() > 0) {
+		if (seasonEntityOption.size() > 0) {
 			entity.setSeason(seasonEntityOption.get(0));
 		}
 		return entity;
-	}
-
-	public String getPhenotypesCsv(@Valid PhenotypesSearchRequest request, Metadata metaData) {
-
-		Page<ObservationUnitEntity> unitsPage = searchPhenotypes(request, metaData);
-		StringBuilder responseBuilder = new StringBuilder();
-		List<String> variableDbIds = new ArrayList<>();
-		for (ObservationUnitEntity entity : unitsPage) {
-			responseBuilder.append(buildRowString(", ", variableDbIds, entity));
-		}
-
-		responseBuilder.insert(0, buildHeaderString(", ", variableDbIds));
-		return responseBuilder.toString();
 	}
 
 	public ObservationUnitsTableResponse getPhenotypesTable(@Valid PhenotypesSearchRequest request, Metadata metaData) {
@@ -142,27 +134,62 @@ public class PhenotypeService {
 		ObservationUnitsTableResponse response = new ObservationUnitsTableResponse();
 		response.setHeaderRow(buildHeaderArray());
 		List<List<String>> data = new ArrayList<>();
-		List<String> variableDbIds = new ArrayList<>();
-		List<String> variableNames = new ArrayList<>();
+		List<ObservationVariableEntity> variables = getDistinctVariables(unitsPage.getContent());
+
 		for (ObservationUnitEntity obsUnit : unitsPage) {
-			data.add(buildRecordArray(obsUnit, variableDbIds, variableNames));
+			data.add(buildRecordArray(obsUnit, variables));
 		}
+		
 		response.setData(data);
-		response.setObservationVariableDbIds(variableDbIds);
-		response.setObservationVariableNames(variableNames);
+		response.setObservationVariableDbIds(variables.stream().map((var) -> {
+			return var.getId();
+		}).collect(Collectors.toList()));
+		response.setObservationVariableNames(variables.stream().map((var) -> {
+			return var.getName();
+		}).collect(Collectors.toList()));
+		
 		return response;
+	}
+
+	public String getPhenotypesCsv(@Valid PhenotypesSearchRequest request, Metadata metaData) {
+
+		Page<ObservationUnitEntity> unitsPage = searchPhenotypes(request, metaData);
+		StringBuilder responseBuilder = new StringBuilder();
+		List<ObservationVariableEntity> variables = getDistinctVariables(unitsPage.getContent());
+
+		responseBuilder.append(buildHeaderString(", ", variables));
+		
+		for (ObservationUnitEntity entity : unitsPage) {
+			responseBuilder.append(buildRowString(", ", variables, entity));
+		}
+
+		return responseBuilder.toString();
 	}
 
 	public String getPhenotypesTsv(@Valid PhenotypesSearchRequest request, Metadata metaData) {
 		Page<ObservationUnitEntity> unitsPage = searchPhenotypes(request, metaData);
 		StringBuilder responseBuilder = new StringBuilder();
-		List<String> variableDbIds = new ArrayList<>();
-		for (ObservationUnitEntity entity : unitsPage) {
-			responseBuilder.append(buildRowString("\t", variableDbIds, entity));
-		}
+		List<ObservationVariableEntity> variables = getDistinctVariables(unitsPage.getContent());
 
-		responseBuilder.insert(0, buildHeaderString("\t", variableDbIds));
+		responseBuilder.append(buildHeaderString("\t", variables));
+		
+		for (ObservationUnitEntity entity : unitsPage) {
+			responseBuilder.append(buildRowString("\t", variables, entity));
+		}
+		
 		return responseBuilder.toString();
+	}
+
+	private List<ObservationVariableEntity> getDistinctVariables(List<ObservationUnitEntity> units) {
+		List<ObservationVariableEntity> variables = new ArrayList<ObservationVariableEntity>();
+		for (ObservationUnitEntity entity : units) {
+			for (ObservationEntity observation : entity.getObservations()) {
+				if (!variables.contains(observation.getObservationVariable())) {
+					variables.add(observation.getObservationVariable());
+				}
+			}
+		}
+		return variables;
 	}
 
 	private Page<ObservationUnitEntity> searchPhenotypes(PhenotypesSearchRequest request, Metadata metaData) {
@@ -230,12 +257,12 @@ public class PhenotypeService {
 			ob.setObservationDbId(e.getId());
 			ob.setObservationTimeStamp(DateUtility.toOffsetDateTime(e.getObservationTimeStamp()));
 			ob.setValue(e.getValue());
-			
-			if(e.getObservationVariable() != null) {
+
+			if (e.getObservationVariable() != null) {
 				ob.setObservationVariableDbId(e.getObservationVariable().getId());
 				ob.setObservationVariableName(e.getObservationVariable().getName());
 			}
-			if(e.getSeason() != null) {
+			if (e.getSeason() != null) {
 				ob.setSeason(e.getSeason().getSeason() + " " + e.getSeason().getYear());
 			}
 			return ob;
@@ -251,27 +278,31 @@ public class PhenotypeService {
 		return pheno;
 	}
 
-	private String buildRowString(String separator, List<String> variableDbIds, ObservationUnitEntity entity) {
-		List<String> rowArray = buildRecordArray(entity, variableDbIds, new ArrayList<>());
+	private String buildRowString(String separator, List<ObservationVariableEntity> variables, ObservationUnitEntity entity) {
+		List<String> rowArray = buildRecordArray(entity, variables);
 		StringBuilder row = new StringBuilder();
+		
 		for (String obsVal : rowArray) {
 			row.append("\"" + obsVal + "\"" + separator);
 		}
+
+		row.deleteCharAt(row.length() - 1);
 		row.append("\n");
 		return row.toString();
 	}
 
-	private String buildHeaderString(String separator, List<String> variableDbIds) {
+	private String buildHeaderString(String separator, List<ObservationVariableEntity> variables) {
 		StringBuilder headerRow = new StringBuilder();
 
 		for (String title : buildHeaderArray()) {
 			headerRow.append("\"" + title + "\"" + separator);
 		}
 
-		for (String var : variableDbIds) {
-			headerRow.append("\"" + var + "\"" + separator);
+		for (ObservationVariableEntity var : variables) {
+			headerRow.append("\"" + var.getId() + "\"" + separator);
 		}
 
+		headerRow.delete(headerRow.length() - separator.length(), headerRow.length());
 		headerRow.append("\n");
 		return headerRow.toString();
 	}
@@ -296,8 +327,7 @@ public class PhenotypeService {
 		return headerRow;
 	}
 
-	private List<String> buildRecordArray(ObservationUnitEntity unit, List<String> variableDbIds,
-			List<String> variableNames) {
+	private List<String> buildRecordArray(ObservationUnitEntity unit, List<ObservationVariableEntity> variables) {
 		List<String> row = new ArrayList<>();
 		SimpleDateFormat sdf = new SimpleDateFormat("YYYY");
 		row.add(sdf.format(unit.getStudy().getStartDate()));
@@ -316,18 +346,16 @@ public class PhenotypeService {
 		row.add(unit.getY());
 
 		List<String> obsVals = new ArrayList<>();
-		for (ObservationEntity obs : unit.getObservations()) {
-			int varIndex = variableDbIds.indexOf(obs.getObservationVariable().getId());
-			if (varIndex < 0) {
-				variableDbIds.add(obs.getObservationVariable().getId());
-				variableNames.add(obs.getObservationVariable().getName());
-				obsVals.add(obs.getValue());
-			} else {
-				while (obsVals.size() - 1 < varIndex) {
-					obsVals.add("");
+		for (ObservationVariableEntity variable : variables) {
+			String foundValue = "";
+			for (ObservationEntity obs : unit.getObservations()) {
+				if (variable.getId().equals(obs.getObservationVariable().getId())) {
+					foundValue = obs.getValue();
+					break;
 				}
-				obsVals.add(varIndex, obs.getValue());
 			}
+
+			obsVals.add(foundValue);
 		}
 		row.addAll(obsVals);
 		return row;

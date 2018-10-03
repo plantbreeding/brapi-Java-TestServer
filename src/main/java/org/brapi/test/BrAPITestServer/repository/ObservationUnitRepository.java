@@ -18,7 +18,7 @@ public interface ObservationUnitRepository extends PagingAndSortingRepository<Ob
 	@Query("select o.observationLevel from ObservationUnitEntity o")
 	public Page<String> findObservationLevels(Pageable pageReq);
 	
-	@Query("select o from ObservationUnitEntity o "
+	@Query("select distinct o from ObservationUnitEntity o "
 			+ "join o.observations observation "
 			+ "where ('' in :germplasmDbIds or o.germplasm.id in :germplasmDbIds) "
 			+ "AND ('' in :observationVariableDbIds or observation.observationVariable.id in :observationVariableDbIds) "
@@ -40,7 +40,7 @@ public interface ObservationUnitRepository extends PagingAndSortingRepository<Ob
 	@Param("observationTimeEnd") Date observationTimeEnd,
 	Pageable pageReq);
 	
-	@Query("select o from ObservationUnitEntity o "
+	@Query("select distinct o from ObservationUnitEntity o "
 			+ "join o.observations observation "
 			+ "where ('' in :germplasmDbIds or o.germplasm.id in :germplasmDbIds) "
 			+ "AND ('' in :observationVariableDbIds or observation.observationVariable.id in :observationVariableDbIds) "
