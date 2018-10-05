@@ -56,7 +56,7 @@ public class PhenotypeController extends BrAPIController implements PhenotypesAp
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<String> phenotypesSearchCsvPost(@Valid PhenotypesSearchRequest request) throws BrAPIServerException {
+	public ResponseEntity<String> phenotypesSearchCsvPost(@Valid @RequestBody PhenotypesSearchRequest request) throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		String response = phenotypeService.getPhenotypesCsv(request, metaData);
 
@@ -86,7 +86,7 @@ public class PhenotypeController extends BrAPIController implements PhenotypesAp
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ObservationUnitsResponse> phenotypesSearchPost(@Valid PhenotypesSearchRequest request) throws BrAPIServerException {
+	public ResponseEntity<ObservationUnitsResponse> phenotypesSearchPost(@Valid @RequestBody PhenotypesSearchRequest request) throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		List<ObservationUnitPhenotype> data = phenotypeService.getPhenotypes(request, metaData);
 
@@ -101,7 +101,7 @@ public class PhenotypeController extends BrAPIController implements PhenotypesAp
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ObservationUnitsTableResponse1> phenotypesSearchTablePost(
-			@Valid PhenotypesSearchRequest request) throws BrAPIServerException {
+			@Valid @RequestBody PhenotypesSearchRequest request) throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		ObservationUnitsTableResponse result = phenotypeService.getPhenotypesTable(request, metaData);
 
@@ -113,7 +113,7 @@ public class PhenotypeController extends BrAPIController implements PhenotypesAp
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<String> phenotypesSearchTsvPost(@Valid PhenotypesSearchRequest request) throws BrAPIServerException {
+	public ResponseEntity<String> phenotypesSearchTsvPost(@Valid @RequestBody PhenotypesSearchRequest request) throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		String response = phenotypeService.getPhenotypesTsv(request, metaData);
 

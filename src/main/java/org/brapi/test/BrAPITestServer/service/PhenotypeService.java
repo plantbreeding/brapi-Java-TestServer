@@ -286,7 +286,7 @@ public class PhenotypeService {
 			row.append("\"" + obsVal + "\"" + separator);
 		}
 
-		row.deleteCharAt(row.length() - 1);
+		row.delete(row.length() - separator.length(), row.length());
 		row.append("\n");
 		return row.toString();
 	}
