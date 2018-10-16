@@ -46,7 +46,6 @@ import io.swagger.model.NewObservationsRequestWrapperDeprecated;
 import io.swagger.model.NewObservationsTableRequest;
 import io.swagger.model.Observation;
 import io.swagger.model.ObservationSummary;
-import io.swagger.model.ObservationTreatment;
 import io.swagger.model.ObservationUnitPosition;
 import io.swagger.model.ObservationUnitStudy;
 import io.swagger.model.ObservationUnitXref;

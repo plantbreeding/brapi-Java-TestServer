@@ -1,19 +1,11 @@
 package org.brapi.test.BrAPITestServer.serializer;
 
 import java.io.IOException;
-import java.util.List;
-
-import javax.validation.Valid;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
-import io.swagger.model.ObservationSummary;
-import io.swagger.model.ObservationUnitPosition;
 import io.swagger.model.ObservationUnitStudy;
-import io.swagger.model.ObservationUnitXref;
 
 public class CustomObservationUnitStudySerializer extends StdSerializer<ObservationUnitStudy>{
 	

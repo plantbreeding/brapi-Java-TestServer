@@ -1,8 +1,6 @@
 package org.brapi.test.BrAPITestServer.serializer;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-
 import org.brapi.test.BrAPITestServer.service.DateUtility;
 import org.threeten.bp.OffsetDateTime;
 import org.threeten.bp.format.DateTimeFormatterBuilder;

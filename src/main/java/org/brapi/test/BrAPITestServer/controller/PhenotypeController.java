@@ -14,8 +14,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.threeten.bp.OffsetDateTime;
-
 import io.swagger.api.PhenotypesApi;
 import io.swagger.api.PhenotypesSearchApi;
 import io.swagger.model.Metadata;
