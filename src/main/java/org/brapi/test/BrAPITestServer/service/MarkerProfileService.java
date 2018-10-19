@@ -95,7 +95,7 @@ public class MarkerProfileService {
 		String value = alleleCode;
 		value = value.replaceAll("\\|", params.getSepPhased());
 		value = value.replaceAll("/", params.getSepUnphased());
-		value = value.replaceAll("N", params.getUnknownString());
+		value = value.replaceAll("-", params.getUnknownString());
 		if (params.isExpandHomozygotes()) {
 			value = value.replaceAll("(?<=[^A-Z]|^)([A-Z])(?=[^A-Z]|$)", "$1$1");
 		}
@@ -106,9 +106,9 @@ public class MarkerProfileService {
 			String unknownString) {
 		AlleleFormatParams params = new AlleleFormatParams();
 		params.setExpandHomozygotes(expandHomozygotes != null && expandHomozygotes);
-		params.setSepPhased(sepPhased);
-		params.setSepUnphased(sepUnphased);
-		params.setUnknownString(unknownString);
+		params.setSepPhased(sepPhased == null ? "\\|" : sepPhased);
+		params.setSepUnphased(sepUnphased == null ? "/" : sepUnphased);
+		params.setUnknownString(unknownString == null ? "-" : unknownString);
 		return params;
 	}
 
