@@ -2,16 +2,20 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.Season;
 import org.threeten.bp.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * Observation
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class Observation   {
   @JsonProperty("germplasmDbId")
@@ -26,7 +30,7 @@ public class Observation   {
   @JsonProperty("observationLevel")
   private String observationLevel = null;
 
-  @JsonProperty("observationTimestamp")
+  @JsonProperty("observationTimeStamp")
   private OffsetDateTime observationTimeStamp = null;
 
   @JsonProperty("observationUnitDbId")
@@ -44,6 +48,9 @@ public class Observation   {
   @JsonProperty("operator")
   private String operator = null;
 
+  @JsonProperty("season")
+  private Season season = null;
+
   @JsonProperty("studyDbId")
   private String studyDbId = null;
 
@@ -58,7 +65,7 @@ public class Observation   {
     return this;
   }
 
-   /**
+  /**
    *  The ID which uniquely identifies a germplasm
    * @return germplasmDbId
   **/
@@ -78,7 +85,7 @@ public class Observation   {
     return this;
   }
 
-   /**
+  /**
    * Name of the germplasm. It can be the prefered name and does not have to be unique.
    * @return germplasmName
   **/
@@ -98,7 +105,7 @@ public class Observation   {
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies an observation
    * @return observationDbId
   **/
@@ -118,7 +125,7 @@ public class Observation   {
     return this;
   }
 
-   /**
+  /**
    * The level of an observation unit. ex. \"plot\", \"plant\"
    * @return observationLevel
   **/
@@ -138,7 +145,7 @@ public class Observation   {
     return this;
   }
 
-   /**
+  /**
    * The date and time  when this observation was made 
    * @return observationTimeStamp
   **/
@@ -159,7 +166,7 @@ public class Observation   {
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies an observation unit
    * @return observationUnitDbId
   **/
@@ -179,7 +186,7 @@ public class Observation   {
     return this;
   }
 
-   /**
+  /**
    * A human readable name for an observation unit
    * @return observationUnitName
   **/
@@ -199,7 +206,7 @@ public class Observation   {
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies an observation variable
    * @return observationVariableDbId
   **/
@@ -219,7 +226,7 @@ public class Observation   {
     return this;
   }
 
-   /**
+  /**
    * A human readable name for an observation variable
    * @return observationVariableName
   **/
@@ -239,7 +246,7 @@ public class Observation   {
     return this;
   }
 
-   /**
+  /**
    * The name or identifier of the entity which collected the observation
    * @return operator
   **/
@@ -254,12 +261,33 @@ public class Observation   {
     this.operator = operator;
   }
 
+  public Observation season(Season season) {
+    this.season = season;
+    return this;
+  }
+
+  /**
+   * Get season
+   * @return season
+  **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public Season getSeason() {
+    return season;
+  }
+
+  public void setSeason(Season season) {
+    this.season = season;
+  }
+
   public Observation studyDbId(String studyDbId) {
     this.studyDbId = studyDbId;
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies a study within the given database server
    * @return studyDbId
   **/
@@ -279,7 +307,7 @@ public class Observation   {
     return this;
   }
 
-   /**
+  /**
    * The name or id of the user who uploaded the observation to the database system
    * @return uploadedBy
   **/
@@ -299,7 +327,7 @@ public class Observation   {
     return this;
   }
 
-   /**
+  /**
    * The value of the data collected as an observation
    * @return value
   **/
@@ -334,6 +362,7 @@ public class Observation   {
         Objects.equals(this.observationVariableDbId, observation.observationVariableDbId) &&
         Objects.equals(this.observationVariableName, observation.observationVariableName) &&
         Objects.equals(this.operator, observation.operator) &&
+        Objects.equals(this.season, observation.season) &&
         Objects.equals(this.studyDbId, observation.studyDbId) &&
         Objects.equals(this.uploadedBy, observation.uploadedBy) &&
         Objects.equals(this.value, observation.value);
@@ -341,7 +370,7 @@ public class Observation   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(germplasmDbId, germplasmName, observationDbId, observationLevel, observationTimeStamp, observationUnitDbId, observationUnitName, observationVariableDbId, observationVariableName, operator, studyDbId, uploadedBy, value);
+    return Objects.hash(germplasmDbId, germplasmName, observationDbId, observationLevel, observationTimeStamp, observationUnitDbId, observationUnitName, observationVariableDbId, observationVariableName, operator, season, studyDbId, uploadedBy, value);
   }
 
   @Override
@@ -359,6 +388,7 @@ public class Observation   {
     sb.append("    observationVariableDbId: ").append(toIndentedString(observationVariableDbId)).append("\n");
     sb.append("    observationVariableName: ").append(toIndentedString(observationVariableName)).append("\n");
     sb.append("    operator: ").append(toIndentedString(operator)).append("\n");
+    sb.append("    season: ").append(toIndentedString(season)).append("\n");
     sb.append("    studyDbId: ").append(toIndentedString(studyDbId)).append("\n");
     sb.append("    uploadedBy: ").append(toIndentedString(uploadedBy)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");

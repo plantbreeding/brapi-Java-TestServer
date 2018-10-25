@@ -6,46 +6,37 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.vendor.VendorFileEntity;
+import org.brapi.test.BrAPITestServer.model.entity.vendor.VendorPlateSubmissionEntity;
 
 @Entity
 @Table(name="plate")
 public class PlateEntity extends BaseEntity{
 	@Column
-    private String vendorProjectDbId;
-	@Column
     private String clientPlateDbId;
 	@Column
-    private String vendorBarcode;
+    private String clientPlateBarcode;
 	@Column
-    private String vendorBarcodeImageURL;
-	@Column
-    private String plateFormat;
-	@Column
-    private String sampleType;
-	@Column
-    private String status;
+    private String sampleSubmissionFormat;
 	@Column
     private Date statusTimeStamp;
 	@OneToMany(mappedBy="plate", cascade = CascadeType.ALL)
     private List<SampleEntity> samples;
 	@OneToMany(mappedBy="plateDbId")
 	private List<VendorFileEntity> files;
+	@ManyToOne
+	private VendorPlateSubmissionEntity submission;
 	
-	public List<VendorFileEntity> getFiles() {
-		return files;
+	
+	public VendorPlateSubmissionEntity getSubmission() {
+		return submission;
 	}
-	public void setFiles(List<VendorFileEntity> files) {
-		this.files = files;
-	}
-	public String getVendorProjectDbId() {
-		return vendorProjectDbId;
-	}
-	public void setVendorProjectDbId(String vendorProjectDbId) {
-		this.vendorProjectDbId = vendorProjectDbId;
+	public void setSubmission(VendorPlateSubmissionEntity submission) {
+		this.submission = submission;
 	}
 	public String getClientPlateDbId() {
 		return clientPlateDbId;
@@ -53,35 +44,17 @@ public class PlateEntity extends BaseEntity{
 	public void setClientPlateDbId(String clientPlateDbId) {
 		this.clientPlateDbId = clientPlateDbId;
 	}
-	public String getVendorBarcode() {
-		return vendorBarcode;
+	public String getClientPlateBarcode() {
+		return clientPlateBarcode;
 	}
-	public void setVendorBarcode(String vendorBarcode) {
-		this.vendorBarcode = vendorBarcode;
+	public void setClientPlateBarcode(String clientPlateBarcode) {
+		this.clientPlateBarcode = clientPlateBarcode;
 	}
-	public String getVendorBarcodeImageURL() {
-		return vendorBarcodeImageURL;
+	public String getSampleSubmissionFormat() {
+		return sampleSubmissionFormat;
 	}
-	public void setVendorBarcodeImageURL(String vendorBarcodeImageURL) {
-		this.vendorBarcodeImageURL = vendorBarcodeImageURL;
-	}
-	public String getPlateFormat() {
-		return plateFormat;
-	}
-	public void setPlateFormat(String plateFormat) {
-		this.plateFormat = plateFormat;
-	}
-	public String getSampleType() {
-		return sampleType;
-	}
-	public void setSampleType(String sampleType) {
-		this.sampleType = sampleType;
-	}
-	public String getStatus() {
-		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
+	public void setSampleSubmissionFormat(String sampleSubmissionFormat) {
+		this.sampleSubmissionFormat = sampleSubmissionFormat;
 	}
 	public Date getStatusTimeStamp() {
 		return statusTimeStamp;
@@ -95,4 +68,12 @@ public class PlateEntity extends BaseEntity{
 	public void setSamples(List<SampleEntity> samples) {
 		this.samples = samples;
 	}
+	public List<VendorFileEntity> getFiles() {
+		return files;
+	}
+	public void setFiles(List<VendorFileEntity> files) {
+		this.files = files;
+	}
+	
+	
 }

@@ -2,51 +2,54 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.VendorPlate;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * VendorPlatesResponseResult
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class VendorPlatesResponseResult   {
   @JsonProperty("data")
   @Valid
-  private List<VendorPlate> plates = null;
+  private List<VendorPlate> data = null;
 
-  public VendorPlatesResponseResult plates(List<VendorPlate> plates) {
-    this.plates = plates;
+  public VendorPlatesResponseResult data(List<VendorPlate> data) {
+    this.data = data;
     return this;
   }
 
-  public VendorPlatesResponseResult addPlatesItem(VendorPlate platesItem) {
-    if (this.plates == null) {
-      this.plates = new ArrayList<VendorPlate>();
+  public VendorPlatesResponseResult addDataItem(VendorPlate dataItem) {
+    if (this.data == null) {
+      this.data = new ArrayList<VendorPlate>();
     }
-    this.plates.add(platesItem);
+    this.data.add(dataItem);
     return this;
   }
 
-   /**
-   * Get plates
-   * @return plates
+  /**
+   * Get data
+   * @return data
   **/
   @ApiModelProperty(value = "")
 
   @Valid
 
-  public List<VendorPlate> getPlates() {
-    return plates;
+  public List<VendorPlate> getData() {
+    return data;
   }
 
-  public void setPlates(List<VendorPlate> plates) {
-    this.plates = plates;
+  public void setData(List<VendorPlate> data) {
+    this.data = data;
   }
 
 
@@ -59,12 +62,12 @@ public class VendorPlatesResponseResult   {
       return false;
     }
     VendorPlatesResponseResult vendorPlatesResponseResult = (VendorPlatesResponseResult) o;
-    return Objects.equals(this.plates, vendorPlatesResponseResult.plates);
+    return Objects.equals(this.data, vendorPlatesResponseResult.data);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(plates);
+    return Objects.hash(data);
   }
 
   @Override
@@ -72,7 +75,7 @@ public class VendorPlatesResponseResult   {
     StringBuilder sb = new StringBuilder();
     sb.append("class VendorPlatesResponseResult {\n");
     
-    sb.append("    plates: ").append(toIndentedString(plates)).append("\n");
+    sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("}");
     return sb.toString();
   }

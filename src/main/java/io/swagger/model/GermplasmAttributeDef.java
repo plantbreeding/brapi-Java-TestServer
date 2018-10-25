@@ -2,24 +2,35 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.ArrayList;
+import io.swagger.model.Method;
+import io.swagger.model.OntologyRefernce;
+import io.swagger.model.Scale;
+import io.swagger.model.Trait;
+import io.swagger.model.VariableBaseClass;
 import java.util.List;
+import org.threeten.bp.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * GermplasmAttributeDef
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
-public class GermplasmAttributeDef   {
+public class GermplasmAttributeDef extends VariableBaseClass  {
   @JsonProperty("attributeCategoryDbId")
   private String attributeCategoryDbId = null;
 
   @JsonProperty("attributeDbId")
   private String attributeDbId = null;
+
+  @JsonProperty("attributeName")
+  private String attributeName = null;
 
   @JsonProperty("code")
   private String code = null;
@@ -37,19 +48,18 @@ public class GermplasmAttributeDef   {
   private String uri = null;
 
   @JsonProperty("values")
-  @Valid
-  private List<String> values = null;
+  private String values = null;
 
   public GermplasmAttributeDef attributeCategoryDbId(String attributeCategoryDbId) {
     this.attributeCategoryDbId = attributeCategoryDbId;
     return this;
   }
 
-   /**
-   * The ID which uniquely identifies this attribute category within the given database server
+  /**
+   * General category for the attribute. very similar to Trait class.
    * @return attributeCategoryDbId
   **/
-  @ApiModelProperty(value = "The ID which uniquely identifies this attribute category within the given database server")
+  @ApiModelProperty(value = "General category for the attribute. very similar to Trait class.")
 
 
   public String getAttributeCategoryDbId() {
@@ -65,11 +75,12 @@ public class GermplasmAttributeDef   {
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies this attribute within the given database server
    * @return attributeDbId
   **/
-  @ApiModelProperty(value = "The ID which uniquely identifies this attribute within the given database server")
+  @ApiModelProperty(required = true, value = "The ID which uniquely identifies this attribute within the given database server")
+  @NotNull
 
 
   public String getAttributeDbId() {
@@ -80,16 +91,37 @@ public class GermplasmAttributeDef   {
     this.attributeDbId = attributeDbId;
   }
 
+  public GermplasmAttributeDef attributeName(String attributeName) {
+    this.attributeName = attributeName;
+    return this;
+  }
+
+  /**
+   * A human readable name for this attribute
+   * @return attributeName
+  **/
+  @ApiModelProperty(required = true, value = "A human readable name for this attribute")
+  @NotNull
+
+
+  public String getAttributeName() {
+    return attributeName;
+  }
+
+  public void setAttributeName(String attributeName) {
+    this.attributeName = attributeName;
+  }
+
   public GermplasmAttributeDef code(String code) {
     this.code = code;
     return this;
   }
 
-   /**
-   * Short abbreviation which represents this attribute
+  /**
+   * DEPRECATED in v1.3 - see \"this.trait.alternativeAbbreviations\"
    * @return code
   **/
-  @ApiModelProperty(value = "Short abbreviation which represents this attribute")
+  @ApiModelProperty(value = "DEPRECATED in v1.3 - see \"this.trait.alternativeAbbreviations\"")
 
 
   public String getCode() {
@@ -105,11 +137,11 @@ public class GermplasmAttributeDef   {
     return this;
   }
 
-   /**
-   * The type of data represented by this attribute
+  /**
+   * DEPRECATED in v1.3 - see \"this.scale.dataType\"
    * @return datatype
   **/
-  @ApiModelProperty(value = "The type of data represented by this attribute")
+  @ApiModelProperty(value = "DEPRECATED in v1.3 - see \"this.scale.dataType\"")
 
 
   public String getDatatype() {
@@ -125,7 +157,7 @@ public class GermplasmAttributeDef   {
     return this;
   }
 
-   /**
+  /**
    * A human readable description of this attribute
    * @return description
   **/
@@ -145,11 +177,11 @@ public class GermplasmAttributeDef   {
     return this;
   }
 
-   /**
-   * A human readable name for this attribute
+  /**
+   * DEPRECATED in v1.3 - Use \"this.attributeName\"
    * @return name
   **/
-  @ApiModelProperty(value = "A human readable name for this attribute")
+  @ApiModelProperty(value = "DEPRECATED in v1.3 - Use \"this.attributeName\"")
 
 
   public String getName() {
@@ -165,11 +197,11 @@ public class GermplasmAttributeDef   {
     return this;
   }
 
-   /**
-   * The URI reference some external documentation or ontology for this attribute
+  /**
+   * DEPRECATED in v1.3 - see \"this.xref\"
    * @return uri
   **/
-  @ApiModelProperty(value = "The URI reference some external documentation or ontology for this attribute")
+  @ApiModelProperty(value = "DEPRECATED in v1.3 - see \"this.xref\"")
 
 
   public String getUri() {
@@ -180,31 +212,23 @@ public class GermplasmAttributeDef   {
     this.uri = uri;
   }
 
-  public GermplasmAttributeDef values(List<String> values) {
+  public GermplasmAttributeDef values(String values) {
     this.values = values;
     return this;
   }
 
-  public GermplasmAttributeDef addValuesItem(String valuesItem) {
-    if (this.values == null) {
-      this.values = new ArrayList<String>();
-    }
-    this.values.add(valuesItem);
-    return this;
-  }
-
-   /**
-   * List of acceptable values for this attribute
+  /**
+   * DEPRECATED in v1.3 - see \"this.scale.validValues\"
    * @return values
   **/
-  @ApiModelProperty(value = "List of acceptable values for this attribute")
+  @ApiModelProperty(value = "DEPRECATED in v1.3 - see \"this.scale.validValues\"")
 
 
-  public List<String> getValues() {
+  public String getValues() {
     return values;
   }
 
-  public void setValues(List<String> values) {
+  public void setValues(String values) {
     this.values = values;
   }
 
@@ -220,26 +244,29 @@ public class GermplasmAttributeDef   {
     GermplasmAttributeDef germplasmAttributeDef = (GermplasmAttributeDef) o;
     return Objects.equals(this.attributeCategoryDbId, germplasmAttributeDef.attributeCategoryDbId) &&
         Objects.equals(this.attributeDbId, germplasmAttributeDef.attributeDbId) &&
+        Objects.equals(this.attributeName, germplasmAttributeDef.attributeName) &&
         Objects.equals(this.code, germplasmAttributeDef.code) &&
         Objects.equals(this.datatype, germplasmAttributeDef.datatype) &&
         Objects.equals(this.description, germplasmAttributeDef.description) &&
         Objects.equals(this.name, germplasmAttributeDef.name) &&
         Objects.equals(this.uri, germplasmAttributeDef.uri) &&
-        Objects.equals(this.values, germplasmAttributeDef.values);
+        Objects.equals(this.values, germplasmAttributeDef.values) &&
+        super.equals(o);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(attributeCategoryDbId, attributeDbId, code, datatype, description, name, uri, values);
+    return Objects.hash(attributeCategoryDbId, attributeDbId, attributeName, code, datatype, description, name, uri, values, super.hashCode());
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class GermplasmAttributeDef {\n");
-    
+    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
     sb.append("    attributeCategoryDbId: ").append(toIndentedString(attributeCategoryDbId)).append("\n");
     sb.append("    attributeDbId: ").append(toIndentedString(attributeDbId)).append("\n");
+    sb.append("    attributeName: ").append(toIndentedString(attributeName)).append("\n");
     sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    datatype: ").append(toIndentedString(datatype)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");

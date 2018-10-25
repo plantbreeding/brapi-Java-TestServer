@@ -2,38 +2,41 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.MarkerSummaryMap;
+import io.swagger.model.Marker;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * MarkersResponseResult
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class MarkersResponseResult   {
   @JsonProperty("data")
   @Valid
-  private List<MarkerSummaryMap> data = null;
+  private List<Marker> data = null;
 
-  public MarkersResponseResult data(List<MarkerSummaryMap> data) {
+  public MarkersResponseResult data(List<Marker> data) {
     this.data = data;
     return this;
   }
 
-  public MarkersResponseResult addDataItem(MarkerSummaryMap dataItem) {
+  public MarkersResponseResult addDataItem(Marker dataItem) {
     if (this.data == null) {
-      this.data = new ArrayList<MarkerSummaryMap>();
+      this.data = new ArrayList<Marker>();
     }
     this.data.add(dataItem);
     return this;
   }
 
-   /**
+  /**
    * Get data
    * @return data
   **/
@@ -41,11 +44,11 @@ public class MarkersResponseResult   {
 
   @Valid
 
-  public List<MarkerSummaryMap> getData() {
+  public List<Marker> getData() {
     return data;
   }
 
-  public void setData(List<MarkerSummaryMap> data) {
+  public void setData(List<Marker> data) {
     this.data = data;
   }
 

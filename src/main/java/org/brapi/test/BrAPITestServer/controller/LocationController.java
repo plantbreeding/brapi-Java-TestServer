@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.api.LocationsApi;
@@ -32,8 +31,8 @@ public class LocationController extends BrAPIController implements LocationsApi 
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<LocationsResponse> locationsGet(@Valid String locationType, @Valid Integer pageSize,
-			@Valid Integer page) throws BrAPIServerException {
+	public ResponseEntity<LocationsResponse> locationsGet(@Valid String locationType, @Valid Integer page,
+			@Valid Integer pageSize, String authorization) throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<Location> data = locationService.getLocations(locationType, metaData);
@@ -44,13 +43,12 @@ public class LocationController extends BrAPIController implements LocationsApi 
 		response.setMetadata(metaData);
 		response.setResult(result);
 		return new ResponseEntity<LocationsResponse>(response, HttpStatus.OK);
-
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<LocationResponse> locationsLocationDbIdGet(
-			@PathVariable("locationDbId") String locationDbId) {
+	public ResponseEntity<LocationResponse> locationsLocationDbIdGet(String locationDbId, String authorization)
+			throws BrAPIServerException {
 
 		Location result = locationService.getLocation(locationDbId);
 

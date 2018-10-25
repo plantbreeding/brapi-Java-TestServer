@@ -18,9 +18,11 @@ import io.swagger.model.Metadata;
 import io.swagger.model.Method;
 import io.swagger.model.ObservationVariable;
 import io.swagger.model.ObservationVariableSearchRequest;
+import io.swagger.model.ObservationVariableSearchRequestDep;
 import io.swagger.model.Ontology;
 import io.swagger.model.Scale;
 import io.swagger.model.Trait;
+import io.swagger.model.TraitDataType;
 import io.swagger.model.ValidValues;
 
 @Service
@@ -71,13 +73,15 @@ public class ObservationVariableService {
 		return var;
 	}
 
-	public List<ObservationVariable> getVariables(ObservationVariableSearchRequest request, Metadata metaData) {
+	public List<ObservationVariable> getVariables(ObservationVariableSearchRequestDep request, Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 
 		request = fixReqestArrays(request);
+		List<String> traitDataTypes = stringifyDataTypes(request);
+		
 
 		Page<ObservationVariableEntity> variablesPage = observationVariableRepository
-				.findAllBySearch(request.getDatatypes(), request.getMethodDbIds(), request.getNames(),
+				.findAllBySearch(traitDataTypes, request.getMethodDbIds(), request.getNames(),
 						request.getObservationVariableDbIds(), request.getOntologyDbIds(), request.getOntologyXrefs(),
 						request.getScaleDbIds(), request.getTraitClasses(), pageReq);
 
@@ -85,12 +89,22 @@ public class ObservationVariableService {
 		return variablesPage.map(this::convertFromEntity).getContent();
 	}
 
-	private ObservationVariableSearchRequest fixReqestArrays(ObservationVariableSearchRequest request) {
+	private List<String> stringifyDataTypes(ObservationVariableSearchRequestDep request) {
+		List<String> dataTypes = new ArrayList<>();
+		if (request.getDatatypes() == null || request.getDatatypes().isEmpty()) {
+			dataTypes.add("");
+		} else {
+			dataTypes = request.getDatatypes()
+					.stream()
+					.map((dt) -> {return dt.toString();})
+					.collect(Collectors.toList());
+		}
+		return dataTypes;
+	}
+
+	private ObservationVariableSearchRequestDep fixReqestArrays(ObservationVariableSearchRequestDep request) {
 		List<String> emptyPlaceHolder = new ArrayList<>();
 		emptyPlaceHolder.add("");
-		if (request.getDatatypes() == null || request.getDatatypes().isEmpty()) {
-			request.setDatatypes(emptyPlaceHolder);
-		}
 		if (request.getMethodDbIds() == null || request.getMethodDbIds().isEmpty()) {
 			request.setMethodDbIds(emptyPlaceHolder);
 		}
@@ -148,7 +162,7 @@ public class ObservationVariableService {
 		var.setOntologyName(entity.getOntology().getOntologyName());
 		var.setScientist(entity.getScientist());
 		var.setStatus(entity.getStatus());
-		var.setSubmissionTimeStamp(DateUtility.toOffsetDateTime(entity.getSubmissionTimestamp()));
+		var.setSubmissionTimestamp(DateUtility.toOffsetDateTime(entity.getSubmissionTimestamp()));
 		var.setSynonyms(entity.getSynonyms().stream().map(e -> e.getSynonym()).collect(Collectors.toList()));
 		var.setXref(entity.getXref());
 
@@ -162,7 +176,7 @@ public class ObservationVariableService {
 		var.setMethod(method);
 
 		Scale scale = new Scale();
-		scale.setDataType(entity.getScale().getDataType());
+		scale.setDataType(TraitDataType.fromValue(entity.getScale().getDataType()));
 		scale.setDecimalPlaces(entity.getScale().getDecimalPlaces());
 		scale.setName(entity.getScale().getName());
 		scale.setScaleDbId(entity.getScale().getId());

@@ -2,17 +2,20 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * Marker
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class Marker   {
   @JsonProperty("analysisMethods")
@@ -24,6 +27,9 @@ public class Marker   {
 
   @JsonProperty("markerDbId")
   private String markerDbId = null;
+
+  @JsonProperty("markerName")
+  private String markerName = null;
 
   @JsonProperty("refAlt")
   @Valid
@@ -49,7 +55,7 @@ public class Marker   {
     return this;
   }
 
-   /**
+  /**
    * List of the genotyping platforms used to interrogate the marker
    * @return analysisMethods
   **/
@@ -69,11 +75,11 @@ public class Marker   {
     return this;
   }
 
-   /**
-   * A string representing the marker that will be meaningful to the user
+  /**
+   * DEPRECATED in v 1.3 - see \"markerName\"
    * @return defaultDisplayName
   **/
-  @ApiModelProperty(value = "A string representing the marker that will be meaningful to the user")
+  @ApiModelProperty(value = "DEPRECATED in v 1.3 - see \"markerName\"")
 
 
   public String getDefaultDisplayName() {
@@ -89,7 +95,7 @@ public class Marker   {
     return this;
   }
 
-   /**
+  /**
    * Internal db identifier
    * @return markerDbId
   **/
@@ -102,6 +108,26 @@ public class Marker   {
 
   public void setMarkerDbId(String markerDbId) {
     this.markerDbId = markerDbId;
+  }
+
+  public Marker markerName(String markerName) {
+    this.markerName = markerName;
+    return this;
+  }
+
+  /**
+   * A string representing the marker that will be meaningful to the user
+   * @return markerName
+  **/
+  @ApiModelProperty(value = "A string representing the marker that will be meaningful to the user")
+
+
+  public String getMarkerName() {
+    return markerName;
+  }
+
+  public void setMarkerName(String markerName) {
+    this.markerName = markerName;
   }
 
   public Marker refAlt(List<String> refAlt) {
@@ -117,7 +143,7 @@ public class Marker   {
     return this;
   }
 
-   /**
+  /**
    * List of the reference (as the first item) and alternatives (the remaining items)
    * @return refAlt
   **/
@@ -145,7 +171,7 @@ public class Marker   {
     return this;
   }
 
-   /**
+  /**
    * List of other names for this marker
    * @return synonyms
   **/
@@ -165,7 +191,7 @@ public class Marker   {
     return this;
   }
 
-   /**
+  /**
    * The type of marker, e.g. SNP
    * @return type
   **/
@@ -193,6 +219,7 @@ public class Marker   {
     return Objects.equals(this.analysisMethods, marker.analysisMethods) &&
         Objects.equals(this.defaultDisplayName, marker.defaultDisplayName) &&
         Objects.equals(this.markerDbId, marker.markerDbId) &&
+        Objects.equals(this.markerName, marker.markerName) &&
         Objects.equals(this.refAlt, marker.refAlt) &&
         Objects.equals(this.synonyms, marker.synonyms) &&
         Objects.equals(this.type, marker.type);
@@ -200,7 +227,7 @@ public class Marker   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(analysisMethods, defaultDisplayName, markerDbId, refAlt, synonyms, type);
+    return Objects.hash(analysisMethods, defaultDisplayName, markerDbId, markerName, refAlt, synonyms, type);
   }
 
   @Override
@@ -211,6 +238,7 @@ public class Marker   {
     sb.append("    analysisMethods: ").append(toIndentedString(analysisMethods)).append("\n");
     sb.append("    defaultDisplayName: ").append(toIndentedString(defaultDisplayName)).append("\n");
     sb.append("    markerDbId: ").append(toIndentedString(markerDbId)).append("\n");
+    sb.append("    markerName: ").append(toIndentedString(markerName)).append("\n");
     sb.append("    refAlt: ").append(toIndentedString(refAlt)).append("\n");
     sb.append("    synonyms: ").append(toIndentedString(synonyms)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");

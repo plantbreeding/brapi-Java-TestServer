@@ -46,11 +46,12 @@ import io.swagger.model.NewObservationsRequestWrapperDeprecated;
 import io.swagger.model.NewObservationsTableRequest;
 import io.swagger.model.Observation;
 import io.swagger.model.ObservationSummary;
+import io.swagger.model.ObservationUnit;
 import io.swagger.model.ObservationUnitPosition;
-import io.swagger.model.ObservationUnitStudy;
 import io.swagger.model.ObservationUnitXref;
 import io.swagger.model.ObservationVariable;
 import io.swagger.model.ObservationsTable;
+import io.swagger.model.ObservationsTable.HeaderRowEnum;
 import io.swagger.model.ObservationUnitPosition.EntryTypeEnum;
 import io.swagger.model.Season;
 import io.swagger.model.Study;
@@ -63,6 +64,7 @@ import io.swagger.model.StudySummary;
 import io.swagger.model.StudyType;
 import io.swagger.model.StudySearchRequest.SortByEnum;
 import io.swagger.model.StudySearchRequest.SortOrderEnum;
+import io.swagger.model.StudySearchRequestDep;
 
 @Service
 public class StudyService {
@@ -128,37 +130,43 @@ public class StudyService {
 		return studyTypes;
 	}
 
-	public List<StudySummary> getStudies(String studyType, String programDbId, String trialDbId, String studyDbId,
+	public List<StudySummary> getStudies(String studyType, String studyTypeDbId, String programDbId, String trialDbId, String studyDbId,
 			String locationDbId, String seasonDbId, List<String> germplasmDbIds, List<String> observationVariableDbIds,
 			Boolean active, String sortBy, String sortOrder, Metadata metaData) {
 
-		return searchStudies(SearchUtility.buildSearchParam(studyType), SearchUtility.buildSearchParam(programDbId),
-				SearchUtility.buildSearchParam(trialDbId), SearchUtility.buildSearchParam(studyDbId),
-				SearchUtility.buildSearchParam(""), SearchUtility.buildSearchParam(""),
-				SearchUtility.buildSearchParam(""), SearchUtility.buildSearchParam(locationDbId),
-				SearchUtility.buildSearchParam(seasonDbId), SearchUtility.buildSearchParam(germplasmDbIds),
-				SearchUtility.buildSearchParam(observationVariableDbIds), active, SortByEnum.fromValue(sortBy),
+		return searchStudies(SearchUtility.buildSearchParam(studyType), 
+				SearchUtility.buildSearchParam(studyTypeDbId),
+				SearchUtility.buildSearchParam(programDbId),
+				SearchUtility.buildSearchParam(trialDbId), 
+				SearchUtility.buildSearchParam(studyDbId),
+				SearchUtility.buildSearchParam(""), 
+				SearchUtility.buildSearchParam(""),
+				SearchUtility.buildSearchParam(locationDbId),
+				SearchUtility.buildSearchParam(seasonDbId), 
+				SearchUtility.buildSearchParam(germplasmDbIds),
+				SearchUtility.buildSearchParam(observationVariableDbIds), 
+				active, SortByEnum.fromValue(sortBy),
 				SortOrderEnum.fromValue(sortOrder), metaData);
 	}
 
 	public List<StudySummary> getStudies(StudySearchRequest request, Metadata metaData) {
-		return searchStudies(SearchUtility.buildSearchParam(request.getStudyType()),
+		return searchStudies(SearchUtility.buildSearchParam(request.getStudyTypeDbIds()),
+				SearchUtility.buildSearchParam(request.getStudyTypeNames()),
 				SearchUtility.buildSearchParam(request.getProgramDbIds()),
 				SearchUtility.buildSearchParam(request.getTrialDbIds()),
 				SearchUtility.buildSearchParam(request.getStudyDbIds()),
 				SearchUtility.buildSearchParam(request.getProgramNames()),
 				SearchUtility.buildSearchParam(request.getStudyNames()),
-				SearchUtility.buildSearchParam(request.getStudyLocations()),
 				SearchUtility.buildSearchParam(request.getLocationDbIds()),
-				SearchUtility.buildSearchParam(request.getSeasonDbId()),
+				SearchUtility.buildSearchParam(request.getSeasonDbIds()),
 				SearchUtility.buildSearchParam(request.getGermplasmDbIds()),
 				SearchUtility.buildSearchParam(request.getObservationVariableDbIds()), request.isActive(),
 				request.getSortBy(), request.getSortOrder(), metaData);
 	}
 
-	private List<StudySummary> searchStudies(List<String> studyTypes, List<String> programDbIds,
+	private List<StudySummary> searchStudies(List<String> studyTypeDbIds, List<String> studyTypeNames, List<String> programDbIds,
 			List<String> trialDbIds, List<String> studyDbIds, List<String> programNames, List<String> studyNames,
-			List<String> studyLocations, List<String> locationDbIds, List<String> seasonDbIds,
+			List<String> locationDbIds, List<String> seasonDbIds,
 			List<String> germplasmDbIds, List<String> observationVariableDbIds, Boolean active, SortByEnum sortBy,
 			SortOrderEnum sortOrder, Metadata metaData) {
 
@@ -168,8 +176,8 @@ public class StudyService {
 			active = Boolean.TRUE;
 		}
 		Pageable pageReq = PagingUtility.getPageRequest(metaData, buildSort(sortOrder, sortBy));
-		Page<StudyEntity> studiesPage = studyRepository.findBySearch(studyTypes, programDbIds, trialDbIds, studyDbIds,
-				programNames, studyNames, studyLocations, locationDbIds, seasonDbIds, germplasmDbIds,
+		Page<StudyEntity> studiesPage = studyRepository.findBySearch(studyTypeDbIds, studyTypeNames, programDbIds, trialDbIds, studyDbIds,
+				programNames, studyNames, locationDbIds, seasonDbIds, germplasmDbIds,
 				observationVariableDbIds, applyActiveFilter, active, pageReq);
 		PagingUtility.calculateMetaData(metaData, studiesPage);
 
@@ -189,7 +197,11 @@ public class StudyService {
 			sum.setTrialName(entity.getTrial().getTrialName());
 
 			sum.setSeasons(entity.getSeasons().stream().map(e -> {
-				return e.getSeason() + " " + e.getYear();
+				Season season = new Season();
+				season.setSeason(e.getSeason());
+				season.setSeasonDbId(e.getId());
+				season.setYear(e.getYear().toString());
+				return season;
 			}).collect(Collectors.toList()));
 
 			sum.setAdditionalInfo(new HashMap<>());
@@ -243,7 +255,10 @@ public class StudyService {
 			case STUDYLOCATION:
 				sortByStr = "location.id";
 				break;
-			case STUDYTYPE:
+			case STUDYTYPEDBID:
+				sortByStr = "studyType.id";
+				break;
+			case STUDYTYPENAME:
 				sortByStr = "studyType.name";
 				break;
 			case TRIALDBID:
@@ -369,7 +384,7 @@ public class StudyService {
 		return levelsPage.getContent();
 	}
 
-	public List<ObservationUnitStudy> getStudyObservations(String studyDbId, String observationLevel,
+	public List<ObservationUnit> getStudyObservations(String studyDbId, String observationLevel,
 			Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 		Page<ObservationUnitEntity> unitsPage;
@@ -380,8 +395,8 @@ public class StudyService {
 					pageReq);
 		}
 		PagingUtility.calculateMetaData(metaData, unitsPage);
-		List<ObservationUnitStudy> observations = unitsPage.map((entity) -> {
-			ObservationUnitStudy observation = new ObservationUnitStudy();
+		List<ObservationUnit> observations = unitsPage.map((entity) -> {
+			ObservationUnit observation = new ObservationUnit();
 			observation.setBlockNumber(entity.getBlockNumber() == null ? "0" : entity.getBlockNumber().toString());
 			observation.setEntryNumber(entity.getEntryNumber());
 			observation.setEntryType(entity.getEntryType());
@@ -475,11 +490,8 @@ public class StudyService {
 		return tableWrapper;
 	}
 
-	private List<String> buildHeaderRow() {
-		String[] headerRow = { "year", "studyDbId", "studyName", "locationDbId", "locationName", "germplasmDbId",
-				"germplasmName", "observationUnitDbId", "plotNumber", "replicate", "blockNumber",
-				"observationTimestamp", "entryType", "X", "Y" };
-		return Arrays.asList(headerRow);
+	private List<HeaderRowEnum> buildHeaderRow() {
+		return Arrays.asList(HeaderRowEnum.values());
 	}
 
 	private List<List<String>> buildDataMatrix(List<ObservationUnitEntity> units, List<ObservationVariable> variables) {
@@ -706,8 +718,8 @@ public class StudyService {
 		ObservationsTable table = getStudyObservationUnitTable(studyDbId);
 		StringBuilder responseBuilder = new StringBuilder();
 
-		for (String header : table.getHeaderRow()) {
-			responseBuilder.append("\"" + header + "\"");
+		for (HeaderRowEnum header : table.getHeaderRow()) {
+			responseBuilder.append("\"" + header.toString() + "\"");
 			responseBuilder.append(sep);
 		}
 		int i = 1;
@@ -733,5 +745,27 @@ public class StudyService {
 		}
 
 		return responseBuilder.toString();
+	}
+
+	public List<StudySummary> getStudies(@Valid StudySearchRequestDep req, Metadata metaData) {
+		StudySearchRequest newRequest = new StudySearchRequest()
+				.active(req.isActive())
+				.germplasmDbIds(req.getGermplasmDbIds())
+				.locationDbIds(req.getLocationDbIds())
+				.observationVariableDbIds(req.getObservationVariableDbIds())
+				.page(req.getPage())
+				.pageSize(req.getPageSize())
+				.programDbIds(req.getProgramDbIds())
+				.programNames(req.getProgramNames())
+				.seasonDbIds(req.getSeasonDbId())
+				.studyDbIds(req.getStudyDbIds())
+				.studyNames(req.getStudyNames())
+				.studyTypeNames(Arrays.asList(req.getStudyType()))
+				.trialDbIds(req.getTrialDbIds());
+
+		newRequest.setSortBy(SortByEnum.fromValue(req.getSortBy().toString()));
+		newRequest.setSortOrder(SortOrderEnum.fromValue(req.getSortOrder().toString()));
+		
+		return getStudies(newRequest, metaData);
 	}
 }

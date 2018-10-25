@@ -2,6 +2,8 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.TrialStudies;
 import java.util.ArrayList;
@@ -11,12 +13,13 @@ import java.util.Map;
 import org.threeten.bp.LocalDate;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * TrialSummary
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class TrialSummary   {
   @JsonProperty("active")
@@ -25,6 +28,12 @@ public class TrialSummary   {
   @JsonProperty("additionalInfo")
   @Valid
   private Map<String, String> additionalInfo = null;
+
+  @JsonProperty("commonCropName")
+  private String commonCropName = null;
+
+  @JsonProperty("documentationURL")
+  private String documentationURL = null;
 
   @JsonProperty("endDate")
   private LocalDate endDate = null;
@@ -53,7 +62,7 @@ public class TrialSummary   {
     return this;
   }
 
-   /**
+  /**
    * Is this trail currently active
    * @return active
   **/
@@ -75,13 +84,13 @@ public class TrialSummary   {
 
   public TrialSummary putAdditionalInfoItem(String key, String additionalInfoItem) {
     if (this.additionalInfo == null) {
-      this.additionalInfo = new HashMap<String, String>();
+      this.additionalInfo = null;
     }
     this.additionalInfo.put(key, additionalInfoItem);
     return this;
   }
 
-   /**
+  /**
    * Additional arbitrary info
    * @return additionalInfo
   **/
@@ -96,12 +105,52 @@ public class TrialSummary   {
     this.additionalInfo = additionalInfo;
   }
 
+  public TrialSummary commonCropName(String commonCropName) {
+    this.commonCropName = commonCropName;
+    return this;
+  }
+
+  /**
+   * Common name for the crop associated with this trial
+   * @return commonCropName
+  **/
+  @ApiModelProperty(value = "Common name for the crop associated with this trial")
+
+
+  public String getCommonCropName() {
+    return commonCropName;
+  }
+
+  public void setCommonCropName(String commonCropName) {
+    this.commonCropName = commonCropName;
+  }
+
+  public TrialSummary documentationURL(String documentationURL) {
+    this.documentationURL = documentationURL;
+    return this;
+  }
+
+  /**
+   * A URL to the human readable documentation of this object
+   * @return documentationURL
+  **/
+  @ApiModelProperty(value = "A URL to the human readable documentation of this object")
+
+
+  public String getDocumentationURL() {
+    return documentationURL;
+  }
+
+  public void setDocumentationURL(String documentationURL) {
+    this.documentationURL = documentationURL;
+  }
+
   public TrialSummary endDate(LocalDate endDate) {
     this.endDate = endDate;
     return this;
   }
 
-   /**
+  /**
    * The date this trial ends
    * @return endDate
   **/
@@ -122,7 +171,7 @@ public class TrialSummary   {
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies a program
    * @return programDbId
   **/
@@ -142,7 +191,7 @@ public class TrialSummary   {
     return this;
   }
 
-   /**
+  /**
    * The human readable name of a program
    * @return programName
   **/
@@ -162,7 +211,7 @@ public class TrialSummary   {
     return this;
   }
 
-   /**
+  /**
    * The date this trial started
    * @return startDate
   **/
@@ -191,7 +240,7 @@ public class TrialSummary   {
     return this;
   }
 
-   /**
+  /**
    * List of studies inside this trial
    * @return studies
   **/
@@ -212,7 +261,7 @@ public class TrialSummary   {
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies a trial
    * @return trialDbId
   **/
@@ -232,7 +281,7 @@ public class TrialSummary   {
     return this;
   }
 
-   /**
+  /**
    * The human readable name of a trial
    * @return trialName
   **/
@@ -259,6 +308,8 @@ public class TrialSummary   {
     TrialSummary trialSummary = (TrialSummary) o;
     return Objects.equals(this.active, trialSummary.active) &&
         Objects.equals(this.additionalInfo, trialSummary.additionalInfo) &&
+        Objects.equals(this.commonCropName, trialSummary.commonCropName) &&
+        Objects.equals(this.documentationURL, trialSummary.documentationURL) &&
         Objects.equals(this.endDate, trialSummary.endDate) &&
         Objects.equals(this.programDbId, trialSummary.programDbId) &&
         Objects.equals(this.programName, trialSummary.programName) &&
@@ -270,7 +321,7 @@ public class TrialSummary   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(active, additionalInfo, endDate, programDbId, programName, startDate, studies, trialDbId, trialName);
+    return Objects.hash(active, additionalInfo, commonCropName, documentationURL, endDate, programDbId, programName, startDate, studies, trialDbId, trialName);
   }
 
   @Override
@@ -280,6 +331,8 @@ public class TrialSummary   {
     
     sb.append("    active: ").append(toIndentedString(active)).append("\n");
     sb.append("    additionalInfo: ").append(toIndentedString(additionalInfo)).append("\n");
+    sb.append("    commonCropName: ").append(toIndentedString(commonCropName)).append("\n");
+    sb.append("    documentationURL: ").append(toIndentedString(documentationURL)).append("\n");
     sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");
     sb.append("    programDbId: ").append(toIndentedString(programDbId)).append("\n");
     sb.append("    programName: ").append(toIndentedString(programName)).append("\n");

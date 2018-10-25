@@ -2,14 +2,18 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * NewObservationDbIdsObservations
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class NewObservationDbIdsObservations   {
   @JsonProperty("observationDbId")
@@ -26,7 +30,7 @@ public class NewObservationDbIdsObservations   {
     return this;
   }
 
-   /**
+  /**
    * Get observationDbId
    * @return observationDbId
   **/
@@ -46,7 +50,7 @@ public class NewObservationDbIdsObservations   {
     return this;
   }
 
-   /**
+  /**
    * Get observationUnitDbId
    * @return observationUnitDbId
   **/
@@ -66,7 +70,7 @@ public class NewObservationDbIdsObservations   {
     return this;
   }
 
-   /**
+  /**
    * Get observationVariableDbId
    * @return observationVariableDbId
   **/

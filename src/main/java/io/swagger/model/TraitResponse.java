@@ -2,31 +2,34 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Metadata;
-import io.swagger.model.TraitSummary;
+import io.swagger.model.Trait;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * TraitResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class TraitResponse   {
   @JsonProperty("metadata")
   private Metadata metadata = null;
 
   @JsonProperty("result")
-  private TraitSummary result = null;
+  private Trait result = null;
 
   public TraitResponse metadata(Metadata metadata) {
     this.metadata = metadata;
     return this;
   }
 
-   /**
+  /**
    * Get metadata
    * @return metadata
   **/
@@ -42,12 +45,12 @@ public class TraitResponse   {
     this.metadata = metadata;
   }
 
-  public TraitResponse result(TraitSummary result) {
+  public TraitResponse result(Trait result) {
     this.result = result;
     return this;
   }
 
-   /**
+  /**
    * Get result
    * @return result
   **/
@@ -55,11 +58,11 @@ public class TraitResponse   {
 
   @Valid
 
-  public TraitSummary getResult() {
+  public Trait getResult() {
     return result;
   }
 
-  public void setResult(TraitSummary result) {
+  public void setResult(Trait result) {
     this.result = result;
   }
 

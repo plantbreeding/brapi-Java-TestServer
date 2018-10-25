@@ -18,7 +18,7 @@ import io.swagger.model.Metadata;
 import io.swagger.model.Program;
 import io.swagger.model.ProgramsResponse;
 import io.swagger.model.ProgramsResponseResult;
-import io.swagger.model.ProgramsSearchRequest;
+import io.swagger.model.ProgramsSearchRequestDeprecated;
 
 @RestController
 public class ProgramController extends BrAPIController implements ProgramsApi, ProgramsSearchApi {
@@ -31,12 +31,12 @@ public class ProgramController extends BrAPIController implements ProgramsApi, P
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ProgramsResponse> programsSearchPost(@Valid @RequestBody ProgramsSearchRequest request)
+	public ResponseEntity<ProgramsResponse> programsGet(@Valid String commonCropName, @Valid String programName,
+			@Valid String abbreviation, @Valid Integer page, @Valid Integer pageSize, String authorization)
 			throws BrAPIServerException {
 
-		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
-		List<Program> data = programService.searchPrograms(request.getAbbreviation(), request.getLeadPerson(),
-				request.getName(), request.getObjective(), request.getProgramDbId(), metaData);
+		Metadata metaData = generateMetaDataTemplate(page, pageSize);
+		List<Program> data = programService.searchPrograms(abbreviation, null, programName, null, null, metaData);
 
 		ProgramsResponseResult result = new ProgramsResponseResult();
 		result.setData(data);
@@ -48,11 +48,12 @@ public class ProgramController extends BrAPIController implements ProgramsApi, P
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ProgramsResponse> programsGet(@Valid String programName, @Valid String abbreviation,
-			@Valid Integer pageSize, @Valid Integer page) throws BrAPIServerException {
+	public ResponseEntity<ProgramsResponse> programsSearchPost(@Valid @RequestBody ProgramsSearchRequestDeprecated request)
+			throws BrAPIServerException {
 
-		Metadata metaData = generateMetaDataTemplate(page, pageSize);
-		List<Program> data = programService.searchPrograms(abbreviation, null, programName, null, null, metaData);
+		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
+		List<Program> data = programService.searchPrograms(request.getAbbreviation(), request.getLeadPerson(),
+				request.getName(), request.getObjective(), request.getProgramDbId(), metaData);
 
 		ProgramsResponseResult result = new ProgramsResponseResult();
 		result.setData(data);

@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import io.swagger.model.Metadata;
 import io.swagger.model.NewSampleDbIdResult;
 import io.swagger.model.Sample;
-import io.swagger.model.SampleSearchRequest;
+import io.swagger.model.SampleSearchRequestDep;
 
 @Service
 public class SampleService {
@@ -122,7 +122,7 @@ public class SampleService {
 				SearchUtility.buildSearchParam(germplasmDbId), metaData);
 	}
 
-	public List<Sample> getSampleSearch(SampleSearchRequest request, Metadata metaData) {
+	public List<Sample> getSampleSearch(SampleSearchRequestDep request, Metadata metaData) {
 		return searchSamples(SearchUtility.buildSearchParam(request.getSampleDbId()),
 				SearchUtility.buildSearchParam(request.getObservationUnitDbId()),
 				SearchUtility.buildSearchParam(request.getPlateDbId()),

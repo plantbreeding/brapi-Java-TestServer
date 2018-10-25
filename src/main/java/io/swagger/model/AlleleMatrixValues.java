@@ -2,17 +2,20 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * AlleleMatrixValues
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class AlleleMatrixValues   {
   @JsonProperty("data")
@@ -32,11 +35,11 @@ public class AlleleMatrixValues   {
     return this;
   }
 
-   /**
-   * Is an array of arrays; each inner array has three entries: ```markerDbId```, ```markerprofileDbId```, ```alleleCall```. Scores have to be represented as described further up. e.g. unknown data as \"N\", etc. Missing data can be skipped.
+  /**
+   * Is an array of arrays; each inner array has three entries: ```markerDbId```, ```markerProfileDbId```, ```alleleCall```. Scores have to be represented as described further up. e.g. unknown data as \"N\", etc. Missing data can be skipped.
    * @return data
   **/
-  @ApiModelProperty(value = "Is an array of arrays; each inner array has three entries: ```markerDbId```, ```markerprofileDbId```, ```alleleCall```. Scores have to be represented as described further up. e.g. unknown data as \"N\", etc. Missing data can be skipped.")
+  @ApiModelProperty(value = "Is an array of arrays; each inner array has three entries: ```markerDbId```, ```markerProfileDbId```, ```alleleCall```. Scores have to be represented as described further up. e.g. unknown data as \"N\", etc. Missing data can be skipped.")
 
   @Valid
 

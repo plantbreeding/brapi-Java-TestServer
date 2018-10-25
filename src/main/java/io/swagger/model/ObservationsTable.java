@@ -2,26 +2,87 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * ObservationsTable
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class ObservationsTable   {
   @JsonProperty("data")
   @Valid
   private List<List<String>> data = null;
 
+  /**
+   * valid header fields
+   */
+  public enum HeaderRowEnum {
+    YEAR("year"),
+    
+    STUDYDBID("studyDbId"),
+    
+    STUDYNAME("studyName"),
+    
+    LOCATIONDBID("locationDbId"),
+    
+    LOCATIONNAME("locationName"),
+    
+    GERMPLASMDBID("germplasmDbId"),
+    
+    GERMPLASMNAME("germplasmName"),
+    
+    OBSERVATIONUNITDBID("observationUnitDbId"),
+    
+    PLOTNUMBER("plotNumber"),
+    
+    REPLICATE("replicate"),
+    
+    BLOCKNUMBER("blockNumber"),
+    
+    OBSERVATIONTIMESTAMP("observationTimestamp"),
+    
+    ENTRYTYPE("entryType"),
+    
+    X("X"),
+    
+    Y("Y");
+
+    private String value;
+
+    HeaderRowEnum(String value) {
+      this.value = value;
+    }
+
+    @Override
+    @JsonValue
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static HeaderRowEnum fromValue(String text) {
+      for (HeaderRowEnum b : HeaderRowEnum.values()) {
+        if (String.valueOf(b.value).equals(text)) {
+          return b;
+        }
+      }
+      return null;
+    }
+  }
+
   @JsonProperty("headerRow")
   @Valid
-  private List<String> headerRow = null;
+  private List<HeaderRowEnum> headerRow = null;
 
   @JsonProperty("observationVariableDbIds")
   @Valid
@@ -44,7 +105,7 @@ public class ObservationsTable   {
     return this;
   }
 
-   /**
+  /**
    * Matrix of observation data recorded for different observation variables across different observation units
    * @return data
   **/
@@ -60,31 +121,31 @@ public class ObservationsTable   {
     this.data = data;
   }
 
-  public ObservationsTable headerRow(List<String> headerRow) {
+  public ObservationsTable headerRow(List<HeaderRowEnum> headerRow) {
     this.headerRow = headerRow;
     return this;
   }
 
-  public ObservationsTable addHeaderRowItem(String headerRowItem) {
+  public ObservationsTable addHeaderRowItem(HeaderRowEnum headerRowItem) {
     if (this.headerRow == null) {
-      this.headerRow = new ArrayList<String>();
+      this.headerRow = new ArrayList<HeaderRowEnum>();
     }
     this.headerRow.add(headerRowItem);
     return this;
   }
 
-   /**
-   * The header row describing the data matrix. Append 'observationVariableDbIds' for complete header row.
+  /**
+   * The header row describing observation unit fields. Append 'observationVariableDbIds' for complete header row of the table. This array should contain any or all of the following strings; year, studyDbId, studyName, locationDbId, locationName, germplasmDbId, germplasmName, observationUnitDbId, plotNumber, replicate, blockNumber, observationTimestamp (DEPRECATED in V1.3), entryType, X, Y
    * @return headerRow
   **/
-  @ApiModelProperty(value = "The header row describing the data matrix. Append 'observationVariableDbIds' for complete header row.")
+  @ApiModelProperty(value = "The header row describing observation unit fields. Append 'observationVariableDbIds' for complete header row of the table. This array should contain any or all of the following strings; year, studyDbId, studyName, locationDbId, locationName, germplasmDbId, germplasmName, observationUnitDbId, plotNumber, replicate, blockNumber, observationTimestamp (DEPRECATED in V1.3), entryType, X, Y")
 
 
-  public List<String> getHeaderRow() {
+  public List<HeaderRowEnum> getHeaderRow() {
     return headerRow;
   }
 
-  public void setHeaderRow(List<String> headerRow) {
+  public void setHeaderRow(List<HeaderRowEnum> headerRow) {
     this.headerRow = headerRow;
   }
 
@@ -101,7 +162,7 @@ public class ObservationsTable   {
     return this;
   }
 
-   /**
+  /**
    * The list of observation variables which have values recorded for them in the data matrix. Append to the 'headerRow' for comlete header row.
    * @return observationVariableDbIds
   **/
@@ -129,7 +190,7 @@ public class ObservationsTable   {
     return this;
   }
 
-   /**
+  /**
    * The list of observation variable names which have values recorded for them in the data matrix. Order should match 'observationVariableDbIds'.
    * @return observationVariableNames
   **/

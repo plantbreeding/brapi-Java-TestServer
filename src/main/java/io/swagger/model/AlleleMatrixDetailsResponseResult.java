@@ -2,18 +2,21 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.AlleleMatrixDetails;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
- * AlleleMatrixDetailsResponse
+ * AlleleMatrixDetailsResponseResult
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class AlleleMatrixDetailsResponseResult   {
   @JsonProperty("data")
@@ -33,9 +36,9 @@ public class AlleleMatrixDetailsResponseResult   {
     return this;
   }
 
-   /**
-   * Get result
-   * @return result
+  /**
+   * Get data
+   * @return data
   **/
   @ApiModelProperty(value = "")
 
@@ -45,8 +48,8 @@ public class AlleleMatrixDetailsResponseResult   {
     return data;
   }
 
-  public void setData(List<AlleleMatrixDetails> result) {
-    this.data = result;
+  public void setData(List<AlleleMatrixDetails> data) {
+    this.data = data;
   }
 
 
@@ -58,8 +61,8 @@ public class AlleleMatrixDetailsResponseResult   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    AlleleMatrixDetailsResponseResult alleleMatrixDetailsResponse = (AlleleMatrixDetailsResponseResult) o;
-    return Objects.equals(this.data, alleleMatrixDetailsResponse.data);
+    AlleleMatrixDetailsResponseResult alleleMatrixDetailsResponseResult = (AlleleMatrixDetailsResponseResult) o;
+    return Objects.equals(this.data, alleleMatrixDetailsResponseResult.data);
   }
 
   @Override
@@ -70,9 +73,9 @@ public class AlleleMatrixDetailsResponseResult   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class AlleleMatrixDetailsResponse {\n");
+    sb.append("class AlleleMatrixDetailsResponseResult {\n");
     
-    sb.append("    result: ").append(toIndentedString(data)).append("\n");
+    sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("}");
     return sb.toString();
   }

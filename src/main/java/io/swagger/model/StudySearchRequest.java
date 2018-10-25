@@ -4,21 +4,27 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * StudySearchRequest
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class StudySearchRequest   {
   @JsonProperty("active")
   private Boolean active = null;
+
+  @JsonProperty("commonCropNames")
+  @Valid
+  private List<String> commonCropNames = null;
 
   @JsonProperty("germplasmDbIds")
   @Valid
@@ -46,9 +52,9 @@ public class StudySearchRequest   {
   @Valid
   private List<String> programNames = null;
 
-  @JsonProperty("seasonDbId")
+  @JsonProperty("seasonDbIds")
   @Valid
-  private List<String> seasonDbId = null;
+  private List<String> seasonDbIds = null;
 
   /**
    * Name of one of the fields within the study object on which results can be sorted
@@ -64,7 +70,9 @@ public class StudySearchRequest   {
     
     SEASONDBID("seasonDbId"),
     
-    STUDYTYPE("studyType"),
+    STUDYTYPENAME("studyTypeName"),
+    
+    STUDYTYPEDBID("studyTypeDbId"),
     
     STUDYNAME("studyName"),
     
@@ -106,9 +114,9 @@ public class StudySearchRequest   {
    * Order results should be sorted. ex. \"ASC\" or \"DESC\"
    */
   public enum SortOrderEnum {
-    ASC("asc"),
+    ASC("ASC"),
     
-    DESC("desc");
+    DESC("DESC");
 
     private String value;
 
@@ -140,16 +148,17 @@ public class StudySearchRequest   {
   @Valid
   private List<String> studyDbIds = null;
 
-  @JsonProperty("studyLocations")
-  @Valid
-  private List<String> studyLocations = null;
-
   @JsonProperty("studyNames")
   @Valid
   private List<String> studyNames = null;
 
-  @JsonProperty("studyType")
-  private String studyType = null;
+  @JsonProperty("studyTypeDbIds")
+  @Valid
+  private List<String> studyTypeDbIds = null;
+
+  @JsonProperty("studyTypeNames")
+  @Valid
+  private List<String> studyTypeNames = null;
 
   @JsonProperty("trialDbIds")
   @Valid
@@ -160,7 +169,7 @@ public class StudySearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * Is this study currently active
    * @return active
   **/
@@ -173,6 +182,34 @@ public class StudySearchRequest   {
 
   public void setActive(Boolean active) {
     this.active = active;
+  }
+
+  public StudySearchRequest commonCropNames(List<String> commonCropNames) {
+    this.commonCropNames = commonCropNames;
+    return this;
+  }
+
+  public StudySearchRequest addCommonCropNamesItem(String commonCropNamesItem) {
+    if (this.commonCropNames == null) {
+      this.commonCropNames = new ArrayList<String>();
+    }
+    this.commonCropNames.add(commonCropNamesItem);
+    return this;
+  }
+
+  /**
+   * Common names for the crop associated with this study
+   * @return commonCropNames
+  **/
+  @ApiModelProperty(value = "Common names for the crop associated with this study")
+
+
+  public List<String> getCommonCropNames() {
+    return commonCropNames;
+  }
+
+  public void setCommonCropNames(List<String> commonCropNames) {
+    this.commonCropNames = commonCropNames;
   }
 
   public StudySearchRequest germplasmDbIds(List<String> germplasmDbIds) {
@@ -188,7 +225,7 @@ public class StudySearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * List of IDs which uniquely identify germplasm
    * @return germplasmDbIds
   **/
@@ -216,11 +253,11 @@ public class StudySearchRequest   {
     return this;
   }
 
-   /**
-   * List of location identifiers to filter search results
+  /**
+   * List of location names to filter search results
    * @return locationDbIds
   **/
-  @ApiModelProperty(value = "List of location identifiers to filter search results")
+  @ApiModelProperty(value = "List of location names to filter search results")
 
 
   public List<String> getLocationDbIds() {
@@ -244,7 +281,7 @@ public class StudySearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * List of observation variable IDs to search for
    * @return observationVariableDbIds
   **/
@@ -264,7 +301,7 @@ public class StudySearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * Which page of the \"data\" array to return. The page indexing starts at 0 (page=0 will return the first page). Default is 0.
    * @return page
   **/
@@ -284,7 +321,7 @@ public class StudySearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * The maximum number of items to return per page of the \"data\" array. Default is 1000.
    * @return pageSize
   **/
@@ -312,7 +349,7 @@ public class StudySearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * List of program identifiers to filter search results
    * @return programDbIds
   **/
@@ -340,7 +377,7 @@ public class StudySearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * List of program names to filter search results
    * @return programNames
   **/
@@ -355,32 +392,32 @@ public class StudySearchRequest   {
     this.programNames = programNames;
   }
 
-  public StudySearchRequest seasonDbId(List<String> seasonDbId) {
-    this.seasonDbId = seasonDbId;
+  public StudySearchRequest seasonDbIds(List<String> seasonDbIds) {
+    this.seasonDbIds = seasonDbIds;
     return this;
   }
 
-  public StudySearchRequest addSeasonDbIdItem(String seasonDbIdItem) {
-    if (this.seasonDbId == null) {
-      this.seasonDbId = new ArrayList<String>();
+  public StudySearchRequest addSeasonDbIdsItem(String seasonDbIdsItem) {
+    if (this.seasonDbIds == null) {
+      this.seasonDbIds = new ArrayList<String>();
     }
-    this.seasonDbId.add(seasonDbIdItem);
+    this.seasonDbIds.add(seasonDbIdsItem);
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies a season
-   * @return seasonDbId
+   * @return seasonDbIds
   **/
   @ApiModelProperty(value = "The ID which uniquely identifies a season")
 
 
-  public List<String> getSeasonDbId() {
-    return seasonDbId;
+  public List<String> getSeasonDbIds() {
+    return seasonDbIds;
   }
 
-  public void setSeasonDbId(List<String> seasonDbId) {
-    this.seasonDbId = seasonDbId;
+  public void setSeasonDbIds(List<String> seasonDbIds) {
+    this.seasonDbIds = seasonDbIds;
   }
 
   public StudySearchRequest sortBy(SortByEnum sortBy) {
@@ -388,7 +425,7 @@ public class StudySearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * Name of one of the fields within the study object on which results can be sorted
    * @return sortBy
   **/
@@ -408,7 +445,7 @@ public class StudySearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * Order results should be sorted. ex. \"ASC\" or \"DESC\"
    * @return sortOrder
   **/
@@ -436,7 +473,7 @@ public class StudySearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * List of study identifiers to search for
    * @return studyDbIds
   **/
@@ -449,34 +486,6 @@ public class StudySearchRequest   {
 
   public void setStudyDbIds(List<String> studyDbIds) {
     this.studyDbIds = studyDbIds;
-  }
-
-  public StudySearchRequest studyLocations(List<String> studyLocations) {
-    this.studyLocations = studyLocations;
-    return this;
-  }
-
-  public StudySearchRequest addStudyLocationsItem(String studyLocationsItem) {
-    if (this.studyLocations == null) {
-      this.studyLocations = new ArrayList<String>();
-    }
-    this.studyLocations.add(studyLocationsItem);
-    return this;
-  }
-
-   /**
-   * List of location names to filter search results
-   * @return studyLocations
-  **/
-  @ApiModelProperty(value = "List of location names to filter search results")
-
-
-  public List<String> getStudyLocations() {
-    return studyLocations;
-  }
-
-  public void setStudyLocations(List<String> studyLocations) {
-    this.studyLocations = studyLocations;
   }
 
   public StudySearchRequest studyNames(List<String> studyNames) {
@@ -492,7 +501,7 @@ public class StudySearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * List of study names to filter search results
    * @return studyNames
   **/
@@ -507,24 +516,60 @@ public class StudySearchRequest   {
     this.studyNames = studyNames;
   }
 
-  public StudySearchRequest studyType(String studyType) {
-    this.studyType = studyType;
+  public StudySearchRequest studyTypeDbIds(List<String> studyTypeDbIds) {
+    this.studyTypeDbIds = studyTypeDbIds;
     return this;
   }
 
-   /**
-   * The type of study being performed. ex. \"Yeald Trial\", etc
-   * @return studyType
-  **/
-  @ApiModelProperty(value = "The type of study being performed. ex. \"Yeald Trial\", etc")
-
-
-  public String getStudyType() {
-    return studyType;
+  public StudySearchRequest addStudyTypeDbIdsItem(String studyTypeDbIdsItem) {
+    if (this.studyTypeDbIds == null) {
+      this.studyTypeDbIds = new ArrayList<String>();
+    }
+    this.studyTypeDbIds.add(studyTypeDbIdsItem);
+    return this;
   }
 
-  public void setStudyType(String studyType) {
-    this.studyType = studyType;
+  /**
+   * The unique identifier of the type of study being performed.
+   * @return studyTypeDbIds
+  **/
+  @ApiModelProperty(value = "The unique identifier of the type of study being performed.")
+
+
+  public List<String> getStudyTypeDbIds() {
+    return studyTypeDbIds;
+  }
+
+  public void setStudyTypeDbIds(List<String> studyTypeDbIds) {
+    this.studyTypeDbIds = studyTypeDbIds;
+  }
+
+  public StudySearchRequest studyTypeNames(List<String> studyTypeNames) {
+    this.studyTypeNames = studyTypeNames;
+    return this;
+  }
+
+  public StudySearchRequest addStudyTypeNamesItem(String studyTypeNamesItem) {
+    if (this.studyTypeNames == null) {
+      this.studyTypeNames = new ArrayList<String>();
+    }
+    this.studyTypeNames.add(studyTypeNamesItem);
+    return this;
+  }
+
+  /**
+   * The name of the type of study being performed. ex. \"Yield Trial\", etc
+   * @return studyTypeNames
+  **/
+  @ApiModelProperty(value = "The name of the type of study being performed. ex. \"Yield Trial\", etc")
+
+
+  public List<String> getStudyTypeNames() {
+    return studyTypeNames;
+  }
+
+  public void setStudyTypeNames(List<String> studyTypeNames) {
+    this.studyTypeNames = studyTypeNames;
   }
 
   public StudySearchRequest trialDbIds(List<String> trialDbIds) {
@@ -540,7 +585,7 @@ public class StudySearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * List of trial identifiers to filter search results
    * @return trialDbIds
   **/
@@ -566,6 +611,7 @@ public class StudySearchRequest   {
     }
     StudySearchRequest studySearchRequest = (StudySearchRequest) o;
     return Objects.equals(this.active, studySearchRequest.active) &&
+        Objects.equals(this.commonCropNames, studySearchRequest.commonCropNames) &&
         Objects.equals(this.germplasmDbIds, studySearchRequest.germplasmDbIds) &&
         Objects.equals(this.locationDbIds, studySearchRequest.locationDbIds) &&
         Objects.equals(this.observationVariableDbIds, studySearchRequest.observationVariableDbIds) &&
@@ -573,19 +619,19 @@ public class StudySearchRequest   {
         Objects.equals(this.pageSize, studySearchRequest.pageSize) &&
         Objects.equals(this.programDbIds, studySearchRequest.programDbIds) &&
         Objects.equals(this.programNames, studySearchRequest.programNames) &&
-        Objects.equals(this.seasonDbId, studySearchRequest.seasonDbId) &&
+        Objects.equals(this.seasonDbIds, studySearchRequest.seasonDbIds) &&
         Objects.equals(this.sortBy, studySearchRequest.sortBy) &&
         Objects.equals(this.sortOrder, studySearchRequest.sortOrder) &&
         Objects.equals(this.studyDbIds, studySearchRequest.studyDbIds) &&
-        Objects.equals(this.studyLocations, studySearchRequest.studyLocations) &&
         Objects.equals(this.studyNames, studySearchRequest.studyNames) &&
-        Objects.equals(this.studyType, studySearchRequest.studyType) &&
+        Objects.equals(this.studyTypeDbIds, studySearchRequest.studyTypeDbIds) &&
+        Objects.equals(this.studyTypeNames, studySearchRequest.studyTypeNames) &&
         Objects.equals(this.trialDbIds, studySearchRequest.trialDbIds);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(active, germplasmDbIds, locationDbIds, observationVariableDbIds, page, pageSize, programDbIds, programNames, seasonDbId, sortBy, sortOrder, studyDbIds, studyLocations, studyNames, studyType, trialDbIds);
+    return Objects.hash(active, commonCropNames, germplasmDbIds, locationDbIds, observationVariableDbIds, page, pageSize, programDbIds, programNames, seasonDbIds, sortBy, sortOrder, studyDbIds, studyNames, studyTypeDbIds, studyTypeNames, trialDbIds);
   }
 
   @Override
@@ -594,6 +640,7 @@ public class StudySearchRequest   {
     sb.append("class StudySearchRequest {\n");
     
     sb.append("    active: ").append(toIndentedString(active)).append("\n");
+    sb.append("    commonCropNames: ").append(toIndentedString(commonCropNames)).append("\n");
     sb.append("    germplasmDbIds: ").append(toIndentedString(germplasmDbIds)).append("\n");
     sb.append("    locationDbIds: ").append(toIndentedString(locationDbIds)).append("\n");
     sb.append("    observationVariableDbIds: ").append(toIndentedString(observationVariableDbIds)).append("\n");
@@ -601,13 +648,13 @@ public class StudySearchRequest   {
     sb.append("    pageSize: ").append(toIndentedString(pageSize)).append("\n");
     sb.append("    programDbIds: ").append(toIndentedString(programDbIds)).append("\n");
     sb.append("    programNames: ").append(toIndentedString(programNames)).append("\n");
-    sb.append("    seasonDbId: ").append(toIndentedString(seasonDbId)).append("\n");
+    sb.append("    seasonDbIds: ").append(toIndentedString(seasonDbIds)).append("\n");
     sb.append("    sortBy: ").append(toIndentedString(sortBy)).append("\n");
     sb.append("    sortOrder: ").append(toIndentedString(sortOrder)).append("\n");
     sb.append("    studyDbIds: ").append(toIndentedString(studyDbIds)).append("\n");
-    sb.append("    studyLocations: ").append(toIndentedString(studyLocations)).append("\n");
     sb.append("    studyNames: ").append(toIndentedString(studyNames)).append("\n");
-    sb.append("    studyType: ").append(toIndentedString(studyType)).append("\n");
+    sb.append("    studyTypeDbIds: ").append(toIndentedString(studyTypeDbIds)).append("\n");
+    sb.append("    studyTypeNames: ").append(toIndentedString(studyTypeNames)).append("\n");
     sb.append("    trialDbIds: ").append(toIndentedString(trialDbIds)).append("\n");
     sb.append("}");
     return sb.toString();

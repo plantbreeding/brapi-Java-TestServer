@@ -2,292 +2,113 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.VendorSpecificationPlatform;
+import io.swagger.model.VendorContact;
+import io.swagger.model.VendorSpecificationService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * VendorSpecification
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class VendorSpecification   {
   @JsonProperty("additionalInfo")
   @Valid
-  private Map<String, String> additionalInfo = null;
+  private Map<String, Object> additionalInfo = null;
 
-  @JsonProperty("contactName")
-  private String contactName = null;
-
-  @JsonProperty("platforms")
+  @JsonProperty("services")
   @Valid
-  private List<VendorSpecificationPlatform> platforms = null;
+  private List<VendorSpecificationService> services = null;
 
-  @JsonProperty("vendorAddress")
-  private String vendorAddress = null;
+  @JsonProperty("vendorContact")
+  private VendorContact vendorContact = null;
 
-  @JsonProperty("vendorCity")
-  private String vendorCity = null;
-
-  @JsonProperty("vendorCountry")
-  private String vendorCountry = null;
-
-  @JsonProperty("vendorDescription")
-  private String vendorDescription = null;
-
-  @JsonProperty("vendorEmail")
-  private String vendorEmail = null;
-
-  @JsonProperty("vendorName")
-  private String vendorName = null;
-
-  @JsonProperty("vendorPhone")
-  private String vendorPhone = null;
-
-  @JsonProperty("vendorURL")
-  private String vendorURL = null;
-
-  public VendorSpecification additionalInfo(Map<String, String> additionalInfo) {
+  public VendorSpecification additionalInfo(Map<String, Object> additionalInfo) {
     this.additionalInfo = additionalInfo;
     return this;
   }
 
-  public VendorSpecification putAdditionalInfoItem(String key, String additionalInfoItem) {
+  public VendorSpecification putAdditionalInfoItem(String key, Object additionalInfoItem) {
     if (this.additionalInfo == null) {
-      this.additionalInfo = new HashMap<String, String>();
+      this.additionalInfo = null;
     }
     this.additionalInfo.put(key, additionalInfoItem);
     return this;
   }
 
-   /**
-   * Additional arbitrary info
+  /**
+   * Additional arbitrary information specific to a particular Vendor. Look for the Vedors specific API documentation for more details
    * @return additionalInfo
   **/
-  @ApiModelProperty(value = "Additional arbitrary info")
+  @ApiModelProperty(value = "Additional arbitrary information specific to a particular Vendor. Look for the Vedors specific API documentation for more details")
 
 
-  public Map<String, String> getAdditionalInfo() {
+  public Map<String, Object> getAdditionalInfo() {
     return additionalInfo;
   }
 
-  public void setAdditionalInfo(Map<String, String> additionalInfo) {
+  public void setAdditionalInfo(Map<String, Object> additionalInfo) {
     this.additionalInfo = additionalInfo;
   }
 
-  public VendorSpecification contactName(String contactName) {
-    this.contactName = contactName;
+  public VendorSpecification services(List<VendorSpecificationService> services) {
+    this.services = services;
     return this;
   }
 
-   /**
-   * The name or identifier of the primary vendor contact
-   * @return contactName
-  **/
-  @ApiModelProperty(value = "The name or identifier of the primary vendor contact")
-
-
-  public String getContactName() {
-    return contactName;
-  }
-
-  public void setContactName(String contactName) {
-    this.contactName = contactName;
-  }
-
-  public VendorSpecification platforms(List<VendorSpecificationPlatform> platforms) {
-    this.platforms = platforms;
-    return this;
-  }
-
-  public VendorSpecification addPlatformsItem(VendorSpecificationPlatform platformsItem) {
-    if (this.platforms == null) {
-      this.platforms = new ArrayList<VendorSpecificationPlatform>();
+  public VendorSpecification addServicesItem(VendorSpecificationService servicesItem) {
+    if (this.services == null) {
+      this.services = new ArrayList<VendorSpecificationService>();
     }
-    this.platforms.add(platformsItem);
+    this.services.add(servicesItem);
     return this;
   }
 
-   /**
+  /**
    * List of platform specifications available at the vendor
-   * @return platforms
+   * @return services
   **/
   @ApiModelProperty(value = "List of platform specifications available at the vendor")
 
   @Valid
 
-  public List<VendorSpecificationPlatform> getPlatforms() {
-    return platforms;
+  public List<VendorSpecificationService> getServices() {
+    return services;
   }
 
-  public void setPlatforms(List<VendorSpecificationPlatform> platforms) {
-    this.platforms = platforms;
+  public void setServices(List<VendorSpecificationService> services) {
+    this.services = services;
   }
 
-  public VendorSpecification vendorAddress(String vendorAddress) {
-    this.vendorAddress = vendorAddress;
+  public VendorSpecification vendorContact(VendorContact vendorContact) {
+    this.vendorContact = vendorContact;
     return this;
   }
 
-   /**
-   * The street address of the vendor
-   * @return vendorAddress
+  /**
+   * Get vendorContact
+   * @return vendorContact
   **/
-  @ApiModelProperty(value = "The street address of the vendor")
+  @ApiModelProperty(value = "")
 
+  @Valid
 
-  public String getVendorAddress() {
-    return vendorAddress;
+  public VendorContact getVendorContact() {
+    return vendorContact;
   }
 
-  public void setVendorAddress(String vendorAddress) {
-    this.vendorAddress = vendorAddress;
-  }
-
-  public VendorSpecification vendorCity(String vendorCity) {
-    this.vendorCity = vendorCity;
-    return this;
-  }
-
-   /**
-   * The name of the city where the vendor is located
-   * @return vendorCity
-  **/
-  @ApiModelProperty(value = "The name of the city where the vendor is located")
-
-
-  public String getVendorCity() {
-    return vendorCity;
-  }
-
-  public void setVendorCity(String vendorCity) {
-    this.vendorCity = vendorCity;
-  }
-
-  public VendorSpecification vendorCountry(String vendorCountry) {
-    this.vendorCountry = vendorCountry;
-    return this;
-  }
-
-   /**
-   * The name of the country where the vendor is located
-   * @return vendorCountry
-  **/
-  @ApiModelProperty(value = "The name of the country where the vendor is located")
-
-
-  public String getVendorCountry() {
-    return vendorCountry;
-  }
-
-  public void setVendorCountry(String vendorCountry) {
-    this.vendorCountry = vendorCountry;
-  }
-
-  public VendorSpecification vendorDescription(String vendorDescription) {
-    this.vendorDescription = vendorDescription;
-    return this;
-  }
-
-   /**
-   * A description of the vendor
-   * @return vendorDescription
-  **/
-  @ApiModelProperty(value = "A description of the vendor")
-
-
-  public String getVendorDescription() {
-    return vendorDescription;
-  }
-
-  public void setVendorDescription(String vendorDescription) {
-    this.vendorDescription = vendorDescription;
-  }
-
-  public VendorSpecification vendorEmail(String vendorEmail) {
-    this.vendorEmail = vendorEmail;
-    return this;
-  }
-
-   /**
-   * The primary email address used to contact the vendor
-   * @return vendorEmail
-  **/
-  @ApiModelProperty(value = "The primary email address used to contact the vendor")
-
-
-  public String getVendorEmail() {
-    return vendorEmail;
-  }
-
-  public void setVendorEmail(String vendorEmail) {
-    this.vendorEmail = vendorEmail;
-  }
-
-  public VendorSpecification vendorName(String vendorName) {
-    this.vendorName = vendorName;
-    return this;
-  }
-
-   /**
-   * The human readable name of the vendor
-   * @return vendorName
-  **/
-  @ApiModelProperty(value = "The human readable name of the vendor")
-
-
-  public String getVendorName() {
-    return vendorName;
-  }
-
-  public void setVendorName(String vendorName) {
-    this.vendorName = vendorName;
-  }
-
-  public VendorSpecification vendorPhone(String vendorPhone) {
-    this.vendorPhone = vendorPhone;
-    return this;
-  }
-
-   /**
-   * The primary phone number used to contact the vendor
-   * @return vendorPhone
-  **/
-  @ApiModelProperty(value = "The primary phone number used to contact the vendor")
-
-
-  public String getVendorPhone() {
-    return vendorPhone;
-  }
-
-  public void setVendorPhone(String vendorPhone) {
-    this.vendorPhone = vendorPhone;
-  }
-
-  public VendorSpecification vendorURL(String vendorURL) {
-    this.vendorURL = vendorURL;
-    return this;
-  }
-
-   /**
-   * The primary URL for the vendor
-   * @return vendorURL
-  **/
-  @ApiModelProperty(value = "The primary URL for the vendor")
-
-
-  public String getVendorURL() {
-    return vendorURL;
-  }
-
-  public void setVendorURL(String vendorURL) {
-    this.vendorURL = vendorURL;
+  public void setVendorContact(VendorContact vendorContact) {
+    this.vendorContact = vendorContact;
   }
 
 
@@ -301,21 +122,13 @@ public class VendorSpecification   {
     }
     VendorSpecification vendorSpecification = (VendorSpecification) o;
     return Objects.equals(this.additionalInfo, vendorSpecification.additionalInfo) &&
-        Objects.equals(this.contactName, vendorSpecification.contactName) &&
-        Objects.equals(this.platforms, vendorSpecification.platforms) &&
-        Objects.equals(this.vendorAddress, vendorSpecification.vendorAddress) &&
-        Objects.equals(this.vendorCity, vendorSpecification.vendorCity) &&
-        Objects.equals(this.vendorCountry, vendorSpecification.vendorCountry) &&
-        Objects.equals(this.vendorDescription, vendorSpecification.vendorDescription) &&
-        Objects.equals(this.vendorEmail, vendorSpecification.vendorEmail) &&
-        Objects.equals(this.vendorName, vendorSpecification.vendorName) &&
-        Objects.equals(this.vendorPhone, vendorSpecification.vendorPhone) &&
-        Objects.equals(this.vendorURL, vendorSpecification.vendorURL);
+        Objects.equals(this.services, vendorSpecification.services) &&
+        Objects.equals(this.vendorContact, vendorSpecification.vendorContact);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(additionalInfo, contactName, platforms, vendorAddress, vendorCity, vendorCountry, vendorDescription, vendorEmail, vendorName, vendorPhone, vendorURL);
+    return Objects.hash(additionalInfo, services, vendorContact);
   }
 
   @Override
@@ -324,16 +137,8 @@ public class VendorSpecification   {
     sb.append("class VendorSpecification {\n");
     
     sb.append("    additionalInfo: ").append(toIndentedString(additionalInfo)).append("\n");
-    sb.append("    contactName: ").append(toIndentedString(contactName)).append("\n");
-    sb.append("    platforms: ").append(toIndentedString(platforms)).append("\n");
-    sb.append("    vendorAddress: ").append(toIndentedString(vendorAddress)).append("\n");
-    sb.append("    vendorCity: ").append(toIndentedString(vendorCity)).append("\n");
-    sb.append("    vendorCountry: ").append(toIndentedString(vendorCountry)).append("\n");
-    sb.append("    vendorDescription: ").append(toIndentedString(vendorDescription)).append("\n");
-    sb.append("    vendorEmail: ").append(toIndentedString(vendorEmail)).append("\n");
-    sb.append("    vendorName: ").append(toIndentedString(vendorName)).append("\n");
-    sb.append("    vendorPhone: ").append(toIndentedString(vendorPhone)).append("\n");
-    sb.append("    vendorURL: ").append(toIndentedString(vendorURL)).append("\n");
+    sb.append("    services: ").append(toIndentedString(services)).append("\n");
+    sb.append("    vendorContact: ").append(toIndentedString(vendorContact)).append("\n");
     sb.append("}");
     return sb.toString();
   }

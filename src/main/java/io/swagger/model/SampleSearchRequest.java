@@ -2,26 +2,29 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * SampleSearchRequest
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class SampleSearchRequest   {
-  @JsonProperty("germplasmDbId")
+  @JsonProperty("germplasmDbIds")
   @Valid
-  private List<String> germplasmDbId = null;
+  private List<String> germplasmDbIds = null;
 
-  @JsonProperty("observationUnitDbId")
+  @JsonProperty("observationUnitDbIds")
   @Valid
-  private List<String> observationUnitDbId = null;
+  private List<String> observationUnitDbIds = null;
 
   @JsonProperty("page")
   private Integer page = null;
@@ -29,68 +32,68 @@ public class SampleSearchRequest   {
   @JsonProperty("pageSize")
   private Integer pageSize = null;
 
-  @JsonProperty("plateDbId")
+  @JsonProperty("plateDbIds")
   @Valid
-  private List<String> plateDbId = null;
+  private List<String> plateDbIds = null;
 
-  @JsonProperty("sampleDbId")
+  @JsonProperty("sampleDbIds")
   @Valid
-  private List<String> sampleDbId = null;
+  private List<String> sampleDbIds = null;
 
-  public SampleSearchRequest germplasmDbId(List<String> germplasmDbId) {
-    this.germplasmDbId = germplasmDbId;
+  public SampleSearchRequest germplasmDbIds(List<String> germplasmDbIds) {
+    this.germplasmDbIds = germplasmDbIds;
     return this;
   }
 
-  public SampleSearchRequest addGermplasmDbIdItem(String germplasmDbIdItem) {
-    if (this.germplasmDbId == null) {
-      this.germplasmDbId = new ArrayList<String>();
+  public SampleSearchRequest addGermplasmDbIdsItem(String germplasmDbIdsItem) {
+    if (this.germplasmDbIds == null) {
+      this.germplasmDbIds = new ArrayList<String>();
     }
-    this.germplasmDbId.add(germplasmDbIdItem);
+    this.germplasmDbIds.add(germplasmDbIdsItem);
     return this;
   }
 
-   /**
+  /**
    *  The ID which uniquely identifies a germplasm
-   * @return germplasmDbId
+   * @return germplasmDbIds
   **/
   @ApiModelProperty(value = " The ID which uniquely identifies a germplasm")
 
 
-  public List<String> getGermplasmDbId() {
-    return germplasmDbId;
+  public List<String> getGermplasmDbIds() {
+    return germplasmDbIds;
   }
 
-  public void setGermplasmDbId(List<String> germplasmDbId) {
-    this.germplasmDbId = germplasmDbId;
+  public void setGermplasmDbIds(List<String> germplasmDbIds) {
+    this.germplasmDbIds = germplasmDbIds;
   }
 
-  public SampleSearchRequest observationUnitDbId(List<String> observationUnitDbId) {
-    this.observationUnitDbId = observationUnitDbId;
+  public SampleSearchRequest observationUnitDbIds(List<String> observationUnitDbIds) {
+    this.observationUnitDbIds = observationUnitDbIds;
     return this;
   }
 
-  public SampleSearchRequest addObservationUnitDbIdItem(String observationUnitDbIdItem) {
-    if (this.observationUnitDbId == null) {
-      this.observationUnitDbId = new ArrayList<String>();
+  public SampleSearchRequest addObservationUnitDbIdsItem(String observationUnitDbIdsItem) {
+    if (this.observationUnitDbIds == null) {
+      this.observationUnitDbIds = new ArrayList<String>();
     }
-    this.observationUnitDbId.add(observationUnitDbIdItem);
+    this.observationUnitDbIds.add(observationUnitDbIdsItem);
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies an observation unit
-   * @return observationUnitDbId
+   * @return observationUnitDbIds
   **/
   @ApiModelProperty(value = "The ID which uniquely identifies an observation unit")
 
 
-  public List<String> getObservationUnitDbId() {
-    return observationUnitDbId;
+  public List<String> getObservationUnitDbIds() {
+    return observationUnitDbIds;
   }
 
-  public void setObservationUnitDbId(List<String> observationUnitDbId) {
-    this.observationUnitDbId = observationUnitDbId;
+  public void setObservationUnitDbIds(List<String> observationUnitDbIds) {
+    this.observationUnitDbIds = observationUnitDbIds;
   }
 
   public SampleSearchRequest page(Integer page) {
@@ -98,7 +101,7 @@ public class SampleSearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is 0.
    * @return page
   **/
@@ -118,7 +121,7 @@ public class SampleSearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * The size of the pages to be returned. Default is 1000.
    * @return pageSize
   **/
@@ -133,60 +136,60 @@ public class SampleSearchRequest   {
     this.pageSize = pageSize;
   }
 
-  public SampleSearchRequest plateDbId(List<String> plateDbId) {
-    this.plateDbId = plateDbId;
+  public SampleSearchRequest plateDbIds(List<String> plateDbIds) {
+    this.plateDbIds = plateDbIds;
     return this;
   }
 
-  public SampleSearchRequest addPlateDbIdItem(String plateDbIdItem) {
-    if (this.plateDbId == null) {
-      this.plateDbId = new ArrayList<String>();
+  public SampleSearchRequest addPlateDbIdsItem(String plateDbIdsItem) {
+    if (this.plateDbIds == null) {
+      this.plateDbIds = new ArrayList<String>();
     }
-    this.plateDbId.add(plateDbIdItem);
+    this.plateDbIds.add(plateDbIdsItem);
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies a plate of samples
-   * @return plateDbId
+   * @return plateDbIds
   **/
   @ApiModelProperty(value = "The ID which uniquely identifies a plate of samples")
 
 
-  public List<String> getPlateDbId() {
-    return plateDbId;
+  public List<String> getPlateDbIds() {
+    return plateDbIds;
   }
 
-  public void setPlateDbId(List<String> plateDbId) {
-    this.plateDbId = plateDbId;
+  public void setPlateDbIds(List<String> plateDbIds) {
+    this.plateDbIds = plateDbIds;
   }
 
-  public SampleSearchRequest sampleDbId(List<String> sampleDbId) {
-    this.sampleDbId = sampleDbId;
+  public SampleSearchRequest sampleDbIds(List<String> sampleDbIds) {
+    this.sampleDbIds = sampleDbIds;
     return this;
   }
 
-  public SampleSearchRequest addSampleDbIdItem(String sampleDbIdItem) {
-    if (this.sampleDbId == null) {
-      this.sampleDbId = new ArrayList<String>();
+  public SampleSearchRequest addSampleDbIdsItem(String sampleDbIdsItem) {
+    if (this.sampleDbIds == null) {
+      this.sampleDbIds = new ArrayList<String>();
     }
-    this.sampleDbId.add(sampleDbIdItem);
+    this.sampleDbIds.add(sampleDbIdsItem);
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies a sample
-   * @return sampleDbId
+   * @return sampleDbIds
   **/
   @ApiModelProperty(value = "The ID which uniquely identifies a sample")
 
 
-  public List<String> getSampleDbId() {
-    return sampleDbId;
+  public List<String> getSampleDbIds() {
+    return sampleDbIds;
   }
 
-  public void setSampleDbId(List<String> sampleDbId) {
-    this.sampleDbId = sampleDbId;
+  public void setSampleDbIds(List<String> sampleDbIds) {
+    this.sampleDbIds = sampleDbIds;
   }
 
 
@@ -199,17 +202,17 @@ public class SampleSearchRequest   {
       return false;
     }
     SampleSearchRequest sampleSearchRequest = (SampleSearchRequest) o;
-    return Objects.equals(this.germplasmDbId, sampleSearchRequest.germplasmDbId) &&
-        Objects.equals(this.observationUnitDbId, sampleSearchRequest.observationUnitDbId) &&
+    return Objects.equals(this.germplasmDbIds, sampleSearchRequest.germplasmDbIds) &&
+        Objects.equals(this.observationUnitDbIds, sampleSearchRequest.observationUnitDbIds) &&
         Objects.equals(this.page, sampleSearchRequest.page) &&
         Objects.equals(this.pageSize, sampleSearchRequest.pageSize) &&
-        Objects.equals(this.plateDbId, sampleSearchRequest.plateDbId) &&
-        Objects.equals(this.sampleDbId, sampleSearchRequest.sampleDbId);
+        Objects.equals(this.plateDbIds, sampleSearchRequest.plateDbIds) &&
+        Objects.equals(this.sampleDbIds, sampleSearchRequest.sampleDbIds);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(germplasmDbId, observationUnitDbId, page, pageSize, plateDbId, sampleDbId);
+    return Objects.hash(germplasmDbIds, observationUnitDbIds, page, pageSize, plateDbIds, sampleDbIds);
   }
 
   @Override
@@ -217,12 +220,12 @@ public class SampleSearchRequest   {
     StringBuilder sb = new StringBuilder();
     sb.append("class SampleSearchRequest {\n");
     
-    sb.append("    germplasmDbId: ").append(toIndentedString(germplasmDbId)).append("\n");
-    sb.append("    observationUnitDbId: ").append(toIndentedString(observationUnitDbId)).append("\n");
+    sb.append("    germplasmDbIds: ").append(toIndentedString(germplasmDbIds)).append("\n");
+    sb.append("    observationUnitDbIds: ").append(toIndentedString(observationUnitDbIds)).append("\n");
     sb.append("    page: ").append(toIndentedString(page)).append("\n");
     sb.append("    pageSize: ").append(toIndentedString(pageSize)).append("\n");
-    sb.append("    plateDbId: ").append(toIndentedString(plateDbId)).append("\n");
-    sb.append("    sampleDbId: ").append(toIndentedString(sampleDbId)).append("\n");
+    sb.append("    plateDbIds: ").append(toIndentedString(plateDbIds)).append("\n");
+    sb.append("    sampleDbIds: ").append(toIndentedString(sampleDbIds)).append("\n");
     sb.append("}");
     return sb.toString();
   }

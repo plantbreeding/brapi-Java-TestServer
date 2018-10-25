@@ -58,9 +58,7 @@ public class GermplasmAttributeService {
 		attrib.setDescription(entity.getDescription());
 		attrib.setName(entity.getName());
 		attrib.setUri(entity.getUri());
-		attrib.setValues(entity.getValues().stream().map(v -> {
-			return v.getValue();
-		}).collect(Collectors.toList()));
+		attrib.setValues(entity.getValues().get(0).getValue());
 		return attrib;
 	}
 

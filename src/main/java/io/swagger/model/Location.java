@@ -2,18 +2,22 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * Location
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class Location   {
   @JsonProperty("abbreviation")
@@ -35,6 +39,9 @@ public class Location   {
   @JsonProperty("countryName")
   private String countryName = null;
 
+  @JsonProperty("documentationURL")
+  private String documentationURL = null;
+
   @JsonProperty("instituteAddress")
   private String instituteAddress = null;
 
@@ -50,6 +57,9 @@ public class Location   {
   @JsonProperty("locationDbId")
   private String locationDbId = null;
 
+  @JsonProperty("locationName")
+  private String locationName = null;
+
   @JsonProperty("locationType")
   private String locationType = null;
 
@@ -64,7 +74,7 @@ public class Location   {
     return this;
   }
 
-   /**
+  /**
    * An abbreviation which represents this location
    * @return abbreviation
   **/
@@ -84,11 +94,11 @@ public class Location   {
     return this;
   }
 
-   /**
-   * Deprecated  <strong>Use abbreviation</strong> 
+  /**
+   * Deprecated  Use abbreviation 
    * @return abreviation
   **/
-  @ApiModelProperty(value = "Deprecated  <strong>Use abbreviation</strong> ")
+  @ApiModelProperty(value = "Deprecated  Use abbreviation ")
 
 
   public String getAbreviation() {
@@ -106,13 +116,13 @@ public class Location   {
 
   public Location putAdditionalInfoItem(String key, String additionalInfoItem) {
     if (this.additionalInfo == null) {
-      this.additionalInfo = new HashMap<String, String>();
+      this.additionalInfo = null;
     }
     this.additionalInfo.put(key, additionalInfoItem);
     return this;
   }
 
-   /**
+  /**
    * Additional arbitrary info
    * @return additionalInfo
   **/
@@ -132,7 +142,7 @@ public class Location   {
     return this;
   }
 
-   /**
+  /**
    * The altitude of this location
    * @return altitude
   **/
@@ -153,7 +163,7 @@ public class Location   {
     return this;
   }
 
-   /**
+  /**
    * [ISO_3166-1_alpha-3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) spec
    * @return countryCode
   **/
@@ -173,7 +183,7 @@ public class Location   {
     return this;
   }
 
-   /**
+  /**
    * The full name of the country where this location is
    * @return countryName
   **/
@@ -188,12 +198,32 @@ public class Location   {
     this.countryName = countryName;
   }
 
+  public Location documentationURL(String documentationURL) {
+    this.documentationURL = documentationURL;
+    return this;
+  }
+
+  /**
+   * A URL to the human readable documentation of this object
+   * @return documentationURL
+  **/
+  @ApiModelProperty(value = "A URL to the human readable documentation of this object")
+
+
+  public String getDocumentationURL() {
+    return documentationURL;
+  }
+
+  public void setDocumentationURL(String documentationURL) {
+    this.documentationURL = documentationURL;
+  }
+
   public Location instituteAddress(String instituteAddress) {
     this.instituteAddress = instituteAddress;
     return this;
   }
 
-   /**
+  /**
    * The street address of the institute representing this location
    * @return instituteAddress
   **/
@@ -213,11 +243,11 @@ public class Location   {
     return this;
   }
 
-   /**
-   * Deprecated  <strong>Use instituteAddress</strong> 
+  /**
+   * Deprecated  Use instituteAddress 
    * @return instituteAdress
   **/
-  @ApiModelProperty(value = "Deprecated  <strong>Use instituteAddress</strong> ")
+  @ApiModelProperty(value = "Deprecated  Use instituteAddress ")
 
 
   public String getInstituteAdress() {
@@ -233,7 +263,7 @@ public class Location   {
     return this;
   }
 
-   /**
+  /**
    * each institute/laboratory can have several experimental field
    * @return instituteName
   **/
@@ -253,7 +283,7 @@ public class Location   {
     return this;
   }
 
-   /**
+  /**
    * The latitude of this location
    * @return latitude
   **/
@@ -274,7 +304,7 @@ public class Location   {
     return this;
   }
 
-   /**
+  /**
    * string identifier
    * @return locationDbId
   **/
@@ -289,12 +319,32 @@ public class Location   {
     this.locationDbId = locationDbId;
   }
 
+  public Location locationName(String locationName) {
+    this.locationName = locationName;
+    return this;
+  }
+
+  /**
+   * A human readable name for this location
+   * @return locationName
+  **/
+  @ApiModelProperty(value = "A human readable name for this location")
+
+
+  public String getLocationName() {
+    return locationName;
+  }
+
+  public void setLocationName(String locationName) {
+    this.locationName = locationName;
+  }
+
   public Location locationType(String locationType) {
     this.locationType = locationType;
     return this;
   }
 
-   /**
+  /**
    * The type of location this represents (ex. Breeding Location, Storage Location, etc)
    * @return locationType
   **/
@@ -314,7 +364,7 @@ public class Location   {
     return this;
   }
 
-   /**
+  /**
    * the longitude of this location
    * @return longitude
   **/
@@ -335,11 +385,11 @@ public class Location   {
     return this;
   }
 
-   /**
-   * A human readable name for this location
+  /**
+   * DEPRECATED in v1.3 - Use \"locationName\"
    * @return name
   **/
-  @ApiModelProperty(value = "A human readable name for this location")
+  @ApiModelProperty(value = "DEPRECATED in v1.3 - Use \"locationName\"")
 
 
   public String getName() {
@@ -366,11 +416,13 @@ public class Location   {
         Objects.equals(this.altitude, location.altitude) &&
         Objects.equals(this.countryCode, location.countryCode) &&
         Objects.equals(this.countryName, location.countryName) &&
+        Objects.equals(this.documentationURL, location.documentationURL) &&
         Objects.equals(this.instituteAddress, location.instituteAddress) &&
         Objects.equals(this.instituteAdress, location.instituteAdress) &&
         Objects.equals(this.instituteName, location.instituteName) &&
         Objects.equals(this.latitude, location.latitude) &&
         Objects.equals(this.locationDbId, location.locationDbId) &&
+        Objects.equals(this.locationName, location.locationName) &&
         Objects.equals(this.locationType, location.locationType) &&
         Objects.equals(this.longitude, location.longitude) &&
         Objects.equals(this.name, location.name);
@@ -378,7 +430,7 @@ public class Location   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(abbreviation, abreviation, additionalInfo, altitude, countryCode, countryName, instituteAddress, instituteAdress, instituteName, latitude, locationDbId, locationType, longitude, name);
+    return Objects.hash(abbreviation, abreviation, additionalInfo, altitude, countryCode, countryName, documentationURL, instituteAddress, instituteAdress, instituteName, latitude, locationDbId, locationName, locationType, longitude, name);
   }
 
   @Override
@@ -392,11 +444,13 @@ public class Location   {
     sb.append("    altitude: ").append(toIndentedString(altitude)).append("\n");
     sb.append("    countryCode: ").append(toIndentedString(countryCode)).append("\n");
     sb.append("    countryName: ").append(toIndentedString(countryName)).append("\n");
+    sb.append("    documentationURL: ").append(toIndentedString(documentationURL)).append("\n");
     sb.append("    instituteAddress: ").append(toIndentedString(instituteAddress)).append("\n");
     sb.append("    instituteAdress: ").append(toIndentedString(instituteAdress)).append("\n");
     sb.append("    instituteName: ").append(toIndentedString(instituteName)).append("\n");
     sb.append("    latitude: ").append(toIndentedString(latitude)).append("\n");
     sb.append("    locationDbId: ").append(toIndentedString(locationDbId)).append("\n");
+    sb.append("    locationName: ").append(toIndentedString(locationName)).append("\n");
     sb.append("    locationType: ").append(toIndentedString(locationType)).append("\n");
     sb.append("    longitude: ").append(toIndentedString(longitude)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");

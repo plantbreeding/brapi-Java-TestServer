@@ -2,17 +2,20 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * AlleleMatrixSearchRequest
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class AlleleMatrixSearchRequest   {
   @JsonProperty("expandHomozygotes")
@@ -24,6 +27,10 @@ public class AlleleMatrixSearchRequest   {
   @JsonProperty("markerDbId")
   @Valid
   private List<String> markerDbId = null;
+
+  @JsonProperty("markerProfileDbId")
+  @Valid
+  private List<String> markerProfileDbId = null;
 
   @JsonProperty("markerprofileDbId")
   @Valid
@@ -53,7 +60,7 @@ public class AlleleMatrixSearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * Should homozygotes be expanded (true) or collapsed into a single occurence (false)
    * @return expandHomozygotes
   **/
@@ -73,7 +80,7 @@ public class AlleleMatrixSearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * The data format of the response data. ie \"json\", \"tsv\", etc
    * @return format
   **/
@@ -101,7 +108,7 @@ public class AlleleMatrixSearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * An ID which uniquely identifies a Marker
    * @return markerDbId
   **/
@@ -114,6 +121,34 @@ public class AlleleMatrixSearchRequest   {
 
   public void setMarkerDbId(List<String> markerDbId) {
     this.markerDbId = markerDbId;
+  }
+
+  public AlleleMatrixSearchRequest markerProfileDbId(List<String> markerProfileDbId) {
+    this.markerProfileDbId = markerProfileDbId;
+    return this;
+  }
+
+  public AlleleMatrixSearchRequest addMarkerProfileDbIdItem(String markerProfileDbIdItem) {
+    if (this.markerProfileDbId == null) {
+      this.markerProfileDbId = new ArrayList<String>();
+    }
+    this.markerProfileDbId.add(markerProfileDbIdItem);
+    return this;
+  }
+
+  /**
+   * An ID which uniquely identifies a Marker Profile
+   * @return markerProfileDbId
+  **/
+  @ApiModelProperty(value = "An ID which uniquely identifies a Marker Profile")
+
+
+  public List<String> getMarkerProfileDbId() {
+    return markerProfileDbId;
+  }
+
+  public void setMarkerProfileDbId(List<String> markerProfileDbId) {
+    this.markerProfileDbId = markerProfileDbId;
   }
 
   public AlleleMatrixSearchRequest markerprofileDbId(List<String> markerprofileDbId) {
@@ -129,11 +164,11 @@ public class AlleleMatrixSearchRequest   {
     return this;
   }
 
-   /**
-   * An ID which uniquely identifies a Marker Profile
+  /**
+   * DEPRECATED in v1.3 - see \"markerProfileDbId\" (camel case)
    * @return markerprofileDbId
   **/
-  @ApiModelProperty(value = "An ID which uniquely identifies a Marker Profile")
+  @ApiModelProperty(value = "DEPRECATED in v1.3 - see \"markerProfileDbId\" (camel case)")
 
 
   public List<String> getMarkerprofileDbId() {
@@ -157,7 +192,7 @@ public class AlleleMatrixSearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * An ID which uniquely identifies an Allele Matrix
    * @return matrixDbId
   **/
@@ -177,7 +212,7 @@ public class AlleleMatrixSearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * Which page of the \"data\" array to return. The page indexing starts at 0 (page=0 will return the first page). Default is 0.
    * @return page
   **/
@@ -197,7 +232,7 @@ public class AlleleMatrixSearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * The maximum number of items to return per page of the \"data\" array. Default is 1000.
    * @return pageSize
   **/
@@ -217,7 +252,7 @@ public class AlleleMatrixSearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * The string to use as a separator for phased allele calls.
    * @return sepPhased
   **/
@@ -237,7 +272,7 @@ public class AlleleMatrixSearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * The string to use as a separator for unphased allele calls.
    * @return sepUnphased
   **/
@@ -257,7 +292,7 @@ public class AlleleMatrixSearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * The string to use as a representation for missing data.
    * @return unknownString
   **/
@@ -285,6 +320,7 @@ public class AlleleMatrixSearchRequest   {
     return Objects.equals(this.expandHomozygotes, alleleMatrixSearchRequest.expandHomozygotes) &&
         Objects.equals(this.format, alleleMatrixSearchRequest.format) &&
         Objects.equals(this.markerDbId, alleleMatrixSearchRequest.markerDbId) &&
+        Objects.equals(this.markerProfileDbId, alleleMatrixSearchRequest.markerProfileDbId) &&
         Objects.equals(this.markerprofileDbId, alleleMatrixSearchRequest.markerprofileDbId) &&
         Objects.equals(this.matrixDbId, alleleMatrixSearchRequest.matrixDbId) &&
         Objects.equals(this.page, alleleMatrixSearchRequest.page) &&
@@ -296,7 +332,7 @@ public class AlleleMatrixSearchRequest   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(expandHomozygotes, format, markerDbId, markerprofileDbId, matrixDbId, page, pageSize, sepPhased, sepUnphased, unknownString);
+    return Objects.hash(expandHomozygotes, format, markerDbId, markerProfileDbId, markerprofileDbId, matrixDbId, page, pageSize, sepPhased, sepUnphased, unknownString);
   }
 
   @Override
@@ -307,6 +343,7 @@ public class AlleleMatrixSearchRequest   {
     sb.append("    expandHomozygotes: ").append(toIndentedString(expandHomozygotes)).append("\n");
     sb.append("    format: ").append(toIndentedString(format)).append("\n");
     sb.append("    markerDbId: ").append(toIndentedString(markerDbId)).append("\n");
+    sb.append("    markerProfileDbId: ").append(toIndentedString(markerProfileDbId)).append("\n");
     sb.append("    markerprofileDbId: ").append(toIndentedString(markerprofileDbId)).append("\n");
     sb.append("    matrixDbId: ").append(toIndentedString(matrixDbId)).append("\n");
     sb.append("    page: ").append(toIndentedString(page)).append("\n");

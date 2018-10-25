@@ -2,16 +2,20 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.Season;
 import org.threeten.bp.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * ObservationSummary
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class ObservationSummary   {
   @JsonProperty("collector")
@@ -29,6 +33,9 @@ public class ObservationSummary   {
   @JsonProperty("observationVariableName")
   private String observationVariableName = null;
 
+  @JsonProperty("season")
+  private Season season = null;
+
   @JsonProperty("value")
   private String value = null;
 
@@ -37,7 +44,7 @@ public class ObservationSummary   {
     return this;
   }
 
-   /**
+  /**
    * The name or identifier of the entity which collected the observation
    * @return collector
   **/
@@ -57,7 +64,7 @@ public class ObservationSummary   {
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies an observation
    * @return observationDbId
   **/
@@ -77,7 +84,7 @@ public class ObservationSummary   {
     return this;
   }
 
-   /**
+  /**
    * The date and time  when this observation was made 
    * @return observationTimeStamp
   **/
@@ -98,7 +105,7 @@ public class ObservationSummary   {
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies an observation variable
    * @return observationVariableDbId
   **/
@@ -118,7 +125,7 @@ public class ObservationSummary   {
     return this;
   }
 
-   /**
+  /**
    * A human readable name for an observation variable
    * @return observationVariableName
   **/
@@ -133,12 +140,33 @@ public class ObservationSummary   {
     this.observationVariableName = observationVariableName;
   }
 
+  public ObservationSummary season(Season season) {
+    this.season = season;
+    return this;
+  }
+
+  /**
+   * Get season
+   * @return season
+  **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public Season getSeason() {
+    return season;
+  }
+
+  public void setSeason(Season season) {
+    this.season = season;
+  }
+
   public ObservationSummary value(String value) {
     this.value = value;
     return this;
   }
 
-   /**
+  /**
    * The value of the data collected as an observation
    * @return value
   **/
@@ -168,12 +196,13 @@ public class ObservationSummary   {
         Objects.equals(this.observationTimeStamp, observationSummary.observationTimeStamp) &&
         Objects.equals(this.observationVariableDbId, observationSummary.observationVariableDbId) &&
         Objects.equals(this.observationVariableName, observationSummary.observationVariableName) &&
+        Objects.equals(this.season, observationSummary.season) &&
         Objects.equals(this.value, observationSummary.value);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(collector, observationDbId, observationTimeStamp, observationVariableDbId, observationVariableName, value);
+    return Objects.hash(collector, observationDbId, observationTimeStamp, observationVariableDbId, observationVariableName, season, value);
   }
 
   @Override
@@ -186,6 +215,7 @@ public class ObservationSummary   {
     sb.append("    observationTimeStamp: ").append(toIndentedString(observationTimeStamp)).append("\n");
     sb.append("    observationVariableDbId: ").append(toIndentedString(observationVariableDbId)).append("\n");
     sb.append("    observationVariableName: ").append(toIndentedString(observationVariableName)).append("\n");
+    sb.append("    season: ").append(toIndentedString(season)).append("\n");
     sb.append("    value: ").append(toIndentedString(value)).append("\n");
     sb.append("}");
     return sb.toString();

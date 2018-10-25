@@ -2,14 +2,18 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * StudyType
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class StudyType   {
   @JsonProperty("description")
@@ -18,12 +22,18 @@ public class StudyType   {
   @JsonProperty("name")
   private String name = null;
 
+  @JsonProperty("studyTypeDbId")
+  private String studyTypeDbId = null;
+
+  @JsonProperty("studyTypeName")
+  private String studyTypeName = null;
+
   public StudyType description(String description) {
     this.description = description;
     return this;
   }
 
-   /**
+  /**
    * The description of this study type
    * @return description
   **/
@@ -43,11 +53,11 @@ public class StudyType   {
     return this;
   }
 
-   /**
-   * The human readable name of a study type
+  /**
+   * DEPRECATED in v1.3 - Use \"studyTypeName\"
    * @return name
   **/
-  @ApiModelProperty(value = "The human readable name of a study type")
+  @ApiModelProperty(value = "DEPRECATED in v1.3 - Use \"studyTypeName\"")
 
 
   public String getName() {
@@ -56,6 +66,46 @@ public class StudyType   {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public StudyType studyTypeDbId(String studyTypeDbId) {
+    this.studyTypeDbId = studyTypeDbId;
+    return this;
+  }
+
+  /**
+   * The unique identifier of a study type
+   * @return studyTypeDbId
+  **/
+  @ApiModelProperty(value = "The unique identifier of a study type")
+
+
+  public String getStudyTypeDbId() {
+    return studyTypeDbId;
+  }
+
+  public void setStudyTypeDbId(String studyTypeDbId) {
+    this.studyTypeDbId = studyTypeDbId;
+  }
+
+  public StudyType studyTypeName(String studyTypeName) {
+    this.studyTypeName = studyTypeName;
+    return this;
+  }
+
+  /**
+   * The human readable name of a study type
+   * @return studyTypeName
+  **/
+  @ApiModelProperty(value = "The human readable name of a study type")
+
+
+  public String getStudyTypeName() {
+    return studyTypeName;
+  }
+
+  public void setStudyTypeName(String studyTypeName) {
+    this.studyTypeName = studyTypeName;
   }
 
 
@@ -69,12 +119,14 @@ public class StudyType   {
     }
     StudyType studyType = (StudyType) o;
     return Objects.equals(this.description, studyType.description) &&
-        Objects.equals(this.name, studyType.name);
+        Objects.equals(this.name, studyType.name) &&
+        Objects.equals(this.studyTypeDbId, studyType.studyTypeDbId) &&
+        Objects.equals(this.studyTypeName, studyType.studyTypeName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(description, name);
+    return Objects.hash(description, name, studyTypeDbId, studyTypeName);
   }
 
   @Override
@@ -84,6 +136,8 @@ public class StudyType   {
     
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    studyTypeDbId: ").append(toIndentedString(studyTypeDbId)).append("\n");
+    sb.append("    studyTypeName: ").append(toIndentedString(studyTypeName)).append("\n");
     sb.append("}");
     return sb.toString();
   }

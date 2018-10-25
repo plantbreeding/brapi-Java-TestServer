@@ -2,21 +2,28 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * GermplasmMarkerprofilesList
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class GermplasmMarkerprofilesList   {
   @JsonProperty("germplasmDbId")
   private String germplasmDbId = null;
+
+  @JsonProperty("markerProfileDbIds")
+  @Valid
+  private List<String> markerProfileDbIds = null;
 
   @JsonProperty("markerprofileDbIds")
   @Valid
@@ -27,7 +34,7 @@ public class GermplasmMarkerprofilesList   {
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies a germplasm within the given database server
    * @return germplasmDbId
   **/
@@ -40,6 +47,34 @@ public class GermplasmMarkerprofilesList   {
 
   public void setGermplasmDbId(String germplasmDbId) {
     this.germplasmDbId = germplasmDbId;
+  }
+
+  public GermplasmMarkerprofilesList markerProfileDbIds(List<String> markerProfileDbIds) {
+    this.markerProfileDbIds = markerProfileDbIds;
+    return this;
+  }
+
+  public GermplasmMarkerprofilesList addMarkerProfileDbIdsItem(String markerProfileDbIdsItem) {
+    if (this.markerProfileDbIds == null) {
+      this.markerProfileDbIds = new ArrayList<String>();
+    }
+    this.markerProfileDbIds.add(markerProfileDbIdsItem);
+    return this;
+  }
+
+  /**
+   * The ID which uniquely identifies a marker profile within the given database server
+   * @return markerProfileDbIds
+  **/
+  @ApiModelProperty(value = "The ID which uniquely identifies a marker profile within the given database server")
+
+
+  public List<String> getMarkerProfileDbIds() {
+    return markerProfileDbIds;
+  }
+
+  public void setMarkerProfileDbIds(List<String> markerProfileDbIds) {
+    this.markerProfileDbIds = markerProfileDbIds;
   }
 
   public GermplasmMarkerprofilesList markerprofileDbIds(List<String> markerprofileDbIds) {
@@ -55,11 +90,11 @@ public class GermplasmMarkerprofilesList   {
     return this;
   }
 
-   /**
-   * The ID which uniquely identifies a marker profile within the given database server
+  /**
+   * DEPRECATED in v1.3 - see \"markerProfileDbIds\" (camel case)
    * @return markerprofileDbIds
   **/
-  @ApiModelProperty(value = "The ID which uniquely identifies a marker profile within the given database server")
+  @ApiModelProperty(value = "DEPRECATED in v1.3 - see \"markerProfileDbIds\" (camel case)")
 
 
   public List<String> getMarkerprofileDbIds() {
@@ -81,12 +116,13 @@ public class GermplasmMarkerprofilesList   {
     }
     GermplasmMarkerprofilesList germplasmMarkerprofilesList = (GermplasmMarkerprofilesList) o;
     return Objects.equals(this.germplasmDbId, germplasmMarkerprofilesList.germplasmDbId) &&
+        Objects.equals(this.markerProfileDbIds, germplasmMarkerprofilesList.markerProfileDbIds) &&
         Objects.equals(this.markerprofileDbIds, germplasmMarkerprofilesList.markerprofileDbIds);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(germplasmDbId, markerprofileDbIds);
+    return Objects.hash(germplasmDbId, markerProfileDbIds, markerprofileDbIds);
   }
 
   @Override
@@ -95,6 +131,7 @@ public class GermplasmMarkerprofilesList   {
     sb.append("class GermplasmMarkerprofilesList {\n");
     
     sb.append("    germplasmDbId: ").append(toIndentedString(germplasmDbId)).append("\n");
+    sb.append("    markerProfileDbIds: ").append(toIndentedString(markerProfileDbIds)).append("\n");
     sb.append("    markerprofileDbIds: ").append(toIndentedString(markerprofileDbIds)).append("\n");
     sb.append("}");
     return sb.toString();

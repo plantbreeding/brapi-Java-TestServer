@@ -4,7 +4,9 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.WSMIMEDataTypes;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
@@ -15,19 +17,58 @@ import javax.validation.constraints.*;
  * Call
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class Call   {
   @JsonProperty("call")
   private String call = null;
 
+  @JsonProperty("dataTypes")
+  @Valid
+  private List<WSMIMEDataTypes> dataTypes = new ArrayList<WSMIMEDataTypes>();
+
   @JsonProperty("datatypes")
   @Valid
-  private List<String> datatypes = new ArrayList<String>();
+  private List<WSMIMEDataTypes> datatypes = null;
+
+  /**
+   * Gets or Sets methods
+   */
+  public enum MethodsEnum {
+    GET("GET"),
+    
+    POST("POST"),
+    
+    PUT("PUT"),
+    
+    DELETE("DELETE");
+
+    private String value;
+
+    MethodsEnum(String value) {
+      this.value = value;
+    }
+
+    @Override
+    @JsonValue
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static MethodsEnum fromValue(String text) {
+      for (MethodsEnum b : MethodsEnum.values()) {
+        if (String.valueOf(b.value).equals(text)) {
+          return b;
+        }
+      }
+      return null;
+    }
+  }
 
   @JsonProperty("methods")
   @Valid
-  private List<String> methods = new ArrayList<String>();
+  private List<MethodsEnum> methods = new ArrayList<MethodsEnum>();
 
   /**
    * Gets or Sets versions
@@ -73,7 +114,7 @@ public class Call   {
     return this;
   }
 
-   /**
+  /**
    * The name of the available call as recorded in the documentation
    * @return call
   **/
@@ -89,43 +130,73 @@ public class Call   {
     this.call = call;
   }
 
-  public Call datatypes(List<String> datatypes) {
-    this.datatypes = datatypes;
+  public Call dataTypes(List<WSMIMEDataTypes> dataTypes) {
+    this.dataTypes = dataTypes;
     return this;
   }
 
-  public Call addDatatypesItem(String datatypesItem) {
-    this.datatypes.add(datatypesItem);
+  public Call addDataTypesItem(WSMIMEDataTypes dataTypesItem) {
+    this.dataTypes.add(dataTypesItem);
     return this;
   }
 
-   /**
+  /**
    * The possible data formats returned by the available call
-   * @return datatypes
+   * @return dataTypes
   **/
   @ApiModelProperty(required = true, value = "The possible data formats returned by the available call")
   @NotNull
 
+  @Valid
 
-  public List<String> getDatatypes() {
+  public List<WSMIMEDataTypes> getDataTypes() {
+    return dataTypes;
+  }
+
+  public void setDataTypes(List<WSMIMEDataTypes> dataTypes) {
+    this.dataTypes = dataTypes;
+  }
+
+  public Call datatypes(List<WSMIMEDataTypes> datatypes) {
+    this.datatypes = datatypes;
+    return this;
+  }
+
+  public Call addDatatypesItem(WSMIMEDataTypes datatypesItem) {
+    if (this.datatypes == null) {
+      this.datatypes = new ArrayList<WSMIMEDataTypes>();
+    }
+    this.datatypes.add(datatypesItem);
+    return this;
+  }
+
+  /**
+   * DEPRECATED in v1.3 - see \"dataTypes\" (camel case)
+   * @return datatypes
+  **/
+  @ApiModelProperty(value = "DEPRECATED in v1.3 - see \"dataTypes\" (camel case)")
+
+  @Valid
+
+  public List<WSMIMEDataTypes> getDatatypes() {
     return datatypes;
   }
 
-  public void setDatatypes(List<String> datatypes) {
+  public void setDatatypes(List<WSMIMEDataTypes> datatypes) {
     this.datatypes = datatypes;
   }
 
-  public Call methods(List<String> methods) {
+  public Call methods(List<MethodsEnum> methods) {
     this.methods = methods;
     return this;
   }
 
-  public Call addMethodsItem(String methodsItem) {
+  public Call addMethodsItem(MethodsEnum methodsItem) {
     this.methods.add(methodsItem);
     return this;
   }
 
-   /**
+  /**
    * The possible HTTP Methods to be used with the available call
    * @return methods
   **/
@@ -133,11 +204,11 @@ public class Call   {
   @NotNull
 
 
-  public List<String> getMethods() {
+  public List<MethodsEnum> getMethods() {
     return methods;
   }
 
-  public void setMethods(List<String> methods) {
+  public void setMethods(List<MethodsEnum> methods) {
     this.methods = methods;
   }
 
@@ -154,7 +225,7 @@ public class Call   {
     return this;
   }
 
-   /**
+  /**
    * The supported versions of a particular call
    * @return versions
   **/
@@ -180,6 +251,7 @@ public class Call   {
     }
     Call call = (Call) o;
     return Objects.equals(this.call, call.call) &&
+        Objects.equals(this.dataTypes, call.dataTypes) &&
         Objects.equals(this.datatypes, call.datatypes) &&
         Objects.equals(this.methods, call.methods) &&
         Objects.equals(this.versions, call.versions);
@@ -187,7 +259,7 @@ public class Call   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(call, datatypes, methods, versions);
+    return Objects.hash(call, dataTypes, datatypes, methods, versions);
   }
 
   @Override
@@ -196,6 +268,7 @@ public class Call   {
     sb.append("class Call {\n");
     
     sb.append("    call: ").append(toIndentedString(call)).append("\n");
+    sb.append("    dataTypes: ").append(toIndentedString(dataTypes)).append("\n");
     sb.append("    datatypes: ").append(toIndentedString(datatypes)).append("\n");
     sb.append("    methods: ").append(toIndentedString(methods)).append("\n");
     sb.append("    versions: ").append(toIndentedString(versions)).append("\n");

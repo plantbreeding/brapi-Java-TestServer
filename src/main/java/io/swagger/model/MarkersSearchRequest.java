@@ -4,17 +4,19 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * MarkersSearchRequest
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class MarkersSearchRequest   {
   @JsonProperty("includeSynonyms")
@@ -23,6 +25,10 @@ public class MarkersSearchRequest   {
   @JsonProperty("markerDbIds")
   @Valid
   private List<String> markerDbIds = null;
+
+  @JsonProperty("markerNames")
+  @Valid
+  private List<String> markerNames = null;
 
   /**
    * How to perform string matching during search. 'exact' will search for exact, case sensitive matches only. 'case_insensitive' will search for exact matches, but case insensitive. 'wildcard' will allow the special characters '*' (star) and '%' (percent) to represent variable length arbitrary strings, and the special character '?' (question) to represent one arbitrary character.
@@ -72,12 +78,16 @@ public class MarkersSearchRequest   {
   @JsonProperty("type")
   private String type = null;
 
+  @JsonProperty("types")
+  @Valid
+  private List<String> types = null;
+
   public MarkersSearchRequest includeSynonyms(Boolean includeSynonyms) {
     this.includeSynonyms = includeSynonyms;
     return this;
   }
 
-   /**
+  /**
    * Should an array of synonyms be included in the response
    * @return includeSynonyms
   **/
@@ -105,7 +115,7 @@ public class MarkersSearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * List of IDs which uniquely identify markers 
    * @return markerDbIds
   **/
@@ -120,12 +130,40 @@ public class MarkersSearchRequest   {
     this.markerDbIds = markerDbIds;
   }
 
+  public MarkersSearchRequest markerNames(List<String> markerNames) {
+    this.markerNames = markerNames;
+    return this;
+  }
+
+  public MarkersSearchRequest addMarkerNamesItem(String markerNamesItem) {
+    if (this.markerNames == null) {
+      this.markerNames = new ArrayList<String>();
+    }
+    this.markerNames.add(markerNamesItem);
+    return this;
+  }
+
+  /**
+   * The search pattern for the marker name or synonym.
+   * @return markerNames
+  **/
+  @ApiModelProperty(value = "The search pattern for the marker name or synonym.")
+
+
+  public List<String> getMarkerNames() {
+    return markerNames;
+  }
+
+  public void setMarkerNames(List<String> markerNames) {
+    this.markerNames = markerNames;
+  }
+
   public MarkersSearchRequest matchMethod(MatchMethodEnum matchMethod) {
     this.matchMethod = matchMethod;
     return this;
   }
 
-   /**
+  /**
    * How to perform string matching during search. 'exact' will search for exact, case sensitive matches only. 'case_insensitive' will search for exact matches, but case insensitive. 'wildcard' will allow the special characters '*' (star) and '%' (percent) to represent variable length arbitrary strings, and the special character '?' (question) to represent one arbitrary character.
    * @return matchMethod
   **/
@@ -145,11 +183,11 @@ public class MarkersSearchRequest   {
     return this;
   }
 
-   /**
-   * The search pattern for the marker name or synonym.
+  /**
+   * DEPRECATED in v 1.3 - see \"markerNames\"
    * @return name
   **/
-  @ApiModelProperty(value = "The search pattern for the marker name or synonym.")
+  @ApiModelProperty(value = "DEPRECATED in v 1.3 - see \"markerNames\"")
 
 
   public String getName() {
@@ -165,7 +203,7 @@ public class MarkersSearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * Which page of the \"data\" array to return. The page indexing starts at 0 (page=0 will return the first page). Default is 0.
    * @return page
   **/
@@ -185,7 +223,7 @@ public class MarkersSearchRequest   {
     return this;
   }
 
-   /**
+  /**
    * The maximum number of items to return per page of the \"data\" array. Default is 1000.
    * @return pageSize
   **/
@@ -205,11 +243,11 @@ public class MarkersSearchRequest   {
     return this;
   }
 
-   /**
-   * The type of marker, e.g. SNP
+  /**
+   * DEPRECATED in v 1.3 - see \"types\"
    * @return type
   **/
-  @ApiModelProperty(value = "The type of marker, e.g. SNP")
+  @ApiModelProperty(value = "DEPRECATED in v 1.3 - see \"types\"")
 
 
   public String getType() {
@@ -218,6 +256,34 @@ public class MarkersSearchRequest   {
 
   public void setType(String type) {
     this.type = type;
+  }
+
+  public MarkersSearchRequest types(List<String> types) {
+    this.types = types;
+    return this;
+  }
+
+  public MarkersSearchRequest addTypesItem(String typesItem) {
+    if (this.types == null) {
+      this.types = new ArrayList<String>();
+    }
+    this.types.add(typesItem);
+    return this;
+  }
+
+  /**
+   * The type of marker, e.g. SNP
+   * @return types
+  **/
+  @ApiModelProperty(value = "The type of marker, e.g. SNP")
+
+
+  public List<String> getTypes() {
+    return types;
+  }
+
+  public void setTypes(List<String> types) {
+    this.types = types;
   }
 
 
@@ -232,16 +298,18 @@ public class MarkersSearchRequest   {
     MarkersSearchRequest markersSearchRequest = (MarkersSearchRequest) o;
     return Objects.equals(this.includeSynonyms, markersSearchRequest.includeSynonyms) &&
         Objects.equals(this.markerDbIds, markersSearchRequest.markerDbIds) &&
+        Objects.equals(this.markerNames, markersSearchRequest.markerNames) &&
         Objects.equals(this.matchMethod, markersSearchRequest.matchMethod) &&
         Objects.equals(this.name, markersSearchRequest.name) &&
         Objects.equals(this.page, markersSearchRequest.page) &&
         Objects.equals(this.pageSize, markersSearchRequest.pageSize) &&
-        Objects.equals(this.type, markersSearchRequest.type);
+        Objects.equals(this.type, markersSearchRequest.type) &&
+        Objects.equals(this.types, markersSearchRequest.types);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(includeSynonyms, markerDbIds, matchMethod, name, page, pageSize, type);
+    return Objects.hash(includeSynonyms, markerDbIds, markerNames, matchMethod, name, page, pageSize, type, types);
   }
 
   @Override
@@ -251,11 +319,13 @@ public class MarkersSearchRequest   {
     
     sb.append("    includeSynonyms: ").append(toIndentedString(includeSynonyms)).append("\n");
     sb.append("    markerDbIds: ").append(toIndentedString(markerDbIds)).append("\n");
+    sb.append("    markerNames: ").append(toIndentedString(markerNames)).append("\n");
     sb.append("    matchMethod: ").append(toIndentedString(matchMethod)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    page: ").append(toIndentedString(page)).append("\n");
     sb.append("    pageSize: ").append(toIndentedString(pageSize)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
+    sb.append("    types: ").append(toIndentedString(types)).append("\n");
     sb.append("}");
     return sb.toString();
   }

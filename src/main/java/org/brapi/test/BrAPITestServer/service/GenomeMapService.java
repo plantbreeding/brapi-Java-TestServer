@@ -16,8 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.GenomeMap;
+import io.swagger.model.GenomeMapDetails;
 import io.swagger.model.LinkageGroup;
-import io.swagger.model.MapDetails;
 import io.swagger.model.MarkerSummaryLinkageGroup;
 import io.swagger.model.MarkerSummaryMap;
 import io.swagger.model.Metadata;
@@ -77,12 +77,12 @@ public class GenomeMapService {
 		return summary;
 	}
 
-	public MapDetails getMapDetail(Metadata metaData, String mapDbId) {
+	public GenomeMapDetails getMapDetail(Metadata metaData, String mapDbId) {
 		Optional<GenomeMapEntity> entityOption = genomeMapRepository.findById(mapDbId);
-		MapDetails detail = null;
+		GenomeMapDetails detail = null;
 		if (entityOption.isPresent()) {
 			GenomeMapEntity entity = entityOption.get();
-			detail = new MapDetails();
+			detail = new GenomeMapDetails();
 			detail.setMapDbId(entity.getId());
 			detail.setName(entity.getName());
 			detail.setType(entity.getType());

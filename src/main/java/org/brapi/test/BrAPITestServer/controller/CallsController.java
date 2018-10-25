@@ -17,6 +17,7 @@ import io.swagger.model.Call;
 import io.swagger.model.CallsResponse;
 import io.swagger.model.CallsResponseResult;
 import io.swagger.model.Metadata;
+import io.swagger.model.WSMIMEDataTypes;
 
 @RestController
 public class CallsController extends BrAPIController implements CallsApi {
@@ -31,18 +32,17 @@ public class CallsController extends BrAPIController implements CallsApi {
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<CallsResponse> callsGet(@Valid String datatype, @Valid Integer pageSize,
-			@Valid Integer page) throws BrAPIServerException {
+	public ResponseEntity<CallsResponse> callsGet(@Valid String datatype, @Valid WSMIMEDataTypes dataType,
+			@Valid Integer page, @Valid Integer pageSize, String authorization) throws BrAPIServerException {
 
-			Metadata metadata = generateMetaDataTemplate(page, pageSize);
-			List<Call> calls = callService.getAvailableCalls(datatype, metadata);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		List<Call> calls = callService.getAvailableCalls(datatype, metadata);
 
-			CallsResponseResult result = new CallsResponseResult();
-			result.setData(calls);
-			CallsResponse response = new CallsResponse();
-			response.setMetadata(metadata);
-			response.setResult(result);
-			return new ResponseEntity<CallsResponse>(response, HttpStatus.OK);
-
+		CallsResponseResult result = new CallsResponseResult();
+		result.setData(calls);
+		CallsResponse response = new CallsResponse();
+		response.setMetadata(metadata);
+		response.setResult(result);
+		return new ResponseEntity<CallsResponse>(response, HttpStatus.OK);
 	}
 }

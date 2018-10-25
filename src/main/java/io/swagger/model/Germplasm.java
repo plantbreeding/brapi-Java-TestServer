@@ -2,6 +2,8 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.GermplasmDonors;
 import io.swagger.model.TaxonID;
@@ -10,12 +12,13 @@ import java.util.List;
 import org.threeten.bp.LocalDate;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * Germplasm
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class Germplasm   {
   @JsonProperty("accessionNumber")
@@ -39,6 +42,9 @@ public class Germplasm   {
   @JsonProperty("defaultDisplayName")
   private String defaultDisplayName = null;
 
+  @JsonProperty("documentationURL")
+  private String documentationURL = null;
+
   @JsonProperty("donors")
   @Valid
   private List<GermplasmDonors> donors = null;
@@ -49,11 +55,17 @@ public class Germplasm   {
   @JsonProperty("germplasmDbId")
   private String germplasmDbId = null;
 
+  @JsonProperty("germplasmGenus")
+  private String germplasmGenus = null;
+
   @JsonProperty("germplasmName")
   private String germplasmName = null;
 
   @JsonProperty("germplasmPUI")
   private String germplasmPUI = null;
+
+  @JsonProperty("germplasmSpecies")
+  private String germplasmSpecies = null;
 
   @JsonProperty("instituteCode")
   private String instituteCode = null;
@@ -96,7 +108,7 @@ public class Germplasm   {
     return this;
   }
 
-   /**
+  /**
    * This is the unique identifier for accessions within a genebank, and is assigned when a sample is entered into the genebank collection
    * @return accessionNumber
   **/
@@ -116,7 +128,7 @@ public class Germplasm   {
     return this;
   }
 
-   /**
+  /**
    * The date this germplasm was aquired by the genebank (MCPD)
    * @return acquisitionDate
   **/
@@ -137,7 +149,7 @@ public class Germplasm   {
     return this;
   }
 
-   /**
+  /**
    * The 3 digit code representing the biological status of the accession (MCPD)
    * @return biologicalStatusOfAccessionCode
   **/
@@ -157,7 +169,7 @@ public class Germplasm   {
     return this;
   }
 
-   /**
+  /**
    * The unique identifier for the breeding method used to create this germplasm
    * @return breedingMethodDbId
   **/
@@ -177,7 +189,7 @@ public class Germplasm   {
     return this;
   }
 
-   /**
+  /**
    * Common name for the crop (MCPD)
    * @return commonCropName
   **/
@@ -197,7 +209,7 @@ public class Germplasm   {
     return this;
   }
 
-   /**
+  /**
    * 3-letter ISO 3166-1 code of the country in which the sample was originally collected (MCPD)
    * @return countryOfOriginCode
   **/
@@ -217,7 +229,7 @@ public class Germplasm   {
     return this;
   }
 
-   /**
+  /**
    * Human readable name used for display purposes
    * @return defaultDisplayName
   **/
@@ -230,6 +242,26 @@ public class Germplasm   {
 
   public void setDefaultDisplayName(String defaultDisplayName) {
     this.defaultDisplayName = defaultDisplayName;
+  }
+
+  public Germplasm documentationURL(String documentationURL) {
+    this.documentationURL = documentationURL;
+    return this;
+  }
+
+  /**
+   * A URL to the human readable documentation of this object
+   * @return documentationURL
+  **/
+  @ApiModelProperty(value = "A URL to the human readable documentation of this object")
+
+
+  public String getDocumentationURL() {
+    return documentationURL;
+  }
+
+  public void setDocumentationURL(String documentationURL) {
+    this.documentationURL = documentationURL;
   }
 
   public Germplasm donors(List<GermplasmDonors> donors) {
@@ -245,7 +277,7 @@ public class Germplasm   {
     return this;
   }
 
-   /**
+  /**
    * List of donor institutes (MCPD)
    * @return donors
   **/
@@ -266,11 +298,11 @@ public class Germplasm   {
     return this;
   }
 
-   /**
-   * Genus name for taxon. Initial uppercase letter required. (MCPD)
+  /**
+   * DEPRECATED in v1.3 - see \"germplasmGenus\"
    * @return genus
   **/
-  @ApiModelProperty(value = "Genus name for taxon. Initial uppercase letter required. (MCPD)")
+  @ApiModelProperty(value = "DEPRECATED in v1.3 - see \"germplasmGenus\"")
 
 
   public String getGenus() {
@@ -286,7 +318,7 @@ public class Germplasm   {
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies a germplasm within the given database server
    * @return germplasmDbId
   **/
@@ -301,12 +333,32 @@ public class Germplasm   {
     this.germplasmDbId = germplasmDbId;
   }
 
+  public Germplasm germplasmGenus(String germplasmGenus) {
+    this.germplasmGenus = germplasmGenus;
+    return this;
+  }
+
+  /**
+   * Genus name for taxon. Initial uppercase letter required. (MCPD)
+   * @return germplasmGenus
+  **/
+  @ApiModelProperty(value = "Genus name for taxon. Initial uppercase letter required. (MCPD)")
+
+
+  public String getGermplasmGenus() {
+    return germplasmGenus;
+  }
+
+  public void setGermplasmGenus(String germplasmGenus) {
+    this.germplasmGenus = germplasmGenus;
+  }
+
   public Germplasm germplasmName(String germplasmName) {
     this.germplasmName = germplasmName;
     return this;
   }
 
-   /**
+  /**
    * Name of the germplasm. It can be the prefered name and does not have to be unique.
    * @return germplasmName
   **/
@@ -326,7 +378,7 @@ public class Germplasm   {
     return this;
   }
 
-   /**
+  /**
    * The Permanent Unique Identifier which represents a germplasm
    * @return germplasmPUI
   **/
@@ -341,12 +393,32 @@ public class Germplasm   {
     this.germplasmPUI = germplasmPUI;
   }
 
+  public Germplasm germplasmSpecies(String germplasmSpecies) {
+    this.germplasmSpecies = germplasmSpecies;
+    return this;
+  }
+
+  /**
+   * Specific epithet portion of the scientific name in lowercase letters. (MCPD)
+   * @return germplasmSpecies
+  **/
+  @ApiModelProperty(value = "Specific epithet portion of the scientific name in lowercase letters. (MCPD)")
+
+
+  public String getGermplasmSpecies() {
+    return germplasmSpecies;
+  }
+
+  public void setGermplasmSpecies(String germplasmSpecies) {
+    this.germplasmSpecies = germplasmSpecies;
+  }
+
   public Germplasm instituteCode(String instituteCode) {
     this.instituteCode = instituteCode;
     return this;
   }
 
-   /**
+  /**
    * The code for the Institute that has bred the material. (MCPD)
    * @return instituteCode
   **/
@@ -366,7 +438,7 @@ public class Germplasm   {
     return this;
   }
 
-   /**
+  /**
    * The name of the institution which bred the material (MCPD)
    * @return instituteName
   **/
@@ -386,7 +458,7 @@ public class Germplasm   {
     return this;
   }
 
-   /**
+  /**
    * The cross name and optional selection history.
    * @return pedigree
   **/
@@ -406,7 +478,7 @@ public class Germplasm   {
     return this;
   }
 
-   /**
+  /**
    * The source of the seed 
    * @return seedSource
   **/
@@ -426,11 +498,11 @@ public class Germplasm   {
     return this;
   }
 
-   /**
-   * Specific epithet portion of the scientific name in lowercase letters. (MCPD)
+  /**
+   * DEPRECATED in v1.3 - see \"germplasmSpecies\"
    * @return species
   **/
-  @ApiModelProperty(value = "Specific epithet portion of the scientific name in lowercase letters. (MCPD)")
+  @ApiModelProperty(value = "DEPRECATED in v1.3 - see \"germplasmSpecies\"")
 
 
   public String getSpecies() {
@@ -446,7 +518,7 @@ public class Germplasm   {
     return this;
   }
 
-   /**
+  /**
    * The authority organization responsible for tracking and maintaining the species name (MCPD)
    * @return speciesAuthority
   **/
@@ -466,7 +538,7 @@ public class Germplasm   {
     return this;
   }
 
-   /**
+  /**
    * Subtaxon can be used to store any additional taxonomic identifier. (MCPD)
    * @return subtaxa
   **/
@@ -486,7 +558,7 @@ public class Germplasm   {
     return this;
   }
 
-   /**
+  /**
    *  The authority organization responsible for tracking and maintaining the subtaxon information (MCPD)
    * @return subtaxaAuthority
   **/
@@ -514,7 +586,7 @@ public class Germplasm   {
     return this;
   }
 
-   /**
+  /**
    * List of alternative names or IDs used to reference this germplasm
    * @return synonyms
   **/
@@ -542,7 +614,7 @@ public class Germplasm   {
     return this;
   }
 
-   /**
+  /**
    * The list of IDs for this SPECIES from different sources. If present, NCBI Taxon should be always listed as \"ncbiTaxon\" preferably with a purl. The rank of this ID should be species.
    * @return taxonIds
   **/
@@ -571,7 +643,7 @@ public class Germplasm   {
     return this;
   }
 
-   /**
+  /**
    * The 2 digit code representing the type of storage this germplasm is kept in at a genebank. (MCPD)
    * @return typeOfGermplasmStorageCode
   **/
@@ -603,11 +675,14 @@ public class Germplasm   {
         Objects.equals(this.commonCropName, germplasm.commonCropName) &&
         Objects.equals(this.countryOfOriginCode, germplasm.countryOfOriginCode) &&
         Objects.equals(this.defaultDisplayName, germplasm.defaultDisplayName) &&
+        Objects.equals(this.documentationURL, germplasm.documentationURL) &&
         Objects.equals(this.donors, germplasm.donors) &&
         Objects.equals(this.genus, germplasm.genus) &&
         Objects.equals(this.germplasmDbId, germplasm.germplasmDbId) &&
+        Objects.equals(this.germplasmGenus, germplasm.germplasmGenus) &&
         Objects.equals(this.germplasmName, germplasm.germplasmName) &&
         Objects.equals(this.germplasmPUI, germplasm.germplasmPUI) &&
+        Objects.equals(this.germplasmSpecies, germplasm.germplasmSpecies) &&
         Objects.equals(this.instituteCode, germplasm.instituteCode) &&
         Objects.equals(this.instituteName, germplasm.instituteName) &&
         Objects.equals(this.pedigree, germplasm.pedigree) &&
@@ -623,7 +698,7 @@ public class Germplasm   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(accessionNumber, acquisitionDate, biologicalStatusOfAccessionCode, breedingMethodDbId, commonCropName, countryOfOriginCode, defaultDisplayName, donors, genus, germplasmDbId, germplasmName, germplasmPUI, instituteCode, instituteName, pedigree, seedSource, species, speciesAuthority, subtaxa, subtaxaAuthority, synonyms, taxonIds, typeOfGermplasmStorageCode);
+    return Objects.hash(accessionNumber, acquisitionDate, biologicalStatusOfAccessionCode, breedingMethodDbId, commonCropName, countryOfOriginCode, defaultDisplayName, documentationURL, donors, genus, germplasmDbId, germplasmGenus, germplasmName, germplasmPUI, germplasmSpecies, instituteCode, instituteName, pedigree, seedSource, species, speciesAuthority, subtaxa, subtaxaAuthority, synonyms, taxonIds, typeOfGermplasmStorageCode);
   }
 
   @Override
@@ -638,11 +713,14 @@ public class Germplasm   {
     sb.append("    commonCropName: ").append(toIndentedString(commonCropName)).append("\n");
     sb.append("    countryOfOriginCode: ").append(toIndentedString(countryOfOriginCode)).append("\n");
     sb.append("    defaultDisplayName: ").append(toIndentedString(defaultDisplayName)).append("\n");
+    sb.append("    documentationURL: ").append(toIndentedString(documentationURL)).append("\n");
     sb.append("    donors: ").append(toIndentedString(donors)).append("\n");
     sb.append("    genus: ").append(toIndentedString(genus)).append("\n");
     sb.append("    germplasmDbId: ").append(toIndentedString(germplasmDbId)).append("\n");
+    sb.append("    germplasmGenus: ").append(toIndentedString(germplasmGenus)).append("\n");
     sb.append("    germplasmName: ").append(toIndentedString(germplasmName)).append("\n");
     sb.append("    germplasmPUI: ").append(toIndentedString(germplasmPUI)).append("\n");
+    sb.append("    germplasmSpecies: ").append(toIndentedString(germplasmSpecies)).append("\n");
     sb.append("    instituteCode: ").append(toIndentedString(instituteCode)).append("\n");
     sb.append("    instituteName: ").append(toIndentedString(instituteName)).append("\n");
     sb.append("    pedigree: ").append(toIndentedString(pedigree)).append("\n");

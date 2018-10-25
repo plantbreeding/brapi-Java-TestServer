@@ -32,37 +32,35 @@ public class GermplasmAttributeController extends BrAPIController implements Att
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<GermplasmAttributeCategoriesResponse> attributesCategoriesGet(@Valid Integer pageSize,
-			@Valid Integer page) throws BrAPIServerException {
+	public ResponseEntity<GermplasmAttributeCategoriesResponse> attributesCategoriesGet(@Valid Integer page,
+			@Valid Integer pageSize, String authorization) throws BrAPIServerException {
 
-			Metadata metaData = generateMetaDataTemplate(page, pageSize);
-			List<GermplasmAttributeCategory> data = germplasmAttributeService.getGermplasmAttributeCategories(metaData);
+		Metadata metaData = generateMetaDataTemplate(page, pageSize);
+		List<GermplasmAttributeCategory> data = germplasmAttributeService.getGermplasmAttributeCategories(metaData);
 
-			GermplasmAttributeCategoriesResponseResult result = new GermplasmAttributeCategoriesResponseResult();
-			result.setData(data);
-			GermplasmAttributeCategoriesResponse response = new GermplasmAttributeCategoriesResponse();
-			response.setMetadata(metaData);
-			response.setResult(result);
-			return new ResponseEntity<GermplasmAttributeCategoriesResponse>(response, HttpStatus.OK);
-		
+		GermplasmAttributeCategoriesResponseResult result = new GermplasmAttributeCategoriesResponseResult();
+		result.setData(data);
+		GermplasmAttributeCategoriesResponse response = new GermplasmAttributeCategoriesResponse();
+		response.setMetadata(metaData);
+		response.setResult(result);
+		return new ResponseEntity<GermplasmAttributeCategoriesResponse>(response, HttpStatus.OK);
 	}
 
 	@CrossOrigin
 	@Override
 	public ResponseEntity<GermplasmAttributeDefsResponse> attributesGet(@Valid String attributeCategoryDbId,
-			@Valid Integer pageSize, @Valid Integer page) throws BrAPIServerException {
+			@Valid Integer page, @Valid Integer pageSize, String authorization) throws BrAPIServerException {
 
-			Metadata metaData = generateMetaDataTemplate(page, pageSize);
-			List<GermplasmAttributeDef> data = germplasmAttributeService.getGermplasmAttributes(attributeCategoryDbId,
-					metaData);
+		Metadata metaData = generateMetaDataTemplate(page, pageSize);
+		List<GermplasmAttributeDef> data = germplasmAttributeService.getGermplasmAttributes(attributeCategoryDbId,
+				metaData);
 
-			GermplasmAttributeDefsResponseResult result = new GermplasmAttributeDefsResponseResult();
-			result.setData(data);
-			GermplasmAttributeDefsResponse response = new GermplasmAttributeDefsResponse();
-			response.setMetadata(metaData);
-			response.setResult(result);
-			return new ResponseEntity<GermplasmAttributeDefsResponse>(response, HttpStatus.OK);
-		
+		GermplasmAttributeDefsResponseResult result = new GermplasmAttributeDefsResponseResult();
+		result.setData(data);
+		GermplasmAttributeDefsResponse response = new GermplasmAttributeDefsResponse();
+		response.setMetadata(metaData);
+		response.setResult(result);
+		return new ResponseEntity<GermplasmAttributeDefsResponse>(response, HttpStatus.OK);
 	}
 
 }

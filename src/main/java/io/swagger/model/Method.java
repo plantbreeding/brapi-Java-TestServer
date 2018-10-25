@@ -2,16 +2,20 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.OntologyRefernce;
 import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * Method metadata
  */
 @ApiModel(description = "Method metadata")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class Method   {
   @JsonProperty("class")
@@ -26,8 +30,14 @@ public class Method   {
   @JsonProperty("methodDbId")
   private String methodDbId = null;
 
+  @JsonProperty("methodName")
+  private String methodName = null;
+
   @JsonProperty("name")
   private String name = null;
+
+  @JsonProperty("ontologyRefernce")
+  private OntologyRefernce ontologyRefernce = null;
 
   @JsonProperty("reference")
   private String reference = null;
@@ -37,7 +47,7 @@ public class Method   {
     return this;
   }
 
-   /**
+  /**
    * Method class (examples: \"Measurement\", \"Counting\", \"Estimation\", \"Computation\", etc.
    * @return propertyClass
   **/
@@ -57,7 +67,7 @@ public class Method   {
     return this;
   }
 
-   /**
+  /**
    * Method description.
    * @return description
   **/
@@ -77,7 +87,7 @@ public class Method   {
     return this;
   }
 
-   /**
+  /**
    * For computational methods i.e., when the method consists in assessing the trait by computing measurements, write the generic formula used for the calculation
    * @return formula
   **/
@@ -97,7 +107,7 @@ public class Method   {
     return this;
   }
 
-   /**
+  /**
    * Method unique identifier
    * @return methodDbId
   **/
@@ -112,16 +122,36 @@ public class Method   {
     this.methodDbId = methodDbId;
   }
 
+  public Method methodName(String methodName) {
+    this.methodName = methodName;
+    return this;
+  }
+
+  /**
+   * Human readable name for the method
+   * @return methodName
+  **/
+  @ApiModelProperty(value = "Human readable name for the method")
+
+
+  public String getMethodName() {
+    return methodName;
+  }
+
+  public void setMethodName(String methodName) {
+    this.methodName = methodName;
+  }
+
   public Method name(String name) {
     this.name = name;
     return this;
   }
 
-   /**
-   * Method name (usually a short name)
+  /**
+   * DEPRECATED in v1.3 - Use \"methodName\"
    * @return name
   **/
-  @ApiModelProperty(value = "Method name (usually a short name)")
+  @ApiModelProperty(value = "DEPRECATED in v1.3 - Use \"methodName\"")
 
 
   public String getName() {
@@ -132,12 +162,33 @@ public class Method   {
     this.name = name;
   }
 
+  public Method ontologyRefernce(OntologyRefernce ontologyRefernce) {
+    this.ontologyRefernce = ontologyRefernce;
+    return this;
+  }
+
+  /**
+   * Get ontologyRefernce
+   * @return ontologyRefernce
+  **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public OntologyRefernce getOntologyRefernce() {
+    return ontologyRefernce;
+  }
+
+  public void setOntologyRefernce(OntologyRefernce ontologyRefernce) {
+    this.ontologyRefernce = ontologyRefernce;
+  }
+
   public Method reference(String reference) {
     this.reference = reference;
     return this;
   }
 
-   /**
+  /**
    * Bibliographical reference describing the method.
    * @return reference
   **/
@@ -166,13 +217,15 @@ public class Method   {
         Objects.equals(this.description, method.description) &&
         Objects.equals(this.formula, method.formula) &&
         Objects.equals(this.methodDbId, method.methodDbId) &&
+        Objects.equals(this.methodName, method.methodName) &&
         Objects.equals(this.name, method.name) &&
+        Objects.equals(this.ontologyRefernce, method.ontologyRefernce) &&
         Objects.equals(this.reference, method.reference);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(propertyClass, description, formula, methodDbId, name, reference);
+    return Objects.hash(propertyClass, description, formula, methodDbId, methodName, name, ontologyRefernce, reference);
   }
 
   @Override
@@ -184,7 +237,9 @@ public class Method   {
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    formula: ").append(toIndentedString(formula)).append("\n");
     sb.append("    methodDbId: ").append(toIndentedString(methodDbId)).append("\n");
+    sb.append("    methodName: ").append(toIndentedString(methodName)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    ontologyRefernce: ").append(toIndentedString(ontologyRefernce)).append("\n");
     sb.append("    reference: ").append(toIndentedString(reference)).append("\n");
     sb.append("}");
     return sb.toString();

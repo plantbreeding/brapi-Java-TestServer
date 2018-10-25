@@ -2,14 +2,18 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * MarkerProfileDescription
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class MarkerProfileDescription   {
   @JsonProperty("analysisMethod")
@@ -20,6 +24,9 @@ public class MarkerProfileDescription   {
 
   @JsonProperty("germplasmDbId")
   private String germplasmDbId = null;
+
+  @JsonProperty("markerProfileDbId")
+  private String markerProfileDbId = null;
 
   @JsonProperty("markerprofileDbId")
   private String markerprofileDbId = null;
@@ -38,7 +45,7 @@ public class MarkerProfileDescription   {
     return this;
   }
 
-   /**
+  /**
    * The type of analysis performed to determine a set of marker data
    * @return analysisMethod
   **/
@@ -58,7 +65,7 @@ public class MarkerProfileDescription   {
     return this;
   }
 
-   /**
+  /**
    *  The ID which uniquely identifies this data extract
    * @return extractDbId
   **/
@@ -78,7 +85,7 @@ public class MarkerProfileDescription   {
     return this;
   }
 
-   /**
+  /**
    *  The ID which uniquely identifies a germplasm
    * @return germplasmDbId
   **/
@@ -93,16 +100,37 @@ public class MarkerProfileDescription   {
     this.germplasmDbId = germplasmDbId;
   }
 
+  public MarkerProfileDescription markerProfileDbId(String markerProfileDbId) {
+    this.markerProfileDbId = markerProfileDbId;
+    return this;
+  }
+
+  /**
+   * Unique in the database. Can be a catenation of unique IDs for germplasm and extract. Required
+   * @return markerProfileDbId
+  **/
+  @ApiModelProperty(required = true, value = "Unique in the database. Can be a catenation of unique IDs for germplasm and extract. Required")
+  @NotNull
+
+
+  public String getMarkerProfileDbId() {
+    return markerProfileDbId;
+  }
+
+  public void setMarkerProfileDbId(String markerProfileDbId) {
+    this.markerProfileDbId = markerProfileDbId;
+  }
+
   public MarkerProfileDescription markerprofileDbId(String markerprofileDbId) {
     this.markerprofileDbId = markerprofileDbId;
     return this;
   }
 
-   /**
-   * Unique in the database. Can be a catenation of unique IDs for germplasm and extract. <strong>Required</strong>
+  /**
+   * DEPRECATED in v1.3 - see \"markerProfileDbId\" (camel case)
    * @return markerprofileDbId
   **/
-  @ApiModelProperty(value = "Unique in the database. Can be a catenation of unique IDs for germplasm and extract. <strong>Required</strong>")
+  @ApiModelProperty(value = "DEPRECATED in v1.3 - see \"markerProfileDbId\" (camel case)")
 
 
   public String getMarkerprofileDbId() {
@@ -118,7 +146,7 @@ public class MarkerProfileDescription   {
     return this;
   }
 
-   /**
+  /**
    * Number of markers present in the marker profile
    * @return resultCount
   **/
@@ -138,7 +166,7 @@ public class MarkerProfileDescription   {
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies a sample
    * @return sampleDbId
   **/
@@ -158,7 +186,7 @@ public class MarkerProfileDescription   {
     return this;
   }
 
-   /**
+  /**
    * Human readable display name for this marker profile
    * @return uniqueDisplayName
   **/
@@ -186,6 +214,7 @@ public class MarkerProfileDescription   {
     return Objects.equals(this.analysisMethod, markerProfileDescription.analysisMethod) &&
         Objects.equals(this.extractDbId, markerProfileDescription.extractDbId) &&
         Objects.equals(this.germplasmDbId, markerProfileDescription.germplasmDbId) &&
+        Objects.equals(this.markerProfileDbId, markerProfileDescription.markerProfileDbId) &&
         Objects.equals(this.markerprofileDbId, markerProfileDescription.markerprofileDbId) &&
         Objects.equals(this.resultCount, markerProfileDescription.resultCount) &&
         Objects.equals(this.sampleDbId, markerProfileDescription.sampleDbId) &&
@@ -194,7 +223,7 @@ public class MarkerProfileDescription   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(analysisMethod, extractDbId, germplasmDbId, markerprofileDbId, resultCount, sampleDbId, uniqueDisplayName);
+    return Objects.hash(analysisMethod, extractDbId, germplasmDbId, markerProfileDbId, markerprofileDbId, resultCount, sampleDbId, uniqueDisplayName);
   }
 
   @Override
@@ -205,6 +234,7 @@ public class MarkerProfileDescription   {
     sb.append("    analysisMethod: ").append(toIndentedString(analysisMethod)).append("\n");
     sb.append("    extractDbId: ").append(toIndentedString(extractDbId)).append("\n");
     sb.append("    germplasmDbId: ").append(toIndentedString(germplasmDbId)).append("\n");
+    sb.append("    markerProfileDbId: ").append(toIndentedString(markerProfileDbId)).append("\n");
     sb.append("    markerprofileDbId: ").append(toIndentedString(markerprofileDbId)).append("\n");
     sb.append("    resultCount: ").append(toIndentedString(resultCount)).append("\n");
     sb.append("    sampleDbId: ").append(toIndentedString(sampleDbId)).append("\n");

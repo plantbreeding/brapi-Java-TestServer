@@ -2,9 +2,13 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Contact;
 import io.swagger.model.TrialDatasetAuthorship;
+import io.swagger.model.TrialDatasetAuthorships;
+import io.swagger.model.TrialPublications;
 import io.swagger.model.TrialStudies;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,12 +17,13 @@ import java.util.Map;
 import org.threeten.bp.LocalDate;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * Trial
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class Trial   {
   @JsonProperty("active")
@@ -28,12 +33,22 @@ public class Trial   {
   @Valid
   private Map<String, String> additionalInfo = null;
 
+  @JsonProperty("commonCropName")
+  private String commonCropName = null;
+
   @JsonProperty("contacts")
   @Valid
   private List<Contact> contacts = null;
 
   @JsonProperty("datasetAuthorship")
   private TrialDatasetAuthorship datasetAuthorship = null;
+
+  @JsonProperty("datasetAuthorships")
+  @Valid
+  private List<TrialDatasetAuthorships> datasetAuthorships = null;
+
+  @JsonProperty("documentationURL")
+  private String documentationURL = null;
 
   @JsonProperty("endDate")
   private LocalDate endDate = null;
@@ -43,6 +58,10 @@ public class Trial   {
 
   @JsonProperty("programName")
   private String programName = null;
+
+  @JsonProperty("publications")
+  @Valid
+  private List<TrialPublications> publications = null;
 
   @JsonProperty("startDate")
   private LocalDate startDate = null;
@@ -62,7 +81,7 @@ public class Trial   {
     return this;
   }
 
-   /**
+  /**
    * Is this trail currently active
    * @return active
   **/
@@ -84,13 +103,13 @@ public class Trial   {
 
   public Trial putAdditionalInfoItem(String key, String additionalInfoItem) {
     if (this.additionalInfo == null) {
-      this.additionalInfo = new HashMap<String, String>();
+      this.additionalInfo = null;
     }
     this.additionalInfo.put(key, additionalInfoItem);
     return this;
   }
 
-   /**
+  /**
    * Additional arbitrary info
    * @return additionalInfo
   **/
@@ -103,6 +122,26 @@ public class Trial   {
 
   public void setAdditionalInfo(Map<String, String> additionalInfo) {
     this.additionalInfo = additionalInfo;
+  }
+
+  public Trial commonCropName(String commonCropName) {
+    this.commonCropName = commonCropName;
+    return this;
+  }
+
+  /**
+   * Common name for the crop associated with this trial
+   * @return commonCropName
+  **/
+  @ApiModelProperty(value = "Common name for the crop associated with this trial")
+
+
+  public String getCommonCropName() {
+    return commonCropName;
+  }
+
+  public void setCommonCropName(String commonCropName) {
+    this.commonCropName = commonCropName;
   }
 
   public Trial contacts(List<Contact> contacts) {
@@ -118,7 +157,7 @@ public class Trial   {
     return this;
   }
 
-   /**
+  /**
    * List of contact entities associated with this trial
    * @return contacts
   **/
@@ -139,7 +178,7 @@ public class Trial   {
     return this;
   }
 
-   /**
+  /**
    * Get datasetAuthorship
    * @return datasetAuthorship
   **/
@@ -155,12 +194,61 @@ public class Trial   {
     this.datasetAuthorship = datasetAuthorship;
   }
 
+  public Trial datasetAuthorships(List<TrialDatasetAuthorships> datasetAuthorships) {
+    this.datasetAuthorships = datasetAuthorships;
+    return this;
+  }
+
+  public Trial addDatasetAuthorshipsItem(TrialDatasetAuthorships datasetAuthorshipsItem) {
+    if (this.datasetAuthorships == null) {
+      this.datasetAuthorships = new ArrayList<TrialDatasetAuthorships>();
+    }
+    this.datasetAuthorships.add(datasetAuthorshipsItem);
+    return this;
+  }
+
+  /**
+   * License and citation information for the data in this trial
+   * @return datasetAuthorships
+  **/
+  @ApiModelProperty(value = "License and citation information for the data in this trial")
+
+  @Valid
+
+  public List<TrialDatasetAuthorships> getDatasetAuthorships() {
+    return datasetAuthorships;
+  }
+
+  public void setDatasetAuthorships(List<TrialDatasetAuthorships> datasetAuthorships) {
+    this.datasetAuthorships = datasetAuthorships;
+  }
+
+  public Trial documentationURL(String documentationURL) {
+    this.documentationURL = documentationURL;
+    return this;
+  }
+
+  /**
+   * A URL to the human readable documentation of this object
+   * @return documentationURL
+  **/
+  @ApiModelProperty(value = "A URL to the human readable documentation of this object")
+
+
+  public String getDocumentationURL() {
+    return documentationURL;
+  }
+
+  public void setDocumentationURL(String documentationURL) {
+    this.documentationURL = documentationURL;
+  }
+
   public Trial endDate(LocalDate endDate) {
     this.endDate = endDate;
     return this;
   }
 
-   /**
+  /**
    * The date this trial ends
    * @return endDate
   **/
@@ -181,7 +269,7 @@ public class Trial   {
     return this;
   }
 
-   /**
+  /**
    * A program identifier to search for
    * @return programDbId
   **/
@@ -201,7 +289,7 @@ public class Trial   {
     return this;
   }
 
-   /**
+  /**
    * The human readable name of a program
    * @return programName
   **/
@@ -216,12 +304,41 @@ public class Trial   {
     this.programName = programName;
   }
 
+  public Trial publications(List<TrialPublications> publications) {
+    this.publications = publications;
+    return this;
+  }
+
+  public Trial addPublicationsItem(TrialPublications publicationsItem) {
+    if (this.publications == null) {
+      this.publications = new ArrayList<TrialPublications>();
+    }
+    this.publications.add(publicationsItem);
+    return this;
+  }
+
+  /**
+   * Get publications
+   * @return publications
+  **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public List<TrialPublications> getPublications() {
+    return publications;
+  }
+
+  public void setPublications(List<TrialPublications> publications) {
+    this.publications = publications;
+  }
+
   public Trial startDate(LocalDate startDate) {
     this.startDate = startDate;
     return this;
   }
 
-   /**
+  /**
    * The date this trial started
    * @return startDate
   **/
@@ -250,7 +367,7 @@ public class Trial   {
     return this;
   }
 
-   /**
+  /**
    * List of studies inside this trial
    * @return studies
   **/
@@ -271,7 +388,7 @@ public class Trial   {
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies a trial
    * @return trialDbId
   **/
@@ -291,7 +408,7 @@ public class Trial   {
     return this;
   }
 
-   /**
+  /**
    * The human readable name of a trial
    * @return trialName
   **/
@@ -318,11 +435,15 @@ public class Trial   {
     Trial trial = (Trial) o;
     return Objects.equals(this.active, trial.active) &&
         Objects.equals(this.additionalInfo, trial.additionalInfo) &&
+        Objects.equals(this.commonCropName, trial.commonCropName) &&
         Objects.equals(this.contacts, trial.contacts) &&
         Objects.equals(this.datasetAuthorship, trial.datasetAuthorship) &&
+        Objects.equals(this.datasetAuthorships, trial.datasetAuthorships) &&
+        Objects.equals(this.documentationURL, trial.documentationURL) &&
         Objects.equals(this.endDate, trial.endDate) &&
         Objects.equals(this.programDbId, trial.programDbId) &&
         Objects.equals(this.programName, trial.programName) &&
+        Objects.equals(this.publications, trial.publications) &&
         Objects.equals(this.startDate, trial.startDate) &&
         Objects.equals(this.studies, trial.studies) &&
         Objects.equals(this.trialDbId, trial.trialDbId) &&
@@ -331,7 +452,7 @@ public class Trial   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(active, additionalInfo, contacts, datasetAuthorship, endDate, programDbId, programName, startDate, studies, trialDbId, trialName);
+    return Objects.hash(active, additionalInfo, commonCropName, contacts, datasetAuthorship, datasetAuthorships, documentationURL, endDate, programDbId, programName, publications, startDate, studies, trialDbId, trialName);
   }
 
   @Override
@@ -341,11 +462,15 @@ public class Trial   {
     
     sb.append("    active: ").append(toIndentedString(active)).append("\n");
     sb.append("    additionalInfo: ").append(toIndentedString(additionalInfo)).append("\n");
+    sb.append("    commonCropName: ").append(toIndentedString(commonCropName)).append("\n");
     sb.append("    contacts: ").append(toIndentedString(contacts)).append("\n");
     sb.append("    datasetAuthorship: ").append(toIndentedString(datasetAuthorship)).append("\n");
+    sb.append("    datasetAuthorships: ").append(toIndentedString(datasetAuthorships)).append("\n");
+    sb.append("    documentationURL: ").append(toIndentedString(documentationURL)).append("\n");
     sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");
     sb.append("    programDbId: ").append(toIndentedString(programDbId)).append("\n");
     sb.append("    programName: ").append(toIndentedString(programName)).append("\n");
+    sb.append("    publications: ").append(toIndentedString(publications)).append("\n");
     sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
     sb.append("    studies: ").append(toIndentedString(studies)).append("\n");
     sb.append("    trialDbId: ").append(toIndentedString(trialDbId)).append("\n");

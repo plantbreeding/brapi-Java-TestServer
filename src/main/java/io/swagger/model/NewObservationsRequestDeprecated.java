@@ -2,18 +2,21 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.NewObservationsRequestDeprecatedData;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * NewObservationsRequestDeprecated
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class NewObservationsRequestDeprecated   {
   @JsonProperty("commit")
@@ -31,7 +34,7 @@ public class NewObservationsRequestDeprecated   {
     return this;
   }
 
-   /**
+  /**
    * Should these changes be commited
    * @return commit
   **/
@@ -59,11 +62,11 @@ public class NewObservationsRequestDeprecated   {
     return this;
   }
 
-   /**
-   * <strong>Required</strong> array of marker-name/score pairs
+  /**
+   * Required array of marker-name/score pairs
    * @return data
   **/
-  @ApiModelProperty(value = "<strong>Required</strong> array of marker-name/score pairs")
+  @ApiModelProperty(value = "Required array of marker-name/score pairs")
 
   @Valid
 
@@ -80,7 +83,7 @@ public class NewObservationsRequestDeprecated   {
     return this;
   }
 
-   /**
+  /**
    * The ID representing this transaction
    * @return transactionDbId
   **/

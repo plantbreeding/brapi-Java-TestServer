@@ -2,7 +2,10 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.Season;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,12 +13,13 @@ import java.util.Map;
 import org.threeten.bp.LocalDate;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * StudySummary
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class StudySummary   {
   @JsonProperty("active")
@@ -24,6 +28,12 @@ public class StudySummary   {
   @JsonProperty("additionalInfo")
   @Valid
   private Map<String, String> additionalInfo = null;
+
+  @JsonProperty("commonCropName")
+  private String commonCropName = null;
+
+  @JsonProperty("documentationURL")
+  private String documentationURL = null;
 
   @JsonProperty("endDate")
   private LocalDate endDate = null;
@@ -45,7 +55,7 @@ public class StudySummary   {
 
   @JsonProperty("seasons")
   @Valid
-  private List<String> seasons = null;
+  private List<Season> seasons = null;
 
   @JsonProperty("startDate")
   private LocalDate startDate = null;
@@ -53,8 +63,17 @@ public class StudySummary   {
   @JsonProperty("studyDbId")
   private String studyDbId = null;
 
+  @JsonProperty("studyName")
+  private String studyName = null;
+
   @JsonProperty("studyType")
   private String studyType = null;
+
+  @JsonProperty("studyTypeDbId")
+  private String studyTypeDbId = null;
+
+  @JsonProperty("studyTypeName")
+  private String studyTypeName = null;
 
   @JsonProperty("trialDbId")
   private String trialDbId = null;
@@ -62,29 +81,40 @@ public class StudySummary   {
   @JsonProperty("trialName")
   private String trialName = null;
 
+  public StudySummary active(String active) {
+    this.active = active;
+    return this;
+  }
+
+  /**
+   * Is this study currently active
+   * @return active
+  **/
+  @ApiModelProperty(value = "Is this study currently active")
+
 
   public String getActive() {
-	return active;
-}
+    return active;
+  }
 
-public void setActive(String active) {
-	this.active = active;
-}
+  public void setActive(String active) {
+    this.active = active;
+  }
 
-public StudySummary additionalInfo(Map<String, String> additionalInfo) {
+  public StudySummary additionalInfo(Map<String, String> additionalInfo) {
     this.additionalInfo = additionalInfo;
     return this;
   }
 
   public StudySummary putAdditionalInfoItem(String key, String additionalInfoItem) {
     if (this.additionalInfo == null) {
-      this.additionalInfo = new HashMap<String, String>();
+      this.additionalInfo = null;
     }
     this.additionalInfo.put(key, additionalInfoItem);
     return this;
   }
 
-   /**
+  /**
    * Additional arbitrary info
    * @return additionalInfo
   **/
@@ -99,12 +129,52 @@ public StudySummary additionalInfo(Map<String, String> additionalInfo) {
     this.additionalInfo = additionalInfo;
   }
 
+  public StudySummary commonCropName(String commonCropName) {
+    this.commonCropName = commonCropName;
+    return this;
+  }
+
+  /**
+   * Common name for the crop associated with this study
+   * @return commonCropName
+  **/
+  @ApiModelProperty(value = "Common name for the crop associated with this study")
+
+
+  public String getCommonCropName() {
+    return commonCropName;
+  }
+
+  public void setCommonCropName(String commonCropName) {
+    this.commonCropName = commonCropName;
+  }
+
+  public StudySummary documentationURL(String documentationURL) {
+    this.documentationURL = documentationURL;
+    return this;
+  }
+
+  /**
+   * A URL to the human readable documentation of this object
+   * @return documentationURL
+  **/
+  @ApiModelProperty(value = "A URL to the human readable documentation of this object")
+
+
+  public String getDocumentationURL() {
+    return documentationURL;
+  }
+
+  public void setDocumentationURL(String documentationURL) {
+    this.documentationURL = documentationURL;
+  }
+
   public StudySummary endDate(LocalDate endDate) {
     this.endDate = endDate;
     return this;
   }
 
-   /**
+  /**
    * The date the study ends
    * @return endDate
   **/
@@ -125,7 +195,7 @@ public StudySummary additionalInfo(Map<String, String> additionalInfo) {
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies a location
    * @return locationDbId
   **/
@@ -145,7 +215,7 @@ public StudySummary additionalInfo(Map<String, String> additionalInfo) {
     return this;
   }
 
-   /**
+  /**
    * The human readable name for a location
    * @return locationName
   **/
@@ -165,11 +235,11 @@ public StudySummary additionalInfo(Map<String, String> additionalInfo) {
     return this;
   }
 
-   /**
-   * The humane readable name of a study
+  /**
+   * DEPRECATED in v1.3 - Use \"studyName\"
    * @return name
   **/
-  @ApiModelProperty(value = "The humane readable name of a study")
+  @ApiModelProperty(value = "DEPRECATED in v1.3 - Use \"studyName\"")
 
 
   public String getName() {
@@ -185,7 +255,7 @@ public StudySummary additionalInfo(Map<String, String> additionalInfo) {
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies a program within the given database server
    * @return programDbId
   **/
@@ -205,7 +275,7 @@ public StudySummary additionalInfo(Map<String, String> additionalInfo) {
     return this;
   }
 
-   /**
+  /**
    * The humane readable name of a program
    * @return programName
   **/
@@ -220,31 +290,32 @@ public StudySummary additionalInfo(Map<String, String> additionalInfo) {
     this.programName = programName;
   }
 
-  public StudySummary seasons(List<String> seasons) {
+  public StudySummary seasons(List<Season> seasons) {
     this.seasons = seasons;
     return this;
   }
 
-  public StudySummary addSeasonsItem(String seasonsItem) {
+  public StudySummary addSeasonsItem(Season seasonsItem) {
     if (this.seasons == null) {
-      this.seasons = new ArrayList<String>();
+      this.seasons = new ArrayList<Season>();
     }
     this.seasons.add(seasonsItem);
     return this;
   }
 
-   /**
+  /**
    * List of seasons over which this study was performed.
    * @return seasons
   **/
   @ApiModelProperty(value = "List of seasons over which this study was performed.")
 
+  @Valid
 
-  public List<String> getSeasons() {
+  public List<Season> getSeasons() {
     return seasons;
   }
 
-  public void setSeasons(List<String> seasons) {
+  public void setSeasons(List<Season> seasons) {
     this.seasons = seasons;
   }
 
@@ -253,7 +324,7 @@ public StudySummary additionalInfo(Map<String, String> additionalInfo) {
     return this;
   }
 
-   /**
+  /**
    * The date this study started
    * @return startDate
   **/
@@ -274,7 +345,7 @@ public StudySummary additionalInfo(Map<String, String> additionalInfo) {
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies a study within the given database server
    * @return studyDbId
   **/
@@ -289,16 +360,36 @@ public StudySummary additionalInfo(Map<String, String> additionalInfo) {
     this.studyDbId = studyDbId;
   }
 
+  public StudySummary studyName(String studyName) {
+    this.studyName = studyName;
+    return this;
+  }
+
+  /**
+   * The humane readable name of a study
+   * @return studyName
+  **/
+  @ApiModelProperty(value = "The humane readable name of a study")
+
+
+  public String getStudyName() {
+    return studyName;
+  }
+
+  public void setStudyName(String studyName) {
+    this.studyName = studyName;
+  }
+
   public StudySummary studyType(String studyType) {
     this.studyType = studyType;
     return this;
   }
 
-   /**
-   * The type of study being performed. ex. \"Yeald Trial\", etc
+  /**
+   * DEPRECATED in v1.3 - See \"studyTypeName\"
    * @return studyType
   **/
-  @ApiModelProperty(value = "The type of study being performed. ex. \"Yeald Trial\", etc")
+  @ApiModelProperty(value = "DEPRECATED in v1.3 - See \"studyTypeName\"")
 
 
   public String getStudyType() {
@@ -309,12 +400,52 @@ public StudySummary additionalInfo(Map<String, String> additionalInfo) {
     this.studyType = studyType;
   }
 
+  public StudySummary studyTypeDbId(String studyTypeDbId) {
+    this.studyTypeDbId = studyTypeDbId;
+    return this;
+  }
+
+  /**
+   * The unique identifier of the type of study being performed.
+   * @return studyTypeDbId
+  **/
+  @ApiModelProperty(value = "The unique identifier of the type of study being performed.")
+
+
+  public String getStudyTypeDbId() {
+    return studyTypeDbId;
+  }
+
+  public void setStudyTypeDbId(String studyTypeDbId) {
+    this.studyTypeDbId = studyTypeDbId;
+  }
+
+  public StudySummary studyTypeName(String studyTypeName) {
+    this.studyTypeName = studyTypeName;
+    return this;
+  }
+
+  /**
+   * The name of the type of study being performed. ex. \"Yield Trial\", etc
+   * @return studyTypeName
+  **/
+  @ApiModelProperty(value = "The name of the type of study being performed. ex. \"Yield Trial\", etc")
+
+
+  public String getStudyTypeName() {
+    return studyTypeName;
+  }
+
+  public void setStudyTypeName(String studyTypeName) {
+    this.studyTypeName = studyTypeName;
+  }
+
   public StudySummary trialDbId(String trialDbId) {
     this.trialDbId = trialDbId;
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies a trial
    * @return trialDbId
   **/
@@ -334,7 +465,7 @@ public StudySummary additionalInfo(Map<String, String> additionalInfo) {
     return this;
   }
 
-   /**
+  /**
    * The human readable name of a trial
    * @return trialName
   **/
@@ -361,6 +492,8 @@ public StudySummary additionalInfo(Map<String, String> additionalInfo) {
     StudySummary studySummary = (StudySummary) o;
     return Objects.equals(this.active, studySummary.active) &&
         Objects.equals(this.additionalInfo, studySummary.additionalInfo) &&
+        Objects.equals(this.commonCropName, studySummary.commonCropName) &&
+        Objects.equals(this.documentationURL, studySummary.documentationURL) &&
         Objects.equals(this.endDate, studySummary.endDate) &&
         Objects.equals(this.locationDbId, studySummary.locationDbId) &&
         Objects.equals(this.locationName, studySummary.locationName) &&
@@ -370,14 +503,17 @@ public StudySummary additionalInfo(Map<String, String> additionalInfo) {
         Objects.equals(this.seasons, studySummary.seasons) &&
         Objects.equals(this.startDate, studySummary.startDate) &&
         Objects.equals(this.studyDbId, studySummary.studyDbId) &&
+        Objects.equals(this.studyName, studySummary.studyName) &&
         Objects.equals(this.studyType, studySummary.studyType) &&
+        Objects.equals(this.studyTypeDbId, studySummary.studyTypeDbId) &&
+        Objects.equals(this.studyTypeName, studySummary.studyTypeName) &&
         Objects.equals(this.trialDbId, studySummary.trialDbId) &&
         Objects.equals(this.trialName, studySummary.trialName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(active, additionalInfo, endDate, locationDbId, locationName, name, programDbId, programName, seasons, startDate, studyDbId, studyType, trialDbId, trialName);
+    return Objects.hash(active, additionalInfo, commonCropName, documentationURL, endDate, locationDbId, locationName, name, programDbId, programName, seasons, startDate, studyDbId, studyName, studyType, studyTypeDbId, studyTypeName, trialDbId, trialName);
   }
 
   @Override
@@ -387,6 +523,8 @@ public StudySummary additionalInfo(Map<String, String> additionalInfo) {
     
     sb.append("    active: ").append(toIndentedString(active)).append("\n");
     sb.append("    additionalInfo: ").append(toIndentedString(additionalInfo)).append("\n");
+    sb.append("    commonCropName: ").append(toIndentedString(commonCropName)).append("\n");
+    sb.append("    documentationURL: ").append(toIndentedString(documentationURL)).append("\n");
     sb.append("    endDate: ").append(toIndentedString(endDate)).append("\n");
     sb.append("    locationDbId: ").append(toIndentedString(locationDbId)).append("\n");
     sb.append("    locationName: ").append(toIndentedString(locationName)).append("\n");
@@ -396,7 +534,10 @@ public StudySummary additionalInfo(Map<String, String> additionalInfo) {
     sb.append("    seasons: ").append(toIndentedString(seasons)).append("\n");
     sb.append("    startDate: ").append(toIndentedString(startDate)).append("\n");
     sb.append("    studyDbId: ").append(toIndentedString(studyDbId)).append("\n");
+    sb.append("    studyName: ").append(toIndentedString(studyName)).append("\n");
     sb.append("    studyType: ").append(toIndentedString(studyType)).append("\n");
+    sb.append("    studyTypeDbId: ").append(toIndentedString(studyTypeDbId)).append("\n");
+    sb.append("    studyTypeName: ").append(toIndentedString(studyTypeName)).append("\n");
     sb.append("    trialDbId: ").append(toIndentedString(trialDbId)).append("\n");
     sb.append("    trialName: ").append(toIndentedString(trialName)).append("\n");
     sb.append("}");

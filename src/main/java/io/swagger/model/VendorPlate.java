@@ -2,12 +2,13 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.VendorPlateFile;
+import io.swagger.model.PlateFormat;
 import io.swagger.model.VendorSample;
 import java.util.ArrayList;
 import java.util.List;
-import org.threeten.bp.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -16,132 +17,81 @@ import javax.validation.constraints.*;
  * VendorPlate
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class VendorPlate   {
-  @JsonProperty("clientPlateDbId")
-  private String clientPlateDbId = null;
+  @JsonProperty("clientPlateBarcode")
+  private String clientPlateBarcode = null;
 
-  @JsonProperty("files")
-  @Valid
-  private List<VendorPlateFile> files = null;
+  @JsonProperty("clientPlateId")
+  private String clientPlateId = null;
 
-  @JsonProperty("plateFormat")
-  private String plateFormat = null;
-
-  @JsonProperty("sampleType")
-  private String sampleType = null;
+  @JsonProperty("sampleSubmissionFormat")
+  private PlateFormat sampleSubmissionFormat = null;
 
   @JsonProperty("samples")
   @Valid
-  private List<VendorSample> samples = new ArrayList<VendorSample>();
+  private List<VendorSample> samples = null;
 
-  @JsonProperty("status")
-  private String status = null;
-
-  @JsonProperty("statusTimeStamp")
-  private OffsetDateTime statusTimeStamp = null;
-
-  @JsonProperty("vendorBarcode")
-  private String vendorBarcode = null;
-
-  @JsonProperty("vendorBarcodeImageURL")
-  private String vendorBarcodeImageURL = null;
-
-  @JsonProperty("vendorPlateDbId")
-  private String vendorPlateDbId = null;
-
-  @JsonProperty("vendorProjectDbId")
-  private String vendorProjectDbId = null;
-
-  public VendorPlate clientPlateDbId(String clientPlateDbId) {
-    this.clientPlateDbId = clientPlateDbId;
+  public VendorPlate clientPlateBarcode(String clientPlateBarcode) {
+    this.clientPlateBarcode = clientPlateBarcode;
     return this;
   }
 
-   /**
-   * The ID which uniquely identifies this plate in the clients database
-   * @return clientPlateDbId
+  /**
+   * (Optional) The value of the bar code attached to this plate
+   * @return clientPlateBarcode
   **/
-  @ApiModelProperty(required = true, value = "The ID which uniquely identifies this plate in the clients database")
-  @NotNull
+  @ApiModelProperty(value = "(Optional) The value of the bar code attached to this plate")
 
 
-  public String getClientPlateDbId() {
-    return clientPlateDbId;
+  public String getClientPlateBarcode() {
+    return clientPlateBarcode;
   }
 
-  public void setClientPlateDbId(String clientPlateDbId) {
-    this.clientPlateDbId = clientPlateDbId;
+  public void setClientPlateBarcode(String clientPlateBarcode) {
+    this.clientPlateBarcode = clientPlateBarcode;
   }
 
-  public VendorPlate files(List<VendorPlateFile> files) {
-    this.files = files;
+  public VendorPlate clientPlateId(String clientPlateId) {
+    this.clientPlateId = clientPlateId;
     return this;
   }
 
-  public VendorPlate addFilesItem(VendorPlateFile filesItem) {
-    if (this.files == null) {
-      this.files = new ArrayList<VendorPlateFile>();
-    }
-    this.files.add(filesItem);
-    return this;
-  }
-
-   /**
-   * The array of data files produced by the vendors analysis
-   * @return files
+  /**
+   * The ID which uniquely identifies this plate to the client making the request
+   * @return clientPlateId
   **/
-  @ApiModelProperty(value = "The array of data files produced by the vendors analysis")
+  @ApiModelProperty(value = "The ID which uniquely identifies this plate to the client making the request")
+
+
+  public String getClientPlateId() {
+    return clientPlateId;
+  }
+
+  public void setClientPlateId(String clientPlateId) {
+    this.clientPlateId = clientPlateId;
+  }
+
+  public VendorPlate sampleSubmissionFormat(PlateFormat sampleSubmissionFormat) {
+    this.sampleSubmissionFormat = sampleSubmissionFormat;
+    return this;
+  }
+
+  /**
+   * Get sampleSubmissionFormat
+   * @return sampleSubmissionFormat
+  **/
+  @ApiModelProperty(value = "")
 
   @Valid
 
-  public List<VendorPlateFile> getFiles() {
-    return files;
+  public PlateFormat getSampleSubmissionFormat() {
+    return sampleSubmissionFormat;
   }
 
-  public void setFiles(List<VendorPlateFile> files) {
-    this.files = files;
-  }
-
-  public VendorPlate plateFormat(String plateFormat) {
-    this.plateFormat = plateFormat;
-    return this;
-  }
-
-   /**
-   * Defines the plate layout format, usually \"Plate_96\" for a 96 well plate or \"Tubes\" for plateless format
-   * @return plateFormat
-  **/
-  @ApiModelProperty(value = "Defines the plate layout format, usually \"Plate_96\" for a 96 well plate or \"Tubes\" for plateless format")
-
-
-  public String getPlateFormat() {
-    return plateFormat;
-  }
-
-  public void setPlateFormat(String plateFormat) {
-    this.plateFormat = plateFormat;
-  }
-
-  public VendorPlate sampleType(String sampleType) {
-    this.sampleType = sampleType;
-    return this;
-  }
-
-   /**
-   * The type of sample. ie \"DNA\", \"RNA\", \"Tissue\", etc 
-   * @return sampleType
-  **/
-  @ApiModelProperty(value = "The type of sample. ie \"DNA\", \"RNA\", \"Tissue\", etc ")
-
-
-  public String getSampleType() {
-    return sampleType;
-  }
-
-  public void setSampleType(String sampleType) {
-    this.sampleType = sampleType;
+  public void setSampleSubmissionFormat(PlateFormat sampleSubmissionFormat) {
+    this.sampleSubmissionFormat = sampleSubmissionFormat;
   }
 
   public VendorPlate samples(List<VendorSample> samples) {
@@ -150,16 +100,18 @@ public class VendorPlate   {
   }
 
   public VendorPlate addSamplesItem(VendorSample samplesItem) {
+    if (this.samples == null) {
+      this.samples = new ArrayList<VendorSample>();
+    }
     this.samples.add(samplesItem);
     return this;
   }
 
-   /**
-   * List of samples in the plate
+  /**
+   * Get samples
    * @return samples
   **/
-  @ApiModelProperty(required = true, value = "List of samples in the plate")
-  @NotNull
+  @ApiModelProperty(value = "")
 
   @Valid
 
@@ -169,131 +121,6 @@ public class VendorPlate   {
 
   public void setSamples(List<VendorSample> samples) {
     this.samples = samples;
-  }
-
-  public VendorPlate status(String status) {
-    this.status = status;
-    return this;
-  }
-
-   /**
-   * The status of the plate in the processing pipeline. Typically, \"Received\", \"Processing\", \"QC_passed\", QC_failed\", \"Completed\" (as per vendor specifications)
-   * @return status
-  **/
-  @ApiModelProperty(required = true, value = "The status of the plate in the processing pipeline. Typically, \"Received\", \"Processing\", \"QC_passed\", QC_failed\", \"Completed\" (as per vendor specifications)")
-  @NotNull
-
-
-  public String getStatus() {
-    return status;
-  }
-
-  public void setStatus(String status) {
-    this.status = status;
-  }
-
-  public VendorPlate statusTimeStamp(OffsetDateTime statusTimeStamp) {
-    this.statusTimeStamp = statusTimeStamp;
-    return this;
-  }
-
-   /**
-   * The time stamp of the most recent status update
-   * @return statusTimeStamp
-  **/
-  @ApiModelProperty(required = true, value = "The time stamp of the most recent status update")
-  @NotNull
-
-  @Valid
-
-  public OffsetDateTime getStatusTimeStamp() {
-    return statusTimeStamp;
-  }
-
-  public void setStatusTimeStamp(OffsetDateTime statusTimeStamp) {
-    this.statusTimeStamp = statusTimeStamp;
-  }
-
-  public VendorPlate vendorBarcode(String vendorBarcode) {
-    this.vendorBarcode = vendorBarcode;
-    return this;
-  }
-
-   /**
-   * A string that can be represented as a barcode, identifying this plate 
-   * @return vendorBarcode
-  **/
-  @ApiModelProperty(value = "A string that can be represented as a barcode, identifying this plate ")
-
-
-  public String getVendorBarcode() {
-    return vendorBarcode;
-  }
-
-  public void setVendorBarcode(String vendorBarcode) {
-    this.vendorBarcode = vendorBarcode;
-  }
-
-  public VendorPlate vendorBarcodeImageURL(String vendorBarcodeImageURL) {
-    this.vendorBarcodeImageURL = vendorBarcodeImageURL;
-    return this;
-  }
-
-   /**
-   * A URL pointing to an image file which has the bar code which identifies this plate
-   * @return vendorBarcodeImageURL
-  **/
-  @ApiModelProperty(value = "A URL pointing to an image file which has the bar code which identifies this plate")
-
-
-  public String getVendorBarcodeImageURL() {
-    return vendorBarcodeImageURL;
-  }
-
-  public void setVendorBarcodeImageURL(String vendorBarcodeImageURL) {
-    this.vendorBarcodeImageURL = vendorBarcodeImageURL;
-  }
-
-  public VendorPlate vendorPlateDbId(String vendorPlateDbId) {
-    this.vendorPlateDbId = vendorPlateDbId;
-    return this;
-  }
-
-   /**
-   * The ID which uniquely identifies this plate in the vendors database
-   * @return vendorPlateDbId
-  **/
-  @ApiModelProperty(required = true, value = "The ID which uniquely identifies this plate in the vendors database")
-  @NotNull
-
-
-  public String getVendorPlateDbId() {
-    return vendorPlateDbId;
-  }
-
-  public void setVendorPlateDbId(String vendorPlateDbId) {
-    this.vendorPlateDbId = vendorPlateDbId;
-  }
-
-  public VendorPlate vendorProjectDbId(String vendorProjectDbId) {
-    this.vendorProjectDbId = vendorProjectDbId;
-    return this;
-  }
-
-   /**
-   * The ID which uniquely identifies this project in the vendors database
-   * @return vendorProjectDbId
-  **/
-  @ApiModelProperty(required = true, value = "The ID which uniquely identifies this project in the vendors database")
-  @NotNull
-
-
-  public String getVendorProjectDbId() {
-    return vendorProjectDbId;
-  }
-
-  public void setVendorProjectDbId(String vendorProjectDbId) {
-    this.vendorProjectDbId = vendorProjectDbId;
   }
 
 
@@ -306,22 +133,15 @@ public class VendorPlate   {
       return false;
     }
     VendorPlate vendorPlate = (VendorPlate) o;
-    return Objects.equals(this.clientPlateDbId, vendorPlate.clientPlateDbId) &&
-        Objects.equals(this.files, vendorPlate.files) &&
-        Objects.equals(this.plateFormat, vendorPlate.plateFormat) &&
-        Objects.equals(this.sampleType, vendorPlate.sampleType) &&
-        Objects.equals(this.samples, vendorPlate.samples) &&
-        Objects.equals(this.status, vendorPlate.status) &&
-        Objects.equals(this.statusTimeStamp, vendorPlate.statusTimeStamp) &&
-        Objects.equals(this.vendorBarcode, vendorPlate.vendorBarcode) &&
-        Objects.equals(this.vendorBarcodeImageURL, vendorPlate.vendorBarcodeImageURL) &&
-        Objects.equals(this.vendorPlateDbId, vendorPlate.vendorPlateDbId) &&
-        Objects.equals(this.vendorProjectDbId, vendorPlate.vendorProjectDbId);
+    return Objects.equals(this.clientPlateBarcode, vendorPlate.clientPlateBarcode) &&
+        Objects.equals(this.clientPlateId, vendorPlate.clientPlateId) &&
+        Objects.equals(this.sampleSubmissionFormat, vendorPlate.sampleSubmissionFormat) &&
+        Objects.equals(this.samples, vendorPlate.samples);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(clientPlateDbId, files, plateFormat, sampleType, samples, status, statusTimeStamp, vendorBarcode, vendorBarcodeImageURL, vendorPlateDbId, vendorProjectDbId);
+    return Objects.hash(clientPlateBarcode, clientPlateId, sampleSubmissionFormat, samples);
   }
 
   @Override
@@ -329,17 +149,10 @@ public class VendorPlate   {
     StringBuilder sb = new StringBuilder();
     sb.append("class VendorPlate {\n");
     
-    sb.append("    clientPlateDbId: ").append(toIndentedString(clientPlateDbId)).append("\n");
-    sb.append("    files: ").append(toIndentedString(files)).append("\n");
-    sb.append("    plateFormat: ").append(toIndentedString(plateFormat)).append("\n");
-    sb.append("    sampleType: ").append(toIndentedString(sampleType)).append("\n");
+    sb.append("    clientPlateBarcode: ").append(toIndentedString(clientPlateBarcode)).append("\n");
+    sb.append("    clientPlateId: ").append(toIndentedString(clientPlateId)).append("\n");
+    sb.append("    sampleSubmissionFormat: ").append(toIndentedString(sampleSubmissionFormat)).append("\n");
     sb.append("    samples: ").append(toIndentedString(samples)).append("\n");
-    sb.append("    status: ").append(toIndentedString(status)).append("\n");
-    sb.append("    statusTimeStamp: ").append(toIndentedString(statusTimeStamp)).append("\n");
-    sb.append("    vendorBarcode: ").append(toIndentedString(vendorBarcode)).append("\n");
-    sb.append("    vendorBarcodeImageURL: ").append(toIndentedString(vendorBarcodeImageURL)).append("\n");
-    sb.append("    vendorPlateDbId: ").append(toIndentedString(vendorPlateDbId)).append("\n");
-    sb.append("    vendorProjectDbId: ").append(toIndentedString(vendorProjectDbId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

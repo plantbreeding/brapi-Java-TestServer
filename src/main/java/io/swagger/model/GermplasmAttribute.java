@@ -2,16 +2,19 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.threeten.bp.LocalDate;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * GermplasmAttribute
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class GermplasmAttribute   {
   @JsonProperty("attributeCode")
@@ -34,7 +37,7 @@ public class GermplasmAttribute   {
     return this;
   }
 
-   /**
+  /**
    * Short abbreviation which represents this attribute
    * @return attributeCode
   **/
@@ -54,7 +57,7 @@ public class GermplasmAttribute   {
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies this attribute within the given database server
    * @return attributeDbId
   **/
@@ -74,7 +77,7 @@ public class GermplasmAttribute   {
     return this;
   }
 
-   /**
+  /**
    * The human readable name of this attribute
    * @return attributeName
   **/
@@ -94,7 +97,7 @@ public class GermplasmAttribute   {
     return this;
   }
 
-   /**
+  /**
    * The date the value of this attribute was determined for a given germplasm
    * @return determinedDate
   **/
@@ -115,7 +118,7 @@ public class GermplasmAttribute   {
     return this;
   }
 
-   /**
+  /**
    * The value of this attribute for a given germplasm
    * @return value
   **/

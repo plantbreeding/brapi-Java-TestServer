@@ -2,52 +2,111 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.TaxonID;
+import io.swagger.model.Measurement;
+import io.swagger.model.OntologyReference;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * VendorSample
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class VendorSample   {
+  @JsonProperty("clientSampleBarCode")
+  private String clientSampleBarCode = null;
+
+  @JsonProperty("clientSampleId")
+  private String clientSampleId = null;
+
   @JsonProperty("column")
   private String column = null;
 
+  @JsonProperty("comments")
+  private String comments = null;
+
   @JsonProperty("concentration")
-  private String concentration = null;
+  private Measurement concentration = null;
+
+  @JsonProperty("organismName")
+  private String organismName = null;
 
   @JsonProperty("row")
   private String row = null;
 
-  @JsonProperty("sampleDbId")
-  private String sampleDbId = null;
+  @JsonProperty("speciesName")
+  private String speciesName = null;
 
-  @JsonProperty("taxonId")
-  private TaxonID taxonId = null;
+  @JsonProperty("taxonomyOntologyReference")
+  private OntologyReference taxonomyOntologyReference = null;
 
   @JsonProperty("tissueType")
   private String tissueType = null;
 
+  @JsonProperty("tissueTypeOntologyReference")
+  private OntologyReference tissueTypeOntologyReference = null;
+
   @JsonProperty("volume")
-  private String volume = null;
+  private Measurement volume = null;
 
   @JsonProperty("well")
   private String well = null;
+
+  public VendorSample clientSampleBarCode(String clientSampleBarCode) {
+    this.clientSampleBarCode = clientSampleBarCode;
+    return this;
+  }
+
+  /**
+   * (Optional) The value of the bar code attached to this sample
+   * @return clientSampleBarCode
+  **/
+  @ApiModelProperty(value = "(Optional) The value of the bar code attached to this sample")
+
+
+  public String getClientSampleBarCode() {
+    return clientSampleBarCode;
+  }
+
+  public void setClientSampleBarCode(String clientSampleBarCode) {
+    this.clientSampleBarCode = clientSampleBarCode;
+  }
+
+  public VendorSample clientSampleId(String clientSampleId) {
+    this.clientSampleId = clientSampleId;
+    return this;
+  }
+
+  /**
+   * The ID which uniquely identifies this sample to the client making the request
+   * @return clientSampleId
+  **/
+  @ApiModelProperty(value = "The ID which uniquely identifies this sample to the client making the request")
+
+
+  public String getClientSampleId() {
+    return clientSampleId;
+  }
+
+  public void setClientSampleId(String clientSampleId) {
+    this.clientSampleId = clientSampleId;
+  }
 
   public VendorSample column(String column) {
     this.column = column;
     return this;
   }
 
-   /**
-   * The sample column index number in a plate
+  /**
+   * The Column identifier for this samples location in the plate
    * @return column
   **/
-  @ApiModelProperty(value = "The sample column index number in a plate")
+  @ApiModelProperty(value = "The Column identifier for this samples location in the plate")
 
 
   public String getColumn() {
@@ -58,24 +117,65 @@ public class VendorSample   {
     this.column = column;
   }
 
-  public VendorSample concentration(String concentration) {
+  public VendorSample comments(String comments) {
+    this.comments = comments;
+    return this;
+  }
+
+  /**
+   * Generic comments about this sample for the vendor
+   * @return comments
+  **/
+  @ApiModelProperty(value = "Generic comments about this sample for the vendor")
+
+
+  public String getComments() {
+    return comments;
+  }
+
+  public void setComments(String comments) {
+    this.comments = comments;
+  }
+
+  public VendorSample concentration(Measurement concentration) {
     this.concentration = concentration;
     return this;
   }
 
-   /**
-   * The concentration of a sample in solution
+  /**
+   * Get concentration
    * @return concentration
   **/
-  @ApiModelProperty(value = "The concentration of a sample in solution")
+  @ApiModelProperty(value = "")
 
+  @Valid
 
-  public String getConcentration() {
+  public Measurement getConcentration() {
     return concentration;
   }
 
-  public void setConcentration(String concentration) {
+  public void setConcentration(Measurement concentration) {
     this.concentration = concentration;
+  }
+
+  public VendorSample organismName(String organismName) {
+    this.organismName = organismName;
+    return this;
+  }
+
+  /**
+   * Scientific organism name
+   * @return organismName
+  **/
+  @ApiModelProperty(value = "Scientific organism name")
+
+
+  public String getOrganismName() {
+    return organismName;
+  }
+
+  public void setOrganismName(String organismName) {
+    this.organismName = organismName;
   }
 
   public VendorSample row(String row) {
@@ -83,11 +183,11 @@ public class VendorSample   {
     return this;
   }
 
-   /**
-   * the sample row index number in a plate
+  /**
+   * The Row identifier for this samples location in the plate
    * @return row
   **/
-  @ApiModelProperty(value = "the sample row index number in a plate")
+  @ApiModelProperty(value = "The Row identifier for this samples location in the plate")
 
 
   public String getRow() {
@@ -98,45 +198,45 @@ public class VendorSample   {
     this.row = row;
   }
 
-  public VendorSample sampleDbId(String sampleDbId) {
-    this.sampleDbId = sampleDbId;
+  public VendorSample speciesName(String speciesName) {
+    this.speciesName = speciesName;
     return this;
   }
 
-   /**
-   * The ID which uniquely identifies a sample
-   * @return sampleDbId
+  /**
+   * Scientific species name
+   * @return speciesName
   **/
-  @ApiModelProperty(value = "The ID which uniquely identifies a sample")
+  @ApiModelProperty(value = "Scientific species name")
 
 
-  public String getSampleDbId() {
-    return sampleDbId;
+  public String getSpeciesName() {
+    return speciesName;
   }
 
-  public void setSampleDbId(String sampleDbId) {
-    this.sampleDbId = sampleDbId;
+  public void setSpeciesName(String speciesName) {
+    this.speciesName = speciesName;
   }
 
-  public VendorSample taxonId(TaxonID taxonId) {
-    this.taxonId = taxonId;
+  public VendorSample taxonomyOntologyReference(OntologyReference taxonomyOntologyReference) {
+    this.taxonomyOntologyReference = taxonomyOntologyReference;
     return this;
   }
 
-   /**
-   * The identifier (name, ID, URI) of a particular taxonomy within the source provider
-   * @return taxonId
+  /**
+   * Get taxonomyOntologyReference
+   * @return taxonomyOntologyReference
   **/
-  @ApiModelProperty(value = "The identifier (name, ID, URI) of a particular taxonomy within the source provider")
+  @ApiModelProperty(value = "")
 
   @Valid
 
-  public TaxonID getTaxonId() {
-    return taxonId;
+  public OntologyReference getTaxonomyOntologyReference() {
+    return taxonomyOntologyReference;
   }
 
-  public void setTaxonId(TaxonID taxonId) {
-    this.taxonId = taxonId;
+  public void setTaxonomyOntologyReference(OntologyReference taxonomyOntologyReference) {
+    this.taxonomyOntologyReference = taxonomyOntologyReference;
   }
 
   public VendorSample tissueType(String tissueType) {
@@ -144,11 +244,11 @@ public class VendorSample   {
     return this;
   }
 
-   /**
-   * The type of tissue sampled. ex. 'Leaf', 'Root', etc.
+  /**
+   * The type of tissue in this sample. List of accepted tissue types can be found in the Vendor Specs.
    * @return tissueType
   **/
-  @ApiModelProperty(value = "The type of tissue sampled. ex. 'Leaf', 'Root', etc.")
+  @ApiModelProperty(value = "The type of tissue in this sample. List of accepted tissue types can be found in the Vendor Specs.")
 
 
   public String getTissueType() {
@@ -159,23 +259,45 @@ public class VendorSample   {
     this.tissueType = tissueType;
   }
 
-  public VendorSample volume(String volume) {
+  public VendorSample tissueTypeOntologyReference(OntologyReference tissueTypeOntologyReference) {
+    this.tissueTypeOntologyReference = tissueTypeOntologyReference;
+    return this;
+  }
+
+  /**
+   * Get tissueTypeOntologyReference
+   * @return tissueTypeOntologyReference
+  **/
+  @ApiModelProperty(value = "")
+
+  @Valid
+
+  public OntologyReference getTissueTypeOntologyReference() {
+    return tissueTypeOntologyReference;
+  }
+
+  public void setTissueTypeOntologyReference(OntologyReference tissueTypeOntologyReference) {
+    this.tissueTypeOntologyReference = tissueTypeOntologyReference;
+  }
+
+  public VendorSample volume(Measurement volume) {
     this.volume = volume;
     return this;
   }
 
-   /**
-   * The physical volume of a sample
+  /**
+   * Get volume
    * @return volume
   **/
-  @ApiModelProperty(value = "The physical volume of a sample")
+  @ApiModelProperty(value = "")
 
+  @Valid
 
-  public String getVolume() {
+  public Measurement getVolume() {
     return volume;
   }
 
-  public void setVolume(String volume) {
+  public void setVolume(Measurement volume) {
     this.volume = volume;
   }
 
@@ -184,11 +306,11 @@ public class VendorSample   {
     return this;
   }
 
-   /**
-   * The plate well number where a sample is located
+  /**
+   * The Well identifier for this samples location in the plate. Ussually a concatination of Row and Column.
    * @return well
   **/
-  @ApiModelProperty(value = "The plate well number where a sample is located")
+  @ApiModelProperty(value = "The Well identifier for this samples location in the plate. Ussually a concatination of Row and Column.")
 
 
   public String getWell() {
@@ -209,19 +331,24 @@ public class VendorSample   {
       return false;
     }
     VendorSample vendorSample = (VendorSample) o;
-    return Objects.equals(this.column, vendorSample.column) &&
+    return Objects.equals(this.clientSampleBarCode, vendorSample.clientSampleBarCode) &&
+        Objects.equals(this.clientSampleId, vendorSample.clientSampleId) &&
+        Objects.equals(this.column, vendorSample.column) &&
+        Objects.equals(this.comments, vendorSample.comments) &&
         Objects.equals(this.concentration, vendorSample.concentration) &&
+        Objects.equals(this.organismName, vendorSample.organismName) &&
         Objects.equals(this.row, vendorSample.row) &&
-        Objects.equals(this.sampleDbId, vendorSample.sampleDbId) &&
-        Objects.equals(this.taxonId, vendorSample.taxonId) &&
+        Objects.equals(this.speciesName, vendorSample.speciesName) &&
+        Objects.equals(this.taxonomyOntologyReference, vendorSample.taxonomyOntologyReference) &&
         Objects.equals(this.tissueType, vendorSample.tissueType) &&
+        Objects.equals(this.tissueTypeOntologyReference, vendorSample.tissueTypeOntologyReference) &&
         Objects.equals(this.volume, vendorSample.volume) &&
         Objects.equals(this.well, vendorSample.well);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(column, concentration, row, sampleDbId, taxonId, tissueType, volume, well);
+    return Objects.hash(clientSampleBarCode, clientSampleId, column, comments, concentration, organismName, row, speciesName, taxonomyOntologyReference, tissueType, tissueTypeOntologyReference, volume, well);
   }
 
   @Override
@@ -229,12 +356,17 @@ public class VendorSample   {
     StringBuilder sb = new StringBuilder();
     sb.append("class VendorSample {\n");
     
+    sb.append("    clientSampleBarCode: ").append(toIndentedString(clientSampleBarCode)).append("\n");
+    sb.append("    clientSampleId: ").append(toIndentedString(clientSampleId)).append("\n");
     sb.append("    column: ").append(toIndentedString(column)).append("\n");
+    sb.append("    comments: ").append(toIndentedString(comments)).append("\n");
     sb.append("    concentration: ").append(toIndentedString(concentration)).append("\n");
+    sb.append("    organismName: ").append(toIndentedString(organismName)).append("\n");
     sb.append("    row: ").append(toIndentedString(row)).append("\n");
-    sb.append("    sampleDbId: ").append(toIndentedString(sampleDbId)).append("\n");
-    sb.append("    taxonId: ").append(toIndentedString(taxonId)).append("\n");
+    sb.append("    speciesName: ").append(toIndentedString(speciesName)).append("\n");
+    sb.append("    taxonomyOntologyReference: ").append(toIndentedString(taxonomyOntologyReference)).append("\n");
     sb.append("    tissueType: ").append(toIndentedString(tissueType)).append("\n");
+    sb.append("    tissueTypeOntologyReference: ").append(toIndentedString(tissueTypeOntologyReference)).append("\n");
     sb.append("    volume: ").append(toIndentedString(volume)).append("\n");
     sb.append("    well: ").append(toIndentedString(well)).append("\n");
     sb.append("}");

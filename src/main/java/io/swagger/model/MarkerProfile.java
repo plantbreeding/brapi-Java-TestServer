@@ -2,18 +2,21 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * MarkerProfile
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class MarkerProfile   {
   @JsonProperty("analysisMethod")
@@ -21,13 +24,16 @@ public class MarkerProfile   {
 
   @JsonProperty("data")
   @Valid
-  private List<Map<String, String>> data = null;
+  private List<Map<String, String>> data = new ArrayList<Map<String, String>>();
 
   @JsonProperty("extractDbId")
   private String extractDbId = null;
 
   @JsonProperty("germplasmDbId")
   private String germplasmDbId = null;
+
+  @JsonProperty("markerProfileDbId")
+  private String markerProfileDbId = null;
 
   @JsonProperty("markerprofileDbId")
   private String markerprofileDbId = null;
@@ -40,7 +46,7 @@ public class MarkerProfile   {
     return this;
   }
 
-   /**
+  /**
    * The type of analysis performed to determine a set of marker data
    * @return analysisMethod
   **/
@@ -61,18 +67,16 @@ public class MarkerProfile   {
   }
 
   public MarkerProfile addDataItem(Map<String, String> dataItem) {
-    if (this.data == null) {
-      this.data = new ArrayList<Map<String, String>>();
-    }
     this.data.add(dataItem);
     return this;
   }
 
-   /**
-   * <strong>Required</strong> array of marker-name/score pairs
+  /**
+   * array of marker-name/score pairs
    * @return data
   **/
-  @ApiModelProperty(value = "<strong>Required</strong> array of marker-name/score pairs")
+  @ApiModelProperty(required = true, value = "array of marker-name/score pairs")
+  @NotNull
 
   @Valid
 
@@ -89,11 +93,12 @@ public class MarkerProfile   {
     return this;
   }
 
-   /**
-   * <strong>Required</strong>
+  /**
+   * Required
    * @return extractDbId
   **/
-  @ApiModelProperty(value = "<strong>Required</strong>")
+  @ApiModelProperty(required = true, value = "Required")
+  @NotNull
 
 
   public String getExtractDbId() {
@@ -109,11 +114,12 @@ public class MarkerProfile   {
     return this;
   }
 
-   /**
-   * <strong>Required</strong>
+  /**
+   * Required
    * @return germplasmDbId
   **/
-  @ApiModelProperty(value = "<strong>Required</strong>")
+  @ApiModelProperty(required = true, value = "Required")
+  @NotNull
 
 
   public String getGermplasmDbId() {
@@ -124,16 +130,37 @@ public class MarkerProfile   {
     this.germplasmDbId = germplasmDbId;
   }
 
+  public MarkerProfile markerProfileDbId(String markerProfileDbId) {
+    this.markerProfileDbId = markerProfileDbId;
+    return this;
+  }
+
+  /**
+   * Unique in the database. Can be a catenation of unique IDs for germplasm and extract. Required
+   * @return markerProfileDbId
+  **/
+  @ApiModelProperty(required = true, value = "Unique in the database. Can be a catenation of unique IDs for germplasm and extract. Required")
+  @NotNull
+
+
+  public String getMarkerProfileDbId() {
+    return markerProfileDbId;
+  }
+
+  public void setMarkerProfileDbId(String markerProfileDbId) {
+    this.markerProfileDbId = markerProfileDbId;
+  }
+
   public MarkerProfile markerprofileDbId(String markerprofileDbId) {
     this.markerprofileDbId = markerprofileDbId;
     return this;
   }
 
-   /**
-   * Unique in the database. Can be a catenation of unique IDs for germplasm and extract. <strong>Required</strong>
+  /**
+   * DEPRECATED in v1.3 - see \"markerProfileDbId\" (camel case)
    * @return markerprofileDbId
   **/
-  @ApiModelProperty(value = "Unique in the database. Can be a catenation of unique IDs for germplasm and extract. <strong>Required</strong>")
+  @ApiModelProperty(value = "DEPRECATED in v1.3 - see \"markerProfileDbId\" (camel case)")
 
 
   public String getMarkerprofileDbId() {
@@ -149,7 +176,7 @@ public class MarkerProfile   {
     return this;
   }
 
-   /**
+  /**
    * Human readable display name for this marker profile
    * @return uniqueDisplayName
   **/
@@ -178,13 +205,14 @@ public class MarkerProfile   {
         Objects.equals(this.data, markerProfile.data) &&
         Objects.equals(this.extractDbId, markerProfile.extractDbId) &&
         Objects.equals(this.germplasmDbId, markerProfile.germplasmDbId) &&
+        Objects.equals(this.markerProfileDbId, markerProfile.markerProfileDbId) &&
         Objects.equals(this.markerprofileDbId, markerProfile.markerprofileDbId) &&
         Objects.equals(this.uniqueDisplayName, markerProfile.uniqueDisplayName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(analysisMethod, data, extractDbId, germplasmDbId, markerprofileDbId, uniqueDisplayName);
+    return Objects.hash(analysisMethod, data, extractDbId, germplasmDbId, markerProfileDbId, markerprofileDbId, uniqueDisplayName);
   }
 
   @Override
@@ -196,6 +224,7 @@ public class MarkerProfile   {
     sb.append("    data: ").append(toIndentedString(data)).append("\n");
     sb.append("    extractDbId: ").append(toIndentedString(extractDbId)).append("\n");
     sb.append("    germplasmDbId: ").append(toIndentedString(germplasmDbId)).append("\n");
+    sb.append("    markerProfileDbId: ").append(toIndentedString(markerProfileDbId)).append("\n");
     sb.append("    markerprofileDbId: ").append(toIndentedString(markerprofileDbId)).append("\n");
     sb.append("    uniqueDisplayName: ").append(toIndentedString(uniqueDisplayName)).append("\n");
     sb.append("}");

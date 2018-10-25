@@ -2,17 +2,20 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * TraitSummary
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class TraitSummary   {
   @JsonProperty("defaultValue")
@@ -34,12 +37,15 @@ public class TraitSummary   {
   @JsonProperty("traitId")
   private String traitId = null;
 
+  @JsonProperty("traitName")
+  private String traitName = null;
+
   public TraitSummary defaultValue(String defaultValue) {
     this.defaultValue = defaultValue;
     return this;
   }
 
-   /**
+  /**
    * The default value of a trait (if applicable) ex. \"0\", \"\", \"null\"
    * @return defaultValue
   **/
@@ -59,7 +65,7 @@ public class TraitSummary   {
     return this;
   }
 
-   /**
+  /**
    * The description of a trait
    * @return description
   **/
@@ -79,11 +85,11 @@ public class TraitSummary   {
     return this;
   }
 
-   /**
-   * The human readable name of a trait
+  /**
+   * DEPRECATED in v1.3 - Use \"traitName\"
    * @return name
   **/
-  @ApiModelProperty(value = "The human readable name of a trait")
+  @ApiModelProperty(value = "DEPRECATED in v1.3 - Use \"traitName\"")
 
 
   public String getName() {
@@ -107,7 +113,7 @@ public class TraitSummary   {
     return this;
   }
 
-   /**
+  /**
    * List of observation variable DbIds which include this trait
    * @return observationVariables
   **/
@@ -127,7 +133,7 @@ public class TraitSummary   {
     return this;
   }
 
-   /**
+  /**
    * The ID which uniquely identifies a trait
    * @return traitDbId
   **/
@@ -147,11 +153,11 @@ public class TraitSummary   {
     return this;
   }
 
-   /**
-   * <strong>DEPRECATED</strong> The ID which uniquely identifies a trait
+  /**
+   * DEPRECATED The ID which uniquely identifies a trait
    * @return traitId
   **/
-  @ApiModelProperty(value = "<strong>DEPRECATED</strong> The ID which uniquely identifies a trait")
+  @ApiModelProperty(value = "DEPRECATED The ID which uniquely identifies a trait")
 
 
   public String getTraitId() {
@@ -160,6 +166,26 @@ public class TraitSummary   {
 
   public void setTraitId(String traitId) {
     this.traitId = traitId;
+  }
+
+  public TraitSummary traitName(String traitName) {
+    this.traitName = traitName;
+    return this;
+  }
+
+  /**
+   * The human readable name of a trait
+   * @return traitName
+  **/
+  @ApiModelProperty(value = "The human readable name of a trait")
+
+
+  public String getTraitName() {
+    return traitName;
+  }
+
+  public void setTraitName(String traitName) {
+    this.traitName = traitName;
   }
 
 
@@ -177,12 +203,13 @@ public class TraitSummary   {
         Objects.equals(this.name, traitSummary.name) &&
         Objects.equals(this.observationVariables, traitSummary.observationVariables) &&
         Objects.equals(this.traitDbId, traitSummary.traitDbId) &&
-        Objects.equals(this.traitId, traitSummary.traitId);
+        Objects.equals(this.traitId, traitSummary.traitId) &&
+        Objects.equals(this.traitName, traitSummary.traitName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(defaultValue, description, name, observationVariables, traitDbId, traitId);
+    return Objects.hash(defaultValue, description, name, observationVariables, traitDbId, traitId, traitName);
   }
 
   @Override
@@ -196,6 +223,7 @@ public class TraitSummary   {
     sb.append("    observationVariables: ").append(toIndentedString(observationVariables)).append("\n");
     sb.append("    traitDbId: ").append(toIndentedString(traitDbId)).append("\n");
     sb.append("    traitId: ").append(toIndentedString(traitId)).append("\n");
+    sb.append("    traitName: ").append(toIndentedString(traitName)).append("\n");
     sb.append("}");
     return sb.toString();
   }

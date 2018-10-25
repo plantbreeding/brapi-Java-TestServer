@@ -2,15 +2,18 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * Ontology
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-06-04T21:50:05.517Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
 
 public class Ontology   {
   @JsonProperty("authors")
@@ -21,6 +24,9 @@ public class Ontology   {
 
   @JsonProperty("description")
   private String description = null;
+
+  @JsonProperty("documentationURL")
+  private String documentationURL = null;
 
   @JsonProperty("licence")
   private String licence = null;
@@ -39,7 +45,7 @@ public class Ontology   {
     return this;
   }
 
-   /**
+  /**
    * Ontology's list of authors (no specific format)
    * @return authors
   **/
@@ -59,7 +65,7 @@ public class Ontology   {
     return this;
   }
 
-   /**
+  /**
    * Ontology copyright
    * @return copyright
   **/
@@ -79,7 +85,7 @@ public class Ontology   {
     return this;
   }
 
-   /**
+  /**
    * Human readable description of Ontology
    * @return description
   **/
@@ -94,12 +100,32 @@ public class Ontology   {
     this.description = description;
   }
 
+  public Ontology documentationURL(String documentationURL) {
+    this.documentationURL = documentationURL;
+    return this;
+  }
+
+  /**
+   * A URL to the human readable documentation of this object
+   * @return documentationURL
+  **/
+  @ApiModelProperty(value = "A URL to the human readable documentation of this object")
+
+
+  public String getDocumentationURL() {
+    return documentationURL;
+  }
+
+  public void setDocumentationURL(String documentationURL) {
+    this.documentationURL = documentationURL;
+  }
+
   public Ontology licence(String licence) {
     this.licence = licence;
     return this;
   }
 
-   /**
+  /**
    * Ontology licence
    * @return licence
   **/
@@ -119,7 +145,7 @@ public class Ontology   {
     return this;
   }
 
-   /**
+  /**
    * Ontology database unique identifier
    * @return ontologyDbId
   **/
@@ -140,7 +166,7 @@ public class Ontology   {
     return this;
   }
 
-   /**
+  /**
    * Ontology name
    * @return ontologyName
   **/
@@ -161,7 +187,7 @@ public class Ontology   {
     return this;
   }
 
-   /**
+  /**
    * Ontology version (no specific format)
    * @return version
   **/
@@ -189,6 +215,7 @@ public class Ontology   {
     return Objects.equals(this.authors, ontology.authors) &&
         Objects.equals(this.copyright, ontology.copyright) &&
         Objects.equals(this.description, ontology.description) &&
+        Objects.equals(this.documentationURL, ontology.documentationURL) &&
         Objects.equals(this.licence, ontology.licence) &&
         Objects.equals(this.ontologyDbId, ontology.ontologyDbId) &&
         Objects.equals(this.ontologyName, ontology.ontologyName) &&
@@ -197,7 +224,7 @@ public class Ontology   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(authors, copyright, description, licence, ontologyDbId, ontologyName, version);
+    return Objects.hash(authors, copyright, description, documentationURL, licence, ontologyDbId, ontologyName, version);
   }
 
   @Override
@@ -208,6 +235,7 @@ public class Ontology   {
     sb.append("    authors: ").append(toIndentedString(authors)).append("\n");
     sb.append("    copyright: ").append(toIndentedString(copyright)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
+    sb.append("    documentationURL: ").append(toIndentedString(documentationURL)).append("\n");
     sb.append("    licence: ").append(toIndentedString(licence)).append("\n");
     sb.append("    ontologyDbId: ").append(toIndentedString(ontologyDbId)).append("\n");
     sb.append("    ontologyName: ").append(toIndentedString(ontologyName)).append("\n");
