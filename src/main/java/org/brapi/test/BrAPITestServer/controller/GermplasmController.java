@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,7 +55,7 @@ public class GermplasmController extends BrAPIController
 	}
 
 	@Override
-	public ResponseEntity<BreedingMethodResponse> breedingmethodsBreedingMethodDbIdGet(String breedingMethodDbId,
+	public ResponseEntity<BreedingMethodResponse> breedingmethodsBreedingMethodDbIdGet(@PathVariable("breedingMethodDbId") String breedingMethodDbId,
 			String authorization) throws BrAPIServerException {
 		BreedingMethod result = germplasmService.getBreedingMethod(breedingMethodDbId);
 
@@ -79,8 +81,8 @@ public class GermplasmController extends BrAPIController
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<GermplasmAttributeListResponse> germplasmGermplasmDbIdAttributesGet(String germplasmDbId,
-			@Valid List<String> attributeDbIds, @Valid List<String> attributeList, @Valid Integer page,
+	public ResponseEntity<GermplasmAttributeListResponse> germplasmGermplasmDbIdAttributesGet(@PathVariable("germplasmDbId") String germplasmDbId,
+			@Valid ArrayList<String> attributeDbIds, @Valid ArrayList<String> attributeList, @Valid Integer page,
 			@Valid Integer pageSize, String authorization) throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
@@ -98,7 +100,7 @@ public class GermplasmController extends BrAPIController
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<GermplasmResponse1> germplasmGermplasmDbIdGet(String germplasmDbId, String authorization)
+	public ResponseEntity<GermplasmResponse1> germplasmGermplasmDbIdGet(@PathVariable("germplasmDbId") String germplasmDbId, String authorization)
 			throws BrAPIServerException {
 		Germplasm result = germplasmService.searchByDbId(germplasmDbId);
 
@@ -111,7 +113,7 @@ public class GermplasmController extends BrAPIController
 	@CrossOrigin
 	@Override
 	public ResponseEntity<GermplasmMarkerprofilesListResponse> germplasmGermplasmDbIdMarkerprofilesGet(
-			String germplasmDbId, String authorization) throws BrAPIServerException {
+			@PathVariable("germplasmDbId") String germplasmDbId, String authorization) throws BrAPIServerException {
 		GermplasmMarkerprofilesList result = germplasmService.searchMarkerProfilesByDbId(germplasmDbId);
 
 		GermplasmMarkerprofilesListResponse response = new GermplasmMarkerprofilesListResponse();
@@ -121,7 +123,7 @@ public class GermplasmController extends BrAPIController
 	}
 
 	@Override
-	public ResponseEntity<GermplasmMCPDResponse> germplasmGermplasmDbIdMcpdGet(String germplasmDbId,
+	public ResponseEntity<GermplasmMCPDResponse> germplasmGermplasmDbIdMcpdGet(@PathVariable("germplasmDbId") String germplasmDbId,
 			String authorization) throws BrAPIServerException {
 		// TODO Auto-generated method stub
 		return null;
@@ -129,7 +131,7 @@ public class GermplasmController extends BrAPIController
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<PedigreeResponse> germplasmGermplasmDbIdPedigreeGet(String germplasmDbId,
+	public ResponseEntity<PedigreeResponse> germplasmGermplasmDbIdPedigreeGet(@PathVariable("germplasmDbId") String germplasmDbId,
 			@Valid String notation, @Valid Boolean includeSiblings, String authorization) throws BrAPIServerException {
 		Pedigree result = germplasmService.searchPedigreeByDbId(germplasmDbId, notation, includeSiblings);
 
@@ -141,7 +143,7 @@ public class GermplasmController extends BrAPIController
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ProgenyResponse> germplasmGermplasmDbIdProgenyGet(String germplasmDbId, String authorization)
+	public ResponseEntity<ProgenyResponse> germplasmGermplasmDbIdProgenyGet(@PathVariable("germplasmDbId") String germplasmDbId, String authorization)
 			throws BrAPIServerException {
 		Progeny result = germplasmService.searchProgenyByDbId(germplasmDbId);
 

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.AlleleMatrixValues;
-import io.swagger.model.Metadata;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -15,16 +14,16 @@ import javax.validation.constraints.*;
  * AlleleMatrixValuesResponse
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-06T17:40:52.157-05:00[America/New_York]")
 
 public class AlleleMatrixValuesResponse   {
   @JsonProperty("metadata")
-  private Metadata metadata = null;
+  private Object metadata = null;
 
   @JsonProperty("result")
   private AlleleMatrixValues result = null;
 
-  public AlleleMatrixValuesResponse metadata(Metadata metadata) {
+  public AlleleMatrixValuesResponse metadata(Object metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -35,13 +34,12 @@ public class AlleleMatrixValuesResponse   {
   **/
   @ApiModelProperty(value = "")
 
-  @Valid
 
-  public Metadata getMetadata() {
+  public Object getMetadata() {
     return metadata;
   }
 
-  public void setMetadata(Metadata metadata) {
+  public void setMetadata(Object metadata) {
     this.metadata = metadata;
   }
 

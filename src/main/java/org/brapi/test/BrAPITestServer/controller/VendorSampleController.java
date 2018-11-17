@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,7 +52,7 @@ public class VendorSampleController extends BrAPIController implements VendorApi
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<VendorPlatesResponse> vendorOrdersOrderIdPlatesGet(String orderId, String authorization)
+	public ResponseEntity<VendorPlatesResponse> vendorOrdersOrderIdPlatesGet(@PathVariable("orderId") String orderId, String authorization)
 			throws BrAPIServerException {
 		// TODO Auto-generated method stub
 		return null;
@@ -59,7 +60,7 @@ public class VendorSampleController extends BrAPIController implements VendorApi
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<VendorOrderResultsResponse> vendorOrdersOrderIdResultsGet(String orderId, String authorization)
+	public ResponseEntity<VendorOrderResultsResponse> vendorOrdersOrderIdResultsGet(@PathVariable("orderId") String orderId, String authorization)
 			throws BrAPIServerException {
 		// TODO Auto-generated method stub
 		return null;
@@ -67,7 +68,7 @@ public class VendorSampleController extends BrAPIController implements VendorApi
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<VendorOrderStatusResponse> vendorOrdersOrderIdStatusGet(String orderId, String authorization)
+	public ResponseEntity<VendorOrderStatusResponse> vendorOrdersOrderIdStatusGet(@PathVariable("orderId") String orderId, String authorization)
 			throws BrAPIServerException {
 		// TODO Auto-generated method stub
 		return null;
@@ -105,7 +106,7 @@ public class VendorSampleController extends BrAPIController implements VendorApi
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<VendorPlateGetResponse1> vendorPlatesSubmissionIdGet(String submissionId)
+	public ResponseEntity<VendorPlateGetResponse1> vendorPlatesSubmissionIdGet(@PathVariable("submissionId") String submissionId)
 			throws BrAPIServerException {
 		VendorPlateGetResponse result = vendorSampleService.getPlateSubmission(submissionId);
 
@@ -117,7 +118,7 @@ public class VendorSampleController extends BrAPIController implements VendorApi
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<VendorSpecificationResponse> vendorSpecificationsGet(String authorization)
+	public ResponseEntity<VendorSpecificationResponse> vendorSpecificationsGet(@PathVariable("authorization") String authorization)
 			throws BrAPIServerException {
 		VendorSpecification result = vendorSampleService.getVendorSpec();
 

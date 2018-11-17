@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.brapi.test.BrAPITestServer.model.entity.GenomeMapEntity;
 import org.brapi.test.BrAPITestServer.model.entity.LinkageGroupEntity;
 import org.brapi.test.BrAPITestServer.model.entity.MarkerEntity;
@@ -36,7 +38,7 @@ public class GenomeMapService {
 		this.markerRepository = markerRepository;
 	}
 
-	public List<GenomeMap> getMapSummaries(String speciesId, String type, Metadata metaData) {
+	public List<GenomeMap> getMapSummaries(String speciesId, String commonCropName, String scientificName, String type, Metadata metaData) {
 		Page<GenomeMap> summaries;
 		if (speciesId != null && type != null) {
 			summaries = genomeMapRepository
@@ -60,6 +62,10 @@ public class GenomeMapService {
 	private GenomeMap convertFromEntity(GenomeMapEntity entity) {
 		GenomeMap summary = new GenomeMap();
 		summary.setComments(entity.getComments());
+		summary.setCommonCropName(entity.getCommonCropName());
+		summary.setDocumentationURL(entity.getDocumentationURL());
+		summary.setScientificName(entity.getScientificName());
+		summary.setMapName(entity.getName());
 		summary.setMapDbId(entity.getId());
 		summary.setName(entity.getName());
 		summary.setPublishedDate(DateUtility.toLocalDate(entity.getPublishedDate()));
@@ -84,9 +90,11 @@ public class GenomeMapService {
 			GenomeMapEntity entity = entityOption.get();
 			detail = new GenomeMapDetails();
 			detail.setMapDbId(entity.getId());
+			detail.setMapName(entity.getName());
 			detail.setName(entity.getName());
 			detail.setType(entity.getType());
 			detail.setUnit(entity.getUnit());
+			detail.setDocumentationURL(entity.getDocumentationURL());
 
 			Pageable pageReq = PagingUtility.getPageRequest(metaData);
 			Page<LinkageGroupEntity> page = linkageGroupRepository.findAllByGenomeMapDbId(mapDbId, pageReq);

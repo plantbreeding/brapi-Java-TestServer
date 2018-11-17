@@ -48,6 +48,8 @@ public class ObservationUnitEntity extends BaseEntity {
 	private List<SampleEntity> samples;
 	@OneToMany(mappedBy="observationUnitDbId", cascade=CascadeType.ALL)	
 	private List<ObservationUnitXrefEntity> observationUnitXref;
+	@OneToMany(mappedBy="observationUnit")	
+	private List<ImageEntity> images;
 	
 	//TODO Specific fields for Phenotypes
 	@Column

@@ -26,7 +26,7 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler{
 	@org.springframework.web.bind.annotation.ExceptionHandler(value = {BrAPIServerException.class})
 	protected ResponseEntity<Object> handleBrAPIException(BrAPIServerException ex, WebRequest request){
 		String message = ex.getResponseMessage().replaceAll("\"", "\'");
-	    return new ResponseEntity<Object>("\"" + message + "\"", HttpStatus.BAD_REQUEST);		
+	    return new ResponseEntity<Object>("\"" + message + "\"", ex.getResponseStatus());		
 	}
 	
 	private ResponseEntity<Object> buildErrorResponse(HttpStatus code, String message){

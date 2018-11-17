@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -52,7 +54,7 @@ public class MarkerController extends BrAPIController implements MarkersApi, Mar
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<MarkerResponse> markersMarkerDbIdGet(String markerDbId, String authorization)
+	public ResponseEntity<MarkerResponse> markersMarkerDbIdGet(@PathVariable("markerDbId") String markerDbId, String authorization)
 			throws BrAPIServerException {
 		Marker result = markersService.getMarker(markerDbId);
 
@@ -64,7 +66,7 @@ public class MarkerController extends BrAPIController implements MarkersApi, Mar
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<MarkersResponse> markersSearchGet(@Valid List<String> markerDbIds, @Valid String name,
+	public ResponseEntity<MarkersResponse> markersSearchGet(@Valid ArrayList<String> markerDbIds, @Valid String name,
 			@Valid String matchMethod, @Valid Boolean includeSynonyms, @Valid String type, @Valid Integer page,
 			@Valid Integer pageSize) throws BrAPIServerException {
 		

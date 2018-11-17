@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +27,8 @@ import io.swagger.model.AlleleMatrixDetailsResponseResult;
 import io.swagger.model.AlleleMatrixSearchRequest;
 import io.swagger.model.AlleleMatrixValues;
 import io.swagger.model.AlleleMatrixValuesResponse;
+import io.swagger.model.AlleleMatrixValuesResponse1;
+import io.swagger.model.AsynchStatusMetadata;
 import io.swagger.model.MarkerProfile;
 import io.swagger.model.MarkerProfileDescription;
 import io.swagger.model.MarkerProfileDescriptionsResponse;
@@ -59,8 +63,8 @@ public class MarkerProfileController extends BrAPIController implements Markerpr
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<AlleleMatrixValuesResponse> allelematricesSearchGet(@Valid List<String> markerprofileDbId,
-			@Valid List<String> markerProfileDbId2, @Valid List<String> markerDbId, @Valid List<String> matrixDbId,
+	public ResponseEntity<AlleleMatrixValuesResponse> allelematricesSearchGet(@Valid ArrayList<String> markerprofileDbId,
+			@Valid ArrayList<String> markerProfileDbId2, @Valid ArrayList<String> markerDbId, @Valid ArrayList<String> matrixDbId,
 			@Valid String format, @Valid Boolean expandHomozygotes, @Valid String unknownString,
 			@Valid String sepPhased, @Valid String sepUnphased, @Valid Integer page, @Valid Integer pageSize,
 			String authorization) throws BrAPIServerException {
@@ -83,7 +87,7 @@ public class MarkerProfileController extends BrAPIController implements Markerpr
 	public ResponseEntity<AlleleMatrixValuesResponse> allelematricesSearchPost(@Valid @RequestBody AlleleMatrixSearchRequest request,
 			String authorization) throws BrAPIServerException {
 
-		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
+		AsyncMetadata metaData = generateAsynchMetaDataTemplate(request.getPage(), request.getPageSize());
 		AlleleFormatParams params = markerProfileService.buildFormatParams(request.isExpandHomozygotes(), request.getSepPhased(), request.getSepUnphased(), request.getUnknownString());
 
 		List<List<String>> data = markerProfileService.getAlleleMatrix(request.getMarkerprofileDbId(), request.getMarkerDbId(), request.getMatrixDbId(), params, metaData);
@@ -99,28 +103,28 @@ public class MarkerProfileController extends BrAPIController implements Markerpr
 	@Deprecated
 	@CrossOrigin
 	@Override
-	public ResponseEntity<AlleleMatrixValuesResponse> allelematrixSearchGet(@Valid List<String> markerprofileDbId,
-			@Valid List<String> markerDbId, @Valid List<String> matrixDbId, @Valid String format,
+	public ResponseEntity<AlleleMatrixValuesResponse1> allelematrixSearchGet(@Valid ArrayList<String> markerprofileDbId,
+			@Valid ArrayList<String> markerDbId, @Valid ArrayList<String> matrixDbId, @Valid String format,
 			@Valid Boolean expandHomozygotes, @Valid String unknownString, @Valid String sepPhased,
 			@Valid String sepUnphased, @Valid Integer page, @Valid Integer pageSize) throws BrAPIServerException {
-		
-		Metadata metaData = generateMetaDataTemplate(page, pageSize);
+
+		AsyncMetadata metaData = generateAsynchMetaDataTemplate(page, pageSize);
 		AlleleFormatParams params = markerProfileService.buildFormatParams(expandHomozygotes, sepPhased, sepUnphased, unknownString);
 
 		List<List<String>> data = markerProfileService.getAlleleMatrix(markerprofileDbId, markerDbId, matrixDbId, params, metaData);
 		
 		AlleleMatrixValues result = new AlleleMatrixValues();
 		result.setData(data);
-		AlleleMatrixValuesResponse response = new AlleleMatrixValuesResponse();
+		AlleleMatrixValuesResponse1 response = new AlleleMatrixValuesResponse1();
 		response.setMetadata(metaData);
 		response.setResult(result);
-		return new ResponseEntity<AlleleMatrixValuesResponse>(response, HttpStatus.OK);
+		return new ResponseEntity<AlleleMatrixValuesResponse1>(response, HttpStatus.OK);
 	}
 
 	//Deprecated
 	@CrossOrigin
 	@Override
-	public ResponseEntity<AlleleMatrixValuesResponse> allelematrixSearchPost(@Valid AlleleMatrixSearchRequest request) throws BrAPIServerException {
+	public ResponseEntity<AlleleMatrixValuesResponse1> allelematrixSearchPost(@Valid AlleleMatrixSearchRequest request) throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
 		AlleleFormatParams params = markerProfileService.buildFormatParams(request.isExpandHomozygotes(), request.getSepPhased(), request.getSepUnphased(), request.getUnknownString());
@@ -129,10 +133,10 @@ public class MarkerProfileController extends BrAPIController implements Markerpr
 		
 		AlleleMatrixValues result = new AlleleMatrixValues();
 		result.setData(data);
-		AlleleMatrixValuesResponse response = new AlleleMatrixValuesResponse();
+		AlleleMatrixValuesResponse1 response = new AlleleMatrixValuesResponse1();
 		response.setMetadata(metaData);
 		response.setResult(result);
-		return new ResponseEntity<AlleleMatrixValuesResponse>(response, HttpStatus.OK);
+		return new ResponseEntity<AlleleMatrixValuesResponse1>(response, HttpStatus.OK);
 	}
 
 	@CrossOrigin
@@ -155,7 +159,7 @@ public class MarkerProfileController extends BrAPIController implements Markerpr
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<MarkerProfilesResponse> markerprofilesMarkerProfileDbIdGet(String markerProfileDbId,
+	public ResponseEntity<MarkerProfilesResponse> markerprofilesMarkerProfileDbIdGet(@PathVariable("markerProfileDbId") String markerProfileDbId,
 			@Valid Boolean expandHomozygotes, @Valid String unknownString, @Valid String sepPhased,
 			@Valid String sepUnphased, @Valid Integer page, @Valid Integer pageSize, String authorization)
 			throws BrAPIServerException {

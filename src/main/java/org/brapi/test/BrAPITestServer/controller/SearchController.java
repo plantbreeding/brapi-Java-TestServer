@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.api.SearchApi;
@@ -43,7 +44,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 	}
 
 	@Override
-	public ResponseEntity<GermplasmResponse> searchGermplasmSearchResultsDbIdGet(String searchResultsDbId,
+	public ResponseEntity<GermplasmResponse> searchGermplasmSearchResultsDbIdGet(@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid Integer page, @Valid Integer pageSize, String authorization) throws BrAPIServerException {
 		// TODO Auto-generated method stub
 		return null;
@@ -57,7 +58,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 	}
 
 	@Override
-	public ResponseEntity<ImagesResponse> searchImagesSearchResultsDbIdGet(String searchResultsDbId,
+	public ResponseEntity<ImagesResponse> searchImagesSearchResultsDbIdGet(@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid Integer page, @Valid Integer pageSize, String authorization) throws BrAPIServerException {
 		// TODO Auto-generated method stub
 		return null;
@@ -71,7 +72,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 	}
 
 	@Override
-	public ResponseEntity<MarkersResponse> searchMarkersSearchResultsDbIdGet(String searchResultsDbId,
+	public ResponseEntity<MarkersResponse> searchMarkersSearchResultsDbIdGet(@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid Integer page, @Valid Integer pageSize, String authorization) throws BrAPIServerException {
 		// TODO Auto-generated method stub
 		return null;
@@ -115,7 +116,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 	}
 
 	@Override
-	public ResponseEntity<ProgramsResponse> searchProgramsSearchResultsDbIdGet(String searchResultsDbId,
+	public ResponseEntity<ProgramsResponse> searchProgramsSearchResultsDbIdGet(@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid Integer page, @Valid Integer pageSize, String authorization) throws BrAPIServerException {
 		// TODO Auto-generated method stub
 		return null;
@@ -129,7 +130,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 	}
 
 	@Override
-	public ResponseEntity<SamplesResponse> searchSamplesSearchResultsDbIdGet(String searchResultsDbId,
+	public ResponseEntity<SamplesResponse> searchSamplesSearchResultsDbIdGet(@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid Integer page, @Valid Integer pageSize, String authorization) throws BrAPIServerException {
 		// TODO Auto-generated method stub
 		return null;
@@ -143,7 +144,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 	}
 
 	@Override
-	public ResponseEntity<StudiesResponse> searchStudiesSearchResultsDbIdGet(String searchResultsDbId,
+	public ResponseEntity<StudiesResponse> searchStudiesSearchResultsDbIdGet(@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid Integer page, @Valid Integer pageSize, String authorization) throws BrAPIServerException {
 		// TODO Auto-generated method stub
 		return null;
@@ -157,7 +158,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 	}
 
 	@Override
-	public ResponseEntity<ObservationVariablesResponse> searchVariablesSearchResultsDbIdGet(String searchResultsDbId,
+	public ResponseEntity<ObservationVariablesResponse> searchVariablesSearchResultsDbIdGet(@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid Integer page, @Valid Integer pageSize, String authorization) throws BrAPIServerException {
 		// TODO Auto-generated method stub
 		return null;

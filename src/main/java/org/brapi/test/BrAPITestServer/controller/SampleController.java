@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,7 +51,7 @@ public class SampleController extends BrAPIController implements SamplesApi, Sam
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<SampleResponse> samplesSampleDbIdGet(String sampleDbId, String authorization)
+	public ResponseEntity<SampleResponse> samplesSampleDbIdGet(@PathVariable("sampleDbId") String sampleDbId, String authorization)
 			throws BrAPIServerException {
 		Sample result = sampleService.getSample(sampleDbId);
 
@@ -93,5 +94,13 @@ public class SampleController extends BrAPIController implements SamplesApi, Sam
 		response.setMetadata(metaData);
 		response.setResult(result);
 		return new ResponseEntity<SamplesResponse>(response, HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<SamplesResponse> samplesGet(@Valid String sampleDbId, @Valid String observationUnitDbId,
+			@Valid String plateDbId, @Valid String germplasmDbId, @Valid Integer page, @Valid Integer pageSize,
+			String authorization) throws BrAPIServerException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

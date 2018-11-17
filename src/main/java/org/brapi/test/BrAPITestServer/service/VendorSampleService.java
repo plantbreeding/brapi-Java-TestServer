@@ -17,6 +17,7 @@ import org.brapi.test.BrAPITestServer.repository.TaxonRepository;
 import org.brapi.test.BrAPITestServer.repository.VendorSampleRepository;
 import org.brapi.test.BrAPITestServer.repository.VendorSpecRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.VendorContact;
@@ -47,7 +48,7 @@ public class VendorSampleService {
 
 	public String savePlates(VendorPlatesSubmissionRequest request) throws BrAPIServerException {
 		if (request.getPlates() == null) {
-			throw new BrAPIServerException("No plate data in request");
+			throw new BrAPIServerException(HttpStatus.BAD_REQUEST, "No plate data in request");
 		}
 		
 		String submissionId = null;

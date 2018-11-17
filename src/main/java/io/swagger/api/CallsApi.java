@@ -22,14 +22,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-06T17:40:52.157-05:00[America/New_York]")
 
 @Api(value = "calls", description = "the calls API")
 public interface CallsApi {
 
-    @ApiOperation(value = "Get the list of implemented Calls", nickname = "callsGet", notes = " Implementation Notes Having a consistent structure for the path string of each call is very important for teams to be able to connect and find errors. Read more on Github. Here are the rules for the path of each call that should be returned    Every word in the call path should match the documentation exactly, both in spelling and capitalization. Note that path strings are all lower case, but path parameters are camel case.  Each path should start relative to \"/\" and therefore should not include \"/\"  No leading or trailing slashes (\"/\")   Path parameters are wrapped in curly braces (\"{}\"). The name of the path parameter should be spelled exactly as it is specified in the documentation.     Examples GOOD \"call\": \"germplasm/{germplasmDbId}/markerprofiles\" BAD \"call\": \"germplasm/{id}/markerprofiles\" BAD \"call\": \"germplasm/{germplasmDbId}/markerProfiles\" BAD \"call\": \"germplasm/{germplasmdbid}/markerprofiles\" BAD \"call\": \"brapi/v1/germplasm/{germplasmDbId}/markerprofiles\" BAD \"call\": \"/germplasm/{germplasmDbId}/markerprofiles/\" BAD \"call\": \"germplasm/<germplasmDbId>/markerprofiles\"    test-server.brapi.org/brapi/v1/calls", response = CallsResponse.class, authorizations = {
+    @ApiOperation(value = "Get the list of implemented Calls", nickname = "callsGet", notes = " Implementation Notes Having a consistent structure for the path string of each call is very important for teams to be able to connect and find errors. Read more on Github. Here are the rules for the path of each call that should be returned    Every word in the call path should match the documentation exactly, both in spelling and capitalization. Note that path strings are all lower case, but path parameters are camel case.  Each path should start relative to \"/\" and therefore should not include \"/\"  No leading or trailing slashes (\"/\")   Path parameters are wrapped in curly braces (\"{}\"). The name of the path parameter should be spelled exactly as it is specified in the documentation.     Examples GOOD    \"call\": \"germplasm/{germplasmDbId}/markerprofiles\" BAD    \"call\": \"germplasm/{id}/markerprofiles\" BAD    \"call\": \"germplasm/{germplasmDbId}/markerProfiles\" BAD    \"call\": \"germplasm/{germplasmdbid}/markerprofiles\" BAD    \"call\": \"brapi/v1/germplasm/{germplasmDbId}/markerprofiles\" BAD    \"call\": \"/germplasm/{germplasmDbId}/markerprofiles/\" BAD    \"call\": \"germplasm/<germplasmDbId>/markerprofiles\"    test-server.brapi.org/brapi/v1/calls", response = CallsResponse.class, authorizations = {
         @Authorization(value = "AuthorizationToken")
     }, tags={ "Calls", })
     @ApiResponses(value = { 

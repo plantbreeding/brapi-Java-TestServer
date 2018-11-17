@@ -24,9 +24,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-06T17:40:52.157-05:00[America/New_York]")
 
 @Api(value = "lists", description = "the lists API")
 public interface ListsApi {
@@ -73,7 +73,7 @@ public interface ListsApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    ResponseEntity<ListResponse> listsListDbIdItemsPost(@ApiParam(value = "The unique ID of this generic list",required=true) @PathVariable("listDbId") String listDbId,@ApiParam(value = ""  )  @Valid @RequestBody List<String> body,@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong>Bearer {token_string} </strong>" ) @RequestHeader(value="Authorization", required=false) String authorization) throws BrAPIServerException;
+    ResponseEntity<ListResponse> listsListDbIdItemsPost(@ApiParam(value = "The unique ID of this generic list",required=true) @PathVariable("listDbId") String listDbId,@ApiParam(value = ""  )  @Valid @RequestBody ArrayList<String> body,@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong>Bearer {token_string} </strong>" ) @RequestHeader(value="Authorization", required=false) String authorization) throws BrAPIServerException;
 
 
     @ApiOperation(value = "Update a specific List", nickname = "listsListDbIdPut", notes = "Update an existing generic list", response = ListResponse.class, authorizations = {

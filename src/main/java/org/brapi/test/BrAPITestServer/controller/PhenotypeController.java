@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.service.DateUtility;
 import org.brapi.test.BrAPITestServer.service.PhenotypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -69,13 +70,14 @@ public class PhenotypeController extends BrAPIController implements PhenotypesAp
 	public ResponseEntity<ObservationUnitsResponse> phenotypesSearchGet(@Valid String germplasmDbId,
 			@Valid String observationVariableDbId, @Valid String studyDbId, @Valid String locationDbId,
 			@Valid String trialDbId, @Valid String programDbId, @Valid String seasonDbId,
-			@Valid String observationLevel, @Valid OffsetDateTime observationTimeStampRangeStart,
-			@Valid OffsetDateTime observationTimeStampRangeEnd, @Valid Integer page, @Valid Integer pageSize)
+			@Valid String observationLevel, @Valid String observationTimeStampRangeStart,
+			@Valid String observationTimeStampRangeEnd, @Valid Integer page, @Valid Integer pageSize)
 			throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<ObservationUnitPhenotype> data = phenotypeService.getPhenotypes(germplasmDbId, observationVariableDbId,
 				studyDbId, locationDbId, trialDbId, programDbId, seasonDbId, observationLevel,
-				observationTimeStampRangeStart, observationTimeStampRangeEnd, metaData);
+				DateUtility.toOffsetDateTime(observationTimeStampRangeStart), 
+				DateUtility.toOffsetDateTime(observationTimeStampRangeEnd), metaData);
 
 		ObservationUnitsResponseResult result = new ObservationUnitsResponseResult();
 		result.setData(data);

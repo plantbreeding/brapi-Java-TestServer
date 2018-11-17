@@ -24,20 +24,29 @@ public class OntologyEntity extends BaseEntity {
 	private String copyright;
 	@Column
 	private String licence;
+	@Column
+	private String documentationURL;
 	@OneToMany(mappedBy="ontology")
-	private List<ObservationVariableEntity> observationVariable;
+	private List<VariableBaseEntity> variables;
+
+	public String getDocumentationURL() {
+		return documentationURL;
+	}
+	public void setDocumentationURL(String documentationURL) {
+		this.documentationURL = documentationURL;
+	}
+	public List<VariableBaseEntity> getVariables() {
+		return variables;
+	}
+	public void setVariables(List<VariableBaseEntity> variables) {
+		this.variables = variables;
+	}
 
 	public String getXref() {
 		return xref;
 	}
 	public void setXref(String xref) {
 		this.xref = xref;
-	}
-	public List<ObservationVariableEntity> getObservationVariable() {
-		return observationVariable;
-	}
-	public void setObservationVariable(List<ObservationVariableEntity> observationVariable) {
-		this.observationVariable = observationVariable;
 	}
 	public String getOntologyName() {
 		return ontologyName;

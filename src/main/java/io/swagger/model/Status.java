@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
  * Status
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-06T17:40:52.157-05:00[America/New_York]")
 
 public class Status   {
   @JsonProperty("code")
@@ -90,7 +90,8 @@ public class Status   {
    * A short message concerning the status of this request/response
    * @return message
   **/
-  @ApiModelProperty(value = "A short message concerning the status of this request/response")
+  @ApiModelProperty(required = true, value = "A short message concerning the status of this request/response")
+  @NotNull
 
 
   public String getMessage() {
@@ -110,7 +111,8 @@ public class Status   {
    * The logging level for the attached message
    * @return messageType
   **/
-  @ApiModelProperty(value = "The logging level for the attached message")
+  @ApiModelProperty(required = true, value = "The logging level for the attached message")
+  @NotNull
 
 
   public MessageTypeEnum getMessageType() {

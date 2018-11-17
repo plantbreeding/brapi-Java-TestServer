@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.NewObservationsTableRequestResult;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
@@ -15,7 +16,7 @@ import javax.validation.constraints.*;
  * NewObservationsTableRequest
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-06T17:40:52.157-05:00[America/New_York]")
 
 public class NewObservationsTableRequest   {
   @JsonProperty("data")
@@ -27,14 +28,14 @@ public class NewObservationsTableRequest   {
   private List<String> headerRow = null;
 
   @JsonProperty("metadata")
-  private String metadata = null;
+  private Object metadata = null;
 
   @JsonProperty("observationVariableDbIds")
   @Valid
   private List<String> observationVariableDbIds = null;
 
   @JsonProperty("result")
-  private String result = null;
+  private NewObservationsTableRequestResult result = null;
 
   public NewObservationsTableRequest data(List<List<String>> data) {
     this.data = data;
@@ -93,7 +94,7 @@ public class NewObservationsTableRequest   {
     this.headerRow = headerRow;
   }
 
-  public NewObservationsTableRequest metadata(String metadata) {
+  public NewObservationsTableRequest metadata(Object metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -105,11 +106,11 @@ public class NewObservationsTableRequest   {
   @ApiModelProperty(value = "DEPRECATED")
 
 
-  public String getMetadata() {
+  public Object getMetadata() {
     return metadata;
   }
 
-  public void setMetadata(String metadata) {
+  public void setMetadata(Object metadata) {
     this.metadata = metadata;
   }
 
@@ -141,23 +142,24 @@ public class NewObservationsTableRequest   {
     this.observationVariableDbIds = observationVariableDbIds;
   }
 
-  public NewObservationsTableRequest result(String result) {
+  public NewObservationsTableRequest result(NewObservationsTableRequestResult result) {
     this.result = result;
     return this;
   }
 
   /**
-   * DEPRECATED
+   * Get result
    * @return result
   **/
-  @ApiModelProperty(value = "DEPRECATED")
+  @ApiModelProperty(value = "")
 
+  @Valid
 
-  public String getResult() {
+  public NewObservationsTableRequestResult getResult() {
     return result;
   }
 
-  public void setResult(String result) {
+  public void setResult(NewObservationsTableRequestResult result) {
     this.result = result;
   }
 

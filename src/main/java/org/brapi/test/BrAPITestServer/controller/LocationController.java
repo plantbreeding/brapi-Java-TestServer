@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.api.LocationsApi;
@@ -47,7 +48,7 @@ public class LocationController extends BrAPIController implements LocationsApi 
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<LocationResponse> locationsLocationDbIdGet(String locationDbId, String authorization)
+	public ResponseEntity<LocationResponse> locationsLocationDbIdGet(@PathVariable("locationDbId") String locationDbId, String authorization)
 			throws BrAPIServerException {
 
 		Location result = locationService.getLocation(locationDbId);

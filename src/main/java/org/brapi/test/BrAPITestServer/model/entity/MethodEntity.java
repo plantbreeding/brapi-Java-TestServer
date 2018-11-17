@@ -2,14 +2,17 @@ package org.brapi.test.BrAPITestServer.model.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="method")
-public class MethodEntity extends BaseEntity{
+public class MethodEntity extends BaseEntity implements OntologyInterface{
 	@Column
 	private String name;
 	@Column
@@ -21,13 +24,30 @@ public class MethodEntity extends BaseEntity{
 	@Column
 	private String reference;
 	@OneToMany(mappedBy="method")
-	private List<ObservationVariableEntity> observationVariables;
+	private List<VariableBaseEntity> variables;
+	@OneToOne
+	private OntologyEntity ontology;
+	@JoinTable
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<OntologyRefernceEntity> ontologyRefernce;
 
-	public List<ObservationVariableEntity> getObservationVariables() {
-		return observationVariables;
+	public OntologyEntity getOntology() {
+		return ontology;
 	}
-	public void setObservationVariables(List<ObservationVariableEntity> observationVariables) {
-		this.observationVariables = observationVariables;
+	public void setOntology(OntologyEntity ontology) {
+		this.ontology = ontology;
+	}
+	public List<OntologyRefernceEntity> getOntologyRefernce() {
+		return ontologyRefernce;
+	}
+	public void setOntologyRefernce(List<OntologyRefernceEntity> ontologyRefernce) {
+		this.ontologyRefernce = ontologyRefernce;
+	}
+	public List<VariableBaseEntity> getVariables() {
+		return variables;
+	}
+	public void setVariables(List<VariableBaseEntity> variables) {
+		this.variables = variables;
 	}
 	public String getName() {
 		return name;

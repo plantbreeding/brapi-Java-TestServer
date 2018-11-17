@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.api.MapsApi;
@@ -42,7 +43,7 @@ public class GenomeMapController extends BrAPIController implements MapsApi {
 			String authorization) throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
-		List<GenomeMap> data = genomeMapService.getMapSummaries(species, type, metaData);
+		List<GenomeMap> data = genomeMapService.getMapSummaries(species, commonCropName, scientificName, type, metaData);
 
 		GenomeMapsResponseResult result = new GenomeMapsResponseResult();
 		result.setData(data);
@@ -54,7 +55,7 @@ public class GenomeMapController extends BrAPIController implements MapsApi {
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<MapDetailsResponse> mapsMapDbIdGet(String mapDbId, @Valid Integer page,
+	public ResponseEntity<MapDetailsResponse> mapsMapDbIdGet(@PathVariable("mapDbId") String mapDbId, @Valid Integer page,
 			@Valid Integer pageSize, String authorization) throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		GenomeMapDetails result = genomeMapService.getMapDetail(metaData, mapDbId);
@@ -67,7 +68,7 @@ public class GenomeMapController extends BrAPIController implements MapsApi {
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<MarkerSummaryMapResponse> mapsMapDbIdPositionsGet(String mapDbId, @Valid String linkageGroupId,
+	public ResponseEntity<MarkerSummaryMapResponse> mapsMapDbIdPositionsGet(@PathVariable("mapDbId") String mapDbId, @Valid String linkageGroupId,
 			@Valid String linkageGroupName, @Valid Integer page, @Valid Integer pageSize, String authorization)
 			throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
@@ -84,7 +85,7 @@ public class GenomeMapController extends BrAPIController implements MapsApi {
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<MarkerSummaryLinkageGroupResponse> mapsMapDbIdPositionsLinkageGroupNameGet(String mapDbId,
+	public ResponseEntity<MarkerSummaryLinkageGroupResponse> mapsMapDbIdPositionsLinkageGroupNameGet(@PathVariable("mapDbId") String mapDbId,
 			String linkageGroupName, @Valid Integer min, @Valid Integer max, @Valid Integer page,
 			@Valid Integer pageSize, String authorization) throws BrAPIServerException {
 

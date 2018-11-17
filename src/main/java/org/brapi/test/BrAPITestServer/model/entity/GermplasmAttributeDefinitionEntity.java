@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="germplasm_attribute_definition")
-public class GermplasmAttributeDefinitionEntity extends BaseEntity{
+public class GermplasmAttributeDefinitionEntity extends VariableBaseEntity{
 	@ManyToOne
 	private GermplasmAttributeCategoryEntity attributeCategory;
 	@Column

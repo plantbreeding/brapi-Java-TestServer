@@ -136,7 +136,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 	public ResponseEntity<StudiesResponse> studiesGet(@Valid String commonCropName, @Valid String studyType,
 			@Valid String studyTypeDbId, @Valid String programDbId, @Valid String locationDbId,
 			@Valid String seasonDbId, @Valid String trialDbId, @Valid String studyDbId,
-			@Valid List<String> germplasmDbIds, @Valid List<String> observationVariableDbIds, @Valid Boolean active,
+			@Valid ArrayList<String> germplasmDbIds, @Valid ArrayList<String> observationVariableDbIds, @Valid Boolean active,
 			@Valid String sortBy, @Valid String sortOrder, @Valid Integer page, @Valid Integer pageSize,
 			String authorization) throws BrAPIServerException {
 
@@ -157,7 +157,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 	@Override
 	public ResponseEntity<StudiesResponse> studiesSearchGet(@Valid String studyType, @Valid String programDbId,
 			@Valid String locationDbId, @Valid String seasonDbId, @Valid String trialDbId, @Valid String studyDbId,
-			@Valid List<String> germplasmDbIds, @Valid List<String> observationVariableDbIds, @Valid Integer page,
+			@Valid ArrayList<String> germplasmDbIds, @Valid ArrayList<String> observationVariableDbIds, @Valid Integer page,
 			@Valid Integer pageSize, @Valid Boolean active, @Valid String sortBy, @Valid String sortOrder)
 			throws BrAPIServerException {
 		return studiesGet(null, studyType, studyType, programDbId, locationDbId, seasonDbId, trialDbId, studyDbId, germplasmDbIds, 
@@ -182,7 +182,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<GermplasmSummaryListResponse> studiesStudyDbIdGermplasmGet(String studyDbId,
+	public ResponseEntity<GermplasmSummaryListResponse> studiesStudyDbIdGermplasmGet(@PathVariable("studyDbId") String studyDbId,
 			@Valid Integer page, @Valid Integer pageSize, String authorization) throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		GermplasmSummaryList result = studyService.getStudyGermplasm(studyDbId, metaData);
@@ -195,7 +195,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<StudyResponse> studiesStudyDbIdGet(String studyDbId, String authorization)
+	public ResponseEntity<StudyResponse> studiesStudyDbIdGet(@PathVariable("studyDbId") String studyDbId, String authorization)
 			throws BrAPIServerException {
 		Study result = studyService.getStudy(studyDbId);
 
@@ -207,7 +207,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ObservationUnitPositionsResponse> studiesStudyDbIdLayoutGet(String studyDbId,
+	public ResponseEntity<ObservationUnitPositionsResponse> studiesStudyDbIdLayoutGet(@PathVariable("studyDbId") String studyDbId,
 			@Valid Integer page, @Valid Integer pageSize, String authorization) throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<ObservationUnitPosition> data = studyService.getStudyPlotLayouts(studyDbId, metaData);
@@ -223,20 +223,20 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 	@Deprecated
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ObservationUnitPositionsResponse> studiesStudyDbIdLayoutPut(String studyDbId,
+	public ResponseEntity<ObservationUnitPositionsResponse> studiesStudyDbIdLayoutPut(@PathVariable("studyDbId") String studyDbId,
 			@Valid @RequestBody StudyLayoutRequest studyLayoutRequest, String authorization) throws BrAPIServerException {
 		return studiesStudyDbIdLayoutsPut(studyDbId, studyLayoutRequest, authorization);
 	}
 
 	@Override
-	public ResponseEntity<ObservationUnitPositionsResponse> studiesStudyDbIdLayoutsGet(String studyDbId,
+	public ResponseEntity<ObservationUnitPositionsResponse> studiesStudyDbIdLayoutsGet(@PathVariable("studyDbId") String studyDbId,
 			@Valid Integer page, @Valid Integer pageSize, String authorization) throws BrAPIServerException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ResponseEntity<ObservationUnitPositionsResponse> studiesStudyDbIdLayoutsPut(String studyDbId,
+	public ResponseEntity<ObservationUnitPositionsResponse> studiesStudyDbIdLayoutsPut(@PathVariable("studyDbId") String studyDbId,
 			@Valid @RequestBody StudyLayoutRequest studyLayoutRequest, String authorization) throws BrAPIServerException {
 		List<ObservationUnitPosition> data = studyService.saveStudyPlotLayout(studyDbId, studyLayoutRequest);
 
@@ -250,8 +250,8 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ObservationsResponse> studiesStudyDbIdObservationsGet(String studyDbId,
-			@Valid List<String> observationVariableDbIds, @Valid Integer page, @Valid Integer pageSize,
+	public ResponseEntity<ObservationsResponse> studiesStudyDbIdObservationsGet(@PathVariable("studyDbId") String studyDbId,
+			@Valid ArrayList<String> observationVariableDbIds, @Valid Integer page, @Valid Integer pageSize,
 			String authorization) throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<Observation> data = studyService.getObservationUnits(studyDbId, observationVariableDbIds, metaData);
@@ -266,7 +266,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<NewObservationDbIdsResponse> studiesStudyDbIdObservationsPut(String studyDbId,
+	public ResponseEntity<NewObservationDbIdsResponse> studiesStudyDbIdObservationsPut(@PathVariable("studyDbId") String studyDbId,
 			@Valid @RequestBody NewObservationsRequest newObservations, String authorization) throws BrAPIServerException {
 		NewObservationDbIds result = studyService.saveObservations(newObservations);
 
@@ -278,7 +278,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ObservationUnitsResponse1> studiesStudyDbIdObservationunitsGet(String studyDbId,
+	public ResponseEntity<ObservationUnitsResponse1> studiesStudyDbIdObservationunitsGet(@PathVariable("studyDbId") String studyDbId,
 			@Valid String observationLevel, @Valid Integer page, @Valid Integer pageSize, String authorization)
 			throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
@@ -296,7 +296,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 	@CrossOrigin
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
-	public ResponseEntity<NewObservationUnitDbIdsResponse> studiesStudyDbIdObservationunitsPost(String studyDbId,
+	public ResponseEntity<NewObservationUnitDbIdsResponse> studiesStudyDbIdObservationunitsPost(@PathVariable("studyDbId") String studyDbId,
 			@NotNull @Valid String format, @Valid @RequestBody NewObservationsRequestWrapperDeprecated request, String authorization)
 			throws BrAPIServerException {
 		studyService.saveObservationUnits(request);
@@ -306,8 +306,8 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 	@CrossOrigin
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
-	public ResponseEntity<NewObservationUnitDbIdsResponse> studiesStudyDbIdObservationunitsPut(String studyDbId,
-			@Valid @RequestBody List<NewObservationUnitRequest> request, String authorization) throws BrAPIServerException {
+	public ResponseEntity<NewObservationUnitDbIdsResponse> studiesStudyDbIdObservationunitsPut(@PathVariable("studyDbId") String studyDbId,
+			@Valid @RequestBody ArrayList<NewObservationUnitRequest> request, String authorization) throws BrAPIServerException {
 		NewObservationUnitDbIds result = studyService.saveObservationUnit(request);
 		Metadata metadata = generateEmptyMetadata();
 		Status status = new Status();
@@ -324,7 +324,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 	@CrossOrigin
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
-	public ResponseEntity<NewObservationUnitDbIdsResponse> studiesStudyDbIdObservationunitsZipPost(String studyDbId,
+	public ResponseEntity<NewObservationUnitDbIdsResponse> studiesStudyDbIdObservationunitsZipPost(@PathVariable("studyDbId") String studyDbId,
 			@Valid @RequestBody Object body, String authorization) throws BrAPIServerException {
 
 		byte[] zipRequest = (byte[]) body;
@@ -348,7 +348,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<StudyObservationVariablesResponse> studiesStudyDbIdObservationvariablesGet(String studyDbId,
+	public ResponseEntity<StudyObservationVariablesResponse> studiesStudyDbIdObservationvariablesGet(@PathVariable("studyDbId") String studyDbId,
 			@Valid Integer page, @Valid Integer pageSize, String authorization) throws BrAPIServerException {
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		StudyObservationVariablesResponseResult result = studyService.getStudyObservationVariables(studyDbId);
@@ -396,7 +396,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<NewObservationDbIdsResponse> studiesStudyDbIdTablePost(String studyDbId,
+	public ResponseEntity<NewObservationDbIdsResponse> studiesStudyDbIdTablePost(@PathVariable("studyDbId") String studyDbId,
 			@Valid @RequestBody NewObservationsTableRequest request, String authorization) throws BrAPIServerException {
 		NewObservationDbIds result = studyService.saveStudyObservationUnitsTable(studyDbId, request);
 

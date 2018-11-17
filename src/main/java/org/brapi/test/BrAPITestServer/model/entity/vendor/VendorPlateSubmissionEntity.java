@@ -13,7 +13,7 @@ import org.brapi.test.BrAPITestServer.model.entity.PlateEntity;
 import io.swagger.model.VendorOrderRequest.SampleTypeEnum;
 
 @Entity
-@Table(name="plate")
+@Table(name="plate_submission")
 public class VendorPlateSubmissionEntity extends BaseEntity{
 	
 	@Column

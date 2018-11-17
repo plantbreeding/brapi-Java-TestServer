@@ -88,7 +88,9 @@ public class GermplasmService {
 		germ.setCountryOfOriginCode(entity.getCountryOfOriginCode());
 		germ.setBreedingMethodDbId(entity.getBreedingMethod().getId());
 		germ.setDefaultDisplayName(entity.getDefaultDisplayName());
+		germ.setDocumentationURL(entity.getDocumentationURL());
 		germ.setGenus(entity.getGenus());
+		germ.setGermplasmGenus(entity.getGenus());
 		germ.setGermplasmDbId(entity.getId());
 		germ.setGermplasmName(entity.getGermplasmName());
 		germ.setGermplasmPUI(entity.getGermplasmPUI());
@@ -97,6 +99,7 @@ public class GermplasmService {
 		germ.setInstituteName(entity.getInstituteName());
 		germ.setPedigree(entity.getPedigree() == null ? null : entity.getPedigree().getPedigree());
 		germ.setSpecies(entity.getSpecies());
+		germ.setGermplasmSpecies(entity.getSpecies());
 		germ.setSpeciesAuthority(entity.getSpeciesAuthority());
 		germ.setSubtaxa(entity.getSubtaxa());
 		germ.setSubtaxaAuthority(entity.getSubtaxaAuthority());
@@ -209,11 +212,15 @@ public class GermplasmService {
 	}
 
 	public GermplasmMarkerprofilesList searchMarkerProfilesByDbId(String germplasmDbId) {
+		
 		List<String> keys = markerProfileRepository.findByGermplasmDbId(germplasmDbId).stream()
 				.map(MarkerProfileEntity::getId).collect(Collectors.toList());
+		
+		
 		GermplasmMarkerprofilesList result = new GermplasmMarkerprofilesList();
 		result.setGermplasmDbId(germplasmDbId);
 		result.setMarkerprofileDbIds(keys);
+		result.setMarkerProfileDbIds(keys);
 		return result;
 	}
 
@@ -236,6 +243,7 @@ public class GermplasmService {
 		bm.setBreedingMethodDbId(entity.getId());
 		bm.setDescription(entity.getDescription());
 		bm.setName(entity.getName());
+		bm.setBreedingMethodName(entity.getName());
 		return bm;
 	}
 }

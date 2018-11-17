@@ -59,6 +59,8 @@ public class LocationService {
 		location.setLocationType(locationEntity.getLocationType());
 		location.setLongitude(new BigDecimal(locationEntity.getLongitude()));
 		location.setName(locationEntity.getName());
+		location.setLocationName(locationEntity.getName());
+		location.setDocumentationURL(locationEntity.getDocumentationURL());
 		
 		Map<String, String> additionalInfo = new HashMap<>();
 		locationEntity.getAdditionalInfo().forEach((entity) -> {

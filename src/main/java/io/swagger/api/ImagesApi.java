@@ -23,9 +23,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import java.util.List;
+
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-06T17:40:52.157-05:00[America/New_York]")
 
 @Api(value = "images", description = "the images API")
 public interface ImagesApi {
@@ -70,12 +72,11 @@ public interface ImagesApi {
         @ApiResponse(code = 404, message = "Not Found", response = String.class) })
     @RequestMapping(value = "/images/{imageDbId}/imagecontent",
         produces = { "application/json" }, 
-        consumes = { "image/_*" },
         method = RequestMethod.PUT)
-    ResponseEntity<ImageResponse> imagesImageDbIdImagecontentPut(@ApiParam(value = "The unique identifier for a image",required=true) @PathVariable("imageDbId") String imageDbId,@ApiParam(value = ""  )  @Valid @RequestBody Object body,@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong>Bearer {token_string} </strong>" ) @RequestHeader(value="Authorization", required=false) String authorization) throws BrAPIServerException;
+    ResponseEntity<ImageResponse> imagesImageDbIdImagecontentPut(@ApiParam(value = "The unique identifier for a image",required=true) @PathVariable("imageDbId") String imageDbId,@ApiParam(value = ""  )  @Valid @RequestBody byte[] body,@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong>Bearer {token_string} </strong>" ) @RequestHeader(value="Authorization", required=false) String authorization) throws BrAPIServerException;
 
 
-    @ApiOperation(value = "Update an image meta data", nickname = "imagesImageDbIdPut", notes = "Update an image meta data object  Implementation Notes  - This call should be paired with 'PUT /images/{imageDbId}/imagecontent' for full capability  - A server may choose to modify the image meta data object based on the actually image which has been uploaded.   - Image data may be stored in a database or file system. Servers should generate and provide the \"imageURL\" as an absolute path for retrieving the image, wherever it happens to live.   - 'descriptiveOntologyTerm' can be thought of as Tags for the image. These could be simple descriptive words, or ontology references, or full ontology URI's. ", response = ImageResponse.class, authorizations = {
+    @ApiOperation(value = "Update an image meta data", nickname = "imagesImageDbIdPut", notes = "Update an image meta data object  Implementation Notes  - This call should be paired with 'PUT /images/{imageDbId}/imagecontent' for full capability  - A server may choose to modify the image meta data object based on the actually image which has been uploaded.   - Image data may be stored in a database or file system. Servers should generate and provide the \\\"imageURL\\\" as an absolute path for retrieving the image, wherever it happens to live.   - 'descriptiveOntologyTerm' can be thought of as Tags for the image. These could be simple descriptive words, or ontology references, or full ontology URI's.   - The `/images` calls support a GeoJSON object structure for describing their location. The BrAPI spec for GeoJSON only supports two of the possible geometries: Points and Polygons.           - With most images, the Point geometry should be used, and it should indicate the longitude and latitude of the camera.           - For top down images (ie from drones, cranes, etc), the Point geometry may be used to indicate the longitude and latitude of the centroid of the image content, and the Polygon geometry may be used to indicate the border of the image content. '", response = ImageResponse.class, authorizations = {
         @Authorization(value = "AuthorizationToken")
     }, tags={ "Images", })
     @ApiResponses(value = { 
@@ -91,7 +92,7 @@ public interface ImagesApi {
     ResponseEntity<ImageResponse> imagesImageDbIdPut(@ApiParam(value = "The unique identifier for a image",required=true) @PathVariable("imageDbId") String imageDbId,@ApiParam(value = ""  )  @Valid @RequestBody NewImageRequest body,@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong>Bearer {token_string} </strong>" ) @RequestHeader(value="Authorization", required=false) String authorization) throws BrAPIServerException;
 
 
-    @ApiOperation(value = "Create a new image meta data object", nickname = "imagesPost", notes = "Create a new image meta data object  Implementation Notes  - 'imageURL' should be a complete URL decribing the location of the image. There is no BrAPI call for retireiving the image content, so it could be on a different path, or a different host.  - 'descriptiveOntologyTerm' can be thought of as Tags for the image. These could be simple descriptive words, or ontology references, or full ontology URI's. ", response = ImageResponse.class, authorizations = {
+    @ApiOperation(value = "Create a new image meta data object", nickname = "imagesPost", notes = "Create a new image meta data object  Implementation Notes  - 'imageURL' should be a complete URL decribing the location of the image. There is no BrAPI call for retireiving the image content, so it could be on a different path, or a different host.  - 'descriptiveOntologyTerm' can be thought of as Tags for the image. These could be simple descriptive words, or ontology references, or full ontology URI's.  - The `/images` calls support a GeoJSON object structure for describing their location. The BrAPI spec for GeoJSON only supports two of the possible geometries: Points and Polygons.  - With most images, the Point geometry should be used, and it should indicate the longitude and latitude of the camera.  - For top down images (ie from drones, cranes, etc), the Point geometry may be used to indicate the longitude and latitude of the centroid of the image content, and the Polygon geometry may be used to indicate the border of the image content. ", response = ImageResponse.class, authorizations = {
         @Authorization(value = "AuthorizationToken")
     }, tags={ "Images", })
     @ApiResponses(value = { 

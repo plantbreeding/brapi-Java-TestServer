@@ -4,6 +4,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.validation.Valid;
+
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.OffsetDateTime;
 
@@ -42,6 +44,8 @@ public class DateUtility {
 	}
 
 	public static LocalDate toLocalDate(Date date) {
+		if(date == null)
+			return null;
 		return LocalDate.parse(toDateString(date));
 	}
 
@@ -55,5 +59,11 @@ public class DateUtility {
 		if(date == null || date.equals(""))
 			return null;
 		return  OffsetDateTime.parse(date);
+	}
+
+	public static Date toDate(LocalDate localDate) {
+		if(localDate == null)
+			return null;
+		return new Date(localDate.toEpochDay());
 	}
 }

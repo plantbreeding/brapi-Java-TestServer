@@ -20,9 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-06T17:40:52.157-05:00[America/New_York]")
 
 @Api(value = "logout", description = "the logout API")
 public interface LogoutApi {
@@ -33,6 +33,7 @@ public interface LogoutApi {
     @ApiResponses(value = { 
         @ApiResponse(code = 201, message = "Created") })
     @RequestMapping(value = "/logout",
+        produces = { "application/json" }, 
         method = RequestMethod.DELETE)
     ResponseEntity<String> logoutDelete() throws BrAPIServerException;
 

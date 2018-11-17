@@ -22,8 +22,8 @@ public class ObservationUnitsController extends BrAPIController implements Obser
 	public ResponseEntity<ObservationUnitsResponse> observationunitsGet(@Valid String germplasmDbId,
 			@Valid String observationVariableDbId, @Valid String studyDbId, @Valid String locationDbId,
 			@Valid String trialDbId, @Valid String programDbId, @Valid String seasonDbId,
-			@Valid String observationLevel, @Valid OffsetDateTime observationTimeStampRangeStart,
-			@Valid OffsetDateTime observationTimeStampRangeEnd, @Valid Integer page, @Valid Integer pageSize,
+			@Valid String observationLevel, @Valid String observationTimeStampRangeStart,
+			@Valid String observationTimeStampRangeEnd, @Valid Integer page, @Valid Integer pageSize,
 			String authorization) throws BrAPIServerException {
 		// TODO Auto-generated method stub
 		return null;

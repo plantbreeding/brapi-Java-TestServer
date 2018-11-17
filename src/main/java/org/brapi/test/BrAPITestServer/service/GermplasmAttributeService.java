@@ -1,10 +1,12 @@
 package org.brapi.test.BrAPITestServer.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.brapi.test.BrAPITestServer.model.entity.GermplasmAttributeDefinitionEntity;
 import org.brapi.test.BrAPITestServer.model.entity.GermplasmAttributeValueEntity;
+import org.brapi.test.BrAPITestServer.model.entity.ObservationVariableEntity;
 import org.brapi.test.BrAPITestServer.repository.GermplasmAttributeCategoryRepository;
 import org.brapi.test.BrAPITestServer.repository.GermplasmAttributeDefinitionRepository;
 import org.brapi.test.BrAPITestServer.repository.GermplasmAttributeValueRepository;
@@ -17,6 +19,12 @@ import io.swagger.model.GermplasmAttribute;
 import io.swagger.model.GermplasmAttributeCategory;
 import io.swagger.model.GermplasmAttributeDef;
 import io.swagger.model.Metadata;
+import io.swagger.model.Method;
+import io.swagger.model.ObservationVariable;
+import io.swagger.model.Scale;
+import io.swagger.model.Trait;
+import io.swagger.model.TraitDataType;
+import io.swagger.model.ValidValues;
 
 @Service
 public class GermplasmAttributeService {
@@ -24,14 +32,17 @@ public class GermplasmAttributeService {
 	private GermplasmAttributeDefinitionRepository attributeRepository;
 	private GermplasmAttributeCategoryRepository categoryRepository;
 	private GermplasmAttributeValueRepository attributeValueRepository;
+	private ObservationVariableService observationVariableService;
 
 	@Autowired
 	public GermplasmAttributeService(GermplasmAttributeDefinitionRepository attributeRepository,
 			GermplasmAttributeCategoryRepository categoryRepository,
-			GermplasmAttributeValueRepository attributeValueRepository) {
+			GermplasmAttributeValueRepository attributeValueRepository,
+			ObservationVariableService observationVariableService) {
 		this.categoryRepository = categoryRepository;
 		this.attributeRepository = attributeRepository;
 		this.attributeValueRepository = attributeValueRepository;
+		this.observationVariableService = observationVariableService;
 	}
 
 	public List<GermplasmAttributeDef> getGermplasmAttributes(String attributeCategoryDbId, Metadata metaData) {
@@ -51,6 +62,9 @@ public class GermplasmAttributeService {
 
 	private GermplasmAttributeDef mapFromEntityToAttribute(GermplasmAttributeDefinitionEntity entity) {
 		GermplasmAttributeDef attrib = new GermplasmAttributeDef();
+		observationVariableService.convertFromBaseEntity(entity, attrib);
+		
+		attrib.setAttributeName(entity.getName());
 		attrib.setAttributeCategoryDbId(entity.getAttributeCategory().getId());
 		attrib.setAttributeDbId(entity.getId());
 		attrib.setCode(entity.getCode());
@@ -59,7 +73,9 @@ public class GermplasmAttributeService {
 		attrib.setName(entity.getName());
 		attrib.setUri(entity.getUri());
 		attrib.setValues(entity.getValues().get(0).getValue());
+
 		return attrib;
+
 	}
 
 	public List<GermplasmAttributeCategory> getGermplasmAttributeCategories(Metadata metaData) {
@@ -69,6 +85,7 @@ public class GermplasmAttributeService {
 					GermplasmAttributeCategory cat = new GermplasmAttributeCategory();
 					cat.setAttributeCategoryDbId(c.getId());
 					cat.setName(c.getName());
+					cat.setAttributeCategoryName(c.getName());
 					return cat;
 				}).getContent();
 		PagingUtility.calculateMetaData(metaData);

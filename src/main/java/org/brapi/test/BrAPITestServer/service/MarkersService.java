@@ -109,6 +109,7 @@ public class MarkersService {
 	private Marker convertFromEntity(MarkerEntity markerEntity, boolean includeSynonyms) {
 		Marker marker = new Marker();
 		marker.setDefaultDisplayName(markerEntity.getMarkerName());
+		marker.setMarkerName(markerEntity.getMarkerName());
 		marker.setMarkerDbId(markerEntity.getId());
 		marker.setType(markerEntity.getType());
 		marker.setAnalysisMethods(markerEntity.getAnalysisMethods().stream().map(entity -> entity.getMethodName())

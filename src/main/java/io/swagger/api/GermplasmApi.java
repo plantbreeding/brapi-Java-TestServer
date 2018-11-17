@@ -27,9 +27,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-06T17:40:52.157-05:00[America/New_York]")
 
 @Api(value = "germplasm", description = "the germplasm API")
 public interface GermplasmApi {
@@ -46,7 +46,7 @@ public interface GermplasmApi {
     @RequestMapping(value = "/germplasm/{germplasmDbId}/attributes",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<GermplasmAttributeListResponse> germplasmGermplasmDbIdAttributesGet(@ApiParam(value = "The germplasm characterized",required=true) @PathVariable("germplasmDbId") String germplasmDbId,@ApiParam(value = "Restrict the response to only the listed attributeDbIds.") @Valid @RequestParam(value = "attributeDbIds", required = false) List<String> attributeDbIds,@ApiParam(value = "**Deprecated** Use \"attributeDbIds\" instead") @Valid @RequestParam(value = "attributeList", required = false) List<String> attributeList,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong>Bearer {token_string} </strong>" ) @RequestHeader(value="Authorization", required=false) String authorization) throws BrAPIServerException;
+    ResponseEntity<GermplasmAttributeListResponse> germplasmGermplasmDbIdAttributesGet(@ApiParam(value = "The germplasm characterized",required=true) @PathVariable("germplasmDbId") String germplasmDbId,@ApiParam(value = "Restrict the response to only the listed attributeDbIds.") @Valid @RequestParam(value = "attributeDbIds", required = false) ArrayList<String> attributeDbIds,@ApiParam(value = "**Deprecated** Use \"attributeDbIds\" instead") @Valid @RequestParam(value = "attributeList", required = false) ArrayList<String> attributeList,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong>Bearer {token_string} </strong>" ) @RequestHeader(value="Authorization", required=false) String authorization) throws BrAPIServerException;
 
 
     @ApiOperation(value = "Get the details of a specific Germplasm", nickname = "germplasmGermplasmDbIdGet", notes = "Germplasm Details by germplasmDbId was merged with Germplasm Multi Crop Passport Data. The MCPD fields are optional and marked with the prefix [MCPD].", response = GermplasmResponse1.class, authorizations = {

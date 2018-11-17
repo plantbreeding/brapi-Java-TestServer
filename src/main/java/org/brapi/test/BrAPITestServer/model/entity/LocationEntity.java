@@ -30,9 +30,17 @@ public class LocationEntity extends BaseEntity{
 	private String instituteName;
 	@Column
 	private String instituteAddress;
+	@Column
+	private String documentationURL;
 	@OneToMany(mappedBy="locationDbId", targetEntity=LocationAdditionalInfoEntity.class)
 	private List<LocationAdditionalInfoEntity> additionalInfo;
 
+	public String getDocumentationURL() {
+		return documentationURL;
+	}
+	public void setDocumentationURL(String documentationURL) {
+		this.documentationURL = documentationURL;
+	}
 	public String getLocationType() {
 		return locationType;
 	}

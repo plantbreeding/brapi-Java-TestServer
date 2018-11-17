@@ -39,9 +39,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-06T17:40:52.157-05:00[America/New_York]")
 
 @Api(value = "search", description = "the search API")
 public interface SearchApi {
@@ -190,7 +190,7 @@ public interface SearchApi {
         @ApiResponse(code = 401, message = "Unauthorized", response = String.class),
         @ApiResponse(code = 403, message = "Forbidden", response = String.class),
         @ApiResponse(code = 404, message = "Not Found", response = String.class) })
-    @RequestMapping(value = "/search/observationunits/searchResultsDbId",
+    @RequestMapping(value = "/search/observationunits/{searchResultsDbId}",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
     ResponseEntity<ObservationUnitsResponse1> searchObservationunitsSearchResultsDbIdGet(@ApiParam(value = "Permanent unique identifier which references the search results",required=true) @PathVariable("searchResultsDbId") String searchResultsDbId,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong>Bearer {token_string} </strong>" ) @RequestHeader(value="Authorization", required=false) String authorization) throws BrAPIServerException;

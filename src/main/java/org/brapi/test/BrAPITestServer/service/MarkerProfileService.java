@@ -47,6 +47,7 @@ public class MarkerProfileService {
 					summary.setExtractDbId(entity.getExtractDbId());
 					summary.setGermplasmDbId(entity.getGermplasmDbId());
 					summary.setMarkerprofileDbId(entity.getId());
+					summary.setMarkerProfileDbId(entity.getId());
 					summary.setResultCount(entity.getResultCount());
 					summary.setSampleDbId(entity.getSampleDbId());
 					summary.setUniqueDisplayName(entity.getUniqueDisplayName());
@@ -68,6 +69,7 @@ public class MarkerProfileService {
 			markerProfile.setExtractDbId(entity.get().getExtractDbId());
 			markerProfile.setGermplasmDbId(entity.get().getGermplasmDbId());
 			markerProfile.setMarkerprofileDbId(entity.get().getId());
+			markerProfile.setMarkerProfileDbId(entity.get().getId());
 			markerProfile.setUniqueDisplayName(entity.get().getUniqueDisplayName());
 		}
 
@@ -158,6 +160,7 @@ public class MarkerProfileService {
 			detail.setDescription(entity.getDescription());
 			detail.setLastUpdated(DateUtility.toOffsetDateTime(entity.getLastUpdated()));
 			detail.setMatrixDbId(entity.getId());
+			detail.setMatrixName(entity.getName());
 			detail.setName(entity.getName());
 			detail.setStudyDbId(entity.getStudy().getId());
 			return detail;

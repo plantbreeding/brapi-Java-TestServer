@@ -9,6 +9,7 @@ import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import io.swagger.model.NewSampleDbId;
 import io.swagger.model.Sample;
 import io.swagger.model.SampleResponse;
+import io.swagger.model.SamplesResponse;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -23,12 +24,26 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-06T17:40:52.157-05:00[America/New_York]")
 
 @Api(value = "samples", description = "the samples API")
 public interface SamplesApi {
+
+    @ApiOperation(value = "Get the Samples", nickname = "samplesGet", notes = "Used to retrieve list of Samples from a Sample Tracking system based on some search criteria.", response = SamplesResponse.class, authorizations = {
+        @Authorization(value = "AuthorizationToken")
+    }, tags={ "Samples", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "OK", response = SamplesResponse.class),
+        @ApiResponse(code = 400, message = "Bad Request", response = String.class),
+        @ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+        @ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+    @RequestMapping(value = "/samples",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    ResponseEntity<SamplesResponse> samplesGet(@ApiParam(value = "the internal DB id for a sample") @Valid @RequestParam(value = "sampleDbId", required = false) String sampleDbId,@ApiParam(value = "the internal DB id for an observation unit where a sample was taken from") @Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,@ApiParam(value = "the internal DB id for a plate of samples") @Valid @RequestParam(value = "plateDbId", required = false) String plateDbId,@ApiParam(value = "the internal DB id for a germplasm") @Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong>Bearer {token_string} </strong>" ) @RequestHeader(value="Authorization", required=false) String authorization) throws BrAPIServerException;
+
 
     @ApiOperation(value = "Add a new Sample", nickname = "samplesPut", notes = "Call to register the event of a sample being taken. Sample ID is assigned as a result of the operation and returned in response.", response = NewSampleDbId.class, authorizations = {
         @Authorization(value = "AuthorizationToken")

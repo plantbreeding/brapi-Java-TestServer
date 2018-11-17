@@ -2,14 +2,17 @@ package org.brapi.test.BrAPITestServer.model.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "trait")
-public class TraitEntity extends BaseEntity {
+public class TraitEntity extends BaseEntity implements OntologyInterface{
 	@Column
 	private String name;
 	@Column
@@ -34,14 +37,116 @@ public class TraitEntity extends BaseEntity {
 	@OneToMany(mappedBy = "traitDbId")
 	private List<TraitAbbreviationEntity> alternativeAbbreviations;
 	@OneToMany(mappedBy = "trait")
-	private List<ObservationVariableEntity> observationVariables;
+	private List<VariableBaseEntity> variables;
+	@OneToOne
+	private OntologyEntity ontology;
+	@JoinTable
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<OntologyRefernceEntity> ontologyRefernce;
+	
+	
+	public OntologyEntity getOntology() {
+		return ontology;
+	}
+
+	public void setOntology(OntologyEntity ontology) {
+		this.ontology = ontology;
+	}
+
+	public List<OntologyRefernceEntity> getOntologyRefernce() {
+		return ontologyRefernce;
+	}
+
+	public void setOntologyRefernce(List<OntologyRefernceEntity> ontologyRefernce) {
+		this.ontologyRefernce = ontologyRefernce;
+	}
+
+	public List<TraitAbbreviationEntity> getAlternativeAbbreviations() {
+		return alternativeAbbreviations;
+	}
+
+	public String getAttribute() {
+		return attribute;
+	}
+
+	public String getDefaultValue() {
+		return defaultValue;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public String getEntity() {
+		return entity;
+	}
+
+	public String getMainAbbreviation() {
+		return mainAbbreviation;
+	}
 
 	public String getName() {
 		return name;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public List<TraitSynonymEntity> getSynonyms() {
+		return synonyms;
+	}
+
+	public List<VariableBaseEntity> getVariables() {
+		return variables;
+	}
+
+	public String getXref() {
+		return xref;
+	}
+
+	public void setAlternativeAbbreviations(List<TraitAbbreviationEntity> alternativeAbbreviations) {
+		this.alternativeAbbreviations = alternativeAbbreviations;
+	}
+
+	public void setAttribute(String attribute) {
+		this.attribute = attribute;
+	}
+
+	public void setDefaultValue(String defaultValue) {
+		this.defaultValue = defaultValue;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setEntity(String entity) {
+		this.entity = entity;
+	}
+
+	public void setMainAbbreviation(String mainAbbreviation) {
+		this.mainAbbreviation = mainAbbreviation;
+	}
+
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public void setSynonyms(List<TraitSynonymEntity> synonyms) {
+		this.synonyms = synonyms;
+	}
+
+	public void setVariables(List<VariableBaseEntity> variables) {
+		this.variables = variables;
+	}
+
+	public void setXref(String xref) {
+		this.xref = xref;
 	}
 
 	public String getTraitClass() {
@@ -52,84 +157,4 @@ public class TraitEntity extends BaseEntity {
 		this.traitClass = traitClass;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getMainAbbreviation() {
-		return mainAbbreviation;
-	}
-
-	public void setMainAbbreviation(String mainAbbreviation) {
-		this.mainAbbreviation = mainAbbreviation;
-	}
-
-	public String getEntity() {
-		return entity;
-	}
-
-	public void setEntity(String entity) {
-		this.entity = entity;
-	}
-
-	public String getAttribute() {
-		return attribute;
-	}
-
-	public void setAttribute(String attribute) {
-		this.attribute = attribute;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public String getXref() {
-		return xref;
-	}
-
-	public void setXref(String xref) {
-		this.xref = xref;
-	}
-
-	public String getDefaultValue() {
-		return defaultValue;
-	}
-
-	public void setDefaultValue(String defaultValue) {
-		this.defaultValue = defaultValue;
-	}
-
-	public List<TraitSynonymEntity> getSynonyms() {
-		return synonyms;
-	}
-
-	public void setSynonyms(List<TraitSynonymEntity> synonyms) {
-		this.synonyms = synonyms;
-	}
-
-	public List<TraitAbbreviationEntity> getAlternativeAbbreviations() {
-		return alternativeAbbreviations;
-	}
-
-	public void setAlternativeAbbreviations(List<TraitAbbreviationEntity> alternativeAbbreviations) {
-		this.alternativeAbbreviations = alternativeAbbreviations;
-	}
-
-	public List<ObservationVariableEntity> getObservationVariables() {
-		return observationVariables;
-	}
-
-	public void setObservationVariables(List<ObservationVariableEntity> observationVariables) {
-		this.observationVariables = observationVariables;
-	}
-	
 }

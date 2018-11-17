@@ -55,6 +55,8 @@ public class GermplasmEntity extends BaseEntity{
     private String subtaxaAuthority;
 	@Column
     private Date acquisitionDate;
+	@Column
+    private String documentationURL;
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "germplasm_germplasm_type_storage_code", joinColumns = { @JoinColumn(name = "germplasm_dbid", referencedColumnName="id") }, inverseJoinColumns = { @JoinColumn(name = "germplasm_type_storage_code_dbid", referencedColumnName="id") })
@@ -75,6 +77,14 @@ public class GermplasmEntity extends BaseEntity{
 	
 	@OneToMany(mappedBy="germplasm")
 	private List<ObservationUnitEntity> observationUnits;
+
+	public String getDocumentationURL() {
+		return documentationURL;
+	}
+
+	public void setDocumentationURL(String documentationURL) {
+		this.documentationURL = documentationURL;
+	}
 
 	public BreedingMethodEntity getBreedingMethod() {
 		return breedingMethod;

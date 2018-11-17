@@ -1,18 +1,20 @@
 INSERT INTO crop (id, crop_name) VALUES ('1', 'Tomatillo');
 INSERT INTO crop (id, crop_name) VALUES ('2', 'Paw Paw');
 
+INSERT INTO person(id, description, email_address, first_name, last_name, mailing_address, middle_name, phone_number, userid) VALUES ('person1', 'Example Person', 'bob@bob.com', 'Bob', 'Robertson', '123 Road Street, City, State, Country, 98765', 'Danger', '+19876543210', 'bdr45');
+
 INSERT INTO breeding_method (id, abbreviation, description, "name") VALUES('bm1', 'MBCR', 'Backcross to recover a specific gene.', 'Male Backcross');
 INSERT INTO breeding_method (id, abbreviation, description, "name") VALUES('bm2', 'FBCR', 'Backcross to recover a specific gene.', 'Female Backcross');
 
-INSERT INTO germplasm (id, accession_number, acquisition_date, biological_status_of_accession_code, common_crop_name, country_of_origin_code, default_display_name, genus, germplasm_name, germplasmpui, germplasm_seed_source, institute_code, institute_name, species, species_authority, subtaxa, subtaxa_authority, synonyms, breeding_method_id) VALUES ('1', 'A000001', '19840101', '300', 'G000001', 'COUNTRY1', 'G000001', 'Fructus', 'Name001', 'http://pui.per/accession/A000001', 'open pollination', 'PER001', 'INST1', 'novus', 'L', 'subtaxa', 'N', 'landrace 1', 'bm1');
-INSERT INTO germplasm (id, accession_number, acquisition_date, biological_status_of_accession_code, common_crop_name, country_of_origin_code, default_display_name, genus, germplasm_name, germplasmpui, germplasm_seed_source, institute_code, institute_name, species, species_authority, subtaxa, subtaxa_authority, synonyms, breeding_method_id) VALUES ('2', 'A000002', '19840101', '300', 'G000002', 'COUNTRY1', 'G000002', 'Fructus', 'Name002', 'http://pui.per/accession/A000002', 'open pollination', 'PER001', 'INST1', 'novus', 'L', 'subtaxa', 'N', 'landrace 2', 'bm1');
-INSERT INTO germplasm (id, accession_number, acquisition_date, biological_status_of_accession_code, common_crop_name, country_of_origin_code, default_display_name, genus, germplasm_name, germplasmpui, germplasm_seed_source, institute_code, institute_name, species, species_authority, subtaxa, subtaxa_authority, synonyms, breeding_method_id) VALUES ('3', 'A000003', '20010101', '500', 'G000003', 'COUNTRY1', 'G000003', 'Fructus', 'Name003', 'http://pui.per/accession/A000003', 'A000001/A000002', 'PER001', 'INST1', 'novus', 'L', 'subtaxa', 'N', 'variety 1', 'bm1');
-INSERT INTO germplasm (id, accession_number, acquisition_date, biological_status_of_accession_code, common_crop_name, country_of_origin_code, default_display_name, genus, germplasm_name, germplasmpui, germplasm_seed_source, institute_code, institute_name, species, species_authority, subtaxa, subtaxa_authority, synonyms, breeding_method_id) VALUES ('4', 'A000004', '20010101', '500', 'G000004', 'COUNTRY1', 'G000004', 'Fructus', 'Name004', 'http://pui.per/accession/A000004',  NULL, 'PER001', 'INST1', 'novus', 'L', 'subtaxa', 'N', 'variety 4', 'bm1');
-INSERT INTO germplasm (id, accession_number, acquisition_date, biological_status_of_accession_code, common_crop_name, country_of_origin_code, default_display_name, genus, germplasm_name, germplasmpui, germplasm_seed_source, institute_code, institute_name, species, species_authority, subtaxa, subtaxa_authority, synonyms, breeding_method_id) VALUES ('5', 'A000005', '20010101', '500', 'G000005', 'COUNTRY1', 'G000005', 'Fructus', 'Name005', 'http://pui.per/accession/A000005',  NULL, 'PER001', 'INST1', 'novus', 'L', 'subtaxa', 'N', 'variety 5', 'bm1');
-INSERT INTO germplasm (id, accession_number, acquisition_date, biological_status_of_accession_code, common_crop_name, country_of_origin_code, default_display_name, genus, germplasm_name, germplasmpui, germplasm_seed_source, institute_code, institute_name, species, species_authority, subtaxa, subtaxa_authority, synonyms, breeding_method_id) VALUES ('6', 'A000006', '20010101', '500', 'G000006', 'COUNTRY1', 'G000006', 'Fructus', 'Name006', 'http://pui.per/accession/A000006',  NULL, 'PER001', 'INST1', 'novus', 'L', 'subtaxa', 'N', 'variety 6', 'bm1');
-INSERT INTO germplasm (id, accession_number, acquisition_date, biological_status_of_accession_code, common_crop_name, country_of_origin_code, default_display_name, genus, germplasm_name, germplasmpui, germplasm_seed_source, institute_code, institute_name, species, species_authority, subtaxa, subtaxa_authority, synonyms, breeding_method_id) VALUES ('7', 'A000007', '20010101', '500', 'G000007', 'COUNTRY1', 'G000007', 'Fructus', 'Name007', 'http://pui.per/accession/A000007',  NULL, 'PER001', 'INST1', 'novus', 'L', 'subtaxa', 'N', 'variety 7', 'bm1');
-INSERT INTO germplasm (id, accession_number, acquisition_date, biological_status_of_accession_code, common_crop_name, country_of_origin_code, default_display_name, genus, germplasm_name, germplasmpui, germplasm_seed_source, institute_code, institute_name, species, species_authority, subtaxa, subtaxa_authority, synonyms, breeding_method_id) VALUES ('8', 'A000008', '20010101', '500', 'G000008', 'COUNTRY1', 'G000008', 'Fructus', 'Name008', 'http://pui.per/accession/A000008',  NULL, 'PER001', 'INST1', 'novus', 'L', 'subtaxa', 'N', 'variety 8', 'bm1');
-INSERT INTO germplasm (id, accession_number, acquisition_date, biological_status_of_accession_code, common_crop_name, country_of_origin_code, default_display_name, genus, germplasm_name, germplasmpui, germplasm_seed_source, institute_code, institute_name, species, species_authority, subtaxa, subtaxa_authority, synonyms, breeding_method_id) VALUES ('9', 'A000009', '20010101', '300', 'Local_variety', 'COUNTRY1', 'Local_variety', 'Fructus', 'Local_variety', 'http://pui.per/accession/A000009', 'open pollination', 'PER001', 'INST1', 'novus', 'L', 'subtaxa', 'N', 'landrace', 'bm1');
+INSERT INTO germplasm (id, accession_number, acquisition_date, biological_status_of_accession_code, common_crop_name, country_of_origin_code, default_display_name, documentationurl, genus, germplasm_name, germplasmpui, germplasm_seed_source, institute_code, institute_name, species, species_authority, subtaxa, subtaxa_authority, synonyms, breeding_method_id) VALUES ('1', 'A000001', '19840101', '300', 'G000001', 'COUNTRY1', 'G000001', 'https://brapi.org', 'Fructus', 'Name001', 'http://pui.per/accession/A000001', 'open pollination', 'PER001', 'INST1', 'novus', 'L', 'subtaxa', 'N', 'landrace 1', 'bm1');
+INSERT INTO germplasm (id, accession_number, acquisition_date, biological_status_of_accession_code, common_crop_name, country_of_origin_code, default_display_name, documentationurl, genus, germplasm_name, germplasmpui, germplasm_seed_source, institute_code, institute_name, species, species_authority, subtaxa, subtaxa_authority, synonyms, breeding_method_id) VALUES ('2', 'A000002', '19840101', '300', 'G000002', 'COUNTRY1', 'G000002', 'https://brapi.org', 'Fructus', 'Name002', 'http://pui.per/accession/A000002', 'open pollination', 'PER001', 'INST1', 'novus', 'L', 'subtaxa', 'N', 'landrace 2', 'bm1');
+INSERT INTO germplasm (id, accession_number, acquisition_date, biological_status_of_accession_code, common_crop_name, country_of_origin_code, default_display_name, documentationurl, genus, germplasm_name, germplasmpui, germplasm_seed_source, institute_code, institute_name, species, species_authority, subtaxa, subtaxa_authority, synonyms, breeding_method_id) VALUES ('3', 'A000003', '20010101', '500', 'G000003', 'COUNTRY1', 'G000003', 'https://brapi.org', 'Fructus', 'Name003', 'http://pui.per/accession/A000003', 'A000001/A000002', 'PER001', 'INST1', 'novus', 'L', 'subtaxa', 'N', 'variety 1', 'bm1');
+INSERT INTO germplasm (id, accession_number, acquisition_date, biological_status_of_accession_code, common_crop_name, country_of_origin_code, default_display_name, documentationurl, genus, germplasm_name, germplasmpui, germplasm_seed_source, institute_code, institute_name, species, species_authority, subtaxa, subtaxa_authority, synonyms, breeding_method_id) VALUES ('4', 'A000004', '20010101', '500', 'G000004', 'COUNTRY1', 'G000004', 'https://brapi.org', 'Fructus', 'Name004', 'http://pui.per/accession/A000004',  NULL, 'PER001', 'INST1', 'novus', 'L', 'subtaxa', 'N', 'variety 4', 'bm1');
+INSERT INTO germplasm (id, accession_number, acquisition_date, biological_status_of_accession_code, common_crop_name, country_of_origin_code, default_display_name, documentationurl, genus, germplasm_name, germplasmpui, germplasm_seed_source, institute_code, institute_name, species, species_authority, subtaxa, subtaxa_authority, synonyms, breeding_method_id) VALUES ('5', 'A000005', '20010101', '500', 'G000005', 'COUNTRY1', 'G000005', 'https://brapi.org', 'Fructus', 'Name005', 'http://pui.per/accession/A000005',  NULL, 'PER001', 'INST1', 'novus', 'L', 'subtaxa', 'N', 'variety 5', 'bm1');
+INSERT INTO germplasm (id, accession_number, acquisition_date, biological_status_of_accession_code, common_crop_name, country_of_origin_code, default_display_name, documentationurl, genus, germplasm_name, germplasmpui, germplasm_seed_source, institute_code, institute_name, species, species_authority, subtaxa, subtaxa_authority, synonyms, breeding_method_id) VALUES ('6', 'A000006', '20010101', '500', 'G000006', 'COUNTRY1', 'G000006', 'https://brapi.org', 'Fructus', 'Name006', 'http://pui.per/accession/A000006',  NULL, 'PER001', 'INST1', 'novus', 'L', 'subtaxa', 'N', 'variety 6', 'bm1');
+INSERT INTO germplasm (id, accession_number, acquisition_date, biological_status_of_accession_code, common_crop_name, country_of_origin_code, default_display_name, documentationurl, genus, germplasm_name, germplasmpui, germplasm_seed_source, institute_code, institute_name, species, species_authority, subtaxa, subtaxa_authority, synonyms, breeding_method_id) VALUES ('7', 'A000007', '20010101', '500', 'G000007', 'COUNTRY1', 'G000007', 'https://brapi.org', 'Fructus', 'Name007', 'http://pui.per/accession/A000007',  NULL, 'PER001', 'INST1', 'novus', 'L', 'subtaxa', 'N', 'variety 7', 'bm1');
+INSERT INTO germplasm (id, accession_number, acquisition_date, biological_status_of_accession_code, common_crop_name, country_of_origin_code, default_display_name, documentationurl, genus, germplasm_name, germplasmpui, germplasm_seed_source, institute_code, institute_name, species, species_authority, subtaxa, subtaxa_authority, synonyms, breeding_method_id) VALUES ('8', 'A000008', '20010101', '500', 'G000008', 'COUNTRY1', 'G000008', 'https://brapi.org', 'Fructus', 'Name008', 'http://pui.per/accession/A000008',  NULL, 'PER001', 'INST1', 'novus', 'L', 'subtaxa', 'N', 'variety 8', 'bm1');
+INSERT INTO germplasm (id, accession_number, acquisition_date, biological_status_of_accession_code, common_crop_name, country_of_origin_code, default_display_name, documentationurl, genus, germplasm_name, germplasmpui, germplasm_seed_source, institute_code, institute_name, species, species_authority, subtaxa, subtaxa_authority, synonyms, breeding_method_id) VALUES ('9', 'A000009', '20010101', '300', 'Local_variety', 'COUNTRY1', 'Local_variety', 'https://brapi.org', 'Fructus', 'Local_variety', 'http://pui.per/accession/A000009', 'open pollination', 'PER001', 'INST1', 'novus', 'L', 'subtaxa', 'N', 'landrace', 'bm1');
 
 INSERT INTO pedigree(id, crossing_plan, crossing_year, family_code, notation, parent1type, parent2type, pedigree, germplasm_db_id, parent1_db_id, parent2_db_id) VALUES('1', 'OPEN_POLLINATION', 2018, 'Cree_x_Bonanza_2018', 'purdy', 'FEMALE', 'MALE', 'A000001', '1', null, null);
 INSERT INTO pedigree(id, crossing_plan, crossing_year, family_code, notation, parent1type, parent2type, pedigree, germplasm_db_id, parent1_db_id, parent2_db_id) VALUES('2', 'OPEN_POLLINATION', 2018, 'Cree_x_Bonanza_2018', 'purdy', 'FEMALE', 'MALE', 'A000002', '2', null, null);
@@ -29,120 +31,142 @@ INSERT INTO donor (id, germplasm_db_id, donor_accession_number, donor_institute_
 INSERT INTO donor (id, germplasm_db_id, donor_accession_number, donor_institute_code, germplasmpui) VALUES ('3', '2', 'A007890', 'INRA', 'https://doi.org/10.1109/5.771073');
 INSERT INTO donor (id, germplasm_db_id, donor_accession_number, donor_institute_code, germplasmpui) VALUES ('4', '2', 'A001010', 'INRA', 'https://doi.org/10.1109/5.231123');
 
+INSERT INTO ontology(id, authors, copyright, description, licence, ontology_name, version, xref, documentationurl)	VALUES ('MO_123', 'Bob', '2017 Ontology.org', 'Ontology.org', 'Apache', 'Ontology.org', '17', 'https://ontology.org', 'https://ontology.org');
+
+INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_min, valid_value_max, ontology_id)	VALUES ('s1', 'Numerical', 1, 'Centimeter', 'xref', '0', '99999', 'MO_123');
+INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_min, valid_value_max, ontology_id)	VALUES ('s2', 'Numerical', 3, 'Kilogram', 'xref', '0', '99999', 'MO_123');
+INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_min, valid_value_max, ontology_id)	VALUES ('s3', 'Nominal', 0, 'Color', 'xref', '0', '0', 'MO_123');
+INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_min, valid_value_max, ontology_id)	VALUES ('s4', 'Numerical', 0, 'Percentage', 'xref', '0', '100', 'MO_123');
+insert into scale_valid_value_category(id, scale_db_id, category) values ('color1', 's3', 'dark red');
+insert into scale_valid_value_category(id, scale_db_id, category) values ('color2', 's3', 'red');
+insert into scale_valid_value_category(id, scale_db_id, category) values ('color3', 's3', 'dark blue');
+insert into scale_valid_value_category(id, scale_db_id, category) values ('color4', 's3', 'blue');
+insert into scale_valid_value_category(id, scale_db_id, category) values ('color5', 's3', 'black');
+
+INSERT INTO method(id, description, formula, method_class, name, reference, ontology_id)	VALUES ('m1', 'Standard rolled measuring tape', 'a^2 + b^2 = c^2', 'Numeric', 'Tape Measure', 'google.com', 'MO_123');
+INSERT INTO method(id, description, formula, method_class, name, reference, ontology_id)	VALUES ('m2', 'Dried sample on electric scale', 'NA', 'Numeric', 'Dry Electric Scale', 'google.com', 'MO_123');
+INSERT INTO method(id, description, formula, method_class, name, reference, ontology_id)	VALUES ('m3', 'Comparing sample color to standard color palette', 'NA', 'Categorical', 'Standard Color Palette', 'google.com', 'MO_123');
+INSERT INTO method(id, description, formula, method_class, name, reference, ontology_id)	VALUES ('m4', 'Image analysis of sample photo', 'Bobs Color Threshold Tool', 'Percentage', 'Image analysis', 'https://bobsimageanalysis.com', 'MO_123');
+
+INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref, ontology_id) VALUES ('t1', 'plant height', '0', 'plant height', 'entity', 'H', 'Plant Height', 'active', 'Numeric', 'xref', 'MO_123');
+INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref, ontology_id) VALUES ('t2', 'root weight', '0', 'root weight', 'entity', 'RW', 'Root Weight', 'active', 'Numeric', 'xref', 'MO_123');
+INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref, ontology_id) VALUES ('t3', 'leaf color', '0', 'color of leaf sample', 'entity', 'LC', 'Leaf Color', 'active', 'Categorical', 'xref', 'MO_123');
+INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref, ontology_id) VALUES ('t4', 'root color', '0', 'color of root sample', 'entity', 'RC', 'Root Color', 'active', 'Categorical', 'xref', 'MO_123');
+INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref, ontology_id) VALUES ('t5', 'Virus severity', '0', 'Percentage of contaminated sample', 'entity', 'LC', 'Virus severity', 'active', 'Percentage', 'xref', 'MO_123');
+
+INSERT INTO ontology_ref(id, url, type) VALUES ('or01', 'https://ontology.org/s1', 0);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or02', 'https://ontology.org/s2', 1);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or03', 'https://ontology.org/s3', 2);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or04', 'https://ontology.org/s4', 0);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or05', 'https://ontology.org/m1', 1);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or06', 'https://ontology.org/m2', 2);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or07', 'https://ontology.org/m3', 0);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or08', 'https://ontology.org/m4', 1);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or09', 'https://ontology.org/t1', 2);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or10', 'https://ontology.org/t2', 0);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or11', 'https://ontology.org/t3', 1);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or12', 'https://ontology.org/t4', 2);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or13', 'https://ontology.org/t5', 0);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or14', 'https://ontology.org/t1', 1);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or15', 'https://ontology.org/t2', 2);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or16', 'https://ontology.org/t3', 0);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or17', 'https://ontology.org/t4', 1);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or18', 'https://ontology.org/t5', 2);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or19', 'https://ontology.org/t1', 0);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or20', 'https://ontology.org/t2', 1);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or21', 'https://ontology.org/t3', 2);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or22', 'https://ontology.org/t4', 0);
+INSERT INTO ontology_ref(id, url, type) VALUES ('or23', 'https://ontology.org/t5', 1);
+
+INSERT INTO method_ontology_refernce(method_entity_id, ontology_refernce_id) VALUES ('m1', 'or05');
+INSERT INTO method_ontology_refernce(method_entity_id, ontology_refernce_id) VALUES ('m2', 'or06');
+INSERT INTO method_ontology_refernce(method_entity_id, ontology_refernce_id) VALUES ('m3', 'or07');
+INSERT INTO method_ontology_refernce(method_entity_id, ontology_refernce_id) VALUES ('m4', 'or08');
+INSERT INTO scale_ontology_refernce(scale_entity_id, ontology_refernce_id) VALUES ('s1', 'or01');
+INSERT INTO scale_ontology_refernce(scale_entity_id, ontology_refernce_id) VALUES ('s2', 'or02');
+INSERT INTO scale_ontology_refernce(scale_entity_id, ontology_refernce_id) VALUES ('s3', 'or03');
+INSERT INTO scale_ontology_refernce(scale_entity_id, ontology_refernce_id) VALUES ('s4', 'or04');
+INSERT INTO trait_ontology_refernce(trait_entity_id, ontology_refernce_id) VALUES ('t1', 'or09');
+INSERT INTO trait_ontology_refernce(trait_entity_id, ontology_refernce_id) VALUES ('t2', 'or10');
+INSERT INTO trait_ontology_refernce(trait_entity_id, ontology_refernce_id) VALUES ('t3', 'or11');
+INSERT INTO trait_ontology_refernce(trait_entity_id, ontology_refernce_id) VALUES ('t4', 'or12');
+INSERT INTO trait_ontology_refernce(trait_entity_id, ontology_refernce_id) VALUES ('t5', 'or13');
+
 INSERT INTO germplasm_attribute_category (id, name) VALUES ('1', 'Morphological');
 INSERT INTO germplasm_attribute_category (id, name) VALUES ('2', 'Agronomic');
 INSERT INTO germplasm_attribute_category (id, name) VALUES ('3', 'Biotic stress');
 INSERT INTO germplasm_attribute_category (id, name) VALUES ('4', 'Abiotic stress');
 
-INSERT INTO germplasm_attribute_definition(id, code, datatype, description, name, uri, attribute_category_id) VALUES ('1', 'RHT', 'Categorical', 'Allele of marker 11_4769', 'Rht-B1b', 'http://www.brapi.org/ontology/MO_123:1000001', '2');
-INSERT INTO germplasm_attribute_definition(id, code, datatype, description, name, uri, attribute_category_id) VALUES ('2', 'WEV', 'Categorical', 'Resistance allele', 'Weevil Resistance', 'http://www.brapi.org/ontology/MO_123:1000002', '3');
-INSERT INTO germplasm_attribute_definition(id, code, datatype, description, name, uri, attribute_category_id) VALUES ('3', 'FLSHORG', 'Categorical', 'Allelele for orange flesh', 'Flesh Color Orange allele', 'http://www.brapi.org/ontology/MO_123:1000003', '1');
-INSERT INTO germplasm_attribute_definition(id, code, datatype, description, name, uri, attribute_category_id) VALUES ('4', 'FLWCOL', 'Categorical', 'Allele for white flower color', 'Flower color white allele', 'http://www.brapi.org/ontology/MO_123:1000004', '1');
-INSERT INTO germplasm_attribute_definition(id, code, datatype, description, name, uri, attribute_category_id) VALUES ('5', 'RAL1', 'Categorical', 'Resistance allele 1', 'R allele 1', 'http://www.brapi.org/ontology/MO_123:1000005', '3');
-INSERT INTO germplasm_attribute_definition(id, code, datatype, description, name, uri, attribute_category_id) VALUES ('6', 'RAL2', 'Categorical', 'Resistance allele 2', 'R allele 2', 'http://www.brapi.org/ontology/MO_123:1000006', '3');
-INSERT INTO germplasm_attribute_definition(id, code, datatype, description, name, uri, attribute_category_id) VALUES ('7', 'RAL3', 'Categorical', 'Resistance allele 3', 'R allele 3', 'http://www.brapi.org/ontology/MO_123:1000007', '3');
-INSERT INTO germplasm_attribute_definition(id, code, datatype, description, name, uri, attribute_category_id) VALUES ('8', 'RAL4', 'Categorical', 'Resistance allele 4', 'R allele 4', 'http://www.brapi.org/ontology/MO_123:1000008', '4');
-INSERT INTO germplasm_attribute_definition(id, code, datatype, description, name, uri, attribute_category_id) VALUES ('9', 'RAL5', 'Categorical', 'Resistance allele 5', 'R allele 5', 'http://www.brapi.org/ontology/MO_123:1000009', '4');
-INSERT INTO germplasm_attribute_definition(id, code, datatype, description, name, uri, attribute_category_id) VALUES ('10', 'RAL6', 'Categorical', 'Resistance allele', 'R allele 6', 'http://www.brapi.org/ontology/MO_123:1000010', '4');
+INSERT INTO germplasm_attribute_definition(id, crop, default_value, documentationurl, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id, code, datatype, description, uri, attribute_category_id) VALUES ('ATT01', 'maize', '10', 'https://brapi.org', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100002', 'Rht-B1b',                   't1', 'm1', 's1', 'RHT',     'Categorical', 'Allele of marker 11_4769',      'http://www.brapi.org/ontology/MO_123:1000001', '2');
+INSERT INTO germplasm_attribute_definition(id, crop, default_value, documentationurl, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id, code, datatype, description, uri, attribute_category_id) VALUES ('ATT02', 'maize', '10', 'https://brapi.org', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100003', 'Weevil Resistance',         't3', 'm3', 's3', 'WEV',     'Categorical', 'Resistance allele',             'http://www.brapi.org/ontology/MO_123:1000002', '3');
+INSERT INTO germplasm_attribute_definition(id, crop, default_value, documentationurl, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id, code, datatype, description, uri, attribute_category_id) VALUES ('ATT03', 'maize', '10', 'https://brapi.org', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100004', 'Flesh Color Orange allele', 't2', 'm2', 's2', 'FLSHORG', 'Categorical', 'Allelele for orange flesh',     'http://www.brapi.org/ontology/MO_123:1000003', '1');
+INSERT INTO germplasm_attribute_definition(id, crop, default_value, documentationurl, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id, code, datatype, description, uri, attribute_category_id) VALUES ('ATT04', 'maize', '10', 'https://brapi.org', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100005', 'Flower color white allele', 't4', 'm3', 's3', 'FLWCOL',  'Categorical', 'Allele for white flower color', 'http://www.brapi.org/ontology/MO_123:1000004', '1');
+INSERT INTO germplasm_attribute_definition(id, crop, default_value, documentationurl, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id, code, datatype, description, uri, attribute_category_id) VALUES ('ATT05', 'maize', '10', 'https://brapi.org', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100006', 'R allele 1',                't5', 'm4', 's4', 'RAL1',    'Categorical', 'Resistance allele 1',           'http://www.brapi.org/ontology/MO_123:1000005', '3');
 
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('1', '1', '1', 'Present', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('2', '1', '2', 'Absent', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('3', '1', '3', '1', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('4', '1', '4', '3', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('5', '1', '5', 'Heterozygous', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('6', '1', '6', '5', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('7', '1', '7', '7', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('8', '1', '8', '9', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('9', '1', '9', '3', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('10', '1', '10', '1', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('11', '2', '1', 'Absent', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('12', '2', '2', 'Heterozygous', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('13', '2', '3', '3', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('14', '2', '4', '4', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('15', '2', '5', 'Absent', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('16', '2', '6', '7', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('17', '2', '7', '8', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('18', '2', '8', '2', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('19', '2', '9', '1', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('20', '2', '10', '8', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('21', '3', '1', 'Heterozygous', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('22', '3', '2', 'Present', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('23', '3', '3', '9', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('24', '3', '4', '5', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('25', '3', '5', '1', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('26', '3', '6', '2', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('27', '3', '7', '6', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('28', '3', '8', '7', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('29', '3', '9', '8', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('30', '3', '10', '4', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('31', '4', '1', 'Present', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('32', '4', '2', 'Heterozygous', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('33', '4', '3', '5', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('34', '4', '4', '9', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('35', '4', '5', 'Absent', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('36', '4', '6', '9', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('37', '4', '7', '8', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('38', '4', '8', '7', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('39', '4', '9', '6', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('40', '4', '10', '5', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('41', '5', '1', 'Absent', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('42', '5', '2', 'Heterozygous', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('43', '5', '3', '8', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('44', '5', '4', '5', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('45', '5', '5', 'Absent', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('46', '5', '6', '3', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('47', '5', '7', '4', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('48', '5', '8', '5', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('49', '5', '9', '6', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('50', '5', '10', '7', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('51', '6', '1', 'Heterozygous', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('52', '6', '2', 'Absent', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('53', '6', '3', '8', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('54', '6', '4', '7', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('55', '6', '5', 'Present', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('56', '6', '6', '7', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('57', '6', '7', '6', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('58', '6', '8', '5', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('59', '6', '9', '2', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('60', '6', '10', '3', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('61', '7', '1', 'Present', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('62', '7', '2', 'Heterozygous', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('63', '7', '3', '9', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('64', '7', '4', '8', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('65', '7', '5', 'Present', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('66', '7', '6', '3', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('67', '7', '7', '2', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('68', '7', '8', '6', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('69', '7', '9', '4', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('70', '7', '10', '9', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('71', '8', '1', 'Absent', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('72', '8', '2', 'Absent', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('73', '8', '3', '9', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('74', '8', '4', '1', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('75', '8', '5', 'Heterozygous', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('76', '8', '6', '7', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('77', '8', '7', '5', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('78', '8', '8', '9', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('79', '8', '9', '7', '20170317');
-INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('80', '8', '10', '3', '20170317');
+INSERT INTO variable_base_entity_ontology_refernce(variable_base_entity_id, ontology_refernce_id) VALUES ('ATT01', 'or19');
+INSERT INTO variable_base_entity_ontology_refernce(variable_base_entity_id, ontology_refernce_id) VALUES ('ATT02', 'or20');
+INSERT INTO variable_base_entity_ontology_refernce(variable_base_entity_id, ontology_refernce_id) VALUES ('ATT03', 'or21');
+INSERT INTO variable_base_entity_ontology_refernce(variable_base_entity_id, ontology_refernce_id) VALUES ('ATT04', 'or22');
+INSERT INTO variable_base_entity_ontology_refernce(variable_base_entity_id, ontology_refernce_id) VALUES ('ATT05', 'or23');
 
-INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address) VALUES ('1', 'Storage location', 'Location 1', 'L1', 'PER', 'Peru', -11.1275, -75.356389, 828, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815');
-INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address) VALUES ('2', 'Breeding location', 'Location 2', 'L2', 'PER', 'Peru', -11.16116, -75.34171, 964, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815');
-INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address) VALUES ('3', 'Storage location', 'Location 3', 'L3', 'PER', 'Peru', -12.076289, -76.948417, 244, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815');
-INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address) VALUES ('4', 'Farmer field location', 'Location 4', 'L4', 'MOZ', 'Mozambique', -15.4669, 36.9777, 701, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815');
-INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address) VALUES ('5', 'Breeding location', 'Location 5', 'L5', 'MOZ', 'Mozambique', -26.0283, 32.39, 7, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815');
-INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address) VALUES ('6', 'Breeding location', 'Location 6', 'L6', 'PER', 'Peru', -10.96096, -75.22065, 717, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815');
-INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address) VALUES ('7', 'Breeding location', 'Location 7', 'L7', 'PER', 'Peru', -10.931809, -74.855467, 484, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815');
-INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address) VALUES ('8', 'Farmer field location', 'Location 8', 'L8', 'PER', 'Peru', -11.05304, -73.75254, 252, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815');
-INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address) VALUES ('9', 'Farmer field location', 'Location 9', 'L9', 'PER', 'Peru', -11.05304, -73.75254, 252, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815');
-INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address) VALUES ('10', 'Breeding location', 'Location 10', 'L10', 'PER', 'Peru', -11.25847, -73.82075, 276, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815');
-INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address) VALUES ('11', 'Breeding location', 'Location 11', 'L11', 'PER', 'Peru', -11.14639, -74.30748, 323, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815');
-INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address) VALUES ('12', 'Breeding location', 'Location 12', 'L12', 'PER', 'Peru', -11.30817, -74.69242, 758, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815');
-INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address) VALUES ('13', 'Farmer field location', 'Location 13', 'L13', 'GHA', 'Ghana', 6.71, -1.572, 288, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815');
-INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address) VALUES ('14', 'Farmer field location', 'Location 14', 'L14', 'GHA', 'Ghana', 5.123, -1.462, 26, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815');
-INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address) VALUES ('15', 'Farmer field location', 'Location 15', 'L15', 'GHA', 'Ghana', 10.87, -1.1466, 183, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815');
-INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address) VALUES ('16', 'Storage location', 'Location 16', 'L16', 'UGA', 'Uganda', 0.529144, 32.61246, 1173, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815');
-INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address) VALUES ('17', 'Storage location', 'Location 17', 'L17', 'UGA', 'Uganda', 1.528, 33.616, 1067, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('1', '1', 'ATT01', 'Present', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('2', '1', 'ATT02', 'Absent', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('3', '1', 'ATT03', '1', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('4', '1', 'ATT04', '3', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('5', '1', 'ATT05', 'Heterozygous', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('11', '2', 'ATT01', 'Absent', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('12', '2', 'ATT02', 'Heterozygous', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('13', '2', 'ATT03', '3', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('14', '2', 'ATT04', '4', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('15', '2', 'ATT05', 'Absent', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('21', '3', 'ATT01', 'Heterozygous', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('22', '3', 'ATT02', 'Present', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('23', '3', 'ATT03', '9', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('24', '3', 'ATT04', '5', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('25', '3', 'ATT05', '1', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('31', '4', 'ATT01', 'Present', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('32', '4', 'ATT02', 'Heterozygous', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('33', '4', 'ATT03', '5', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('34', '4', 'ATT04', '9', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('35', '4', 'ATT05', 'Absent', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('41', '5', 'ATT01', 'Absent', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('42', '5', 'ATT02', 'Heterozygous', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('43', '5', 'ATT03', '8', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('44', '5', 'ATT04', '5', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('45', '5', 'ATT05', 'Absent', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('51', '6', 'ATT01', 'Heterozygous', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('52', '6', 'ATT02', 'Absent', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('53', '6', 'ATT03', '8', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('54', '6', 'ATT04', '7', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('55', '6', 'ATT05', 'Present', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('61', '7', 'ATT01', 'Present', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('62', '7', 'ATT02', 'Heterozygous', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('63', '7', 'ATT03', '9', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('64', '7', 'ATT04', '8', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('65', '7', 'ATT05', 'Present', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('71', '8', 'ATT01', 'Absent', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('72', '8', 'ATT02', 'Absent', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('73', '8', 'ATT03', '9', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('74', '8', 'ATT04', '1', '20170317');
+INSERT INTO germplasm_attribute_value(id, germplasm_id, germplasm_attribute_definition_id, value, determined_date) VALUES ('75', '8', 'ATT05', 'Heterozygous', '20170317');
+
+INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address, documentationurl) VALUES ('1', 'Storage location', 'Location 1', 'L1', 'PER', 'Peru', -11.1275, -75.356389, 828, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815', 'https://brapi.org');
+INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address, documentationurl) VALUES ('2', 'Breeding location', 'Location 2', 'L2', 'PER', 'Peru', -11.16116, -75.34171, 964, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815', 'https://brapi.org');
+INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address, documentationurl) VALUES ('3', 'Storage location', 'Location 3', 'L3', 'PER', 'Peru', -12.076289, -76.948417, 244, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815', 'https://brapi.org');
+INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address, documentationurl) VALUES ('4', 'Farmer field location', 'Location 4', 'L4', 'MOZ', 'Mozambique', -15.4669, 36.9777, 701, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815', 'https://brapi.org');
+INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address, documentationurl) VALUES ('5', 'Breeding location', 'Location 5', 'L5', 'MOZ', 'Mozambique', -26.0283, 32.39, 7, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815', 'https://brapi.org');
+INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address, documentationurl) VALUES ('6', 'Breeding location', 'Location 6', 'L6', 'PER', 'Peru', -10.96096, -75.22065, 717, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815', 'https://brapi.org');
+INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address, documentationurl) VALUES ('7', 'Breeding location', 'Location 7', 'L7', 'PER', 'Peru', -10.931809, -74.855467, 484, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815', 'https://brapi.org');
+INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address, documentationurl) VALUES ('8', 'Farmer field location', 'Location 8', 'L8', 'PER', 'Peru', -11.05304, -73.75254, 252, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815', 'https://brapi.org');
+INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address, documentationurl) VALUES ('9', 'Farmer field location', 'Location 9', 'L9', 'PER', 'Peru', -11.05304, -73.75254, 252, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815', 'https://brapi.org');
+INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address, documentationurl) VALUES ('10', 'Breeding location', 'Location 10', 'L10', 'PER', 'Peru', -11.25847, -73.82075, 276, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815', 'https://brapi.org');
+INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address, documentationurl) VALUES ('11', 'Breeding location', 'Location 11', 'L11', 'PER', 'Peru', -11.14639, -74.30748, 323, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815', 'https://brapi.org');
+INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address, documentationurl) VALUES ('12', 'Breeding location', 'Location 12', 'L12', 'PER', 'Peru', -11.30817, -74.69242, 758, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815', 'https://brapi.org');
+INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address, documentationurl) VALUES ('13', 'Farmer field location', 'Location 13', 'L13', 'GHA', 'Ghana', 6.71, -1.572, 288, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815', 'https://brapi.org');
+INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address, documentationurl) VALUES ('14', 'Farmer field location', 'Location 14', 'L14', 'GHA', 'Ghana', 5.123, -1.462, 26, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815', 'https://brapi.org');
+INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address, documentationurl) VALUES ('15', 'Farmer field location', 'Location 15', 'L15', 'GHA', 'Ghana', 10.87, -1.1466, 183, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815', 'https://brapi.org');
+INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address, documentationurl) VALUES ('16', 'Storage location', 'Location 16', 'L16', 'UGA', 'Uganda', 0.529144, 32.61246, 1173, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815', 'https://brapi.org');
+INSERT INTO location (id, location_type, name, abbreviation, country_code, country_name, latitude, longitude, altitude, institute_name, institute_address, documentationurl) VALUES ('17', 'Storage location', 'Location 17', 'L17', 'UGA', 'Uganda', 1.528, 33.616, 1067, 'Plant Science Institute', '71 Pilgrim Avenue Chevy Chase MD 20815', 'https://brapi.org');
 
 INSERT INTO location_additional_info (id, location_db_id, key, value) VALUES ('1', '6', 'altern', 'MARANK');
 INSERT INTO location_additional_info (id, location_db_id, key, value) VALUES ('2', '7', 'altern', 'SHIRANI');
@@ -242,30 +266,6 @@ INSERT INTO contact (id, name, email, type, orcid, institute_name) VALUES ('1', 
 INSERT INTO contact (id, name, email, type, orcid, institute_name) VALUES ('2', 'B. Breeder', 'b.breeder@brapi.org', 'Breeder', '0000-0002-0607-8729', 'Plant Science Institute');
 INSERT INTO contact (id, name, email, type, orcid, institute_name) VALUES ('3', 'A. Technician', 'a.technician@brapi.org', 'Technician', '0000-0002-0607-8731', 'Plant Science Institute');
 INSERT INTO contact (id, name, email, type, orcid, institute_name) VALUES ('4', 'B. Technician', 'b.technician@brapi.org', 'Technician', '0000-0002-0607-8732', 'Plant Science Institute');
-
-INSERT INTO scale_valid_value(id, max, min)	VALUES ('svv1', '99999', '0');
-INSERT INTO scale_valid_value(id, max, min)	VALUES ('svv2', '0', '0');
-INSERT INTO scale_valid_value(id, max, min)	VALUES ('svv3', '100', '0');
-insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('color1', 'svv2', 'dark red');
-insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('color2', 'svv2', 'red');
-insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('color3', 'svv2', 'dark blue');
-insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('color4', 'svv2', 'blue');
-insert into scale_valid_value_category(id, scale_valid_value_db_id, category) values ('color5', 'svv2', 'black');
-INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_id)	VALUES ('s1', 'Numerical', 1, 'Centimeter', 'xref', 'svv1');
-INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_id)	VALUES ('s2', 'Numerical', 3, 'Kilogram', 'xref', 'svv1');
-INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_id)	VALUES ('s3', 'Categorical', 0, 'Color', 'xref', 'svv2');
-INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_id)	VALUES ('s4', 'Percentage', 0, 'Percentage', 'xref', 'svv3');
-
-INSERT INTO method(id, description, formula, method_class, name, reference)	VALUES ('m1', 'Standard rolled measuring tape', 'a^2 + b^2 = c^2', 'Numeric', 'Tape Measure', 'google.com');
-INSERT INTO method(id, description, formula, method_class, name, reference)	VALUES ('m2', 'Dried sample on electric scale', 'NA', 'Numeric', 'Dry Electric Scale', 'google.com');
-INSERT INTO method(id, description, formula, method_class, name, reference)	VALUES ('m3', 'Comparing sample color to standard color palette', 'NA', 'Categorical', 'Standard Color Palette', 'google.com');
-INSERT INTO method(id, description, formula, method_class, name, reference)	VALUES ('m4', 'Image analysis of sample photo', 'Bobs Color Threshold Tool', 'Percentage', 'Image analysis', 'https://bobsimageanalysis.com');
-
-INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref) VALUES ('t1', 'plant height', '0', 'plant height', 'entity', 'H', 'Plant Height', 'active', 'Numeric', 'xref');
-INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref) VALUES ('t2', 'root weight', '0', 'root weight', 'entity', 'RW', 'Root Weight', 'active', 'Numeric', 'xref');
-INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref) VALUES ('t3', 'leaf color', '0', 'color of leaf sample', 'entity', 'LC', 'Leaf Color', 'active', 'Categorical', 'xref');
-INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref) VALUES ('t4', 'root color', '0', 'color of root sample', 'entity', 'RC', 'Root Color', 'active', 'Categorical', 'xref');
-INSERT INTO trait (id, attribute, default_value, description, entity, main_abbreviation, name, status, trait_class, xref) VALUES ('t5', 'Virus severity', '0', 'Percentage of contaminated sample', 'entity', 'LC', 'Virus severity', 'active', 'Percentage', 'xref');
 
 INSERT INTO program (crop_id, id, abbreviation, lead_person, objective, name) VALUES ('1', '1', 'P1', 'G. Leader', 'Global Population Improvement', 'Program 1');
 INSERT INTO program (crop_id, id, abbreviation, lead_person, objective, name) VALUES ('1', '2', 'P2', 'M. Breeder', 'XYZ', 'Program 2');
@@ -395,13 +395,17 @@ INSERT INTO treatment (id, observation_unit_db_id, factor, modality) VALUES ('6'
 INSERT INTO treatment (id, observation_unit_db_id, factor, modality) VALUES ('7', '7', 'water regimen', 'normal');
 INSERT INTO treatment (id, observation_unit_db_id, factor, modality) VALUES ('8', '8', 'water regimen', 'normal');
 
-INSERT INTO ontology(id, authors, copyright, description, licence, ontology_name, version, xref)	VALUES ('MO_123', 'Bob', '2017 Ontology.org', 'Ontology.org', 'Apache', 'Ontology.org', '17', 'https://ontology.org');
+INSERT INTO observation_variable (id, crop, default_value, documentationurl, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100002', 'maize', '10', 'https://brapi.org', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100002', 'Plant height', 't1', 'm1', 's1');
+INSERT INTO observation_variable (id, crop, default_value, documentationurl, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100003', 'maize', '10', 'https://brapi.org', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100003', 'Carotenoid', 't3', 'm3', 's3');
+INSERT INTO observation_variable (id, crop, default_value, documentationurl, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100004', 'maize', '10', 'https://brapi.org', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100004', 'Root weight', 't2', 'm2', 's2');
+INSERT INTO observation_variable (id, crop, default_value, documentationurl, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100005', 'maize', '10', 'https://brapi.org', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100005', 'Root color', 't4', 'm3', 's3');
+INSERT INTO observation_variable (id, crop, default_value, documentationurl, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100006', 'maize', '10', 'https://brapi.org', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100006', 'Virus severity', 't5', 'm4', 's4');
 
-INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100002', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100002', 'Plant height', 't1', 'm1', 's1');
-INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100003', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100003', 'Carotenoid', 't3', 'm3', 's3');
-INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100004', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100004', 'Root weight', 't2', 'm2', 's2');
-INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100005', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100005', 'Root color', 't4', 'm3', 's3');
-INSERT INTO observation_variable (id, crop, default_value, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id) VALUES ('MO_123:100006', 'maize', '10', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100006', 'Virus severity', 't5', 'm4', 's4');
+INSERT INTO variable_base_entity_ontology_refernce(variable_base_entity_id, ontology_refernce_id) VALUES ('MO_123:100002', 'or14');
+INSERT INTO variable_base_entity_ontology_refernce(variable_base_entity_id, ontology_refernce_id) VALUES ('MO_123:100003', 'or15');
+INSERT INTO variable_base_entity_ontology_refernce(variable_base_entity_id, ontology_refernce_id) VALUES ('MO_123:100004', 'or16');
+INSERT INTO variable_base_entity_ontology_refernce(variable_base_entity_id, ontology_refernce_id) VALUES ('MO_123:100005', 'or17');
+INSERT INTO variable_base_entity_ontology_refernce(variable_base_entity_id, ontology_refernce_id) VALUES ('MO_123:100006', 'or18');
 
 INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('1', 'MO_123:100002', '1', '2013-06-14T22:03:51Z', '1', 'A. Technician', '1.2');
 INSERT INTO observation (observation_unit_id, observation_variable_id, id, observation_time_stamp, season_id, collector, value) VALUES ('1', 'MO_123:100006', '2', '2013-06-14T22:04:51Z', '1', 'A. Technician', '4.5');
@@ -448,7 +452,7 @@ INSERT INTO germplasm_taxon (taxon_dbid, germplasm_dbid) VALUES ('2', '8');
 INSERT INTO germplasm_taxon (taxon_dbid, germplasm_dbid) VALUES ('0', '9');
 INSERT INTO germplasm_taxon (taxon_dbid, germplasm_dbid) VALUES ('2', '9');
 
-INSERT INTO genome_map (id, comments, "name", published_date, species, "type", unit) VALUES('gm1', 'comments', 'Genome Map 1', '01-01-2018', 'novus', 'Genetic', 'cM');
+INSERT INTO public.genome_map(id, comments, common_crop_name, documentationurl, name, published_date, scientific_name, species, type, unit) 	VALUES ('gm1', 'comments', 'Paw Paw', 'https://brapi.org', 'Genome Map 1', '01-01-2018', 'Asimina triloba', 'triloba', 'Genetic', 'cM');
 
 INSERT INTO linkage_group (id, genome_map_db_id, linkage_group_name, max_marker_position) VALUES('lg1', 'gm1', '1', 1110);
 INSERT INTO linkage_group (id, genome_map_db_id, linkage_group_name, max_marker_position) VALUES('lg2', 'gm1', '2', 5050);
@@ -555,7 +559,9 @@ INSERT INTO marker_synonym (id, marker_db_id, synonym) VALUES('ms20', 'mr20', 'i
 INSERT INTO marker_synonym (id, marker_db_id, synonym) VALUES('ms21', 'mr21', 'i_11_10210');
 INSERT INTO marker_synonym (id, marker_db_id, synonym) VALUES('ms22', 'mr22', 'i_11_10220');
 
-INSERT INTO plate (id, client_plate_db_id, plate_format, sample_type, status, status_time_stamp, vendor_barcode, vendor_barcode_imageurl, vendor_project_db_id) VALUES('pl1', 'cl1', 'Plate_96', 'DNA', 'Submitted', '2018-01-01 00:00:00', '12345', 'https://brapi.org/assets/images/code.jpg', 'vp1');
+INSERT INTO plate_submission (id, client_id, number_of_samples, sample_type) VALUES('ps1', 'cl1', 14, 0);
+INSERT INTO plate (id, client_plate_db_id, client_plate_barcode, sample_submission_format, status_time_stamp, submission_id) VALUES('pl1', 'cl1', 'cl1', 'Plate_96', '2018-01-01 00:00:00', 'ps1');
+
 
 INSERT INTO sample (id, concentration, notes, plate_id, plate_index, sample_timestamp, sample_type, taken_by, tissue_type, volume, observation_unit_id, taxon_id_id) VALUES('sam00', '20', 'Example Sample', 'pl1', 0, '2018-01-01 00:00:00', 'DNA', 'Bob', 'Leaf', '100', '1', '0');
 INSERT INTO sample (id, concentration, notes, plate_id, plate_index, sample_timestamp, sample_type, taken_by, tissue_type, volume, observation_unit_id, taxon_id_id) VALUES('sam01', '19', 'Example Sample', 'pl1', 1, '2018-01-01 00:00:00', 'DNA', 'Bob', 'Leaf', '100', '2', '0');
@@ -571,6 +577,8 @@ INSERT INTO sample (id, concentration, notes, plate_id, plate_index, sample_time
 INSERT INTO sample (id, concentration, notes, plate_id, plate_index, sample_timestamp, sample_type, taken_by, tissue_type, volume, observation_unit_id, taxon_id_id) VALUES('sam11', '23', 'Example Sample', 'pl1', 11, '2018-01-01 00:00:00', 'DNA', 'Bob', 'Leaf', '100', '3', '0');
 INSERT INTO sample (id, concentration, notes, plate_id, plate_index, sample_timestamp, sample_type, taken_by, tissue_type, volume, observation_unit_id, taxon_id_id) VALUES('sam12', '20', 'Example Sample', 'pl1', 12, '2018-01-01 00:00:00', 'DNA', 'Bob', 'Leaf', '100', '1', '0');
 INSERT INTO sample (id, concentration, notes, plate_id, plate_index, sample_timestamp, sample_type, taken_by, tissue_type, volume, observation_unit_id, taxon_id_id) VALUES('sam13', '19', 'Example Sample', 'pl1', 13, '2018-01-01 00:00:00', 'DNA', 'Bob', 'Leaf', '100', '2', '0');
+INSERT INTO sample (id, concentration, notes, plate_id, plate_index, sample_timestamp, sample_type, taken_by, tissue_type, volume, observation_unit_id, taxon_id_id) VALUES('sam14', '20', 'Example Sample', 'pl1', 14, '2018-01-01 00:00:00', 'DNA', 'Bob', 'Leaf', '100', '1', '0');
+INSERT INTO sample (id, concentration, notes, plate_id, plate_index, sample_timestamp, sample_type, taken_by, tissue_type, volume, observation_unit_id, taxon_id_id) VALUES('sam15', '19', 'Example Sample', 'pl1', 15, '2018-01-01 00:00:00', 'DNA', 'Bob', 'Leaf', '100', '2', '0');
 
 INSERT INTO marker_profile (id, analysis_method, extract_db_id, germplasm_db_id, sample_db_id, unique_display_name) VALUES('P1', 'GBS', 'extract1', '1', 'sam00', 'My Fancy Germplasm');
 INSERT INTO marker_profile (id, analysis_method, extract_db_id, germplasm_db_id, sample_db_id, unique_display_name) VALUES('P2', 'GBS', 'extract2', '1', 'sam01', 'My Fancy Germplasm');
@@ -586,6 +594,8 @@ INSERT INTO marker_profile (id, analysis_method, extract_db_id, germplasm_db_id,
 INSERT INTO marker_profile (id, analysis_method, extract_db_id, germplasm_db_id, sample_db_id, unique_display_name) VALUES('F1-11', 'GBS', 'extract3', '1', 'sam11', 'My Fancy Germplasm');
 INSERT INTO marker_profile (id, analysis_method, extract_db_id, germplasm_db_id, sample_db_id, unique_display_name) VALUES('F1-12', 'GBS', 'extract1', '1', 'sam12', 'My Fancy Germplasm');
 INSERT INTO marker_profile (id, analysis_method, extract_db_id, germplasm_db_id, sample_db_id, unique_display_name) VALUES('F1-13', 'GBS', 'extract2', '1', 'sam13', 'My Fancy Germplasm');
+INSERT INTO marker_profile (id, analysis_method, extract_db_id, germplasm_db_id, sample_db_id, unique_display_name) VALUES('G2-P1', 'GBS', 'extract1', '2', 'sam14', 'My Fancy Germplasm');
+INSERT INTO marker_profile (id, analysis_method, extract_db_id, germplasm_db_id, sample_db_id, unique_display_name) VALUES('G3-P2', 'GBS', 'extract2', '3', 'sam15', 'My Fancy Germplasm');
 
 INSERT INTO study_marker_profile (marker_profile_db_id, study_db_id) VALUES('P1', '1001');
 INSERT INTO study_marker_profile (marker_profile_db_id, study_db_id) VALUES('P2', '1001');
@@ -898,6 +908,13 @@ INSERT INTO allele (id, allele_code, marker_id, marker_profile_id, matrix_id, sa
 INSERT INTO allele (id, allele_code, marker_id, marker_profile_id, matrix_id, sample_id) VALUES('al1319', 'T/A', 'mr19', 'F1-13', 'mat1', 'sam13');
 INSERT INTO allele (id, allele_code, marker_id, marker_profile_id, matrix_id, sample_id) VALUES('al1320', 'T', 'mr20', 'F1-13', 'mat1', 'sam13');
 
+INSERT INTO image(id, description, descriptive_ontology_terms, image_file_name, image_file_size, image_height, image_type, imageurl, image_width, name, observation_db_ids, observation_unit_id, copyright, time_stamp, longitude, latitude)	VALUES ('img1', 'BrAPI Logo', 'brapi,logo', 'brapi-logo.svg', 3676, 56, 'image/svg', 'https://brapi.org/assets/images/brapi-logo.svg', 258, 'brapiLogo', '1,2', '1', 'Copyright 2018', '2011-06-14T22:12:51Z', 50.010083, -110.113006 );
+
+INSERT INTO list(id, date_created, date_modified, description, list_name, list_owner_name, list_owner_person_db_id, list_source, list_type)	VALUES ('list1', '2011-06-14T22:12:51Z', '2011-06-14T22:12:51Z', 'Example List of germplasm', 'Example List 1', 'Bob Robertson', 'bob123', 'User Created', 0);
+INSERT INTO list_item(id, item, list_id) VALUES ('item01', '1', 'list1');
+INSERT INTO list_item(id, item, list_id) VALUES ('item02', '2', 'list1');
+INSERT INTO list_item(id, item, list_id) VALUES ('item03', '3', 'list1');
+
 
 INSERT INTO vendor_spec (id, additional_info, contact_name, vendor_address, vendor_city, vendor_country, vendor_description, vendor_email, vendor_name, vendor_phone, vendorurl) VALUES('1', NULL, 'Bob Smith', '123 Street Ave', 'Townsville', 'USA', 'Example vendor used for testing', 'bsmith@brapi.org', 'Bobs Vendor', '+12345678910', 'https://brapi.org');
 
@@ -919,6 +936,3 @@ INSERT INTO vendor_spec_status (id, status_description, status_name, vendor_spec
 INSERT INTO vendor_spec_status (id, status_description, status_name, vendor_spec_platform_db_id) VALUES('vssta3', 'Sample submission has been rejected by the vendor', 'Rejected', 'vsp1');
 INSERT INTO vendor_spec_status (id, status_description, status_name, vendor_spec_platform_db_id) VALUES('vssta4', 'Vendor has begun to process the samples', 'Processing', 'vsp1');
 INSERT INTO vendor_spec_status (id, status_description, status_name, vendor_spec_platform_db_id) VALUES('vssta5', 'Processing is complete, data is ready to download', 'Completed', 'vsp1');
-
-
-

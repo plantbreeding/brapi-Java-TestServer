@@ -13,7 +13,7 @@ import javax.validation.constraints.*;
  * TaxonID
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-10-25T15:57:44.669-04:00[America/New_York]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-06T17:40:52.157-05:00[America/New_York]")
 
 public class TaxonID   {
   @JsonProperty("sourceName")
@@ -31,7 +31,8 @@ public class TaxonID   {
    * The human readable name of the taxonomy provider
    * @return sourceName
   **/
-  @ApiModelProperty(value = "The human readable name of the taxonomy provider")
+  @ApiModelProperty(required = true, value = "The human readable name of the taxonomy provider")
+  @NotNull
 
 
   public String getSourceName() {
@@ -51,7 +52,8 @@ public class TaxonID   {
    * The identifier (name, ID, URI) of a particular taxonomy within the source provider
    * @return taxonId
   **/
-  @ApiModelProperty(value = "The identifier (name, ID, URI) of a particular taxonomy within the source provider")
+  @ApiModelProperty(required = true, value = "The identifier (name, ID, URI) of a particular taxonomy within the source provider")
+  @NotNull
 
 
   public String getTaxonId() {

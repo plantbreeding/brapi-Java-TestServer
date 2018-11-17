@@ -8,14 +8,15 @@ import javax.persistence.Table;
 @Table(name="scale_valid_value_category")
 public class ScaleValidValueCategoryEntity extends BaseEntity{
 	@Column
-	private String scaleValidValueDbId;
+	private String scaleDbId;
 	@Column
 	private String category;
-	public String getScaleValidValueDbId() {
-		return scaleValidValueDbId;
+
+	public String getScaleDbId() {
+		return scaleDbId;
 	}
-	public void setScaleValidValueDbId(String scaleValidValueDbId) {
-		this.scaleValidValueDbId = scaleValidValueDbId;
+	public void setScaleDbId(String scaleDbId) {
+		this.scaleDbId = scaleDbId;
 	}
 	public String getCategory() {
 		return category;

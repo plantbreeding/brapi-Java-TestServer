@@ -2,15 +2,17 @@ package org.brapi.test.BrAPITestServer.model.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="scale")
-public class ScaleEntity extends BaseEntity {
+public class ScaleEntity extends BaseEntity implements OntologyInterface{
 	@Column
 	private String name;
 	@Column
@@ -19,17 +21,59 @@ public class ScaleEntity extends BaseEntity {
 	private Integer decimalPlaces;
 	@Column
 	private String xref;
-	@ManyToOne
-	private ScaleValidValueEntity validValue;
-	@OneToMany(mappedBy="scale")
-	private List<ObservationVariableEntity> observationVariables;
 
-	public List<ObservationVariableEntity> getObservationVariables() {
-		return observationVariables;
+
+	@Column
+	private Integer validValueMin;
+	@Column
+	private Integer validValueMax;
+	@OneToMany(mappedBy="scaleDbId")
+	private List<ScaleValidValueCategoryEntity> validValueCategories;
+	
+	@OneToMany(mappedBy="scale", cascade = CascadeType.DETACH)
+	private List<VariableBaseEntity> variables;
+	@OneToOne
+	private OntologyEntity ontology;
+	@JoinTable
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<OntologyRefernceEntity> ontologyRefernce;
+	
+
+	public Integer getValidValueMin() {
+		return validValueMin;
 	}
-
-	public void setObservationVariables(List<ObservationVariableEntity> observationVariables) {
-		this.observationVariables = observationVariables;
+	public void setValidValueMin(Integer validValueMin) {
+		this.validValueMin = validValueMin;
+	}
+	public Integer getValidValueMax() {
+		return validValueMax;
+	}
+	public void setValidValueMax(Integer validValueMax) {
+		this.validValueMax = validValueMax;
+	}
+	public List<ScaleValidValueCategoryEntity> getValidValueCategories() {
+		return validValueCategories;
+	}
+	public void setValidValueCategories(List<ScaleValidValueCategoryEntity> validValueCategories) {
+		this.validValueCategories = validValueCategories;
+	}
+	public OntologyEntity getOntology() {
+		return ontology;
+	}
+	public void setOntology(OntologyEntity ontology) {
+		this.ontology = ontology;
+	}
+	public List<OntologyRefernceEntity> getOntologyRefernce() {
+		return ontologyRefernce;
+	}
+	public void setOntologyRefernce(List<OntologyRefernceEntity> ontologyRefernce) {
+		this.ontologyRefernce = ontologyRefernce;
+	}
+	public List<VariableBaseEntity> getVariables() {
+		return variables;
+	}
+	public void setVariables(List<VariableBaseEntity> variables) {
+		this.variables = variables;
 	}
 
 	public String getName() {
@@ -62,13 +106,5 @@ public class ScaleEntity extends BaseEntity {
 
 	public void setXref(String xref) {
 		this.xref = xref;
-	}
-
-	public ScaleValidValueEntity getValidValues() {
-		return validValue;
-	}
-
-	public void setValidValues(ScaleValidValueEntity validValues) {
-		this.validValue = validValues;
 	}
 }
