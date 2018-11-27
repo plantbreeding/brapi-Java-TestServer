@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import io.swagger.model.Metadata;
 import io.swagger.model.Trial;
 import io.swagger.model.TrialDatasetAuthorship;
+import io.swagger.model.TrialDatasetAuthorships;
+import io.swagger.model.TrialPublications;
 import io.swagger.model.TrialStudies;
 import io.swagger.model.TrialSummary;
 
@@ -35,16 +37,17 @@ public class TrialService {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData, sort);
 
 		boolean applyActiveFilter = true;
-		if(active == null) {
+		if (active == null) {
 			applyActiveFilter = false;
 			active = Boolean.TRUE;
 		}
 		programDbId = null == programDbId ? "" : programDbId;
 		locationDbId = null == locationDbId ? "" : locationDbId;
-		
-		Page<TrialEntity> trialsPage = trialRepository.findBySearch(programDbId, locationDbId, applyActiveFilter, active, pageReq);
 
-		List<TrialSummary> summaries = trialsPage.map(this::convertFromEntity).getContent();
+		Page<TrialEntity> trialsPage = trialRepository.findBySearch(programDbId, locationDbId, applyActiveFilter,
+				active, pageReq);
+
+		List<TrialSummary> summaries = trialsPage.map(this::convertFromEntityToSummary).getContent();
 
 		PagingUtility.calculateMetaData(metaData, trialsPage);
 		return summaries;
@@ -55,15 +58,15 @@ public class TrialService {
 		switch (sortOrder) {
 		case "desc":
 		case "DESC":
-			sortOrder = "desc";			
+			sortOrder = "desc";
 			break;
 		case "asc":
 		case "ASC":
 		default:
-			sortOrder = "asc";			
+			sortOrder = "asc";
 			break;
 		}
-		
+
 		sortBy = null == sortBy ? "id" : sortBy;
 		switch (sortBy) {
 		case "startDate":
@@ -84,54 +87,60 @@ public class TrialService {
 			sortBy = "id";
 			break;
 		}
-		
+
 		return Sort.by(Direction.fromString(sortOrder), sortBy);
 	}
 
 	public Trial getTrialSummary(String trialDbId) {
 		Optional<TrialEntity> entityOption = trialRepository.findById(trialDbId);
 		if (entityOption.isPresent()) {
-			TrialEntity entity = entityOption.get();
-			// TODO should use the same return object and convertFromEntity()
-
-			Trial summary = new Trial();
-			summary.setActive(entity.isActive());
-			summary.setEndDate(DateUtility.toLocalDate(entity.getEndDate()));
-			summary.setProgramDbId(entity.getProgram().getId());
-			summary.setProgramName(entity.getProgram().getName());
-			summary.setStartDate(DateUtility.toLocalDate(entity.getStartDate()));
-			summary.setTrialDbId(entity.getId());
-			summary.setTrialName(entity.getTrialName());
-
-			summary.setDatasetAuthorship(new TrialDatasetAuthorship());
-			summary.getDatasetAuthorship().setDatasetPUI(entity.getDatasetPUI());
-			summary.getDatasetAuthorship().setLicense(entity.getDatasetLicence());
-
-			summary.setContacts(entity.getContacts().stream().map(this.contactService::convertFromEntity)
-					.collect(Collectors.toList()));
-
-			summary.setStudies(entity.getStudies().stream().map((e) -> {
-				TrialStudies id = new TrialStudies();
-				id.setLocationDbId(e.getLocation().getId());
-				id.setLocationName(e.getLocation().getName());
-				id.setStudyDbId(e.getId());
-				id.setStudyName(e.getStudyName());
-				return id;
-			}).collect(Collectors.toList()));
-
-			summary.setAdditionalInfo(new HashMap<>());
-			for (TrialAdditionalInfoEntity e : entity.getAdditionalInfo()) {
-				summary.getAdditionalInfo().put(e.getKey(), e.getValue());
-			}
-
-			return summary;
+			return convertFromEntity(entityOption.get());
 		}
 		return null;
 	}
 
-	private TrialSummary convertFromEntity(TrialEntity entity) {
+	private Trial convertFromEntity(TrialEntity entity) {
+		Trial trial = new Trial();
+		trial.setActive(entity.isActive());
+		trial.setCommonCropName(entity.getProgram().getCrop().getCropName());
+		trial.setDocumentationURL(entity.getDocumentationURL());
+		trial.setEndDate(DateUtility.toLocalDate(entity.getEndDate()));
+		trial.setProgramDbId(entity.getProgram().getId());
+		trial.setProgramName(entity.getProgram().getName());
+		trial.setStartDate(DateUtility.toLocalDate(entity.getStartDate()));
+		trial.setTrialDbId(entity.getId());
+		trial.setTrialName(entity.getTrialName());
+
+		trial.setDatasetAuthorship(
+				new TrialDatasetAuthorship().datasetPUI(entity.getDatasetPUI()).license(entity.getDatasetLicence()));
+		trial.addDatasetAuthorshipsItem(
+				new TrialDatasetAuthorships().datasetPUI(entity.getDatasetPUI()).license(entity.getDatasetLicence()));
+		trial.addPublicationsItem(new TrialPublications().publicationPUI(entity.getDatasetPUI()).publicationReference(entity.getDocumentationURL()));
+		trial.setContacts(
+				entity.getContacts().stream().map(this.contactService::convertFromEntity).collect(Collectors.toList()));
+
+		trial.setStudies(entity.getStudies().stream().map((e) -> {
+			TrialStudies id = new TrialStudies();
+			id.setLocationDbId(e.getLocation().getId());
+			id.setLocationName(e.getLocation().getName());
+			id.setStudyDbId(e.getId());
+			id.setStudyName(e.getStudyName());
+			return id;
+		}).collect(Collectors.toList()));
+
+		trial.setAdditionalInfo(new HashMap<>());
+		for (TrialAdditionalInfoEntity e : entity.getAdditionalInfo()) {
+			trial.getAdditionalInfo().put(e.getKey(), e.getValue());
+		}
+
+		return trial;
+	}
+
+	private TrialSummary convertFromEntityToSummary(TrialEntity entity) {
 		TrialSummary summary = new TrialSummary();
 		summary.setActive(entity.isActive());
+		summary.setCommonCropName(entity.getProgram().getCrop().getCropName());
+		summary.setDocumentationURL(entity.getDocumentationURL());
 		summary.setEndDate(DateUtility.toLocalDate(entity.getEndDate()));
 		summary.setProgramDbId(entity.getProgram().getId());
 		summary.setProgramName(entity.getProgram().getName());

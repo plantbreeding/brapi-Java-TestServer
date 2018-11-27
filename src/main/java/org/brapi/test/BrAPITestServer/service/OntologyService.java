@@ -267,7 +267,7 @@ public class OntologyService {
 		entity.setValidValueCategories(scale.getValidValues().getCategories().stream().map((categoryString) -> {
 			ScaleValidValueCategoryEntity e = new ScaleValidValueCategoryEntity();
 			e.setCategory(categoryString);
-			e.setScaleDbId(entity.getId());
+			e.setScale(entity);
 			return e;
 		}).collect(Collectors.toList()));
 
@@ -286,7 +286,7 @@ public class OntologyService {
 		entity.setAlternativeAbbreviations(trait.getAlternativeAbbreviations().stream().map((aa) -> {
 			TraitAbbreviationEntity e = new TraitAbbreviationEntity();
 			e.setAbbreviation(aa);
-			e.setTraitDbId(entity.getId());
+			e.setTrait(entity);
 			return e;
 		}).collect(Collectors.toList()));
 		entity.setAttribute(trait.getAttribute());
@@ -298,7 +298,7 @@ public class OntologyService {
 		entity.setSynonyms(trait.getSynonyms().stream().map(syn -> {
 			TraitSynonymEntity e = new TraitSynonymEntity();
 			e.setSynonym(syn);
-			e.setTraitDbId(entity.getId());
+			e.setTrait(entity);
 			return e;
 		}).collect(Collectors.toList()));
 		entity.setTraitClass(trait.getPropertyClass());

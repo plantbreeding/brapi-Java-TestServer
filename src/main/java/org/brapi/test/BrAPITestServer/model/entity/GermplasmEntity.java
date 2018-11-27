@@ -77,6 +77,10 @@ public class GermplasmEntity extends BaseEntity{
 	
 	@OneToMany(mappedBy="germplasm")
 	private List<ObservationUnitEntity> observationUnits;
+	
+	@ManyToMany
+	@JoinTable
+	private List<SearchRequestEntity> searchResults;
 
 	public String getDocumentationURL() {
 		return documentationURL;

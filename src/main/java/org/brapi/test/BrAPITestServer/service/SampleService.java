@@ -3,8 +3,10 @@ package org.brapi.test.BrAPITestServer.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.PlateEntity;
+import org.brapi.test.BrAPITestServer.model.entity.ProgramEntity;
 import org.brapi.test.BrAPITestServer.model.entity.SampleEntity;
 import org.brapi.test.BrAPITestServer.repository.ObservationUnitRepository;
 import org.brapi.test.BrAPITestServer.repository.PlateRepository;
@@ -16,21 +18,26 @@ import org.springframework.stereotype.Service;
 
 import io.swagger.model.Metadata;
 import io.swagger.model.NewSampleDbIdResult;
+import io.swagger.model.Program;
+import io.swagger.model.ProgramsSearchRequest;
 import io.swagger.model.Sample;
+import io.swagger.model.SampleSearchRequest;
 import io.swagger.model.SampleSearchRequestDep;
 
 @Service
 public class SampleService {
 	private SampleRepository sampleRepository;
 	private ObservationUnitRepository observationUnitRepository;
+	private SearchService searchService;
 	private PlateRepository plateRepository;
 
 	@Autowired
 	public SampleService(SampleRepository sampleRepository, ObservationUnitRepository observationUnitRepository,
-			PlateRepository plateRepository) {
+			PlateRepository plateRepository, SearchService searchService) {
 		this.sampleRepository = sampleRepository;
 		this.observationUnitRepository = observationUnitRepository;
 		this.plateRepository = plateRepository;
+		this.searchService = searchService;
 	}
 
 	public NewSampleDbIdResult saveSample(Sample sample) {
@@ -117,28 +124,54 @@ public class SampleService {
 
 	public List<Sample> getSampleSearch(String sampleDbId, String observationUnitDbId, String plateDbId,
 			String germplasmDbId, Metadata metaData) {
-		return searchSamples(SearchUtility.buildSearchParam(sampleDbId),
-				SearchUtility.buildSearchParam(observationUnitDbId), SearchUtility.buildSearchParam(plateDbId),
-				SearchUtility.buildSearchParam(germplasmDbId), metaData);
+		SampleSearchRequestDep request = new SampleSearchRequestDep();
+		if(sampleDbId != null) {
+			request.addSampleDbIdItem(sampleDbId);
+		}
+		if(observationUnitDbId != null) {
+			request.addObservationUnitDbIdItem(observationUnitDbId);
+		}
+		if(plateDbId != null) {
+			request.addPlateDbIdItem(plateDbId);
+		}
+		if(germplasmDbId != null) {
+			request.addGermplasmDbIdItem(germplasmDbId);
+		}
+		
+		return searchSamples(request, metaData);
 	}
 
 	public List<Sample> getSampleSearch(SampleSearchRequestDep request, Metadata metaData) {
-		return searchSamples(SearchUtility.buildSearchParam(request.getSampleDbId()),
-				SearchUtility.buildSearchParam(request.getObservationUnitDbId()),
-				SearchUtility.buildSearchParam(request.getPlateDbId()),
-				SearchUtility.buildSearchParam(request.getGermplasmDbId()), metaData);
+		return searchSamples(request, metaData);
 	}
 
-	private List<Sample> searchSamples(List<String> sampleDbIds, List<String> observationUnitDbIds,
-			List<String> plateDbIds, List<String> germplasmDbIds, Metadata metaData) {
+	private List<Sample> searchSamples(SampleSearchRequestDep request, Metadata metaData) {
 
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-		Page<SampleEntity> entitiesPage = sampleRepository.findBySearch(sampleDbIds, observationUnitDbIds, plateDbIds,
-				germplasmDbIds, pageReq);
+		Page<SampleEntity> entitiesPage = sampleRepository.findBySearch(request, pageReq);
 
 		PagingUtility.calculateMetaData(metaData, entitiesPage);
 
 		return entitiesPage.map(this::convertFromEntity).getContent();
+	}
+
+	public List<Sample> searchBySearchRequestDbId(String searchResultsDbId, Metadata metadata) throws BrAPIServerException {
+		Pageable pageReq = PagingUtility.getPageRequest(metadata);
+		SampleSearchRequest request = searchService.findById(searchResultsDbId).getParameters(SampleSearchRequest.class);
+		SampleSearchRequestDep depRequest = convertRequest(request);
+		Page<SampleEntity> page = sampleRepository.findBySearch(depRequest, pageReq);
+		List<Sample> samples = page.map(this::convertFromEntity).getContent();
+		PagingUtility.calculateMetaData(metadata, page);
+		return samples;
+	}
+
+	private SampleSearchRequestDep convertRequest(SampleSearchRequest request) {
+		SampleSearchRequestDep req = new SampleSearchRequestDep();
+		req.setGermplasmDbId(request.getGermplasmDbIds());
+		req.setObservationUnitDbId(request.getObservationUnitDbIds());
+		req.setPlateDbId(request.getPlateDbIds());
+		req.setSampleDbId(request.getSampleDbIds());
+		return req;
 	}
 
 }

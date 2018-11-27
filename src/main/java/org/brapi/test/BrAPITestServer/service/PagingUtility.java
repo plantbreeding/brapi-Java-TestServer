@@ -11,7 +11,7 @@ public class PagingUtility {
 	public static void calculateMetaData(Metadata metaData) {
 		int totalCount = metaData.getPagination().getTotalCount();
 		int pageSize = metaData.getPagination().getPageSize();
-		metaData.getPagination().setTotalPages(totalCount / pageSize);
+		metaData.getPagination().setTotalPages((totalCount / pageSize) + 1);
 	}
 
 	public static Pageable getPageRequest(Metadata metaData) {

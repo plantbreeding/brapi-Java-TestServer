@@ -27,7 +27,7 @@ public class ScaleEntity extends BaseEntity implements OntologyInterface{
 	private Integer validValueMin;
 	@Column
 	private Integer validValueMax;
-	@OneToMany(mappedBy="scaleDbId")
+	@OneToMany(mappedBy="scale", cascade = CascadeType.ALL)
 	private List<ScaleValidValueCategoryEntity> validValueCategories;
 	
 	@OneToMany(mappedBy="scale", cascade = CascadeType.DETACH)

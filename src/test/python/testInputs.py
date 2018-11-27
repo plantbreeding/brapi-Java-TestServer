@@ -24,7 +24,7 @@ def replaceIDs(url):
 	newURL = newURL.replace('{markerDbId}', 'mr02')
 	newURL = newURL.replace('{markerProfileDbId}', 'P1')
 	newURL = newURL.replace('{linkageGroupName}', '1')
-	newURL = newURL.replace('{sampleDbId}', 'sam1')
+	newURL = newURL.replace('{sampleDbId}', 'sam01')
 	newURL = newURL.replace('{vendorPlateDbId}', 'pl1')
 	newURL = newURL.replace('{imageDbId}', 'img1')
 	newURL = newURL.replace('{listDbId}', 'list1')
@@ -32,6 +32,7 @@ def replaceIDs(url):
 	newURL = newURL.replace('{methodDbId}', 'm1')
 	newURL = newURL.replace('{scaleDbId}', 's1')
 	newURL = newURL.replace('{traitDbId}', 't1')
+	newURL = newURL.replace('{searchResultsDbId}', 'search01')
 	return newURL
 
 
@@ -137,6 +138,116 @@ def postParams(path):
 				  "phoneNumber": "string",
 				  "userID": "string"
 				}
+	elif path == '/methods':
+		params = {
+				  "class": "string",
+				  "description": "string",
+				  "formula": "string",
+				  "methodName": "string",
+				  "ontologyRefernce": {
+				    "documentationLinks": [
+				      {
+				        "URL": "string",
+				        "type": "OBO"
+				      }
+				    ],
+				    "ontologyDbId": "MO_123",
+				    "ontologyName": "string",
+				    "version": "string"
+				  },
+				  "reference": "string"
+				}
+	elif path == '/scales':
+		params = {
+				  "dataType": "Code",
+				  "decimalPlaces": 0,
+				  "ontologyRefernce": {
+				    "documentationLinks": [
+				      {
+				        "URL": "string",
+				        "type": "OBO"
+				      }
+				    ],
+				    "ontologyDbId": "MO_123",
+				    "ontologyName": "string",
+				    "version": "string"
+				  },
+				  "scaleName": "string",
+				  "validValues": {
+				    "categories": [
+				      "string"
+				    ],
+				    "max": 0,
+				    "min": 0
+				  },
+				  "xref": "string"
+				}
+	elif path == '/traits':
+		params = {
+				  "alternativeAbbreviations": [
+				    "string"
+				  ],
+				  "attribute": "string",
+				  "class": "string",
+				  "description": "string",
+				  "entity": "string",
+				  "mainAbbreviation": "string",
+				  "ontologyRefernce": {
+				    "documentationLinks": [
+				      {
+				        "URL": "string",
+				        "type": "OBO"
+				      }
+				    ],
+				    "ontologyDbId": "MO_123",
+				    "ontologyName": "string",
+				    "version": "string"
+				  },
+				  "status": "string",
+				  "synonyms": [
+				    "string"
+				  ],
+				  "traitName": "string",
+				  "xref": "string"
+				}
+	elif path == '/studies/{studyDbId}/observationunits':
+		params = {
+				  "metadata": {},
+				  "result": {
+				    "commit": "string",
+				    "data": [
+				      {
+				        "observatioUnitDbId": "1",
+				        "observations": [
+				          {
+				            "collector": "string",
+				            "observationDbId": "1",
+				            "observationTimeStamp": "2018-11-26T22:07:58.096Z",
+				            "observationUnitDbId": "1",
+				            "observationVariableDbId": "MO_123:100002",
+				            "value": "string"
+				          }
+				        ],
+				        "studyDbId": 1001
+				      }
+				    ],
+				    "transactionDbId": "string"
+				  }
+				}
+	elif path == '/studies/{studyDbId}/table':
+		params = {
+				  "data": [
+				    [
+				      "1", "2", "3"
+				    ]
+				  ],
+				  "headerRow": [
+				    "blockNumber", "plotNumber"
+				  ],
+				  "observationVariableDbIds": [
+				    "MO_123:100002"
+				  ]
+				}
 		 
 	return params
 
@@ -159,21 +270,73 @@ def putParams(path):
 		  "takenBy": "string",
 		  "tissueType": "string"
 		}
-	elif path == '/studies/{studyDbId}/layout':
-		params = {
-		  "layout": [
-		    {
-		      "X": 10,
-		      "Y": 12,
-		      "blockNumber": 0,
-		      "entryType": "CHECK",
-		      "observationUnitDbId": "1",
-		      "replicate": 0
-		    }
-		  ]
-		}
 	elif path == '/studies/{studyDbId}/observationunits':
-		params = [{}]
+		params = [
+				  {
+				    "blockNumber": "string",
+				    "entryNumber": "string",
+				    "entryType": "string",
+				    "germplasmDbId": "2",
+				    "observationLevel": "string",
+				    "observationUnitDbId": "1",
+				    "observationUnitName": "string",
+				    "observationUnitXref": [
+				      {
+				        "id": "string",
+				        "source": "string"
+				      }
+				    ],
+				    "observations": [
+				      {
+				        "germplasmDbId": "2",
+				        "germplasmName": "string",
+				        "observationDbId": "1",
+				        "observationLevel": "string",
+				        "observationTimeStamp": "2018-11-26T22:39:48.919Z",
+				        "observationUnitDbId": "1",
+				        "observationUnitName": "string",
+				        "observationVariableDbId": "MO_123:100005",
+				        "observationVariableName": "string",
+				        "operator": "string",
+				        "season": {
+				          "season": "string",
+				          "seasonDbId": "1",
+				          "year": "string"
+				        },
+				        "studyDbId": "1001",
+				        "uploadedBy": "string",
+				        "value": "string"
+				      }
+				    ],
+				    "plantNumber": "string",
+				    "plotNumber": "string",
+				    "positionCoordinateX": "string",
+				    "positionCoordinateXType": "LONGITUDE",
+				    "positionCoordinateY": "string",
+				    "positionCoordinateYType": "LONGITUDE",
+				    "replicate": "string",
+				    "studyDbId": "1001",
+				    "treatments": [
+				      {
+				        "factor": "string",
+				        "modality": "string"
+				      }
+				    ]
+				  }
+				]
+	elif path == '/studies/{studyDbId}/observations':
+		params = {
+				  "observations": [
+				    {
+				      "collector": "string",
+				      "observationDbId": "5",
+				      "observationTimeStamp": "2018-11-26T20:56:29.814Z",
+				      "observationUnitDbId": "1",
+				      "observationVariableDbId": "MO_123:100002",
+				      "value": "string"
+				    }
+				  ]
+				}
 	elif path == '/images/{imageDbId}':
 		params = {
 				  "copyright": "Copyright 2019",
@@ -224,6 +387,96 @@ def putParams(path):
 				  "phoneNumber": "string",
 				  "userID": "string"
 				}
+	elif path == '/methods/{methodDbId}':
+		params = {
+				  "class": "string",
+				  "description": "string",
+				  "formula": "string",
+				  "methodName": "string",
+				  "ontologyRefernce": {
+				    "documentationLinks": [
+				      {
+				        "URL": "string",
+				        "type": "OBO"
+				      }
+				    ],
+				    "ontologyDbId": "MO_123",
+				    "ontologyName": "string",
+				    "version": "string"
+				  },
+				  "reference": "string"
+				}
+	elif path == '/scales/{scaleDbId}':
+		params = {
+				  "dataType": "Code",
+				  "decimalPlaces": 0,
+				  "ontologyRefernce": {
+				    "documentationLinks": [
+				      {
+				        "URL": "string",
+				        "type": "OBO"
+				      }
+				    ],
+				    "ontologyDbId": "MO_123",
+				    "ontologyName": "string",
+				    "version": "string"
+				  },
+				  "scaleName": "string",
+				  "validValues": {
+				    "categories": [
+				      "string"
+				    ],
+				    "max": 0,
+				    "min": 0
+				  },
+				  "xref": "string"
+				}
+	elif path == '/traits/{traitDbId}':
+		params = {
+				  "alternativeAbbreviations": [
+				    "string"
+				  ],
+				  "attribute": "string",
+				  "class": "string",
+				  "description": "string",
+				  "entity": "string",
+				  "mainAbbreviation": "string",
+				  "ontologyRefernce": {
+				    "documentationLinks": [
+				      {
+				        "URL": "string",
+				        "type": "OBO"
+				      }
+				    ],
+				    "ontologyDbId": "MO_123",
+				    "ontologyName": "string",
+				    "version": "string"
+				  },
+				  "status": "string",
+				  "synonyms": [
+				    "string"
+				  ],
+				  "traitName": "string",
+				  "xref": "string"
+				}
+	elif path == '/studies/{studyDbId}/layouts' or path == '/studies/{studyDbId}/layout':
+		params = {
+					"layout": [
+				    {
+				      "blockNumber": 0,
+				      "entryType": "CHECK",
+				      "observationUnitDbId": "2",
+				      "X": "1",
+				      "Y": "1",
+				      "positionCoordinateX": "1",
+				      "positionCoordinateXType": "LONGITUDE",
+				      "positionCoordinateY": "1",
+				      "positionCoordinateYType": "LONGITUDE",
+				      "replicate": 0
+				    }
+				  ]
+				}
+				
 		
 	return params
 

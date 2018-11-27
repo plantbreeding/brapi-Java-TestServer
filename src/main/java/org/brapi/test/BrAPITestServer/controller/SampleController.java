@@ -67,19 +67,10 @@ public class SampleController extends BrAPIController implements SamplesApi, Sam
 	public ResponseEntity<SamplesResponse> samplesSearchGet(@Valid String sampleDbId, @Valid String observationUnitDbId,
 			@Valid String plateDbId, @Valid String germplasmDbId, @Valid Integer pageSize, @Valid Integer page)
 			throws BrAPIServerException {
-
-		Metadata metaData = generateMetaDataTemplate(page, pageSize);
-		List<Sample> data = sampleService.getSampleSearch(sampleDbId, observationUnitDbId, plateDbId, germplasmDbId,
-				metaData);
-
-		SamplesResponseResult result = new SamplesResponseResult();
-		result.setData(data);
-		SamplesResponse response = new SamplesResponse();
-		response.setMetadata(metaData);
-		response.setResult(result);
-		return new ResponseEntity<SamplesResponse>(response, HttpStatus.OK);
+		return samplesGet(sampleDbId, observationUnitDbId, plateDbId, germplasmDbId, page, pageSize, null);
 	}
 
+	@Deprecated
 	@CrossOrigin
 	@Override
 	public ResponseEntity<SamplesResponse> samplesSearchPost(@Valid @RequestBody SampleSearchRequestDep request)
@@ -100,7 +91,15 @@ public class SampleController extends BrAPIController implements SamplesApi, Sam
 	public ResponseEntity<SamplesResponse> samplesGet(@Valid String sampleDbId, @Valid String observationUnitDbId,
 			@Valid String plateDbId, @Valid String germplasmDbId, @Valid Integer page, @Valid Integer pageSize,
 			String authorization) throws BrAPIServerException {
-		// TODO Auto-generated method stub
-		return null;
+		Metadata metaData = generateMetaDataTemplate(page, pageSize);
+		List<Sample> data = sampleService.getSampleSearch(sampleDbId, observationUnitDbId, plateDbId, germplasmDbId,
+				metaData);
+
+		SamplesResponseResult result = new SamplesResponseResult();
+		result.setData(data);
+		SamplesResponse response = new SamplesResponse();
+		response.setMetadata(metaData);
+		response.setResult(result);
+		return new ResponseEntity<SamplesResponse>(response, HttpStatus.OK);
 	}
 }

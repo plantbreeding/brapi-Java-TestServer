@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.math.NumberUtils;
+import org.brapi.test.BrAPITestServer.model.entity.MarkerEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationVariableEntity;
@@ -24,10 +25,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.threeten.bp.OffsetDateTime;
 
+import io.swagger.model.Marker;
+import io.swagger.model.MarkersSearchRequest;
 import io.swagger.model.Metadata;
 import io.swagger.model.NewObservationDbIdsObservations;
+import io.swagger.model.Observation;
+import io.swagger.model.ObservationSummary;
 import io.swagger.model.ObservationSummaryPhenotype;
 import io.swagger.model.ObservationTreatment;
+import io.swagger.model.ObservationUnit;
+import io.swagger.model.ObservationUnit.PositionCoordinateXTypeEnum;
+import io.swagger.model.ObservationUnit.PositionCoordinateYTypeEnum;
 import io.swagger.model.ObservationUnitPhenotype;
 import io.swagger.model.ObservationUnitXref;
 import io.swagger.model.ObservationUnitsTableResponse;
@@ -35,6 +43,8 @@ import io.swagger.model.PhenotypesRequest;
 import io.swagger.model.PhenotypesRequestData;
 import io.swagger.model.PhenotypesRequestObservation;
 import io.swagger.model.PhenotypesSearchRequest;
+import io.swagger.model.Season;
+import io.swagger.model.WSMIMEDataTypes;
 
 @Service
 public class PhenotypeService {
@@ -42,15 +52,17 @@ public class PhenotypeService {
 	private ObservationUnitRepository observationUnitRepository;
 	private ObservationRepository observationRepository;
 	private ObservationVariableRepository observationVariableRepository;
+	private SearchService searchService;
 	private SeasonRepository seasonRepository;
 
 	public PhenotypeService(ObservationUnitRepository observationUnitRepository,
 			ObservationRepository observationRepository, ObservationVariableRepository observationVariableRepository,
-			SeasonRepository seasonRepository) {
+			SeasonRepository seasonRepository, SearchService searchService) {
 		this.observationUnitRepository = observationUnitRepository;
 		this.observationRepository = observationRepository;
 		this.observationVariableRepository = observationVariableRepository;
 		this.seasonRepository = seasonRepository;
+		this.searchService = searchService;
 	}
 
 	public List<ObservationUnitPhenotype> getPhenotypes(PhenotypesSearchRequest request, Metadata metaData) {
@@ -68,13 +80,20 @@ public class PhenotypeService {
 		request.setObservationTimeStampRangeEnd(observationTimeStampRangeEnd);
 		request.setObservationTimeStampRangeStart(observationTimeStampRangeStart);
 
-		request.setGermplasmDbIds(SearchUtility.buildSearchParam(germplasmDbId));
-		request.setLocationDbIds(SearchUtility.buildSearchParam(locationDbId));
-		request.setObservationVariableDbIds(SearchUtility.buildSearchParam(observationVariableDbId));
-		request.setProgramDbIds(SearchUtility.buildSearchParam(programDbId));
-		request.setSeasonDbIds(SearchUtility.buildSearchParam(seasonDbId));
-		request.setStudyDbIds(SearchUtility.buildSearchParam(studyDbId));
-		request.setTrialDbIds(SearchUtility.buildSearchParam(trialDbId));
+		if (germplasmDbId != null)
+			request.addGermplasmDbIdsItem(germplasmDbId);
+		if (locationDbId != null)
+			request.addLocationDbIdsItem(locationDbId);
+		if (observationVariableDbId != null)
+			request.addObservationVariableDbIdsItem(observationVariableDbId);
+		if (programDbId != null)
+			request.addProgramDbIdsItem(programDbId);
+		if (seasonDbId != null)
+			request.addSeasonDbIdsItem(seasonDbId);
+		if (studyDbId != null)
+			request.addStudyDbIdsItem(studyDbId);
+		if (trialDbId != null)
+			request.addTrialDbIdsItem(trialDbId);
 
 		Page<ObservationUnitEntity> unitsPage = searchPhenotypes(request, metaData);
 		List<ObservationUnitPhenotype> phenotypes = unitsPage.map(this::convertFromEntity).getContent();
@@ -107,10 +126,6 @@ public class PhenotypeService {
 			ObservationUnitEntity unitEntity) {
 		Optional<ObservationVariableEntity> variableEntityOption = observationVariableRepository
 				.findById(observation.getObservationVariableDbId());
-		String[] seasonArr = observation.getSeason().split(" ", 2);
-		List<SeasonEntity> seasonEntityOption = seasonRepository
-				.findAllByYearAndSeason(NumberUtils.toInt(seasonArr[1]), seasonArr[0], PageRequest.of(0, 1))
-				.getContent();
 
 		ObservationEntity entity = new ObservationEntity();
 		entity.setCollector(observation.getCollector());
@@ -120,10 +135,21 @@ public class PhenotypeService {
 		if (variableEntityOption.isPresent()) {
 			entity.setObservationVariable(variableEntityOption.get());
 		}
-		if (seasonEntityOption.size() > 0) {
-			entity.setSeason(seasonEntityOption.get(0));
-		}
+		entity.setSeason(getSeasonFromString(observation.getSeason()));
+
 		return entity;
+	}
+
+	private SeasonEntity getSeasonFromString(String season) {
+		String[] seasonArr = season.split(" ", 2);
+		List<SeasonEntity> seasonEntityOption = seasonRepository
+				.findAllByYearAndSeason(NumberUtils.toInt(seasonArr[1]), seasonArr[0], PageRequest.of(0, 1))
+				.getContent();
+
+		if (seasonEntityOption.size() > 0) {
+			return seasonEntityOption.get(0);
+		}
+		return null;
 	}
 
 	public ObservationUnitsTableResponse getPhenotypesTable(@Valid PhenotypesSearchRequest request, Metadata metaData) {
@@ -136,7 +162,7 @@ public class PhenotypeService {
 		for (ObservationUnitEntity obsUnit : unitsPage) {
 			data.add(buildRecordArray(obsUnit, variables));
 		}
-		
+
 		response.setData(data);
 		response.setObservationVariableDbIds(variables.stream().map((var) -> {
 			return var.getId();
@@ -144,7 +170,7 @@ public class PhenotypeService {
 		response.setObservationVariableNames(variables.stream().map((var) -> {
 			return var.getName();
 		}).collect(Collectors.toList()));
-		
+
 		return response;
 	}
 
@@ -155,7 +181,7 @@ public class PhenotypeService {
 		List<ObservationVariableEntity> variables = getDistinctVariables(unitsPage.getContent());
 
 		responseBuilder.append(buildHeaderString(", ", variables));
-		
+
 		for (ObservationUnitEntity entity : unitsPage) {
 			responseBuilder.append(buildRowString(", ", variables, entity));
 		}
@@ -169,11 +195,11 @@ public class PhenotypeService {
 		List<ObservationVariableEntity> variables = getDistinctVariables(unitsPage.getContent());
 
 		responseBuilder.append(buildHeaderString("\t", variables));
-		
+
 		for (ObservationUnitEntity entity : unitsPage) {
 			responseBuilder.append(buildRowString("\t", variables, entity));
 		}
-		
+
 		return responseBuilder.toString();
 	}
 
@@ -192,28 +218,7 @@ public class PhenotypeService {
 	private Page<ObservationUnitEntity> searchPhenotypes(PhenotypesSearchRequest request, Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 
-		Page<ObservationUnitEntity> unitsPage;
-		if (request.getObservationTimeStampRangeStart() != null || request.getObservationTimeStampRangeEnd() != null) {
-			unitsPage = observationUnitRepository.findBySearch_byDate(
-					SearchUtility.buildSearchParam(request.getGermplasmDbIds()),
-					SearchUtility.buildSearchParam(request.getObservationVariableDbIds()),
-					SearchUtility.buildSearchParam(request.getStudyDbIds()),
-					SearchUtility.buildSearchParam(request.getLocationDbIds()),
-					SearchUtility.buildSearchParam(request.getProgramDbIds()),
-					SearchUtility.buildSearchParam(request.getSeasonDbIds()),
-					SearchUtility.buildSearchParam(request.getObservationLevel()),
-					new Date(request.getObservationTimeStampRangeStart().toEpochSecond()),
-					new Date(request.getObservationTimeStampRangeEnd().toEpochSecond()), pageReq);
-		} else {
-			unitsPage = observationUnitRepository.findBySearch(
-					SearchUtility.buildSearchParam(request.getGermplasmDbIds()),
-					SearchUtility.buildSearchParam(request.getObservationVariableDbIds()),
-					SearchUtility.buildSearchParam(request.getStudyDbIds()),
-					SearchUtility.buildSearchParam(request.getLocationDbIds()),
-					SearchUtility.buildSearchParam(request.getProgramDbIds()),
-					SearchUtility.buildSearchParam(request.getSeasonDbIds()),
-					SearchUtility.buildSearchParam(request.getObservationLevel()), pageReq);
-		}
+		Page<ObservationUnitEntity> unitsPage = observationUnitRepository.findBySearch(request, pageReq);
 
 		PagingUtility.calculateMetaData(metaData, unitsPage);
 		return unitsPage;
@@ -224,8 +229,10 @@ public class PhenotypeService {
 		pheno.setBlockNumber(String.valueOf(entity.getBlockNumber()));
 		pheno.setEntryNumber(entity.getEntryNumber());
 		pheno.setEntryType(entity.getEntryType());
-		pheno.setGermplasmDbId(entity.getGermplasm().getId());
-		pheno.setGermplasmName(entity.getGermplasm().getGermplasmName());
+		if (entity.getGermplasm() != null) {
+			pheno.setGermplasmDbId(entity.getGermplasm().getId());
+			pheno.setGermplasmName(entity.getGermplasm().getGermplasmName());
+		}
 		pheno.setObservationUnitDbId(entity.getId());
 		pheno.setObservationUnitName(entity.getObservationUnitName());
 		pheno.setPlantNumber(String.valueOf(entity.getPlantNumber()));
@@ -275,10 +282,11 @@ public class PhenotypeService {
 		return pheno;
 	}
 
-	private String buildRowString(String separator, List<ObservationVariableEntity> variables, ObservationUnitEntity entity) {
+	private String buildRowString(String separator, List<ObservationVariableEntity> variables,
+			ObservationUnitEntity entity) {
 		List<String> rowArray = buildRecordArray(entity, variables);
 		StringBuilder row = new StringBuilder();
-		
+
 		for (String obsVal : rowArray) {
 			row.append("\"" + obsVal + "\"" + separator);
 		}
@@ -326,14 +334,18 @@ public class PhenotypeService {
 
 	private List<String> buildRecordArray(ObservationUnitEntity unit, List<ObservationVariableEntity> variables) {
 		List<String> row = new ArrayList<>();
-		SimpleDateFormat sdf = new SimpleDateFormat("YYYY");
-		row.add(sdf.format(unit.getStudy().getStartDate()));
-		row.add(unit.getStudy().getId());
-		row.add(unit.getStudy().getStudyName());
-		row.add(unit.getStudy().getLocation().getId());
-		row.add(unit.getStudy().getLocation().getName());
-		row.add(unit.getGermplasm().getId());
-		row.add(unit.getGermplasm().getGermplasmName());
+		if (unit.getStudy() != null) {
+			SimpleDateFormat sdf = new SimpleDateFormat("YYYY");
+			row.add(sdf.format(unit.getStudy().getStartDate()));
+			row.add(unit.getStudy().getId());
+			row.add(unit.getStudy().getStudyName());
+			row.add(unit.getStudy().getLocation().getId());
+			row.add(unit.getStudy().getLocation().getName());
+		}
+		if (unit.getGermplasm() != null) {
+			row.add(unit.getGermplasm().getId());
+			row.add(unit.getGermplasm().getGermplasmName());
+		}
 		row.add(unit.getId());
 		row.add(unit.getPlotNumber().toString());
 		row.add(unit.getReplicate());
@@ -358,4 +370,55 @@ public class PhenotypeService {
 		return row;
 	}
 
+	public ObservationUnit convertUnit(ObservationUnitPhenotype pheno) {
+		ObservationUnit unit = new ObservationUnit();
+		unit.setBlockNumber(pheno.getBlockNumber());
+		unit.setEntryNumber(pheno.getEntryNumber());
+		unit.setEntryType(pheno.getEntryType());
+		unit.setGermplasmDbId(pheno.getGermplasmDbId());
+		unit.setGermplasmName(pheno.getGermplasmName());
+		unit.setLocationDbId(pheno.getStudyLocationDbId());
+		unit.setLocationName(pheno.getStudyLocation());
+		unit.setObservationLevel(pheno.getObservationLevel());
+		unit.setObservationLevels(pheno.getObservationLevels());
+		unit.setObservationUnitDbId(pheno.getObservationUnitDbId());
+		unit.setObservationUnitName(pheno.getObservationUnitName());
+		unit.setObservationUnitXref(pheno.getObservationUnitXref());
+		unit.setPlantNumber(pheno.getPlantNumber());
+		unit.setPedigree("");
+		unit.setPlotNumber(pheno.getPlotNumber());
+		unit.setPositionCoordinateX(pheno.getPositionCoordinateX());
+		if (pheno.getPositionCoordinateXType() != null)
+			unit.setPositionCoordinateXType(
+					PositionCoordinateXTypeEnum.fromValue(pheno.getPositionCoordinateXType().toString()));
+		unit.setPositionCoordinateY(pheno.getPositionCoordinateY());
+		if (pheno.getPositionCoordinateYType() != null)
+			unit.setPositionCoordinateYType(
+					PositionCoordinateYTypeEnum.fromValue(pheno.getPositionCoordinateYType().toString()));
+		unit.setProgramName(pheno.getProgramName());
+		unit.setReplicate(pheno.getReplicate());
+		unit.setStudyDbId(pheno.getStudyDbId());
+		unit.setStudyLocation(pheno.getStudyLocation());
+		unit.setStudyLocationDbId(pheno.getStudyLocationDbId());
+		unit.setStudyName(pheno.getStudyName());
+		unit.setTreatments(pheno.getTreatments());
+		unit.setX(pheno.getX());
+		unit.setY(pheno.getY());
+
+		unit.setObservations(pheno.getObservations().stream().map((op) -> {
+			ObservationSummary o = new ObservationSummary();
+			o.setCollector(op.getCollector());
+			o.setObservationDbId(op.getObservationDbId());
+			o.setObservationTimeStamp(op.getObservationTimeStamp());
+			o.setObservationVariableDbId(op.getObservationVariableDbId());
+			o.setObservationVariableName(op.getObservationVariableName());
+			o.setValue(op.getValue());
+			SeasonEntity season = getSeasonFromString(op.getSeason());
+			o.setSeason(new Season().season(season.getSeason()).seasonDbId(season.getId())
+					.year(season.getYear().toString()));
+			return o;
+		}).collect(Collectors.toList()));
+
+		return unit;
+	}
 }

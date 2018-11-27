@@ -13,7 +13,7 @@ import testInputs
 
 def testPath(schema, path, method):
 	url = baseURL + testInputs.replaceIDs(path)
-	headers = {'Authorization':'Bearer YYYY'}
+	headers = {'Authorization':'Bearer YYYY', 'Accept': 'application/json'}
 	if method == 'get':
 		params = testInputs.getParams(path)
 		res = requests.get(url, params, headers=headers)

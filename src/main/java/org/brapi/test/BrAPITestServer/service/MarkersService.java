@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.MarkerEntity;
 import org.brapi.test.BrAPITestServer.repository.MarkerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Marker;
+import io.swagger.model.MarkersSearchRequest;
 import io.swagger.model.MarkersSearchRequest.MatchMethodEnum;
 import io.swagger.model.Metadata;
 
@@ -19,82 +21,34 @@ import io.swagger.model.Metadata;
 public class MarkersService {
 
 	MarkerRepository markerRepository;
+	SearchService searchService;
 
 	@Autowired
-	public MarkersService(MarkerRepository markerRepository) {
+	public MarkersService(MarkerRepository markerRepository, SearchService searchService) {
 		this.markerRepository = markerRepository;
+		this.searchService = searchService;
+		
 	}
 
 	public List<Marker> getMarkers(String name, String type, List<String> markerDbIds, MatchMethodEnum matchMethod,
 			 Boolean includeSynonyms, Metadata metaData) {
-		boolean includeSynonym = includeSynonyms != null && includeSynonyms;
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 
-		boolean ignoreCase = MatchMethodEnum.EXACT != matchMethod;
-		String namePattern = generateNamePattern(name, matchMethod);
+		MarkersSearchRequest request = new MarkersSearchRequest();
+		if(name != null)
+			request.addMarkerNamesItem(name);
+		if(type != null)
+			request.addTypesItem(type);
+		request.setIncludeSynonyms(includeSynonyms);
+		request.setMarkerDbIds(markerDbIds);
+		request.setMatchMethod(matchMethod);
 
-		Page<MarkerEntity> entities = runAppropriateQuery(namePattern, type, markerDbIds, ignoreCase, includeSynonym,
-				pageReq);
+		Page<MarkerEntity> entities = markerRepository.findBySearch(request, pageReq);
 
-		List<Marker> markers = entities.map((entity) -> {
-			return convertFromEntity(entity, includeSynonym);
-		}).getContent();
+		List<Marker> markers = entities.map(m -> convertFromEntity(m, includeSynonyms)).getContent();
 
 		PagingUtility.calculateMetaData(metaData, entities);
 		return markers;
-	}
-
-	private Page<MarkerEntity> runAppropriateQuery(String namePattern, String type, List<String> markerDbIds,
-			boolean ignoreCase, boolean includeSynonyms, Pageable pageReq) {
-		Page<MarkerEntity> entities = null;
-		if (markerDbIds != null && !markerDbIds.isEmpty()) {
-			entities = markerRepository.findAllByIdIn(markerDbIds, pageReq);
-			//TODO: missing rare case when both name and ID list are used to search
-		} else {
-			if (namePattern != null && type != null) {
-				if (ignoreCase) {
-					entities = markerRepository
-							.findAllByMarkerNameLikeIgnoreCaseOrSynonyms_SynonymLikeIgnoreCaseAndType(namePattern,
-									namePattern, type, pageReq);
-				} else {
-					entities = markerRepository.findAllByMarkerNameOrSynonyms_SynonymAndType(namePattern, namePattern,
-							type, pageReq);
-				}
-			} else if (namePattern != null) {
-				if (ignoreCase) {
-					entities = markerRepository.findAllByMarkerNameLikeIgnoreCaseOrSynonyms_SynonymLikeIgnoreCase(
-							namePattern, namePattern, pageReq);
-				} else {
-					entities = markerRepository.findAllByMarkerNameOrSynonyms_Synonym(namePattern, namePattern,
-							pageReq);
-				}
-			} else if (type != null) {
-				entities = markerRepository.findAllByType(type, pageReq);
-			} else {
-				entities = markerRepository.findAll(pageReq);
-			}
-		}
-		return entities;
-	}
-
-	private String generateNamePattern(String name, MatchMethodEnum matchMethod) {
-		String namePattern;
-		if (name == null) {
-			namePattern = null;
-		} else {
-			namePattern = name;
-			switch (matchMethod) {
-			case WILDCARD:
-				namePattern = namePattern.replaceAll("[\\*\\%]", "%");
-				namePattern = namePattern.replaceAll("\\?", "_");
-				break;
-			case EXACT:
-			case CASE_INSENSITIVE:
-			default:
-				break;
-			}
-		}
-		return namePattern;
 	}
 
 	public Marker getMarker(String markerDbId) {
@@ -106,7 +60,7 @@ public class MarkersService {
 		return marker;
 	}
 
-	private Marker convertFromEntity(MarkerEntity markerEntity, boolean includeSynonyms) {
+	private Marker convertFromEntity(MarkerEntity markerEntity, Boolean includeSynonyms) {
 		Marker marker = new Marker();
 		marker.setDefaultDisplayName(markerEntity.getMarkerName());
 		marker.setMarkerName(markerEntity.getMarkerName());
@@ -117,12 +71,21 @@ public class MarkersService {
 		marker.setRefAlt(
 				markerEntity.getRefAlt().stream().map(entity -> entity.getReference()).collect(Collectors.toList()));
 
-		if (includeSynonyms) {
+		if (includeSynonyms == null || includeSynonyms) {
 			marker.setSynonyms(markerEntity.getSynonyms().stream().map(entity -> entity.getSynonym())
 					.collect(Collectors.toList()));
 		}
 
 		return marker;
+	}
+
+	public List<Marker> searchBySearchRequestDbId(String searchResultsDbId, Metadata metadata) throws BrAPIServerException {
+		Pageable pageReq = PagingUtility.getPageRequest(metadata);
+		MarkersSearchRequest request = searchService.findById(searchResultsDbId).getParameters(MarkersSearchRequest.class);
+		Page<MarkerEntity> page = markerRepository.findBySearch(request, pageReq);
+		PagingUtility.calculateMetaData(metadata, page);
+		List<Marker> markers = page.map(m -> convertFromEntity(m, request.isIncludeSynonyms())).getContent();
+		return markers;
 	}
 
 }

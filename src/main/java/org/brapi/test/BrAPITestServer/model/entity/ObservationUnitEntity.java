@@ -42,7 +42,7 @@ public class ObservationUnitEntity extends BaseEntity {
 	private GermplasmEntity germplasm;
 	@ManyToOne
 	private PedigreeEntity pedigree;
-	@OneToMany(mappedBy="observationUnit")
+	@OneToMany(mappedBy="observationUnit", cascade=CascadeType.ALL)
 	private List<ObservationEntity> observations;
 	@OneToMany(mappedBy="observationUnit")
 	private List<SampleEntity> samples;

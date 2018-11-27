@@ -37,11 +37,11 @@ INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_min, v
 INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_min, valid_value_max, ontology_id)	VALUES ('s2', 'Numerical', 3, 'Kilogram', 'xref', '0', '99999', 'MO_123');
 INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_min, valid_value_max, ontology_id)	VALUES ('s3', 'Nominal', 0, 'Color', 'xref', '0', '0', 'MO_123');
 INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_min, valid_value_max, ontology_id)	VALUES ('s4', 'Numerical', 0, 'Percentage', 'xref', '0', '100', 'MO_123');
-insert into scale_valid_value_category(id, scale_db_id, category) values ('color1', 's3', 'dark red');
-insert into scale_valid_value_category(id, scale_db_id, category) values ('color2', 's3', 'red');
-insert into scale_valid_value_category(id, scale_db_id, category) values ('color3', 's3', 'dark blue');
-insert into scale_valid_value_category(id, scale_db_id, category) values ('color4', 's3', 'blue');
-insert into scale_valid_value_category(id, scale_db_id, category) values ('color5', 's3', 'black');
+insert into scale_valid_value_category(id, scale_id, category) values ('color1', 's3', 'dark red');
+insert into scale_valid_value_category(id, scale_id, category) values ('color2', 's3', 'red');
+insert into scale_valid_value_category(id, scale_id, category) values ('color3', 's3', 'dark blue');
+insert into scale_valid_value_category(id, scale_id, category) values ('color4', 's3', 'blue');
+insert into scale_valid_value_category(id, scale_id, category) values ('color5', 's3', 'black');
 
 INSERT INTO method(id, description, formula, method_class, name, reference, ontology_id)	VALUES ('m1', 'Standard rolled measuring tape', 'a^2 + b^2 = c^2', 'Numeric', 'Tape Measure', 'google.com', 'MO_123');
 INSERT INTO method(id, description, formula, method_class, name, reference, ontology_id)	VALUES ('m2', 'Dried sample on electric scale', 'NA', 'Numeric', 'Dry Electric Scale', 'google.com', 'MO_123');
@@ -267,22 +267,22 @@ INSERT INTO contact (id, name, email, type, orcid, institute_name) VALUES ('2', 
 INSERT INTO contact (id, name, email, type, orcid, institute_name) VALUES ('3', 'A. Technician', 'a.technician@brapi.org', 'Technician', '0000-0002-0607-8731', 'Plant Science Institute');
 INSERT INTO contact (id, name, email, type, orcid, institute_name) VALUES ('4', 'B. Technician', 'b.technician@brapi.org', 'Technician', '0000-0002-0607-8732', 'Plant Science Institute');
 
-INSERT INTO program (crop_id, id, abbreviation, lead_person, objective, name) VALUES ('1', '1', 'P1', 'G. Leader', 'Global Population Improvement', 'Program 1');
-INSERT INTO program (crop_id, id, abbreviation, lead_person, objective, name) VALUES ('1', '2', 'P2', 'M. Breeder', 'XYZ', 'Program 2');
-INSERT INTO program (crop_id, id, abbreviation, lead_person, objective, name) VALUES ('1', '3', 'P3', 'W. Select', 'XYZ', 'Program 3');
-INSERT INTO program (crop_id, id, abbreviation, lead_person, objective, name) VALUES ('1', '4', 'P4', 'G. Gain', 'ABC', 'Program 4');
-INSERT INTO program (crop_id, id, abbreviation, lead_person, objective, name) VALUES ('1', '5', 'P5', 'C. Improvement', 'Processing', 'Program 5');
-INSERT INTO program (crop_id, id, abbreviation, lead_person, objective, name) VALUES ('1', '6', 'P6', 'A. Test', 'Demo', 'Program 6');
-	
-INSERT INTO trial (program_id, id, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('1', '101', 'Peru Yield Trial 1', '1/1/2013', '7/5/2013', false, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/312953986E3');
-INSERT INTO trial (program_id, id, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('1', '102', 'Peru Yield Trial 2', '6/1/2014', '1/15/2015', false, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/1234992349');
-INSERT INTO trial (program_id, id, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('2', '103', 'Ghana Genotype Trial 1', '5/1/2011', '12/15/2011', false, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/134591245');
-INSERT INTO trial (program_id, id, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('3', '104', 'Ghana Yield Trial 1', '7/1/2012', '2/1/2013', false, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/1235919');
-INSERT INTO trial (program_id, id, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('3', '105', 'Ghana Yield Trial 2', '8/15/2013', '2/28/2014', false, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/13425915');
-INSERT INTO trial (program_id, id, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('3', '106', 'Ghana Yield Trial 3', '9/22/2014', '3/21/2015', true, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/125512251');
-INSERT INTO trial (program_id, id, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('4', '107', 'Mozambique Yield Trial', '5/12/2011', '11/30/2011', false, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/34576437');
-INSERT INTO trial (program_id, id, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('4', '108', 'Mozambique Genotype Trial', '2/17/2012', '8/21/2012', false, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/34734756');
-INSERT INTO trial (program_id, id, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('6', '109', 'Demo Yield Trial', '3/24/2016', '10/21/2016', true, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/35673236');
+INSERT INTO program (crop_id, id, abbreviation, lead_person_id, documentationurl, objective, name) VALUES ('1', '1', 'P1', 'person1', 'https://brapi.org', 'Global Population Improvement', 'Program 1');
+INSERT INTO program (crop_id, id, abbreviation, lead_person_id, documentationurl, objective, name) VALUES ('1', '2', 'P2', 'person1', 'https://brapi.org', 'XYZ', 'Program 2');
+INSERT INTO program (crop_id, id, abbreviation, lead_person_id, documentationurl, objective, name) VALUES ('1', '3', 'P3', 'person1', 'https://brapi.org', 'XYZ', 'Program 3');
+INSERT INTO program (crop_id, id, abbreviation, lead_person_id, documentationurl, objective, name) VALUES ('1', '4', 'P4', 'person1', 'https://brapi.org', 'ABC', 'Program 4');
+INSERT INTO program (crop_id, id, abbreviation, lead_person_id, documentationurl, objective, name) VALUES ('1', '5', 'P5', 'person1', 'https://brapi.org', 'Processing', 'Program 5');
+INSERT INTO program (crop_id, id, abbreviation, lead_person_id, documentationurl, objective, name) VALUES ('1', '6', 'P6', 'person1', 'https://brapi.org', 'Demo', 'Program 6');
+
+INSERT INTO trial (program_id, id, documentationurl, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('1', '101', 'https://brapi.org', 'Peru Yield Trial 1', '1/1/2013', '7/5/2013', false, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/312953986E3');
+INSERT INTO trial (program_id, id, documentationurl, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('1', '102', 'https://brapi.org', 'Peru Yield Trial 2', '6/1/2014', '1/15/2015', false, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/1234992349');
+INSERT INTO trial (program_id, id, documentationurl, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('2', '103', 'https://brapi.org', 'Ghana Genotype Trial 1', '5/1/2011', '12/15/2011', false, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/134591245');
+INSERT INTO trial (program_id, id, documentationurl, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('3', '104', 'https://brapi.org', 'Ghana Yield Trial 1', '7/1/2012', '2/1/2013', false, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/1235919');
+INSERT INTO trial (program_id, id, documentationurl, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('3', '105', 'https://brapi.org', 'Ghana Yield Trial 2', '8/15/2013', '2/28/2014', false, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/13425915');
+INSERT INTO trial (program_id, id, documentationurl, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('3', '106', 'https://brapi.org', 'Ghana Yield Trial 3', '9/22/2014', '3/21/2015', true, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/125512251');
+INSERT INTO trial (program_id, id, documentationurl, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('4', '107', 'https://brapi.org', 'Mozambique Yield Trial', '5/12/2011', '11/30/2011', false, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/34576437');
+INSERT INTO trial (program_id, id, documentationurl, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('4', '108', 'https://brapi.org', 'Mozambique Genotype Trial', '2/17/2012', '8/21/2012', false, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/34734756');
+INSERT INTO trial (program_id, id, documentationurl, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('6', '109', 'https://brapi.org', 'Demo Yield Trial', '3/24/2016', '10/21/2016', true, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/35673236');
 
 INSERT INTO trial_contact (trial_db_id, contact_db_id) VALUES ('101', '4');
 INSERT INTO trial_contact (trial_db_id, contact_db_id) VALUES ('101', '3');
@@ -313,16 +313,16 @@ INSERT INTO study_type (id, name, description) VALUES ('1', 'Crossing Nursery', 
 INSERT INTO study_type (id, name, description) VALUES ('2', 'Yield study', 'Description for yield study type');
 INSERT INTO study_type (id, name, description) VALUES ('3', 'Genotype', 'Description for Genotyping study type');
 
-INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('101', '1', '2', '1001', 'Study 1', 'Field yield phenotyping study', '1/1/2013', '1/1/2014', true, 'https://creativecommons.org/licenses/by/4.0', '1.1', '01/01/15');
-INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('101', '1', '2', '1002', 'Study 2', 'Field yield phenotyping study', '1/1/2014', '1/1/2015', true, 'https://creativecommons.org/licenses/by/4.0', '2.3', '01/01/16');
-INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('102', '2', '1', '1003', 'Study 3', 'Nursery study description', '1/1/2011', '1/1/2012', false, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
-INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('103', '2', '1', '1004', 'Study 4', 'Nursery study description', '1/1/2011', '1/1/2012', true, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
-INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('104', '2', '1', '1005', 'Study 5', 'Bobs study description', '1/1/2011', '1/1/2012', false, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
-INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('105', '2', '1', '1006', 'Study 6', 'Daves study description', '1/1/2011', '1/1/2012', true, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
-INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('106', '2', '1', '1007', 'Study 7', 'Example study description', '1/1/2011', '1/1/2012', false, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
-INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('107', '2', '1', '1008', 'Study 8', 'Nursery study description', '1/1/2011', '1/1/2012', true, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
-INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('108', '2', '1', '1009', 'Study 9', 'Nursery study description', '1/1/2011', '1/1/2012', false, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
-INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('109', '2', '1', '1010', 'Study 10', 'Nursery study description', '1/1/2011', '1/1/2012', true, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
+INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, documentationurl, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('101', '1', '2', '1001', 'Study 1',  'https://brapi.org', 'Field yield phenotyping study', '1/1/2013', '1/1/2014', true, 'https://creativecommons.org/licenses/by/4.0', '1.1', '01/01/15');
+INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, documentationurl, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('101', '1', '2', '1002', 'Study 2',  'https://brapi.org', 'Field yield phenotyping study', '1/1/2014', '1/1/2015', true, 'https://creativecommons.org/licenses/by/4.0', '2.3', '01/01/16');
+INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, documentationurl, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('102', '2', '1', '1003', 'Study 3',  'https://brapi.org', 'Nursery study description', '1/1/2011', '1/1/2012', false, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
+INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, documentationurl, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('103', '2', '1', '1004', 'Study 4',  'https://brapi.org', 'Nursery study description', '1/1/2011', '1/1/2012', true, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
+INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, documentationurl, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('104', '2', '1', '1005', 'Study 5',  'https://brapi.org', 'Bobs study description', '1/1/2011', '1/1/2012', false, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
+INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, documentationurl, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('105', '2', '1', '1006', 'Study 6',  'https://brapi.org', 'Daves study description', '1/1/2011', '1/1/2012', true, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
+INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, documentationurl, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('106', '2', '1', '1007', 'Study 7',  'https://brapi.org', 'Example study description', '1/1/2011', '1/1/2012', false, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
+INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, documentationurl, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('107', '2', '1', '1008', 'Study 8',  'https://brapi.org', 'Nursery study description', '1/1/2011', '1/1/2012', true, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
+INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, documentationurl, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('108', '2', '1', '1009', 'Study 9',  'https://brapi.org', 'Nursery study description', '1/1/2011', '1/1/2012', false, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
+INSERT INTO study (trial_id, location_id, study_type_id, id, study_name, documentationurl, study_description, start_date, end_date, active, licence, version, "timestamp") VALUES ('109', '2', '1', '1010', 'Study 10', 'https://brapi.org',  'Nursery study description', '1/1/2011', '1/1/2012', true, 'https://creativecommons.org/licenses/by/4.0', '0.1', '01/01/14');
 
 INSERT INTO study_contact (study_db_id, contact_db_id) VALUES ('1001', '1');
 INSERT INTO study_contact (study_db_id, contact_db_id) VALUES ('1001', '2');
@@ -915,6 +915,13 @@ INSERT INTO list_item(id, item, list_id) VALUES ('item01', '1', 'list1');
 INSERT INTO list_item(id, item, list_id) VALUES ('item02', '2', 'list1');
 INSERT INTO list_item(id, item, list_id) VALUES ('item03', '3', 'list1');
 
+INSERT INTO search(id, request_type, parameters) VALUES ('search01', 0, '10');
+SELECT lo_create(10);
+BEGIN;
+SELECT pg_catalog.lo_open('10', 131072);
+SELECT pg_catalog.lowrite(0, '\x7b7d');
+SELECT pg_catalog.lo_close(0);
+COMMIT;
 
 INSERT INTO vendor_spec (id, additional_info, contact_name, vendor_address, vendor_city, vendor_country, vendor_description, vendor_email, vendor_name, vendor_phone, vendorurl) VALUES('1', NULL, 'Bob Smith', '123 Street Ave', 'Townsville', 'USA', 'Example vendor used for testing', 'bsmith@brapi.org', 'Bobs Vendor', '+12345678910', 'https://brapi.org');
 

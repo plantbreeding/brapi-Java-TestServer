@@ -28,6 +28,8 @@ public class TrialEntity extends BaseEntity{
 	private String datasetLicence;
 	@Column
 	private String datasetPUI;
+	@Column
+	private String documentationURL;
 	@ManyToOne
 	private ProgramEntity program;
 	@ManyToMany(cascade = CascadeType.ALL)
@@ -37,6 +39,14 @@ public class TrialEntity extends BaseEntity{
 	private List<StudyEntity> studies;
 	@OneToMany(mappedBy="trialDbId")
 	private List<TrialAdditionalInfoEntity> additionalInfo;
+
+	public String getDocumentationURL() {
+		return documentationURL;
+	}
+
+	public void setDocumentationURL(String documentationURL) {
+		this.documentationURL = documentationURL;
+	}
 
 	public String getDatasetLicence() {
 		return datasetLicence;

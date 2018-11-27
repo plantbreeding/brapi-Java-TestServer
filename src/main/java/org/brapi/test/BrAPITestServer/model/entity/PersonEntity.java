@@ -24,6 +24,12 @@ public class PersonEntity extends BaseEntity {
 	@Column
 	private String userID;
 
+	public String getName() {
+		return firstName + " " + lastName;
+	}
+	public String getFullName() {
+		return firstName + " " + middleName + " " + lastName;
+	}
 	public String getDescription() {
 		return description;
 	}

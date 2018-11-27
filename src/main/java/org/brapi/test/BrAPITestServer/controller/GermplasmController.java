@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.api.BreedingmethodsApi;
@@ -27,6 +28,7 @@ import io.swagger.model.Germplasm;
 import io.swagger.model.GermplasmAttribute;
 import io.swagger.model.GermplasmAttributeList;
 import io.swagger.model.GermplasmAttributeListResponse;
+import io.swagger.model.GermplasmMCPD;
 import io.swagger.model.GermplasmMCPDResponse;
 import io.swagger.model.GermplasmMarkerprofilesList;
 import io.swagger.model.GermplasmMarkerprofilesListResponse;
@@ -82,12 +84,18 @@ public class GermplasmController extends BrAPIController
 	@CrossOrigin
 	@Override
 	public ResponseEntity<GermplasmAttributeListResponse> germplasmGermplasmDbIdAttributesGet(@PathVariable("germplasmDbId") String germplasmDbId,
-			@Valid ArrayList<String> attributeDbIds, @Valid ArrayList<String> attributeList, @Valid Integer page,
-			@Valid Integer pageSize, String authorization) throws BrAPIServerException {
+			@Valid @RequestParam(value = "attributeDbIds", required = false) ArrayList<String> attributeDbIds, 
+			@Valid @RequestParam(value = "attributeList", required = false) ArrayList<String> attributeList, 
+			@Valid Integer page, @Valid Integer pageSize, String authorization) throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
+		List<String> attribs = new ArrayList<>();
+		if(attributeList != null)
+			attribs.addAll(attributeList);
+		if(attributeDbIds != null)
+			attribs.addAll(attributeDbIds);
 		List<GermplasmAttribute> data = germplasmAttributeService.getGermplasmAttributeValues(germplasmDbId,
-				attributeList, metaData);
+				attribs, metaData);
 
 		GermplasmAttributeList result = new GermplasmAttributeList();
 		result.setData(data);
@@ -125,8 +133,12 @@ public class GermplasmController extends BrAPIController
 	@Override
 	public ResponseEntity<GermplasmMCPDResponse> germplasmGermplasmDbIdMcpdGet(@PathVariable("germplasmDbId") String germplasmDbId,
 			String authorization) throws BrAPIServerException {
-		// TODO Auto-generated method stub
-		return null;
+		GermplasmMCPD result = germplasmService.searchMCPDByDbId(germplasmDbId);
+
+		GermplasmMCPDResponse response = new GermplasmMCPDResponse();
+		response.setMetadata(generateEmptyMetadata());
+		response.setResult(result);
+		return new ResponseEntity<GermplasmMCPDResponse>(response, HttpStatus.OK);
 	}
 
 	@CrossOrigin
@@ -187,9 +199,7 @@ public class GermplasmController extends BrAPIController
 			throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
-		List<Germplasm> data = germplasmService.search(request.getGermplasmDbIds(), request.getGermplasmGenus(),
-				request.getCommonCropNames(), request.getGermplasmNames(), request.getGermplasmPUIs(),
-				request.getGermplasmSpecies(), request.getAccessionNumbers(), metaData);
+		List<Germplasm> data = germplasmService.search(request, metaData);
 
 		GermplasmResponseResult result = new GermplasmResponseResult();
 		result.setData(data);

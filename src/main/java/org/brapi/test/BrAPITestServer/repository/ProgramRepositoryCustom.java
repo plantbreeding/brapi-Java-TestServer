@@ -9,6 +9,6 @@ import org.springframework.data.repository.query.Param;
 
 import io.swagger.model.ProgramsSearchRequest;
 
-public interface ProgramRepository extends PagingAndSortingRepository<ProgramEntity, String>, ProgramRepositoryCustom{
-
+public interface ProgramRepositoryCustom{
+	Page<ProgramEntity> findAllBySearch(ProgramsSearchRequest request, Pageable pageReq);
 }

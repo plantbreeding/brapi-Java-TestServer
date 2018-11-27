@@ -9,16 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
-public interface SampleRepository extends PagingAndSortingRepository<SampleEntity, String> {
-	@Query("select s from SampleEntity s "
-			+ "where ('' IN :sampleDbIds OR s.id IN :sampleDbIds) "
-			+ "AND ('' IN :observationUnitDbIds OR s.observationUnit.id IN :observationUnitDbIds) "
-			+ "AND ('' IN :plateDbIds OR s.plate.id IN :plateDbIds) "
-			+ "AND ('' IN :germplasmDbIds OR s.observationUnit.germplasm.id IN :germplasmDbIds) ")
-	Page<SampleEntity> findBySearch(
-			@Param("sampleDbIds") List<String> sampleDbIds, 
-			@Param("observationUnitDbIds")List<String> observationUnitDbIds,
-			@Param("plateDbIds")List<String> plateDbIds, 
-			@Param("germplasmDbIds")List<String> germplasmDbIds, Pageable pageReq);
+import io.swagger.model.SampleSearchRequest;
+
+public interface SampleRepository extends PagingAndSortingRepository<SampleEntity, String>, SampleRepositoryCustom {
 
 }

@@ -35,6 +35,8 @@ public class StudyEntity extends BaseEntity{
 	@Column
 	private String licence;
 	@Column
+	private String documentationURL;
+	@Column
 	private String version;
 	@Column
 	private Date timestamp;
@@ -54,6 +56,24 @@ public class StudyEntity extends BaseEntity{
 	@OneToMany(mappedBy="study")
 	private List<AlleleMatrixEntity> alleleMatricies;
 
+	public String getDocumentationURL() {
+		return documentationURL;
+	}
+	public void setDocumentationURL(String documentationURL) {
+		this.documentationURL = documentationURL;
+	}
+	public List<ObservationUnitEntity> getObservationUnits() {
+		return observationUnits;
+	}
+	public void setObservationUnits(List<ObservationUnitEntity> observationUnits) {
+		this.observationUnits = observationUnits;
+	}
+	public List<AlleleMatrixEntity> getAlleleMatricies() {
+		return alleleMatricies;
+	}
+	public void setAlleleMatricies(List<AlleleMatrixEntity> alleleMatricies) {
+		this.alleleMatricies = alleleMatricies;
+	}
 	public StudyTypeEntity getStudyType() {
 		return studyType;
 	}

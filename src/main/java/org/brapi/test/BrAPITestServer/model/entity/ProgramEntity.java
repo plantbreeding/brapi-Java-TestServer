@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,12 +19,38 @@ public class ProgramEntity extends BaseEntity{
 	@Column
 	private String objective;
 	@Column
-	private String leadPerson;
+	private String documentationURL;
+	@OneToOne
+	private PersonEntity leadPerson;
 	@ManyToOne
 	private CropEntity crop;
 	@OneToMany(mappedBy="program")
 	private List<TrialEntity> trials;
 
+	public String getDocumentationURL() {
+		return documentationURL;
+	}
+	public void setDocumentationURL(String documentationURL) {
+		this.documentationURL = documentationURL;
+	}
+	public PersonEntity getLeadPerson() {
+		return leadPerson;
+	}
+	public void setLeadPerson(PersonEntity leadPerson) {
+		this.leadPerson = leadPerson;
+	}
+	public CropEntity getCrop() {
+		return crop;
+	}
+	public void setCrop(CropEntity crop) {
+		this.crop = crop;
+	}
+	public List<TrialEntity> getTrials() {
+		return trials;
+	}
+	public void setTrials(List<TrialEntity> trials) {
+		this.trials = trials;
+	}
 	public String getName() {
 		return name;
 	}
@@ -41,11 +68,5 @@ public class ProgramEntity extends BaseEntity{
 	}
 	public void setObjective(String objective) {
 		this.objective = objective;
-	}
-	public String getLeadPerson() {
-		return leadPerson;
-	}
-	public void setLeadPerson(String leadPerson) {
-		this.leadPerson = leadPerson;
 	}
 }

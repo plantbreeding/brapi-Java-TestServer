@@ -32,9 +32,9 @@ public class TraitEntity extends BaseEntity implements OntologyInterface{
 	@Column
 	private String defaultValue;
 
-	@OneToMany(mappedBy = "traitDbId")
+	@OneToMany(mappedBy = "trait", cascade = CascadeType.ALL)
 	private List<TraitSynonymEntity> synonyms;
-	@OneToMany(mappedBy = "traitDbId")
+	@OneToMany(mappedBy = "trait", cascade = CascadeType.ALL)
 	private List<TraitAbbreviationEntity> alternativeAbbreviations;
 	@OneToMany(mappedBy = "trait")
 	private List<VariableBaseEntity> variables;

@@ -1,14 +1,18 @@
 package org.brapi.test.BrAPITestServer.repository;
 
-import org.brapi.test.BrAPITestServer.model.entity.ProgramEntity;
+import java.util.List;
+
+import org.brapi.test.BrAPITestServer.model.entity.GermplasmEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
-import io.swagger.model.ProgramsSearchRequest;
+import io.swagger.model.Germplasm;
+import io.swagger.model.GermplasmSearchRequest;
 
-public interface ProgramRepository extends PagingAndSortingRepository<ProgramEntity, String>, ProgramRepositoryCustom{
+public interface GermplasmRepositoryCustom{
+	Page<GermplasmEntity> findBySearch(GermplasmSearchRequest request, Pageable pageRequest);
 
 }

@@ -1,12 +1,5 @@
 package org.brapi.test.BrAPITestServer.service;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,22 +12,22 @@ import javax.validation.Valid;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.ImageEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
 import org.brapi.test.BrAPITestServer.repository.ImageRepository;
 import org.brapi.test.BrAPITestServer.repository.ObservationUnitRepository;
+import org.brapi.test.BrAPITestServer.repository.SearchRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.io.ByteStreams;
-
 import io.swagger.model.GeoJSON;
 import io.swagger.model.GeoJSON.TypeEnum;
 import io.swagger.model.Image;
+import io.swagger.model.ImagesSearchRequest;
 import io.swagger.model.Metadata;
 import io.swagger.model.NewImageRequest;
 
@@ -43,13 +36,16 @@ public class ImageService {
 
 	private ImageRepository imageRepository;
 	private ObservationUnitRepository observationUnitRepository;
+	private SearchService searchService;
 
 	@Value("${app.baseurl}")
 	private String baseUrlProperty;
 
-	public ImageService(ImageRepository imageRepository, ObservationUnitRepository observationUnitRepository) {
+	public ImageService(ImageRepository imageRepository, ObservationUnitRepository observationUnitRepository,
+			SearchService searchService) {
 		this.imageRepository = imageRepository;
 		this.observationUnitRepository = observationUnitRepository;
+		this.searchService = searchService;
 	}
 
 	public Image getImage(String imageDbId) {
@@ -69,18 +65,15 @@ public class ImageService {
 			String observationDbId, String descriptiveOntologyTerm, Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 
-		String obsUnitDbId = "", obsDbId = "", tag = "";
-		if (observationUnitDbId != null && !observationUnitDbId.isEmpty()) {
-			obsUnitDbId = observationUnitDbId;
-		}
-		if (observationDbId != null && !observationDbId.isEmpty()) {
-			obsDbId = "%" + observationDbId + "%";
-		}
-		if (descriptiveOntologyTerm != null && !descriptiveOntologyTerm.isEmpty()) {
-			tag = "%" + descriptiveOntologyTerm + "%";
-		}
+		ImagesSearchRequest request = new ImagesSearchRequest();
+		if (observationUnitDbId != null)
+			request.addObservationUnitDbIdsItem(observationUnitDbId);
+		if (observationDbId != null)
+			request.addObservationDbIdsItem(observationDbId);
+		if (descriptiveOntologyTerm != null)
+			request.addDescriptiveOntologyTermsItem(descriptiveOntologyTerm);
 
-		Page<ImageEntity> imagePage = imageRepository.findBySearch(obsUnitDbId, obsDbId, tag, pageReq);
+		Page<ImageEntity> imagePage = imageRepository.findBySearch(request, pageReq);
 		PagingUtility.calculateMetaData(metaData, imagePage);
 
 		List<Image> images = imagePage.map(this::convertFromEntiy).getContent();
@@ -111,21 +104,21 @@ public class ImageService {
 
 	public Image saveImageData(String imageDbId, byte[] imageData) throws BrAPIServerException {
 		Image result = null;
-			if (imageDbId != null && !imageDbId.isEmpty()) {
-				Optional<ImageEntity> imageOption = imageRepository.findById(imageDbId);
-				if (imageOption.isPresent()) {
-					ImageEntity newEntity = imageOption.get();
-					newEntity.setImageData(imageData);
-					newEntity.setImageURL(constructURL(newEntity));
+		if (imageDbId != null && !imageDbId.isEmpty()) {
+			Optional<ImageEntity> imageOption = imageRepository.findById(imageDbId);
+			if (imageOption.isPresent()) {
+				ImageEntity newEntity = imageOption.get();
+				newEntity.setImageData(imageData);
+				newEntity.setImageURL(constructURL(newEntity));
 
-					ImageEntity saved = imageRepository.save(newEntity);
+				ImageEntity saved = imageRepository.save(newEntity);
 
-					result = convertFromEntiy(saved);
-				}else {
-					throw new BrAPIServerException(HttpStatus.NOT_FOUND, "ImageDbId not found");
-				}
-					
+				result = convertFromEntiy(saved);
+			} else {
+				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "ImageDbId not found");
 			}
+
+		}
 		return result;
 	}
 
@@ -269,5 +262,16 @@ public class ImageService {
 			}
 			return null;
 		}
+	}
+
+	public List<Image> searchBySearchRequestDbId(String searchResultsDbId, Metadata metadata)
+			throws BrAPIServerException {
+		Pageable pageReq = PagingUtility.getPageRequest(metadata);
+		ImagesSearchRequest request =  searchService.findById(searchResultsDbId).getParameters(ImagesSearchRequest.class);
+		Page<ImageEntity> imagesPage = imageRepository.findBySearch(request, pageReq);
+		PagingUtility.calculateMetaData(metadata, imagesPage);
+		List<Image> images = imagesPage.map(this::convertFromEntiy).getContent();
+
+		return images;
 	}
 }
