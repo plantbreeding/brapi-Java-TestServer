@@ -19,6 +19,7 @@ import org.brapi.test.BrAPITestServer.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,7 +58,6 @@ import io.swagger.model.SamplesResponse;
 import io.swagger.model.SamplesResponseResult;
 import io.swagger.model.StudiesResponse;
 import io.swagger.model.StudiesResponseResult;
-import io.swagger.model.Study;
 import io.swagger.model.StudySearchRequest;
 import io.swagger.model.StudySummary;
 import io.swagger.model.SuccessfulSearchResponse;
@@ -102,6 +102,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 		return new ResponseEntity<SuccessfulSearchResponse>(response, HttpStatus.OK);
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<SuccessfulSearchResponse> searchGermplasmPost(@Valid @RequestBody GermplasmSearchRequest body,
 			String authorization) throws BrAPIServerException {
@@ -109,6 +110,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 		return generateSearchRequestResponse(searchResultDbId);
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<GermplasmResponse> searchGermplasmSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId, @Valid Integer page, @Valid Integer pageSize,
@@ -126,6 +128,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<SuccessfulSearchResponse> searchImagesPost(@Valid @RequestBody ImagesSearchRequest body,
 			String authorization) throws BrAPIServerException {
@@ -133,6 +136,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 		return generateSearchRequestResponse(searchResultDbId);
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<ImagesResponse> searchImagesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId, @Valid Integer page, @Valid Integer pageSize,
@@ -150,6 +154,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 		return new ResponseEntity<ImagesResponse>(response, HttpStatus.OK);
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<SuccessfulSearchResponse> searchMarkersPost(@Valid @RequestBody MarkersSearchRequest body,
 			String authorization) throws BrAPIServerException {
@@ -157,6 +162,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 		return generateSearchRequestResponse(searchResultDbId);
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<MarkersResponse> searchMarkersSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId, @Valid Integer page, @Valid Integer pageSize,
@@ -173,6 +179,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 		return new ResponseEntity<MarkersResponse>(response, HttpStatus.OK);
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<SuccessfulSearchResponse> searchObservationtablesPost(
 			@Valid @RequestBody PhenotypesSearchRequest body, String authorization) throws BrAPIServerException {
@@ -180,6 +187,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 		return generateSearchRequestResponse(searchResultDbId);
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<Object> searchObservationtablesSearchResultsDbIdGet(WSMIMEDataTypes accept,
 			@PathVariable("searchResultsDbId") String searchResultsDbId, String authorization, @Valid Integer page, @Valid Integer pageSize)
@@ -201,6 +209,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 		return new ResponseEntity<Object>(response, HttpStatus.OK);
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<SuccessfulSearchResponse> searchObservationunitsPost(
 			@Valid @RequestBody PhenotypesSearchRequest body, String authorization) throws BrAPIServerException {
@@ -208,6 +217,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 		return generateSearchRequestResponse(searchResultDbId);
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<ObservationUnitsResponse1> searchObservationunitsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId, @Valid Integer page, @Valid Integer pageSize, String authorization)
@@ -228,6 +238,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 		return new ResponseEntity<ObservationUnitsResponse1>(response, HttpStatus.OK);
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<SuccessfulSearchResponse> searchProgramsPost(@Valid @RequestBody ProgramsSearchRequest body,
 			String authorization) throws BrAPIServerException {
@@ -235,6 +246,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 		return generateSearchRequestResponse(searchResultDbId);
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<ProgramsResponse> searchProgramsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId, @Valid Integer page, @Valid Integer pageSize,
@@ -251,6 +263,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 		return new ResponseEntity<ProgramsResponse>(response, HttpStatus.OK);
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<SuccessfulSearchResponse> searchSamplesPost(@Valid @RequestBody SampleSearchRequest body,
 			String authorization) throws BrAPIServerException {
@@ -258,6 +271,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 		return generateSearchRequestResponse(searchResultDbId);
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<SamplesResponse> searchSamplesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId, @Valid Integer page, @Valid Integer pageSize,
@@ -274,6 +288,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 		return new ResponseEntity<SamplesResponse>(response, HttpStatus.OK);
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<SuccessfulSearchResponse> searchStudiesPost(@Valid @RequestBody StudySearchRequest body,
 			String authorization) throws BrAPIServerException {
@@ -281,6 +296,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 		return generateSearchRequestResponse(searchResultDbId);
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<StudiesResponse> searchStudiesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId, @Valid Integer page, @Valid Integer pageSize,
@@ -297,6 +313,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 		return new ResponseEntity<StudiesResponse>(response, HttpStatus.OK);
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<SuccessfulSearchResponse> searchVariablesPost(
 			@Valid @RequestBody ObservationVariableSearchRequest body, String authorization)
@@ -305,6 +322,7 @@ public class SearchController extends BrAPIController implements SearchApi {
 		return generateSearchRequestResponse(searchResultDbId);
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<ObservationVariablesResponse> searchVariablesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId, @Valid Integer page, @Valid Integer pageSize,

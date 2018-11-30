@@ -216,12 +216,14 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 
 	@Deprecated
 	@CrossOrigin
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
 	public ResponseEntity<ObservationUnitPositionsResponse> studiesStudyDbIdLayoutPut(@PathVariable("studyDbId") String studyDbId,
 			@Valid @RequestBody StudyLayoutRequest studyLayoutRequest, String authorization) throws BrAPIServerException {
 		return studiesStudyDbIdLayoutsPut(studyDbId, studyLayoutRequest, authorization);
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<ObservationUnitPositionsResponse> studiesStudyDbIdLayoutsGet(@PathVariable("studyDbId") String studyDbId,
 			@Valid Integer page, @Valid Integer pageSize, String authorization) throws BrAPIServerException {
@@ -236,6 +238,8 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 		return new ResponseEntity<ObservationUnitPositionsResponse>(response, HttpStatus.OK);
 	}
 
+	@CrossOrigin
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
 	public ResponseEntity<ObservationUnitPositionsResponse> studiesStudyDbIdLayoutsPut(@PathVariable("studyDbId") String studyDbId,
 			@Valid @RequestBody StudyLayoutRequest studyLayoutRequest, String authorization) throws BrAPIServerException {
@@ -271,6 +275,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 	}
 
 	@CrossOrigin
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
 	public ResponseEntity<NewObservationDbIdsResponse> studiesStudyDbIdObservationsPut(@PathVariable("studyDbId") String studyDbId,
 			@Valid @RequestBody NewObservationsRequest newObservations, String authorization) throws BrAPIServerException {
@@ -390,10 +395,9 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 		return new ResponseEntity<StudyObservationVariablesResponse>(response, HttpStatus.OK);
 	}
 
-	@Deprecated
 	@CrossOrigin
 	@Override
-	public ResponseEntity<Object> studiesStudyDbIdTableGet(String studyDbId,
+	public ResponseEntity<Object> studiesStudyDbIdTableGet(@PathVariable String studyDbId,
 			@Valid String format, String authorization) throws BrAPIServerException {
 		if ("csv".equals(format) || "CSV".equals(format)) {
 			String result = studyService.getStudyObservationUnitTableText(studyDbId, ",");
@@ -413,6 +417,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 	}
 
 	@CrossOrigin
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
 	public ResponseEntity<NewObservationDbIdsResponse> studiesStudyDbIdTablePost(@PathVariable("studyDbId") String studyDbId,
 			@Valid @RequestBody NewObservationsTableRequest request, String authorization) throws BrAPIServerException {

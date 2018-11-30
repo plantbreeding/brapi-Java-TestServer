@@ -1,8 +1,5 @@
 package org.brapi.test.BrAPITestServer.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
@@ -21,7 +18,6 @@ import io.swagger.model.VendorOrderResponse;
 import io.swagger.model.VendorOrderResultsResponse;
 import io.swagger.model.VendorOrderStatusResponse;
 import io.swagger.model.VendorOrdersResponse;
-import io.swagger.model.VendorPlate;
 import io.swagger.model.VendorPlateGetResponse;
 import io.swagger.model.VendorPlateGetResponse1;
 import io.swagger.model.VendorPlateResponse;

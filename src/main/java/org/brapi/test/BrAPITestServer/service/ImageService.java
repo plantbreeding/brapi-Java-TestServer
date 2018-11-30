@@ -193,7 +193,7 @@ public class ImageService {
 			img.setImageLocation(new GeoJSON().type(TypeEnum.FEATURE)
 					.geometry(new Geometry(entity.getLatitude(), entity.getLongitude())));
 		} else {
-			img.setImageLocation(new GeoJSON().type(TypeEnum.FEATURE).geometry(new HashMap<>()));
+			img.setImageLocation(new GeoJSON().type(TypeEnum.FEATURE).geometry(new Geometry(0F, 0F)));
 		}
 
 		if (entity.getDescriptiveOntologyTerms() != null && !entity.getDescriptiveOntologyTerms().isEmpty()) {
@@ -242,6 +242,10 @@ public class ImageService {
 		@JsonProperty("coordinates")
 		private List<Float> coordinates;
 
+		public Geometry() {
+			type = "Point";
+			coordinates = new ArrayList<>();
+		}
 		public Geometry(Float latitude, Float longitude) {
 			type = "Point";
 			coordinates = Arrays.asList(latitude, longitude);

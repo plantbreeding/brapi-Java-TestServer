@@ -28,7 +28,6 @@ import io.swagger.model.AlleleMatrixSearchRequest;
 import io.swagger.model.AlleleMatrixValues;
 import io.swagger.model.AlleleMatrixValuesResponse;
 import io.swagger.model.AlleleMatrixValuesResponse1;
-import io.swagger.model.AsynchStatusMetadata;
 import io.swagger.model.MarkerProfile;
 import io.swagger.model.MarkerProfileDescription;
 import io.swagger.model.MarkerProfileDescriptionsResponse;

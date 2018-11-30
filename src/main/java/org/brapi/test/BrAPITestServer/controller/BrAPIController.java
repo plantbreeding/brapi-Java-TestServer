@@ -7,7 +7,6 @@ import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.exceptions.InvalidPagingException;
 import org.brapi.test.BrAPITestServer.service.DateUtility;
 
-import io.swagger.model.AsynchStatusMetadata;
 import io.swagger.model.Metadata;
 import io.swagger.model.MetadataPagination;
 

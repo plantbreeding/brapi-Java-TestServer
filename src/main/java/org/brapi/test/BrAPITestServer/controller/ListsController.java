@@ -10,14 +10,13 @@ import org.brapi.test.BrAPITestServer.service.ListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.api.ListsApi;
-import io.swagger.model.Image;
-import io.swagger.model.ImagesResponse;
-import io.swagger.model.ImagesResponseResult;
 import io.swagger.model.ListDetails;
 import io.swagger.model.ListResponse;
 import io.swagger.model.ListSummary;
@@ -37,6 +36,7 @@ public class ListsController extends BrAPIController implements ListsApi {
 		this.listService = listService;
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<ListSummaryResponse> listsGet(@Valid ListTypes listType, @Valid String listName,
 			@Valid String listDbId, @Valid String listSource, @Valid Integer page, @Valid Integer pageSize,
@@ -53,6 +53,7 @@ public class ListsController extends BrAPIController implements ListsApi {
 		return new ResponseEntity<ListSummaryResponse>(response, HttpStatus.OK);
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<ListResponse> listsListDbIdGet(@PathVariable("listDbId") String listDbId, String authorization)
 			throws BrAPIServerException {
@@ -65,6 +66,8 @@ public class ListsController extends BrAPIController implements ListsApi {
 		return new ResponseEntity<ListResponse>(response, HttpStatus.OK);
 	}
 
+	@CrossOrigin
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
 	public ResponseEntity<ListResponse> listsListDbIdItemsPost(@PathVariable("listDbId") String listDbId, @Valid @RequestBody ArrayList<String> body,
 			String authorization) throws BrAPIServerException {
@@ -77,6 +80,8 @@ public class ListsController extends BrAPIController implements ListsApi {
 		return new ResponseEntity<ListResponse>(response, HttpStatus.OK);
 	}
 
+	@CrossOrigin
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
 	public ResponseEntity<ListResponse> listsListDbIdPut(@PathVariable("listDbId") String listDbId, @Valid @RequestBody NewListRequest body,
 			String authorization) throws BrAPIServerException {
@@ -89,6 +94,8 @@ public class ListsController extends BrAPIController implements ListsApi {
 		return new ResponseEntity<ListResponse>(response, HttpStatus.OK);
 	}
 
+	@CrossOrigin
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
 	public ResponseEntity<ListResponse> listsPost(@Valid @RequestBody NewListRequest body, String authorization)
 			throws BrAPIServerException {

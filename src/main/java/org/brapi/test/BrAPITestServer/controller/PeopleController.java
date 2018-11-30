@@ -9,6 +9,8 @@ import org.brapi.test.BrAPITestServer.service.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +33,7 @@ public class PeopleController extends BrAPIController implements PeopleApi {
 		this.peopleService = peopleService;
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<PersonsResponse> peopleGet(@Valid String firstName, @Valid String lastName,
 			@Valid String personDbId, @Valid String userID, @Valid Integer page, @Valid Integer pageSize,
@@ -47,6 +50,7 @@ public class PeopleController extends BrAPIController implements PeopleApi {
 		return new ResponseEntity<PersonsResponse>(response, HttpStatus.OK);
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<PersonResponse> peoplePersonDbIdGet(@PathVariable("personDbId") String personDbId, String authorization)
 			throws BrAPIServerException {
@@ -59,6 +63,8 @@ public class PeopleController extends BrAPIController implements PeopleApi {
 		return new ResponseEntity<PersonResponse>(response, HttpStatus.OK);
 	}
 
+	@CrossOrigin
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
 	public ResponseEntity<PersonResponse> peoplePersonDbIdPut(@PathVariable("personDbId") String personDbId, @Valid @RequestBody NewPersonRequest body,
 			String authorization) throws BrAPIServerException {
@@ -71,6 +77,8 @@ public class PeopleController extends BrAPIController implements PeopleApi {
 		return new ResponseEntity<PersonResponse>(response, HttpStatus.OK);
 	}
 
+	@CrossOrigin
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
 	public ResponseEntity<PersonResponse> peoplePost(@Valid @RequestBody NewPersonRequest body, String authorization)
 			throws BrAPIServerException {

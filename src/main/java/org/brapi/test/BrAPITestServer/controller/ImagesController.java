@@ -1,6 +1,5 @@
 package org.brapi.test.BrAPITestServer.controller;
 
-import java.io.InputStream;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -10,11 +9,11 @@ import org.brapi.test.BrAPITestServer.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import io.swagger.api.ImagesApi;
 import io.swagger.model.Image;
 import io.swagger.model.ImageResponse;
@@ -33,6 +32,7 @@ public class ImagesController extends BrAPIController implements ImagesApi {
 		this.imageService = imageService;
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<ImagesResponse> imagesGet(@Valid String imageDbId, @Valid String imageName,
 			@Valid String observationUnitDbId, @Valid String observationDbId, @Valid String descriptiveOntologyTerm,
@@ -51,6 +51,7 @@ public class ImagesController extends BrAPIController implements ImagesApi {
 		return new ResponseEntity<ImagesResponse>(response, HttpStatus.OK);
 	}
 
+	@CrossOrigin
 	@Override
 	public ResponseEntity<ImageResponse> imagesImageDbIdGet(@PathVariable("imageDbId") String imageDbId, String authorization)
 			throws BrAPIServerException {
@@ -62,6 +63,8 @@ public class ImagesController extends BrAPIController implements ImagesApi {
 		return new ResponseEntity<ImageResponse>(response, HttpStatus.OK);
 	}
 
+	@CrossOrigin
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
 	public ResponseEntity<ImageResponse> imagesImageDbIdImagecontentPut(@PathVariable("imageDbId") String imageDbId, @Valid @RequestBody byte[] imageData,
 			String authorization) throws BrAPIServerException {
@@ -73,6 +76,8 @@ public class ImagesController extends BrAPIController implements ImagesApi {
 		return new ResponseEntity<ImageResponse>(response, HttpStatus.OK);
 	}
 
+	@CrossOrigin
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
 	public ResponseEntity<ImageResponse> imagesImageDbIdPut(@PathVariable("imageDbId") String imageDbId, @Valid @RequestBody NewImageRequest request,
 			String authorization) throws BrAPIServerException {
@@ -84,6 +89,8 @@ public class ImagesController extends BrAPIController implements ImagesApi {
 		return new ResponseEntity<ImageResponse>(response, HttpStatus.OK);
 	}
 
+	@CrossOrigin
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@Override
 	public ResponseEntity<ImageResponse> imagesPost(@Valid @RequestBody NewImageRequest request, String authorization)
 			throws BrAPIServerException {
