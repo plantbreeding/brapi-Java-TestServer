@@ -5,85 +5,121 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.OntologyReferenceDocumentationLinks;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Ontology reference details
+ * OntologyReference
  */
-@ApiModel(description = "Ontology reference details")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-06T17:40:52.157-05:00[America/New_York]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-05T14:32:54.779-05:00[America/New_York]")
 
 public class OntologyReference   {
-  @JsonProperty("ontologyID")
-  private String ontologyID = null;
+  @JsonProperty("documentationLinks")
+  @Valid
+  private List<OntologyReferenceDocumentationLinks> documentationLinks = null;
 
-  @JsonProperty("ontologyPrefix")
-  private String ontologyPrefix = null;
+  @JsonProperty("ontologyDbId")
+  private String ontologyDbId = null;
 
-  @JsonProperty("ontologyTerm")
-  private String ontologyTerm = null;
+  @JsonProperty("ontologyName")
+  private String ontologyName = null;
 
-  public OntologyReference ontologyID(String ontologyID) {
-    this.ontologyID = ontologyID;
+  @JsonProperty("version")
+  private String version = null;
+
+  public OntologyReference documentationLinks(List<OntologyReferenceDocumentationLinks> documentationLinks) {
+    this.documentationLinks = documentationLinks;
+    return this;
+  }
+
+  public OntologyReference addDocumentationLinksItem(OntologyReferenceDocumentationLinks documentationLinksItem) {
+    if (this.documentationLinks == null) {
+      this.documentationLinks = new ArrayList<OntologyReferenceDocumentationLinks>();
+    }
+    this.documentationLinks.add(documentationLinksItem);
     return this;
   }
 
   /**
-   * Ontology unique ID (example: \"0025034\" or \"4577\")
-   * @return ontologyID
+   * links to various ontology documentation
+   * @return documentationLinks
   **/
-  @ApiModelProperty(value = "Ontology unique ID (example: \"0025034\" or \"4577\")")
+  @ApiModelProperty(value = "links to various ontology documentation")
 
+  @Valid
 
-  public String getOntologyID() {
-    return ontologyID;
+  public List<OntologyReferenceDocumentationLinks> getDocumentationLinks() {
+    return documentationLinks;
   }
 
-  public void setOntologyID(String ontologyID) {
-    this.ontologyID = ontologyID;
+  public void setDocumentationLinks(List<OntologyReferenceDocumentationLinks> documentationLinks) {
+    this.documentationLinks = documentationLinks;
   }
 
-  public OntologyReference ontologyPrefix(String ontologyPrefix) {
-    this.ontologyPrefix = ontologyPrefix;
+  public OntologyReference ontologyDbId(String ontologyDbId) {
+    this.ontologyDbId = ontologyDbId;
     return this;
   }
 
   /**
-   * Ontology identifier prefix (example: \"PO\" or \"NCBITaxon\")
-   * @return ontologyPrefix
+   * Ontology database unique identifier
+   * @return ontologyDbId
   **/
-  @ApiModelProperty(value = "Ontology identifier prefix (example: \"PO\" or \"NCBITaxon\")")
+  @ApiModelProperty(value = "Ontology database unique identifier")
 
 
-  public String getOntologyPrefix() {
-    return ontologyPrefix;
+  public String getOntologyDbId() {
+    return ontologyDbId;
   }
 
-  public void setOntologyPrefix(String ontologyPrefix) {
-    this.ontologyPrefix = ontologyPrefix;
+  public void setOntologyDbId(String ontologyDbId) {
+    this.ontologyDbId = ontologyDbId;
   }
 
-  public OntologyReference ontologyTerm(String ontologyTerm) {
-    this.ontologyTerm = ontologyTerm;
+  public OntologyReference ontologyName(String ontologyName) {
+    this.ontologyName = ontologyName;
     return this;
   }
 
   /**
-   * Ontology term string (example: \"leaf\" or \"Zea mays\")
-   * @return ontologyTerm
+   * Ontology name
+   * @return ontologyName
   **/
-  @ApiModelProperty(value = "Ontology term string (example: \"leaf\" or \"Zea mays\")")
+  @ApiModelProperty(required = true, value = "Ontology name")
+  @NotNull
 
 
-  public String getOntologyTerm() {
-    return ontologyTerm;
+  public String getOntologyName() {
+    return ontologyName;
   }
 
-  public void setOntologyTerm(String ontologyTerm) {
-    this.ontologyTerm = ontologyTerm;
+  public void setOntologyName(String ontologyName) {
+    this.ontologyName = ontologyName;
+  }
+
+  public OntologyReference version(String version) {
+    this.version = version;
+    return this;
+  }
+
+  /**
+   * Ontology version (no specific format)
+   * @return version
+  **/
+  @ApiModelProperty(value = "Ontology version (no specific format)")
+
+
+  public String getVersion() {
+    return version;
+  }
+
+  public void setVersion(String version) {
+    this.version = version;
   }
 
 
@@ -96,14 +132,15 @@ public class OntologyReference   {
       return false;
     }
     OntologyReference ontologyReference = (OntologyReference) o;
-    return Objects.equals(this.ontologyID, ontologyReference.ontologyID) &&
-        Objects.equals(this.ontologyPrefix, ontologyReference.ontologyPrefix) &&
-        Objects.equals(this.ontologyTerm, ontologyReference.ontologyTerm);
+    return Objects.equals(this.documentationLinks, ontologyReference.documentationLinks) &&
+        Objects.equals(this.ontologyDbId, ontologyReference.ontologyDbId) &&
+        Objects.equals(this.ontologyName, ontologyReference.ontologyName) &&
+        Objects.equals(this.version, ontologyReference.version);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(ontologyID, ontologyPrefix, ontologyTerm);
+    return Objects.hash(documentationLinks, ontologyDbId, ontologyName, version);
   }
 
   @Override
@@ -111,9 +148,10 @@ public class OntologyReference   {
     StringBuilder sb = new StringBuilder();
     sb.append("class OntologyReference {\n");
     
-    sb.append("    ontologyID: ").append(toIndentedString(ontologyID)).append("\n");
-    sb.append("    ontologyPrefix: ").append(toIndentedString(ontologyPrefix)).append("\n");
-    sb.append("    ontologyTerm: ").append(toIndentedString(ontologyTerm)).append("\n");
+    sb.append("    documentationLinks: ").append(toIndentedString(documentationLinks)).append("\n");
+    sb.append("    ontologyDbId: ").append(toIndentedString(ontologyDbId)).append("\n");
+    sb.append("    ontologyName: ").append(toIndentedString(ontologyName)).append("\n");
+    sb.append("    version: ").append(toIndentedString(version)).append("\n");
     sb.append("}");
     return sb.toString();
   }

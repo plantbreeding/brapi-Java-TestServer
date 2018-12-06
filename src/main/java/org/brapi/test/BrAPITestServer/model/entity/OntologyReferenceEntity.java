@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "ontology_ref")
-public class OntologyRefernceEntity extends BaseEntity {
+public class OntologyReferenceEntity extends BaseEntity {
 	@Column
 	private String URL;
 	@Column

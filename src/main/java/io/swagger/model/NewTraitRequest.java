@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.OntologyRefernce;
+import io.swagger.model.OntologyReference;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
  * NewTraitRequest
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-06T17:40:52.157-05:00[America/New_York]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-05T14:32:54.779-05:00[America/New_York]")
 
 public class NewTraitRequest   {
   @JsonProperty("alternativeAbbreviations")
@@ -38,8 +38,8 @@ public class NewTraitRequest   {
   @JsonProperty("mainAbbreviation")
   private String mainAbbreviation = null;
 
-  @JsonProperty("ontologyRefernce")
-  private OntologyRefernce ontologyRefernce = null;
+  @JsonProperty("ontologyReference")
+  private OntologyReference ontologyReference = null;
 
   @JsonProperty("status")
   private String status = null;
@@ -182,25 +182,25 @@ public class NewTraitRequest   {
     this.mainAbbreviation = mainAbbreviation;
   }
 
-  public NewTraitRequest ontologyRefernce(OntologyRefernce ontologyRefernce) {
-    this.ontologyRefernce = ontologyRefernce;
+  public NewTraitRequest ontologyReference(OntologyReference ontologyReference) {
+    this.ontologyReference = ontologyReference;
     return this;
   }
 
   /**
-   * Get ontologyRefernce
-   * @return ontologyRefernce
+   * Get ontologyReference
+   * @return ontologyReference
   **/
   @ApiModelProperty(value = "")
 
   @Valid
 
-  public OntologyRefernce getOntologyRefernce() {
-    return ontologyRefernce;
+  public OntologyReference getOntologyReference() {
+    return ontologyReference;
   }
 
-  public void setOntologyRefernce(OntologyRefernce ontologyRefernce) {
-    this.ontologyRefernce = ontologyRefernce;
+  public void setOntologyReference(OntologyReference ontologyReference) {
+    this.ontologyReference = ontologyReference;
   }
 
   public NewTraitRequest status(String status) {
@@ -307,7 +307,7 @@ public class NewTraitRequest   {
         Objects.equals(this.description, newTraitRequest.description) &&
         Objects.equals(this.entity, newTraitRequest.entity) &&
         Objects.equals(this.mainAbbreviation, newTraitRequest.mainAbbreviation) &&
-        Objects.equals(this.ontologyRefernce, newTraitRequest.ontologyRefernce) &&
+        Objects.equals(this.ontologyReference, newTraitRequest.ontologyReference) &&
         Objects.equals(this.status, newTraitRequest.status) &&
         Objects.equals(this.synonyms, newTraitRequest.synonyms) &&
         Objects.equals(this.traitName, newTraitRequest.traitName) &&
@@ -316,7 +316,7 @@ public class NewTraitRequest   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(alternativeAbbreviations, attribute, propertyClass, description, entity, mainAbbreviation, ontologyRefernce, status, synonyms, traitName, xref);
+    return Objects.hash(alternativeAbbreviations, attribute, propertyClass, description, entity, mainAbbreviation, ontologyReference, status, synonyms, traitName, xref);
   }
 
   @Override
@@ -330,7 +330,7 @@ public class NewTraitRequest   {
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    entity: ").append(toIndentedString(entity)).append("\n");
     sb.append("    mainAbbreviation: ").append(toIndentedString(mainAbbreviation)).append("\n");
-    sb.append("    ontologyRefernce: ").append(toIndentedString(ontologyRefernce)).append("\n");
+    sb.append("    ontologyReference: ").append(toIndentedString(ontologyReference)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    synonyms: ").append(toIndentedString(synonyms)).append("\n");
     sb.append("    traitName: ").append(toIndentedString(traitName)).append("\n");

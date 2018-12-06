@@ -23,11 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-
-import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.List; import java.util.ArrayList;
 import java.util.Map;
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-06T17:40:52.157-05:00[America/New_York]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-05T14:32:54.779-05:00[America/New_York]")
 
 @Api(value = "images", description = "the images API")
 public interface ImagesApi {
@@ -72,6 +70,7 @@ public interface ImagesApi {
         @ApiResponse(code = 404, message = "Not Found", response = String.class) })
     @RequestMapping(value = "/images/{imageDbId}/imagecontent",
         produces = { "application/json" }, 
+        consumes = { "image/*" },
         method = RequestMethod.PUT)
     ResponseEntity<ImageResponse> imagesImageDbIdImagecontentPut(@ApiParam(value = "The unique identifier for a image",required=true) @PathVariable("imageDbId") String imageDbId,@ApiParam(value = ""  )  @Valid @RequestBody byte[] body,@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong>Bearer {token_string} </strong>" ) @RequestHeader(value="Authorization", required=false) String authorization) throws BrAPIServerException;
 

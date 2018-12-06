@@ -374,7 +374,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 	public ResponseEntity<StudyObservationVariablesResponse> studiesStudyDbIdObservationvariablesGet(@PathVariable("studyDbId") String studyDbId,
 			@Valid Integer page, @Valid Integer pageSize, String authorization) throws BrAPIServerException {
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		StudyObservationVariablesResponseResult result = studyService.getStudyObservationVariables(studyDbId);
+		StudyObservationVariablesResponseResult result = studyService.getStudyObservationVariables(studyDbId, metadata);
 
 		StudyObservationVariablesResponse response = new StudyObservationVariablesResponse();
 		response.setMetadata(metadata);
@@ -387,10 +387,11 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 	@Override
 	public ResponseEntity<StudyObservationVariablesResponse> studiesStudyDbIdObservationVariablesGet(
 			@PathVariable("studyDbId") String studyDbId) {
-		StudyObservationVariablesResponseResult result = studyService.getStudyObservationVariables(studyDbId);
+		Metadata metadata = generateEmptyMetadata();
+		StudyObservationVariablesResponseResult result = studyService.getStudyObservationVariables(studyDbId, metadata);
 
 		StudyObservationVariablesResponse response = new StudyObservationVariablesResponse();
-		response.setMetadata(generateEmptyMetadata());
+		response.setMetadata(metadata);
 		response.setResult(result);
 		return new ResponseEntity<StudyObservationVariablesResponse>(response, HttpStatus.OK);
 	}
@@ -408,9 +409,10 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 
 			return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(result);
 		} else {
-			ObservationsTable result = studyService.getStudyObservationUnitTable(studyDbId);
+			Metadata metadata = generateEmptyMetadata();
+			ObservationsTable result = studyService.getStudyObservationUnitTable(studyDbId, metadata);
 			StudyobservationsTableResponse response = new StudyobservationsTableResponse();
-			response.setMetadata(generateEmptyMetadata());
+			response.setMetadata(metadata);
 			response.setResult(result);
 			return new ResponseEntity<Object>(response, HttpStatus.OK);
 		}

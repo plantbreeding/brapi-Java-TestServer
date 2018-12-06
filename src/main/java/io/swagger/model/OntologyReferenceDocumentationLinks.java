@@ -11,12 +11,12 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * OntologyRefernceDocumentationLinks
+ * OntologyReferenceDocumentationLinks
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-06T17:40:52.157-05:00[America/New_York]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-05T14:32:54.779-05:00[America/New_York]")
 
-public class OntologyRefernceDocumentationLinks   {
+public class OntologyReferenceDocumentationLinks   {
   @JsonProperty("URL")
   private String URL = null;
 
@@ -56,7 +56,7 @@ public class OntologyRefernceDocumentationLinks   {
   @JsonProperty("type")
   private TypeEnum type = null;
 
-  public OntologyRefernceDocumentationLinks URL(String URL) {
+  public OntologyReferenceDocumentationLinks URL(String URL) {
     this.URL = URL;
     return this;
   }
@@ -76,7 +76,7 @@ public class OntologyRefernceDocumentationLinks   {
     this.URL = URL;
   }
 
-  public OntologyRefernceDocumentationLinks type(TypeEnum type) {
+  public OntologyReferenceDocumentationLinks type(TypeEnum type) {
     this.type = type;
     return this;
   }
@@ -105,9 +105,9 @@ public class OntologyRefernceDocumentationLinks   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    OntologyRefernceDocumentationLinks ontologyRefernceDocumentationLinks = (OntologyRefernceDocumentationLinks) o;
-    return Objects.equals(this.URL, ontologyRefernceDocumentationLinks.URL) &&
-        Objects.equals(this.type, ontologyRefernceDocumentationLinks.type);
+    OntologyReferenceDocumentationLinks ontologyReferenceDocumentationLinks = (OntologyReferenceDocumentationLinks) o;
+    return Objects.equals(this.URL, ontologyReferenceDocumentationLinks.URL) &&
+        Objects.equals(this.type, ontologyReferenceDocumentationLinks.type);
   }
 
   @Override
@@ -118,7 +118,7 @@ public class OntologyRefernceDocumentationLinks   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class OntologyRefernceDocumentationLinks {\n");
+    sb.append("class OntologyReferenceDocumentationLinks {\n");
     
     sb.append("    URL: ").append(toIndentedString(URL)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");

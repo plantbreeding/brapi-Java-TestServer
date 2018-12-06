@@ -10,8 +10,8 @@ import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.MethodEntity;
 import org.brapi.test.BrAPITestServer.model.entity.OntologyEntity;
 import org.brapi.test.BrAPITestServer.model.entity.OntologyInterface;
-import org.brapi.test.BrAPITestServer.model.entity.OntologyRefernceEntity;
-import org.brapi.test.BrAPITestServer.model.entity.OntologyRefernceEntity.OntologyReferenceTypeEnum;
+import org.brapi.test.BrAPITestServer.model.entity.OntologyReferenceEntity;
+import org.brapi.test.BrAPITestServer.model.entity.OntologyReferenceEntity.OntologyReferenceTypeEnum;
 import org.brapi.test.BrAPITestServer.model.entity.ScaleEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ScaleValidValueCategoryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.TraitAbbreviationEntity;
@@ -33,9 +33,9 @@ import io.swagger.model.NewMethodRequest;
 import io.swagger.model.NewScaleRequest;
 import io.swagger.model.NewTraitRequest;
 import io.swagger.model.Ontology;
-import io.swagger.model.OntologyRefernce;
-import io.swagger.model.OntologyRefernceDocumentationLinks;
-import io.swagger.model.OntologyRefernceDocumentationLinks.TypeEnum;
+import io.swagger.model.OntologyReference;
+import io.swagger.model.OntologyReferenceDocumentationLinks;
+import io.swagger.model.OntologyReferenceDocumentationLinks.TypeEnum;
 import io.swagger.model.Scale;
 import io.swagger.model.Trait;
 import io.swagger.model.TraitDataType;
@@ -67,7 +67,7 @@ public class OntologyService {
 		method.setMethodName(entity.getName());
 		method.setName(entity.getName());
 		method.setReference(entity.getReference());
-		method.setOntologyRefernce(convertFromEntity(entity.getOntology(), entity.getOntologyRefernce()));
+		method.setOntologyReference(convertFromEntity(entity.getOntology(), entity.getOntologyReference()));
 		return method;
 	}
 
@@ -84,15 +84,15 @@ public class OntologyService {
 		return ontology;
 	}
 
-	public OntologyRefernce convertFromEntity(OntologyEntity ontology, List<OntologyRefernceEntity> ontologyRefernce) {
-		OntologyRefernce oRef = null;
-		if (ontology != null && ontologyRefernce != null && !ontologyRefernce.isEmpty()) {
-			oRef = new OntologyRefernce();
+	public OntologyReference convertFromEntity(OntologyEntity ontology, List<OntologyReferenceEntity> ontologyReference) {
+		OntologyReference oRef = null;
+		if (ontology != null && ontologyReference != null && !ontologyReference.isEmpty()) {
+			oRef = new OntologyReference();
 			oRef.setOntologyDbId(ontology.getId());
 			oRef.setOntologyName(ontology.getOntologyName());
 			oRef.setVersion(ontology.getVersion());
-			oRef.setDocumentationLinks(ontologyRefernce.stream().map((entity -> {
-				OntologyRefernceDocumentationLinks link = new OntologyRefernceDocumentationLinks();
+			oRef.setDocumentationLinks(ontologyReference.stream().map((entity -> {
+				OntologyReferenceDocumentationLinks link = new OntologyReferenceDocumentationLinks();
 				link.setType(TypeEnum.fromValue(entity.getType().toString()));
 				link.setURL(entity.getURL());
 				return link;
@@ -109,7 +109,7 @@ public class OntologyService {
 		scale.setName(entity.getName());
 		scale.setScaleDbId(entity.getId());
 		scale.setXref(entity.getXref());
-		scale.setOntologyRefernce(convertFromEntity(entity.getOntology(), entity.getOntologyRefernce()));
+		scale.setOntologyReference(convertFromEntity(entity.getOntology(), entity.getOntologyReference()));
 
 		ValidValues validValues = new ValidValues();
 		validValues.setMax(entity.getValidValueMax());
@@ -135,7 +135,7 @@ public class OntologyService {
 		trait.setPropertyClass(entity.getTraitClass());
 		trait.setTraitDbId(entity.getId());
 		trait.setXref(entity.getXref());
-		trait.setOntologyRefernce(convertFromEntity(entity.getOntology(), entity.getOntologyRefernce()));
+		trait.setOntologyReference(convertFromEntity(entity.getOntology(), entity.getOntologyReference()));
 
 		return trait;
 	}
@@ -229,20 +229,20 @@ public class OntologyService {
 		entity.setMethodClass(method.getPropertyClass());
 		entity.setName(method.getMethodName());
 		entity.setReference(method.getReference());
-		updateOntologyReference(entity, method.getOntologyRefernce());
+		updateOntologyReference(entity, method.getOntologyReference());
 
 		return entity;
 	}
 
-	private void updateOntologyReference(OntologyInterface entity, OntologyRefernce ontologyRefernce) {
-		if (entity != null && ontologyRefernce != null) {
-			Optional<OntologyEntity> ontologyOpt = ontologyRepository.findById(ontologyRefernce.getOntologyDbId());
+	private void updateOntologyReference(OntologyInterface entity, OntologyReference ontologyReference) {
+		if (entity != null && ontologyReference != null) {
+			Optional<OntologyEntity> ontologyOpt = ontologyRepository.findById(ontologyReference.getOntologyDbId());
 			if (ontologyOpt.isPresent()) {
 				// if (ontologyOpt.isPresent() && entity.getId() != null &&
 				// !entity.getId().isEmpty()) {
 				entity.setOntology(ontologyOpt.get());
-				entity.setOntologyRefernce(ontologyRefernce.getDocumentationLinks().stream().map((link) -> {
-					OntologyRefernceEntity e = new OntologyRefernceEntity();
+				entity.setOntologyReference(ontologyReference.getDocumentationLinks().stream().map((link) -> {
+					OntologyReferenceEntity e = new OntologyReferenceEntity();
 					e.setType(OntologyReferenceTypeEnum.fromValue(link.getType().toString()));
 					e.setURL(link.getURL());
 					return e;
@@ -271,7 +271,7 @@ public class OntologyService {
 			return e;
 		}).collect(Collectors.toList()));
 
-		updateOntologyReference(entity, scale.getOntologyRefernce());
+		updateOntologyReference(entity, scale.getOntologyReference());
 
 		return entity;
 	}
@@ -303,7 +303,7 @@ public class OntologyService {
 		}).collect(Collectors.toList()));
 		entity.setTraitClass(trait.getPropertyClass());
 		entity.setXref(trait.getXref());
-		updateOntologyReference(entity, trait.getOntologyRefernce());
+		updateOntologyReference(entity, trait.getOntologyReference());
 		return entity;
 	}
 

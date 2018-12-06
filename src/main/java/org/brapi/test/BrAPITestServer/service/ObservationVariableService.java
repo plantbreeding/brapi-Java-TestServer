@@ -22,11 +22,12 @@ import io.swagger.model.Method;
 import io.swagger.model.ObservationVariable;
 import io.swagger.model.ObservationVariableSearchRequest;
 import io.swagger.model.ObservationVariableSearchRequestDep;
-import io.swagger.model.OntologyRefernce;
-import io.swagger.model.OntologyRefernceDocumentationLinks;
+import io.swagger.model.OntologyReference;
+import io.swagger.model.VendorOntologyReference;
+import io.swagger.model.OntologyReferenceDocumentationLinks;
 import io.swagger.model.Program;
 import io.swagger.model.ProgramsSearchRequest;
-import io.swagger.model.OntologyRefernceDocumentationLinks.TypeEnum;
+import io.swagger.model.OntologyReferenceDocumentationLinks.TypeEnum;
 import io.swagger.model.Scale;
 import io.swagger.model.Trait;
 import io.swagger.model.VariableBaseClass;
@@ -129,11 +130,11 @@ public class ObservationVariableService {
 		var.setSynonyms(entity.getSynonyms().stream().map(e -> e.getSynonym()).collect(Collectors.toList()));
 		var.setXref(entity.getXref());
 
-		OntologyRefernce oRef = ontologyService.convertFromEntity(entity.getOntology(), entity.getOntologyRefernce());
+		OntologyReference oRef = ontologyService.convertFromEntity(entity.getOntology(), entity.getOntologyReference());
 		if (oRef != null) {
-			oRef.setDocumentationLinks(Arrays.asList(new OntologyRefernceDocumentationLinks()
+			oRef.setDocumentationLinks(Arrays.asList(new OntologyReferenceDocumentationLinks()
 					.URL(entity.getOntology().getXref()).type(TypeEnum.WEBPAGE)));
-			var.setOntologyRefernce(oRef);
+			var.setOntologyReference(oRef);
 		}
 
 		Method method = ontologyService.convertFromEntity(entity.getMethod());
@@ -146,9 +147,11 @@ public class ObservationVariableService {
 		var.setTrait(trait);
 	}
 
-	public List<ObservationVariable> getVariablesForStudy(String studyDbId) {
-		return observationVariableRepository.findAllForStudy(studyDbId).stream().map(this::convertFromEntity)
-				.collect(Collectors.toList());
+	public List<ObservationVariable> getVariablesForStudy(String studyDbId, Metadata metadata) {
+		Pageable pageReq = PagingUtility.getPageRequest(metadata);
+		Page<ObservationVariableEntity> page = observationVariableRepository.findAllForStudy(studyDbId, pageReq);
+		PagingUtility.calculateMetaData(metadata, page);
+		return page.map(this::convertFromEntity).getContent();
 	}
 
 	public ObservationVariableEntity getVariableEntity(String observationVariableDbId) {

@@ -9,6 +9,8 @@ import jsonschema
 from jsonschema import validate
 import dereferenceAll
 import testInputs
+import json
+from jsonschema._utils import indent
 
 
 def testPath(schema, path, method):
@@ -32,7 +34,7 @@ def testPath(schema, path, method):
 	except:
 		success = False
 		if verbose:
-			error = 'Bad JSON\n' + method + ' ' + url + '\n' + res
+			error = 'Bad JSON\n' + method + ' ' + url + '\n' + str(res)
 		else:
 			error = 'X1 - ' + method + ' ' + url
 	
@@ -49,7 +51,7 @@ def testPath(schema, path, method):
 	except jsonschema.exceptions.ValidationError as ve:
 		success = False
 		if verbose:
-			error = 'Bad Schema Match\n' + method + ' ' + url + '\n' + str(ve)
+			error = 'Bad Schema Match\n' + method + ' ' + url + '\n' + str(ve) + '\n' + json.dumps(example, indent = 4)
 		else:
 			error = 'X3 - ' + method + ' ' + url
 	
@@ -67,10 +69,8 @@ def testPaths(obj):
 							if ('schema' in response):
 								schema = deepcopy(response['schema'])
 								success, error = testPath(schema, path, method)
-								if success :
-									print('.')
-								else:
-									print('X' + error)
+								if not success :
+									print(error)
 						
 	return obj
 

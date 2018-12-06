@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Method;
-import io.swagger.model.OntologyRefernce;
+import io.swagger.model.OntologyReference;
 import io.swagger.model.Scale;
 import io.swagger.model.Trait;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import javax.validation.constraints.*;
  * VariableBaseClass
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-06T17:40:52.157-05:00[America/New_York]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-05T14:32:54.779-05:00[America/New_York]")
 
 public class VariableBaseClass   {
   @JsonProperty("contextOfUse")
@@ -54,8 +54,8 @@ public class VariableBaseClass   {
   @JsonProperty("ontologyName")
   private String ontologyName = null;
 
-  @JsonProperty("ontologyRefernce")
-  private OntologyRefernce ontologyRefernce = null;
+  @JsonProperty("ontologyReference")
+  private OntologyReference ontologyReference = null;
 
   @JsonProperty("scale")
   private Scale scale = null;
@@ -255,10 +255,10 @@ public class VariableBaseClass   {
   }
 
   /**
-   * DEPRECATED in v1.3 - see \"this.ontologyRefernce.ontologyDbId\"
+   * DEPRECATED in v1.3 - see \"this.ontologyReference.ontologyDbId\"
    * @return ontologyDbId
   **/
-  @ApiModelProperty(value = "DEPRECATED in v1.3 - see \"this.ontologyRefernce.ontologyDbId\"")
+  @ApiModelProperty(value = "DEPRECATED in v1.3 - see \"this.ontologyReference.ontologyDbId\"")
 
 
   public String getOntologyDbId() {
@@ -275,10 +275,10 @@ public class VariableBaseClass   {
   }
 
   /**
-   * DEPRECATED in v1.3 - see \"this.ontologyRefernce.ontologyName\"
+   * DEPRECATED in v1.3 - see \"this.ontologyReference.ontologyName\"
    * @return ontologyName
   **/
-  @ApiModelProperty(value = "DEPRECATED in v1.3 - see \"this.ontologyRefernce.ontologyName\"")
+  @ApiModelProperty(value = "DEPRECATED in v1.3 - see \"this.ontologyReference.ontologyName\"")
 
 
   public String getOntologyName() {
@@ -289,25 +289,25 @@ public class VariableBaseClass   {
     this.ontologyName = ontologyName;
   }
 
-  public VariableBaseClass ontologyRefernce(OntologyRefernce ontologyRefernce) {
-    this.ontologyRefernce = ontologyRefernce;
+  public VariableBaseClass ontologyReference(OntologyReference ontologyReference) {
+    this.ontologyReference = ontologyReference;
     return this;
   }
 
   /**
-   * Get ontologyRefernce
-   * @return ontologyRefernce
+   * Get ontologyReference
+   * @return ontologyReference
   **/
   @ApiModelProperty(value = "")
 
   @Valid
 
-  public OntologyRefernce getOntologyRefernce() {
-    return ontologyRefernce;
+  public OntologyReference getOntologyReference() {
+    return ontologyReference;
   }
 
-  public void setOntologyRefernce(OntologyRefernce ontologyRefernce) {
-    this.ontologyRefernce = ontologyRefernce;
+  public void setOntologyReference(OntologyReference ontologyReference) {
+    this.ontologyReference = ontologyReference;
   }
 
   public VariableBaseClass scale(Scale scale) {
@@ -483,7 +483,7 @@ public class VariableBaseClass   {
         Objects.equals(this.method, variableBaseClass.method) &&
         Objects.equals(this.ontologyDbId, variableBaseClass.ontologyDbId) &&
         Objects.equals(this.ontologyName, variableBaseClass.ontologyName) &&
-        Objects.equals(this.ontologyRefernce, variableBaseClass.ontologyRefernce) &&
+        Objects.equals(this.ontologyReference, variableBaseClass.ontologyReference) &&
         Objects.equals(this.scale, variableBaseClass.scale) &&
         Objects.equals(this.scientist, variableBaseClass.scientist) &&
         Objects.equals(this.status, variableBaseClass.status) &&
@@ -495,7 +495,7 @@ public class VariableBaseClass   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(contextOfUse, crop, defaultValue, documentationURL, growthStage, institution, language, method, ontologyDbId, ontologyName, ontologyRefernce, scale, scientist, status, submissionTimestamp, synonyms, trait, xref);
+    return Objects.hash(contextOfUse, crop, defaultValue, documentationURL, growthStage, institution, language, method, ontologyDbId, ontologyName, ontologyReference, scale, scientist, status, submissionTimestamp, synonyms, trait, xref);
   }
 
   @Override
@@ -513,7 +513,7 @@ public class VariableBaseClass   {
     sb.append("    method: ").append(toIndentedString(method)).append("\n");
     sb.append("    ontologyDbId: ").append(toIndentedString(ontologyDbId)).append("\n");
     sb.append("    ontologyName: ").append(toIndentedString(ontologyName)).append("\n");
-    sb.append("    ontologyRefernce: ").append(toIndentedString(ontologyRefernce)).append("\n");
+    sb.append("    ontologyReference: ").append(toIndentedString(ontologyReference)).append("\n");
     sb.append("    scale: ").append(toIndentedString(scale)).append("\n");
     sb.append("    scientist: ").append(toIndentedString(scientist)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");

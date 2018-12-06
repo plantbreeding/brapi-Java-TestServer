@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Measurement;
-import io.swagger.model.OntologyReference;
+import io.swagger.model.VendorOntologyReference;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -15,7 +15,7 @@ import javax.validation.constraints.*;
  * VendorSample
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-06T17:40:52.157-05:00[America/New_York]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-05T14:32:54.779-05:00[America/New_York]")
 
 public class VendorSample   {
   @JsonProperty("clientSampleBarCode")
@@ -43,13 +43,13 @@ public class VendorSample   {
   private String speciesName = null;
 
   @JsonProperty("taxonomyOntologyReference")
-  private OntologyReference taxonomyOntologyReference = null;
+  private VendorOntologyReference taxonomyOntologyReference = null;
 
   @JsonProperty("tissueType")
   private String tissueType = null;
 
   @JsonProperty("tissueTypeOntologyReference")
-  private OntologyReference tissueTypeOntologyReference = null;
+  private VendorOntologyReference tissueTypeOntologyReference = null;
 
   @JsonProperty("volume")
   private Measurement volume = null;
@@ -218,7 +218,7 @@ public class VendorSample   {
     this.speciesName = speciesName;
   }
 
-  public VendorSample taxonomyOntologyReference(OntologyReference taxonomyOntologyReference) {
+  public VendorSample taxonomyOntologyReference(VendorOntologyReference taxonomyOntologyReference) {
     this.taxonomyOntologyReference = taxonomyOntologyReference;
     return this;
   }
@@ -231,11 +231,11 @@ public class VendorSample   {
 
   @Valid
 
-  public OntologyReference getTaxonomyOntologyReference() {
+  public VendorOntologyReference getTaxonomyOntologyReference() {
     return taxonomyOntologyReference;
   }
 
-  public void setTaxonomyOntologyReference(OntologyReference taxonomyOntologyReference) {
+  public void setTaxonomyOntologyReference(VendorOntologyReference taxonomyOntologyReference) {
     this.taxonomyOntologyReference = taxonomyOntologyReference;
   }
 
@@ -259,7 +259,7 @@ public class VendorSample   {
     this.tissueType = tissueType;
   }
 
-  public VendorSample tissueTypeOntologyReference(OntologyReference tissueTypeOntologyReference) {
+  public VendorSample tissueTypeOntologyReference(VendorOntologyReference tissueTypeOntologyReference) {
     this.tissueTypeOntologyReference = tissueTypeOntologyReference;
     return this;
   }
@@ -272,11 +272,11 @@ public class VendorSample   {
 
   @Valid
 
-  public OntologyReference getTissueTypeOntologyReference() {
+  public VendorOntologyReference getTissueTypeOntologyReference() {
     return tissueTypeOntologyReference;
   }
 
-  public void setTissueTypeOntologyReference(OntologyReference tissueTypeOntologyReference) {
+  public void setTissueTypeOntologyReference(VendorOntologyReference tissueTypeOntologyReference) {
     this.tissueTypeOntologyReference = tissueTypeOntologyReference;
   }
 

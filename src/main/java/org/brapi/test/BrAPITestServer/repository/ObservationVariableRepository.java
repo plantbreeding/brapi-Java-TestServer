@@ -1,7 +1,5 @@
 package org.brapi.test.BrAPITestServer.repository;
 
-import java.util.List;
-
 import org.brapi.test.BrAPITestServer.model.entity.ObservationVariableEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,5 +15,5 @@ public interface ObservationVariableRepository extends PagingAndSortingRepositor
 	
 	@Query("select distinct o.observationVariable from ObservationEntity o "
 			+ "where o.observationUnit.study.id = :studyDbId")
-	public List<ObservationVariableEntity> findAllForStudy(@Param("studyDbId") String studyDbId);
+	public Page<ObservationVariableEntity> findAllForStudy(@Param("studyDbId") String studyDbId, Pageable pageReq);
 }

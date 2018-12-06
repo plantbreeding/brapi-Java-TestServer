@@ -42,7 +42,7 @@ public class TraitEntity extends BaseEntity implements OntologyInterface{
 	private OntologyEntity ontology;
 	@JoinTable
 	@OneToMany(cascade = CascadeType.ALL)
-	private List<OntologyRefernceEntity> ontologyRefernce;
+	private List<OntologyReferenceEntity> ontologyReference;
 	
 	
 	public OntologyEntity getOntology() {
@@ -53,12 +53,12 @@ public class TraitEntity extends BaseEntity implements OntologyInterface{
 		this.ontology = ontology;
 	}
 
-	public List<OntologyRefernceEntity> getOntologyRefernce() {
-		return ontologyRefernce;
+	public List<OntologyReferenceEntity> getOntologyReference() {
+		return ontologyReference;
 	}
 
-	public void setOntologyRefernce(List<OntologyRefernceEntity> ontologyRefernce) {
-		this.ontologyRefernce = ontologyRefernce;
+	public void setOntologyReference(List<OntologyReferenceEntity> ontologyReference) {
+		this.ontologyReference = ontologyReference;
 	}
 
 	public List<TraitAbbreviationEntity> getAlternativeAbbreviations() {

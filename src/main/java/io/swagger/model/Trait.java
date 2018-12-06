@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.OntologyRefernce;
+import io.swagger.model.OntologyReference;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
  * Trait
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-06T17:40:52.157-05:00[America/New_York]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-05T14:32:54.779-05:00[America/New_York]")
 
 public class Trait   {
   @JsonProperty("alternativeAbbreviations")
@@ -41,8 +41,8 @@ public class Trait   {
   @JsonProperty("name")
   private String name = null;
 
-  @JsonProperty("ontologyRefernce")
-  private OntologyRefernce ontologyRefernce = null;
+  @JsonProperty("ontologyReference")
+  private OntologyReference ontologyReference = null;
 
   @JsonProperty("status")
   private String status = null;
@@ -208,25 +208,25 @@ public class Trait   {
     this.name = name;
   }
 
-  public Trait ontologyRefernce(OntologyRefernce ontologyRefernce) {
-    this.ontologyRefernce = ontologyRefernce;
+  public Trait ontologyReference(OntologyReference ontologyReference) {
+    this.ontologyReference = ontologyReference;
     return this;
   }
 
   /**
-   * Get ontologyRefernce
-   * @return ontologyRefernce
+   * Get ontologyReference
+   * @return ontologyReference
   **/
   @ApiModelProperty(value = "")
 
   @Valid
 
-  public OntologyRefernce getOntologyRefernce() {
-    return ontologyRefernce;
+  public OntologyReference getOntologyReference() {
+    return ontologyReference;
   }
 
-  public void setOntologyRefernce(OntologyRefernce ontologyRefernce) {
-    this.ontologyRefernce = ontologyRefernce;
+  public void setOntologyReference(OntologyReference ontologyReference) {
+    this.ontologyReference = ontologyReference;
   }
 
   public Trait status(String status) {
@@ -354,7 +354,7 @@ public class Trait   {
         Objects.equals(this.entity, trait.entity) &&
         Objects.equals(this.mainAbbreviation, trait.mainAbbreviation) &&
         Objects.equals(this.name, trait.name) &&
-        Objects.equals(this.ontologyRefernce, trait.ontologyRefernce) &&
+        Objects.equals(this.ontologyReference, trait.ontologyReference) &&
         Objects.equals(this.status, trait.status) &&
         Objects.equals(this.synonyms, trait.synonyms) &&
         Objects.equals(this.traitDbId, trait.traitDbId) &&
@@ -364,7 +364,7 @@ public class Trait   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(alternativeAbbreviations, attribute, propertyClass, description, entity, mainAbbreviation, name, ontologyRefernce, status, synonyms, traitDbId, traitName, xref);
+    return Objects.hash(alternativeAbbreviations, attribute, propertyClass, description, entity, mainAbbreviation, name, ontologyReference, status, synonyms, traitDbId, traitName, xref);
   }
 
   @Override
@@ -379,7 +379,7 @@ public class Trait   {
     sb.append("    entity: ").append(toIndentedString(entity)).append("\n");
     sb.append("    mainAbbreviation: ").append(toIndentedString(mainAbbreviation)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    ontologyRefernce: ").append(toIndentedString(ontologyRefernce)).append("\n");
+    sb.append("    ontologyReference: ").append(toIndentedString(ontologyReference)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    synonyms: ").append(toIndentedString(synonyms)).append("\n");
     sb.append("    traitDbId: ").append(toIndentedString(traitDbId)).append("\n");

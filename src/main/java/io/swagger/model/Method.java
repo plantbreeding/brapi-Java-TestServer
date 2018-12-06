@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.OntologyRefernce;
+import io.swagger.model.OntologyReference;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -15,7 +15,7 @@ import javax.validation.constraints.*;
  */
 @ApiModel(description = "Method metadata")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-06T17:40:52.157-05:00[America/New_York]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-05T14:32:54.779-05:00[America/New_York]")
 
 public class Method   {
   @JsonProperty("class")
@@ -36,8 +36,8 @@ public class Method   {
   @JsonProperty("name")
   private String name = null;
 
-  @JsonProperty("ontologyRefernce")
-  private OntologyRefernce ontologyRefernce = null;
+  @JsonProperty("ontologyReference")
+  private OntologyReference ontologyReference = null;
 
   @JsonProperty("reference")
   private String reference = null;
@@ -162,25 +162,25 @@ public class Method   {
     this.name = name;
   }
 
-  public Method ontologyRefernce(OntologyRefernce ontologyRefernce) {
-    this.ontologyRefernce = ontologyRefernce;
+  public Method ontologyReference(OntologyReference ontologyReference) {
+    this.ontologyReference = ontologyReference;
     return this;
   }
 
   /**
-   * Get ontologyRefernce
-   * @return ontologyRefernce
+   * Get ontologyReference
+   * @return ontologyReference
   **/
   @ApiModelProperty(value = "")
 
   @Valid
 
-  public OntologyRefernce getOntologyRefernce() {
-    return ontologyRefernce;
+  public OntologyReference getOntologyReference() {
+    return ontologyReference;
   }
 
-  public void setOntologyRefernce(OntologyRefernce ontologyRefernce) {
-    this.ontologyRefernce = ontologyRefernce;
+  public void setOntologyReference(OntologyReference ontologyReference) {
+    this.ontologyReference = ontologyReference;
   }
 
   public Method reference(String reference) {
@@ -219,13 +219,13 @@ public class Method   {
         Objects.equals(this.methodDbId, method.methodDbId) &&
         Objects.equals(this.methodName, method.methodName) &&
         Objects.equals(this.name, method.name) &&
-        Objects.equals(this.ontologyRefernce, method.ontologyRefernce) &&
+        Objects.equals(this.ontologyReference, method.ontologyReference) &&
         Objects.equals(this.reference, method.reference);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(propertyClass, description, formula, methodDbId, methodName, name, ontologyRefernce, reference);
+    return Objects.hash(propertyClass, description, formula, methodDbId, methodName, name, ontologyReference, reference);
   }
 
   @Override
@@ -239,7 +239,7 @@ public class Method   {
     sb.append("    methodDbId: ").append(toIndentedString(methodDbId)).append("\n");
     sb.append("    methodName: ").append(toIndentedString(methodName)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    ontologyRefernce: ").append(toIndentedString(ontologyRefernce)).append("\n");
+    sb.append("    ontologyReference: ").append(toIndentedString(ontologyReference)).append("\n");
     sb.append("    reference: ").append(toIndentedString(reference)).append("\n");
     sb.append("}");
     return sb.toString();

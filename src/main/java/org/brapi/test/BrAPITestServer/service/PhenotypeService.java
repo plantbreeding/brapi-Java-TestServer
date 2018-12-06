@@ -141,13 +141,15 @@ public class PhenotypeService {
 	}
 
 	private SeasonEntity getSeasonFromString(String season) {
-		String[] seasonArr = season.split(" ", 2);
-		List<SeasonEntity> seasonEntityOption = seasonRepository
-				.findAllByYearAndSeason(NumberUtils.toInt(seasonArr[1]), seasonArr[0], PageRequest.of(0, 1))
-				.getContent();
+		if (season != null) {
+			String[] seasonArr = season.split(" ", 2);
+			List<SeasonEntity> seasonEntityOption = seasonRepository
+					.findAllByYearAndSeason(NumberUtils.toInt(seasonArr[1]), seasonArr[0], PageRequest.of(0, 1))
+					.getContent();
 
-		if (seasonEntityOption.size() > 0) {
-			return seasonEntityOption.get(0);
+			if (seasonEntityOption.size() > 0) {
+				return seasonEntityOption.get(0);
+			}
 		}
 		return null;
 	}
@@ -414,8 +416,10 @@ public class PhenotypeService {
 			o.setObservationVariableName(op.getObservationVariableName());
 			o.setValue(op.getValue());
 			SeasonEntity season = getSeasonFromString(op.getSeason());
-			o.setSeason(new Season().season(season.getSeason()).seasonDbId(season.getId())
-					.year(season.getYear().toString()));
+			if (season != null) {
+				o.setSeason(new Season().season(season.getSeason()).seasonDbId(season.getId())
+						.year(season.getYear().toString()));
+			}
 			return o;
 		}).collect(Collectors.toList()));
 

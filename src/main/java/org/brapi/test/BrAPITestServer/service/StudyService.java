@@ -497,12 +497,12 @@ public class StudyService {
 		return observations;
 	}
 
-	public ObservationsTable getStudyObservationUnitTable(String studyDbId) {
+	public ObservationsTable getStudyObservationUnitTable(String studyDbId, Metadata metadata) {
 		ObservationsTable tableWrapper = new ObservationsTable();
 
 		tableWrapper.setHeaderRow(buildHeaderRow());
 
-		List<ObservationVariable> variables = observationVariableService.getVariablesForStudy(studyDbId);
+		List<ObservationVariable> variables = observationVariableService.getVariablesForStudy(studyDbId, metadata);
 		tableWrapper.setObservationVariableDbIds(
 				variables.stream().map(e -> e.getObservationVariableDbId()).collect(Collectors.toList()));
 		tableWrapper.setObservationVariableNames(variables.stream().map(e -> e.getName()).collect(Collectors.toList()));
@@ -514,7 +514,7 @@ public class StudyService {
 	}
 
 	public String getStudyObservationUnitTableText(String studyDbId, String sep) {
-		ObservationsTable table = getStudyObservationUnitTable(studyDbId);
+		ObservationsTable table = getStudyObservationUnitTable(studyDbId, new Metadata());
 		StringBuilder responseBuilder = new StringBuilder();
 
 		for (HeaderRowEnum header : table.getHeaderRow()) {
@@ -546,12 +546,12 @@ public class StudyService {
 		return responseBuilder.toString();
 	}
 
-	public StudyObservationVariablesResponseResult getStudyObservationVariables(String studyDbId) {
+	public StudyObservationVariablesResponseResult getStudyObservationVariables(String studyDbId, Metadata metadata) {
 		Study study = getStudy(studyDbId);
 		StudyObservationVariablesResponseResult wrapper = null;
 		if (study != null) {
 			wrapper = new StudyObservationVariablesResponseResult();
-			wrapper.setData(observationVariableService.getVariablesForStudy(studyDbId));
+			wrapper.setData(observationVariableService.getVariablesForStudy(studyDbId, metadata));
 			wrapper.setStudyDbId(study.getStudyDbId());
 			wrapper.setTrialName(study.getTrialName());
 		}

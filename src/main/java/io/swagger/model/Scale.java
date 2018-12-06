@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.OntologyRefernce;
+import io.swagger.model.OntologyReference;
 import io.swagger.model.TraitDataType;
 import io.swagger.model.ValidValues;
 import org.springframework.validation.annotation.Validated;
@@ -17,7 +17,7 @@ import javax.validation.constraints.*;
  */
 @ApiModel(description = "Scale metadata")
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-11-06T17:40:52.157-05:00[America/New_York]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-05T14:32:54.779-05:00[America/New_York]")
 
 public class Scale   {
   @JsonProperty("dataType")
@@ -29,8 +29,8 @@ public class Scale   {
   @JsonProperty("name")
   private String name = null;
 
-  @JsonProperty("ontologyRefernce")
-  private OntologyRefernce ontologyRefernce = null;
+  @JsonProperty("ontologyReference")
+  private OntologyReference ontologyReference = null;
 
   @JsonProperty("scaleDbId")
   private String scaleDbId = null;
@@ -105,25 +105,25 @@ public class Scale   {
     this.name = name;
   }
 
-  public Scale ontologyRefernce(OntologyRefernce ontologyRefernce) {
-    this.ontologyRefernce = ontologyRefernce;
+  public Scale ontologyReference(OntologyReference ontologyReference) {
+    this.ontologyReference = ontologyReference;
     return this;
   }
 
   /**
-   * Get ontologyRefernce
-   * @return ontologyRefernce
+   * Get ontologyReference
+   * @return ontologyReference
   **/
   @ApiModelProperty(value = "")
 
   @Valid
 
-  public OntologyRefernce getOntologyRefernce() {
-    return ontologyRefernce;
+  public OntologyReference getOntologyReference() {
+    return ontologyReference;
   }
 
-  public void setOntologyRefernce(OntologyRefernce ontologyRefernce) {
-    this.ontologyRefernce = ontologyRefernce;
+  public void setOntologyReference(OntologyReference ontologyReference) {
+    this.ontologyReference = ontologyReference;
   }
 
   public Scale scaleDbId(String scaleDbId) {
@@ -220,7 +220,7 @@ public class Scale   {
     return Objects.equals(this.dataType, scale.dataType) &&
         Objects.equals(this.decimalPlaces, scale.decimalPlaces) &&
         Objects.equals(this.name, scale.name) &&
-        Objects.equals(this.ontologyRefernce, scale.ontologyRefernce) &&
+        Objects.equals(this.ontologyReference, scale.ontologyReference) &&
         Objects.equals(this.scaleDbId, scale.scaleDbId) &&
         Objects.equals(this.scaleName, scale.scaleName) &&
         Objects.equals(this.validValues, scale.validValues) &&
@@ -229,7 +229,7 @@ public class Scale   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(dataType, decimalPlaces, name, ontologyRefernce, scaleDbId, scaleName, validValues, xref);
+    return Objects.hash(dataType, decimalPlaces, name, ontologyReference, scaleDbId, scaleName, validValues, xref);
   }
 
   @Override
@@ -240,7 +240,7 @@ public class Scale   {
     sb.append("    dataType: ").append(toIndentedString(dataType)).append("\n");
     sb.append("    decimalPlaces: ").append(toIndentedString(decimalPlaces)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    ontologyRefernce: ").append(toIndentedString(ontologyRefernce)).append("\n");
+    sb.append("    ontologyReference: ").append(toIndentedString(ontologyReference)).append("\n");
     sb.append("    scaleDbId: ").append(toIndentedString(scaleDbId)).append("\n");
     sb.append("    scaleName: ").append(toIndentedString(scaleName)).append("\n");
     sb.append("    validValues: ").append(toIndentedString(validValues)).append("\n");
