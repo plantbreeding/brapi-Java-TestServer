@@ -6,6 +6,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BaseEntity;
@@ -24,7 +25,16 @@ public class VendorPlateSubmissionEntity extends BaseEntity{
 	private SampleTypeEnum sampleType;
 	@OneToMany(mappedBy="submission", cascade = CascadeType.ALL)
     private List<PlateEntity> plates;
+	@OneToOne(cascade = CascadeType.ALL)
+	private VendorOrderEntity order;
 	
+	
+	public VendorOrderEntity getOrder() {
+		return order;
+	}
+	public void setOrder(VendorOrderEntity order) {
+		this.order = order;
+	}
 	public String getClientId() {
 		return clientId;
 	}

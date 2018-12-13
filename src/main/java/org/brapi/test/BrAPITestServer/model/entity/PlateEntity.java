@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import org.brapi.test.BrAPITestServer.model.entity.vendor.VendorFileEntity;
 import org.brapi.test.BrAPITestServer.model.entity.vendor.VendorPlateSubmissionEntity;
 
+import io.swagger.model.PlateFormat;
+
 @Entity
 @Table(name="plate")
 public class PlateEntity extends BaseEntity{
@@ -21,16 +23,13 @@ public class PlateEntity extends BaseEntity{
 	@Column
     private String clientPlateBarcode;
 	@Column
-    private String sampleSubmissionFormat;
+    private PlateFormat sampleSubmissionFormat;
 	@Column
     private Date statusTimeStamp;
 	@OneToMany(mappedBy="plate", cascade = CascadeType.ALL)
     private List<SampleEntity> samples;
-	@OneToMany(mappedBy="plateDbId")
-	private List<VendorFileEntity> files;
 	@ManyToOne
-	private VendorPlateSubmissionEntity submission;
-	
+	private VendorPlateSubmissionEntity submission;	
 	
 	public VendorPlateSubmissionEntity getSubmission() {
 		return submission;
@@ -50,10 +49,10 @@ public class PlateEntity extends BaseEntity{
 	public void setClientPlateBarcode(String clientPlateBarcode) {
 		this.clientPlateBarcode = clientPlateBarcode;
 	}
-	public String getSampleSubmissionFormat() {
+	public PlateFormat getSampleSubmissionFormat() {
 		return sampleSubmissionFormat;
 	}
-	public void setSampleSubmissionFormat(String sampleSubmissionFormat) {
+	public void setSampleSubmissionFormat(PlateFormat sampleSubmissionFormat) {
 		this.sampleSubmissionFormat = sampleSubmissionFormat;
 	}
 	public Date getStatusTimeStamp() {
@@ -67,12 +66,6 @@ public class PlateEntity extends BaseEntity{
 	}
 	public void setSamples(List<SampleEntity> samples) {
 		this.samples = samples;
-	}
-	public List<VendorFileEntity> getFiles() {
-		return files;
-	}
-	public void setFiles(List<VendorFileEntity> files) {
-		this.files = files;
 	}
 	
 	

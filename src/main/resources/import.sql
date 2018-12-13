@@ -561,9 +561,11 @@ INSERT INTO marker_synonym (id, marker_db_id, synonym) VALUES('ms20', 'mr20', 'i
 INSERT INTO marker_synonym (id, marker_db_id, synonym) VALUES('ms21', 'mr21', 'i_11_10210');
 INSERT INTO marker_synonym (id, marker_db_id, synonym) VALUES('ms22', 'mr22', 'i_11_10220');
 
-INSERT INTO plate_submission (id, client_id, number_of_samples, sample_type) VALUES('ps1', 'cl1', 14, 0);
-INSERT INTO plate (id, client_plate_db_id, client_plate_barcode, sample_submission_format, status_time_stamp, submission_id) VALUES('pl1', 'cl1', 'cl1', 'Plate_96', '2018-01-01 00:00:00', 'ps1');
 
+INSERT INTO vendor_order(id, client_plate_barcode, client_plate_db_id, sample_type, status, status_time_stamp)	VALUES ('vo1', '123456', '123456', 0, 0, '2018-01-01 00:00:00');
+INSERT INTO plate_submission (id, client_id, number_of_samples, sample_type, order_id) VALUES('ps1', '123456', 14, 0, 'vo1');
+INSERT INTO plate (id, client_plate_db_id, client_plate_barcode, sample_submission_format, status_time_stamp, submission_id) VALUES('pl1', '123456789', '123456789', 0, '2018-01-01 00:00:00', 'ps1');
+INSERT INTO vendor_order_entity_service_ids(vendor_order_entity_id, service_ids) VALUES ('vo1', 'vsp1');
 
 INSERT INTO sample (id, concentration, notes, plate_id, plate_index, sample_timestamp, sample_type, taken_by, tissue_type, volume, observation_unit_id, taxon_id_id) VALUES('sam00', '20', 'Example Sample', 'pl1', 0, '2018-01-01 00:00:00', 'DNA', 'Bob', 'Leaf', '100', '1', '0');
 INSERT INTO sample (id, concentration, notes, plate_id, plate_index, sample_timestamp, sample_type, taken_by, tissue_type, volume, observation_unit_id, taxon_id_id) VALUES('sam01', '19', 'Example Sample', 'pl1', 1, '2018-01-01 00:00:00', 'DNA', 'Bob', 'Leaf', '100', '2', '0');
@@ -943,7 +945,6 @@ INSERT INTO vendor_spec_well_position (id, "position", vendor_spec_standard_requ
 INSERT INTO vendor_spec_well_position (id, "position", vendor_spec_standard_requirement_db_id) VALUES('vswp2', 'A01', 'vsr1');
 INSERT INTO vendor_spec_well_position (id, "position", vendor_spec_standard_requirement_db_id) VALUES('vswp3', 'H12', 'vsr1');
 
-
 INSERT INTO vendor_spec_platform (id, contact_email, contact_name, contact_phone, platform_description, platform_name, platformurl, shipping_address, specific_requirements, taxonomy_id_system_name, taxonomy_id_systemuri, tissue_id_system_name, tissue_id_systemuri, vendor_spec_db_id, standard_requirements_id) VALUES('vsp1', 'plat1@brapi.org', 'Bob Smith', '+12345678910', 'This is an example platform', 'Example Platform', 'https://brapi.org', '123 Street Ave, Townsville, USA', NULL, 'NCBITaxonomyId', 'https://ncbi.org', 'TIS', 'https://tis.org', '1', 'vsr1');
 INSERT INTO vendor_spec_deliverable (id, description, format, "name", vendor_spec_platform_db_id) VALUES('vsd1', 'An Example Deliverable', 'CSV', 'Example Deliverable', 'vsp1');
 INSERT INTO vendor_spec_status (id, status_description, status_name, vendor_spec_platform_db_id) VALUES('vssta1', 'Samples have been recored, but not recieved', 'Created', 'vsp1');
@@ -951,3 +952,5 @@ INSERT INTO vendor_spec_status (id, status_description, status_name, vendor_spec
 INSERT INTO vendor_spec_status (id, status_description, status_name, vendor_spec_platform_db_id) VALUES('vssta3', 'Sample submission has been rejected by the vendor', 'Rejected', 'vsp1');
 INSERT INTO vendor_spec_status (id, status_description, status_name, vendor_spec_platform_db_id) VALUES('vssta4', 'Vendor has begun to process the samples', 'Processing', 'vsp1');
 INSERT INTO vendor_spec_status (id, status_description, status_name, vendor_spec_platform_db_id) VALUES('vssta5', 'Processing is complete, data is ready to download', 'Completed', 'vsp1');
+
+
