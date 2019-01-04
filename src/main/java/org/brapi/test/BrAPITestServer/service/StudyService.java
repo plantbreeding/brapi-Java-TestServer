@@ -420,12 +420,10 @@ public class StudyService {
 		request.setGermplasmDbIds(germplasmDbIds);
 		request.setObservationVariableDbIds(observationVariableDbIds);
 		request.setActive(active);
+		request.setSortBy(SortByEnum.fromValue(sortBy));
+		request.setSortOrder(SortOrderEnum.fromValue(sortOrder));
 
-		return searchStudies(request, SortByEnum.fromValue(sortBy), SortOrderEnum.fromValue(sortOrder), metaData);
-	}
-
-	public List<StudySummary> getStudies(StudySearchRequest request, Metadata metaData) {
-		return searchStudies(request, request.getSortBy(), request.getSortOrder(), metaData);
+		return searchStudies(request, metaData);
 	}
 
 	public List<StudySummary> getStudies(@Valid StudySearchRequestDep req, Metadata metaData) {
@@ -443,7 +441,7 @@ public class StudyService {
 		if (req.getSortOrder() != null)
 			newRequest.setSortOrder(SortOrderEnum.fromValue(req.getSortOrder().toString()));
 
-		return getStudies(newRequest, metaData);
+		return searchStudies(newRequest, metaData);
 	}
 
 	public Study getStudy(String studyDbId) {
@@ -838,21 +836,10 @@ public class StudyService {
 		return positions;
 	}
 
-	public List<StudySummary> searchBySearchRequestDbId(String searchResultsDbId, Metadata metadata)
-			throws BrAPIServerException {
-		Pageable pageReq = PagingUtility.getPageRequest(metadata);
-		StudySearchRequest request = searchService.findById(searchResultsDbId).getParameters(StudySearchRequest.class);
-		Page<StudyEntity> page = studyRepository.findBySearch(request, null, null, pageReq);
-		List<StudySummary> programs = page.map(this::convertFromEntityToSummary).getContent();
-		PagingUtility.calculateMetaData(metadata, page);
-		return programs;
-	}
-
-	private List<StudySummary> searchStudies(StudySearchRequest request, SortByEnum sortBy, SortOrderEnum sortOrder,
-			Metadata metaData) {
+	public List<StudySummary> searchStudies(StudySearchRequest request, Metadata metaData) {
 
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-		Page<StudyEntity> studiesPage = studyRepository.findBySearch(request, sortBy, sortOrder, pageReq);
+		Page<StudyEntity> studiesPage = studyRepository.findBySearch(request, pageReq);
 		PagingUtility.calculateMetaData(metaData, studiesPage);
 
 		List<StudySummary> summaries = studiesPage.map(this::convertFromEntityToSummary).getContent();

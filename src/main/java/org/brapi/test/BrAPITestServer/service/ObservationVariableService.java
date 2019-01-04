@@ -153,10 +153,8 @@ public class ObservationVariableService {
 		return observationVariableRepository.findById(observationVariableDbId).orElse(null);
 	}
 
-	public List<ObservationVariable> searchBySearchRequestDbId(String searchResultsDbId, Metadata metadata) throws BrAPIServerException {
+	public List<ObservationVariable> search(ObservationVariableSearchRequest request, Metadata metadata) throws BrAPIServerException {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
-		ObservationVariableSearchRequest request = searchService.findById(searchResultsDbId)
-				.getParameters(ObservationVariableSearchRequest.class);
 		Page<ObservationVariableEntity> page = observationVariableRepository.findBySearch(request, pageReq);
 		List<ObservationVariable> programs = page.map(this::convertFromEntity).getContent();
 		PagingUtility.calculateMetaData(metadata, page);

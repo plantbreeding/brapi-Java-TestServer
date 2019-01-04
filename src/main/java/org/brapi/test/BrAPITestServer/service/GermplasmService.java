@@ -393,13 +393,4 @@ public class GermplasmService {
 
 		return mcpd;
 	}
-
-	public List<Germplasm> searchBySearchRequestDbId(String searchRequestDbId, Metadata metaData)
-			throws BrAPIServerException {
-		GermplasmSearchRequest request = searchService.findById(searchRequestDbId)
-				.getParameters(GermplasmSearchRequest.class);
-		List<Germplasm> germplasm = search(request, metaData);
-
-		return germplasm;
-	}
 }

@@ -11,6 +11,20 @@ import io.swagger.model.Metadata;
 import io.swagger.model.MetadataPagination;
 
 public class BrAPIController {
+	protected Metadata generateMetaDataTemplateForSearch(Integer originalRequestedPage, Integer newRequestedPage, Integer originalRequestedPageSize, Integer newRequestedPageSize) throws BrAPIServerException {
+		Integer page = newRequestedPage;
+		Integer pageSize = newRequestedPageSize;
+		
+		if (page == null) {
+			page = originalRequestedPage;
+		}
+		if (pageSize == null) {
+			pageSize = originalRequestedPageSize;
+		}
+		
+		return generateMetaDataTemplate(page, pageSize);
+	}
+
 	protected Metadata generateMetaDataTemplate(Integer page, Integer pageSize) throws BrAPIServerException {
 		validatePaging(page, pageSize);
 
@@ -85,38 +99,47 @@ public class BrAPIController {
 		private Integer percentComplete;
 		private String startTime;
 		private AsyncMetadataStatusEnum status;
-		
+
 		public String getAsynchId() {
 			return asynchId;
 		}
+
 		public void setAsynchId(String asynchId) {
 			this.asynchId = asynchId;
 		}
+
 		public String getEndTime() {
 			return endTime;
 		}
+
 		public void setEndTime(String endTime) {
 			this.endTime = endTime;
 		}
+
 		public Integer getPercentComplete() {
 			return percentComplete;
 		}
+
 		public void setPercentComplete(Integer percentComplete) {
 			this.percentComplete = percentComplete;
 		}
+
 		public String getStartTime() {
 			return startTime;
 		}
+
 		public void setStartTime(String startTime) {
 			this.startTime = startTime;
 		}
+
 		public AsyncMetadataStatusEnum getStatus() {
 			return status;
 		}
+
 		public void setStatus(AsyncMetadataStatusEnum status) {
 			this.status = status;
 		}
-		
+
 	}
 
 	protected enum AsyncMetadataStatusEnum {

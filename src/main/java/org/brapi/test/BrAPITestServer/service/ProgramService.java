@@ -64,9 +64,8 @@ public class ProgramService {
 		return program;
 	}
 
-	public List<Program> searchBySearchRequestDbId(String searchResultsDbId, Metadata metadata) throws BrAPIServerException {
+	public List<Program> search(ProgramsSearchRequest request, Metadata metadata) throws BrAPIServerException {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
-		ProgramsSearchRequest request = searchService.findById(searchResultsDbId).getParameters(ProgramsSearchRequest.class);
 		Page<ProgramEntity> page = programRepository.findAllBySearch(request, pageReq);
 		List<Program> programs = page.map(this::convertFromEntity).getContent();
 		PagingUtility.calculateMetaData(metadata, page);

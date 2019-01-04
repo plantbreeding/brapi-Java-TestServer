@@ -115,14 +115,15 @@ public class SearchController extends BrAPIController implements SearchApi {
 	public ResponseEntity<GermplasmResponse> searchGermplasmSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId, @Valid Integer page, @Valid Integer pageSize,
 			String authorization) throws BrAPIServerException {
-
-		Metadata metaData = generateMetaDataTemplate(page, pageSize);
-		List<Germplasm> data = germplasmService.searchBySearchRequestDbId(searchResultsDbId, metaData);
+		GermplasmSearchRequest request = searchService.findById(searchResultsDbId).getParameters(GermplasmSearchRequest.class);
+		Metadata metadata = generateMetaDataTemplateForSearch(request.getPage(), page, request.getPageSize(), pageSize);
+		
+		List<Germplasm> data = germplasmService.search(request, metadata);
 
 		GermplasmResponseResult result = new GermplasmResponseResult();
 		result.setData(data);
 		GermplasmResponse response = new GermplasmResponse();
-		response.setMetadata(metaData);
+		response.setMetadata(metadata);
 		response.setResult(result);
 		return new ResponseEntity<GermplasmResponse>(response, HttpStatus.OK);
 
@@ -141,10 +142,10 @@ public class SearchController extends BrAPIController implements SearchApi {
 	public ResponseEntity<ImagesResponse> searchImagesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId, @Valid Integer page, @Valid Integer pageSize,
 			String authorization) throws BrAPIServerException {
-
+		ImagesSearchRequest request = searchService.findById(searchResultsDbId).getParameters(ImagesSearchRequest.class);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 
-		List<Image> data = imageService.searchBySearchRequestDbId(searchResultsDbId, metadata);
+		List<Image> data = imageService.search(request, metadata);
 
 		ImagesResponseResult result = new ImagesResponseResult();
 		result.setData(data);
@@ -167,9 +168,10 @@ public class SearchController extends BrAPIController implements SearchApi {
 	public ResponseEntity<MarkersResponse> searchMarkersSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId, @Valid Integer page, @Valid Integer pageSize,
 			String authorization) throws BrAPIServerException {
-		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		MarkersSearchRequest request = searchService.findById(searchResultsDbId).getParameters(MarkersSearchRequest.class);
+		Metadata metadata = generateMetaDataTemplateForSearch(request.getPage(), page, request.getPageSize(), pageSize);
 
-		List<Marker> data = markerService.searchBySearchRequestDbId(searchResultsDbId, metadata);
+		List<Marker> data = markerService.search(request, metadata);
 
 		MarkersResponseResult result = new MarkersResponseResult();
 		result.setData(data);
@@ -193,8 +195,8 @@ public class SearchController extends BrAPIController implements SearchApi {
 			@PathVariable("searchResultsDbId") String searchResultsDbId, String authorization, @Valid Integer page, @Valid Integer pageSize)
 			throws BrAPIServerException {
 		
-		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		PhenotypesSearchRequest request = searchService.findById(searchResultsDbId).getParameters(PhenotypesSearchRequest.class);
+		Metadata metadata = generateMetaDataTemplateForSearch(request.getPage(), page, request.getPageSize(), pageSize);
 
 		if (accept == WSMIMEDataTypes.TEXT_CSV) {
 			String response = phenotypeService.getPhenotypesCsv(request, metadata);
@@ -222,8 +224,8 @@ public class SearchController extends BrAPIController implements SearchApi {
 	public ResponseEntity<ObservationUnitsResponse1> searchObservationunitsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId, @Valid Integer page, @Valid Integer pageSize, String authorization)
 			throws BrAPIServerException {
-		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		PhenotypesSearchRequest request = searchService.findById(searchResultsDbId).getParameters(PhenotypesSearchRequest.class);
+		Metadata metadata = generateMetaDataTemplateForSearch(request.getPage(), page, request.getPageSize(), pageSize);
 
 		List<ObservationUnit> data = phenotypeService.getPhenotypes(request, metadata)
 				.stream()
@@ -251,9 +253,10 @@ public class SearchController extends BrAPIController implements SearchApi {
 	public ResponseEntity<ProgramsResponse> searchProgramsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId, @Valid Integer page, @Valid Integer pageSize,
 			String authorization) throws BrAPIServerException {
-		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		ProgramsSearchRequest request = searchService.findById(searchResultsDbId).getParameters(ProgramsSearchRequest.class);
+		Metadata metadata = generateMetaDataTemplateForSearch(request.getPage(), page, request.getPageSize(), pageSize);
 
-		List<Program> data = programService.searchBySearchRequestDbId(searchResultsDbId, metadata);
+		List<Program> data = programService.search(request, metadata);
 
 		ProgramsResponseResult result = new ProgramsResponseResult();
 		result.setData(data);
@@ -276,9 +279,10 @@ public class SearchController extends BrAPIController implements SearchApi {
 	public ResponseEntity<SamplesResponse> searchSamplesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId, @Valid Integer page, @Valid Integer pageSize,
 			String authorization) throws BrAPIServerException {
-		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		SampleSearchRequest request = searchService.findById(searchResultsDbId).getParameters(SampleSearchRequest.class);
+		Metadata metadata = generateMetaDataTemplateForSearch(request.getPage(), page, request.getPageSize(), pageSize);
 
-		List<Sample> data = sampleService.searchBySearchRequestDbId(searchResultsDbId, metadata);
+		List<Sample> data = sampleService.searchSamples(request, metadata);
 
 		SamplesResponseResult result = new SamplesResponseResult();
 		result.setData(data);
@@ -301,9 +305,10 @@ public class SearchController extends BrAPIController implements SearchApi {
 	public ResponseEntity<StudiesResponse> searchStudiesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId, @Valid Integer page, @Valid Integer pageSize,
 			String authorization) throws BrAPIServerException {
-		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		StudySearchRequest request = searchService.findById(searchResultsDbId).getParameters(StudySearchRequest.class);
+		Metadata metadata = generateMetaDataTemplateForSearch(request.getPage(), page, request.getPageSize(), pageSize);
 
-		List<StudySummary> data = studyService.searchBySearchRequestDbId(searchResultsDbId, metadata);
+		List<StudySummary> data = studyService.searchStudies(request, metadata);
 
 		StudiesResponseResult result = new StudiesResponseResult();
 		result.setData(data);
@@ -327,10 +332,11 @@ public class SearchController extends BrAPIController implements SearchApi {
 	public ResponseEntity<ObservationVariablesResponse> searchVariablesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId, @Valid Integer page, @Valid Integer pageSize,
 			String authorization) throws BrAPIServerException {
-		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-
-		List<ObservationVariable> data = observationVariableService.searchBySearchRequestDbId(searchResultsDbId,
-				metadata);
+		
+		ObservationVariableSearchRequest request = searchService.findById(searchResultsDbId).getParameters(ObservationVariableSearchRequest.class);
+		Metadata metadata = generateMetaDataTemplateForSearch(request.getPage(), page, request.getPageSize(), pageSize);
+		
+		List<ObservationVariable> data = observationVariableService.search(request, metadata);
 
 		ObservationVariablesResponseResult result = new ObservationVariablesResponseResult();
 		result.setData(data);

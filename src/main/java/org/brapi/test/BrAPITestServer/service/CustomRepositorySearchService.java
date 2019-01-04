@@ -44,7 +44,7 @@ public class CustomRepositorySearchService<ResponseEntityType> {
 
 	private Long getTotalCount(CustomRepositorySearchContext<ResponseEntityType> context) {
 		String queryStr = context.getQueryStr();
-		queryStr = queryStr.replaceFirst("(select|Select|SELECT)( distinct)? ([^\\s]*) ", "select $2 count($3) ");
+		queryStr = queryStr.replaceFirst("(select|Select|SELECT)( distinct)? ([^\\s]*) ", "select count($2 $3) ");
 		queryStr = queryStr.replaceFirst("(order by|Order By|ORDER BY) .*", "");
 		
 		TypedQuery<Long> query = context.getEm().createQuery(queryStr, Long.class);

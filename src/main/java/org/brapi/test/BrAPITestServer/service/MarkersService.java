@@ -79,9 +79,8 @@ public class MarkersService {
 		return marker;
 	}
 
-	public List<Marker> searchBySearchRequestDbId(String searchResultsDbId, Metadata metadata) throws BrAPIServerException {
+	public List<Marker> search(MarkersSearchRequest request, Metadata metadata) throws BrAPIServerException {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
-		MarkersSearchRequest request = searchService.findById(searchResultsDbId).getParameters(MarkersSearchRequest.class);
 		Page<MarkerEntity> page = markerRepository.findBySearch(request, pageReq);
 		PagingUtility.calculateMetaData(metadata, page);
 		List<Marker> markers = page.map(m -> convertFromEntity(m, request.isIncludeSynonyms())).getContent();

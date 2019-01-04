@@ -265,10 +265,9 @@ public class ImageService {
 		}
 	}
 
-	public List<Image> searchBySearchRequestDbId(String searchResultsDbId, Metadata metadata)
+	public List<Image> search(ImagesSearchRequest request, Metadata metadata)
 			throws BrAPIServerException {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
-		ImagesSearchRequest request =  searchService.findById(searchResultsDbId).getParameters(ImagesSearchRequest.class);
 		Page<ImageEntity> imagesPage = imageRepository.findBySearch(request, pageReq);
 		PagingUtility.calculateMetaData(metadata, imagesPage);
 		List<Image> images = imagesPage.map(this::convertFromEntiy).getContent();

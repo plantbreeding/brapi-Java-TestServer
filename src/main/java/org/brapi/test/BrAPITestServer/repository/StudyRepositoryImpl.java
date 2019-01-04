@@ -35,14 +35,14 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
 	}
 
 	@Override
-	public Page<StudyEntity> findBySearch(StudySearchRequest request, SortByEnum sortBy, SortOrderEnum sortOrder, Pageable pageRequest) {
+	public Page<StudyEntity> findBySearch(StudySearchRequest request, Pageable pageRequest) {
 		Map<String, Object> params = new HashMap<>();
-		String queryStr = buildQueryString(request, sortBy, sortOrder, params);
+		String queryStr = buildQueryString(request, params);
 		Page<StudyEntity> page = customRepositorySearchService.findAllBySearch(queryStr, params, pageRequest, StudyEntity.class, em);
 		return page;
 	}
 
-	private String buildQueryString(StudySearchRequest request, SortByEnum sortBy, SortOrderEnum sortOrder, Map<String, Object> params) {
+	private String buildQueryString(StudySearchRequest request, Map<String, Object> params) {
 		String queryStr = "select distinct s from StudyEntity s "
 				+ "JOIN s.seasons season "
 				+ "JOIN s.observationUnits ou "
@@ -97,7 +97,7 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
 			params.put("active", request.isActive());
 		}
 		
-		queryStr += buildSort(sortOrder, sortBy);
+		queryStr += buildSort(request.getSortOrder(), request.getSortBy());
 		
 		return queryStr;
 	}

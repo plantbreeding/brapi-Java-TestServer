@@ -152,9 +152,8 @@ public class SampleService {
 		return entitiesPage.map(this::convertFromEntity).getContent();
 	}
 
-	public List<Sample> searchBySearchRequestDbId(String searchResultsDbId, Metadata metadata) throws BrAPIServerException {
+	public List<Sample> searchSamples(SampleSearchRequest request, Metadata metadata) throws BrAPIServerException {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
-		SampleSearchRequest request = searchService.findById(searchResultsDbId).getParameters(SampleSearchRequest.class);
 		SampleSearchRequestDep depRequest = convertRequest(request);
 		Page<SampleEntity> page = sampleRepository.findBySearch(depRequest, pageReq);
 		List<Sample> samples = page.map(this::convertFromEntity).getContent();

@@ -8,6 +8,6 @@ import io.swagger.model.StudySearchRequest.SortByEnum;
 import io.swagger.model.StudySearchRequest.SortOrderEnum;
 
 public interface StudyRepositoryCustom {
-	public Page<StudyEntity> findBySearch(StudySearchRequest request, SortByEnum sortBy, SortOrderEnum sortOrder, Pageable pageReq);
+	public Page<StudyEntity> findBySearch(StudySearchRequest request, Pageable pageReq);
 
 }
