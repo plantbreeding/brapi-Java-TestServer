@@ -9,33 +9,33 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.brapi.test.BrAPITestServer.model.entity.ObservationVariableEntity;
 import org.brapi.test.BrAPITestServer.model.entity.SampleEntity;
+import org.brapi.test.BrAPITestServer.service.CustomRepositorySearchService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+
+import io.swagger.model.ObservationVariableSearchRequest;
 import io.swagger.model.SampleSearchRequestDep;
 
 public class SampleRepositoryImpl implements SampleRepositoryCustom {
 	@PersistenceContext
 	private EntityManager em;
 
-	@Override
-	public Page<SampleEntity> findBySearch(SampleSearchRequestDep request, Pageable pageReq) {
+	@Autowired
+	private CustomRepositorySearchService<SampleEntity> customRepositorySearchService;
+	
+	public SampleRepositoryImpl(CustomRepositorySearchService<SampleEntity> customRepositorySearchService) {
+		this.customRepositorySearchService = customRepositorySearchService;
+	}
 
+	@Override
+	public Page<SampleEntity> findBySearch(SampleSearchRequestDep request, Pageable pageRequest) {
 		Map<String, Object> params = new HashMap<>();
 		String queryStr = buildQueryString(request, params);
-
-		TypedQuery<SampleEntity> query = em.createQuery(queryStr, SampleEntity.class);
-		for (Entry<String, Object> entry : params.entrySet()) {
-			query.setParameter(entry.getKey(), entry.getValue());
-		}
-
-		query.setFirstResult((int) pageReq.getOffset());
-		query.setMaxResults(pageReq.getPageSize());
-
-		List<SampleEntity> content = query.getResultList();
-		PageImpl<SampleEntity> page = new PageImpl<>(content, pageReq, content.size());
-
+		Page<SampleEntity> page = customRepositorySearchService.findAllBySearch(queryStr, params, pageRequest, SampleEntity.class, em);
 		return page;
 	}
 

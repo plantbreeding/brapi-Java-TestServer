@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 import io.swagger.model.ObservationVariableSearchRequest;
 
 public interface ObservationVariableRepositoryCustom {
-	public Page<ObservationVariableEntity> findAllBySearch(ObservationVariableSearchRequest request, Pageable pageReq);
+	public Page<ObservationVariableEntity> findBySearch(ObservationVariableSearchRequest request, Pageable pageReq);
 }

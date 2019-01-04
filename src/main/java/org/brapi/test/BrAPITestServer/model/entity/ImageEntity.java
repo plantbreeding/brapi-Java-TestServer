@@ -1,6 +1,5 @@
 package org.brapi.test.BrAPITestServer.model.entity;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.CascadeType;

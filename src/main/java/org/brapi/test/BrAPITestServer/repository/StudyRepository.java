@@ -1,7 +1,5 @@
 package org.brapi.test.BrAPITestServer.repository;
 
-import java.util.List;
-
 import org.brapi.test.BrAPITestServer.model.entity.GermplasmEntity;
 import org.brapi.test.BrAPITestServer.model.entity.StudyEntity;
 import org.springframework.data.domain.Page;

@@ -2,12 +2,9 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * The pagination object is applicable only when the payload contains a \&quot;data\&quot; key. It describes the pagination of the data contained in the \&quot;data\&quot; array, as a way to identify which subset of data is being returned. Pages are zero indexed, so the first page will be page 0 (zero).

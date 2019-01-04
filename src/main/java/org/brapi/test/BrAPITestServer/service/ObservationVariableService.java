@@ -1,6 +1,5 @@
 package org.brapi.test.BrAPITestServer.service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.stream.Collectors;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationVariableEntity;
-import org.brapi.test.BrAPITestServer.model.entity.ProgramEntity;
 import org.brapi.test.BrAPITestServer.model.entity.VariableBaseEntity;
 import org.brapi.test.BrAPITestServer.repository.ObservationVariableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +21,7 @@ import io.swagger.model.ObservationVariable;
 import io.swagger.model.ObservationVariableSearchRequest;
 import io.swagger.model.ObservationVariableSearchRequestDep;
 import io.swagger.model.OntologyReference;
-import io.swagger.model.VendorOntologyReference;
 import io.swagger.model.OntologyReferenceDocumentationLinks;
-import io.swagger.model.Program;
-import io.swagger.model.ProgramsSearchRequest;
 import io.swagger.model.OntologyReferenceDocumentationLinks.TypeEnum;
 import io.swagger.model.Scale;
 import io.swagger.model.Trait;
@@ -85,7 +80,7 @@ public class ObservationVariableService {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 
 		ObservationVariableSearchRequest req = convertSearchRequest(request);
-		Page<ObservationVariableEntity> variablesPage = observationVariableRepository.findAllBySearch(req, pageReq);
+		Page<ObservationVariableEntity> variablesPage = observationVariableRepository.findBySearch(req, pageReq);
 
 		PagingUtility.calculateMetaData(metaData, variablesPage);
 		return variablesPage.map(this::convertFromEntity).getContent();
@@ -162,7 +157,7 @@ public class ObservationVariableService {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		ObservationVariableSearchRequest request = searchService.findById(searchResultsDbId)
 				.getParameters(ObservationVariableSearchRequest.class);
-		Page<ObservationVariableEntity> page = observationVariableRepository.findAllBySearch(request, pageReq);
+		Page<ObservationVariableEntity> page = observationVariableRepository.findBySearch(request, pageReq);
 		List<ObservationVariable> programs = page.map(this::convertFromEntity).getContent();
 		PagingUtility.calculateMetaData(metadata, page);
 		return programs;

@@ -10,20 +10,11 @@ import io.swagger.model.CallsResponse;
 import io.swagger.model.WSMIMEDataTypes;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.validation.Valid;
-import javax.validation.constraints.*;
-import java.util.List; import java.util.ArrayList;
-import java.util.Map;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-05T14:32:54.779-05:00[America/New_York]")
 
 @Api(value = "calls", description = "the calls API")
@@ -40,6 +31,6 @@ public interface CallsApi {
     @RequestMapping(value = "/calls",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    ResponseEntity<CallsResponse> callsGet(@ApiParam(value = "DEPRECATED in v1.3 - see dataType (camel case)") @Valid @RequestParam(value = "datatype", required = false) String datatype,@ApiParam(value = "The data format supported by the call. Example: `json`") @Valid @RequestParam(value = "dataType", required = false) WSMIMEDataTypes dataType,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong>Bearer {token_string} </strong>" ) @RequestHeader(value="Authorization", required=false) String authorization) throws BrAPIServerException;
+    ResponseEntity<CallsResponse> callsGet(@ApiParam(value = "DEPRECATED in v1.3 - see dataType (camel case)") @Valid @RequestParam(value = "datatype", required = false) String datatype,@ApiParam(value = "The data format supported by the call. Example: `json`") @Valid @RequestParam(value = "dataType", required = false) String dataType,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong>Bearer {token_string} </strong>" ) @RequestHeader(value="Authorization", required=false) String authorization) throws BrAPIServerException;
 
 }

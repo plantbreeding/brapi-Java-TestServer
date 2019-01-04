@@ -13,9 +13,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BaseEntity;
-import org.brapi.test.BrAPITestServer.model.entity.PlateEntity;
-import org.brapi.test.BrAPITestServer.model.entity.SampleEntity;
-
 import io.swagger.model.VendorOrderRequest.SampleTypeEnum;
 import io.swagger.model.VendorOrderStatusResponseResult.StatusEnum;
 

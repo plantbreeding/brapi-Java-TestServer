@@ -16,7 +16,6 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.GermplasmEntity;
-import org.brapi.test.BrAPITestServer.model.entity.LocationEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitXrefEntity;
@@ -37,8 +36,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import com.google.api.client.googleapis.auth.clientlogin.ClientLogin.Response;
 
 import io.swagger.model.DataLink;
 import io.swagger.model.GermplasmSummaryList;

@@ -4,10 +4,7 @@ import java.util.Objects;
 import io.swagger.annotations.ApiModel;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.List;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * A single position

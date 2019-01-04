@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.PlateEntity;
-import org.brapi.test.BrAPITestServer.model.entity.ProgramEntity;
 import org.brapi.test.BrAPITestServer.model.entity.SampleEntity;
 import org.brapi.test.BrAPITestServer.repository.ObservationUnitRepository;
 import org.brapi.test.BrAPITestServer.repository.PlateRepository;
@@ -18,8 +17,6 @@ import org.springframework.stereotype.Service;
 
 import io.swagger.model.Metadata;
 import io.swagger.model.NewSampleDbIdResult;
-import io.swagger.model.Program;
-import io.swagger.model.ProgramsSearchRequest;
 import io.swagger.model.Sample;
 import io.swagger.model.SampleSearchRequest;
 import io.swagger.model.SampleSearchRequestDep;

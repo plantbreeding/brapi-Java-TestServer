@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.model.Call;
 import io.swagger.model.Metadata;
+import io.swagger.model.WSMIMEDataTypes;
 
 @Service
 public class CallsService {
@@ -124,7 +125,7 @@ public class CallsService {
 		calls.add("{\"call\": \"vendor/specifications\", \"methods\": [\"GET\"], \"datatypes\": [\"application/json\"], \"dataTypes\": [\"application/json\"], \"versions\": [\"1.1\", \"1.2\", \"1.3\"]}");
 			}
     
-	public List<Call> getAvailableCalls(String datatype, Metadata metadata) {
+	public List<Call> getAvailableCalls(WSMIMEDataTypes datatype, Metadata metadata) {
 		List<Call> calls = buildCalls();
 		List<Call> filtered = filterCalls(calls, datatype);
 		List<Call> response = paginateCalls(filtered, metadata.getPagination().getCurrentPage(), metadata.getPagination().getPageSize());
@@ -149,9 +150,9 @@ public class CallsService {
 		return calls;
 	}
 
-	private List<Call> filterCalls(List<Call> calls, String datatype) {
+	private List<Call> filterCalls(List<Call> calls, WSMIMEDataTypes datatype) {
 		List<Call> filteredCalls;
-		if(datatype != null && !datatype.equals("")) {
+		if(datatype != null) {
 			filteredCalls = calls.stream().filter((call) -> {
 				return call.getDatatypes().contains(datatype);
 			}).collect(Collectors.toList());

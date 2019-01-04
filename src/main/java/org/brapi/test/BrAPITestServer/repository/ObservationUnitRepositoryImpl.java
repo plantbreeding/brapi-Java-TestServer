@@ -9,10 +9,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.brapi.test.BrAPITestServer.model.entity.MarkerEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitEntity;
+import org.brapi.test.BrAPITestServer.service.CustomRepositorySearchService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+
+import io.swagger.model.MarkersSearchRequest;
 import io.swagger.model.PhenotypesSearchRequest;
 
 public class ObservationUnitRepositoryImpl implements ObservationUnitRepositoryCustom{
@@ -20,23 +25,18 @@ public class ObservationUnitRepositoryImpl implements ObservationUnitRepositoryC
 	@PersistenceContext
 	private EntityManager em;
 
-	@Override
-	public Page<ObservationUnitEntity> findBySearch(PhenotypesSearchRequest request, Pageable pageReq) {
+	@Autowired
+	private CustomRepositorySearchService<ObservationUnitEntity> customRepositorySearchService;
+	
+	public ObservationUnitRepositoryImpl(CustomRepositorySearchService<ObservationUnitEntity> customRepositorySearchService) {
+		this.customRepositorySearchService = customRepositorySearchService;
+	}
 
+	@Override
+	public Page<ObservationUnitEntity> findBySearch(PhenotypesSearchRequest request, Pageable pageRequest) {
 		Map<String, Object> params = new HashMap<>();
 		String queryStr = buildQueryString(request, params);
-
-		TypedQuery<ObservationUnitEntity> query = em.createQuery(queryStr, ObservationUnitEntity.class);
-		for (Entry<String, Object> entry : params.entrySet()) {
-			query.setParameter(entry.getKey(), entry.getValue());
-		}
-
-		query.setFirstResult((int) pageReq.getOffset());
-		query.setMaxResults(pageReq.getPageSize());
-
-		List<ObservationUnitEntity> content = query.getResultList();
-		PageImpl<ObservationUnitEntity> page = new PageImpl<>(content, pageReq, content.size());
-
+		Page<ObservationUnitEntity> page = customRepositorySearchService.findAllBySearch(queryStr, params, pageRequest, ObservationUnitEntity.class, em);
 		return page;
 	}
 

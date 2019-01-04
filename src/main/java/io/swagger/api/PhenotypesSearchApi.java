@@ -8,24 +8,14 @@ import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 
 import io.swagger.model.ObservationUnitsResponse;
 import io.swagger.model.ObservationUnitsTableResponse1;
-import org.threeten.bp.OffsetDateTime;
 import io.swagger.model.PhenotypesSearchRequest;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
-
 import javax.validation.Valid;
-import javax.validation.constraints.*;
-import java.util.List; import java.util.ArrayList;
-import java.util.Map;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-05T14:32:54.779-05:00[America/New_York]")
 
 @Api(value = "phenotypes-search", description = "the phenotypes-search API")

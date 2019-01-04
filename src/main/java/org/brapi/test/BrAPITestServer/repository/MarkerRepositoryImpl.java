@@ -13,6 +13,8 @@ import javax.persistence.TypedQuery;
 
 import org.brapi.test.BrAPITestServer.model.entity.ImageEntity;
 import org.brapi.test.BrAPITestServer.model.entity.MarkerEntity;
+import org.brapi.test.BrAPITestServer.service.CustomRepositorySearchService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -25,26 +27,21 @@ public class MarkerRepositoryImpl implements MarkerRepositoryCustom {
 	@PersistenceContext
 	private EntityManager em;
 
-	@Override
-	public Page<MarkerEntity> findBySearch(MarkersSearchRequest request, Pageable pageReq) {
-
-		Map<String, Object> params = new HashMap<>();
-		String queryStr = buildQueryString(request, params);
-
-		TypedQuery<MarkerEntity> query = em.createQuery(queryStr, MarkerEntity.class);
-		for (Entry<String, Object> entry : params.entrySet()) {
-			query.setParameter(entry.getKey(), entry.getValue());
-		}
-
-		query.setFirstResult((int) pageReq.getOffset());
-		query.setMaxResults(pageReq.getPageSize());
-
-		List<MarkerEntity> content = query.getResultList();
-		PageImpl<MarkerEntity> page = new PageImpl<MarkerEntity>(content, pageReq, content.size());
-
-		return page;
+	@Autowired
+	private CustomRepositorySearchService<MarkerEntity> customRepositorySearchService;
+	
+	public MarkerRepositoryImpl(CustomRepositorySearchService<MarkerEntity> customRepositorySearchService) {
+		this.customRepositorySearchService = customRepositorySearchService;
 	}
 
+	@Override
+	public Page<MarkerEntity> findBySearch(MarkersSearchRequest request, Pageable pageRequest) {
+		Map<String, Object> params = new HashMap<>();
+		String queryStr = buildQueryString(request, params);
+		Page<MarkerEntity> page = customRepositorySearchService.findAllBySearch(queryStr, params, pageRequest, MarkerEntity.class, em);
+		return page;
+	}	
+	
 	private String buildQueryString(MarkersSearchRequest request, Map<String, Object> params) {
 		String queryStr = "select m from MarkerEntity m where 1 = 1 ";
 

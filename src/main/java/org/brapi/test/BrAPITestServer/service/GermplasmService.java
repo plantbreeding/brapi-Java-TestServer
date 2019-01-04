@@ -12,17 +12,13 @@ import org.brapi.test.BrAPITestServer.model.entity.BreedingMethodEntity;
 import org.brapi.test.BrAPITestServer.model.entity.GermplasmEntity;
 import org.brapi.test.BrAPITestServer.model.entity.MarkerProfileEntity;
 import org.brapi.test.BrAPITestServer.model.entity.PedigreeEntity;
-import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
-import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
 import org.brapi.test.BrAPITestServer.repository.BreedingMethodRepository;
 import org.brapi.test.BrAPITestServer.repository.GermplasmRepository;
 import org.brapi.test.BrAPITestServer.repository.MarkerProfileRepository;
 import org.brapi.test.BrAPITestServer.repository.PedigreeRepository;
-import org.brapi.test.BrAPITestServer.repository.SearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.BreedingMethod;

@@ -4,8 +4,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.validation.Valid;
-
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.OffsetDateTime;
 

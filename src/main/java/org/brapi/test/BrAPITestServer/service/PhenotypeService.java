@@ -2,7 +2,6 @@ package org.brapi.test.BrAPITestServer.service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -10,7 +9,6 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.math.NumberUtils;
-import org.brapi.test.BrAPITestServer.model.entity.MarkerEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationVariableEntity;
@@ -25,11 +23,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.threeten.bp.OffsetDateTime;
 
-import io.swagger.model.Marker;
-import io.swagger.model.MarkersSearchRequest;
 import io.swagger.model.Metadata;
 import io.swagger.model.NewObservationDbIdsObservations;
-import io.swagger.model.Observation;
 import io.swagger.model.ObservationSummary;
 import io.swagger.model.ObservationSummaryPhenotype;
 import io.swagger.model.ObservationTreatment;
@@ -44,7 +39,6 @@ import io.swagger.model.PhenotypesRequestData;
 import io.swagger.model.PhenotypesRequestObservation;
 import io.swagger.model.PhenotypesSearchRequest;
 import io.swagger.model.Season;
-import io.swagger.model.WSMIMEDataTypes;
 
 @Service
 public class PhenotypeService {

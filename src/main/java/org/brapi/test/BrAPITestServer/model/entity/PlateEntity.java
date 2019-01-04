@@ -10,7 +10,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.brapi.test.BrAPITestServer.model.entity.vendor.VendorFileEntity;
 import org.brapi.test.BrAPITestServer.model.entity.vendor.VendorPlateSubmissionEntity;
 
 import io.swagger.model.PlateFormat;

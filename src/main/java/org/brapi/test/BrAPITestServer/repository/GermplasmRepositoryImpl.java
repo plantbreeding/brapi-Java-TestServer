@@ -1,17 +1,13 @@
 package org.brapi.test.BrAPITestServer.repository;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-
 import org.brapi.test.BrAPITestServer.model.entity.GermplasmEntity;
+import org.brapi.test.BrAPITestServer.service.CustomRepositorySearchService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import io.swagger.model.GermplasmSearchRequest;
 
@@ -20,28 +16,22 @@ public class GermplasmRepositoryImpl implements GermplasmRepositoryCustom {
 	@PersistenceContext
 	private EntityManager em;
 
-	@Override
-	public Page<GermplasmEntity> findBySearch(GermplasmSearchRequest request, Pageable pageReq) {
-
-		Map<String, List<String>> params = new HashMap<>();
-		String queryStr = buildQueryString(request, params);
-
-		TypedQuery<GermplasmEntity> query = em.createQuery(queryStr, GermplasmEntity.class);
-		for (Entry<String, List<String>> entry : params.entrySet()) {
-			query.setParameter(entry.getKey(), entry.getValue());
-		}
-
-		query.setFirstResult((int) pageReq.getOffset());
-		query.setMaxResults(pageReq.getPageSize());
-
-		List<GermplasmEntity> content = query.getResultList();
-		PageImpl<GermplasmEntity> page = new PageImpl<>(content, pageReq, content.size());
-
-		return page;
+	@Autowired
+	private CustomRepositorySearchService<GermplasmEntity> customRepositorySearchService;
+	
+	public GermplasmRepositoryImpl(CustomRepositorySearchService<GermplasmEntity> customRepositorySearchService) {
+		this.customRepositorySearchService = customRepositorySearchService;
 	}
 
-	private String buildQueryString(GermplasmSearchRequest request, Map<String, List<String>> params) {
-
+	@Override
+	public Page<GermplasmEntity> findBySearch(GermplasmSearchRequest request, Pageable pageRequest) {
+		Map<String, Object> params = new HashMap<>();
+		String queryStr = buildQueryString(request, params);
+		Page<GermplasmEntity> page = customRepositorySearchService.findAllBySearch(queryStr, params, pageRequest, GermplasmEntity.class, em);
+		return page;
+	}
+	
+	public String buildQueryString(GermplasmSearchRequest request, Map<String, Object> params) {
 		String queryStr = "SELECT g FROM GermplasmEntity g where 1 = 1 ";
 
 		if (request.getGermplasmDbIds() != null && !request.getGermplasmDbIds().isEmpty()) {

@@ -4,10 +4,7 @@ import java.util.Objects;
 import io.swagger.annotations.ApiModel;
 import io.swagger.model.Position;
 import java.util.ArrayList;
-import java.util.List;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * An array of at least four positions where the first equals the last

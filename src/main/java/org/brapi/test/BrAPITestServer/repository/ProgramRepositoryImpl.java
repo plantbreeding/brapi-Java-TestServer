@@ -1,52 +1,39 @@
 package org.brapi.test.BrAPITestServer.repository;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-
-import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ProgramEntity;
+import org.brapi.test.BrAPITestServer.service.CustomRepositorySearchService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.query.Param;
-
-import io.swagger.model.PhenotypesSearchRequest;
 import io.swagger.model.ProgramsSearchRequest;
 
 public class ProgramRepositoryImpl implements ProgramRepositoryCustom {
 
 	@PersistenceContext
 	private EntityManager em;
+	
+	@Autowired
+	private CustomRepositorySearchService<ProgramEntity> customRepositorySearchService;
+	
+	public ProgramRepositoryImpl(CustomRepositorySearchService<ProgramEntity> customRepositorySearchService) {
+		this.customRepositorySearchService = customRepositorySearchService;
+	}
 
 	@Override
 	public Page<ProgramEntity> findAllBySearch(ProgramsSearchRequest request, Pageable pageReq) {
 		Map<String, Object> params = new HashMap<>();
 		String queryStr = buildQueryString(request, params);
-
-		TypedQuery<ProgramEntity> query = em.createQuery(queryStr, ProgramEntity.class);
-		for (Entry<String, Object> entry : params.entrySet()) {
-			query.setParameter(entry.getKey(), entry.getValue());
-		}
-
-		query.setFirstResult((int) pageReq.getOffset());
-		query.setMaxResults(pageReq.getPageSize());
-
-		List<ProgramEntity> content = query.getResultList();
-		PageImpl<ProgramEntity> page = new PageImpl<>(content, pageReq, content.size());
-
+		Page<ProgramEntity> page = customRepositorySearchService.findAllBySearch(queryStr, params, pageReq, ProgramEntity.class, em);
 		return page;
 	}
 
-	private String buildQueryString(ProgramsSearchRequest request, Map<String, Object> params) {
-		String query = "select p from ProgramEntity p where 1=1 ";
+	public String buildQueryString(ProgramsSearchRequest request, Map<String, Object> params) {
+
+		String query = "SELECT p FROM ProgramEntity p where 1=1  ";
 
 		if (request.getAbbreviations() != null && !request.getAbbreviations().isEmpty()) {
 			query += "AND p.abbreviation in :abbreviations ";
@@ -65,7 +52,8 @@ public class ProgramRepositoryImpl implements ProgramRepositoryCustom {
 				String wildcardName = "%" + name + "%";
 				query += "(p.leadPerson.firstName LIKE :wildcardName" + i
 						+ " OR p.leadPerson.lastName LIKE :wildcardName" + i
-						+ " OR CONCAT(p.leadPerson.firstName, ' ', p.leadPerson.lastName) LIKE :wildcardName" + i + ") ";
+						+ " OR CONCAT(p.leadPerson.firstName, ' ', p.leadPerson.lastName) LIKE :wildcardName" + i
+						+ ") ";
 				params.put("wildcardName" + i, wildcardName);
 				i++;
 			}

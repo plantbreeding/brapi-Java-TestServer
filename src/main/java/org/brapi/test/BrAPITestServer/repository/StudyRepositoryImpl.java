@@ -9,10 +9,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.brapi.test.BrAPITestServer.model.entity.SampleEntity;
 import org.brapi.test.BrAPITestServer.model.entity.StudyEntity;
+import org.brapi.test.BrAPITestServer.service.CustomRepositorySearchService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+
+import io.swagger.model.SampleSearchRequestDep;
 import io.swagger.model.StudySearchRequest;
 import io.swagger.model.StudySearchRequest.SortByEnum;
 import io.swagger.model.StudySearchRequest.SortOrderEnum;
@@ -22,23 +27,18 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
 	@PersistenceContext
 	private EntityManager em;
 
-	@Override
-	public Page<StudyEntity> findBySearch(StudySearchRequest request, SortByEnum sortBy, SortOrderEnum sortOrder, Pageable pageReq) {
+	@Autowired
+	private CustomRepositorySearchService<StudyEntity> customRepositorySearchService;
+	
+	public StudyRepositoryImpl(CustomRepositorySearchService<StudyEntity> customRepositorySearchService) {
+		this.customRepositorySearchService = customRepositorySearchService;
+	}
 
+	@Override
+	public Page<StudyEntity> findBySearch(StudySearchRequest request, SortByEnum sortBy, SortOrderEnum sortOrder, Pageable pageRequest) {
 		Map<String, Object> params = new HashMap<>();
 		String queryStr = buildQueryString(request, sortBy, sortOrder, params);
-
-		TypedQuery<StudyEntity> query = em.createQuery(queryStr, StudyEntity.class);
-		for (Entry<String, Object> entry : params.entrySet()) {
-			query.setParameter(entry.getKey(), entry.getValue());
-		}
-		
-		query.setFirstResult((int) pageReq.getOffset());
-		query.setMaxResults(pageReq.getPageSize());
-
-		List<StudyEntity> content = query.getResultList();
-		PageImpl<StudyEntity> page = new PageImpl<StudyEntity>(content, pageReq, content.size());
-
+		Page<StudyEntity> page = customRepositorySearchService.findAllBySearch(queryStr, params, pageRequest, StudyEntity.class, em);
 		return page;
 	}
 

@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.validation.Valid;
-
 import org.brapi.test.BrAPITestServer.model.entity.GenomeMapEntity;
 import org.brapi.test.BrAPITestServer.model.entity.LinkageGroupEntity;
 import org.brapi.test.BrAPITestServer.model.entity.MarkerEntity;

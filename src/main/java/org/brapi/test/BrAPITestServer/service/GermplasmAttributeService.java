@@ -1,12 +1,8 @@
 package org.brapi.test.BrAPITestServer.service;
 
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.brapi.test.BrAPITestServer.model.entity.GermplasmAttributeDefinitionEntity;
 import org.brapi.test.BrAPITestServer.model.entity.GermplasmAttributeValueEntity;
-import org.brapi.test.BrAPITestServer.model.entity.ObservationVariableEntity;
 import org.brapi.test.BrAPITestServer.repository.GermplasmAttributeCategoryRepository;
 import org.brapi.test.BrAPITestServer.repository.GermplasmAttributeDefinitionRepository;
 import org.brapi.test.BrAPITestServer.repository.GermplasmAttributeValueRepository;
@@ -19,12 +15,6 @@ import io.swagger.model.GermplasmAttribute;
 import io.swagger.model.GermplasmAttributeCategory;
 import io.swagger.model.GermplasmAttributeDef;
 import io.swagger.model.Metadata;
-import io.swagger.model.Method;
-import io.swagger.model.ObservationVariable;
-import io.swagger.model.Scale;
-import io.swagger.model.Trait;
-import io.swagger.model.TraitDataType;
-import io.swagger.model.ValidValues;
 
 @Service
 public class GermplasmAttributeService {

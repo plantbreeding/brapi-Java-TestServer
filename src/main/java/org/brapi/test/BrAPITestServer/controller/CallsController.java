@@ -32,11 +32,19 @@ public class CallsController extends BrAPIController implements CallsApi {
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<CallsResponse> callsGet(@Valid String datatype, @Valid WSMIMEDataTypes dataType,
+	public ResponseEntity<CallsResponse> callsGet(@Valid String datatype, @Valid String dataType,
 			@Valid Integer page, @Valid Integer pageSize, String authorization) throws BrAPIServerException {
 
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<Call> calls = callService.getAvailableCalls(datatype, metadata);
+		WSMIMEDataTypes dataTypeEnum = null;
+		if(datatype != null) {
+			dataTypeEnum = WSMIMEDataTypes.fromValue(datatype);
+		}
+		if(dataType != null) {
+			dataTypeEnum = WSMIMEDataTypes.fromValue(dataType);
+		}
+		
+		List<Call> calls = callService.getAvailableCalls(dataTypeEnum, metadata);
 
 		CallsResponseResult result = new CallsResponseResult();
 		result.setData(calls);

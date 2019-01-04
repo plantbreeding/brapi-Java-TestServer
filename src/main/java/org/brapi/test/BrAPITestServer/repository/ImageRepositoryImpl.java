@@ -1,6 +1,5 @@
 package org.brapi.test.BrAPITestServer.repository;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,37 +9,35 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.brapi.test.BrAPITestServer.model.entity.GermplasmEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ImageEntity;
+import org.brapi.test.BrAPITestServer.service.CustomRepositorySearchService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import io.swagger.model.GermplasmSearchRequest;
 import io.swagger.model.ImagesSearchRequest;
-import io.swagger.model.SampleSearchRequestDep;
 
 public class ImageRepositoryImpl implements ImageRepositoryCustom {
 	@PersistenceContext
 	private EntityManager em;
 
-	@Override
-	public Page<ImageEntity> findBySearch(ImagesSearchRequest request, Pageable pageReq) {
+	@Autowired
+	private CustomRepositorySearchService<ImageEntity> customRepositorySearchService;
+	
+	public ImageRepositoryImpl(CustomRepositorySearchService<ImageEntity> customRepositorySearchService) {
+		this.customRepositorySearchService = customRepositorySearchService;
+	}
 
+	@Override
+	public Page<ImageEntity> findBySearch(ImagesSearchRequest request, Pageable pageRequest) {
 		Map<String, Object> params = new HashMap<>();
 		String queryStr = buildQueryString(request, params);
-		
-		TypedQuery<ImageEntity> query = em.createQuery(queryStr, ImageEntity.class);
-		for(Entry<String, Object> entry: params.entrySet()) {
-			query.setParameter(entry.getKey(), entry.getValue());
-		}
-		
-		query.setFirstResult((int) pageReq.getOffset());
-		query.setMaxResults(pageReq.getPageSize());
-		
-		List<ImageEntity> content = query.getResultList();
-		PageImpl<ImageEntity> page = new PageImpl<>(content, pageReq, content.size());
-		
+		Page<ImageEntity> page = customRepositorySearchService.findAllBySearch(queryStr, params, pageRequest, ImageEntity.class, em);
 		return page;
-	}
+	}	
 	
 	private String buildQueryString(ImagesSearchRequest request, Map<String, Object> params) {
 		String queryStr = "select i from ImageEntity i where 1 = 1 ";

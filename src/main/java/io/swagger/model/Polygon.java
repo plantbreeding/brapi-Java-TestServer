@@ -4,10 +4,7 @@ import java.util.Objects;
 import io.swagger.annotations.ApiModel;
 import io.swagger.model.LinearRing;
 import java.util.ArrayList;
-import java.util.List;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * An array of linear rings
