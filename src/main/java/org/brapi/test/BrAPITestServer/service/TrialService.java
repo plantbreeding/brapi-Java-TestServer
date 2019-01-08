@@ -31,7 +31,7 @@ public class TrialService {
 		this.contactService = contactService;
 	}
 
-	public List<TrialSummary> getTrialSummaries(String programDbId, String locationDbId, Boolean active, String sortBy,
+	public List<TrialSummary> getTrialSummaries(String commonCropName, String programDbId, String locationDbId, Boolean active, String sortBy,
 			String sortOrder, Metadata metaData) {
 		Sort sort = buildSort(sortBy, sortOrder);
 		Pageable pageReq = PagingUtility.getPageRequest(metaData, sort);
@@ -43,8 +43,9 @@ public class TrialService {
 		}
 		programDbId = null == programDbId ? "" : programDbId;
 		locationDbId = null == locationDbId ? "" : locationDbId;
+		commonCropName = null == commonCropName ? "" : commonCropName;
 
-		Page<TrialEntity> trialsPage = trialRepository.findBySearch(programDbId, locationDbId, applyActiveFilter,
+		Page<TrialEntity> trialsPage = trialRepository.findBySearch(commonCropName, programDbId, locationDbId, applyActiveFilter,
 				active, pageReq);
 
 		List<TrialSummary> summaries = trialsPage.map(this::convertFromEntityToSummary).getContent();

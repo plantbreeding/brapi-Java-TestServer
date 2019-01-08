@@ -36,7 +36,7 @@ public class ProgramController extends BrAPIController implements ProgramsApi, P
 			throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
-		List<Program> data = programService.searchPrograms(abbreviation, null, programName, null, null, metaData);
+		List<Program> data = programService.searchPrograms(commonCropName, abbreviation, null, programName, null, null, metaData);
 
 		ProgramsResponseResult result = new ProgramsResponseResult();
 		result.setData(data);
@@ -52,7 +52,7 @@ public class ProgramController extends BrAPIController implements ProgramsApi, P
 			throws BrAPIServerException {
 
 		Metadata metaData = generateMetaDataTemplate(request.getPage(), request.getPageSize());
-		List<Program> data = programService.searchPrograms(request.getAbbreviation(), request.getLeadPerson(),
+		List<Program> data = programService.searchPrograms(null, request.getAbbreviation(), request.getLeadPerson(),
 				request.getName(), request.getObjective(), request.getProgramDbId(), metaData);
 
 		ProgramsResponseResult result = new ProgramsResponseResult();

@@ -35,7 +35,7 @@ public class TrialController extends BrAPIController implements TrialsApi {
 			@Valid String locationDbId, @Valid Boolean active, @Valid String sortBy, @Valid String sortOrder,
 			@Valid Integer page, @Valid Integer pageSize, String authorization) throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
-		List<TrialSummary> data = trialService.getTrialSummaries(programDbId, locationDbId, active, sortBy, sortOrder,
+		List<TrialSummary> data = trialService.getTrialSummaries(commonCropName, programDbId, locationDbId, active, sortBy, sortOrder,
 				metaData);
 
 		TrialsResponseResult result = new TrialsResponseResult();

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import io.swagger.model.GenomeMap;
 import io.swagger.model.GenomeMapDetails;
+import io.swagger.model.GenomeMapSearchRequest;
 import io.swagger.model.LinkageGroup;
 import io.swagger.model.MarkerSummaryLinkageGroup;
 import io.swagger.model.MarkerSummaryMap;
@@ -37,20 +38,10 @@ public class GenomeMapService {
 	}
 
 	public List<GenomeMap> getMapSummaries(String speciesId, String commonCropName, String scientificName, String type, Metadata metaData) {
-		Page<GenomeMap> summaries;
-		if (speciesId != null && type != null) {
-			summaries = genomeMapRepository
-					.findBySpeciesAndType(speciesId, type, PagingUtility.getPageRequest(metaData))
-					.map(this::convertFromEntity);
-		} else if (speciesId != null) {
-			summaries = genomeMapRepository.findBySpecies(speciesId, PagingUtility.getPageRequest(metaData))
-					.map(this::convertFromEntity);
-		} else if (type != null) {
-			summaries = genomeMapRepository.findByType(type, PagingUtility.getPageRequest(metaData))
-					.map(this::convertFromEntity);
-		} else {
-			summaries = genomeMapRepository.findAll(PagingUtility.getPageRequest(metaData)).map(this::convertFromEntity);
-		}
+		
+		GenomeMapSearchRequest request = new GenomeMapSearchRequest(speciesId, commonCropName, scientificName, type);
+		Pageable pageReq = PagingUtility.getPageRequest(metaData);
+		Page<GenomeMap> summaries = genomeMapRepository.findBySearch(request, pageReq).map(this::convertFromEntity);
 
 		PagingUtility.calculateMetaData(metaData, summaries);
 		return summaries.getContent();

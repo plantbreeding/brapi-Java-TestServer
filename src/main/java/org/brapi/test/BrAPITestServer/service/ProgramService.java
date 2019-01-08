@@ -17,21 +17,21 @@ import io.swagger.model.ProgramsSearchRequest;
 @Service
 public class ProgramService {
 	private ProgramRepository programRepository;
-	private SearchService searchService;
 	
 	@Autowired
-	public ProgramService( ProgramRepository programRepository, SearchService searchService) {
+	public ProgramService( ProgramRepository programRepository) {
 		this.programRepository = programRepository;
-		this.searchService = searchService;
 	}
 
-	public List<Program> searchPrograms(String abbreviation, String leadPerson, String name,
+	public List<Program> searchPrograms(String commonCropName, String abbreviation, String leadPerson, String name,
 			String objective, String programDbId, Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 
 		ProgramsSearchRequest request = new ProgramsSearchRequest();
 		if (abbreviation != null)
 			request.addAbbreviationsItem(abbreviation);
+		if (commonCropName != null)
+			request.addCommonCropNamesItem(commonCropName);
 		if (leadPerson != null)
 			request.addLeadPersonNamesItem(leadPerson);
 		if (name != null)

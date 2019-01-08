@@ -398,11 +398,13 @@ public class StudyService {
 		return seasons;
 	}
 
-	public List<StudySummary> getStudies(String studyType, String studyTypeDbId, String programDbId, String trialDbId,
+	public List<StudySummary> getStudies(String commonCropName, String studyType, String studyTypeDbId, String programDbId, String trialDbId,
 			String studyDbId, String locationDbId, String seasonDbId, List<String> germplasmDbIds,
 			List<String> observationVariableDbIds, Boolean active, String sortBy, String sortOrder, Metadata metaData) {
 
 		StudySearchRequest request = new StudySearchRequest();
+		if (commonCropName != null)
+			request.addCommonCropNamesItem(commonCropName);
 		if (studyType != null)
 			request.addStudyTypeNamesItem(studyType);
 		if (studyTypeDbId != null)

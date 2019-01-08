@@ -48,6 +48,10 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
 				+ "JOIN s.observationUnits ou "
 				+ "JOIN ou.observations observation where 1=1 " ;
 
+		if (request.getCommonCropNames() != null && !request.getCommonCropNames().isEmpty()) {
+			queryStr += "AND s.trial.program.crop.cropName IN :commonCropNames ";
+			params.put("commonCropNames", request.getCommonCropNames());
+		}
 		if (request.getStudyTypeDbIds() != null && !request.getStudyTypeDbIds().isEmpty()) {
 			queryStr += "AND s.studyType.id IN :studyTypeDbIds ";
 			params.put("studyTypeDbIds", request.getStudyTypeDbIds());
