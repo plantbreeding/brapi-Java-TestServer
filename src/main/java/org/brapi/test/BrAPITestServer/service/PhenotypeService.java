@@ -138,7 +138,7 @@ public class PhenotypeService {
 		if (season != null) {
 			String[] seasonArr = season.split(" ", 2);
 			List<SeasonEntity> seasonEntityOption = seasonRepository
-					.findAllByYearAndSeason(NumberUtils.toInt(seasonArr[1]), seasonArr[0], PageRequest.of(0, 1))
+					.findBySearch(null, seasonArr[0], NumberUtils.toInt(seasonArr[1]), PageRequest.of(0, 1))
 					.getContent();
 
 			if (seasonEntityOption.size() > 0) {

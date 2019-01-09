@@ -122,7 +122,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 			@Valid String year, @Valid Integer page, @Valid Integer pageSize, String authorization)
 			throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
-		List<Season> data = studyService.getSeasons(year, metaData);
+		List<Season> data = studyService.getSeasons(seasonDbId, season, year, metaData);
 
 		SeasonsResponseResult result = new SeasonsResponseResult();
 		result.setData(data);

@@ -378,20 +378,24 @@ public class StudyService {
 		return units;
 	}
 
-	public List<Season> getSeasons(String year, Metadata metaData) {
+	public List<Season> getSeasons(String seasonDbId, String season, String year, Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-		Page<SeasonEntity> seasonPage;
-		if (year == null) {
-			seasonPage = seasonRepository.findAll(pageReq);
-		} else {
-			seasonPage = seasonRepository.findAllByYear(Integer.parseInt(year), pageReq);
+		Integer yearInt = null;
+		if(year != null) {
+			try {
+				yearInt = Integer.valueOf(year);
+			} catch (NumberFormatException e) {
+				yearInt = -1;
+			}
 		}
+		Page<SeasonEntity> seasonPage = seasonRepository.findBySearch(seasonDbId, season, yearInt, pageReq);
+		
 		List<Season> seasons = seasonPage.map((entity) -> {
-			Season season = new Season();
-			season.setSeason(entity.getSeason());
-			season.setSeasonDbId(entity.getId());
-			season.setYear(String.valueOf(entity.getYear()));
-			return season;
+			Season seasonObj = new Season();
+			seasonObj.setSeason(entity.getSeason());
+			seasonObj.setSeasonDbId(entity.getId());
+			seasonObj.setYear(String.valueOf(entity.getYear()));
+			return seasonObj;
 		}).getContent();
 
 		PagingUtility.calculateMetaData(metaData, seasonPage);
