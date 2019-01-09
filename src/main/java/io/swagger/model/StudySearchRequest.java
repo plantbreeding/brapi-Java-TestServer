@@ -112,9 +112,10 @@ public class StudySearchRequest   {
    * Order results should be sorted. ex. \"ASC\" or \"DESC\"
    */
   public enum SortOrderEnum {
-    ASC("ASC"),
-    
-    DESC("DESC");
+	    ASC("ASC"),
+	    DESC("DESC"),
+	    ASC_LOWER("asc"),
+	    DESC_LOWER("desc");
 
     private String value;
 

@@ -111,9 +111,11 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
 		if (sortOrder != null) {
 			switch (sortOrder) {
 			case DESC:
+			case DESC_LOWER:
 				sortOrderStr = "desc";
 				break;
 			case ASC:
+			case ASC_LOWER:
 			default:
 				sortOrderStr = "asc";
 				break;
@@ -127,16 +129,16 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
 				sortByStr = "ou.germplasm.id";
 				break;
 			case LOCATIONDBID:
-				sortByStr = "location.id";
+				sortByStr = "s.location.id";
 				break;
 			case OBSERVATIONVARIABLEDBID:
 				sortByStr = "observation.observationVariable.id";
 				break;
 			case PROGRAMDBID:
-				sortByStr = "trial.program.id";
+				sortByStr = "s.trial.program.id";
 				break;
 			case PROGRAMNAME:
-				sortByStr = "trial.program.name";
+				sortByStr = "s.trial.program.name";
 				break;
 			case SEASONDBID:
 				sortByStr = "season.id";
@@ -145,20 +147,20 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
 				sortByStr = "s.id";
 				break;
 			case STUDYLOCATION:
-				sortByStr = "location.id";
+				sortByStr = "s.location.id";
 				break;
 			case STUDYTYPEDBID:
-				sortByStr = "studyType.id";
+				sortByStr = "s.studyType.id";
 				break;
 			case STUDYTYPENAME:
-				sortByStr = "studyType.name";
+				sortByStr = "s.studyType.name";
 				break;
 			case TRIALDBID:
-				sortByStr = "trial.id ";
+				sortByStr = "s.trial.id ";
 				break;
 			case STUDYNAME:
 			default:
-				sortByStr = "studyName";
+				sortByStr = "s.studyName";
 				break;
 			}
 		}
