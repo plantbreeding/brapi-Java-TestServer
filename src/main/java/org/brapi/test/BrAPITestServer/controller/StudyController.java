@@ -21,6 +21,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -261,7 +262,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ObservationsResponse> studiesStudyDbIdObservationsGet(@PathVariable("studyDbId") String studyDbId,
-			@Valid ArrayList<String> observationVariableDbIds, @Valid Integer page, @Valid Integer pageSize,
+			@RequestParam(value = "observationVariableDbIds", required = false) ArrayList<String> observationVariableDbIds, @Valid Integer page, @Valid Integer pageSize,
 			String authorization) throws BrAPIServerException {
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<Observation> data = studyService.getObservationUnits(studyDbId, observationVariableDbIds, metaData);
