@@ -247,7 +247,10 @@ public interface StudiesApi {
     ResponseEntity<NewObservationUnitDbIdsResponse> studiesStudyDbIdObservationunitsZipPost(@ApiParam(value = "The study these observation units are related to.",required=true) @PathVariable("studyDbId") String studyDbId,@ApiParam(value = ""  )  @Valid @RequestBody Object body,@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong>Bearer {token_string} </strong>" ) @RequestHeader(value="Authorization", required=false) String authorization) throws BrAPIServerException;
 
 
-    @ApiOperation(value = "Get the Observation Variables for a specific Study", nickname = "studiesStudyDbIdObservationvariablesGet", notes = "List all the observation variables measured in the study.  Refer to the data type definition of variables in `/Specification/ObservationVariables/README.md`.", response = StudyObservationVariablesResponse.class, authorizations = {
+    @ApiOperation(value = "Get the Observation Variables for a specific Study", 
+    		nickname = "studiesStudyDbIdObservationvariablesGet", 
+    		notes = "List all the observation variables measured in the study.  Refer to the data type definition of variables in `/Specification/ObservationVariables/README.md`.", 
+    		response = StudyObservationVariablesResponse.class, authorizations = {
         @Authorization(value = "AuthorizationToken")
     }, tags={ "Studies","Observation Variables", })
     @ApiResponses(value = { 
@@ -262,7 +265,10 @@ public interface StudiesApi {
     ResponseEntity<StudyObservationVariablesResponse> studiesStudyDbIdObservationvariablesGet(@ApiParam(value = "string database unique identifier",required=true) @PathVariable("studyDbId") String studyDbId,@ApiParam(value = "Which result page is requested. The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong>Bearer {token_string} </strong>" ) @RequestHeader(value="Authorization", required=false) String authorization) throws BrAPIServerException;
 
 
-    @ApiOperation(value = "Get the Observations for a specific Study in a table format", nickname = "studiesStudyDbIdTableGet", notes = "Retrieve the details of the study required for field data collection. Includes actual trait data.", response = String.class, authorizations = {
+    @ApiOperation(value = "Get the Observations for a specific Study in a table format", 
+    		nickname = "studiesStudyDbIdTableGet", 
+    		notes = "Retrieve the details of the study required for field data collection. Includes actual trait data.", 
+    		response = String.class, authorizations = {
         @Authorization(value = "AuthorizationToken")
     }, tags={ "Studies","Observations", })
     @ApiResponses(value = { 
@@ -272,7 +278,7 @@ public interface StudiesApi {
         @ApiResponse(code = 403, message = "Forbidden", response = String.class),
         @ApiResponse(code = 404, message = "Not Found", response = String.class) })
     @RequestMapping(value = "/studies/{studyDbId}/table",
-        produces = { "application/csv", "application/json", "application/tsv" }, 
+        produces = { "text/csv", "application/json", "text/tsv" }, 
         method = RequestMethod.GET)
     ResponseEntity<Object> studiesStudyDbIdTableGet(@ApiParam(value = "Identifier of the study. Usually a number, could be alphanumeric.",required=true) @PathVariable("studyDbId") String studyDbId,@ApiParam(value = "The format parameter will cause the data to be dumped to a file in the specified format. Currently, tsv and csv are supported.") @Valid @RequestParam(value = "format", required = false) String format,@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong>Bearer {token_string} </strong>" ) @RequestHeader(value="Authorization", required=false) String authorization) throws BrAPIServerException;
 
