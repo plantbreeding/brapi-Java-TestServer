@@ -410,7 +410,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 
 			return ResponseEntity.ok().contentType(MediaType.TEXT_PLAIN).body(result);
 		} else {
-			Metadata metadata = generateEmptyMetadata();
+			Metadata metadata = generateMetaDataTemplate(0, 1000);
 			ObservationsTable result = studyService.getStudyObservationUnitTable(studyDbId, metadata);
 			StudyobservationsTableResponse response = new StudyobservationsTableResponse();
 			response.setMetadata(metadata);
