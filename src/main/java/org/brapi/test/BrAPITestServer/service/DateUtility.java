@@ -13,7 +13,7 @@ public class DateUtility {
 	public static final String TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssXXX";
 	
 	public static Date toDate(String string) {
-		SimpleDateFormat sdf = new SimpleDateFormat();
+		SimpleDateFormat sdf = new SimpleDateFormat(TIME_FORMAT);
 		Date date = new Date();
 		try {
 			if (string != null && !string.isEmpty()) {

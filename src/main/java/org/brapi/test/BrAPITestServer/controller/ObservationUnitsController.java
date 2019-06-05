@@ -47,8 +47,8 @@ public class ObservationUnitsController extends BrAPIController implements Obser
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<ObservationUnitPhenotype> data = phenotypeService.getPhenotypes(germplasmDbId, observationVariableDbId,
 				studyDbId, locationDbId, trialDbId, programDbId, seasonDbId, observationLevel,
-				DateUtility.toOffsetDateTime(observationTimeStampRangeStart), 
-				DateUtility.toOffsetDateTime(observationTimeStampRangeEnd), metaData);
+				DateUtility.toDate(observationTimeStampRangeStart), 
+				DateUtility.toDate(observationTimeStampRangeEnd), metaData);
 
 		ObservationUnitsResponseResult result = new ObservationUnitsResponseResult();
 		result.setData(data);

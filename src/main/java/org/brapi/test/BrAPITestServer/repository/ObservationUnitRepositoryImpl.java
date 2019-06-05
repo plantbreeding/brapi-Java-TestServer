@@ -69,7 +69,7 @@ public class ObservationUnitRepositoryImpl implements ObservationUnitRepositoryC
 		}
 		if (request.getObservationLevel() != null) {
 			queryStr += "AND o.observationLevel in :observationLevel ";
-			params.put("observationLevel", request.getGermplasmDbIds());
+			params.put("observationLevel", request.getObservationLevel());
 		}
 		if (request.getObservationTimeStampRangeStart() != null && request.getObservationTimeStampRangeEnd() != null) {
 			queryStr += "AND observation.observationTimeStamp BETWEEN :observationTimeStart AND :observationTimeEnd ";

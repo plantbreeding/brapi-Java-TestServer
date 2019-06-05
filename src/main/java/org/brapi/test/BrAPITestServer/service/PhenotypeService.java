@@ -2,6 +2,7 @@ package org.brapi.test.BrAPITestServer.service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -67,8 +68,8 @@ public class PhenotypeService {
 
 	public List<ObservationUnitPhenotype> getPhenotypes(String germplasmDbId, String observationVariableDbId,
 			String studyDbId, String locationDbId, String trialDbId, String programDbId, String seasonDbId,
-			String observationLevel, OffsetDateTime observationTimeStampRangeStart,
-			OffsetDateTime observationTimeStampRangeEnd, Metadata metaData) {
+			String observationLevel, Date observationTimeStampRangeStart,
+			Date observationTimeStampRangeEnd, Metadata metaData) {
 		PhenotypesSearchRequest request = new PhenotypesSearchRequest();
 		request.setObservationLevel(observationLevel);
 		request.setObservationTimeStampRangeEnd(observationTimeStampRangeEnd);

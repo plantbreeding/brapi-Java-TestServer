@@ -75,8 +75,8 @@ public class PhenotypeController extends BrAPIController implements PhenotypesAp
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
 		List<ObservationUnitPhenotype> data = phenotypeService.getPhenotypes(germplasmDbId, observationVariableDbId,
 				studyDbId, locationDbId, trialDbId, programDbId, seasonDbId, observationLevel,
-				DateUtility.toOffsetDateTime(observationTimeStampRangeStart), 
-				DateUtility.toOffsetDateTime(observationTimeStampRangeEnd), metaData);
+				DateUtility.toDate(observationTimeStampRangeStart), 
+				DateUtility.toDate(observationTimeStampRangeEnd), metaData);
 
 		ObservationUnitsResponseResult result = new ObservationUnitsResponseResult();
 		result.setData(data);

@@ -4,8 +4,10 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.threeten.bp.OffsetDateTime;
+import org.brapi.test.BrAPITestServer.service.DateUtility;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 
@@ -148,8 +150,12 @@ public class PhenotypesSearchRequest   {
 
   @Valid
 
-  public OffsetDateTime getObservationTimeStampRangeEnd() {
-    return observationTimeStampRangeEnd;
+  public Date getObservationTimeStampRangeEnd() {
+    return DateUtility.toDate(observationTimeStampRangeEnd);
+  }
+
+  public void setObservationTimeStampRangeEnd(Date observationTimeStampRangeEnd) {
+    this.observationTimeStampRangeEnd = DateUtility.toOffsetDateTime(observationTimeStampRangeEnd);
   }
 
   public void setObservationTimeStampRangeEnd(OffsetDateTime observationTimeStampRangeEnd) {
@@ -169,8 +175,12 @@ public class PhenotypesSearchRequest   {
 
   @Valid
 
-  public OffsetDateTime getObservationTimeStampRangeStart() {
-    return observationTimeStampRangeStart;
+  public Date getObservationTimeStampRangeStart() {
+    return DateUtility.toDate(observationTimeStampRangeStart);
+  }
+
+  public void setObservationTimeStampRangeStart(Date observationTimeStampRangeStart) {
+    this.observationTimeStampRangeStart = DateUtility.toOffsetDateTime(observationTimeStampRangeStart);
   }
 
   public void setObservationTimeStampRangeStart(OffsetDateTime observationTimeStampRangeStart) {
