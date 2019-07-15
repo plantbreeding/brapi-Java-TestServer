@@ -35,6 +35,7 @@ import org.brapi.test.BrAPITestServer.repository.StudyTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.DataLink;
@@ -637,7 +638,13 @@ public class StudyService {
 		return newObsIds;
 	}
 
-	public NewObservationUnitDbIds saveObservationUnit(@Valid List<NewObservationUnitRequest> request) {
+	public NewObservationUnitDbIds saveObservationUnit(@Valid List<NewObservationUnitRequest> request, String studyDbId) throws BrAPIServerException {
+
+		Optional<StudyEntity> studyEntityOpt = studyRepository.findById(studyDbId);
+		if (!studyEntityOpt.isPresent()) {
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "No study found for the given studyDbId");
+		}
+			
 		NewObservationUnitDbIds response = new NewObservationUnitDbIds();
 		for (NewObservationUnitRequest unit : request) {
 			ObservationUnitEntity unitEntity;
@@ -649,6 +656,8 @@ public class StudyService {
 				unitEntity = updateEntity(new ObservationUnitEntity(), unit);
 			}
 
+			unitEntity.setStudy(studyEntityOpt.get());
+			
 			final ObservationUnitEntity newUnitEntity = observationUnitRepository.save(unitEntity);
 
 			if (unit.getObservationUnitXref() == null) {
@@ -690,7 +699,7 @@ public class StudyService {
 		return response;
 	}
 
-	public List<String> saveObservationUnits(String studyDbId, NewObservationsRequestWrapperDeprecated requestDep) {
+	public List<String> saveObservationUnits(String studyDbId, NewObservationsRequestWrapperDeprecated requestDep) throws BrAPIServerException {
 		List<String> newUnitDbIds = new ArrayList<>();
 		Optional<StudyEntity> studyOpt = studyRepository.findById(studyDbId);
 		if (studyOpt.isPresent()) {
@@ -711,7 +720,7 @@ public class StudyService {
 
 				requests.add(request);
 
-				newUnitDbIds.addAll(saveObservationUnit(requests).getObservationUnitDbIds());
+				newUnitDbIds.addAll(saveObservationUnit(requests, studyDbId).getObservationUnitDbIds());
 			}
 		}
 		return newUnitDbIds;

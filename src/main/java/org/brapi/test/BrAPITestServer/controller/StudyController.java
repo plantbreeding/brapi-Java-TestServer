@@ -331,7 +331,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 	@Override
 	public ResponseEntity<NewObservationUnitDbIdsResponse> studiesStudyDbIdObservationunitsPut(@PathVariable("studyDbId") String studyDbId,
 			@Valid @RequestBody ArrayList<NewObservationUnitRequest> request, String authorization) throws BrAPIServerException {
-		NewObservationUnitDbIds result = studyService.saveObservationUnit(request);
+		NewObservationUnitDbIds result = studyService.saveObservationUnit(request, studyDbId);
 		Metadata metadata = generateEmptyMetadata();
 		Status status = new Status();
 		status.setCode("200");
