@@ -18,6 +18,8 @@ public class DateUtility {
 		try {
 			if (string != null && !string.isEmpty()) {
 				date = sdf.parse(string);
+			}else {
+				date = null;
 			}
 		} catch (ParseException e) {
 			e.printStackTrace();
