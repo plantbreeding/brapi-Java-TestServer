@@ -137,13 +137,30 @@ public class PhenotypeService {
 
 	private SeasonEntity getSeasonFromString(String season) {
 		if (season != null) {
-			String[] seasonArr = season.split(" ", 2);
-			List<SeasonEntity> seasonEntityOption = seasonRepository
-					.findBySearch(null, seasonArr[0], NumberUtils.toInt(seasonArr[1]), PageRequest.of(0, 1))
+			// check dbid
+			List<SeasonEntity> seasonEntities = seasonRepository
+					.findBySearch(season, null, null, PageRequest.of(0, 1))
 					.getContent();
 
-			if (seasonEntityOption.size() > 0) {
-				return seasonEntityOption.get(0);
+			if (seasonEntities.isEmpty()) {
+				// dbid not found, try name
+				seasonEntities = seasonRepository
+						.findBySearch(null, season, null, PageRequest.of(0, 1))
+						.getContent();
+			}
+
+			if (seasonEntities.isEmpty()) {
+				// name not found, try split name and year
+				String[] seasonArr = season.split(" ", 2);
+				if (seasonArr.length >= 2 && NumberUtils.isDigits(seasonArr[1])) {
+					seasonEntities = seasonRepository
+							.findBySearch(null, seasonArr[0], NumberUtils.toInt(seasonArr[1]), PageRequest.of(0, 1))
+							.getContent();
+				}
+			}
+
+			if (!seasonEntities.isEmpty()) {
+				return seasonEntities.get(0);
 			}
 		}
 		return null;
