@@ -605,32 +605,31 @@ public class StudyService {
 				Optional<ObservationUnitEntity> unitOpt = observationUnitRepository
 						.findById(newObs.getObservationUnitDbId());
 				if (unitOpt.isPresent()) {
+					ObservationEntity newObsEntity = null;
+
 					List<ObservationEntity> obsEntities = unitOpt.get().getObservations();
-					boolean found = false;
 					for (ObservationEntity obsEntity : obsEntities) {
 						if (obsEntity.getId().equals(newObs.getObservationDbId())) {
-							updateEntity(obsEntity, newObs);
-							found = true;
+							newObsEntity = obsEntity;
+							break;
 						}
 					}
-					if (!found) {
-						ObservationEntity obsEntity = new ObservationEntity();
-						updateEntity(obsEntity, newObs);
-						obsEntity.setObservationUnit(unitOpt.get());
-						obsEntities.add(obsEntity);
+					if (newObsEntity == null) {
+						newObsEntity = new ObservationEntity();
+						newObsEntity.setObservationUnit(unitOpt.get());
 					}
 
-					unitOpt.get().setObservations(obsEntities);
-					ObservationUnitEntity savedUnit = observationUnitRepository.save(unitOpt.get());
+					updateEntity(newObsEntity, newObs);
+					ObservationEntity savedObsEntity = observationRepository.save(newObsEntity);
+					
+					NewObservationDbIdsObservations newId = 
+							new NewObservationDbIdsObservations()
+							.observationDbId(savedObsEntity.getId())
+							.observationUnitDbId(savedObsEntity.getObservationUnit().getId());
+					if (savedObsEntity.getObservationVariable() != null)
+						newId.setObservationVariableDbId(savedObsEntity.getObservationVariable().getId());
 
-					for (ObservationEntity obsEntity : savedUnit.getObservations()) {
-						NewObservationDbIdsObservations newId = new NewObservationDbIdsObservations()
-								.observationDbId(obsEntity.getId()).observationUnitDbId(savedUnit.getId());
-						if (obsEntity.getObservationVariable() != null)
-							newId.setObservationVariableDbId(obsEntity.getObservationVariable().getId());
-
-						newObsIds.addObservationsItem(newId);
-					}
+					newObsIds.addObservationsItem(newId);
 				}
 			}
 		}
