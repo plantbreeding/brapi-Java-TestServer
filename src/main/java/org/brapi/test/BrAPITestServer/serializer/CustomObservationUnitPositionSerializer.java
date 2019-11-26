@@ -20,20 +20,23 @@ public class CustomObservationUnitPositionSerializer extends StdSerializer<Obser
 	}
 
 	@Override
-	public void serialize(ObservationUnitPosition position, JsonGenerator jgen, SerializerProvider sp) throws IOException {
+	public void serialize(ObservationUnitPosition unit, JsonGenerator jgen, SerializerProvider sp) throws IOException {
 		jgen.writeStartObject();
-		jgen.writeStringField("X", position.getX());
-		jgen.writeStringField("Y", position.getY());
-		jgen.writeObjectField("additionalInfo", position.getAdditionalInfo());
-		jgen.writeStringField("blockNumber", position.getBlockNumber());
-		jgen.writeStringField("entryType", position.getEntryType().name());
-		jgen.writeStringField("germplasmDbId", position.getGermplasmDbId());
-		jgen.writeStringField("germplasmName", position.getGermplasmName());
-		jgen.writeStringField("observationLevel", position.getObservationLevel());
-		jgen.writeStringField("observationUnitDbId", position.getObservationUnitDbId());
-		jgen.writeStringField("observationUnitName", position.getObservationUnitName());
-		jgen.writeStringField("replicate", position.getReplicate());
-		jgen.writeStringField("studyDbId", position.getStudyDbId());
+		jgen.writeStringField("blockNumber", unit.getBlockNumber());
+		jgen.writeStringField("entryType", unit.getEntryType().toString());
+		jgen.writeStringField("germplasmDbId", unit.getGermplasmDbId());
+		jgen.writeStringField("germplasmName", unit.getGermplasmName());
+		jgen.writeStringField("observationLevel", unit.getObservationLevel());
+		jgen.writeStringField("observationUnitDbId", unit.getObservationUnitDbId());
+		jgen.writeStringField("observationUnitName", unit.getObservationUnitName());
+		jgen.writeStringField("positionCoordinateX", unit.getPositionCoordinateX());
+		jgen.writeStringField("positionCoordinateXType", unit.getPositionCoordinateXType().toString());
+		jgen.writeStringField("positionCoordinateY", unit.getPositionCoordinateY());
+		jgen.writeStringField("positionCoordinateYType", unit.getPositionCoordinateYType().toString());
+		jgen.writeStringField("replicate", unit.getReplicate());
+		jgen.writeStringField("studyDbId", unit.getStudyDbId());
+		jgen.writeStringField("X", unit.getX());
+		jgen.writeStringField("Y", unit.getY());
 		jgen.writeEndObject();
 	}
 

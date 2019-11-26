@@ -52,7 +52,10 @@ import io.swagger.model.NewObservationsRequestWrapperDeprecated;
 import io.swagger.model.NewObservationsTableRequest;
 import io.swagger.model.Observation;
 import io.swagger.model.ObservationSummary;
+import io.swagger.model.ObservationTreatment;
 import io.swagger.model.ObservationUnit;
+import io.swagger.model.ObservationUnit.PositionCoordinateXTypeEnum;
+import io.swagger.model.ObservationUnit.PositionCoordinateYTypeEnum;
 import io.swagger.model.ObservationUnitPosition;
 import io.swagger.model.ObservationUnitXref;
 import io.swagger.model.ObservationVariable;
@@ -189,6 +192,26 @@ public class StudyService {
 			observation.setGermplasmDbId(entity.getGermplasm().getId());
 			observation.setGermplasmName(entity.getGermplasm().getGermplasmName());
 		}
+		if (entity.getStudy() != null) {
+			observation.setStudyDbId(entity.getStudy().getId());
+			observation.setStudyName(entity.getStudy().getStudyName());
+			if (entity.getStudy().getLocation() != null) {
+				observation.setLocationDbId(entity.getStudy().getLocation().getId());
+				observation.setStudyLocationDbId(entity.getStudy().getLocation().getId());
+				observation.setLocationName(entity.getStudy().getLocation().getName());
+				observation.setStudyLocation(entity.getStudy().getLocation().getName());
+			}
+			if (entity.getStudy().getTrial() != null) {
+				observation.setTrialDbId(entity.getStudy().getTrial().getId());
+				observation.setTrialName(entity.getStudy().getTrial().getTrialName());
+				if (entity.getStudy().getTrial().getProgram() != null) {
+					observation.setProgramDbId(entity.getStudy().getTrial().getProgram().getId());
+					observation.setProgramName(entity.getStudy().getTrial().getProgram().getName());
+				}
+			}
+		}
+		observation.setObservationLevel(entity.getObservationLevel());
+		observation.setObservationLevels(entity.getObservationLevels());
 		observation.setObservationUnitDbId(entity.getId());
 		observation.setObservationUnitName(entity.getObservationUnitName());
 		if (entity.getPedigree() != null)
@@ -197,7 +220,11 @@ public class StudyService {
 		observation.setPlotNumber(entity.getPlotNumber() == null ? "0" : entity.getPlotNumber().toString());
 		observation.setReplicate(entity.getReplicate());
 		observation.setX(entity.getX());
+		observation.setPositionCoordinateX(entity.getX());
+		observation.setPositionCoordinateXType(PositionCoordinateXTypeEnum.GRID_COL);
 		observation.setY(entity.getY());
+		observation.setPositionCoordinateY(entity.getY());
+		observation.setPositionCoordinateYType(PositionCoordinateYTypeEnum.GRID_ROW);
 
 		observation.setObservations(
 				entity.getObservations().stream().map(this::convertFromEntityToSummary).collect(Collectors.toList()));
@@ -207,6 +234,13 @@ public class StudyService {
 			xref.setId(e.getXref());
 			xref.setSource(e.getSource());
 			return xref;
+		}).collect(Collectors.toList()));
+		
+		observation.setTreatments(entity.getTreatments().stream().map(e -> {
+			ObservationTreatment treatment = new ObservationTreatment();
+			treatment.setFactor(e.getFactor());
+			treatment.setModality(e.getModality());
+			return treatment;
 		}).collect(Collectors.toList()));
 
 		return observation;
@@ -382,7 +416,7 @@ public class StudyService {
 	public List<Season> getSeasons(String seasonDbId, String season, String year, Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 		Integer yearInt = null;
-		if(year != null) {
+		if (year != null) {
 			try {
 				yearInt = Integer.valueOf(year);
 			} catch (NumberFormatException e) {
@@ -390,7 +424,7 @@ public class StudyService {
 			}
 		}
 		Page<SeasonEntity> seasonPage = seasonRepository.findBySearch(seasonDbId, season, yearInt, pageReq);
-		
+
 		List<Season> seasons = seasonPage.map((entity) -> {
 			Season seasonObj = new Season();
 			seasonObj.setSeason(entity.getSeason());
@@ -403,9 +437,10 @@ public class StudyService {
 		return seasons;
 	}
 
-	public List<StudySummary> getStudies(String commonCropName, String studyType, String studyTypeDbId, String programDbId, String trialDbId,
-			String studyDbId, String locationDbId, String seasonDbId, List<String> germplasmDbIds,
-			List<String> observationVariableDbIds, Boolean active, String sortBy, String sortOrder, Metadata metaData) {
+	public List<StudySummary> getStudies(String commonCropName, String studyType, String studyTypeDbId,
+			String programDbId, String trialDbId, String studyDbId, String locationDbId, String seasonDbId,
+			List<String> germplasmDbIds, List<String> observationVariableDbIds, Boolean active, String sortBy,
+			String sortOrder, Metadata metaData) {
 
 		StudySearchRequest request = new StudySearchRequest();
 		if (commonCropName != null)
@@ -621,9 +656,8 @@ public class StudyService {
 
 					updateEntity(newObsEntity, newObs);
 					ObservationEntity savedObsEntity = observationRepository.save(newObsEntity);
-					
-					NewObservationDbIdsObservations newId = 
-							new NewObservationDbIdsObservations()
+
+					NewObservationDbIdsObservations newId = new NewObservationDbIdsObservations()
 							.observationDbId(savedObsEntity.getId())
 							.observationUnitDbId(savedObsEntity.getObservationUnit().getId());
 					if (savedObsEntity.getObservationVariable() != null)
@@ -637,13 +671,14 @@ public class StudyService {
 		return newObsIds;
 	}
 
-	public NewObservationUnitDbIds saveObservationUnit(@Valid List<NewObservationUnitRequest> request, String studyDbId) throws BrAPIServerException {
+	public NewObservationUnitDbIds saveObservationUnit(@Valid List<NewObservationUnitRequest> request, String studyDbId)
+			throws BrAPIServerException {
 
 		Optional<StudyEntity> studyEntityOpt = studyRepository.findById(studyDbId);
 		if (!studyEntityOpt.isPresent()) {
 			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "No study found for the given studyDbId");
 		}
-			
+
 		NewObservationUnitDbIds response = new NewObservationUnitDbIds();
 		for (NewObservationUnitRequest unit : request) {
 			ObservationUnitEntity unitEntity;
@@ -656,7 +691,7 @@ public class StudyService {
 			}
 
 			unitEntity.setStudy(studyEntityOpt.get());
-			
+
 			final ObservationUnitEntity newUnitEntity = observationUnitRepository.save(unitEntity);
 
 			if (unit.getObservationUnitXref() == null) {
@@ -698,7 +733,8 @@ public class StudyService {
 		return response;
 	}
 
-	public List<String> saveObservationUnits(String studyDbId, NewObservationsRequestWrapperDeprecated requestDep) throws BrAPIServerException {
+	public List<String> saveObservationUnits(String studyDbId, NewObservationsRequestWrapperDeprecated requestDep)
+			throws BrAPIServerException {
 		List<String> newUnitDbIds = new ArrayList<>();
 		Optional<StudyEntity> studyOpt = studyRepository.findById(studyDbId);
 		if (studyOpt.isPresent()) {
