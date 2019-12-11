@@ -51,7 +51,7 @@ public class CallsService {
 		calls.add("{'call': 'maps/{mapDbId}/positions', 'methods': ['GET'], 'datatypes': ['application/json'], 'dataTypes': ['application/json'], 'versions': ['1.0', '1.1', '1.2', '1.3']}");
 		calls.add("{'call': 'maps/{mapDbId}/positions/{linkageGroupName}', 'methods': ['GET'], 'datatypes': ['application/json'], 'dataTypes': ['application/json'], 'versions': ['1.0', '1.1', '1.2', '1.3']}");
 		calls.add("{'call': 'markerprofiles', 'methods': ['GET'], 'datatypes': ['application/json'], 'dataTypes': ['application/json'], 'versions': ['1.0', '1.1', '1.2', '1.3']}");
-		calls.add("{'call': 'markerprofiles/{markerProfileDbId}', 'methods': ['GET'], 'datatypes': ['application/json'], 'dataTypes': ['application/json'], 'versions': []}");
+		calls.add("{'call': 'markerprofiles/{markerProfileDbId}', 'methods': ['GET'], 'datatypes': ['application/json'], 'dataTypes': ['application/json'], 'versions': [1.0, 1.1, 1.2, 1.3]}");
 		calls.add("{'call': 'markers', 'methods': ['GET'], 'datatypes': ['application/json'], 'dataTypes': ['application/json'], 'versions': ['1.0', '1.3']}");
 		calls.add("{'call': 'markers-search', 'methods': ['GET', 'POST'], 'datatypes': ['application/json'], 'dataTypes': ['application/json'], 'versions': ['1.1', '1.2']}");
 		calls.add("{'call': 'markers/{markerDbId}', 'methods': ['GET'], 'datatypes': ['application/json'], 'dataTypes': ['application/json'], 'versions': ['1.0', '1.1', '1.2', '1.3']}");
@@ -84,7 +84,7 @@ public class CallsService {
 		calls.add("{'call': 'search/observationtables', 'methods': ['POST'], 'datatypes': ['application/json'], 'dataTypes': ['application/json'], 'versions': ['1.3']}");
 		calls.add("{'call': 'search/observationtables/{searchResultsDbId}', 'methods': ['GET'], 'datatypes': ['application/json', 'text/csv', 'text/tsv'], 'dataTypes': ['application/json', 'text/csv', 'text/tsv'], 'versions': ['1.3']}");
 		calls.add("{'call': 'search/observationunits', 'methods': ['POST'], 'datatypes': ['application/json'], 'dataTypes': ['application/json'], 'versions': ['1.3']}");
-		calls.add("{'call': 'search/observationunits/{searchResultsDbId}', 'methods': ['GET'], 'datatypes': ['application/json'], 'dataTypes': ['application/json'], 'versions': []}");
+		calls.add("{'call': 'search/observationunits/{searchResultsDbId}', 'methods': ['GET'], 'datatypes': ['application/json'], 'dataTypes': ['application/json'], 'versions': [1.3]}");
 		calls.add("{'call': 'search/programs', 'methods': ['POST'], 'datatypes': ['application/json'], 'dataTypes': ['application/json'], 'versions': ['1.3']}");
 		calls.add("{'call': 'search/programs/{searchResultsDbId}', 'methods': ['GET'], 'datatypes': ['application/json'], 'dataTypes': ['application/json'], 'versions': ['1.3']}");
 		calls.add("{'call': 'search/samples', 'methods': ['POST'], 'datatypes': ['application/json'], 'dataTypes': ['application/json'], 'versions': ['1.3']}");
