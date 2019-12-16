@@ -317,7 +317,7 @@ public class StudyService {
 		plot.setPositionCoordinateXType(io.swagger.model.ObservationUnitPosition.PositionCoordinateXTypeEnum.GRID_COL);
 		plot.setY(entity.getY());
 		plot.setPositionCoordinateY(entity.getY());
-		plot.setPositionCoordinateYType(io.swagger.model.ObservationUnitPosition.PositionCoordinateYTypeEnum.GRID_COL);
+		plot.setPositionCoordinateYType(io.swagger.model.ObservationUnitPosition.PositionCoordinateYTypeEnum.GRID_ROW);
 		plot.setAdditionalInfo(new HashMap<>());
 
 		if (entity.getGermplasm() != null) {
