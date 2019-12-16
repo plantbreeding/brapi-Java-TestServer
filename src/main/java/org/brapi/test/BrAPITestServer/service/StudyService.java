@@ -313,7 +313,11 @@ public class StudyService {
 		plot.setReplicate(entity.getReplicate());
 		plot.setStudyDbId(entity.getStudy().getId());
 		plot.setX(entity.getX());
+		plot.setPositionCoordinateX(entity.getX());
+		plot.setPositionCoordinateXType(io.swagger.model.ObservationUnitPosition.PositionCoordinateXTypeEnum.GRID_COL);
 		plot.setY(entity.getY());
+		plot.setPositionCoordinateY(entity.getY());
+		plot.setPositionCoordinateYType(io.swagger.model.ObservationUnitPosition.PositionCoordinateYTypeEnum.GRID_COL);
 		plot.setAdditionalInfo(new HashMap<>());
 
 		if (entity.getGermplasm() != null) {
