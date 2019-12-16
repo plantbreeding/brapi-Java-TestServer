@@ -23,16 +23,16 @@ public class CustomObservationUnitPositionSerializer extends StdSerializer<Obser
 	public void serialize(ObservationUnitPosition unit, JsonGenerator jgen, SerializerProvider sp) throws IOException {
 		jgen.writeStartObject();
 		jgen.writeStringField("blockNumber", unit.getBlockNumber());
-		jgen.writeStringField("entryType", unit.getEntryType().toString());
+		jgen.writeStringField("entryType", unit.getEntryType() == null ? "" : unit.getEntryType().toString());
 		jgen.writeStringField("germplasmDbId", unit.getGermplasmDbId());
 		jgen.writeStringField("germplasmName", unit.getGermplasmName());
 		jgen.writeStringField("observationLevel", unit.getObservationLevel());
 		jgen.writeStringField("observationUnitDbId", unit.getObservationUnitDbId());
 		jgen.writeStringField("observationUnitName", unit.getObservationUnitName());
 		jgen.writeStringField("positionCoordinateX", unit.getPositionCoordinateX());
-		jgen.writeStringField("positionCoordinateXType", unit.getPositionCoordinateXType().toString());
+		jgen.writeStringField("positionCoordinateXType", unit.getPositionCoordinateXType() == null ? "" : unit.getPositionCoordinateXType().toString());
 		jgen.writeStringField("positionCoordinateY", unit.getPositionCoordinateY());
-		jgen.writeStringField("positionCoordinateYType", unit.getPositionCoordinateYType().toString());
+		jgen.writeStringField("positionCoordinateYType", unit.getPositionCoordinateYType() == null ? "" : unit.getPositionCoordinateYType().toString());
 		jgen.writeStringField("replicate", unit.getReplicate());
 		jgen.writeStringField("studyDbId", unit.getStudyDbId());
 		jgen.writeStringField("X", unit.getX());
