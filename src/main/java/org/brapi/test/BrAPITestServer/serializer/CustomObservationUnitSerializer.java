@@ -39,9 +39,9 @@ public class CustomObservationUnitSerializer extends StdSerializer<ObservationUn
 		jgen.writeStringField("plantNumber", unit.getPlantNumber());
 		jgen.writeStringField("plotNumber", unit.getPlotNumber());
 		jgen.writeStringField("positionCoordinateX", unit.getPositionCoordinateX());
-		jgen.writeStringField("positionCoordinateXType", unit.getPositionCoordinateXType().toString());
+		jgen.writeStringField("positionCoordinateXType", unit.getPositionCoordinateXType() == null ? null : unit.getPositionCoordinateXType().toString());
 		jgen.writeStringField("positionCoordinateY", unit.getPositionCoordinateY());
-		jgen.writeStringField("positionCoordinateYType", unit.getPositionCoordinateYType().toString());
+		jgen.writeStringField("positionCoordinateYType", unit.getPositionCoordinateYType() == null ? null : unit.getPositionCoordinateYType().toString());
 		jgen.writeStringField("programDbId", unit.getProgramDbId());
 		jgen.writeStringField("programName", unit.getProgramName());
 		jgen.writeStringField("replicate", unit.getReplicate());

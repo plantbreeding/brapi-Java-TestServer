@@ -253,7 +253,11 @@ public class PhenotypeService {
 		pheno.setPlotNumber(String.valueOf(entity.getPlotNumber()));
 		pheno.setReplicate(entity.getReplicate());
 		pheno.setX(entity.getX());
+		pheno.setPositionCoordinateX(entity.getX());
+		pheno.setPositionCoordinateXType(io.swagger.model.ObservationUnitPhenotype.PositionCoordinateXTypeEnum.GRID_COL);
 		pheno.setY(entity.getY());
+		pheno.setPositionCoordinateY(entity.getY());
+		pheno.setPositionCoordinateYType(io.swagger.model.ObservationUnitPhenotype.PositionCoordinateYTypeEnum.GRID_ROW);
 		pheno.setObservationLevel(entity.getObservationLevel());
 		pheno.setObservationLevels(entity.getObservationLevels());
 		pheno.setProgramName(entity.getStudy().getTrial().getProgram().getName());
