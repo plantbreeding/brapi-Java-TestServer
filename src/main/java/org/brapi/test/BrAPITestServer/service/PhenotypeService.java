@@ -72,8 +72,8 @@ public class PhenotypeService {
 			Date observationTimeStampRangeEnd, Metadata metaData) {
 		PhenotypesSearchRequest request = new PhenotypesSearchRequest();
 		request.setObservationLevel(observationLevel);
-		request.setObservationTimeStampRangeEnd(observationTimeStampRangeEnd);
-		request.setObservationTimeStampRangeStart(observationTimeStampRangeStart);
+		request.setObservationTimeStampRangeEnd(DateUtility.toOffsetDateTime(observationTimeStampRangeEnd));
+		request.setObservationTimeStampRangeStart(DateUtility.toOffsetDateTime(observationTimeStampRangeStart));
 
 		if (germplasmDbId != null)
 			request.addGermplasmDbIdsItem(germplasmDbId);

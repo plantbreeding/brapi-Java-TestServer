@@ -46,8 +46,27 @@ public class MarkerRepositoryImpl implements MarkerRepositoryCustom {
 		String queryStr = "select m from MarkerEntity m where 1 = 1 ";
 
 		if (request.getMarkerDbIds() != null && !request.getMarkerDbIds().isEmpty()) {
-			queryStr += "AND m.id IN :markerDbIds ";
-			params.put("markerDbIds", request.getMarkerDbIds());
+			List<String> dbids = request.getMarkerDbIds();
+			if (request.getMatchMethod().equals(MatchMethodEnum.EXACT)) {
+				queryStr += "AND m.id IN :markerDbIds ";
+				params.put("markerDbIds", dbids);
+			} else if (request.getMatchMethod().equals(MatchMethodEnum.CASE_INSENSITIVE)) {
+				dbids = dbids.stream().map(n -> n.toLowerCase()).collect(Collectors.toList());
+
+				queryStr += "AND lower(m.id) IN :markerDbIds ";
+				params.put("markerDbIds", dbids);
+			} else if (request.getMatchMethod().equals(MatchMethodEnum.WILDCARD)) {
+				queryStr += "AND (";
+				int i = 0;
+				for (String dbid : dbids) {
+					if (i > 0)
+						queryStr += "OR ";
+					queryStr += "lower(m.id) LIKE :markerDbIds" + i + " ";
+					params.put("markerDbIds" + i, dbid.toLowerCase().replaceAll("[\\*\\%]", "%").replaceAll("\\?", "_"));
+					i++;
+				}
+				queryStr += ") ";
+			}
 		}
 
 		List<String> names = new ArrayList<String>();

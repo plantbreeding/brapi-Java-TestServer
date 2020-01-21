@@ -563,7 +563,7 @@ INSERT INTO marker_synonym (id, marker_db_id, synonym) VALUES('ms22', 'mr22', 'i
 
 
 INSERT INTO vendor_order(id, client_plate_barcode, client_plate_db_id, sample_type, status, status_time_stamp)	VALUES ('vo1', '123456', '123456', 0, 0, '2018-01-01 00:00:00');
-INSERT INTO plate_submission (id, client_id, number_of_samples, sample_type, order_id) VALUES('ps1', '123456', 14, 0, 'vo1');
+INSERT INTO plate_submission (id, client_id, number_of_samples, sample_type, order_id) VALUES('ps1', '123456', 16, 0, 'vo1');
 INSERT INTO plate (id, client_plate_db_id, client_plate_barcode, sample_submission_format, status_time_stamp, submission_id) VALUES('pl1', '123456789', '123456789', 0, '2018-01-01 00:00:00', 'ps1');
 INSERT INTO vendor_order_entity_service_ids(vendor_order_entity_id, service_ids) VALUES ('vo1', 'vsp1');
 

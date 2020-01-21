@@ -1,6 +1,7 @@
 package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -41,8 +42,35 @@ public class MarkerController extends BrAPIController implements MarkersApi, Mar
 			throws BrAPIServerException {
 		
 		Metadata metaData = generateMetaDataTemplate(page, pageSize);
-		List<Marker> data = markersService.getMarkers(name, type, null, MatchMethodEnum.fromValue(matchMethod),
-				"synonyms".equals(include), metaData);
+		
+		String typeReq = type;
+		List<String> markerDbIdReq = null; //default null
+		if(markerDbId != null) {
+			markerDbIdReq = Arrays.asList(markerDbId);
+		}
+		
+		MatchMethodEnum matchMethodReq = MatchMethodEnum.EXACT; //default exact 
+		if(matchMethod != null) {
+			matchMethodReq = MatchMethodEnum.fromValue(matchMethod);
+		}
+		
+		String markerNameReq = null; //default null
+		if (name != null) {
+			markerNameReq = name;
+		}
+		if (markerName != null) {
+			markerNameReq = markerName;
+		}
+		
+		Boolean includeSynonymsReq = true; //default true
+		if (include != null) {
+			includeSynonymsReq = "synonyms".equals(include);
+		}
+		if (includeSynonyms != null) {
+			includeSynonymsReq = includeSynonyms;
+		}		
+		
+		List<Marker> data = markersService.getMarkers(markerNameReq, typeReq, markerDbIdReq, matchMethodReq, includeSynonymsReq, metaData);
 		
 		MarkersResponseResult result = new MarkersResponseResult();
 		result.setData(data);

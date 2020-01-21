@@ -154,10 +154,6 @@ public class PhenotypesSearchRequest   {
     return DateUtility.toDate(observationTimeStampRangeEnd);
   }
 
-  public void setObservationTimeStampRangeEnd(Date observationTimeStampRangeEnd) {
-    this.observationTimeStampRangeEnd = DateUtility.toOffsetDateTime(observationTimeStampRangeEnd);
-  }
-
   public void setObservationTimeStampRangeEnd(OffsetDateTime observationTimeStampRangeEnd) {
     this.observationTimeStampRangeEnd = observationTimeStampRangeEnd;
   }
@@ -177,10 +173,6 @@ public class PhenotypesSearchRequest   {
 
   public Date getObservationTimeStampRangeStart() {
     return DateUtility.toDate(observationTimeStampRangeStart);
-  }
-
-  public void setObservationTimeStampRangeStart(Date observationTimeStampRangeStart) {
-    this.observationTimeStampRangeStart = DateUtility.toOffsetDateTime(observationTimeStampRangeStart);
   }
 
   public void setObservationTimeStampRangeStart(OffsetDateTime observationTimeStampRangeStart) {
