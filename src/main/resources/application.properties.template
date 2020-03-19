@@ -11,3 +11,5 @@ spring.jpa.hibernate.ddl-auto=create-drop
 spring.jpa.show-sql=false
 
 spring.mvc.dispatch-options-request=true
+
+app.baseurl=http://localhost:8080/brapi/v1
