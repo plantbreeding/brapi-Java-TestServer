@@ -1,7 +1,8 @@
 package org.brapi.test.BrAPITestServer.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;

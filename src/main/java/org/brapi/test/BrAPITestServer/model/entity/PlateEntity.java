@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.vendor.VendorPlateSubmissionEntity;
 
-import io.swagger.model.PlateFormat;
+import io.swagger.model.geno.PlateFormat;
 
 @Entity
 @Table(name="plate")

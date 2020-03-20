@@ -11,7 +11,8 @@ import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BaseEntity;
 import org.brapi.test.BrAPITestServer.model.entity.PlateEntity;
-import io.swagger.model.VendorOrderRequest.SampleTypeEnum;
+
+import io.swagger.model.geno.VendorPlateSubmissionRequest.SampleTypeEnum;
 
 @Entity
 @Table(name="plate_submission")

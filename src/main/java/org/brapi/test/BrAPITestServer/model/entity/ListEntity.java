@@ -1,6 +1,5 @@
 package org.brapi.test.BrAPITestServer.model.entity;
 
-import io.swagger.model.ListTypes;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import io.swagger.model.core.ListTypes;
 
 @Entity
 @Table(name = "list")
