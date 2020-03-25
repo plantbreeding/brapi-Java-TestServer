@@ -3,7 +3,7 @@ package org.brapi.test.BrAPITestServer.service;
 import org.brapi.test.BrAPITestServer.model.entity.ContactEntity;
 import org.springframework.stereotype.Service;
 
-import io.swagger.model.Contact;
+import io.swagger.model.core.Contact;
 
 @Service
 public class ContactService {

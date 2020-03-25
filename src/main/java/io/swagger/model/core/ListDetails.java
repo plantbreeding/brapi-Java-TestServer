@@ -3,6 +3,8 @@ package io.swagger.model.core;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.common.BrAPIResponseResult;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
@@ -13,7 +15,7 @@ import javax.validation.Valid;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
-public class ListDetails extends ListSummary  {
+public class ListDetails extends ListSummary implements BrAPIResponseResult<String> {
   @JsonProperty("data")
   @Valid
   private List<String> data = null;

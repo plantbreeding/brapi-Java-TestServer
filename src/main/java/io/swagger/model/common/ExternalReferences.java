@@ -17,6 +17,13 @@ import org.springframework.validation.annotation.Validated;
 public class ExternalReferences extends ArrayList<ExternalReferencesInner> {
 
 	private static final long serialVersionUID = -4795437173672218910L;
+	
+	public ExternalReferences addReference(String referenceId, String referenceSource) {
+		ExternalReferencesInner inner = new ExternalReferencesInner()
+				.referenceID(referenceId).referenceSource(referenceSource);
+		this.add(inner);
+		return this;
+	}
 
 	@Override
 	public boolean equals(java.lang.Object o) {

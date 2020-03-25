@@ -9,7 +9,8 @@ import org.brapi.test.BrAPITestServer.service.CustomRepositorySearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import io.swagger.model.GermplasmSearchRequest;
+
+import io.swagger.model.germ.GermplasmSearchRequest;
 
 public class GermplasmRepositoryImpl implements GermplasmRepositoryCustom {
 
@@ -38,9 +39,9 @@ public class GermplasmRepositoryImpl implements GermplasmRepositoryCustom {
 			queryStr += "AND g.id in :germplasmDbIds ";
 			params.put("germplasmDbIds", request.getGermplasmDbIds());
 		}
-		if (request.getGermplasmGenus() != null && !request.getGermplasmGenus().isEmpty()) {
+		if (request.getGenus() != null && !request.getGenus().isEmpty()) {
 			queryStr += "AND g.genus in :genus ";
-			params.put("genus", request.getGermplasmGenus());
+			params.put("genus", request.getGenus());
 		}
 		if (request.getCommonCropNames() != null && !request.getCommonCropNames().isEmpty()) {
 			queryStr += "AND g.commonCropName in :commonCropName ";
@@ -54,9 +55,9 @@ public class GermplasmRepositoryImpl implements GermplasmRepositoryCustom {
 			queryStr += "AND g.germplasmPUI in :puis ";
 			params.put("puis", request.getGermplasmPUIs());
 		}
-		if (request.getGermplasmSpecies() != null && !request.getGermplasmSpecies().isEmpty()) {
+		if (request.getSpecies() != null && !request.getSpecies().isEmpty()) {
 			queryStr += "AND g.species in :species ";
-			params.put("species", request.getGermplasmSpecies());
+			params.put("species", request.getSpecies());
 		}
 		if (request.getAccessionNumbers() != null && !request.getAccessionNumbers().isEmpty()) {
 			queryStr += "AND g.accessionNumber in :accessionNumbers ";

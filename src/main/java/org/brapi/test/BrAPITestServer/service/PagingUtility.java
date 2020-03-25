@@ -5,8 +5,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import io.swagger.model.Metadata;
-import io.swagger.model.MetadataPagination;
+import io.swagger.model.common.IndexPagination;
+import io.swagger.model.common.Metadata;
 
 public class PagingUtility {
 	public static void calculateMetaData(Metadata metaData) {
@@ -20,7 +20,7 @@ public class PagingUtility {
 			metaData = new Metadata();
 		}
 		if (metaData.getPagination() == null) {
-			metaData.setPagination(new MetadataPagination());
+			metaData.setPagination(new IndexPagination());
 		}
 		return getPageRequest(metaData, null);
 	}

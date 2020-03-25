@@ -30,50 +30,32 @@ import org.brapi.test.BrAPITestServer.repository.ObservationRepository;
 import org.brapi.test.BrAPITestServer.repository.ObservationUnitRepository;
 import org.brapi.test.BrAPITestServer.repository.ObservationVariableRepository;
 import org.brapi.test.BrAPITestServer.repository.SeasonRepository;
-import org.brapi.test.BrAPITestServer.repository.StudyRepository;
-import org.brapi.test.BrAPITestServer.repository.StudyTypeRepository;
+import org.brapi.test.BrAPITestServer.repository.core.StudyRepository;
+import org.brapi.test.BrAPITestServer.repository.core.StudyTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import io.swagger.model.DataLink;
-import io.swagger.model.GermplasmSummaryList;
-import io.swagger.model.Metadata;
-import io.swagger.model.NewObservationDbIds;
-import io.swagger.model.NewObservationDbIdsObservations;
-import io.swagger.model.NewObservationUnitDbIds;
-import io.swagger.model.NewObservationUnitRequest;
-import io.swagger.model.NewObservationsRequest;
-import io.swagger.model.NewObservationsRequestDeprecatedData;
-import io.swagger.model.NewObservationsRequestObservations;
-import io.swagger.model.NewObservationsRequestWrapperDeprecated;
-import io.swagger.model.NewObservationsTableRequest;
-import io.swagger.model.Observation;
-import io.swagger.model.ObservationSummary;
-import io.swagger.model.ObservationTreatment;
-import io.swagger.model.ObservationUnit;
-import io.swagger.model.ObservationUnit.PositionCoordinateXTypeEnum;
-import io.swagger.model.ObservationUnit.PositionCoordinateYTypeEnum;
-import io.swagger.model.ObservationUnitPosition;
-import io.swagger.model.ObservationUnitXref;
-import io.swagger.model.ObservationVariable;
-import io.swagger.model.ObservationsTable;
-import io.swagger.model.ObservationsTable.HeaderRowEnum;
-import io.swagger.model.ObservationUnitPosition.EntryTypeEnum;
-import io.swagger.model.Season;
-import io.swagger.model.Study;
-import io.swagger.model.StudyLastUpdate;
-import io.swagger.model.StudyLayoutRequest;
-import io.swagger.model.StudyLayoutRequestLayout;
-import io.swagger.model.StudyObservationVariablesResponseResult;
-import io.swagger.model.StudySearchRequest;
-import io.swagger.model.StudySummary;
-import io.swagger.model.StudyType;
-import io.swagger.model.StudySearchRequest.SortByEnum;
-import io.swagger.model.StudySearchRequest.SortOrderEnum;
-import io.swagger.model.StudySearchRequestDep;
+import io.swagger.model.common.DataLink;
+import io.swagger.model.common.Metadata;
+import io.swagger.model.core.Season;
+import io.swagger.model.core.Study;
+import io.swagger.model.core.StudyNewRequestLastUpdate;
+import io.swagger.model.core.StudySearchRequest;
+import io.swagger.model.germ.Germplasm;
+import io.swagger.model.pheno.Observation;
+import io.swagger.model.pheno.ObservationNewRequest;
+import io.swagger.model.pheno.ObservationTable;
+import io.swagger.model.pheno.ObservationTable.HeaderRowEnum;
+import io.swagger.model.pheno.ObservationTableObservationVariables;
+import io.swagger.model.pheno.ObservationUnit;
+import io.swagger.model.pheno.ObservationUnitNewRequest;
+import io.swagger.model.pheno.ObservationUnitPosition;
+import io.swagger.model.pheno.ObservationVariable;
+import io.swagger.model.pheno.ObservationVariableListResponseResult;
+
 
 @Service
 public class StudyService {
@@ -166,7 +148,7 @@ public class StudyService {
 		unit.setGermplasmDbId(entity.getObservationUnit().getGermplasm().getId());
 		unit.setGermplasmName(entity.getObservationUnit().getGermplasm().getGermplasmName());
 		unit.setObservationDbId(entity.getId());
-		unit.setObservationLevel(entity.getObservationUnit().getObservationLevel());
+//		unit.setObservationLevel(entity.getObservationUnit().getObservationLevel());
 		unit.setObservationTimeStamp(DateUtility.toOffsetDateTime(entity.getObservationTimeStamp()));
 		unit.setObservationUnitDbId(entity.getObservationUnit().getId());
 		unit.setObservationUnitName(entity.getObservationUnit().getObservationUnitName());
@@ -174,9 +156,9 @@ public class StudyService {
 			unit.setObservationVariableDbId(entity.getObservationVariable().getId());
 			unit.setObservationVariableName(entity.getObservationVariable().getName());
 		}
-		unit.setOperator(entity.getObservationUnit().getOperator());
+//		unit.setOperator(entity.getObservationUnit().getOperator());
 		unit.setStudyDbId(entity.getObservationUnit().getStudy().getId());
-		unit.setSeason(convertFromEntity(entity.getSeason()));
+//		unit.setSeason(convertFromEntity(entity.getSeason()));
 		unit.setUploadedBy(entity.getObservationUnit().getUploadedBy());
 		unit.setValue(entity.getValue());
 
@@ -185,9 +167,9 @@ public class StudyService {
 
 	private ObservationUnit convertFromEntity(ObservationUnitEntity entity) {
 		ObservationUnit observation = new ObservationUnit();
-		observation.setBlockNumber(entity.getBlockNumber() == null ? "0" : entity.getBlockNumber().toString());
-		observation.setEntryNumber(entity.getEntryNumber());
-		observation.setEntryType(entity.getEntryType());
+//		observation.setBlockNumber(entity.getBlockNumber() == null ? "0" : entity.getBlockNumber().toString());
+//		observation.setEntryNumber(entity.getEntryNumber());
+//		observation.setEntryType(entity.getEntryType());
 		if (entity.getGermplasm() != null) {
 			observation.setGermplasmDbId(entity.getGermplasm().getId());
 			observation.setGermplasmName(entity.getGermplasm().getGermplasmName());
@@ -197,9 +179,7 @@ public class StudyService {
 			observation.setStudyName(entity.getStudy().getStudyName());
 			if (entity.getStudy().getLocation() != null) {
 				observation.setLocationDbId(entity.getStudy().getLocation().getId());
-				observation.setStudyLocationDbId(entity.getStudy().getLocation().getId());
 				observation.setLocationName(entity.getStudy().getLocation().getName());
-				observation.setStudyLocation(entity.getStudy().getLocation().getName());
 			}
 			if (entity.getStudy().getTrial() != null) {
 				observation.setTrialDbId(entity.getStudy().getTrial().getId());
@@ -210,38 +190,38 @@ public class StudyService {
 				}
 			}
 		}
-		observation.setObservationLevel(entity.getObservationLevel());
-		observation.setObservationLevels(entity.getObservationLevels());
+//		observation.setObservationLevel(entity.getObservationLevel());
+//		observation.setObservationLevels(entity.getObservationLevels());
 		observation.setObservationUnitDbId(entity.getId());
 		observation.setObservationUnitName(entity.getObservationUnitName());
-		if (entity.getPedigree() != null)
-			observation.setPedigree(entity.getPedigree().getPedigree());
-		observation.setPlantNumber(entity.getPlantNumber() == null ? "0" : entity.getPlantNumber().toString());
-		observation.setPlotNumber(entity.getPlotNumber() == null ? "0" : entity.getPlotNumber().toString());
-		observation.setReplicate(entity.getReplicate());
-		observation.setX(entity.getX());
-		observation.setPositionCoordinateX(entity.getX());
-		observation.setPositionCoordinateXType(PositionCoordinateXTypeEnum.GRID_COL);
-		observation.setY(entity.getY());
-		observation.setPositionCoordinateY(entity.getY());
-		observation.setPositionCoordinateYType(PositionCoordinateYTypeEnum.GRID_ROW);
+//		if (entity.getPedigree() != null)
+//			observation.setPedigree(entity.getPedigree().getPedigree());
+//		observation.setPlantNumber(entity.getPlantNumber() == null ? "0" : entity.getPlantNumber().toString());
+//		observation.setPlotNumber(entity.getPlotNumber() == null ? "0" : entity.getPlotNumber().toString());
+//		observation.setReplicate(entity.getReplicate());
+//		observation.setX(entity.getX());
+//		observation.setPositionCoordinateX(entity.getX());
+//		observation.setPositionCoordinateXType(PositionCoordinateXTypeEnum.GRID_COL);
+//		observation.setY(entity.getY());
+//		observation.setPositionCoordinateY(entity.getY());
+//		observation.setPositionCoordinateYType(PositionCoordinateYTypeEnum.GRID_ROW);
 
-		observation.setObservations(
-				entity.getObservations().stream().map(this::convertFromEntityToSummary).collect(Collectors.toList()));
+//		observation.setObservations(
+//				entity.getObservations().stream().map(this::convertFromEntityToSummary).collect(Collectors.toList()));
 
-		observation.setObservationUnitXref(entity.getObservationUnitXref().stream().map(e -> {
-			ObservationUnitXref xref = new ObservationUnitXref();
-			xref.setId(e.getXref());
-			xref.setSource(e.getSource());
-			return xref;
-		}).collect(Collectors.toList()));
-		
-		observation.setTreatments(entity.getTreatments().stream().map(e -> {
-			ObservationTreatment treatment = new ObservationTreatment();
-			treatment.setFactor(e.getFactor());
-			treatment.setModality(e.getModality());
-			return treatment;
-		}).collect(Collectors.toList()));
+//		observation.setObservationUnitXref(entity.getObservationUnitXref().stream().map(e -> {
+//			ObservationUnitXref xref = new ObservationUnitXref();
+//			xref.setId(e.getXref());
+//			xref.setSource(e.getSource());
+//			return xref;
+//		}).collect(Collectors.toList()));
+//		
+//		observation.setTreatments(entity.getTreatments().stream().map(e -> {
+//			ObservationTreatment treatment = new ObservationTreatment();
+//			treatment.setFactor(e.getFactor());
+//			treatment.setModality(e.getModality());
+//			return treatment;
+//		}).collect(Collectors.toList()));
 
 		return observation;
 
@@ -250,9 +230,9 @@ public class StudyService {
 	private Season convertFromEntity(SeasonEntity entity) {
 		Season season = new Season();
 		if (entity != null) {
-			season.setSeason(entity.getSeason());
+			season.setSeasonName(entity.getSeason());
 			season.setSeasonDbId(entity.getId());
-			season.setYear(entity.getYear().toString());
+			season.setYear(entity.getYear());
 		}
 		return season;
 	}
@@ -260,23 +240,23 @@ public class StudyService {
 	private Study convertFromEntity(StudyEntity entity) {
 		Study study = new Study();
 
-		study.setActive(String.valueOf(entity.isActive()));
+		study.setActive(entity.isActive());
 		study.setCommonCropName(entity.getTrial().getProgram().getCrop().getCropName());
 		study.setDocumentationURL(entity.getDocumentationURL());
-		study.setEndDate(DateUtility.toLocalDate(entity.getEndDate()));
-		study.setStartDate(DateUtility.toLocalDate(entity.getStartDate()));
+		study.setEndDate(DateUtility.toOffsetDateTime(entity.getEndDate()));
+		study.setStartDate(DateUtility.toOffsetDateTime(entity.getStartDate()));
 		study.setStudyDbId(entity.getId());
 		study.setStudyType(entity.getStudyType().getName());
-		study.setStudyTypeName(entity.getStudyType().getName());
-		study.setStudyTypeDbId(entity.getStudyType().getId());
+//		study.setStudyTypeName(entity.getStudyType().getName());
+//		study.setStudyTypeDbId(entity.getStudyType().getId());
 		study.setTrialDbId(entity.getTrial().getId());
 		study.setTrialName(entity.getTrial().getTrialName());
 		study.setLicense(entity.getLicence());
-		study.setLocation(locationService.convertFromEntity(entity.getLocation()));
+//		study.setLocation(locationService.convertFromEntity(entity.getLocation()));
 		study.setStudyDescription(entity.getStudyDescription());
 		study.setStudyName(entity.getStudyName());
 
-		study.setLastUpdate(new StudyLastUpdate());
+		study.setLastUpdate(new StudyNewRequestLastUpdate());
 		study.getLastUpdate().setTimestamp(DateUtility.toOffsetDateTime(entity.getTimestamp()));
 		study.getLastUpdate().setVersion(entity.getVersion());
 
@@ -286,8 +266,8 @@ public class StudyService {
 		study.setDataLinks(entity.getDataLinks().stream().map(e -> {
 			DataLink dataLink = new DataLink();
 			dataLink.setName(e.getName());
-			dataLink.setDataLinkName(e.getName());
-			dataLink.setType(e.getType());
+//			dataLink.setDataLinkName(e.getName());
+//			dataLink.setType(e.getType());
 			dataLink.setUrl(e.getUrl());
 			return dataLink;
 		}).collect(Collectors.toList()));
@@ -305,35 +285,35 @@ public class StudyService {
 
 	private ObservationUnitPosition convertFromEntityToPosition(ObservationUnitEntity entity) {
 		ObservationUnitPosition plot = new ObservationUnitPosition();
-		plot.setBlockNumber(entity.getBlockNumber() == null ? null : entity.getBlockNumber().toString());
-		plot.setEntryType(EntryTypeEnum.valueOf(entity.getEntryType()));
+//		plot.setBlockNumber(entity.getBlockNumber() == null ? null : entity.getBlockNumber().toString());
+//		plot.setEntryType(EntryTypeEnum.valueOf(entity.getEntryType()));
 		plot.setObservationLevel(entity.getObservationLevel());
-		plot.setObservationUnitDbId(entity.getId());
-		plot.setObservationUnitName(entity.getObservationUnitName());
-		plot.setReplicate(entity.getReplicate());
-		plot.setStudyDbId(entity.getStudy().getId());
-		plot.setX(entity.getX());
+//		plot.setObservationUnitDbId(entity.getId());
+//		plot.setObservationUnitName(entity.getObservationUnitName());
+//		plot.setReplicate(entity.getReplicate());
+//		plot.setStudyDbId(entity.getStudy().getId());
+//		plot.setX(entity.getX());
 		plot.setPositionCoordinateX(entity.getX());
-		plot.setPositionCoordinateXType(io.swagger.model.ObservationUnitPosition.PositionCoordinateXTypeEnum.GRID_COL);
-		plot.setY(entity.getY());
+//		plot.setPositionCoordinateXType(io.swagger.model.ObservationUnitPosition.PositionCoordinateXTypeEnum.GRID_COL);
+//		plot.setY(entity.getY());
 		plot.setPositionCoordinateY(entity.getY());
-		plot.setPositionCoordinateYType(io.swagger.model.ObservationUnitPosition.PositionCoordinateYTypeEnum.GRID_ROW);
-		plot.setAdditionalInfo(new HashMap<>());
+//		plot.setPositionCoordinateYType(io.swagger.model.ObservationUnitPosition.PositionCoordinateYTypeEnum.GRID_ROW);
+//		plot.setAdditionalInfo(new HashMap<>());
 
 		if (entity.getGermplasm() != null) {
-			plot.setGermplasmDbId(entity.getGermplasm().getId());
-			plot.setGermplasmName(entity.getGermplasm().getGermplasmName());
+//			plot.setGermplasmDbId(entity.getGermplasm().getId());
+//			plot.setGermplasmName(entity.getGermplasm().getGermplasmName());
 		}
 
 		return plot;
 	}
 
-	private ObservationSummary convertFromEntityToSummary(ObservationEntity entity) {
-		ObservationSummary ob = new ObservationSummary();
+	private Observation convertFromEntityToSummary(ObservationEntity entity) {
+		Observation ob = new Observation();
 		ob.setCollector(entity.getCollector());
 		ob.setObservationDbId(entity.getId());
 		ob.setObservationTimeStamp(DateUtility.toOffsetDateTime(entity.getObservationTimeStamp()));
-		ob.setSeason(convertFromEntity(entity.getSeason()));
+//		ob.setSeason(convertFromEntity(entity.getSeason()));
 		ob.setValue(entity.getValue());
 		if (entity.getObservationVariable() != null) {
 			ob.setObservationVariableDbId(entity.getObservationVariable().getId());
@@ -342,27 +322,27 @@ public class StudyService {
 		return ob;
 	}
 
-	private StudySummary convertFromEntityToSummary(StudyEntity entity) {
-		StudySummary sum = new StudySummary();
-		sum.setActive(String.valueOf(entity.isActive()));
+	private Study convertFromEntityToSummary(StudyEntity entity) {
+		Study sum = new Study();
+		sum.setActive(entity.isActive());
 		sum.setCommonCropName(entity.getTrial().getProgram().getCrop().getCropName());
 		sum.setDocumentationURL(entity.getDocumentationURL());
-		sum.setEndDate(DateUtility.toLocalDate(entity.getEndDate()));
+		sum.setEndDate(DateUtility.toOffsetDateTime(entity.getEndDate()));
 		sum.setLocationDbId(entity.getLocation().getId());
 		sum.setLocationName(entity.getLocation().getName());
-		sum.setName(entity.getStudyName());
-		sum.setProgramDbId(entity.getTrial().getProgram().getId());
-		sum.setProgramName(entity.getTrial().getProgram().getName());
-		sum.setStartDate(DateUtility.toLocalDate(entity.getStartDate()));
+//		sum.setName(entity.getStudyName());
+//		sum.setProgramDbId(entity.getTrial().getProgram().getId());
+//		sum.setProgramName(entity.getTrial().getProgram().getName());
+		sum.setStartDate(DateUtility.toOffsetDateTime(entity.getStartDate()));
 		sum.setStudyDbId(entity.getId());
 		sum.setStudyName(entity.getStudyName());
 		sum.setStudyType(entity.getStudyType().getName());
-		sum.setStudyTypeName(entity.getStudyType().getName());
-		sum.setStudyTypeDbId(entity.getStudyType().getId());
+//		sum.setStudyTypeName(entity.getStudyType().getName());
+//		sum.setStudyTypeDbId(entity.getStudyType().getId());
 		sum.setTrialDbId(entity.getTrial().getId());
 		sum.setTrialName(entity.getTrial().getTrialName());
 
-		sum.setSeasons(entity.getSeasons().stream().map(this::convertFromEntity).collect(Collectors.toList()));
+//		sum.setSeasons(entity.getSeasons().stream().map(this::convertFromEntity).collect(Collectors.toList()));
 
 		sum.setAdditionalInfo(new HashMap<>());
 		for (StudyAddtionalInfoEntity e : entity.getAdditionalInfo()) {
@@ -372,21 +352,21 @@ public class StudyService {
 		return sum;
 	}
 
-	private ObservationEntity convertToEntity(NewObservationsRequestObservations observation) {
-		ObservationEntity obe = observationRepository.findById(observation.getObservationDbId())
-				.orElse(new ObservationEntity());
-		obe.setCollector(observation.getCollector());
-		obe.setObservationTimeStamp(DateUtility.toDate(observation.getObservationTimeStamp()));
-		obe.setValue(observation.getValue());
-		obe.setObservationVariable(
-				observationVariableService.getVariableEntity(observation.getObservationVariableDbId()));
-		return obe;
-	}
+//	private ObservationEntity convertToEntity(NewObservationsRequestObservations observation) {
+//		ObservationEntity obe = observationRepository.findById(observation.getObservationDbId())
+//				.orElse(new ObservationEntity());
+//		obe.setCollector(observation.getCollector());
+//		obe.setObservationTimeStamp(DateUtility.toDate(observation.getObservationTimeStamp()));
+//		obe.setValue(observation.getValue());
+//		obe.setObservationVariable(
+//				observationVariableService.getVariableEntity(observation.getObservationVariableDbId()));
+//		return obe;
+//	}
 
 	private ObservationEntity convertToEntity(Observation observation) {
 		ObservationEntity obe = observationRepository.findById(observation.getObservationDbId())
 				.orElse(new ObservationEntity());
-		obe.setCollector(observation.getOperator());
+//		obe.setCollector(observation.getOperator());
 		obe.setObservationTimeStamp(DateUtility.toDate(observation.getObservationTimeStamp()));
 		obe.setValue(observation.getValue());
 		obe.setObservationVariable(
@@ -431,9 +411,9 @@ public class StudyService {
 
 		List<Season> seasons = seasonPage.map((entity) -> {
 			Season seasonObj = new Season();
-			seasonObj.setSeason(entity.getSeason());
+//			seasonObj.setSeason(entity.getSeason());
 			seasonObj.setSeasonDbId(entity.getId());
-			seasonObj.setYear(String.valueOf(entity.getYear()));
+			seasonObj.setYear(entity.getYear());
 			return seasonObj;
 		}).getContent();
 
@@ -441,7 +421,7 @@ public class StudyService {
 		return seasons;
 	}
 
-	public List<StudySummary> getStudies(String commonCropName, String studyType, String studyTypeDbId,
+	public List<Study> getStudies(String commonCropName, String studyType, String studyTypeDbId,
 			String programDbId, String trialDbId, String studyDbId, String locationDbId, String seasonDbId,
 			List<String> germplasmDbIds, List<String> observationVariableDbIds, Boolean active, String sortBy,
 			String sortOrder, Metadata metaData) {
@@ -450,9 +430,9 @@ public class StudyService {
 		if (commonCropName != null)
 			request.addCommonCropNamesItem(commonCropName);
 		if (studyType != null)
-			request.addStudyTypeNamesItem(studyType);
+//			request.addStudyTypeNamesItem(studyType);
 		if (studyTypeDbId != null)
-			request.addStudyTypeDbIdsItem(studyTypeDbId);
+//			request.addStudyTypeDbIdsItem(studyTypeDbId);
 		if (programDbId != null)
 			request.addProgramDbIdsItem(programDbId);
 		if (trialDbId != null)
@@ -466,26 +446,31 @@ public class StudyService {
 		request.setGermplasmDbIds(germplasmDbIds);
 		request.setObservationVariableDbIds(observationVariableDbIds);
 		request.setActive(active);
-		request.setSortBy(SortByEnum.fromValue(sortBy));
-		request.setSortOrder(SortOrderEnum.fromValue(sortOrder));
+//		request.setSortBy(SortByEnum.fromValue(sortBy));
+//		request.setSortOrder(SortOrderEnum.fromValue(sortOrder));
 
 		return searchStudies(request, metaData);
 	}
 
-	public List<StudySummary> getStudies(@Valid StudySearchRequestDep req, Metadata metaData) {
-		StudySearchRequest newRequest = new StudySearchRequest().active(req.isActive())
-				.germplasmDbIds(req.getGermplasmDbIds()).locationDbIds(req.getLocationDbIds())
-				.observationVariableDbIds(req.getObservationVariableDbIds()).page(req.getPage())
-				.pageSize(req.getPageSize()).programDbIds(req.getProgramDbIds()).programNames(req.getProgramNames())
-				.seasonDbIds(req.getSeasonDbId()).studyDbIds(req.getStudyDbIds()).studyNames(req.getStudyNames())
-				.trialDbIds(req.getTrialDbIds());
+	public List<Study> getStudies(@Valid StudySearchRequest req, Metadata metaData) {
+		StudySearchRequest newRequest = new StudySearchRequest();
+//				.active(req.isActive())
+//				.germplasmDbIds(req.getGermplasmDbIds()).locationDbIds(req.getLocationDbIds())
+//				.observationVariableDbIds(req.getObservationVariableDbIds()).page(req.getPage())
+//				.pageSize(req.getPageSize())
+//				.programDbIds(req.getProgramDbIds())
+//				.programNames(req.getProgramNames())
+//				.seasonDbIds(req.getSeasonDbId())
+//				.studyDbIds(req.getStudyDbIds())
+//				.studyNames(req.getStudyNames())
+//				.trialDbIds(req.getTrialDbIds());
 
-		if (req.getStudyType() != null)
-			newRequest.addStudyTypeNamesItem(req.getStudyType());
-		if (req.getSortBy() != null)
-			newRequest.setSortBy(SortByEnum.fromValue(req.getSortBy().toString()));
-		if (req.getSortOrder() != null)
-			newRequest.setSortOrder(SortOrderEnum.fromValue(req.getSortOrder().toString()));
+//		if (req.getStudyType() != null)
+//			newRequest.addStudyTypeNamesItem(req.getStudyType());
+//		if (req.getSortBy() != null)
+//			newRequest.setSortBy(SortByEnum.fromValue(req.getSortBy().toString()));
+//		if (req.getSortOrder() != null)
+//			newRequest.setSortOrder(SortOrderEnum.fromValue(req.getSortOrder().toString()));
 
 		return searchStudies(newRequest, metaData);
 	}
@@ -499,9 +484,9 @@ public class StudyService {
 		return study;
 	}
 
-	public GermplasmSummaryList getStudyGermplasm(String studyDbId, Metadata metaData) {
+	public Germplasm getStudyGermplasm(String studyDbId, Metadata metaData) {
 		Optional<StudyEntity> studyOption = studyRepository.findById(studyDbId);
-		GermplasmSummaryList germplasms = null;
+		Germplasm germplasms = null;
 		if (studyOption.isPresent()) {
 			Pageable pageReq = PagingUtility.getPageRequest(metaData);
 			Page<GermplasmEntity> germplasmPage = studyRepository.findGermplasmsByStudy(studyDbId, pageReq);
@@ -510,14 +495,14 @@ public class StudyService {
 
 			Map<String, String> entryMap = buildEntryMap(observationUnitsPage);
 
-			germplasms = new GermplasmSummaryList();
-			germplasms.setData(germplasmPage.map((entity) -> {
-				return germplasmService.convertFromEntityToSummary(entity, entryMap);
-			}).getContent());
+			germplasms = new Germplasm();
+//			germplasms.setData(germplasmPage.map((entity) -> {
+//				return germplasmService.convertFromEntityToSummary(entity, entryMap);
+//			}).getContent());
 
 			StudyEntity study = studyOption.get();
-			germplasms.setStudyDbId(study.getId());
-			germplasms.setTrialName(study.getTrial().getTrialName());
+//			germplasms.setStudyDbId(study.getId());
+//			germplasms.setTrialName(study.getTrial().getTrialName());
 		}
 		return germplasms;
 
@@ -538,15 +523,15 @@ public class StudyService {
 		return observations;
 	}
 
-	public ObservationsTable getStudyObservationUnitTable(String studyDbId, Metadata metadata) {
-		ObservationsTable tableWrapper = new ObservationsTable();
+	public ObservationTable getStudyObservationUnitTable(String studyDbId, Metadata metadata) {
+		ObservationTable tableWrapper = new ObservationTable();
 
 		tableWrapper.setHeaderRow(buildHeaderRow());
 
 		List<ObservationVariable> variables = observationVariableService.getVariablesForStudy(studyDbId, metadata);
-		tableWrapper.setObservationVariableDbIds(
-				variables.stream().map(e -> e.getObservationVariableDbId()).collect(Collectors.toList()));
-		tableWrapper.setObservationVariableNames(variables.stream().map(e -> e.getName()).collect(Collectors.toList()));
+//		tableWrapper.setObservationVariables(
+//				variables.stream().map(e -> e.getObservationVariableDbId()).collect(Collectors.toList()));
+//		tableWrapper.setObservationVariableNames(variables.stream().map(e -> e.getName()).collect(Collectors.toList()));
 
 		List<ObservationUnitEntity> units = observationUnitRepository.findAllByStudy_Id(studyDbId);
 		tableWrapper.setData(buildDataMatrix(units, variables));
@@ -555,7 +540,7 @@ public class StudyService {
 	}
 
 	public String getStudyObservationUnitTableText(String studyDbId, String sep) {
-		ObservationsTable table = getStudyObservationUnitTable(studyDbId, new Metadata());
+		ObservationTable table = getStudyObservationUnitTable(studyDbId, new Metadata());
 		StringBuilder responseBuilder = new StringBuilder();
 
 		for (HeaderRowEnum header : table.getHeaderRow()) {
@@ -563,9 +548,9 @@ public class StudyService {
 			responseBuilder.append(sep);
 		}
 		int i = 1;
-		for (String header : table.getObservationVariableDbIds()) {
-			responseBuilder.append("\"" + header + "\"");
-			if (i < table.getObservationVariableDbIds().size()) {
+		for (ObservationTableObservationVariables header : table.getObservationVariables()) {
+			responseBuilder.append("\"" + header.getObservationVariableDbId() + "\"");
+			if (i < table.getObservationVariables().size()) {
 				responseBuilder.append(sep);
 			}
 			i++;
@@ -587,14 +572,14 @@ public class StudyService {
 		return responseBuilder.toString();
 	}
 
-	public StudyObservationVariablesResponseResult getStudyObservationVariables(String studyDbId, Metadata metadata) {
+	public ObservationVariableListResponseResult getStudyObservationVariables(String studyDbId, Metadata metadata) {
 		Study study = getStudy(studyDbId);
-		StudyObservationVariablesResponseResult wrapper = null;
+		ObservationVariableListResponseResult wrapper = null;
 		if (study != null) {
-			wrapper = new StudyObservationVariablesResponseResult();
+			wrapper = new ObservationVariableListResponseResult();
 			wrapper.setData(observationVariableService.getVariablesForStudy(studyDbId, metadata));
-			wrapper.setStudyDbId(study.getStudyDbId());
-			wrapper.setTrialName(study.getTrialName());
+//			wrapper.setStudyDbId(study.getStudyDbId());
+//			wrapper.setTrialName(study.getTrialName());
 		}
 		return wrapper;
 	}
@@ -607,52 +592,52 @@ public class StudyService {
 		return plots;
 	}
 
-	public List<StudyType> getStudyTypes(String studyTypeDbId, Metadata metaData) {
-		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-		List<StudyType> studyTypes = new ArrayList<>();
+//	public List<StudyType> getStudyTypes(String studyTypeDbId, Metadata metaData) {
+//		Pageable pageReq = PagingUtility.getPageRequest(metaData);
+//		List<StudyType> studyTypes = new ArrayList<>();
+//
+//		if (studyTypeDbId == null) {
+//			Page<StudyTypeEntity> page = studyTypeRepository.findAll(pageReq);
+//			PagingUtility.calculateMetaData(metaData, page);
+//			studyTypes = page.map(this::convertFromEntity).getContent();
+//		} else {
+//			Optional<StudyTypeEntity> studyOption = studyTypeRepository.findById(studyTypeDbId);
+//			if (studyOption.isPresent()) {
+//				metaData.getPagination().setTotalCount(1);
+//				PagingUtility.calculateMetaData(metaData);
+//				studyTypes.add(convertFromEntity(studyOption.get()));
+//			}
+//		}
+//
+//		return studyTypes;
+//	}
+//
+//	private StudyType convertFromEntity(StudyTypeEntity entity) {
+//		StudyType studyType = new StudyType();
+//		studyType.setDescription(entity.getDescription());
+//		studyType.setName(entity.getName());
+//		studyType.setStudyTypeDbId(entity.getId());
+//		studyType.setStudyTypeName(entity.getName());
+//		return studyType;
+//	}
 
-		if (studyTypeDbId == null) {
-			Page<StudyTypeEntity> page = studyTypeRepository.findAll(pageReq);
-			PagingUtility.calculateMetaData(metaData, page);
-			studyTypes = page.map(this::convertFromEntity).getContent();
-		} else {
-			Optional<StudyTypeEntity> studyOption = studyTypeRepository.findById(studyTypeDbId);
-			if (studyOption.isPresent()) {
-				metaData.getPagination().setTotalCount(1);
-				PagingUtility.calculateMetaData(metaData);
-				studyTypes.add(convertFromEntity(studyOption.get()));
-			}
-		}
-
-		return studyTypes;
-	}
-
-	private StudyType convertFromEntity(StudyTypeEntity entity) {
-		StudyType studyType = new StudyType();
-		studyType.setDescription(entity.getDescription());
-		studyType.setName(entity.getName());
-		studyType.setStudyTypeDbId(entity.getId());
-		studyType.setStudyTypeName(entity.getName());
-		return studyType;
-	}
-
-	public NewObservationDbIds saveObservations(String studyDbId, @Valid NewObservationsRequest newObservations) {
-		NewObservationDbIds newObsIds = new NewObservationDbIds();
+	public Observation saveObservations(String studyDbId, @Valid List<ObservationNewRequest> newObservations) {
+		Observation newObsIds = new Observation();
 		Optional<StudyEntity> studyOpt = studyRepository.findById(studyDbId);
 		if (studyOpt.isPresent()) {
-			for (NewObservationsRequestObservations newObs : newObservations.getObservations()) {
+			for (ObservationNewRequest newObs : newObservations) {
 				Optional<ObservationUnitEntity> unitOpt = observationUnitRepository
 						.findById(newObs.getObservationUnitDbId());
 				if (unitOpt.isPresent()) {
 					ObservationEntity newObsEntity = null;
 
 					List<ObservationEntity> obsEntities = unitOpt.get().getObservations();
-					for (ObservationEntity obsEntity : obsEntities) {
-						if (obsEntity.getId().equals(newObs.getObservationDbId())) {
-							newObsEntity = obsEntity;
-							break;
-						}
-					}
+//					for (ObservationEntity obsEntity : obsEntities) {
+//						if (obsEntity.getId().equals(newObs.getObservationDbId())) {
+//							newObsEntity = obsEntity;
+//							break;
+//						}
+//					}
 					if (newObsEntity == null) {
 						newObsEntity = new ObservationEntity();
 						newObsEntity.setObservationUnit(unitOpt.get());
@@ -661,13 +646,13 @@ public class StudyService {
 					updateEntity(newObsEntity, newObs);
 					ObservationEntity savedObsEntity = observationRepository.save(newObsEntity);
 
-					NewObservationDbIdsObservations newId = new NewObservationDbIdsObservations()
-							.observationDbId(savedObsEntity.getId())
-							.observationUnitDbId(savedObsEntity.getObservationUnit().getId());
-					if (savedObsEntity.getObservationVariable() != null)
-						newId.setObservationVariableDbId(savedObsEntity.getObservationVariable().getId());
+//					Observation newId = new Observation()
+//							.observationDbId(savedObsEntity.getId())
+//							.observationUnitDbId(savedObsEntity.getObservationUnit().getId());
+//					if (savedObsEntity.getObservationVariable() != null)
+//						newId.setObservationVariableDbId(savedObsEntity.getObservationVariable().getId());
 
-					newObsIds.addObservationsItem(newId);
+//					newObsIds.addObservationsItem(newId);
 				}
 			}
 		}
@@ -675,7 +660,7 @@ public class StudyService {
 		return newObsIds;
 	}
 
-	public NewObservationUnitDbIds saveObservationUnit(@Valid List<NewObservationUnitRequest> request, String studyDbId)
+	public ObservationUnit saveObservationUnit(@Valid List<ObservationUnitNewRequest> request, String studyDbId)
 			throws BrAPIServerException {
 
 		Optional<StudyEntity> studyEntityOpt = studyRepository.findById(studyDbId);
@@ -683,11 +668,11 @@ public class StudyService {
 			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "No study found for the given studyDbId");
 		}
 
-		NewObservationUnitDbIds response = new NewObservationUnitDbIds();
-		for (NewObservationUnitRequest unit : request) {
+		ObservationUnit response = new ObservationUnit();
+		for (ObservationUnitNewRequest unit : request) {
 			ObservationUnitEntity unitEntity;
-			Optional<ObservationUnitEntity> unitEntityOpt = observationUnitRepository
-					.findById(unit.getObservationUnitDbId() == null ? "" : unit.getObservationUnitDbId());
+			Optional<ObservationUnitEntity> unitEntityOpt = observationUnitRepository.findById("");
+//					.findById(unit.getObservationUnitDbId() == null ? "" : unit.getObservationUnitDbId());
 			if (unitEntityOpt.isPresent()) {
 				unitEntity = updateEntity(unitEntityOpt.get(), unit);
 			} else {
@@ -698,17 +683,17 @@ public class StudyService {
 
 			final ObservationUnitEntity newUnitEntity = observationUnitRepository.save(unitEntity);
 
-			if (unit.getObservationUnitXref() == null) {
-				newUnitEntity.setObservationUnitXref(null);
-			} else {
-				newUnitEntity.setObservationUnitXref(unit.getObservationUnitXref().stream().map((xref) -> {
-					ObservationUnitXrefEntity entity = new ObservationUnitXrefEntity();
-					entity.setObservationUnitDbId(newUnitEntity.getId());
-					entity.setXref(xref.getId());
-					entity.setSource(xref.getSource());
-					return entity;
-				}).collect(Collectors.toList()));
-			}
+//			if (unit.getObservationUnitXref() == null) {
+//				newUnitEntity.setObservationUnitXref(null);
+//			} else {
+//				newUnitEntity.setObservationUnitXref(unit.getObservationUnitXref().stream().map((xref) -> {
+//					ObservationUnitXrefEntity entity = new ObservationUnitXrefEntity();
+//					entity.setObservationUnitDbId(newUnitEntity.getId());
+//					entity.setXref(xref.getId());
+//					entity.setSource(xref.getSource());
+//					return entity;
+//				}).collect(Collectors.toList()));
+//			}
 
 			if (unit.getTreatments() == null) {
 				newUnitEntity.setTreatments(null);
@@ -724,87 +709,87 @@ public class StudyService {
 
 			ObservationUnitEntity newNewUnitEntity = observationUnitRepository.save(newUnitEntity);
 
-			if (unit.getObservations() != null) {
-				for (Observation observation : unit.getObservations()) {
-					ObservationEntity observationEntity = convertToEntity(observation);
-					observationEntity.setObservationUnit(newNewUnitEntity);
-					observationRepository.save(observationEntity);
-				}
-			}
-
-			response.addObservationUnitDbIdsItem(newNewUnitEntity.getId());
+//			if (unit.getObservations() != null) {
+//				for (Observation observation : unit.getObservations()) {
+//					ObservationEntity observationEntity = convertToEntity(observation);
+//					observationEntity.setObservationUnit(newNewUnitEntity);
+//					observationRepository.save(observationEntity);
+//				}
+//			}
+//
+//			response.addObservationUnitDbIdsItem(newNewUnitEntity.getId());
 		}
 		return response;
 	}
 
-	public List<String> saveObservationUnits(String studyDbId, NewObservationsRequestWrapperDeprecated requestDep)
-			throws BrAPIServerException {
-		List<String> newUnitDbIds = new ArrayList<>();
-		Optional<StudyEntity> studyOpt = studyRepository.findById(studyDbId);
-		if (studyOpt.isPresent()) {
-			List<NewObservationUnitRequest> requests = new ArrayList<>();
-			for (NewObservationsRequestDeprecatedData unit : requestDep.getResult().getData()) {
-				NewObservationUnitRequest request = new NewObservationUnitRequest();
-				request.setStudyDbId(studyOpt.get().getId());
-				request.setObservationUnitDbId(unit.getObservatioUnitDbId());
-				request.setObservations(unit.getObservations().stream().map((oDep) -> {
-					Observation o = new Observation();
-					o.setObservationDbId(oDep.getObservationDbId());
-					o.setObservationTimeStamp(oDep.getObservationTimeStamp());
-					o.setObservationUnitDbId(unit.getObservatioUnitDbId());
-					o.setObservationVariableDbId(oDep.getObservationVariableDbId());
-					o.setValue(oDep.getValue());
-					return o;
-				}).collect(Collectors.toList()));
+//	public List<String> saveObservationUnits(String studyDbId, NewObservationsRequestWrapperDeprecated requestDep)
+//			throws BrAPIServerException {
+//		List<String> newUnitDbIds = new ArrayList<>();
+//		Optional<StudyEntity> studyOpt = studyRepository.findById(studyDbId);
+//		if (studyOpt.isPresent()) {
+//			List<NewObservationUnitRequest> requests = new ArrayList<>();
+//			for (NewObservationsRequestDeprecatedData unit : requestDep.getResult().getData()) {
+//				NewObservationUnitRequest request = new NewObservationUnitRequest();
+//				request.setStudyDbId(studyOpt.get().getId());
+//				request.setObservationUnitDbId(unit.getObservatioUnitDbId());
+//				request.setObservations(unit.getObservations().stream().map((oDep) -> {
+//					Observation o = new Observation();
+//					o.setObservationDbId(oDep.getObservationDbId());
+//					o.setObservationTimeStamp(oDep.getObservationTimeStamp());
+//					o.setObservationUnitDbId(unit.getObservatioUnitDbId());
+//					o.setObservationVariableDbId(oDep.getObservationVariableDbId());
+//					o.setValue(oDep.getValue());
+//					return o;
+//				}).collect(Collectors.toList()));
+//
+//				requests.add(request);
+//
+//				newUnitDbIds.addAll(saveObservationUnit(requests, studyDbId).getObservationUnitDbIds());
+//			}
+//		}
+//		return newUnitDbIds;
+//	}
 
-				requests.add(request);
+//	public NewObservationDbIds saveStudyObservationUnitsTable(String studyDbId,
+//			@Valid NewObservationsTableRequest request) {
+//		Optional<StudyEntity> studyOpt = studyRepository.findById(studyDbId);
+//		Set<NewObservationDbIdsObservations> observationDbIds = new HashSet<>();
+//		if (studyOpt.isPresent()) {
+//			for (List<String> row : request.getData()) {
+//				ObservationUnitEntity entity = buildEntityFromRow(row, request, studyDbId);
+//				if (entity.getStudy() == null) {
+//					entity.setStudy(studyOpt.get());
+//				}
+//				ObservationUnitEntity savedEntity = observationUnitRepository.save(entity);
+//				observationDbIds.addAll(savedEntity.getObservations().stream().map(e -> {
+//					return new NewObservationDbIdsObservations().observationDbId(e.getId())
+//							.observationUnitDbId(e.getObservationUnit().getId())
+//							.observationVariableDbId(e.getObservationVariable().getId());
+//				}).collect(Collectors.toSet()));
+//			}
+//		}
+//		NewObservationDbIds response = new NewObservationDbIds();
+//		response.setObservations(new ArrayList<>());
+//		response.getObservations().addAll(observationDbIds);
+//		return response;
+//	}
 
-				newUnitDbIds.addAll(saveObservationUnit(requests, studyDbId).getObservationUnitDbIds());
-			}
-		}
-		return newUnitDbIds;
-	}
-
-	public NewObservationDbIds saveStudyObservationUnitsTable(String studyDbId,
-			@Valid NewObservationsTableRequest request) {
-		Optional<StudyEntity> studyOpt = studyRepository.findById(studyDbId);
-		Set<NewObservationDbIdsObservations> observationDbIds = new HashSet<>();
-		if (studyOpt.isPresent()) {
-			for (List<String> row : request.getData()) {
-				ObservationUnitEntity entity = buildEntityFromRow(row, request, studyDbId);
-				if (entity.getStudy() == null) {
-					entity.setStudy(studyOpt.get());
-				}
-				ObservationUnitEntity savedEntity = observationUnitRepository.save(entity);
-				observationDbIds.addAll(savedEntity.getObservations().stream().map(e -> {
-					return new NewObservationDbIdsObservations().observationDbId(e.getId())
-							.observationUnitDbId(e.getObservationUnit().getId())
-							.observationVariableDbId(e.getObservationVariable().getId());
-				}).collect(Collectors.toSet()));
-			}
-		}
-		NewObservationDbIds response = new NewObservationDbIds();
-		response.setObservations(new ArrayList<>());
-		response.getObservations().addAll(observationDbIds);
-		return response;
-	}
-
-	private ObservationUnitEntity buildEntityFromRow(List<String> row, @Valid NewObservationsTableRequest request,
+	private ObservationUnitEntity buildEntityFromRow(List<String> row, @Valid ObservationTable request,
 			String studyDbId) {
 		ObservationUnitEntity entity = new ObservationUnitEntity();
 		Date observationTimeStamp = new Date();
 		for (int i = 0; i < row.size(); i++) {
 			int varIndex = i - request.getHeaderRow().size();
 			if (varIndex < 0) {
-				HeaderRowEnum header = HeaderRowEnum.fromValue(request.getHeaderRow().get(i));
+				HeaderRowEnum header = request.getHeaderRow().get(i);
 				if (header != null) {
 					switch (header) {
-					case BLOCKNUMBER:
-						entity.setBlockNumber(Integer.parseInt(row.get(i)));
-						break;
-					case ENTRYTYPE:
-						entity.setEntryType(row.get(i));
-						break;
+//					case BLOCKNUMBER:
+//						entity.setBlockNumber(Integer.parseInt(row.get(i)));
+//						break;
+//					case ENTRYTYPE:
+//						entity.setEntryType(row.get(i));
+//						break;
 					case GERMPLASMDBID:
 					case GERMPLASMNAME:
 						Optional<GermplasmEntity> germOpt = germplasmRepository.findById(row.get(i));
@@ -821,34 +806,34 @@ public class StudyService {
 							entity.setObservations(unitOpt.get().getObservations());
 						}
 						break;
-					case PLOTNUMBER:
-						entity.setPlotNumber(Integer.parseInt(row.get(i)));
-						break;
-					case REPLICATE:
-						entity.setReplicate(row.get(i));
-						break;
+//					case PLOTNUMBER:
+//						entity.setPlotNumber(Integer.parseInt(row.get(i)));
+//						break;
+//					case REPLICATE:
+//						entity.setReplicate(row.get(i));
+//						break;
 					case STUDYDBID:
 					case STUDYNAME:
 						Optional<StudyEntity> studyOpt = studyRepository.findById(row.get(i));
 						if (studyOpt.isPresent())
 							entity.setStudy(studyOpt.get());
 						break;
-					case X:
-						entity.setX(row.get(i));
-						break;
-					case Y:
-						entity.setY(row.get(i));
-						break;
+//					case X:
+//						entity.setX(row.get(i));
+//						break;
+//					case Y:
+//						entity.setY(row.get(i));
+//						break;
 					case YEAR:
-					case LOCATIONDBID:
-					case LOCATIONNAME:
+//					case LOCATIONDBID:
+//					case LOCATIONNAME:
 					default:
 						break;
 					}
 				}
 			} else {
 				Optional<ObservationVariableEntity> varOpt = observationVariableRepository
-						.findById(request.getObservationVariableDbIds().get(varIndex));
+						.findById(request.getObservationVariables().get(varIndex).getObservationVariableDbId());
 				if (varOpt.isPresent()) {
 					ObservationEntity observation = new ObservationEntity();
 					observation.setObservationTimeStamp(observationTimeStamp);
@@ -864,43 +849,43 @@ public class StudyService {
 		return entity;
 	}
 
-	public List<ObservationUnitPosition> saveStudyPlotLayout(String studyDbId,
-			@Valid StudyLayoutRequest studyLayoutRequest) {
-		List<ObservationUnitPosition> positions = new ArrayList<>();
-		Optional<StudyEntity> studyOpt = studyRepository.findById(studyDbId);
-		if (studyOpt.isPresent()) {
-			for (StudyLayoutRequestLayout layout : studyLayoutRequest.getLayout()) {
-				Optional<ObservationUnitEntity> unitOpt = observationUnitRepository
-						.findById(layout.getObservationUnitDbId());
-				if (unitOpt.isPresent()) {
-					ObservationUnitEntity unit = unitOpt.get();
-					unit.setBlockNumber(layout.getBlockNumber());
-					unit.setX(layout.getX());
-					unit.setX(layout.getPositionCoordinateX());
-					unit.setY(layout.getY());
-					unit.setY(layout.getPositionCoordinateY());
-					unit.setEntryType(layout.getEntryType().name());
-					unit.setReplicate(layout.getReplicate().toString());
+//	public List<ObservationUnitPosition> saveStudyPlotLayout(String studyDbId,
+//			@Valid StudyLayoutRequest studyLayoutRequest) {
+//		List<ObservationUnitPosition> positions = new ArrayList<>();
+//		Optional<StudyEntity> studyOpt = studyRepository.findById(studyDbId);
+//		if (studyOpt.isPresent()) {
+//			for (StudyLayoutRequestLayout layout : studyLayoutRequest.getLayout()) {
+//				Optional<ObservationUnitEntity> unitOpt = observationUnitRepository
+//						.findById(layout.getObservationUnitDbId());
+//				if (unitOpt.isPresent()) {
+//					ObservationUnitEntity unit = unitOpt.get();
+//					unit.setBlockNumber(layout.getBlockNumber());
+//					unit.setX(layout.getX());
+//					unit.setX(layout.getPositionCoordinateX());
+//					unit.setY(layout.getY());
+//					unit.setY(layout.getPositionCoordinateY());
+//					unit.setEntryType(layout.getEntryType().name());
+//					unit.setReplicate(layout.getReplicate().toString());
+//
+//					ObservationUnitEntity newUnit = observationUnitRepository.save(unit);
+//					positions.add(convertFromEntityToPosition(newUnit));
+//				}
+//			}
+//		}
+//		return positions;
+//	}
 
-					ObservationUnitEntity newUnit = observationUnitRepository.save(unit);
-					positions.add(convertFromEntityToPosition(newUnit));
-				}
-			}
-		}
-		return positions;
-	}
-
-	public List<StudySummary> searchStudies(StudySearchRequest request, Metadata metaData) {
+	public List<Study> searchStudies(StudySearchRequest request, Metadata metaData) {
 
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 		Page<StudyEntity> studiesPage = studyRepository.findBySearch(request, pageReq);
 		PagingUtility.calculateMetaData(metaData, studiesPage);
 
-		List<StudySummary> summaries = studiesPage.map(this::convertFromEntityToSummary).getContent();
+		List<Study> summaries = studiesPage.map(this::convertFromEntityToSummary).getContent();
 		return summaries;
 	}
 
-	private void updateEntity(ObservationEntity entity, NewObservationsRequestObservations obs) {
+	private void updateEntity(ObservationEntity entity, ObservationNewRequest obs) {
 		entity.setCollector(obs.getCollector());
 		entity.setObservationTimeStamp(DateUtility.toDate(obs.getObservationTimeStamp()));
 		entity.setValue(obs.getValue());
@@ -917,17 +902,17 @@ public class StudyService {
 	}
 
 	private ObservationUnitEntity updateEntity(ObservationUnitEntity observationUnitEntity,
-			NewObservationUnitRequest unit) {
-		observationUnitEntity.setBlockNumber(NumberUtils.toInt(unit.getBlockNumber()));
-		observationUnitEntity.setEntryNumber(unit.getEntryNumber());
-		observationUnitEntity.setEntryType(unit.getEntryType());
-		observationUnitEntity.setObservationLevel(unit.getObservationLevel());
+			ObservationUnitNewRequest unit) {
+//		observationUnitEntity.setBlockNumber(NumberUtils.toInt(unit.getBlockNumber()));
+//		observationUnitEntity.setEntryNumber(unit.getEntryNumber());
+//		observationUnitEntity.setEntryType(unit.getEntryType());
+//		observationUnitEntity.setObservationLevel(unit.getObservationLevel());
 		observationUnitEntity.setObservationUnitName(unit.getObservationUnitName());
-		observationUnitEntity.setPlantNumber(NumberUtils.toInt(unit.getPlantNumber()));
-		observationUnitEntity.setPlotNumber(NumberUtils.toInt(unit.getPlotNumber()));
-		observationUnitEntity.setReplicate(unit.getReplicate());
-		observationUnitEntity.setX(unit.getX());
-		observationUnitEntity.setY(unit.getY());
+//		observationUnitEntity.setPlantNumber(NumberUtils.toInt(unit.getPlantNumber()));
+//		observationUnitEntity.setPlotNumber(NumberUtils.toInt(unit.getPlotNumber()));
+//		observationUnitEntity.setReplicate(unit.getReplicate());
+//		observationUnitEntity.setX(unit.getX());
+//		observationUnitEntity.setY(unit.getY());
 
 		if (unit.getGermplasmDbId() == null) {
 			observationUnitEntity.setGermplasm(null);

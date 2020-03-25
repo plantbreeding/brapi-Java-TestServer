@@ -8,7 +8,7 @@ import org.brapi.test.BrAPITestServer.repository.CropRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import io.swagger.model.Metadata;
+import io.swagger.model.common.Metadata;
 
 @Service
 public class CropService {

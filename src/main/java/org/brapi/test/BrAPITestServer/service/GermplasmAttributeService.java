@@ -11,10 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import io.swagger.model.GermplasmAttribute;
-import io.swagger.model.GermplasmAttributeCategory;
-import io.swagger.model.GermplasmAttributeDef;
-import io.swagger.model.Metadata;
+import io.swagger.model.common.Metadata;
+import io.swagger.model.germ.GermplasmAttribute;
 
 @Service
 public class GermplasmAttributeService {
@@ -35,7 +33,7 @@ public class GermplasmAttributeService {
 		this.observationVariableService = observationVariableService;
 	}
 
-	public List<GermplasmAttributeDef> getGermplasmAttributes(String attributeCategoryDbId, Metadata metaData) {
+	public List<GermplasmAttribute> getGermplasmAttributes(String attributeCategoryDbId, Metadata metaData) {
 		Page<GermplasmAttributeDefinitionEntity> page;
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 
@@ -46,42 +44,42 @@ public class GermplasmAttributeService {
 		}
 		PagingUtility.calculateMetaData(metaData, page);
 
-		List<GermplasmAttributeDef> attributes = page.map(this::mapFromEntityToAttribute).getContent();
+		List<GermplasmAttribute> attributes = page.map(this::mapFromEntityToAttribute).getContent();
 		return attributes;
 	}
 
-	private GermplasmAttributeDef mapFromEntityToAttribute(GermplasmAttributeDefinitionEntity entity) {
-		GermplasmAttributeDef attrib = new GermplasmAttributeDef();
-		observationVariableService.convertFromBaseEntity(entity, attrib);
-		
-		attrib.setAttributeName(entity.getName());
-		attrib.setAttributeCategoryDbId(entity.getAttributeCategory().getId());
-		attrib.setAttributeDbId(entity.getId());
-		attrib.setCode(entity.getCode());
-		attrib.setDatatype(entity.getDatatype());
-		attrib.setDescription(entity.getDescription());
-		attrib.setName(entity.getName());
-		attrib.setUri(entity.getUri());
-		attrib.setValues(entity.getValues().get(0).getValue());
+	private GermplasmAttribute mapFromEntityToAttribute(GermplasmAttributeDefinitionEntity entity) {
+		GermplasmAttribute attrib = new GermplasmAttribute();
+//		observationVariableService.convertFromBaseEntity(entity, attrib);
+//		
+//		attrib.setAttributeName(entity.getName());
+//		attrib.setAttributeCategoryDbId(entity.getAttributeCategory().getId());
+//		attrib.setAttributeDbId(entity.getId());
+//		attrib.setCode(entity.getCode());
+//		attrib.setDatatype(entity.getDatatype());
+//		attrib.setDescription(entity.getDescription());
+//		attrib.setName(entity.getName());
+//		attrib.setUri(entity.getUri());
+//		attrib.setValues(entity.getValues().get(0).getValue());
 
 		return attrib;
 
 	}
 
-	public List<GermplasmAttributeCategory> getGermplasmAttributeCategories(Metadata metaData) {
-
-		List<GermplasmAttributeCategory> categories = categoryRepository.findAll(PagingUtility.getPageRequest(metaData))
-				.map(c -> {
-					GermplasmAttributeCategory cat = new GermplasmAttributeCategory();
-					cat.setAttributeCategoryDbId(c.getId());
-					cat.setName(c.getName());
-					cat.setAttributeCategoryName(c.getName());
-					return cat;
-				}).getContent();
-		PagingUtility.calculateMetaData(metaData);
-
-		return categories;
-	}
+//	public List<GermplasmAttributeCategory> getGermplasmAttributeCategories(Metadata metaData) {
+//
+//		List<GermplasmAttributeCategory> categories = categoryRepository.findAll(PagingUtility.getPageRequest(metaData))
+//				.map(c -> {
+//					GermplasmAttributeCategory cat = new GermplasmAttributeCategory();
+//					cat.setAttributeCategoryDbId(c.getId());
+//					cat.setName(c.getName());
+//					cat.setAttributeCategoryName(c.getName());
+//					return cat;
+//				}).getContent();
+//		PagingUtility.calculateMetaData(metaData);
+//
+//		return categories;
+//	}
 
 	public List<GermplasmAttribute> getGermplasmAttributeValues(String germplasmDbId, List<String> attributeList,
 			Metadata metaData) {
@@ -100,11 +98,11 @@ public class GermplasmAttributeService {
 
 	private GermplasmAttribute mapFromEntityToValue(GermplasmAttributeValueEntity entity) {
 		GermplasmAttribute attrib = new GermplasmAttribute();
-		attrib.setAttributeCode(entity.getGermplasmAttributeDefinition().getCode());
+//		attrib.setAttributeCode(entity.getGermplasmAttributeDefinition().getCode());
 		attrib.setAttributeDbId(entity.getGermplasmAttributeDefinition().getId());
 		attrib.setAttributeName(entity.getGermplasmAttributeDefinition().getName());
-		attrib.setDeterminedDate(DateUtility.toLocalDate(entity.getDeterminedDate()));
-		attrib.setValue(entity.getValue());
+//		attrib.setDeterminedDate(DateUtility.toLocalDate(entity.getDeterminedDate()));
+//		attrib.setValue(entity.getValue());
 		return attrib;
 	}
 

@@ -3,8 +3,8 @@ package org.brapi.test.BrAPITestServer.repository;
 import org.brapi.test.BrAPITestServer.model.entity.SampleEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import io.swagger.model.SampleSearchRequestDep;
+import io.swagger.model.geno.SampleSearchRequest;
 
 public interface SampleRepositoryCustom {
-	Page<SampleEntity> findBySearch(SampleSearchRequestDep request, Pageable pageReq);
+	Page<SampleEntity> findBySearch(SampleSearchRequest request, Pageable pageReq);
 }

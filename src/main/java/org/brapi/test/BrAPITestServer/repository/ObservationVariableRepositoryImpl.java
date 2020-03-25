@@ -17,8 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import io.swagger.model.ObservationVariableSearchRequest;
-import io.swagger.model.PhenotypesSearchRequest;
+
+import io.swagger.model.pheno.ObservationVariableSearchRequest;
 
 public class ObservationVariableRepositoryImpl implements ObservationVariableRepositoryCustom {
 
@@ -60,13 +60,13 @@ public class ObservationVariableRepositoryImpl implements ObservationVariableRep
 			query += "AND o.name in :observationVariableNames ";
 			params.put("observationVariableNames", request.getObservationVariableNames());
 		}
-		if (request.getObservationVariableXrefs() != null && !request.getObservationVariableXrefs().isEmpty()) {
-			query += "AND (o.xref in :observationVariableXrefs "
-					+ "OR o.scale.xref in :observationVariableXrefs "
-					+ "OR o.method.xref in :observationVariableXrefs "
-					+ "OR o.trait.xref in :observationVariableXrefs) ";
-			params.put("observationVariableXrefs", request.getObservationVariableXrefs());
-		}
+//		if (request.getObservationVariableXrefs() != null && !request.getObservationVariableXrefs().isEmpty()) {
+//			query += "AND (o.xref in :observationVariableXrefs "
+//					+ "OR o.scale.xref in :observationVariableXrefs "
+//					+ "OR o.method.xref in :observationVariableXrefs "
+//					+ "OR o.trait.xref in :observationVariableXrefs) ";
+//			params.put("observationVariableXrefs", request.getObservationVariableXrefs());
+//		}
 		if (request.getOntologyDbIds() != null && !request.getOntologyDbIds().isEmpty()) {
 			query += "AND o.ontology.id in :ontologyDbIds ";
 			params.put("ontologyDbIds", request.getOntologyDbIds());
@@ -75,10 +75,10 @@ public class ObservationVariableRepositoryImpl implements ObservationVariableRep
 			query += "AND o.scale.id in :scaleDbIds ";
 			params.put("scaleDbIds", request.getScaleDbIds());
 		}
-		if (request.getScaleXrefs() != null && !request.getScaleXrefs().isEmpty()) {
-			query += "AND o.scale.xref in :scaleXrefs ";
-			params.put("scaleXrefs", request.getScaleXrefs());
-		}
+//		if (request.getScaleXrefs() != null && !request.getScaleXrefs().isEmpty()) {
+//			query += "AND o.scale.xref in :scaleXrefs ";
+//			params.put("scaleXrefs", request.getScaleXrefs());
+//		}
 		if (request.getTraitClasses() != null && !request.getTraitClasses().isEmpty()) {
 			query += "AND o.trait.traitClass in :traitClasses ";
 			params.put("traitClasses", request.getTraitClasses());
@@ -87,11 +87,11 @@ public class ObservationVariableRepositoryImpl implements ObservationVariableRep
 			query += "AND o.trait.id in :traitDbIds ";
 			params.put("traitDbIds", request.getTraitDbIds());
 		}
-		if (request.getTraitXrefs() != null && !request.getTraitXrefs().isEmpty()) {
-			query += "AND o.trait.xref in :traitXrefs ";
-			params.put("traitXrefs", request.getTraitXrefs());
-		}
-		
+//		if (request.getTraitXrefs() != null && !request.getTraitXrefs().isEmpty()) {
+//			query += "AND o.trait.xref in :traitXrefs ";
+//			params.put("traitXrefs", request.getTraitXrefs());
+//		}
+//		
 		return query;
 
 	}

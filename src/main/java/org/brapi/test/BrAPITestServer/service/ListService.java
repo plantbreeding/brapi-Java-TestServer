@@ -11,16 +11,18 @@ import javax.validation.Valid;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.ListEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ListItemEntity;
-import org.brapi.test.BrAPITestServer.repository.ListRepository;
+import org.brapi.test.BrAPITestServer.repository.core.ListRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import io.swagger.model.ListDetails;
-import io.swagger.model.ListSummary;
-import io.swagger.model.ListTypes;
-import io.swagger.model.Metadata;
-import io.swagger.model.NewListRequest;
+
+import io.swagger.model.common.ExternalReferences;
+import io.swagger.model.common.Metadata;
+import io.swagger.model.core.ListDetails;
+import io.swagger.model.core.ListNewRequest;
+import io.swagger.model.core.ListSummary;
+import io.swagger.model.core.ListTypes;
 
 @Service
 public class ListService {
@@ -32,7 +34,7 @@ public class ListService {
 	}
 
 	public List<ListSummary> findLists(@Valid ListTypes listType, @Valid String listName, @Valid String listDbId,
-			@Valid String listSource, Metadata metadata) {
+			@Valid String listSource, ExternalReferences exRefs, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		Page<ListEntity> entityPage;
 		listName = prepParam(listName, true);
@@ -51,12 +53,12 @@ public class ListService {
 	}
 
 	private String prepParam(String param, boolean fuzzySearch) {
-		if(param == null) {
+		if (param == null) {
 			return "";
-		}else {
+		} else {
 			if (fuzzySearch) {
 				return "%" + param + "%";
-			}else {
+			} else {
 				return param;
 			}
 		}
@@ -75,8 +77,7 @@ public class ListService {
 		return convertFromEntity(entity);
 	}
 
-	public ListDetails updateListItems(String listDbId, @Valid ArrayList<String> listItems)
-			throws BrAPIServerException {
+	public ListDetails updateListItems(String listDbId, @Valid List<String> listItems) throws BrAPIServerException {
 		ListEntity savedEntity;
 		Optional<ListEntity> entityOpt = listRepository.findById(listDbId);
 		if (entityOpt.isPresent()) {
@@ -100,7 +101,7 @@ public class ListService {
 		return convertFromEntity(savedEntity);
 	}
 
-	public ListDetails updateList(String listDbId, @Valid NewListRequest list) throws BrAPIServerException {
+	public ListDetails updateList(String listDbId, @Valid ListNewRequest list) throws BrAPIServerException {
 		ListEntity savedEntity;
 		Optional<ListEntity> entityOpt = listRepository.findById(listDbId);
 		if (entityOpt.isPresent()) {
@@ -116,23 +117,31 @@ public class ListService {
 		return convertFromEntity(savedEntity);
 	}
 
-	public ListDetails saveNewList(@Valid NewListRequest list) {
-		ListEntity entity = new ListEntity();
-		updateEntity(entity, list);
-		Date now = new Date();
-		entity.setDateCreated(now);
-		entity.setDateModified(now);
+	public List<ListSummary> saveNewList(@Valid List<ListNewRequest> requests) {
 
-		ListEntity savedEntity = listRepository.save(entity);
+		List<ListSummary> savedLists = new ArrayList<>();
 
-		return convertFromEntity(savedEntity);
+		for (ListNewRequest list : requests) {
+
+			ListEntity entity = new ListEntity();
+			updateEntity(entity, list);
+			Date now = new Date();
+			entity.setDateCreated(now);
+			entity.setDateModified(now);
+
+			ListEntity savedEntity = listRepository.save(entity);
+
+			savedLists.add(convertToSummary(savedEntity));
+		}
+
+		return savedLists;
 	}
 
 	private ListDetails convertFromEntity(ListEntity entity) {
 		ListDetails details = new ListDetails();
 		details.setDateCreated(DateUtility.toOffsetDateTime(entity.getDateCreated()));
 		details.setDateModified(DateUtility.toOffsetDateTime(entity.getDateModified()));
-		details.setDescription(entity.getDescription());
+		details.setListDescription(entity.getDescription());
 		details.setListDbId(entity.getId());
 		details.setListName(entity.getListName());
 		details.setListOwnerName(entity.getListOwnerName());
@@ -152,7 +161,7 @@ public class ListService {
 		ListSummary summary = new ListSummary();
 		summary.setDateCreated(DateUtility.toOffsetDateTime(entity.getDateCreated()));
 		summary.setDateModified(DateUtility.toOffsetDateTime(entity.getDateModified()));
-		summary.setDescription(entity.getDescription());
+		summary.setListDescription(entity.getDescription());
 		summary.setListDbId(entity.getId());
 		summary.setListName(entity.getListName());
 		summary.setListOwnerName(entity.getListOwnerName());
@@ -164,9 +173,9 @@ public class ListService {
 		return summary;
 	}
 
-	private void updateEntity(ListEntity entity, @Valid NewListRequest list) {
+	private void updateEntity(ListEntity entity, @Valid ListNewRequest list) {
 
-		entity.setDescription(list.getDescription());
+		entity.setDescription(list.getListDescription());
 		entity.setListName(list.getListName());
 		entity.setListOwnerName(list.getListOwnerName());
 		entity.setListOwnerPersonDbId(list.getListOwnerPersonDbId());

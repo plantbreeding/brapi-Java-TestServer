@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.brapi.test.BrAPITestServer.model.entity.LocationEntity;
-import org.brapi.test.BrAPITestServer.repository.LocationRepository;
+import org.brapi.test.BrAPITestServer.repository.core.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import io.swagger.model.Location;
-import io.swagger.model.Metadata;
+import io.swagger.model.common.Metadata;
+import io.swagger.model.core.Location;
 
 @Service
 public class LocationService {
@@ -47,18 +47,18 @@ public class LocationService {
 	public Location convertFromEntity(LocationEntity locationEntity) {
 		Location location = new Location();
 		location.setAbbreviation(locationEntity.getAbbreviation());
-		location.setAbreviation(locationEntity.getAbbreviation());
-		location.setAltitude(new BigDecimal(locationEntity.getAltitude()));
+//		location.setAbreviation(locationEntity.getAbbreviation());
+//		location.setAltitude(new BigDecimal(locationEntity.getAltitude()));
 		location.setCountryCode(locationEntity.getCountryCode());
 		location.setCountryName(locationEntity.getCountryName());
-		location.setInstituteAdress(locationEntity.getInstituteAddress());
+//		location.setInstituteAdress(locationEntity.getInstituteAddress());
 		location.setInstituteAddress(locationEntity.getInstituteAddress());
 		location.setInstituteName(locationEntity.getInstituteName());
-		location.setLatitude(new BigDecimal(locationEntity.getLatitude()));
+//		location.setLatitude(new BigDecimal(locationEntity.getLatitude()));
 		location.setLocationDbId(locationEntity.getId());
 		location.setLocationType(locationEntity.getLocationType());
-		location.setLongitude(new BigDecimal(locationEntity.getLongitude()));
-		location.setName(locationEntity.getName());
+//		location.setLongitude(new BigDecimal(locationEntity.getLongitude()));
+//		location.setName(locationEntity.getName());
 		location.setLocationName(locationEntity.getName());
 		location.setDocumentationURL(locationEntity.getDocumentationURL());
 		

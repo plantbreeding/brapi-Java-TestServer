@@ -5,15 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import io.swagger.model.Call;
-import io.swagger.model.Metadata;
-import io.swagger.model.WSMIMEDataTypes;
+import io.swagger.model.common.Metadata;
+import io.swagger.model.common.WSMIMEDataTypes;
+import io.swagger.model.core.Service;
 
-@Service
+@org.springframework.stereotype.Service
 public class CallsService {
 	
 	static List<String> calls;
@@ -125,10 +124,10 @@ public class CallsService {
 		calls.add("{'call': 'vendor/specifications', 'methods': ['GET'], 'datatypes': ['application/json'], 'dataTypes': ['application/json'], 'versions': ['1.1', '1.2', '1.3']}");
 			}
     
-	public List<Call> getAvailableCalls(WSMIMEDataTypes datatype, Metadata metadata) {
-		List<Call> calls = buildCalls();
-		List<Call> filtered = filterCalls(calls, datatype);
-		List<Call> response = paginateCalls(filtered, metadata.getPagination().getCurrentPage(), metadata.getPagination().getPageSize());
+	public List<Service> getAvailableCalls(WSMIMEDataTypes datatype, Metadata metadata) {
+		List<Service> calls = buildCalls();
+		List<Service> filtered = filterCalls(calls, datatype);
+		List<Service> response = paginateCalls(filtered, metadata.getPagination().getCurrentPage(), metadata.getPagination().getPageSize());
 		
 		metadata.getPagination().setTotalPages((int) Math.ceil((double)filtered.size() / (double)metadata.getPagination().getPageSize()));
 		metadata.getPagination().setTotalCount(filtered.size());
@@ -136,13 +135,13 @@ public class CallsService {
 		return response;
 	}
 
-	private List<Call> buildCalls() {
-		List<Call> calls = new ArrayList<>();
+	private List<Service> buildCalls() {
+		List<Service> calls = new ArrayList<>();
 		ObjectMapper mapper = new ObjectMapper();
 		for(String callStr: CallsService.calls) {
 			try {
 				String callStrClean = callStr.replace("'", "\"");
-				calls.add(mapper.readValue(callStrClean, Call.class));
+				calls.add(mapper.readValue(callStrClean, Service.class));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -151,11 +150,11 @@ public class CallsService {
 		return calls;
 	}
 
-	private List<Call> filterCalls(List<Call> calls, WSMIMEDataTypes datatype) {
-		List<Call> filteredCalls;
+	private List<Service> filterCalls(List<Service> calls, WSMIMEDataTypes datatype) {
+		List<Service> filteredCalls;
 		if(datatype != null) {
 			filteredCalls = calls.stream().filter((call) -> {
-				return call.getDatatypes().contains(datatype);
+				return call.getDataTypes().contains(datatype);
 			}).collect(Collectors.toList());
 		}else {
 			filteredCalls = calls;
@@ -164,7 +163,7 @@ public class CallsService {
 	}
 	
 
-	private List<Call> paginateCalls(List<Call> calls, Integer page, Integer pageSize) {
+	private List<Service> paginateCalls(List<Service> calls, Integer page, Integer pageSize) {
 		int fromIndex = 0, toIndex = 0;
 		if(page * pageSize < calls.size()) {
 			fromIndex = page * pageSize;

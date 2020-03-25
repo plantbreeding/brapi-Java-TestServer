@@ -20,27 +20,25 @@ import org.brapi.test.BrAPITestServer.model.entity.TraitSynonymEntity;
 import org.brapi.test.BrAPITestServer.repository.MethodRepository;
 import org.brapi.test.BrAPITestServer.repository.OntologyRepository;
 import org.brapi.test.BrAPITestServer.repository.ScaleRepository;
-import org.brapi.test.BrAPITestServer.repository.TraitRepository;
+import org.brapi.test.BrAPITestServer.repository.core.TraitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import io.swagger.model.Metadata;
-import io.swagger.model.Method;
-import io.swagger.model.NewMethodRequest;
-import io.swagger.model.NewScaleRequest;
-import io.swagger.model.NewTraitRequest;
-import io.swagger.model.Ontology;
-import io.swagger.model.OntologyReference;
-import io.swagger.model.OntologyReferenceDocumentationLinks;
-import io.swagger.model.OntologyReferenceDocumentationLinks.TypeEnum;
-import io.swagger.model.Scale;
-import io.swagger.model.Trait;
-import io.swagger.model.TraitDataType;
-import io.swagger.model.TraitSummary;
-import io.swagger.model.ValidValues;
+import io.swagger.model.common.Metadata;
+import io.swagger.model.common.OntologyReference;
+import io.swagger.model.common.OntologyReferenceDocumentationLinks;
+import io.swagger.model.common.OntologyReferenceDocumentationLinks.TypeEnum;
+import io.swagger.model.pheno.Method;
+import io.swagger.model.pheno.MethodNewRequest;
+import io.swagger.model.pheno.Ontology;
+import io.swagger.model.pheno.Scale;
+import io.swagger.model.pheno.ScaleNewRequest;
+import io.swagger.model.pheno.Trait;
+import io.swagger.model.pheno.TraitDataType;
+import io.swagger.model.pheno.TraitNewRequest;
 
 @Service
 public class OntologyService {
@@ -62,11 +60,11 @@ public class OntologyService {
 		Method method = new Method();
 		method.setDescription(entity.getDescription());
 		method.setFormula(entity.getFormula());
-		method.setPropertyClass(entity.getMethodClass());
+//		method.setPropertyClass(entity.getMethodClass());
 		method.setMethodDbId(entity.getId());
 		method.setMethodName(entity.getName());
-		method.setName(entity.getName());
-		method.setReference(entity.getReference());
+//		method.setName(entity.getName());
+//		method.setReference(entity.getReference());
 		method.setOntologyReference(convertFromEntity(entity.getOntology(), entity.getOntologyReference()));
 		return method;
 	}
@@ -106,17 +104,17 @@ public class OntologyService {
 		scale.setDataType(TraitDataType.fromValue(entity.getDataType()));
 		scale.setDecimalPlaces(entity.getDecimalPlaces());
 		scale.setScaleName(entity.getName());
-		scale.setName(entity.getName());
+//		scale.setName(entity.getName());
 		scale.setScaleDbId(entity.getId());
-		scale.setXref(entity.getXref());
+//		scale.setXref(entity.getXref());
 		scale.setOntologyReference(convertFromEntity(entity.getOntology(), entity.getOntologyReference()));
 
-		ValidValues validValues = new ValidValues();
-		validValues.setMax(entity.getValidValueMax());
-		validValues.setMin(entity.getValidValueMin());
-		validValues.setCategories(
-				entity.getValidValueCategories().stream().map(e -> e.getCategory()).collect(Collectors.toList()));
-		scale.setValidValues(validValues);
+//		validValues validValues = new ValidValues();
+//		validValues.setMax(entity.getValidValueMax());
+//		validValues.setMin(entity.getValidValueMin());
+//		validValues.setCategories(
+//				entity.getValidValueCategories().stream().map(e -> e.getCategory()).collect(Collectors.toList()));
+//		scale.setValidValues(validValues);
 		return scale;
 	}
 
@@ -125,33 +123,33 @@ public class OntologyService {
 		trait.setAlternativeAbbreviations(entity.getAlternativeAbbreviations().stream().map(e -> e.getAbbreviation())
 				.collect(Collectors.toList()));
 		trait.setAttribute(entity.getAttribute());
-		trait.setDescription(entity.getDescription());
+//		trait.setDescription(entity.getDescription());
 		trait.setEntity(entity.getEntity());
 		trait.setMainAbbreviation(entity.getMainAbbreviation());
 		trait.setTraitName(entity.getName());
-		trait.setName(entity.getName());
+//		trait.setName(entity.getName());
 		trait.setStatus(entity.getStatus());
 		trait.setSynonyms(entity.getSynonyms().stream().map(e -> e.getSynonym()).collect(Collectors.toList()));
-		trait.setPropertyClass(entity.getTraitClass());
+//		trait.setPropertyClass(entity.getTraitClass());
 		trait.setTraitDbId(entity.getId());
-		trait.setXref(entity.getXref());
+//		trait.setXref(entity.getXref());
 		trait.setOntologyReference(convertFromEntity(entity.getOntology(), entity.getOntologyReference()));
 
 		return trait;
 	}
 
-	public TraitSummary convertFromEntitySummary(TraitEntity entity) {
-		TraitSummary summary = new TraitSummary();
-		summary.setDefaultValue(entity.getDefaultValue());
-		summary.setDescription(entity.getDescription());
+	public Trait convertFromEntitySummary(TraitEntity entity) {
+		Trait summary = new Trait();
+//		summary.setDefaultValue(entity.getDefaultValue());
+//		summary.setDescription(entity.getDescription());
 		summary.setTraitName(entity.getName());
-		summary.setName(entity.getName());
+//		summary.setName(entity.getName());
 		summary.setTraitDbId(entity.getId());
-		summary.setTraitId(entity.getId());
+//		summary.setTraitId(entity.getId());
 
 		if (entity.getVariables() != null) {
-			summary.setObservationVariables(
-					entity.getVariables().stream().map(e -> e.getId()).collect(Collectors.toList()));
+//			summary.setObservationVariables(
+//					entity.getVariables().stream().map(e -> e.getId()).collect(Collectors.toList()));
 		}
 
 		return summary;
@@ -197,8 +195,8 @@ public class OntologyService {
 		return scalesPage.getContent();
 	}
 
-	public TraitSummary getTrait(String traitDbId) throws BrAPIServerException {
-		TraitSummary trait;
+	public Trait getTrait(String traitDbId) throws BrAPIServerException {
+		Trait trait;
 		Optional<TraitEntity> entityOpt = traitRepository.findById(traitDbId);
 		if (entityOpt.isPresent()) {
 			trait = convertFromEntitySummary(entityOpt.get());
@@ -209,27 +207,27 @@ public class OntologyService {
 		return trait;
 	}
 
-	public List<TraitSummary> getTraits(Metadata metaData) {
+	public List<Trait> getTraits(Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-		Page<TraitSummary> traits = traitRepository.findAll(pageReq).map(this::convertFromEntitySummary);
+		Page<Trait> traits = traitRepository.findAll(pageReq).map(this::convertFromEntitySummary);
 		PagingUtility.calculateMetaData(metaData, traits);
 		return traits.getContent();
 	}
 
-	public Method saveNewMethod(@Valid NewMethodRequest body) {
+	public Method saveNewMethod(@Valid MethodNewRequest body) {
 		MethodEntity entity = updateEntity(new MethodEntity(), body);
 		MethodEntity savedEntity = methodRepository.save(entity);
 		savedEntity = methodRepository.save(savedEntity);
 		return convertFromEntity(savedEntity);
 	}
 
-	private MethodEntity updateEntity(MethodEntity entity, @Valid NewMethodRequest method) {
-		entity.setDescription(method.getDescription());
-		entity.setFormula(method.getFormula());
-		entity.setMethodClass(method.getPropertyClass());
-		entity.setName(method.getMethodName());
-		entity.setReference(method.getReference());
-		updateOntologyReference(entity, method.getOntologyReference());
+	private MethodEntity updateEntity(MethodEntity entity, @Valid MethodNewRequest method) {
+//		entity.setDescription(method.getDescription());
+//		entity.setFormula(method.getFormula());
+//		entity.setMethodClass(method.getPropertyClass());
+//		entity.setName(method.getMethodName());
+//		entity.setReference(method.getReference());
+//		updateOntologyReference(entity, method.getOntologyReference());
 
 		return entity;
 	}
@@ -251,63 +249,63 @@ public class OntologyService {
 		}
 	}
 
-	public Scale saveNewScale(@Valid NewScaleRequest body) {
+	public Scale saveNewScale(@Valid ScaleNewRequest body) {
 		ScaleEntity entity = updateEntity(new ScaleEntity(), body);
 		ScaleEntity savedEntity = scaleRepository.save(entity);
 		return convertFromEntity(savedEntity);
 	}
 
-	private ScaleEntity updateEntity(ScaleEntity entity, @Valid NewScaleRequest scale) {
-		entity.setDataType(scale.getDataType().toString());
-		entity.setDecimalPlaces(scale.getDecimalPlaces());
-		entity.setName(scale.getScaleName());
-		entity.setXref(scale.getXref());
-		entity.setValidValueMax(scale.getValidValues().getMax());
-		entity.setValidValueMin(scale.getValidValues().getMin());
-		entity.setValidValueCategories(scale.getValidValues().getCategories().stream().map((categoryString) -> {
-			ScaleValidValueCategoryEntity e = new ScaleValidValueCategoryEntity();
-			e.setCategory(categoryString);
-			e.setScale(entity);
-			return e;
-		}).collect(Collectors.toList()));
-
-		updateOntologyReference(entity, scale.getOntologyReference());
+	private ScaleEntity updateEntity(ScaleEntity entity, @Valid ScaleNewRequest scale) {
+//		entity.setDataType(scale.getDataType().toString());
+//		entity.setDecimalPlaces(scale.getDecimalPlaces());
+//		entity.setName(scale.getScaleName());
+//		entity.setXref(scale.getXref());
+//		entity.setValidValueMax(scale.getValidValues().getMax());
+//		entity.setValidValueMin(scale.getValidValues().getMin());
+//		entity.setValidValueCategories(scale.getValidValues().getCategories().stream().map((categoryString) -> {
+//			ScaleValidValueCategoryEntity e = new ScaleValidValueCategoryEntity();
+//			e.setCategory(categoryString);
+//			e.setScale(entity);
+//			return e;
+//		}).collect(Collectors.toList()));
+//
+//		updateOntologyReference(entity, scale.getOntologyReference());
 
 		return entity;
 	}
 
-	public Trait saveNewTrait(@Valid NewTraitRequest body) {
+	public Trait saveNewTrait(@Valid TraitNewRequest body) {
 		TraitEntity entity = updateEntity(new TraitEntity(), body);
 		TraitEntity savedEntity = traitRepository.save(entity);
 		return convertFromEntity(savedEntity);
 	}
 
-	private TraitEntity updateEntity(TraitEntity entity, @Valid NewTraitRequest trait) {
-		entity.setAlternativeAbbreviations(trait.getAlternativeAbbreviations().stream().map((aa) -> {
-			TraitAbbreviationEntity e = new TraitAbbreviationEntity();
-			e.setAbbreviation(aa);
-			e.setTrait(entity);
-			return e;
-		}).collect(Collectors.toList()));
-		entity.setAttribute(trait.getAttribute());
-		entity.setDescription(trait.getDescription());
-		entity.setEntity(trait.getEntity());
-		entity.setMainAbbreviation(trait.getMainAbbreviation());
-		entity.setName(trait.getTraitName());
-		entity.setStatus(trait.getStatus());
-		entity.setSynonyms(trait.getSynonyms().stream().map(syn -> {
-			TraitSynonymEntity e = new TraitSynonymEntity();
-			e.setSynonym(syn);
-			e.setTrait(entity);
-			return e;
-		}).collect(Collectors.toList()));
-		entity.setTraitClass(trait.getPropertyClass());
-		entity.setXref(trait.getXref());
-		updateOntologyReference(entity, trait.getOntologyReference());
+	private TraitEntity updateEntity(TraitEntity entity, @Valid TraitNewRequest trait) {
+//		entity.setAlternativeAbbreviations(trait.getAlternativeAbbreviations().stream().map((aa) -> {
+//			TraitAbbreviationEntity e = new TraitAbbreviationEntity();
+//			e.setAbbreviation(aa);
+//			e.setTrait(entity);
+//			return e;
+//		}).collect(Collectors.toList()));
+//		entity.setAttribute(trait.getAttribute());
+//		entity.setDescription(trait.getDescription());
+//		entity.setEntity(trait.getEntity());
+//		entity.setMainAbbreviation(trait.getMainAbbreviation());
+//		entity.setName(trait.getTraitName());
+//		entity.setStatus(trait.getStatus());
+//		entity.setSynonyms(trait.getSynonyms().stream().map(syn -> {
+//			TraitSynonymEntity e = new TraitSynonymEntity();
+//			e.setSynonym(syn);
+//			e.setTrait(entity);
+//			return e;
+//		}).collect(Collectors.toList()));
+//		entity.setTraitClass(trait.getPropertyClass());
+//		entity.setXref(trait.getXref());
+//		updateOntologyReference(entity, trait.getOntologyReference());
 		return entity;
 	}
 
-	public Method updateMethod(String methodDbId, @Valid NewMethodRequest body) throws BrAPIServerException {
+	public Method updateMethod(String methodDbId, @Valid MethodNewRequest body) throws BrAPIServerException {
 		Method method;
 		Optional<MethodEntity> entityOpt = methodRepository.findById(methodDbId);
 		if (entityOpt.isPresent()) {
@@ -320,7 +318,7 @@ public class OntologyService {
 		return method;
 	}
 
-	public Scale updateScale(String scaleDbId, @Valid NewScaleRequest body) throws BrAPIServerException {
+	public Scale updateScale(String scaleDbId, @Valid ScaleNewRequest body) throws BrAPIServerException {
 		Scale scale;
 		Optional<ScaleEntity> entityOpt = scaleRepository.findById(scaleDbId);
 		if (entityOpt.isPresent()) {
@@ -333,7 +331,7 @@ public class OntologyService {
 		return scale;
 	}
 
-	public Trait updateTrait(String traitDbId, @Valid NewTraitRequest body) throws BrAPIServerException {
+	public Trait updateTrait(String traitDbId, @Valid TraitNewRequest body) throws BrAPIServerException {
 		Trait trait;
 		Optional<TraitEntity> entityOpt = traitRepository.findById(traitDbId);
 		if (entityOpt.isPresent()) {

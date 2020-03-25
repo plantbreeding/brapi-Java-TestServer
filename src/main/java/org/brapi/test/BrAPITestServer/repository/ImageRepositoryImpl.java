@@ -17,8 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import io.swagger.model.GermplasmSearchRequest;
-import io.swagger.model.ImagesSearchRequest;
+import io.swagger.model.pheno.ImageSearchRequest;
 
 public class ImageRepositoryImpl implements ImageRepositoryCustom {
 	@PersistenceContext
@@ -32,14 +31,14 @@ public class ImageRepositoryImpl implements ImageRepositoryCustom {
 	}
 
 	@Override
-	public Page<ImageEntity> findBySearch(ImagesSearchRequest request, Pageable pageRequest) {
+	public Page<ImageEntity> findBySearch(ImageSearchRequest request, Pageable pageRequest) {
 		Map<String, Object> params = new HashMap<>();
 		String queryStr = buildQueryString(request, params);
 		Page<ImageEntity> page = customRepositorySearchService.findAllBySearch(queryStr, params, pageRequest, ImageEntity.class, em);
 		return page;
 	}	
 	
-	private String buildQueryString(ImagesSearchRequest request, Map<String, Object> params) {
+	private String buildQueryString(ImageSearchRequest request, Map<String, Object> params) {
 		String queryStr = "select i from ImageEntity i where 1 = 1 ";
 		
 		if(request.getObservationUnitDbIds() != null && !request.getObservationUnitDbIds().isEmpty()) {

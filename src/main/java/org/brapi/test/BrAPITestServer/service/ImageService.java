@@ -21,12 +21,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.model.GeoJSON;
-import io.swagger.model.GeoJSON.TypeEnum;
-import io.swagger.model.Image;
-import io.swagger.model.ImagesSearchRequest;
-import io.swagger.model.Metadata;
-import io.swagger.model.NewImageRequest;
+
+import io.swagger.model.common.GeoJSON;
+import io.swagger.model.common.Metadata;
+import io.swagger.model.pheno.Image;
+import io.swagger.model.pheno.ImageNewRequest;
+import io.swagger.model.pheno.ImageSearchRequest;
 
 @Service
 public class ImageService {
@@ -62,7 +62,7 @@ public class ImageService {
 			String observationDbId, String descriptiveOntologyTerm, Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 
-		ImagesSearchRequest request = new ImagesSearchRequest();
+		ImageSearchRequest request = new ImageSearchRequest();
 		if (observationUnitDbId != null)
 			request.addObservationUnitDbIdsItem(observationUnitDbId);
 		if (observationDbId != null)
@@ -89,7 +89,7 @@ public class ImageService {
 		return bytes;
 	}
 
-	public Image saveImageMetaData(NewImageRequest imageMetadata) {
+	public Image saveImageMetaData(ImageNewRequest imageMetadata) {
 		ImageEntity newEntity = new ImageEntity();
 		updateEntity(newEntity, imageMetadata);
 
@@ -134,7 +134,7 @@ public class ImageService {
 		return baseUrlProperty + "/images/" + newEntity.getId() + "/" + name;
 	}
 
-	private void updateEntity(ImageEntity entity, NewImageRequest image) {
+	private void updateEntity(ImageEntity entity, ImageNewRequest image) {
 
 		if (image.getObservationUnitDbId() != null && !image.getObservationUnitDbId().isEmpty()) {
 			Optional<ObservationUnitEntity> unitOption = this.observationUnitRepository
@@ -184,13 +184,13 @@ public class ImageService {
 		img.setMimeType(entity.getImageType());
 		img.setImageURL(entity.getImageURL());
 		img.setImageWidth(entity.getImageWidth());
-		img.setImageTimeStamp(DateUtility.toLocalDate(entity.getTimeStamp()));
+		img.setImageTimeStamp(DateUtility.toOffsetDateTime(entity.getTimeStamp()));
 
 		if (entity.getLatitude() != null && entity.getLongitude() != null) {
-			img.setImageLocation(new GeoJSON().type(TypeEnum.FEATURE)
-					.geometry(new Geometry(entity.getLatitude(), entity.getLongitude())));
+//			img.setImageLocation(new GeoJSON()
+//					.geometry(new Geometry(entity.getLatitude(), entity.getLongitude())));
 		} else {
-			img.setImageLocation(new GeoJSON().type(TypeEnum.FEATURE).geometry(new Geometry(0F, 0F)));
+//			img.setImageLocation(new GeoJSON().geometry(new Geometry(0F, 0F)));
 		}
 
 		if (entity.getDescriptiveOntologyTerms() != null && !entity.getDescriptiveOntologyTerms().isEmpty()) {
@@ -217,7 +217,7 @@ public class ImageService {
 		return str;
 	}
 
-	public Image updateImageMetaData(String imageDbId, @Valid NewImageRequest imageMetadata) {
+	public Image updateImageMetaData(String imageDbId, @Valid ImageNewRequest imageMetadata) {
 		Image result = null;
 
 		if (imageDbId != null) {
@@ -243,6 +243,7 @@ public class ImageService {
 			type = "Point";
 			coordinates = new ArrayList<>();
 		}
+
 		public Geometry(Float latitude, Float longitude) {
 			type = "Point";
 			coordinates = Arrays.asList(latitude, longitude);
@@ -265,8 +266,7 @@ public class ImageService {
 		}
 	}
 
-	public List<Image> search(ImagesSearchRequest request, Metadata metadata)
-			throws BrAPIServerException {
+	public List<Image> search(ImageSearchRequest request, Metadata metadata) throws BrAPIServerException {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		Page<ImageEntity> imagesPage = imageRepository.findBySearch(request, pageReq);
 		PagingUtility.calculateMetaData(metadata, imagesPage);

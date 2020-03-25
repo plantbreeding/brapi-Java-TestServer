@@ -17,8 +17,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-import io.swagger.model.MarkersSearchRequest;
-import io.swagger.model.PhenotypesSearchRequest;
+import io.swagger.model.pheno.ObservationSearchRequest;
+import io.swagger.model.pheno.ObservationUnitSearchRequest;
 
 public class ObservationUnitRepositoryImpl implements ObservationUnitRepositoryCustom{
 
@@ -33,14 +33,14 @@ public class ObservationUnitRepositoryImpl implements ObservationUnitRepositoryC
 	}
 
 	@Override
-	public Page<ObservationUnitEntity> findBySearch(PhenotypesSearchRequest request, Pageable pageRequest) {
+	public Page<ObservationUnitEntity> findBySearch(ObservationUnitSearchRequest request, Pageable pageRequest) {
 		Map<String, Object> params = new HashMap<>();
 		String queryStr = buildQueryString(request, params);
 		Page<ObservationUnitEntity> page = customRepositorySearchService.findAllBySearch(queryStr, params, pageRequest, ObservationUnitEntity.class, em);
 		return page;
 	}
 
-	private String buildQueryString(PhenotypesSearchRequest request, Map<String, Object> params) {
+	private String buildQueryString(ObservationUnitSearchRequest request, Map<String, Object> params) {
 		String queryStr = "select distinct o from ObservationUnitEntity o join o.observations observation  where 1 = 1 ";
 
 		if (request.getGermplasmDbIds() != null && !request.getGermplasmDbIds().isEmpty()) {
@@ -63,25 +63,25 @@ public class ObservationUnitRepositoryImpl implements ObservationUnitRepositoryC
 			queryStr += "AND o.study.trial.program.id in :programDbIds ";
 			params.put("programDbIds", request.getProgramDbIds());
 		}
-		if (request.getSeasonDbIds() != null && !request.getSeasonDbIds().isEmpty()) {
-			queryStr += "AND observation.season.id in :seasonDbIds ";
-			params.put("seasonDbIds", request.getSeasonDbIds());
-		}
-		if (request.getObservationLevel() != null) {
-			queryStr += "AND o.observationLevel in :observationLevel ";
-			params.put("observationLevel", request.getObservationLevel());
-		}
-		if (request.getObservationTimeStampRangeStart() != null && request.getObservationTimeStampRangeEnd() != null) {
-			queryStr += "AND observation.observationTimeStamp BETWEEN :observationTimeStart AND :observationTimeEnd ";
-			params.put("observationTimeStart", request.getObservationTimeStampRangeStart());
-			params.put("observationTimeEnd", request.getObservationTimeStampRangeEnd());
-		}else if(request.getObservationTimeStampRangeStart() != null) {
-			queryStr += "AND observation.observationTimeStamp >= :observationTimeStart ";
-			params.put("observationTimeStart", request.getObservationTimeStampRangeStart());			
-		}else if(request.getObservationTimeStampRangeEnd() != null) {
-			queryStr += "AND observation.observationTimeStamp <= :observationTimeEnd ";
-			params.put("observationTimeEnd", request.getObservationTimeStampRangeEnd());
-		}
+//		if (request.getSeasonDbIds() != null && !request.getSeasonDbIds().isEmpty()) {
+//			queryStr += "AND observation.season.id in :seasonDbIds ";
+//			params.put("seasonDbIds", request.getSeasonDbIds());
+//		}
+//		if (request.getObservationLevel() != null) {
+//			queryStr += "AND o.observationLevel in :observationLevel ";
+//			params.put("observationLevel", request.getObservationLevel());
+//		}
+//		if (request.getObservationTimeStampRangeStart() != null && request.getObservationTimeStampRangeEnd() != null) {
+//			queryStr += "AND observation.observationTimeStamp BETWEEN :observationTimeStart AND :observationTimeEnd ";
+//			params.put("observationTimeStart", request.getObservationTimeStampRangeStart());
+//			params.put("observationTimeEnd", request.getObservationTimeStampRangeEnd());
+//		}else if(request.getObservationTimeStampRangeStart() != null) {
+//			queryStr += "AND observation.observationTimeStamp >= :observationTimeStart ";
+//			params.put("observationTimeStart", request.getObservationTimeStampRangeStart());			
+//		}else if(request.getObservationTimeStampRangeEnd() != null) {
+//			queryStr += "AND observation.observationTimeStamp <= :observationTimeEnd ";
+//			params.put("observationTimeEnd", request.getObservationTimeStampRangeEnd());
+//		}
 		
 		return queryStr;
 	}

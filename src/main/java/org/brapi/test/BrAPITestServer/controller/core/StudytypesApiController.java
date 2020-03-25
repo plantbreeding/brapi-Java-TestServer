@@ -24,37 +24,40 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
 @Controller
 public class StudytypesApiController implements StudytypesApi {
 
-    private static final Logger log = LoggerFactory.getLogger(StudytypesApiController.class);
+	private static final Logger log = LoggerFactory.getLogger(StudytypesApiController.class);
 
-    private final ObjectMapper objectMapper;
+	private final ObjectMapper objectMapper;
 
-    private final HttpServletRequest request;
+	private final HttpServletRequest request;
 
-    @org.springframework.beans.factory.annotation.Autowired
-    public StudytypesApiController(ObjectMapper objectMapper, HttpServletRequest request) {
-        this.objectMapper = objectMapper;
-        this.request = request;
-    }
+	@org.springframework.beans.factory.annotation.Autowired
+	public StudytypesApiController(ObjectMapper objectMapper, HttpServletRequest request) {
+		this.objectMapper = objectMapper;
+		this.request = request;
+	}
 
-    public ResponseEntity<StudyTypesResponse> studytypesGet(@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page
-,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize
-,@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>" ) @RequestHeader(value="Authorization", required=false) String authorization
-) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                return new ResponseEntity<StudyTypesResponse>(objectMapper.readValue("{\n  \"result\" : {\n    \"data\" : [ \"Crossing Nursery\", \"Yield study\" ]\n  },\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}", StudyTypesResponse.class), HttpStatus.NOT_IMPLEMENTED);
-            } catch (IOException e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<StudyTypesResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
+	public ResponseEntity<StudyTypesResponse> studytypesGet(
+			@Valid @RequestParam(value = "page", required = false) Integer page,
+			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestHeader(value = "Authorization", required = false) String authorization) {
+		String accept = request.getHeader("Accept");
+		if (accept != null && accept.contains("application/json")) {
+			try {
+				return new ResponseEntity<StudyTypesResponse>(objectMapper.readValue(
+						"{\n  \"result\" : {\n    \"data\" : [ \"Crossing Nursery\", \"Yield study\" ]\n  },\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}",
+						StudyTypesResponse.class), HttpStatus.NOT_IMPLEMENTED);
+			} catch (IOException e) {
+				log.error("Couldn't serialize response for content type application/json", e);
+				return new ResponseEntity<StudyTypesResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
 
-        return new ResponseEntity<StudyTypesResponse>(HttpStatus.NOT_IMPLEMENTED);
-    }
+		return new ResponseEntity<StudyTypesResponse>(HttpStatus.NOT_IMPLEMENTED);
+	}
 
 }

@@ -11,9 +11,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import io.swagger.model.Person;
-import io.swagger.model.Metadata;
-import io.swagger.model.NewPersonRequest;
+import io.swagger.model.core.Person;
+import io.swagger.model.common.Metadata;
+import io.swagger.model.core.PersonNewRequest;
 
 @Service
 public class PeopleService {
@@ -65,7 +65,7 @@ public class PeopleService {
 		return convertFromEntity(entity);
 	}
 
-	public Person updatePerson(String PeopleDbId, @Valid NewPersonRequest person) throws BrAPIServerException {
+	public Person updatePerson(String PeopleDbId, @Valid PersonNewRequest person) throws BrAPIServerException {
 		PersonEntity savedEntity;
 		Optional<PersonEntity> entityOpt = peopleRepository.findById(PeopleDbId);
 		if (entityOpt.isPresent()) {
@@ -80,7 +80,7 @@ public class PeopleService {
 		return convertFromEntity(savedEntity);
 	}
 
-	public Person saveNewPerson(@Valid NewPersonRequest person) {
+	public Person saveNewPerson(@Valid PersonNewRequest person) {
 		PersonEntity entity = new PersonEntity();
 		updateEntity(entity, person);
 
@@ -105,7 +105,7 @@ public class PeopleService {
 		return person;
 	}
 
-	private void updateEntity(PersonEntity entity, NewPersonRequest person) {
+	private void updateEntity(PersonEntity entity, PersonNewRequest person) {
 		entity.setDescription(person.getDescription());
 		entity.setEmailAddress(person.getEmailAddress());
 		entity.setFirstName(person.getFirstName());

@@ -2,7 +2,6 @@ package org.brapi.test.BrAPITestServer;
 
 import org.brapi.test.BrAPITestServer.serializer.CustomDateSerializer;
 import org.brapi.test.BrAPITestServer.serializer.CustomInstantDeserializer;
-import org.brapi.test.BrAPITestServer.serializer.CustomObservationUnitPhenotypeSerializer;
 import org.brapi.test.BrAPITestServer.serializer.CustomObservationUnitPositionSerializer;
 import org.brapi.test.BrAPITestServer.serializer.CustomObservationUnitSerializer;
 import org.brapi.test.BrAPITestServer.serializer.CustomTimeStampSerializer;
@@ -18,12 +17,11 @@ import org.threeten.bp.ZonedDateTime;
 
 import com.fasterxml.jackson.datatype.threetenbp.ThreeTenModule;
 
-import io.swagger.model.ObservationUnit;
-import io.swagger.model.ObservationUnitPhenotype;
-import io.swagger.model.ObservationUnitPosition;
+import io.swagger.model.pheno.ObservationUnit;
+import io.swagger.model.pheno.ObservationUnitPosition;
 
 @Configuration
-@EnableJpaRepositories("org.brapi.test.BrAPITestServer.repository")
+@EnableJpaRepositories(basePackages="org.brapi.test.BrAPITestServer.repository", repositoryFactoryBeanClass=BrAPIRepositoryFactoryBean.class)
 @PropertySource(value = "classpath:properties/application.properties")
 public class BrapiTestServerConfig {
 	@Bean
@@ -38,7 +36,6 @@ public class BrapiTestServerConfig {
 		module.addSerializer(LocalDate.class, new CustomDateSerializer());
 		module.addSerializer(ObservationUnitPosition.class, new CustomObservationUnitPositionSerializer());
 		module.addSerializer(ObservationUnit.class, new CustomObservationUnitSerializer());
-		module.addSerializer(ObservationUnitPhenotype.class, new CustomObservationUnitPhenotypeSerializer());
 		return module;
 	}
 

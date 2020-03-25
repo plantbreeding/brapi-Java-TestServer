@@ -13,13 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
-import io.swagger.model.Metadata;
-import io.swagger.model.Trial;
-import io.swagger.model.TrialDatasetAuthorship;
-import io.swagger.model.TrialDatasetAuthorships;
-import io.swagger.model.TrialPublications;
-import io.swagger.model.TrialStudies;
-import io.swagger.model.TrialSummary;
+
+import io.swagger.model.common.Metadata;
+import io.swagger.model.core.Trial;
 
 @Service
 public class TrialService {
@@ -31,7 +27,7 @@ public class TrialService {
 		this.contactService = contactService;
 	}
 
-	public List<TrialSummary> getTrialSummaries(String commonCropName, String programDbId, String locationDbId, Boolean active, String sortBy,
+	public List<Trial> getTrialSummaries(String commonCropName, String programDbId, String locationDbId, Boolean active, String sortBy,
 			String sortOrder, Metadata metaData) {
 		Sort sort = buildSort(sortBy, sortOrder);
 		Pageable pageReq = PagingUtility.getPageRequest(metaData, sort);
@@ -48,7 +44,7 @@ public class TrialService {
 		Page<TrialEntity> trialsPage = trialRepository.findBySearch(commonCropName, programDbId, locationDbId, applyActiveFilter,
 				active, pageReq);
 
-		List<TrialSummary> summaries = trialsPage.map(this::convertFromEntityToSummary).getContent();
+		List<Trial> summaries = trialsPage.map(this::convertFromEntityToSummary).getContent();
 
 		PagingUtility.calculateMetaData(metaData, trialsPage);
 		return summaries;
@@ -112,22 +108,22 @@ public class TrialService {
 		trial.setTrialDbId(entity.getId());
 		trial.setTrialName(entity.getTrialName());
 
-		trial.setDatasetAuthorship(
-				new TrialDatasetAuthorship().datasetPUI(entity.getDatasetPUI()).license(entity.getDatasetLicence()));
-		trial.addDatasetAuthorshipsItem(
-				new TrialDatasetAuthorships().datasetPUI(entity.getDatasetPUI()).license(entity.getDatasetLicence()));
-		trial.addPublicationsItem(new TrialPublications().publicationPUI(entity.getDatasetPUI()).publicationReference(entity.getDocumentationURL()));
+//		trial.setDatasetAuthorship(
+//				new TrialDatasetAuthorship().datasetPUI(entity.getDatasetPUI()).license(entity.getDatasetLicence()));
+//		trial.addDatasetAuthorshipsItem(
+//				new TrialDatasetAuthorships().datasetPUI(entity.getDatasetPUI()).license(entity.getDatasetLicence()));
+//		trial.addPublicationsItem(new TrialPublications().publicationPUI(entity.getDatasetPUI()).publicationReference(entity.getDocumentationURL()));
 		trial.setContacts(
 				entity.getContacts().stream().map(this.contactService::convertFromEntity).collect(Collectors.toList()));
 
-		trial.setStudies(entity.getStudies().stream().map((e) -> {
-			TrialStudies id = new TrialStudies();
-			id.setLocationDbId(e.getLocation().getId());
-			id.setLocationName(e.getLocation().getName());
-			id.setStudyDbId(e.getId());
-			id.setStudyName(e.getStudyName());
-			return id;
-		}).collect(Collectors.toList()));
+//		trial.setStudies(entity.getStudies().stream().map((e) -> {
+//			TrialStudies id = new TrialStudies();
+//			id.setLocationDbId(e.getLocation().getId());
+//			id.setLocationName(e.getLocation().getName());
+//			id.setStudyDbId(e.getId());
+//			id.setStudyName(e.getStudyName());
+//			return id;
+//		}).collect(Collectors.toList()));
 
 		trial.setAdditionalInfo(new HashMap<>());
 		for (TrialAdditionalInfoEntity e : entity.getAdditionalInfo()) {
@@ -137,8 +133,8 @@ public class TrialService {
 		return trial;
 	}
 
-	private TrialSummary convertFromEntityToSummary(TrialEntity entity) {
-		TrialSummary summary = new TrialSummary();
+	private Trial convertFromEntityToSummary(TrialEntity entity) {
+		Trial summary = new Trial();
 		summary.setActive(entity.isActive());
 		summary.setCommonCropName(entity.getProgram().getCrop().getCropName());
 		summary.setDocumentationURL(entity.getDocumentationURL());
@@ -149,14 +145,14 @@ public class TrialService {
 		summary.setTrialDbId(entity.getId());
 		summary.setTrialName(entity.getTrialName());
 
-		summary.setStudies(entity.getStudies().stream().map((e) -> {
-			TrialStudies id = new TrialStudies();
-			id.setLocationDbId(e.getLocation().getId());
-			id.setLocationName(e.getLocation().getName());
-			id.setStudyDbId(e.getId());
-			id.setStudyName(e.getStudyName());
-			return id;
-		}).collect(Collectors.toList()));
+//		summary.setStudies(entity.getStudies().stream().map((e) -> {
+//			TrialStudies id = new TrialStudies();
+//			id.setLocationDbId(e.getLocation().getId());
+//			id.setLocationName(e.getLocation().getName());
+//			id.setStudyDbId(e.getId());
+//			id.setStudyName(e.getStudyName());
+//			return id;
+//		}).collect(Collectors.toList()));
 
 		summary.setAdditionalInfo(new HashMap<>());
 		entity.getAdditionalInfo().forEach((e) -> {

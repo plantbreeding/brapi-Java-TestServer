@@ -4,15 +4,15 @@ import java.util.List;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.ProgramEntity;
-import org.brapi.test.BrAPITestServer.repository.ProgramRepository;
+import org.brapi.test.BrAPITestServer.repository.core.ProgramRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import io.swagger.model.Metadata;
-import io.swagger.model.Program;
-import io.swagger.model.ProgramsSearchRequest;
+import io.swagger.model.common.Metadata;
+import io.swagger.model.core.Program;
+import io.swagger.model.core.ProgramSearchRequest;
 
 @Service
 public class ProgramService {
@@ -27,7 +27,7 @@ public class ProgramService {
 			String objective, String programDbId, Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 
-		ProgramsSearchRequest request = new ProgramsSearchRequest();
+		ProgramSearchRequest request = new ProgramSearchRequest();
 		if (abbreviation != null)
 			request.addAbbreviationsItem(abbreviation);
 		if (commonCropName != null)
@@ -53,10 +53,10 @@ public class ProgramService {
 		program.setAbbreviation(entity.getAbbreviation());
 		program.setCommonCropName(entity.getCrop().getCropName());
 		program.setDocumentationURL(entity.getDocumentationURL());
-		program.setLeadPerson(entity.getLeadPerson().getName());
+//		program.setLeadPerson(entity.getLeadPerson().getName());
 		program.setLeadPersonDbId(entity.getLeadPerson().getId());
 		program.setLeadPersonName(entity.getLeadPerson().getName());
-		program.setName(entity.getName());
+//		program.setName(entity.getName());
 		program.setObjective(entity.getObjective());
 		program.setProgramDbId(entity.getId());
 		program.setProgramName(entity.getName());
@@ -64,7 +64,7 @@ public class ProgramService {
 		return program;
 	}
 
-	public List<Program> search(ProgramsSearchRequest request, Metadata metadata) throws BrAPIServerException {
+	public List<Program> search(ProgramSearchRequest request, Metadata metadata) throws BrAPIServerException {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		Page<ProgramEntity> page = programRepository.findAllBySearch(request, pageReq);
 		List<Program> programs = page.map(this::convertFromEntity).getContent();
