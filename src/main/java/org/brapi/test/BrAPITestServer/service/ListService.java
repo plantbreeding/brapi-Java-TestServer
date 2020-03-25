@@ -51,12 +51,12 @@ public class ListService {
 	}
 
 	private String prepParam(String param, boolean fuzzySearch) {
-		if(param == null) {
+		if (param == null) {
 			return "";
-		}else {
+		} else {
 			if (fuzzySearch) {
 				return "%" + param + "%";
-			}else {
+			} else {
 				return param;
 			}
 		}
@@ -90,7 +90,7 @@ public class ListService {
 				return itemEntity;
 			}).collect(Collectors.toList());
 
-			entity.setData(itemEntities);
+			entity.getData().addAll(itemEntities);
 
 			savedEntity = listRepository.save(entity);
 		} else {
@@ -173,12 +173,22 @@ public class ListService {
 		entity.setListSource(list.getListSource());
 		entity.setListType(list.getListType());
 
-		entity.setData(list.getData().stream().map((item) -> {
-			ListItemEntity itemEntity = new ListItemEntity();
-			itemEntity.setItem(item);
-			itemEntity.setList(entity);
-			return itemEntity;
-		}).collect(Collectors.toList()));
+		if (entity.getData() != null) {
+			entity.getData().stream().forEach((item) -> {
+				item.setList(null);
+			});
+		}
+
+		if (list.getData() != null) {
+			entity.setData(list.getData().stream().map((item) -> {
+				ListItemEntity itemEntity = new ListItemEntity();
+				itemEntity.setItem(item);
+				itemEntity.setList(entity);
+				return itemEntity;
+			}).collect(Collectors.toList()));
+		} else {
+			entity.setData(new ArrayList<>());
+		}
 	}
 
 }
