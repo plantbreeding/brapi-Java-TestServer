@@ -150,13 +150,6 @@ INSERT INTO contact (id, name, email, type, orcid, institute_name) VALUES ('2', 
 INSERT INTO contact (id, name, email, type, orcid, institute_name) VALUES ('3', 'A. Technician', 'a.technician@brapi.org', 'Technician', '0000-0002-0607-8731', 'Plant Science Institute');
 INSERT INTO contact (id, name, email, type, orcid, institute_name) VALUES ('4', 'B. Technician', 'b.technician@brapi.org', 'Technician', '0000-0002-0607-8732', 'Plant Science Institute');
 
-INSERT INTO program (crop_id, id, abbreviation, lead_person_id, documentationurl, objective, name) VALUES ('1', '1', 'P1', 'person1', 'https://brapi.org', 'Global Population Improvement', 'Program 1');
-INSERT INTO program (crop_id, id, abbreviation, lead_person_id, documentationurl, objective, name) VALUES ('1', '2', 'P2', 'person1', 'https://brapi.org', 'XYZ', 'Program 2');
-INSERT INTO program (crop_id, id, abbreviation, lead_person_id, documentationurl, objective, name) VALUES ('1', '3', 'P3', 'person1', 'https://brapi.org', 'XYZ', 'Program 3');
-INSERT INTO program (crop_id, id, abbreviation, lead_person_id, documentationurl, objective, name) VALUES ('1', '4', 'P4', 'person1', 'https://brapi.org', 'ABC', 'Program 4');
-INSERT INTO program (crop_id, id, abbreviation, lead_person_id, documentationurl, objective, name) VALUES ('1', '5', 'P5', 'person1', 'https://brapi.org', 'Processing', 'Program 5');
-INSERT INTO program (crop_id, id, abbreviation, lead_person_id, documentationurl, objective, name) VALUES ('1', '6', 'P6', 'person1', 'https://brapi.org', 'Demo', 'Program 6');
-
 INSERT INTO trial (program_id, id, documentationurl, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('1', '101', 'https://brapi.org', 'Peru Yield Trial 1', '1/1/2013', '7/5/2013', false, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/312953986E3');
 INSERT INTO trial (program_id, id, documentationurl, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('1', '102', 'https://brapi.org', 'Peru Yield Trial 2', '6/1/2014', '1/15/2015', false, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/1234992349');
 INSERT INTO trial (program_id, id, documentationurl, trial_name, start_date, end_date, active, dataset_licence, datasetpui) VALUES ('2', '103', 'https://brapi.org', 'Ghana Genotype Trial 1', '5/1/2011', '12/15/2011', false, 'https://creativecommons.org/licenses/by/4.0', 'doi:10.15454/134591245');

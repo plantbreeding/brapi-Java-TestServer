@@ -76,7 +76,7 @@ public class LocationService {
 			LocationEntity entity = entityOpt.get();
 			location = convertFromEntity(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "ListDbId not found!");
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found!");
 		}
 		return location;
 	}
@@ -90,7 +90,7 @@ public class LocationService {
 
 			savedEntity = locationRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "ListDbId not found!");
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found!");
 		}
 
 		return convertFromEntity(savedEntity);
@@ -140,6 +140,8 @@ public class LocationService {
 	}
 
 	private void updateEntity(LocationEntity entity, LocationNewRequest request) {
+		if (request.getAdditionalInfo() != null)
+			entity.setAdditionalInfo(request.getAdditionalInfo());
 		if (request.getAbbreviation() != null)
 			entity.setAbbreviation(request.getAbbreviation());
 		if (request.getCoordinateDescription() != null)

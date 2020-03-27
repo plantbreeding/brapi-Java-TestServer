@@ -9,11 +9,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 
 @Entity
 @Table(name="program")
-public class ProgramEntity extends BrAPIBaseEntity{
+public class ProgramEntity extends BrAPIPrimaryEntity{
 	@Column
 	private String name;
 	@Column

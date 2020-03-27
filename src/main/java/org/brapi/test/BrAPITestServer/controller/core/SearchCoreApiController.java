@@ -41,43 +41,6 @@ public class SearchCoreApiController implements SearchCoreApi {
 
 
 
-	public ResponseEntity<ProgramListResponse> searchProgramsPost(
-			@Valid @RequestBody ProgramSearchRequest body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<ProgramListResponse>(objectMapper.readValue(
-						"{\n  \"result\" : {\n    \"data\" : [ \"\", \"\" ]\n  },\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}",
-						ProgramListResponse.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<ProgramListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
-
-		return new ResponseEntity<ProgramListResponse>(HttpStatus.NOT_IMPLEMENTED);
-	}
-
-	public ResponseEntity<ProgramListResponse> searchProgramsSearchResultsDbIdGet(
-			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<ProgramListResponse>(objectMapper.readValue(
-						"{\n  \"result\" : {\n    \"data\" : [ \"\", \"\" ]\n  },\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}",
-						ProgramListResponse.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<ProgramListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
-
-		return new ResponseEntity<ProgramListResponse>(HttpStatus.NOT_IMPLEMENTED);
-	}
 
 	public ResponseEntity<StudyListResponse> searchStudiesPost(
 			@Valid @RequestBody StudySearchRequest body,
