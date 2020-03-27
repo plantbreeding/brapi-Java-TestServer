@@ -12,9 +12,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
 
-import org.brapi.test.BrAPITestServer.model.entity.core.AdditionalInfoEntity;
-import org.brapi.test.BrAPITestServer.model.entity.core.ExternalReferenceEntity;
-
 import io.swagger.model.common.ExternalReferences;
 import io.swagger.model.common.ExternalReferencesInner;
 

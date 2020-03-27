@@ -1,12 +1,10 @@
-package org.brapi.test.BrAPITestServer.model.entity.core;
+package org.brapi.test.BrAPITestServer.model.entity;
 
 import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 
 @Entity
 @Table(name="coordinate")

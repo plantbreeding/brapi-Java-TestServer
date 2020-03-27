@@ -1,20 +1,24 @@
 package org.brapi.test.BrAPITestServer.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
-import org.brapi.test.BrAPITestServer.model.entity.PersonEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.PersonEntity;
 import org.brapi.test.BrAPITestServer.repository.PeopleRepository;
 import org.brapi.test.BrAPITestServer.utility.PagingUtility;
+import org.brapi.test.BrAPITestServer.utility.SearchQueryBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
 import io.swagger.model.core.Person;
 import io.swagger.model.common.Metadata;
 import io.swagger.model.core.PersonNewRequest;
+import io.swagger.model.core.PersonSearchRequest;
 
 @Service
 public class PeopleService {
@@ -26,31 +30,41 @@ public class PeopleService {
 	}
 
 	public List<Person> findPeople(@Valid String firstName, @Valid String lastName, @Valid String personDbId,
-			@Valid String userID, Metadata metadata) {
-		Pageable pageReq = PagingUtility.getPageRequest(metadata);
-		Page<PersonEntity> entityPage;
-		firstName = prepParam(firstName, true);
-		lastName = prepParam(lastName, true);
-		personDbId = prepParam(personDbId, false);
-		userID = prepParam(userID, false);
-		entityPage = peopleRepository.findBySearch(firstName, lastName, personDbId, userID, pageReq);
+			@Valid String userID, String externalReferenceID, String externalReferenceSource, Metadata metadata) {
 
-		List<Person> summaries = entityPage.map(this::convertFromEntity).getContent();
-		PagingUtility.calculateMetaData(metadata, entityPage);
+		PersonSearchRequest request = new PersonSearchRequest();
+		if (firstName != null)
+			request.addFirstNamesItem(firstName);
+		if (lastName != null)
+			request.addLastNamesItem(lastName);
+		if (personDbId != null)
+			request.addPersonDbIdsItem(personDbId);
+		if (userID != null)
+			request.addUserIDsItem(userID);
+		if (externalReferenceID != null)
+			request.addExternalReferenceIDsItem(externalReferenceID);
+		if (externalReferenceSource != null)
+			request.addExternalReferenceSourcesItem(externalReferenceSource);
 
-		return summaries;
+		return findPeople(request, metadata);
 	}
 
-	private String prepParam(String param, boolean fuzzySearch) {
-		if (param == null) {
-			return "";
-		} else {
-			if (fuzzySearch) {
-				return "%" + param + "%";
-			} else {
-				return param;
-			}
-		}
+	public List<Person> findPeople(@Valid PersonSearchRequest request, Metadata metadata) {
+		Pageable pageReq = PagingUtility.getPageRequest(metadata);
+		SearchQueryBuilder<PersonEntity> searchQuery = new SearchQueryBuilder<PersonEntity>(PersonEntity.class)
+				.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
+				.appendList(request.getEmailAddresses(), "emailAddress")
+				.appendList(request.getFirstNames(), "firstName").appendList(request.getLastNames(), "lastName")
+				.appendList(request.getMailingAddresses(), "mailingAddress")
+				.appendList(request.getMiddleNames(), "middleName").appendList(request.getPersonDbIds(), "id")
+				.appendList(request.getPhoneNumbers(), "phoneNumber").appendList(request.getUserIDs(), "userID");
+
+		Page<PersonEntity> entityPage = peopleRepository.findAllBySearch(searchQuery, pageReq);
+
+		List<Person> data = entityPage.map(this::convertFromEntity).getContent();
+		PagingUtility.calculateMetaData(metadata, entityPage);
+
+		return data;
 	}
 
 	public Person getPerson(String personDbId) throws BrAPIServerException {
@@ -58,7 +72,7 @@ public class PeopleService {
 	}
 
 	public PersonEntity getPersonEntity(String personDbId) throws BrAPIServerException {
-		PersonEntity entity;
+		PersonEntity entity = null;
 
 		Optional<PersonEntity> entityOpt = peopleRepository.findById(personDbId);
 		if (entityOpt.isPresent()) {
@@ -85,20 +99,28 @@ public class PeopleService {
 		return convertFromEntity(savedEntity);
 	}
 
-	public Person saveNewPerson(@Valid PersonNewRequest person) {
-		PersonEntity entity = new PersonEntity();
-		updateEntity(entity, person);
+	public List<Person> savePeople(@Valid List<PersonNewRequest> body) {
+		List<Person> savedPeople = new ArrayList<>();
 
-		PersonEntity savedEntity = peopleRepository.save(entity);
+		for (PersonNewRequest person : body) {
+			PersonEntity entity = new PersonEntity();
+			updateEntity(entity, person);
 
-		return convertFromEntity(savedEntity);
+			PersonEntity savedEntity = peopleRepository.save(entity);
+
+			savedPeople.add(convertFromEntity(savedEntity));
+		}
+
+		return savedPeople;
 	}
 
 	private Person convertFromEntity(PersonEntity entity) {
 		Person person = new Person();
-		
+
+		person.setAdditionalInfo(entity.getAdditionalInfoMap());
 		person.setDescription(entity.getDescription());
 		person.setEmailAddress(entity.getEmailAddress());
+		person.setExternalReferences(entity.getExternalReferencesMap());
 		person.setFirstName(entity.getFirstName());
 		person.setLastName(entity.getLastName());
 		person.setMailingAddress(entity.getMailingAddress());
@@ -110,15 +132,27 @@ public class PeopleService {
 		return person;
 	}
 
-	private void updateEntity(PersonEntity entity, PersonNewRequest person) {
-		entity.setDescription(person.getDescription());
-		entity.setEmailAddress(person.getEmailAddress());
-		entity.setFirstName(person.getFirstName());
-		entity.setLastName(person.getLastName());
-		entity.setMailingAddress(person.getMailingAddress());
-		entity.setMiddleName(person.getMiddleName());
-		entity.setPhoneNumber(person.getPhoneNumber());
-		entity.setUserID(person.getUserID());
+	private void updateEntity(PersonEntity entity, PersonNewRequest request) {
+		if (request.getAdditionalInfo() != null)
+			entity.setAdditionalInfo(request.getAdditionalInfo());
+		if (request.getDescription() != null)
+			entity.setDescription(request.getDescription());
+		if (request.getEmailAddress() != null)
+			entity.setEmailAddress(request.getEmailAddress());
+		if (request.getExternalReferences() != null)
+			entity.setExternalReferences(request.getExternalReferences());
+		if (request.getFirstName() != null)
+			entity.setFirstName(request.getFirstName());
+		if (request.getLastName() != null)
+			entity.setLastName(request.getLastName());
+		if (request.getMailingAddress() != null)
+			entity.setMailingAddress(request.getMailingAddress());
+		if (request.getMiddleName() != null)
+			entity.setMiddleName(request.getMiddleName());
+		if (request.getPhoneNumber() != null)
+			entity.setPhoneNumber(request.getPhoneNumber());
+		if (request.getUserID() != null)
+			entity.setUserID(request.getUserID());
 	}
 
 }

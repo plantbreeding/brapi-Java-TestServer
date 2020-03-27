@@ -10,7 +10,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
-import org.brapi.test.BrAPITestServer.model.entity.PersonEntity;
 
 @Entity
 @Table(name="program")

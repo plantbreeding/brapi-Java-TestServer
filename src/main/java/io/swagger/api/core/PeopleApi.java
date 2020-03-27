@@ -5,10 +5,14 @@
  */
 package io.swagger.api.core;
 
+import io.swagger.model.common.Model202AcceptedSearchResponse;
 import io.swagger.model.core.PersonListResponse;
 import io.swagger.model.core.PersonNewRequest;
+import io.swagger.model.core.PersonSearchRequest;
 import io.swagger.model.core.PersonSingleResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,7 +44,8 @@ public interface PeopleApi {
 			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the details for a specific Person", nickname = "peoplePersonDbIdGet", notes = "Get the details for a specific Person", response = PersonSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "People", })
@@ -52,7 +57,8 @@ public interface PeopleApi {
 	@RequestMapping(value = "/people/{personDbId}", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<PersonSingleResponse> peoplePersonDbIdGet(
 			@ApiParam(value = "The unique ID of a person", required = true) @PathVariable("personDbId") String personDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Update an existing Person", nickname = "peoplePersonDbIdPut", notes = "Update an existing Person", response = PersonSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "People", })
@@ -66,7 +72,7 @@ public interface PeopleApi {
 	ResponseEntity<PersonSingleResponse> peoplePersonDbIdPut(
 			@ApiParam(value = "The unique ID of a person", required = true) @PathVariable("personDbId") String personDbId,
 			@ApiParam(value = "") @Valid @RequestBody PersonNewRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 	@ApiOperation(value = "Create new People", nickname = "peoplePost", notes = "Create new People entities. `personDbId` is generated and managed by the server.", response = PersonListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "People", })
@@ -77,6 +83,34 @@ public interface PeopleApi {
 	@RequestMapping(value = "/people", produces = { "application/json" }, consumes = {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<PersonListResponse> peoplePost(@ApiParam(value = "") @Valid @RequestBody List<PersonNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+
+	@ApiOperation(value = "Submit a search request for People", nickname = "searchPeoplePost", notes = "Advanced searching for the programs resource.  See Search Services for additional implementation details.", response = PersonListResponse.class, authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "People", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = PersonListResponse.class),
+			@ApiResponse(code = 202, message = "Accepted", response = Model202AcceptedSearchResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/search/people", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.POST)
+	ResponseEntity<PersonListResponse> searchPeoplePost(
+			@ApiParam(value = "") @Valid @RequestBody PersonSearchRequest body,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+
+	@ApiOperation(value = "Get the results of a People search request", nickname = "searchPeopleSearchResultsDbIdGet", notes = "Advanced searching for the people resource.  See Search Services for additional implementation details.", response = PersonListResponse.class, authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "People", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = PersonListResponse.class),
+			@ApiResponse(code = 202, message = "Accepted", response = Model202AcceptedSearchResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/search/people/{searchResultsDbId}", produces = {
+			"application/json" }, method = RequestMethod.GET)
+	ResponseEntity<PersonListResponse> searchPeopleSearchResultsDbIdGet(
+			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
+			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 }

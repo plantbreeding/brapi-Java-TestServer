@@ -9,9 +9,9 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
-import org.brapi.test.BrAPITestServer.model.entity.PersonEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.ListEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.ListItemEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.PersonEntity;
 import org.brapi.test.BrAPITestServer.repository.core.ListRepository;
 import org.brapi.test.BrAPITestServer.utility.DateUtility;
 import org.brapi.test.BrAPITestServer.utility.PagingUtility;

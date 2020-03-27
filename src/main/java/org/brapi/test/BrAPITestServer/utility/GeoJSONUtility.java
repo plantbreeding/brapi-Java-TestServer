@@ -2,8 +2,8 @@ package org.brapi.test.BrAPITestServer.utility;
 
 import java.util.ArrayList;
 
-import org.brapi.test.BrAPITestServer.model.entity.core.CoordinateEntity;
-import org.brapi.test.BrAPITestServer.model.entity.core.GeoJSONEntity;
+import org.brapi.test.BrAPITestServer.model.entity.CoordinateEntity;
+import org.brapi.test.BrAPITestServer.model.entity.GeoJSONEntity;
 
 import io.swagger.model.common.GeoJSON;
 import io.swagger.model.common.GeoJSONGeometry;

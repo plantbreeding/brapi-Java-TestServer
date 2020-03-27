@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.brapi.test.BrAPITestServer.model.entity.core.AdditionalInfoEntity;
+import org.brapi.test.BrAPITestServer.model.entity.AdditionalInfoEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.TrialEntity;
 import org.brapi.test.BrAPITestServer.repository.TrialRepository;
 import org.brapi.test.BrAPITestServer.utility.DateUtility;

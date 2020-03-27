@@ -1,12 +1,14 @@
-package org.brapi.test.BrAPITestServer.model.entity;
+package org.brapi.test.BrAPITestServer.model.entity.core;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
+
 @Entity
 @Table(name = "person")
-public class PersonEntity extends BrAPIBaseEntity {
+public class PersonEntity extends BrAPIPrimaryEntity {
 	@Column
 	private String description;
 	@Column

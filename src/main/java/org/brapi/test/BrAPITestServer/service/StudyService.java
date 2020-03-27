@@ -15,6 +15,7 @@ import javax.validation.Valid;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.AdditionalInfoEntity;
 import org.brapi.test.BrAPITestServer.model.entity.GermplasmEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitEntity;
@@ -22,7 +23,6 @@ import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitXrefEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationVariableEntity;
 import org.brapi.test.BrAPITestServer.model.entity.SeasonEntity;
 import org.brapi.test.BrAPITestServer.model.entity.TreatmentEntity;
-import org.brapi.test.BrAPITestServer.model.entity.core.AdditionalInfoEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.StudyTypeEntity;
 import org.brapi.test.BrAPITestServer.repository.GermplasmRepository;

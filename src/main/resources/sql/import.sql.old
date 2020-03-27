@@ -1,6 +1,3 @@
-INSERT INTO person(id, description, email_address, first_name, last_name, mailing_address, middle_name, phone_number, userid) VALUES ('person1', 'Example Person', 'bob@bob.com', 'Bob', 'Robertson', '123 Road Street, City, State, Country, 98765', 'Danger', '+19876543210', 'bdr45');
-INSERT INTO person(id, description, email_address, first_name, last_name, mailing_address, middle_name, phone_number, userid) VALUES ('person2', 'Example Person', 'rob@bob.com', 'Rob', 'Robertson', '123 Road Street, City, State, Country, 98765', 'Danger', '+19876543210', 'rdr45');
-
 INSERT INTO breeding_method (id, abbreviation, description, "name") VALUES('bm1', 'MBCR', 'Backcross to recover a specific gene.', 'Male Backcross');
 INSERT INTO breeding_method (id, abbreviation, description, "name") VALUES('bm2', 'FBCR', 'Backcross to recover a specific gene.', 'Female Backcross');
 
