@@ -1,8 +1,8 @@
 package org.brapi.test.BrAPITestServer.repository;
 
 import org.brapi.test.BrAPITestServer.model.entity.OntologyEntity;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.brapi.test.BrAPITestServer.repository.core.BrAPIRepository;
 
-public interface OntologyRepository extends PagingAndSortingRepository<OntologyEntity, String>{
+public interface OntologyRepository extends BrAPIRepository<OntologyEntity, String>{
 
 }

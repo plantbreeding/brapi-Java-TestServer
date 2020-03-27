@@ -3,6 +3,7 @@ package io.swagger.model.core;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.common.BrAPIResponse;
 import io.swagger.model.common.Context;
 import io.swagger.model.common.Metadata;
 import org.springframework.validation.annotation.Validated;
@@ -14,7 +15,7 @@ import javax.validation.constraints.*;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
-public class LocationListResponse   {
+public class LocationListResponse implements BrAPIResponse<LocationListResponseResult>  {
   @JsonProperty("@context")
   private Context _atContext = null;
 
@@ -29,16 +30,7 @@ public class LocationListResponse   {
     return this;
   }
 
-  /**
-   * Get _atContext
-   * @return _atContext
-  **/
-  @ApiModelProperty(value = "")
   
-    @Valid
-    public Context getAtContext() {
-    return _atContext;
-  }
 
   public void setAtContext(Context _atContext) {
     this._atContext = _atContext;

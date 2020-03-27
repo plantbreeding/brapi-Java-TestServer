@@ -16,7 +16,7 @@ import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name="germplasm")
-public class GermplasmEntity extends BaseEntity{
+public class GermplasmEntity extends BrAPIBaseEntity{
 	@Column
     private String germplasmPUI;
 	@Column

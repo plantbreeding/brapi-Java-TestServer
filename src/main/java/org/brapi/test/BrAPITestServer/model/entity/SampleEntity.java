@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="sample")
-public class SampleEntity extends BaseEntity{
+public class SampleEntity extends BrAPIBaseEntity{
 	@ManyToOne
 	private PlateEntity plate;
 	@Column

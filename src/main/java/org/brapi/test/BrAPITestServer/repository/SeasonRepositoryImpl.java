@@ -7,12 +7,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.brapi.test.BrAPITestServer.model.entity.SeasonEntity;
-import org.brapi.test.BrAPITestServer.model.entity.StudyEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
 import org.brapi.test.BrAPITestServer.service.CustomRepositorySearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.brapi.test.BrAPITestServer.repository.core.BrAPIRepository;
 
 public class SeasonRepositoryImpl implements SeasonRepositoryCustom{
 

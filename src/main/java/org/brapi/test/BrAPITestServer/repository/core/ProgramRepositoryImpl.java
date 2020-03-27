@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.brapi.test.BrAPITestServer.model.entity.ProgramEntity;
+
+import org.brapi.test.BrAPITestServer.model.entity.core.ProgramEntity;
 import org.brapi.test.BrAPITestServer.service.CustomRepositorySearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

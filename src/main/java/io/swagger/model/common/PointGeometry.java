@@ -15,7 +15,7 @@ import javax.validation.Valid;
 @ApiModel(description = "Copied from RFC 7946 Section 3.1.1  A position is an array of numbers. There MUST be two or more elements. The first two elements are longitude and latitude, or easting and northing, precisely in that order and using decimal numbers. Altitude or elevation MAY be included as an optional third element.")
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
-public class PointGeometry  implements OneOfgeoJSONGeometry {
+public class PointGeometry  implements GeoJSONGeometry {
   @JsonProperty("coordinates")
   private Position coordinates = null;
 

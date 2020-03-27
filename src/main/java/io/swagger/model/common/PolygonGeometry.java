@@ -15,7 +15,7 @@ import javax.validation.Valid;
 @ApiModel(description = "An array of Linear Rings. Each Linear Ring is an array of Points.   A Point is an array of numbers. There MUST be two or more elements. The first two elements are longitude and latitude, or easting and northing, precisely in that order and using decimal numbers. Altitude or elevation MAY be included as an optional third element.")
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
-public class PolygonGeometry  implements OneOfgeoJSONGeometry {
+public class PolygonGeometry  implements GeoJSONGeometry {
   @JsonProperty("coordinates")
   private Polygon coordinates = null;
 

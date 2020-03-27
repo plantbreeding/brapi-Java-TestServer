@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="season")
-public class SeasonEntity extends BaseEntity{
+public class SeasonEntity extends BrAPIBaseEntity{
 	@Column
 	private String season;
 	@Column

@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="donor")
-public class DonorEntity extends BaseEntity{
+public class DonorEntity extends BrAPIBaseEntity{
 	@Column
 	private String germplasmDbId;
 	@Column

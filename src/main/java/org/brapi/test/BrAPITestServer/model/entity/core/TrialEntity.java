@@ -1,4 +1,4 @@
-package org.brapi.test.BrAPITestServer.model.entity;
+package org.brapi.test.BrAPITestServer.model.entity.core;
 
 import java.util.Date;
 import java.util.List;
@@ -13,9 +13,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
+import org.brapi.test.BrAPITestServer.model.entity.ContactEntity;
+
 @Entity
 @Table(name="trial")
-public class TrialEntity extends BaseEntity{
+public class TrialEntity extends BrAPIPrimaryEntity{
 	@Column
 	private String trialName;
 	@Column
@@ -37,8 +41,6 @@ public class TrialEntity extends BaseEntity{
 	private List<ContactEntity> contacts;
 	@OneToMany(mappedBy="trial")
 	private List<StudyEntity> studies;
-	@OneToMany(mappedBy="trialDbId")
-	private List<TrialAdditionalInfoEntity> additionalInfo;
 
 	public String getDocumentationURL() {
 		return documentationURL;
@@ -78,14 +80,6 @@ public class TrialEntity extends BaseEntity{
 
 	public void setStudies(List<StudyEntity> studies) {
 		this.studies = studies;
-	}
-
-	public List<TrialAdditionalInfoEntity> getAdditionalInfo() {
-		return additionalInfo;
-	}
-
-	public void setAdditionalInfo(List<TrialAdditionalInfoEntity> additionalInfo) {
-		this.additionalInfo = additionalInfo;
 	}
 
 	public String getTrialName() {

@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "ontology_ref")
-public class OntologyReferenceEntity extends BaseEntity {
+public class OntologyReferenceEntity extends BrAPIBaseEntity {
 	@Column
 	private String URL;
 	@Column

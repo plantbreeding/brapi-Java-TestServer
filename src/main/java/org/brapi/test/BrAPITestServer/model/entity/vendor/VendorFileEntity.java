@@ -11,12 +11,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.brapi.test.BrAPITestServer.model.entity.BaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 import org.brapi.test.BrAPITestServer.model.entity.SampleEntity;
 
 @Entity
 @Table(name = "vendor_file")
-public class VendorFileEntity extends BaseEntity {
+public class VendorFileEntity extends BrAPIBaseEntity {
 	@Column
 	private String filename;
 	@Column
@@ -32,8 +32,6 @@ public class VendorFileEntity extends BaseEntity {
 			@JoinColumn(name = "verndor_file_dbid", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "sample_dbid", referencedColumnName = "id") })
 	private List<SampleEntity> samples;
-	@Column
-	private String additionalInfo;
 
 	public VendorOrderEntity getOrder() {
 		return order;
@@ -73,14 +71,6 @@ public class VendorFileEntity extends BaseEntity {
 
 	public void setFileType(String fileType) {
 		this.fileType = fileType;
-	}
-
-	public String getAdditionalInfo() {
-		return additionalInfo;
-	}
-
-	public void setAdditionalInfo(String additionalInfo) {
-		this.additionalInfo = additionalInfo;
 	}
 
 	public List<SampleEntity> getSamples() {

@@ -8,9 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
+
 @Entity
 @Table(name="allele_matrix")
-public class AlleleMatrixEntity extends BaseEntity{
+public class AlleleMatrixEntity extends BrAPIBaseEntity{
 	@Column()
 	private String name;
 	@Column()

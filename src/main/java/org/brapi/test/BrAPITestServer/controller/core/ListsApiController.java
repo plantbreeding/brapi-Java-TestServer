@@ -1,6 +1,5 @@
 package org.brapi.test.BrAPITestServer.controller.core;
 
-import io.swagger.model.common.ExternalReferences;
 import io.swagger.model.common.Metadata;
 import io.swagger.model.core.ListDetails;
 import io.swagger.model.core.ListNewRequest;
@@ -11,7 +10,6 @@ import io.swagger.model.core.ListTypes;
 import io.swagger.model.core.ListsListResponse;
 import io.swagger.model.core.ListsListResponseResult;
 import io.swagger.model.core.ListsSingleResponse;
-import io.swagger.annotations.ApiParam;
 import io.swagger.api.core.ListsApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
@@ -28,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,9 +58,8 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		ExternalReferences exRefs = new ExternalReferences().addReference(externalReferenceID, externalReferenceSource);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<ListSummary> data = listService.findLists(listType, listName, listDbId, listSource, exRefs, metadata);
+		List<ListSummary> data = listService.findLists(listType, listName, listDbId, listSource, externalReferenceID, externalReferenceSource, metadata);
 		return responseOK(new ListsListResponse(), new ListsListResponseResult(), data, metadata);
 	}
 
@@ -96,7 +92,7 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		ListDetails data = listService.getList(listDbId);
+		ListDetails data = listService.updateList(listDbId, body);
 		return responseOK(new ListsSingleResponse(), data);
 	}
 
@@ -111,24 +107,24 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 	
 	public ResponseEntity<ListsListResponse> searchListsPost(
 			@Valid @RequestBody ListSearchRequest body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
+			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		List<ListSummary> data = listService.saveNewList(body);
-		return responseOK(new ListsListResponse(), new ListsListResponseResult(), data);
+		Metadata metadata = generateMetaDataTemplate(body);
+		List<ListSummary> data = listService.findLists(body, metadata);
+		return responseOK(new ListsListResponse(), new ListsListResponseResult(), data, metadata);
 	}
 
 	public ResponseEntity<ListsListResponse> searchListsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
+			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		List<ListSummary> data = listService.saveNewList(body);
-		return responseOK(new ListsListResponse(), new ListsListResponseResult(), data);
+		return new ResponseEntity<ListsListResponse>(HttpStatus.NOT_IMPLEMENTED);
 	}
 
 }

@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer;
 
+import org.brapi.test.BrAPITestServer.repository.core.BrAPIRepositoryImpl;
 import org.brapi.test.BrAPITestServer.serializer.CustomDateSerializer;
 import org.brapi.test.BrAPITestServer.serializer.CustomInstantDeserializer;
 import org.brapi.test.BrAPITestServer.serializer.CustomObservationUnitPositionSerializer;
@@ -21,9 +22,9 @@ import io.swagger.model.pheno.ObservationUnit;
 import io.swagger.model.pheno.ObservationUnitPosition;
 
 @Configuration
-@EnableJpaRepositories(basePackages="org.brapi.test.BrAPITestServer.repository", repositoryFactoryBeanClass=BrAPIRepositoryFactoryBean.class)
+@EnableJpaRepositories(basePackages="org.brapi.test.BrAPITestServer.repository", repositoryBaseClass=BrAPIRepositoryImpl.class)
 @PropertySource(value = "classpath:properties/application.properties")
-public class BrapiTestServerConfig {
+public class BrapiTestServerConfig{
 	@Bean
 	@ConditionalOnMissingBean(ThreeTenModule.class)
 	ThreeTenModule threeTenModule() {
@@ -38,5 +39,5 @@ public class BrapiTestServerConfig {
 		module.addSerializer(ObservationUnit.class, new CustomObservationUnitSerializer());
 		return module;
 	}
-
+	
 }

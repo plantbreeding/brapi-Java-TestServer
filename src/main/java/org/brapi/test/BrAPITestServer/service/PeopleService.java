@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.PersonEntity;
 import org.brapi.test.BrAPITestServer.repository.PeopleRepository;
+import org.brapi.test.BrAPITestServer.utility.PagingUtility;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -53,6 +54,10 @@ public class PeopleService {
 	}
 
 	public Person getPerson(String personDbId) throws BrAPIServerException {
+		return convertFromEntity(getPersonEntity(personDbId));
+	}
+
+	public PersonEntity getPersonEntity(String personDbId) throws BrAPIServerException {
 		PersonEntity entity;
 
 		Optional<PersonEntity> entityOpt = peopleRepository.findById(personDbId);
@@ -62,7 +67,7 @@ public class PeopleService {
 			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "PersonDbId not found!");
 		}
 
-		return convertFromEntity(entity);
+		return entity;
 	}
 
 	public Person updatePerson(String PeopleDbId, @Valid PersonNewRequest person) throws BrAPIServerException {

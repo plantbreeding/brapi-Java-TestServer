@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="scale_valid_value_category")
-public class ScaleValidValueCategoryEntity extends BaseEntity{
+public class ScaleValidValueCategoryEntity extends BrAPIBaseEntity{
 	@ManyToOne
 	private ScaleEntity scale;
 	@Column

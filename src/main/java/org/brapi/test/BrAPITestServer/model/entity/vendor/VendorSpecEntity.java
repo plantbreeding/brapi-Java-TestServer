@@ -7,11 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.brapi.test.BrAPITestServer.model.entity.BaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 
 @Entity
 @Table(name="vendor_spec")
-public class VendorSpecEntity extends BaseEntity {
+public class VendorSpecEntity extends BrAPIBaseEntity {
 	@Column
 	private String vendorName;
 	@Column
@@ -30,8 +30,6 @@ public class VendorSpecEntity extends BaseEntity {
 	private String vendorCity;
 	@Column
 	private String vendorCountry;
-	@Column
-	private String additionalInfo;
 	@OneToMany(mappedBy="vendorSpecDbId")
 	private List<VendorSpecPlatformEntity> platforms;
 	public String getVendorName() {
@@ -87,12 +85,6 @@ public class VendorSpecEntity extends BaseEntity {
 	}
 	public void setVendorCountry(String vendorCountry) {
 		this.vendorCountry = vendorCountry;
-	}
-	public String getAdditionalInfo() {
-		return additionalInfo;
-	}
-	public void setAdditionalInfo(String additionalInfo) {
-		this.additionalInfo = additionalInfo;
 	}
 	public List<VendorSpecPlatformEntity> getPlatforms() {
 		return platforms;

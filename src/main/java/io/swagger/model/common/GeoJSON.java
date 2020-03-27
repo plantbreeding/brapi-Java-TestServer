@@ -15,12 +15,12 @@ import org.springframework.validation.annotation.Validated;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
 public class GeoJSON   {
   @JsonProperty("geometry")
-  private OneOfgeoJSONGeometry geometry = null;
+  private GeoJSONGeometry geometry = null;
 
   @JsonProperty("type")
   private String type = "Feature";
 
-  public GeoJSON geometry(OneOfgeoJSONGeometry geometry) {
+  public GeoJSON geometry(GeoJSONGeometry geometry) {
     this.geometry = geometry;
     return this;
   }
@@ -31,11 +31,11 @@ public class GeoJSON   {
   **/
   @ApiModelProperty(example = "{\"coordinates\":[-76.506042,42.417373,123],\"type\":\"Point\"}", value = "A geometry as defined by GeoJSON (RFC 7946). In this context, only Point or Polygon geometry are allowed.")
   
-    public OneOfgeoJSONGeometry getGeometry() {
+    public GeoJSONGeometry getGeometry() {
     return geometry;
   }
 
-  public void setGeometry(OneOfgeoJSONGeometry geometry) {
+  public void setGeometry(GeoJSONGeometry geometry) {
     this.geometry = geometry;
   }
 

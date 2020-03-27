@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="data_link")
-public class DataLinkEntity extends BaseEntity{
+public class DataLinkEntity extends BrAPIBaseEntity{
 	@Column
 	private String studyDbId;
 	@Column

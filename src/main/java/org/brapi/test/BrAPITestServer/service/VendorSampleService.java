@@ -20,6 +20,7 @@ import org.brapi.test.BrAPITestServer.model.entity.vendor.VendorSpecEntity;
 import org.brapi.test.BrAPITestServer.repository.VendorOrderRepository;
 import org.brapi.test.BrAPITestServer.repository.VendorPlateRepository;
 import org.brapi.test.BrAPITestServer.repository.VendorSpecRepository;
+import org.brapi.test.BrAPITestServer.utility.PagingUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -354,7 +355,6 @@ public class VendorSampleService {
 		entity.setMd5sum("8DEA19500BC44D35E2D7B6A68ABA552B");
 		entity.setURL("https://brapi.org/" + entity.getFilename());
 		entity.setOrder(order);
-		entity.setAdditionalInfo("");
 		if(order.getPlateSubmission() != null && order.getPlateSubmission().getPlates() != null && !order.getPlateSubmission().getPlates().isEmpty()) {
 			entity.setSamples(order.getPlateSubmission().getPlates().get(0).getSamples());
 		}

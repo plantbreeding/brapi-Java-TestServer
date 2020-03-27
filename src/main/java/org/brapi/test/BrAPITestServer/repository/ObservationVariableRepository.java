@@ -4,10 +4,10 @@ import org.brapi.test.BrAPITestServer.model.entity.ObservationVariableEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.brapi.test.BrAPITestServer.repository.core.BrAPIRepository;
 import org.springframework.data.repository.query.Param;
 
-public interface ObservationVariableRepository extends PagingAndSortingRepository<ObservationVariableEntity, String>, ObservationVariableRepositoryCustom{
+public interface ObservationVariableRepository extends BrAPIRepository<ObservationVariableEntity, String>, ObservationVariableRepositoryCustom{
 	@Query("select distinct o.scale.dataType from ObservationVariableEntity o")
 	public Page<String> findDistinctScale_DatatypeAll(Pageable pageReq);
 	

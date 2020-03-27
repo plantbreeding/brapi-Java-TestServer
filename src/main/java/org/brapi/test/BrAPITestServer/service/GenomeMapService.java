@@ -10,6 +10,7 @@ import org.brapi.test.BrAPITestServer.model.entity.MarkerEntity;
 import org.brapi.test.BrAPITestServer.repository.GenomeMapRepository;
 import org.brapi.test.BrAPITestServer.repository.LinkageGroupRepository;
 import org.brapi.test.BrAPITestServer.repository.MarkerRepository;
+import org.brapi.test.BrAPITestServer.utility.PagingUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

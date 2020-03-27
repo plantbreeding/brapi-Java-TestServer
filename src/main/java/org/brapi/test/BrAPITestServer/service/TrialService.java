@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.brapi.test.BrAPITestServer.model.entity.TrialAdditionalInfoEntity;
-import org.brapi.test.BrAPITestServer.model.entity.TrialEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.AdditionalInfoEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.TrialEntity;
 import org.brapi.test.BrAPITestServer.repository.TrialRepository;
+import org.brapi.test.BrAPITestServer.utility.DateUtility;
+import org.brapi.test.BrAPITestServer.utility.PagingUtility;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -126,7 +128,7 @@ public class TrialService {
 //		}).collect(Collectors.toList()));
 
 		trial.setAdditionalInfo(new HashMap<>());
-		for (TrialAdditionalInfoEntity e : entity.getAdditionalInfo()) {
+		for (AdditionalInfoEntity e : entity.getAdditionalInfo()) {
 			trial.getAdditionalInfo().put(e.getKey(), e.getValue());
 		}
 

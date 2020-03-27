@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="contact")
-public class ContactEntity extends BaseEntity{
+public class ContactEntity extends BrAPIBaseEntity{
 	@Column
 	private String studyDbId;
 	@Column

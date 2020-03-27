@@ -1,4 +1,4 @@
-package org.brapi.test.BrAPITestServer.model.entity;
+package org.brapi.test.BrAPITestServer.model.entity.core;
 
 import java.util.Date;
 import java.util.List;
@@ -14,9 +14,17 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.brapi.test.BrAPITestServer.model.entity.AlleleMatrixEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
+import org.brapi.test.BrAPITestServer.model.entity.ContactEntity;
+import org.brapi.test.BrAPITestServer.model.entity.DataLinkEntity;
+import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SeasonEntity;
+
 @Entity
 @Table(name="study")
-public class StudyEntity extends BaseEntity{
+public class StudyEntity extends BrAPIPrimaryEntity{
 	@Column
 	private String studyName;
 	@ManyToOne
@@ -49,8 +57,6 @@ public class StudyEntity extends BaseEntity{
 	private List<ContactEntity> contacts;
 	@OneToMany(mappedBy="studyDbId")
 	private List<DataLinkEntity> dataLinks;
-	@OneToMany(mappedBy="studyDbId")
-	private List<StudyAddtionalInfoEntity> additionalInfo;
 	@OneToMany(mappedBy="study")
 	private List<ObservationUnitEntity> observationUnits;
 	@OneToMany(mappedBy="study")
@@ -157,11 +163,5 @@ public class StudyEntity extends BaseEntity{
 	}
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
-	}
-	public List<StudyAddtionalInfoEntity> getAdditionalInfo() {
-		return additionalInfo;
-	}
-	public void setAdditionalInfo(List<StudyAddtionalInfoEntity> additionalInfo) {
-		this.additionalInfo = additionalInfo;
 	}
 }

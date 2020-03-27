@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="allele")
-public class AlleleEntity extends BaseEntity{
+public class AlleleEntity extends BrAPIBaseEntity{
 	@ManyToOne(cascade=CascadeType.DETACH)
 	private MarkerProfileEntity markerProfile;
 	@ManyToOne(cascade=CascadeType.DETACH)

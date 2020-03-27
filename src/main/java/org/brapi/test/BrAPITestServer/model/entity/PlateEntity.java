@@ -16,7 +16,7 @@ import io.swagger.model.geno.PlateFormat;
 
 @Entity
 @Table(name="plate")
-public class PlateEntity extends BaseEntity{
+public class PlateEntity extends BrAPIBaseEntity{
 	@Column
     private String clientPlateDbId;
 	@Column

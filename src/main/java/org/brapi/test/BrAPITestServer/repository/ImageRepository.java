@@ -1,8 +1,8 @@
 package org.brapi.test.BrAPITestServer.repository;
 
 import org.brapi.test.BrAPITestServer.model.entity.ImageEntity;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.brapi.test.BrAPITestServer.repository.core.BrAPIRepository;
 
-public interface ImageRepository extends PagingAndSortingRepository<ImageEntity, String>, ImageRepositoryCustom{
+public interface ImageRepository extends BrAPIRepository<ImageEntity, String>, ImageRepositoryCustom{
 
 }

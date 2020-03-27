@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="observation_variable_synonym")
-public class ObservationVariableSynonymEntity extends BaseEntity{
+public class ObservationVariableSynonymEntity extends BrAPIBaseEntity{
 	@Column
 	private String observationVariableDbId;
 	@Column

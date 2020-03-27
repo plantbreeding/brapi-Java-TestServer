@@ -21,6 +21,7 @@ import org.brapi.test.BrAPITestServer.repository.MethodRepository;
 import org.brapi.test.BrAPITestServer.repository.OntologyRepository;
 import org.brapi.test.BrAPITestServer.repository.ScaleRepository;
 import org.brapi.test.BrAPITestServer.repository.core.TraitRepository;
+import org.brapi.test.BrAPITestServer.utility.PagingUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

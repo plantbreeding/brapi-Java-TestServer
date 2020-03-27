@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class VariableBaseEntity extends BaseEntity {
+public class VariableBaseEntity extends BrAPIBaseEntity {
 	@Column
 	private String crop;
 	@Column

@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="genome_map")
-public class GenomeMapEntity extends BaseEntity{
+public class GenomeMapEntity extends BrAPIBaseEntity{
 
 	@Column
 	private String name;

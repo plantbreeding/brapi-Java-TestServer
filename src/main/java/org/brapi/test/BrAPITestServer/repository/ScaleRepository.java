@@ -1,8 +1,8 @@
 package org.brapi.test.BrAPITestServer.repository;
 
 import org.brapi.test.BrAPITestServer.model.entity.ScaleEntity;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.brapi.test.BrAPITestServer.repository.core.BrAPIRepository;
 
-public interface ScaleRepository extends PagingAndSortingRepository<ScaleEntity, String> {
+public interface ScaleRepository extends BrAPIRepository<ScaleEntity, String> {
 
 }

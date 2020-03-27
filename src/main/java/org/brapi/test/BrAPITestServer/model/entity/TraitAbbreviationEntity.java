@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="trait_abbreviation")
-public class TraitAbbreviationEntity extends BaseEntity{
+public class TraitAbbreviationEntity extends BrAPIBaseEntity{
 	@ManyToOne
 	private TraitEntity trait;
 	@Column

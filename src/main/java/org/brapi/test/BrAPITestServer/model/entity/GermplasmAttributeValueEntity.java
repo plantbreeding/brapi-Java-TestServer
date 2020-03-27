@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="germplasm_attribute_value")
-public class GermplasmAttributeValueEntity extends BaseEntity{
+public class GermplasmAttributeValueEntity extends BrAPIBaseEntity{
 	@ManyToOne
 	private GermplasmAttributeDefinitionEntity germplasmAttributeDefinition;
 	@ManyToOne

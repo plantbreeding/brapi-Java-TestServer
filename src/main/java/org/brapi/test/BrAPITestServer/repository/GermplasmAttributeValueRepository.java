@@ -5,9 +5,9 @@ import java.util.List;
 import org.brapi.test.BrAPITestServer.model.entity.GermplasmAttributeValueEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.brapi.test.BrAPITestServer.repository.core.BrAPIRepository;
 
-public interface GermplasmAttributeValueRepository extends PagingAndSortingRepository<GermplasmAttributeValueEntity, String>{
+public interface GermplasmAttributeValueRepository extends BrAPIRepository<GermplasmAttributeValueEntity, String>{
 
 	Page<GermplasmAttributeValueEntity> findByGermplasm_Id(String germplasmDbId, Pageable pageReq);
 

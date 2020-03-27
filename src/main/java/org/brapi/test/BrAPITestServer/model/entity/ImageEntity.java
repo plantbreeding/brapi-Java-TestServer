@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="image")
-public class ImageEntity extends BaseEntity{
+public class ImageEntity extends BrAPIBaseEntity{
 	@Column
 	private byte[] imageData;
 	@ManyToOne(cascade=CascadeType.DETACH)

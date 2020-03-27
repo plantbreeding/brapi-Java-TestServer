@@ -11,9 +11,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
+
 @Entity
 @Table(name="marker_profile")
-public class MarkerProfileEntity extends BaseEntity {
+public class MarkerProfileEntity extends BrAPIBaseEntity {
 	@Column
 	private String germplasmDbId;
 	@Column

@@ -1,25 +1,18 @@
-package org.brapi.test.BrAPITestServer.model.entity;
+package org.brapi.test.BrAPITestServer.model.entity.core;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+
 @Entity
-@Table(name="trial_additional_info")
-public class TrialAdditionalInfoEntity extends BaseEntity {
-	@Column
-	private String trialDbId;
+@Table(name="additional_info")
+public class AdditionalInfoEntity extends BrAPIBaseEntity{
 	@Column
 	private String key;
 	@Column
 	private String value;
-
-	public String getTrialDbId() {
-		return trialDbId;
-	}
-	public void setTrialDbId(String trialDbId) {
-		this.trialDbId = trialDbId;
-	}
 	public String getKey() {
 		return key;
 	}
@@ -32,5 +25,6 @@ public class TrialAdditionalInfoEntity extends BaseEntity {
 	public void setValue(String value) {
 		this.value = value;
 	}
+	
 	
 }

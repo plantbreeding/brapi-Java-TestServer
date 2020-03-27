@@ -6,6 +6,7 @@ import org.brapi.test.BrAPITestServer.model.entity.GermplasmAttributeValueEntity
 import org.brapi.test.BrAPITestServer.repository.GermplasmAttributeCategoryRepository;
 import org.brapi.test.BrAPITestServer.repository.GermplasmAttributeDefinitionRepository;
 import org.brapi.test.BrAPITestServer.repository.GermplasmAttributeValueRepository;
+import org.brapi.test.BrAPITestServer.utility.PagingUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -3,8 +3,9 @@ package org.brapi.test.BrAPITestServer.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.brapi.test.BrAPITestServer.model.entity.CropEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 import org.brapi.test.BrAPITestServer.repository.CropRepository;
+import org.brapi.test.BrAPITestServer.utility.PagingUtility;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 

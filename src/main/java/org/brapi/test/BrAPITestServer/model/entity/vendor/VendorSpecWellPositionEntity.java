@@ -4,11 +4,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import org.brapi.test.BrAPITestServer.model.entity.BaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 
 @Entity
 @Table(name="vendor_spec_well_position")
-public class VendorSpecWellPositionEntity extends BaseEntity {
+public class VendorSpecWellPositionEntity extends BrAPIBaseEntity {
 	@Column
 	private String vendorSpecStandardRequirementDbId;
 	@Column

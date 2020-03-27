@@ -1,8 +1,8 @@
 package org.brapi.test.BrAPITestServer.repository.core;
 
-import org.brapi.test.BrAPITestServer.model.entity.ProgramEntity;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.brapi.test.BrAPITestServer.model.entity.core.ProgramEntity;
+import org.brapi.test.BrAPITestServer.repository.core.BrAPIRepository;
 
-public interface ProgramRepository extends PagingAndSortingRepository<ProgramEntity, String>, ProgramRepositoryCustom{
+public interface ProgramRepository extends BrAPIRepository<ProgramEntity, String>, ProgramRepositoryCustom{
 
 }

@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="germplasm_type_storage_code")
-public class GermplasmTypeStorageCodeEntity extends BaseEntity{
+public class GermplasmTypeStorageCodeEntity extends BrAPIBaseEntity{
 	@Column(name="storage_code")
 	private Integer storageCode;
 

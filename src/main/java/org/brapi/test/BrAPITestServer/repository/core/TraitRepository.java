@@ -1,8 +1,8 @@
 package org.brapi.test.BrAPITestServer.repository.core;
 
 import org.brapi.test.BrAPITestServer.model.entity.TraitEntity;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.brapi.test.BrAPITestServer.repository.core.BrAPIRepository;
 
-public interface TraitRepository extends PagingAndSortingRepository<TraitEntity, String> {
+public interface TraitRepository extends BrAPIRepository<TraitEntity, String> {
 
 }

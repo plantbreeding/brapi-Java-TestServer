@@ -10,7 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.brapi.test.BrAPITestServer.model.entity.SampleEntity;
-import org.brapi.test.BrAPITestServer.model.entity.StudyEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
 import org.brapi.test.BrAPITestServer.service.CustomRepositorySearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

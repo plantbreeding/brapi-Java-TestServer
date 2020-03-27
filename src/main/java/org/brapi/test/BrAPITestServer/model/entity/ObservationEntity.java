@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="observation")
-public class ObservationEntity extends BaseEntity{
+public class ObservationEntity extends BrAPIBaseEntity{
 	@Column
 	private Date observationTimeStamp;
 	@Column

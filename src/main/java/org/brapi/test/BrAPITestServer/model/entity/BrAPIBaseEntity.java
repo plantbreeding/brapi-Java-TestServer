@@ -7,7 +7,7 @@ import javax.persistence.MappedSuperclass;
 import org.hibernate.annotations.GenericGenerator;
 
 @MappedSuperclass
-public class BaseEntity {
+public class BrAPIBaseEntity {
 
 	@Id
 	@GeneratedValue(generator = "uuid")

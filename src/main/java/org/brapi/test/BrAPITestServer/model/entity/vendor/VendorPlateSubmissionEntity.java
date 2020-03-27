@@ -9,14 +9,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.brapi.test.BrAPITestServer.model.entity.BaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 import org.brapi.test.BrAPITestServer.model.entity.PlateEntity;
 
 import io.swagger.model.geno.VendorPlateSubmissionRequest.SampleTypeEnum;
 
 @Entity
 @Table(name="plate_submission")
-public class VendorPlateSubmissionEntity extends BaseEntity{
+public class VendorPlateSubmissionEntity extends BrAPIBaseEntity{
 	
 	@Column
 	private String clientId;

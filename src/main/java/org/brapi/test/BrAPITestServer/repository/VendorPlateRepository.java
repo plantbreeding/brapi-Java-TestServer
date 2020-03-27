@@ -1,8 +1,8 @@
 package org.brapi.test.BrAPITestServer.repository;
 
 import org.brapi.test.BrAPITestServer.model.entity.vendor.VendorPlateSubmissionEntity;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.brapi.test.BrAPITestServer.repository.core.BrAPIRepository;
 
-public interface VendorPlateRepository extends PagingAndSortingRepository<VendorPlateSubmissionEntity, String> {
+public interface VendorPlateRepository extends BrAPIRepository<VendorPlateSubmissionEntity, String> {
 
 }

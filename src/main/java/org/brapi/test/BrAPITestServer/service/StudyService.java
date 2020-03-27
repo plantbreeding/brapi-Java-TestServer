@@ -21,10 +21,10 @@ import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitXrefEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationVariableEntity;
 import org.brapi.test.BrAPITestServer.model.entity.SeasonEntity;
-import org.brapi.test.BrAPITestServer.model.entity.StudyAddtionalInfoEntity;
-import org.brapi.test.BrAPITestServer.model.entity.StudyEntity;
-import org.brapi.test.BrAPITestServer.model.entity.StudyTypeEntity;
 import org.brapi.test.BrAPITestServer.model.entity.TreatmentEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.AdditionalInfoEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.StudyTypeEntity;
 import org.brapi.test.BrAPITestServer.repository.GermplasmRepository;
 import org.brapi.test.BrAPITestServer.repository.ObservationRepository;
 import org.brapi.test.BrAPITestServer.repository.ObservationUnitRepository;
@@ -32,6 +32,8 @@ import org.brapi.test.BrAPITestServer.repository.ObservationVariableRepository;
 import org.brapi.test.BrAPITestServer.repository.SeasonRepository;
 import org.brapi.test.BrAPITestServer.repository.core.StudyRepository;
 import org.brapi.test.BrAPITestServer.repository.core.StudyTypeRepository;
+import org.brapi.test.BrAPITestServer.utility.DateUtility;
+import org.brapi.test.BrAPITestServer.utility.PagingUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -179,7 +181,7 @@ public class StudyService {
 			observation.setStudyName(entity.getStudy().getStudyName());
 			if (entity.getStudy().getLocation() != null) {
 				observation.setLocationDbId(entity.getStudy().getLocation().getId());
-				observation.setLocationName(entity.getStudy().getLocation().getName());
+				observation.setLocationName(entity.getStudy().getLocation().getLocationName());
 			}
 			if (entity.getStudy().getTrial() != null) {
 				observation.setTrialDbId(entity.getStudy().getTrial().getId());
@@ -277,7 +279,7 @@ public class StudyService {
 		}).collect(Collectors.toList()));
 
 		study.setAdditionalInfo(new HashMap<>());
-		for (StudyAddtionalInfoEntity e : entity.getAdditionalInfo()) {
+		for (AdditionalInfoEntity e : entity.getAdditionalInfo()) {
 			study.getAdditionalInfo().put(e.getKey(), e.getValue());
 		}
 		return study;
@@ -329,7 +331,7 @@ public class StudyService {
 		sum.setDocumentationURL(entity.getDocumentationURL());
 		sum.setEndDate(DateUtility.toOffsetDateTime(entity.getEndDate()));
 		sum.setLocationDbId(entity.getLocation().getId());
-		sum.setLocationName(entity.getLocation().getName());
+		sum.setLocationName(entity.getLocation().getLocationName());
 //		sum.setName(entity.getStudyName());
 //		sum.setProgramDbId(entity.getTrial().getProgram().getId());
 //		sum.setProgramName(entity.getTrial().getProgram().getName());
@@ -345,7 +347,7 @@ public class StudyService {
 //		sum.setSeasons(entity.getSeasons().stream().map(this::convertFromEntity).collect(Collectors.toList()));
 
 		sum.setAdditionalInfo(new HashMap<>());
-		for (StudyAddtionalInfoEntity e : entity.getAdditionalInfo()) {
+		for (AdditionalInfoEntity e : entity.getAdditionalInfo()) {
 			sum.getAdditionalInfo().put(e.getKey(), e.getValue());
 		}
 

@@ -1,4 +1,4 @@
-package org.brapi.test.BrAPITestServer.model.entity;
+package org.brapi.test.BrAPITestServer.model.entity.core;
 
 import java.util.List;
 
@@ -9,9 +9,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.PersonEntity;
+
 @Entity
 @Table(name="program")
-public class ProgramEntity extends BaseEntity{
+public class ProgramEntity extends BrAPIBaseEntity{
 	@Column
 	private String name;
 	@Column

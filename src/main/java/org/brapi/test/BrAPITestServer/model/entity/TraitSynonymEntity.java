@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="trait_synonym")
-public class TraitSynonymEntity extends BaseEntity{
+public class TraitSynonymEntity extends BrAPIBaseEntity{
 	@ManyToOne
 	private TraitEntity trait;
 	@Column

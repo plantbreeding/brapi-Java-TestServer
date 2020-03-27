@@ -1,8 +1,8 @@
 package org.brapi.test.BrAPITestServer.repository;
 
 import org.brapi.test.BrAPITestServer.model.entity.GermplasmEntity;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.brapi.test.BrAPITestServer.repository.core.BrAPIRepository;
 
-public interface GermplasmRepository extends PagingAndSortingRepository<GermplasmEntity, String>, GermplasmRepositoryCustom {
+public interface GermplasmRepository extends BrAPIRepository<GermplasmEntity, String>, GermplasmRepositoryCustom {
 
 }

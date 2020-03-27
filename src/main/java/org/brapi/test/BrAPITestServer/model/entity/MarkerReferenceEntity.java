@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="marker_reference")
-public class MarkerReferenceEntity extends BaseEntity{
+public class MarkerReferenceEntity extends BrAPIBaseEntity{
 	@Column
 	private String markerDbId;
 	@Column

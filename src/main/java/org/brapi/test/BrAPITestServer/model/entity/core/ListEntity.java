@@ -1,4 +1,4 @@
-package org.brapi.test.BrAPITestServer.model.entity;
+package org.brapi.test.BrAPITestServer.model.entity.core;
 
 import java.util.Date;
 import java.util.List;
@@ -6,14 +6,18 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
+import org.brapi.test.BrAPITestServer.model.entity.PersonEntity;
 
 import io.swagger.model.core.ListTypes;
 
 @Entity
 @Table(name = "list")
-public class ListEntity extends BaseEntity {
+public class ListEntity extends BrAPIPrimaryEntity {
 	@Column
 	private Date dateCreated;
 	@Column
@@ -25,14 +29,22 @@ public class ListEntity extends BaseEntity {
 	@Column
 	private String listOwnerName;
 	@Column
-	private String listOwnerPersonDbId;
-	@Column
 	private String listSource;
 	@Column
 	private ListTypes listType;
-	
+
+	@ManyToOne
+	private PersonEntity listOwnerPerson;
 	@OneToMany(mappedBy="list", cascade = CascadeType.ALL)
 	private List<ListItemEntity> data;
+
+	public PersonEntity getListOwnerPerson() {
+		return listOwnerPerson;
+	}
+
+	public void setListOwnerPerson(PersonEntity listOwnerPerson) {
+		this.listOwnerPerson = listOwnerPerson;
+	}
 
 	public Date getDateCreated() {
 		return dateCreated;
@@ -72,14 +84,6 @@ public class ListEntity extends BaseEntity {
 
 	public void setListOwnerName(String listOwnerName) {
 		this.listOwnerName = listOwnerName;
-	}
-
-	public String getListOwnerPersonDbId() {
-		return listOwnerPersonDbId;
-	}
-
-	public void setListOwnerPersonDbId(String listOwnerPersonDbId) {
-		this.listOwnerPersonDbId = listOwnerPersonDbId;
 	}
 
 	public String getListSource() {

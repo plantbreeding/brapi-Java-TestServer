@@ -14,7 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="marker")
-public class MarkerEntity extends BaseEntity{
+public class MarkerEntity extends BrAPIBaseEntity{
 	@ManyToOne
 	private LinkageGroupEntity linkageGroup;
 	@Column

@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="taxon")
-public class TaxonEntity extends BaseEntity {
+public class TaxonEntity extends BrAPIBaseEntity {
 	@Column
 	private String sourceName;
 	@Column

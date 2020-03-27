@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="observation_unit_xref")
-public class ObservationUnitXrefEntity extends BaseEntity{
+public class ObservationUnitXrefEntity extends BrAPIBaseEntity{
 	@Column
 	private String observationUnitDbId;
 	@Column

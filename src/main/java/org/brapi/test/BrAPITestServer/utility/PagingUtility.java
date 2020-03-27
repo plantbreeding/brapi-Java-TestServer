@@ -1,4 +1,4 @@
-package org.brapi.test.BrAPITestServer.service;
+package org.brapi.test.BrAPITestServer.utility;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

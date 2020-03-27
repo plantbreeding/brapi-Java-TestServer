@@ -10,6 +10,8 @@ import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationVariableEntity;
 import org.brapi.test.BrAPITestServer.model.entity.VariableBaseEntity;
 import org.brapi.test.BrAPITestServer.repository.ObservationVariableRepository;
+import org.brapi.test.BrAPITestServer.utility.DateUtility;
+import org.brapi.test.BrAPITestServer.utility.PagingUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

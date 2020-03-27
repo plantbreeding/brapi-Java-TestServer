@@ -1,4 +1,4 @@
-package org.brapi.test.BrAPITestServer.service;
+package org.brapi.test.BrAPITestServer.utility;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

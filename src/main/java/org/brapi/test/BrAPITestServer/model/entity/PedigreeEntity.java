@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="pedigree")
-public class PedigreeEntity extends BaseEntity{
+public class PedigreeEntity extends BrAPIBaseEntity{
 	@OneToOne
     @JoinColumn(name = "germplasm_db_id")
     private GermplasmEntity germplasm;

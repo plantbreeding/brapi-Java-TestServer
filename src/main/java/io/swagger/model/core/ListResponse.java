@@ -15,118 +15,104 @@ import javax.validation.constraints.*;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
-public class ListResponse implements BrAPIResponse<ListDetails>  {
-  @JsonProperty("@context")
-  private Context _atContext = null;
+public class ListResponse implements BrAPIResponse<ListDetails> {
+	@JsonProperty("@context")
+	private Context _atContext = null;
 
-  @JsonProperty("metadata")
-  private Metadata metadata = null;
+	@JsonProperty("metadata")
+	private Metadata metadata = null;
 
-  @JsonProperty("result")
-  private ListDetails result = null;
+	@JsonProperty("result")
+	private ListDetails result = null;
 
-  public ListResponse _atContext(Context _atContext) {
-    this._atContext = _atContext;
-    return this;
-  }
+	public ListResponse() {
+		this._atContext = new Context();
+		this._atContext.add("context");
+	}
 
-  /**
-   * Get _atContext
-   * @return _atContext
-  **/
-  @ApiModelProperty(value = "")
-  
-    @Valid
-    public Context getAtContext() {
-    return _atContext;
-  }
+	public ListResponse metadata(Metadata metadata) {
+		this.metadata = metadata;
+		return this;
+	}
 
-  public void setAtContext(Context _atContext) {
-    this._atContext = _atContext;
-  }
+	/**
+	 * Get metadata
+	 * 
+	 * @return metadata
+	 **/
+	@ApiModelProperty(required = true, value = "")
+	@NotNull
 
-  public ListResponse metadata(Metadata metadata) {
-    this.metadata = metadata;
-    return this;
-  }
+	@Valid
+	public Metadata getMetadata() {
+		return metadata;
+	}
 
-  /**
-   * Get metadata
-   * @return metadata
-  **/
-  @ApiModelProperty(required = true, value = "")
-      @NotNull
+	public void setMetadata(Metadata metadata) {
+		this.metadata = metadata;
+	}
 
-    @Valid
-    public Metadata getMetadata() {
-    return metadata;
-  }
+	public ListResponse result(ListDetails result) {
+		this.result = result;
+		return this;
+	}
 
-  public void setMetadata(Metadata metadata) {
-    this.metadata = metadata;
-  }
+	/**
+	 * Get result
+	 * 
+	 * @return result
+	 **/
+	@ApiModelProperty(required = true, value = "")
+	@NotNull
 
-  public ListResponse result(ListDetails result) {
-    this.result = result;
-    return this;
-  }
+	@Valid
+	public ListDetails getResult() {
+		return result;
+	}
 
-  /**
-   * Get result
-   * @return result
-  **/
-  @ApiModelProperty(required = true, value = "")
-      @NotNull
+	public void setResult(ListDetails result) {
+		this.result = result;
+	}
 
-    @Valid
-    public ListDetails getResult() {
-    return result;
-  }
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		ListResponse listResponse = (ListResponse) o;
+		return Objects.equals(this._atContext, listResponse._atContext)
+				&& Objects.equals(this.metadata, listResponse.metadata)
+				&& Objects.equals(this.result, listResponse.result);
+	}
 
-  public void setResult(ListDetails result) {
-    this.result = result;
-  }
+	@Override
+	public int hashCode() {
+		return Objects.hash(_atContext, metadata, result);
+	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class ListResponse {\n");
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    ListResponse listResponse = (ListResponse) o;
-    return Objects.equals(this._atContext, listResponse._atContext) &&
-        Objects.equals(this.metadata, listResponse.metadata) &&
-        Objects.equals(this.result, listResponse.result);
-  }
+		sb.append("    _atContext: ").append(toIndentedString(_atContext)).append("\n");
+		sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
+		sb.append("    result: ").append(toIndentedString(result)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(_atContext, metadata, result);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class ListResponse {\n");
-    
-    sb.append("    _atContext: ").append(toIndentedString(_atContext)).append("\n");
-    sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");
-    sb.append("    result: ").append(toIndentedString(result)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
 }

@@ -9,18 +9,22 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
-import org.brapi.test.BrAPITestServer.model.entity.ListEntity;
-import org.brapi.test.BrAPITestServer.model.entity.ListItemEntity;
+import org.brapi.test.BrAPITestServer.model.entity.PersonEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.ListEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.ListItemEntity;
 import org.brapi.test.BrAPITestServer.repository.core.ListRepository;
+import org.brapi.test.BrAPITestServer.utility.DateUtility;
+import org.brapi.test.BrAPITestServer.utility.PagingUtility;
+import org.brapi.test.BrAPITestServer.utility.SearchQueryBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import io.swagger.model.common.ExternalReferences;
 import io.swagger.model.common.Metadata;
+import io.swagger.model.core.ListBaseFieldsInterface;
 import io.swagger.model.core.ListDetails;
 import io.swagger.model.core.ListNewRequest;
+import io.swagger.model.core.ListSearchRequest;
 import io.swagger.model.core.ListSummary;
 import io.swagger.model.core.ListTypes;
 
@@ -28,40 +32,62 @@ import io.swagger.model.core.ListTypes;
 public class ListService {
 
 	private ListRepository listRepository;
+	private PeopleService peopleService;
 
-	public ListService(ListRepository listRepository) {
+	public ListService(ListRepository listRepository, PeopleService peopleService) {
 		this.listRepository = listRepository;
+		this.peopleService = peopleService;
 	}
 
 	public List<ListSummary> findLists(@Valid ListTypes listType, @Valid String listName, @Valid String listDbId,
-			@Valid String listSource, ExternalReferences exRefs, Metadata metadata) {
-		Pageable pageReq = PagingUtility.getPageRequest(metadata);
-		Page<ListEntity> entityPage;
-		listName = prepParam(listName, true);
-		listDbId = prepParam(listDbId, false);
-		listSource = prepParam(listSource, true);
-		if (listType == null) {
-			entityPage = listRepository.findBySearch(listName, listDbId, listSource, pageReq);
-		} else {
-			entityPage = listRepository.findBySearch(listType, listName, listDbId, listSource, pageReq);
+			@Valid String listSource, String externalReferenceID, String externalReferenceSource, Metadata metadata) {
+		ListSearchRequest request = new ListSearchRequest();
+		if (listType != null) {
+			request.setListType(listType);
 		}
-
-		List<ListSummary> summaries = entityPage.map(this::convertToSummary).getContent();
-		PagingUtility.calculateMetaData(metadata, entityPage);
-
-		return summaries;
+		if (listName != null) {
+			request.addListNamesItem(listName);
+		}
+		if (listDbId != null) {
+			request.addListDbIdsItem(listDbId);
+		}
+		if (listSource != null) {
+			request.addListSourcesItem(listSource);
+		}
+		if (externalReferenceID != null) {
+			request.addExternalReferenceIDsItem(externalReferenceID);
+		}
+		if (externalReferenceSource != null) {
+			request.addExternalReferenceSourcesItem(externalReferenceSource);
+		}
+		return findLists(request, metadata);
 	}
 
-	private String prepParam(String param, boolean fuzzySearch) {
-		if (param == null) {
-			return "";
-		} else {
-			if (fuzzySearch) {
-				return "%" + param + "%";
-			} else {
-				return param;
-			}
-		}
+	public List<ListSummary> findLists(ListSearchRequest request, Metadata metadata) {
+		Pageable pageReq = PagingUtility.getPageRequest(metadata);
+		SearchQueryBuilder<ListEntity> searchQuery = buildQueryString(request);
+
+		Page<ListEntity> entityPage = listRepository.findAllBySearch(searchQuery, pageReq);
+
+		List<ListSummary> data = entityPage.map(this::convertToSummary).getContent();
+		PagingUtility.calculateMetaData(metadata, entityPage);
+
+		return data;
+	}
+
+	public SearchQueryBuilder<ListEntity> buildQueryString(ListSearchRequest request) {
+
+		SearchQueryBuilder<ListEntity> query = new SearchQueryBuilder<ListEntity>(ListEntity.class)
+				.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
+				.appendList(request.getListDbIds(), "id").appendList(request.getListNames(), "listName")
+				.appendList(request.getListOwnerNames(), "listOwnerName")
+				.appendList(request.getListOwnerPersonDbIds(), "listOwnerPerson.id")
+				.appendList(request.getListSources(), "listSource").appendEnum(request.getListType(), "listType")
+				.appendDateRange(request.getDateCreatedRangeStart(), request.getDateCreatedRangeEnd(), "dateCreated")
+				.appendDateRange(request.getDateModifiedRangeStart(), request.getDateModifiedRangeEnd(),
+						"dateModified");
+
+		return query;
 	}
 
 	public ListDetails getList(String listDbId) throws BrAPIServerException {
@@ -74,7 +100,7 @@ public class ListService {
 			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "ListDbId not found!");
 		}
 
-		return convertFromEntity(entity);
+		return convertToDetails(entity);
 	}
 
 	public ListDetails updateListItems(String listDbId, @Valid List<String> listItems) throws BrAPIServerException {
@@ -91,14 +117,14 @@ public class ListService {
 				return itemEntity;
 			}).collect(Collectors.toList());
 
-			entity.setData(itemEntities);
+			entity.getData().addAll(itemEntities);
 
 			savedEntity = listRepository.save(entity);
 		} else {
 			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "ListDbId not found!");
 		}
 
-		return convertFromEntity(savedEntity);
+		return convertToDetails(savedEntity);
 	}
 
 	public ListDetails updateList(String listDbId, @Valid ListNewRequest list) throws BrAPIServerException {
@@ -114,10 +140,10 @@ public class ListService {
 			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "ListDbId not found!");
 		}
 
-		return convertFromEntity(savedEntity);
+		return convertToDetails(savedEntity);
 	}
 
-	public List<ListSummary> saveNewList(@Valid List<ListNewRequest> requests) {
+	public List<ListSummary> saveNewList(@Valid List<ListNewRequest> requests) throws BrAPIServerException {
 
 		List<ListSummary> savedLists = new ArrayList<>();
 
@@ -137,19 +163,10 @@ public class ListService {
 		return savedLists;
 	}
 
-	private ListDetails convertFromEntity(ListEntity entity) {
+	private ListDetails convertToDetails(ListEntity entity) {
 		ListDetails details = new ListDetails();
-		details.setDateCreated(DateUtility.toOffsetDateTime(entity.getDateCreated()));
-		details.setDateModified(DateUtility.toOffsetDateTime(entity.getDateModified()));
-		details.setListDescription(entity.getDescription());
+		details = (ListDetails) convertToBaseFields(entity, details);
 		details.setListDbId(entity.getId());
-		details.setListName(entity.getListName());
-		details.setListOwnerName(entity.getListOwnerName());
-		details.setListOwnerPersonDbId(entity.getListOwnerPersonDbId());
-		details.setListSize(entity.getData().size());
-		details.setListSource(entity.getListSource());
-		details.setListType(entity.getListType());
-
 		details.setData(entity.getData().stream().map((e) -> {
 			return e.getItem();
 		}).collect(Collectors.toList()));
@@ -159,35 +176,70 @@ public class ListService {
 
 	private ListSummary convertToSummary(ListEntity entity) {
 		ListSummary summary = new ListSummary();
-		summary.setDateCreated(DateUtility.toOffsetDateTime(entity.getDateCreated()));
-		summary.setDateModified(DateUtility.toOffsetDateTime(entity.getDateModified()));
-		summary.setListDescription(entity.getDescription());
+		summary = (ListSummary) convertToBaseFields(entity, summary);
 		summary.setListDbId(entity.getId());
-		summary.setListName(entity.getListName());
-		summary.setListOwnerName(entity.getListOwnerName());
-		summary.setListOwnerPersonDbId(entity.getListOwnerPersonDbId());
-		summary.setListSize(entity.getData().size());
-		summary.setListSource(entity.getListSource());
-		summary.setListType(entity.getListType());
 
 		return summary;
+
 	}
 
-	private void updateEntity(ListEntity entity, @Valid ListNewRequest list) {
+	private ListBaseFieldsInterface convertToBaseFields(ListEntity entity, ListBaseFieldsInterface base) {
+		base.setDateCreated(DateUtility.toOffsetDateTime(entity.getDateCreated()));
+		base.setDateModified(DateUtility.toOffsetDateTime(entity.getDateModified()));
+		base.setListDescription(entity.getDescription());
+		base.setListName(entity.getListName());
+		base.setListOwnerName(entity.getListOwnerName());
+		base.setListSource(entity.getListSource());
+		base.setListType(entity.getListType());
+		base.setAdditionalInfo(entity.getAdditionalInfoMap());
+		base.setExternalReferences(entity.getExternalReferencesMap());
 
-		entity.setDescription(list.getListDescription());
-		entity.setListName(list.getListName());
-		entity.setListOwnerName(list.getListOwnerName());
-		entity.setListOwnerPersonDbId(list.getListOwnerPersonDbId());
-		entity.setListSource(list.getListSource());
-		entity.setListType(list.getListType());
-
-		entity.setData(list.getData().stream().map((item) -> {
-			ListItemEntity itemEntity = new ListItemEntity();
-			itemEntity.setItem(item);
-			itemEntity.setList(entity);
-			return itemEntity;
-		}).collect(Collectors.toList()));
+		if (entity.getListOwnerPerson() != null) {
+			base.setListOwnerPersonDbId(entity.getListOwnerPerson().getId());
+		}
+		if (entity.getData() != null) {
+			base.setListSize(entity.getData().size());
+		}
+		return base;
 	}
 
+	private void updateEntity(ListEntity entity, @Valid ListNewRequest list) throws BrAPIServerException {
+
+		if (list.getAdditionalInfo() != null)
+			entity.setAdditionalInfo(list.getAdditionalInfo());
+		if (list.getListDescription() != null)
+			entity.setDescription(list.getListDescription());
+		if (list.getExternalReferences() != null)
+			entity.setExternalReferences(list.getExternalReferences());
+		if (list.getListName() != null)
+			entity.setListName(list.getListName());
+		if (list.getListOwnerName() != null)
+			entity.setListOwnerName(list.getListOwnerName());
+		if (list.getListSource() != null)
+			entity.setListSource(list.getListSource());
+		if (list.getListType() != null)
+			entity.setListType(list.getListType());
+
+		if (list.getListOwnerPersonDbId() != null) {
+			PersonEntity person = peopleService.getPersonEntity(list.getListOwnerPersonDbId());
+			entity.setListOwnerPerson(person);
+		}
+
+		if (entity.getData() != null) {
+			entity.getData().stream().forEach((item) -> {
+				item.setList(null);
+			});
+		}
+
+		if (list.getData() != null) {
+			entity.setData(list.getData().stream().map((item) -> {
+				ListItemEntity itemEntity = new ListItemEntity();
+				itemEntity.setItem(item);
+				itemEntity.setList(entity);
+				return itemEntity;
+			}).collect(Collectors.toList()));
+		} else {
+			entity.setData(new ArrayList<>());
+		}
+	}
 }

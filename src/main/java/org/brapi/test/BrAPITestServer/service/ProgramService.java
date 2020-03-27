@@ -3,8 +3,9 @@ package org.brapi.test.BrAPITestServer.service;
 import java.util.List;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
-import org.brapi.test.BrAPITestServer.model.entity.ProgramEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.ProgramEntity;
 import org.brapi.test.BrAPITestServer.repository.core.ProgramRepository;
+import org.brapi.test.BrAPITestServer.utility.PagingUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

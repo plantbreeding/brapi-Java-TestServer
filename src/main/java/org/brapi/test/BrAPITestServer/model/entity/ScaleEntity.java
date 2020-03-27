@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="scale")
-public class ScaleEntity extends BaseEntity implements OntologyInterface{
+public class ScaleEntity extends BrAPIBaseEntity implements OntologyInterface{
 	@Column
 	private String name;
 	@Column

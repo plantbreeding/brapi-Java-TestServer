@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="linkageGroup")
-public class LinkageGroupEntity extends BaseEntity{
+public class LinkageGroupEntity extends BrAPIBaseEntity{
 	@Column
 	private String genomeMapDbId;
 	@Column

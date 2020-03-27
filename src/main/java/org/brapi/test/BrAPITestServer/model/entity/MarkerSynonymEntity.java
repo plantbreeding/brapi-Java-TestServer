@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="marker_synonym")
-public class MarkerSynonymEntity extends BaseEntity{
+public class MarkerSynonymEntity extends BrAPIBaseEntity{
 	@Column
 	private String markerDbId;
 	@Column

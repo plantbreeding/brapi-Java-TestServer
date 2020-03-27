@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="breeding_method")
-public class BreedingMethodEntity extends BaseEntity {
+public class BreedingMethodEntity extends BrAPIBaseEntity {
 	@Column
     private String abbreviation;
     @Column

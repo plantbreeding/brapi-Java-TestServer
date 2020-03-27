@@ -55,44 +55,6 @@ public class SearchCoreApiController implements SearchCoreApi {
 
 
 
-	public ResponseEntity<LocationListResponse> searchLocationsPost(
-			@Valid @RequestBody LocationSearchRequest body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<LocationListResponse>(objectMapper.readValue(
-						"{\n  \"result\" : {\n    \"data\" : [ \"\", \"\" ]\n  },\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}",
-						LocationListResponse.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<LocationListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
-
-		return new ResponseEntity<LocationListResponse>(HttpStatus.NOT_IMPLEMENTED);
-	}
-
-	public ResponseEntity<LocationListResponse> searchLocationsSearchResultsDbIdGet(
-			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<LocationListResponse>(objectMapper.readValue(
-						"{\n  \"result\" : {\n    \"data\" : [ \"\", \"\" ]\n  },\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}",
-						LocationListResponse.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<LocationListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
-
-		return new ResponseEntity<LocationListResponse>(HttpStatus.NOT_IMPLEMENTED);
-	}
-
 	public ResponseEntity<PersonListResponse> searchPeoplePost(
 			@Valid @RequestBody PersonSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) {

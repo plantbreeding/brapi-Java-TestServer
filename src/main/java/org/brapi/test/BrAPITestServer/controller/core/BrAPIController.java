@@ -14,6 +14,7 @@ import io.swagger.model.common.BrAPIResponse;
 import io.swagger.model.common.BrAPIResponseResult;
 import io.swagger.model.common.IndexPagination;
 import io.swagger.model.common.Metadata;
+import io.swagger.model.common.SearchRequestParametersPaging;
 
 public class BrAPIController {
 	protected Metadata generateMetaDataTemplateForSearch(Integer originalRequestedPage, Integer newRequestedPage,
@@ -29,6 +30,10 @@ public class BrAPIController {
 		}
 
 		return generateMetaDataTemplate(page, pageSize);
+	}
+
+	protected Metadata generateMetaDataTemplate(SearchRequestParametersPaging request) throws BrAPIServerException {
+		return generateMetaDataTemplate(request.getPage(), request.getPageSize());
 	}
 
 	protected Metadata generateMetaDataTemplate(Integer page, Integer pageSize) throws BrAPIServerException {

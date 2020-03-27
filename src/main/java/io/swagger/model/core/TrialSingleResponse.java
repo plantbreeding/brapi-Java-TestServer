@@ -29,16 +29,7 @@ public class TrialSingleResponse   {
     return this;
   }
 
-  /**
-   * Get _atContext
-   * @return _atContext
-  **/
-  @ApiModelProperty(value = "")
   
-    @Valid
-    public Context getAtContext() {
-    return _atContext;
-  }
 
   public void setAtContext(Context _atContext) {
     this._atContext = _atContext;
