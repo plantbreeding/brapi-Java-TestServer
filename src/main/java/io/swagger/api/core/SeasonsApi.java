@@ -9,6 +9,8 @@ import io.swagger.model.core.Season;
 import io.swagger.model.core.SeasonListResponse;
 import io.swagger.model.core.SeasonSingleResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,7 +39,7 @@ public interface SeasonsApi {
 			@ApiParam(value = "The 4 digit year of a season. Example \"2017\"") @Valid @RequestParam(value = "year", required = false) Integer year,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 	@ApiOperation(value = "POST new Seasons", nickname = "seasonsPost", notes = "Add new season entries to the database", response = SeasonListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Seasons", })
@@ -48,7 +50,7 @@ public interface SeasonsApi {
 	@RequestMapping(value = "/seasons", produces = { "application/json" }, consumes = {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<SeasonListResponse> seasonsPost(@ApiParam(value = "") @Valid @RequestBody List<Season> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the a single Season", nickname = "seasonsSeasonDbIdGet", notes = "Get the a single Season", response = SeasonSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Seasons", })
@@ -59,7 +61,7 @@ public interface SeasonsApi {
 	@RequestMapping(value = "/seasons/{seasonDbId}", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<SeasonSingleResponse> seasonsSeasonDbIdGet(
 			@ApiParam(value = "The unique identifier for a season. For backward compatibility it can be a string like '2012', '1957-2004'", required = true) @PathVariable("seasonDbId") String seasonDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 	@ApiOperation(value = "Update existing Seasons", nickname = "seasonsSeasonDbIdPut", notes = "Update existing Seasons", response = SeasonSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Seasons", })
@@ -71,7 +73,7 @@ public interface SeasonsApi {
 			"application/json" }, method = RequestMethod.PUT)
 	ResponseEntity<SeasonSingleResponse> seasonsSeasonDbIdPut(
 			@ApiParam(value = "The unique identifier for a season. For backward compatibility it can be a string like '2012', '1957-2004'", required = true) @PathVariable("seasonDbId") String seasonDbId,
-			@ApiParam(value = "") @Valid @RequestBody List<Season> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "") @Valid @RequestBody Season body,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 }

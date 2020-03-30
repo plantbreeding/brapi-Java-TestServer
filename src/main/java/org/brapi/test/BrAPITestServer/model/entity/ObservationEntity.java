@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.brapi.test.BrAPITestServer.model.entity.core.SeasonEntity;
+
 @Entity
 @Table(name="observation")
 public class ObservationEntity extends BrAPIBaseEntity{

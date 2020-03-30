@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
 
 /**
  * Season
@@ -32,9 +31,7 @@ public class Season   {
    * The ID which uniquely identifies a season. For backward compatibility it can be a string like '2012', '1957-2004'
    * @return seasonDbId
   **/
-  @ApiModelProperty(example = "Spring_2018", required = true, value = "The ID which uniquely identifies a season. For backward compatibility it can be a string like '2012', '1957-2004'")
-      @NotNull
-
+  @ApiModelProperty(example = "Spring_2018", value = "The ID which uniquely identifies a season. For backward compatibility it can be a string like '2012', '1957-2004'")
     public String getSeasonDbId() {
     return seasonDbId;
   }

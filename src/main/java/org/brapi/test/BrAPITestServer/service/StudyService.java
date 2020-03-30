@@ -21,15 +21,15 @@ import org.brapi.test.BrAPITestServer.model.entity.ObservationEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitXrefEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationVariableEntity;
-import org.brapi.test.BrAPITestServer.model.entity.SeasonEntity;
 import org.brapi.test.BrAPITestServer.model.entity.TreatmentEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.SeasonEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.StudyTypeEntity;
 import org.brapi.test.BrAPITestServer.repository.GermplasmRepository;
 import org.brapi.test.BrAPITestServer.repository.ObservationRepository;
 import org.brapi.test.BrAPITestServer.repository.ObservationUnitRepository;
 import org.brapi.test.BrAPITestServer.repository.ObservationVariableRepository;
-import org.brapi.test.BrAPITestServer.repository.SeasonRepository;
+import org.brapi.test.BrAPITestServer.repository.core.SeasonRepository;
 import org.brapi.test.BrAPITestServer.repository.core.StudyRepository;
 import org.brapi.test.BrAPITestServer.repository.core.StudyTypeRepository;
 import org.brapi.test.BrAPITestServer.utility.DateUtility;
@@ -399,29 +399,6 @@ public class StudyService {
 		return units;
 	}
 
-	public List<Season> getSeasons(String seasonDbId, String season, String year, Metadata metaData) {
-		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-		Integer yearInt = null;
-		if (year != null) {
-			try {
-				yearInt = Integer.valueOf(year);
-			} catch (NumberFormatException e) {
-				yearInt = -1;
-			}
-		}
-		Page<SeasonEntity> seasonPage = seasonRepository.findBySearch(seasonDbId, season, yearInt, pageReq);
-
-		List<Season> seasons = seasonPage.map((entity) -> {
-			Season seasonObj = new Season();
-//			seasonObj.setSeason(entity.getSeason());
-			seasonObj.setSeasonDbId(entity.getId());
-			seasonObj.setYear(entity.getYear());
-			return seasonObj;
-		}).getContent();
-
-		PagingUtility.calculateMetaData(metaData, seasonPage);
-		return seasons;
-	}
 
 	public List<Study> getStudies(String commonCropName, String studyType, String studyTypeDbId,
 			String programDbId, String trialDbId, String studyDbId, String locationDbId, String seasonDbId,

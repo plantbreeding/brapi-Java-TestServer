@@ -43,6 +43,14 @@ public class SearchQueryBuilder<T> {
 		return this;
 	}
 
+	public SearchQueryBuilder<T> appendSingle(Integer single, String columnName) {
+		if (single != null) {
+			this.query += "AND entity." + columnName + " = :" + columnName + " ";
+			this.params.put(columnName, single);
+		}
+		return this;
+	}
+
 	public SearchQueryBuilder<T> appendSingle(String single, String columnName) {
 		if (single != null && !single.isEmpty()) {
 			this.query += "AND entity." + columnName + " = :" + columnName + " ";
@@ -90,13 +98,12 @@ public class SearchQueryBuilder<T> {
 	}
 
 	public SearchQueryBuilder<T> appendGeoJSONArea(GeoJSONSearchArea area) {
-//		if (single != null && !single.isEmpty()) {
-//			this.query += "AND entity." + columnName + " = :" + columnName + " ";
-//			this.params.put(columnName, single);
-//		}
+		// if (single != null && !single.isEmpty()) {
+		// this.query += "AND entity." + columnName + " = :" + columnName + " ";
+		// this.params.put(columnName, single);
+		// }
 		return this;
 	}
-
 
 	public SearchQueryBuilder<T> withExRefs(List<String> exRefIds, List<String> exRefSources) {
 		if (exRefIds != null && !exRefIds.isEmpty()) {
@@ -109,8 +116,6 @@ public class SearchQueryBuilder<T> {
 		}
 		return this;
 	}
-	
-
 
 	private String prepParam(String param, boolean fuzzySearch) {
 		if (param == null) {

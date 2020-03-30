@@ -20,7 +20,6 @@ import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ContactEntity;
 import org.brapi.test.BrAPITestServer.model.entity.DataLinkEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitEntity;
-import org.brapi.test.BrAPITestServer.model.entity.SeasonEntity;
 
 @Entity
 @Table(name="study")
