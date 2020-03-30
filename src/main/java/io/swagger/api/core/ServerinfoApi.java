@@ -5,9 +5,11 @@
  */
 package io.swagger.api.core;
 
-import io.swagger.model.core.CallsResponse;
+import io.swagger.model.core.ServerInfoResponse;
 import io.swagger.model.common.WSMIMEDataTypes;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,15 +22,15 @@ import javax.validation.Valid;
 @Api(value = "serverinfo", description = "the serverinfo API")
 public interface ServerinfoApi {
 
-	@ApiOperation(value = "Get the list of implemented Calls", nickname = "serverinfoGet", notes = "Implementation Notes  Having a consistent structure for the path string of each call is very  important for teams to be able to connect and find errors. Read more on Github.  Here are the rules for the path of each call that should be returned  Every word in the call path should match the documentation exactly, both in  spelling and capitalization. Note that path strings are all lower case, but  path parameters are camel case.  Each path should start relative to \\\"/\\\" and therefore should not include \\\"/\\\"  No leading or trailing slashes (\\\"/\\\")   Path parameters are wrapped in curly braces (\\\"{}\\\"). The name of the path parameter  should be spelled exactly as it is specified in the documentation.  Examples   GOOD   \"call\": \"germplasm/{germplasmDbId}/pedigree\"   BAD    \"call\": \"germplasm/{id}/pedigree\"  BAD    \"call\": \"germplasm/{germplasmDBid}/pedigree\"   BAD    \"call\": \"brapi/v2/germplasm/{germplasmDbId}/pedigree\"   BAD    \"call\": \"/germplasm/{germplasmDbId}/pedigree/\"   BAD    \"call\": \"germplasm/<germplasmDbId>/pedigree\"", response = CallsResponse.class, authorizations = {
+	@ApiOperation(value = "Get the list of implemented Calls", nickname = "serverinfoGet", notes = "Implementation Notes  Having a consistent structure for the path string of each call is very  important for teams to be able to connect and find errors. Read more on Github.  Here are the rules for the path of each call that should be returned  Every word in the call path should match the documentation exactly, both in  spelling and capitalization. Note that path strings are all lower case, but  path parameters are camel case.  Each path should start relative to \\\"/\\\" and therefore should not include \\\"/\\\"  No leading or trailing slashes (\\\"/\\\")   Path parameters are wrapped in curly braces (\\\"{}\\\"). The name of the path parameter  should be spelled exactly as it is specified in the documentation.  Examples   GOOD   \"call\": \"germplasm/{germplasmDbId}/pedigree\"   BAD    \"call\": \"germplasm/{id}/pedigree\"  BAD    \"call\": \"germplasm/{germplasmDBid}/pedigree\"   BAD    \"call\": \"brapi/v2/germplasm/{germplasmDbId}/pedigree\"   BAD    \"call\": \"/germplasm/{germplasmDbId}/pedigree/\"   BAD    \"call\": \"germplasm/<germplasmDbId>/pedigree\"", response = ServerInfoResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Server Info", })
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = CallsResponse.class),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = ServerInfoResponse.class),
 			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
 			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/serverinfo", produces = { "application/json" }, method = RequestMethod.GET)
-	ResponseEntity<CallsResponse> serverinfoGet(
+	ResponseEntity<ServerInfoResponse> serverinfoGet(
 			@ApiParam(value = "The data format supported by the call.") @Valid @RequestParam(value = "dataType", required = false) WSMIMEDataTypes dataType,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 }

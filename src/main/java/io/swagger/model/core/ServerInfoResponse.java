@@ -3,6 +3,7 @@ package io.swagger.model.core;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.common.BrAPIResponse;
 import io.swagger.model.common.Context;
 import io.swagger.model.common.Metadata;
 import org.springframework.validation.annotation.Validated;
@@ -14,7 +15,7 @@ import javax.validation.constraints.*;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
-public class CallsResponse   {
+public class ServerInfoResponse implements BrAPIResponse<ServerInfo>  {
   @JsonProperty("@context")
   private Context _atContext = null;
 
@@ -24,7 +25,7 @@ public class CallsResponse   {
   @JsonProperty("result")
   private ServerInfo result = null;
 
-  public CallsResponse _atContext(Context _atContext) {
+  public ServerInfoResponse _atContext(Context _atContext) {
     this._atContext = _atContext;
     return this;
   }
@@ -35,7 +36,7 @@ public class CallsResponse   {
     this._atContext = _atContext;
   }
 
-  public CallsResponse metadata(Metadata metadata) {
+  public ServerInfoResponse metadata(Metadata metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -56,7 +57,7 @@ public class CallsResponse   {
     this.metadata = metadata;
   }
 
-  public CallsResponse result(ServerInfo result) {
+  public ServerInfoResponse result(ServerInfo result) {
     this.result = result;
     return this;
   }
@@ -86,7 +87,7 @@ public class CallsResponse   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CallsResponse callsResponse = (CallsResponse) o;
+    ServerInfoResponse callsResponse = (ServerInfoResponse) o;
     return Objects.equals(this._atContext, callsResponse._atContext) &&
         Objects.equals(this.metadata, callsResponse.metadata) &&
         Objects.equals(this.result, callsResponse.result);

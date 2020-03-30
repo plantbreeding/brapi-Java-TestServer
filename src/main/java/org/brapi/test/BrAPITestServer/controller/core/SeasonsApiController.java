@@ -5,7 +5,6 @@ import io.swagger.model.core.Season;
 import io.swagger.model.core.SeasonListResponse;
 import io.swagger.model.core.SeasonListResponseResult;
 import io.swagger.model.core.SeasonSingleResponse;
-import io.swagger.annotations.*;
 import io.swagger.api.core.SeasonsApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
