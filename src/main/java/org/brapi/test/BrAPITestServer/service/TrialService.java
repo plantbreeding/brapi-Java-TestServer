@@ -163,4 +163,9 @@ public class TrialService {
 
 		return summary;
 	}
+
+	public TrialEntity getTrialEntity(String trialDbId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

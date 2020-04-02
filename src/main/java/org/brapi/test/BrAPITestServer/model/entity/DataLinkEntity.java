@@ -2,36 +2,95 @@ package org.brapi.test.BrAPITestServer.model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
+
 @Entity
-@Table(name="data_link")
-public class DataLinkEntity extends BrAPIBaseEntity{
+@Table(name = "data_link")
+public class DataLinkEntity extends BrAPIBaseEntity {
 	@Column
-	private String studyDbId;
+	private String dataFormat;
 	@Column
-	private String type;
+	private String description;
+	@Column
+	private String fileFormat;
 	@Column
 	private String name;
 	@Column
+	private String provenance;
+	@Column
+	private String scientificType;
+	@Column
 	private String url;
-	
-	public String getType() {
-		return type;
+	@Column
+	private String version;
+	@ManyToOne
+	private StudyEntity study;
+
+	public String getDataFormat() {
+		return dataFormat;
 	}
-	public void setType(String type) {
-		this.type = type;
+
+	public void setDataFormat(String dataFormat) {
+		this.dataFormat = dataFormat;
 	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getFileFormat() {
+		return fileFormat;
+	}
+
+	public void setFileFormat(String fileFormat) {
+		this.fileFormat = fileFormat;
+	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public String getProvenance() {
+		return provenance;
+	}
+
+	public void setProvenance(String provenance) {
+		this.provenance = provenance;
+	}
+
+	public String getScientificType() {
+		return scientificType;
+	}
+
+	public void setScientificType(String scientificType) {
+		this.scientificType = scientificType;
+	}
+
 	public String getUrl() {
 		return url;
 	}
+
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
 }

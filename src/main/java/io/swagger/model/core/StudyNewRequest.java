@@ -53,16 +53,16 @@ public class StudyNewRequest   {
   private List<EnvironmentParameter> environmentParameters = null;
 
   @JsonProperty("experimentalDesign")
-  private StudyNewRequestExperimentalDesign experimentalDesign = null;
+  private StudyExperimentalDesign experimentalDesign = null;
 
   @JsonProperty("externalReferences")
   private ExternalReferences externalReferences = null;
 
   @JsonProperty("growthFacility")
-  private StudyNewRequestGrowthFacility growthFacility = null;
+  private StudyGrowthFacility growthFacility = null;
 
   @JsonProperty("lastUpdate")
-  private StudyNewRequestLastUpdate lastUpdate = null;
+  private StudyLastUpdate lastUpdate = null;
 
   @JsonProperty("license")
   private String license = null;
@@ -312,7 +312,7 @@ public class StudyNewRequest   {
     this.environmentParameters = environmentParameters;
   }
 
-  public StudyNewRequest experimentalDesign(StudyNewRequestExperimentalDesign experimentalDesign) {
+  public StudyNewRequest experimentalDesign(StudyExperimentalDesign experimentalDesign) {
     this.experimentalDesign = experimentalDesign;
     return this;
   }
@@ -324,11 +324,11 @@ public class StudyNewRequest   {
   @ApiModelProperty(value = "")
   
     @Valid
-    public StudyNewRequestExperimentalDesign getExperimentalDesign() {
+    public StudyExperimentalDesign getExperimentalDesign() {
     return experimentalDesign;
   }
 
-  public void setExperimentalDesign(StudyNewRequestExperimentalDesign experimentalDesign) {
+  public void setExperimentalDesign(StudyExperimentalDesign experimentalDesign) {
     this.experimentalDesign = experimentalDesign;
   }
 
@@ -352,7 +352,7 @@ public class StudyNewRequest   {
     this.externalReferences = externalReferences;
   }
 
-  public StudyNewRequest growthFacility(StudyNewRequestGrowthFacility growthFacility) {
+  public StudyNewRequest growthFacility(StudyGrowthFacility growthFacility) {
     this.growthFacility = growthFacility;
     return this;
   }
@@ -364,15 +364,15 @@ public class StudyNewRequest   {
   @ApiModelProperty(value = "")
   
     @Valid
-    public StudyNewRequestGrowthFacility getGrowthFacility() {
+    public StudyGrowthFacility getGrowthFacility() {
     return growthFacility;
   }
 
-  public void setGrowthFacility(StudyNewRequestGrowthFacility growthFacility) {
+  public void setGrowthFacility(StudyGrowthFacility growthFacility) {
     this.growthFacility = growthFacility;
   }
 
-  public StudyNewRequest lastUpdate(StudyNewRequestLastUpdate lastUpdate) {
+  public StudyNewRequest lastUpdate(StudyLastUpdate lastUpdate) {
     this.lastUpdate = lastUpdate;
     return this;
   }
@@ -384,11 +384,11 @@ public class StudyNewRequest   {
   @ApiModelProperty(value = "")
   
     @Valid
-    public StudyNewRequestLastUpdate getLastUpdate() {
+    public StudyLastUpdate getLastUpdate() {
     return lastUpdate;
   }
 
-  public void setLastUpdate(StudyNewRequestLastUpdate lastUpdate) {
+  public void setLastUpdate(StudyLastUpdate lastUpdate) {
     this.lastUpdate = lastUpdate;
   }
 

@@ -1,9 +1,5 @@
 package org.brapi.test.BrAPITestServer.controller.core;
 
-import io.swagger.model.core.ProgramListResponse;
-import io.swagger.model.core.ProgramSearchRequest;
-import io.swagger.model.core.StudyListResponse;
-import io.swagger.model.core.StudySearchRequest;
 import io.swagger.model.core.TrialListResponse;
 import io.swagger.model.core.TrialSearchRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,44 +37,6 @@ public class SearchCoreApiController implements SearchCoreApi {
 
 
 
-
-	public ResponseEntity<StudyListResponse> searchStudiesPost(
-			@Valid @RequestBody StudySearchRequest body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<StudyListResponse>(objectMapper.readValue(
-						"{\n  \"result\" : {\n    \"data\" : [ \"\", \"\" ]\n  },\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}",
-						StudyListResponse.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<StudyListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
-
-		return new ResponseEntity<StudyListResponse>(HttpStatus.NOT_IMPLEMENTED);
-	}
-
-	public ResponseEntity<StudyListResponse> searchStudiesSearchResultsDbIdGet(
-			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<StudyListResponse>(objectMapper.readValue(
-						"{\n  \"result\" : {\n    \"data\" : [ \"\", \"\" ]\n  },\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}",
-						StudyListResponse.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<StudyListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
-
-		return new ResponseEntity<StudyListResponse>(HttpStatus.NOT_IMPLEMENTED);
-	}
 
 	public ResponseEntity<TrialListResponse> searchTrialsPost(
 			@Valid @RequestBody TrialSearchRequest body,

@@ -13,14 +13,14 @@ import org.springframework.validation.annotation.Validated;
 @ApiModel(description = "The experimental and statistical design full description plus a category PUI taken from crop research ontology or agronomy ontology")
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
-public class StudyNewRequestExperimentalDesign   {
+public class StudyExperimentalDesign   {
   @JsonProperty("PUI")
   private String PUI = null;
 
   @JsonProperty("description")
   private String description = null;
 
-  public StudyNewRequestExperimentalDesign PUI(String PUI) {
+  public StudyExperimentalDesign PUI(String PUI) {
     this.PUI = PUI;
     return this;
   }
@@ -39,7 +39,7 @@ public class StudyNewRequestExperimentalDesign   {
     this.PUI = PUI;
   }
 
-  public StudyNewRequestExperimentalDesign description(String description) {
+  public StudyExperimentalDesign description(String description) {
     this.description = description;
     return this;
   }
@@ -67,7 +67,7 @@ public class StudyNewRequestExperimentalDesign   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    StudyNewRequestExperimentalDesign studyNewRequestExperimentalDesign = (StudyNewRequestExperimentalDesign) o;
+    StudyExperimentalDesign studyNewRequestExperimentalDesign = (StudyExperimentalDesign) o;
     return Objects.equals(this.PUI, studyNewRequestExperimentalDesign.PUI) &&
         Objects.equals(this.description, studyNewRequestExperimentalDesign.description);
   }

@@ -78,7 +78,7 @@ public class BrAPIController {
 	protected void validateAcceptHeader(HttpServletRequest request) throws BrAPIServerException {
 		String accept = request.getHeader("Accept");
 		if (accept != null) {
-			String acceptRegex = accept.replaceAll("\\*", ".*").replaceAll(", ?", "|");
+			String acceptRegex = accept.replaceAll("\\*", ".*").replaceAll(", ?", "|").replaceAll(";?q=[01]\\.[0-9]", "");
 			if (!"application/json".matches(acceptRegex)) {
 				throw new BrAPIServerException(HttpStatus.NOT_ACCEPTABLE,
 						"Client is requesting a response other than \"application/json\"");

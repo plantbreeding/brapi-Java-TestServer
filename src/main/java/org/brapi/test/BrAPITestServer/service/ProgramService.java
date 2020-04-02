@@ -76,7 +76,7 @@ public class ProgramService {
 			ProgramEntity entity = entityOpt.get();
 			program = convertFromEntity(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found!");
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + programDbId);
 		}
 		return program;
 	}
@@ -90,7 +90,7 @@ public class ProgramService {
 
 			savedEntity = programRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found!");
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + programDbId);
 		}
 
 		return convertFromEntity(savedEntity);

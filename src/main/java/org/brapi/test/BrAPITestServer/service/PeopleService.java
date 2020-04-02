@@ -78,7 +78,7 @@ public class PeopleService {
 		if (entityOpt.isPresent()) {
 			entity = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "PersonDbId not found!");
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + personDbId);
 		}
 
 		return entity;

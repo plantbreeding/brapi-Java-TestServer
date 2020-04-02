@@ -49,13 +49,16 @@ public class SeasonService {
 	}
 
 	public Season getSeason(String seasonDbId) throws BrAPIServerException {
-		Season season = null;
+		return convertFromEntity(getSeasonEntity(seasonDbId));
+	}
+
+	public SeasonEntity getSeasonEntity(String seasonDbId) throws BrAPIServerException {
+		SeasonEntity season = null;
 		Optional<SeasonEntity> entityOpt = seasonRepository.findById(seasonDbId);
 		if (entityOpt.isPresent()) {
-			SeasonEntity entity = entityOpt.get();
-			season = convertFromEntity(entity);
+			season = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found!");
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + seasonDbId);
 		}
 		return season;
 	}
@@ -69,7 +72,7 @@ public class SeasonService {
 
 			savedEntity = seasonRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found!");
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + seasonDbId);
 		}
 
 		return convertFromEntity(savedEntity);
@@ -107,5 +110,4 @@ public class SeasonService {
 			entity.setYear(request.getYear());
 
 	}
-
 }

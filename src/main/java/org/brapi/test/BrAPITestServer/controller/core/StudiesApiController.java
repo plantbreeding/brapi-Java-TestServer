@@ -1,45 +1,43 @@
 package org.brapi.test.BrAPITestServer.controller.core;
 
+import io.swagger.model.common.Metadata;
+import io.swagger.model.core.Study;
 import io.swagger.model.core.StudyListResponse;
+import io.swagger.model.core.StudyListResponseResult;
 import io.swagger.model.core.StudyNewRequest;
+import io.swagger.model.core.StudySearchRequest;
 import io.swagger.model.core.StudySingleResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import io.swagger.api.core.StudiesApi;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.service.StudyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.constraints.*;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
 @Controller
-public class StudiesApiController implements StudiesApi {
+public class StudiesApiController extends BrAPIController implements StudiesApi {
 
 	private static final Logger log = LoggerFactory.getLogger(StudiesApiController.class);
 
-	private final ObjectMapper objectMapper;
+	private final StudyService studyService;
 
 	private final HttpServletRequest request;
 
 	@org.springframework.beans.factory.annotation.Autowired
-	public StudiesApiController(ObjectMapper objectMapper, HttpServletRequest request) {
-		this.objectMapper = objectMapper;
+	public StudiesApiController(StudyService studyService, HttpServletRequest request) {
+		this.studyService = studyService;
 		this.request = request;
 	}
 
@@ -57,81 +55,74 @@ public class StudiesApiController implements StudiesApi {
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
 			@Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
 			@Valid @RequestParam(value = "active", required = false) Boolean active,
-			@ApiParam(value = "Name of the field to sort by.", allowableValues = "studyDbId, trialDbId, programDbId, locationDbId, seasonDbId, studyType, studyName, studyLocation, programName") @Valid @RequestParam(value = "sortBy", required = false) String sortBy,
-			@ApiParam(value = "Sort order direction. Ascending/Descending.", allowableValues = "asc, ASC, desc, DESC") @Valid @RequestParam(value = "sortOrder", required = false) String sortOrder,
+			@Valid @RequestParam(value = "sortBy", required = false) String sortBy,
+			@Valid @RequestParam(value = "sortOrder", required = false) String sortOrder,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<StudyListResponse>(objectMapper.readValue(
-						"{\n  \"result\" : {\n    \"data\" : [ \"\", \"\" ]\n  },\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}",
-						StudyListResponse.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<StudyListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
+			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
-		return new ResponseEntity<StudyListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		List<Study> data = studyService.findStudies(commonCropName, studyType, programDbId, locationDbId, 
+				seasonDbId, trialDbId, studyDbId, studyName, studyCode, studyPUI, germplasmDbId, observationVariableDbId,
+				externalReferenceID, externalReferenceSource, active, sortBy, sortOrder, metadata);
+		return responseOK(new StudyListResponse(), new StudyListResponseResult(), data, metadata);
 	}
 
 	public ResponseEntity<StudyListResponse> studiesPost(
 			@Valid @RequestBody List<StudyNewRequest> body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<StudyListResponse>(objectMapper.readValue(
-						"{\n  \"result\" : {\n    \"data\" : [ \"\", \"\" ]\n  },\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}",
-						StudyListResponse.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<StudyListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
+			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
-		return new ResponseEntity<StudyListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		List<Study> data = studyService.saveStudies(body);
+		return responseOK(new StudyListResponse(), new StudyListResponseResult(), data);
 	}
 
 	public ResponseEntity<StudySingleResponse> studiesStudyDbIdGet(
 			@ApiParam(value = "Identifier of the study. Usually a number, could be alphanumeric.", required = true) @PathVariable("studyDbId") String studyDbId,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<StudySingleResponse>(objectMapper.readValue(
-						"{\n  \"result\" : \"\",\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}",
-						StudySingleResponse.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<StudySingleResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
+			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
-		return new ResponseEntity<StudySingleResponse>(HttpStatus.NOT_IMPLEMENTED);
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		Study data = studyService.getStudy(studyDbId);
+		return responseOK(new StudySingleResponse(), data);
 	}
 
 	public ResponseEntity<StudySingleResponse> studiesStudyDbIdPut(
 			@ApiParam(value = "Identifier of the study. Usually a number, could be alphanumeric.", required = true) @PathVariable("studyDbId") String studyDbId,
 			@Valid @RequestBody StudyNewRequest body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<StudySingleResponse>(objectMapper.readValue(
-						"{\n  \"result\" : \"\",\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}",
-						StudySingleResponse.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<StudySingleResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
+			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
-		return new ResponseEntity<StudySingleResponse>(HttpStatus.NOT_IMPLEMENTED);
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		Study data = studyService.updateStudy(studyDbId, body);
+		return responseOK(new StudySingleResponse(), data);
 	}
 
+
+	public ResponseEntity<StudyListResponse> searchStudiesPost(
+			@Valid @RequestBody StudySearchRequest body,
+			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		Metadata metadata = generateMetaDataTemplate(body);
+		List<Study> data = studyService.findStudies(body, metadata);
+		return responseOK(new StudyListResponse(), new StudyListResponseResult(), data, metadata);
+	}
+
+	public ResponseEntity<StudyListResponse> searchStudiesSearchResultsDbIdGet(
+			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
+			@Valid @RequestParam(value = "page", required = false) Integer page,
+			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		return new ResponseEntity<StudyListResponse>(HttpStatus.NOT_IMPLEMENTED);
+	}
 }

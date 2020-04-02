@@ -1,35 +1,36 @@
 package org.brapi.test.BrAPITestServer.model.entity.core;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 
 @Entity
-@Table(name="study_type")
-public class StudyTypeEntity extends BrAPIBaseEntity {
+@Table(name = "study_growth_facility")
+public class GrowthFacilityEntity extends BrAPIBaseEntity {
 	@Column
-	private String name;
+	private String PUI;
 	@Column
 	private String description;
-	@OneToMany(mappedBy="studyType")
-	private List<StudyEntity> studies;
-	
-	public String getName() {
-		return name;
+	@OneToOne
+	private StudyEntity study;
+
+	public String getPUI() {
+		return PUI;
 	}
-	public void setName(String name) {
-		this.name = name;
+
+	public void setPUI(String pUI) {
+		PUI = pUI;
 	}
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
 }

@@ -44,6 +44,16 @@ public class ObservationUnitHierarchyLevel   {
     
     SAMPLE("sample");
 
+    @JsonCreator
+    public static LevelNameEnum fromValue(String text) {
+      for (LevelNameEnum b : LevelNameEnum.values()) {
+        if (String.valueOf(b.value).equals(text)) {
+          return b;
+        }
+      }
+      return null;
+    }
+
     private String value;
 
     LevelNameEnum(String value) {
@@ -55,61 +65,12 @@ public class ObservationUnitHierarchyLevel   {
     public String toString() {
       return String.valueOf(value);
     }
-
-    @JsonCreator
-    public static LevelNameEnum fromValue(String text) {
-      for (LevelNameEnum b : LevelNameEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
   }
   @JsonProperty("levelName")
   private LevelNameEnum levelName = null;
 
   @JsonProperty("levelOrder")
   private Integer levelOrder = null;
-
-  public ObservationUnitHierarchyLevel levelName(LevelNameEnum levelName) {
-    this.levelName = levelName;
-    return this;
-  }
-
-  /**
-   * A name for this level
-   * @return levelName
-  **/
-  @ApiModelProperty(example = "plot", value = "A name for this level")
-  
-    public LevelNameEnum getLevelName() {
-    return levelName;
-  }
-
-  public void setLevelName(LevelNameEnum levelName) {
-    this.levelName = levelName;
-  }
-
-  public ObservationUnitHierarchyLevel levelOrder(Integer levelOrder) {
-    this.levelOrder = levelOrder;
-    return this;
-  }
-
-  /**
-   * `levelOrder` defines where that level exists in the hierarchy of levels. `levelOrder`'s lower numbers are at the top of the hierarchy (ie field -> 1) and higher numbers are at the bottom of the hierarchy (ie plant -> 9).
-   * @return levelOrder
-  **/
-  @ApiModelProperty(example = "2", value = "`levelOrder` defines where that level exists in the hierarchy of levels. `levelOrder`'s lower numbers are at the top of the hierarchy (ie field -> 1) and higher numbers are at the bottom of the hierarchy (ie plant -> 9).")
-  
-    public Integer getLevelOrder() {
-    return levelOrder;
-  }
-
-  public void setLevelOrder(Integer levelOrder) {
-    this.levelOrder = levelOrder;
-  }
-
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -124,20 +85,48 @@ public class ObservationUnitHierarchyLevel   {
         Objects.equals(this.levelOrder, observationUnitHierarchyLevel.levelOrder);
   }
 
+  /**
+   * A name for this level
+   * @return levelName
+  **/
+  @ApiModelProperty(example = "plot", value = "A name for this level")
+  
+    public LevelNameEnum getLevelName() {
+    return levelName;
+  }
+
+  /**
+   * `levelOrder` defines where that level exists in the hierarchy of levels. `levelOrder`'s lower numbers are at the top of the hierarchy (ie field -> 1) and higher numbers are at the bottom of the hierarchy (ie plant -> 9).
+   * @return levelOrder
+  **/
+  @ApiModelProperty(example = "2", value = "`levelOrder` defines where that level exists in the hierarchy of levels. `levelOrder`'s lower numbers are at the top of the hierarchy (ie field -> 1) and higher numbers are at the bottom of the hierarchy (ie plant -> 9).")
+  
+    public Integer getLevelOrder() {
+    return levelOrder;
+  }
+
   @Override
   public int hashCode() {
     return Objects.hash(levelName, levelOrder);
   }
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class ObservationUnitHierarchyLevel {\n");
-    
-    sb.append("    levelName: ").append(toIndentedString(levelName)).append("\n");
-    sb.append("    levelOrder: ").append(toIndentedString(levelOrder)).append("\n");
-    sb.append("}");
-    return sb.toString();
+  public ObservationUnitHierarchyLevel levelName(LevelNameEnum levelName) {
+    this.levelName = levelName;
+    return this;
+  }
+
+  public ObservationUnitHierarchyLevel levelOrder(Integer levelOrder) {
+    this.levelOrder = levelOrder;
+    return this;
+  }
+
+
+  public void setLevelName(LevelNameEnum levelName) {
+    this.levelName = levelName;
+  }
+
+  public void setLevelOrder(Integer levelOrder) {
+    this.levelOrder = levelOrder;
   }
 
   /**
@@ -149,5 +138,16 @@ public class ObservationUnitHierarchyLevel   {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("class ObservationUnitHierarchyLevel {\n");
+    
+    sb.append("    levelName: ").append(toIndentedString(levelName)).append("\n");
+    sb.append("    levelOrder: ").append(toIndentedString(levelOrder)).append("\n");
+    sb.append("}");
+    return sb.toString();
   }
 }

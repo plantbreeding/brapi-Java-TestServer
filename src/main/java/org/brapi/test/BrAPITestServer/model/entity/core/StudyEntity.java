@@ -14,153 +14,238 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.brapi.test.BrAPITestServer.model.entity.AlleleMatrixEntity;
-import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ContactEntity;
 import org.brapi.test.BrAPITestServer.model.entity.DataLinkEntity;
-import org.brapi.test.BrAPITestServer.model.entity.ObservationUnitEntity;
 
 @Entity
-@Table(name="study")
-public class StudyEntity extends BrAPIPrimaryEntity{
+@Table(name = "study")
+public class StudyEntity extends BrAPIPrimaryEntity {
+
 	@Column
-	private String studyName;
-	@ManyToOne
-	private StudyTypeEntity studyType;
+	private boolean active;
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "study_contact", joinColumns = {
+			@JoinColumn(name = "study_db_id", referencedColumnName = "id") }, inverseJoinColumns = {
+					@JoinColumn(name = "contact_db_id", referencedColumnName = "id") })
+	private List<ContactEntity> contacts;
 	@Column
-	private String studyDescription;
+	private String culturalPractices;
+	@OneToMany(mappedBy = "study")
+	private List<DataLinkEntity> dataLinks;
+	@Column
+	private String documentationURL;
+	@Column
+	private Date endDate;
+	@OneToMany(mappedBy = "study")
+	private List<EnvironmentParametersEntity> environmentParameters;
+	@OneToOne(mappedBy = "study")
+	private ExperimentalDesignEntity experimentalDesign;
+	@OneToOne(mappedBy = "study")
+	private GrowthFacilityEntity growthFacility;
+	@OneToOne(mappedBy = "study")
+	private StudyLastUpdateEntity lastUpdate;
+	@Column
+	private String license;
+	@OneToOne
+	private LocationEntity location;
+	@OneToMany(mappedBy = "study")
+	private List<ObservationLevelEntity> observationLevels;
+	@Column
+	private String observationUnitsDescription;
 	@ManyToMany
-	@JoinTable(name = "study_season", joinColumns = { @JoinColumn(name = "study_db_id", referencedColumnName="id") }, inverseJoinColumns = { @JoinColumn(name = "season_db_id", referencedColumnName="id") })
+	@JoinTable(name = "study_season", joinColumns = {
+			@JoinColumn(name = "study_db_id", referencedColumnName = "id") }, inverseJoinColumns = {
+					@JoinColumn(name = "season_db_id", referencedColumnName = "id") })
 	private List<SeasonEntity> seasons;
 	@Column
 	private Date startDate;
 	@Column
-	private Date endDate;
+	private String studyCode;
 	@Column
-	private boolean active;
+	private String studyDescription;
 	@Column
-	private String licence;
+	private String studyName;
 	@Column
-	private String documentationURL;
+	private String studyPUI;
 	@Column
-	private String version;
-	@Column
-	private Date timestamp;
+	private String studyType;
 	@ManyToOne
 	private TrialEntity trial;
-	@OneToOne
-	private LocationEntity location;
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "study_contact", joinColumns = { @JoinColumn(name = "study_db_id", referencedColumnName="id") }, inverseJoinColumns = { @JoinColumn(name = "contact_db_id", referencedColumnName="id") })
-	private List<ContactEntity> contacts;
-	@OneToMany(mappedBy="studyDbId")
-	private List<DataLinkEntity> dataLinks;
-	@OneToMany(mappedBy="study")
-	private List<ObservationUnitEntity> observationUnits;
-	@OneToMany(mappedBy="study")
-	private List<AlleleMatrixEntity> alleleMatricies;
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public List<ContactEntity> getContacts() {
+		return contacts;
+	}
+
+	public void setContacts(List<ContactEntity> contacts) {
+		this.contacts = contacts;
+	}
+
+	public String getCulturalPractices() {
+		return culturalPractices;
+	}
+
+	public void setCulturalPractices(String culturalPractices) {
+		this.culturalPractices = culturalPractices;
+	}
+
+	public List<DataLinkEntity> getDataLinks() {
+		return dataLinks;
+	}
+
+	public void setDataLinks(List<DataLinkEntity> dataLinks) {
+		this.dataLinks = dataLinks;
+	}
 
 	public String getDocumentationURL() {
 		return documentationURL;
 	}
+
 	public void setDocumentationURL(String documentationURL) {
 		this.documentationURL = documentationURL;
 	}
-	public List<ObservationUnitEntity> getObservationUnits() {
-		return observationUnits;
-	}
-	public void setObservationUnits(List<ObservationUnitEntity> observationUnits) {
-		this.observationUnits = observationUnits;
-	}
-	public List<AlleleMatrixEntity> getAlleleMatricies() {
-		return alleleMatricies;
-	}
-	public void setAlleleMatricies(List<AlleleMatrixEntity> alleleMatricies) {
-		this.alleleMatricies = alleleMatricies;
-	}
-	public StudyTypeEntity getStudyType() {
-		return studyType;
-	}
-	public void setStudyType(StudyTypeEntity studyType) {
-		this.studyType = studyType;
-	}
-	public String getStudyName() {
-		return studyName;
-	}
-	public void setStudyName(String studyName) {
-		this.studyName = studyName;
-	}
-	public String getStudyDescription() {
-		return studyDescription;
-	}
-	public void setStudyDescription(String studyDescription) {
-		this.studyDescription = studyDescription;
-	}
-	public List<SeasonEntity> getSeasons() {
-		return seasons;
-	}
-	public void setSeasons(List<SeasonEntity> seasons) {
-		this.seasons = seasons;
-	}
-	public TrialEntity getTrial() {
-		return trial;
-	}
-	public void setTrial(TrialEntity trial) {
-		this.trial = trial;
-	}
-	public Date getStartDate() {
-		return startDate;
-	}
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
+
 	public Date getEndDate() {
 		return endDate;
 	}
+
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	public boolean isActive() {
-		return active;
+
+	public List<EnvironmentParametersEntity> getEnvironmentParameters() {
+		return environmentParameters;
 	}
-	public void setActive(boolean active) {
-		this.active = active;
+
+	public void setEnvironmentParameters(List<EnvironmentParametersEntity> environmentParameters) {
+		this.environmentParameters = environmentParameters;
 	}
-	public String getLicence() {
-		return licence;
+
+	public ExperimentalDesignEntity getExperimentalDesign() {
+		return experimentalDesign;
 	}
-	public void setLicence(String licence) {
-		this.licence = licence;
+
+	public void setExperimentalDesign(ExperimentalDesignEntity experimentalDesign) {
+		this.experimentalDesign = experimentalDesign;
 	}
+
+	public GrowthFacilityEntity getGrowthFacility() {
+		return growthFacility;
+	}
+
+	public void setGrowthFacility(GrowthFacilityEntity growthFacility) {
+		this.growthFacility = growthFacility;
+	}
+
+	public StudyLastUpdateEntity getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public void setLastUpdate(StudyLastUpdateEntity lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
+
+	public String getLicense() {
+		return license;
+	}
+
+	public void setLicense(String license) {
+		this.license = license;
+	}
+
 	public LocationEntity getLocation() {
 		return location;
 	}
+
 	public void setLocation(LocationEntity location) {
 		this.location = location;
 	}
-	public List<ContactEntity> getContacts() {
-		return contacts;
+
+	public List<ObservationLevelEntity> getObservationLevels() {
+		return observationLevels;
 	}
-	public void setContacts(List<ContactEntity> contacts) {
-		this.contacts = contacts;
+
+	public void setObservationLevels(List<ObservationLevelEntity> observationLevels) {
+		this.observationLevels = observationLevels;
 	}
-	public List<DataLinkEntity> getDataLinks() {
-		return dataLinks;
+
+	public String getObservationUnitsDescription() {
+		return observationUnitsDescription;
 	}
-	public void setDataLinks(List<DataLinkEntity> dataLinks) {
-		this.dataLinks = dataLinks;
+
+	public void setObservationUnitsDescription(String observationUnitsDescription) {
+		this.observationUnitsDescription = observationUnitsDescription;
 	}
-	public String getVersion() {
-		return version;
+
+	public List<SeasonEntity> getSeasons() {
+		return seasons;
 	}
-	public void setVersion(String version) {
-		this.version = version;
+
+	public void setSeasons(List<SeasonEntity> seasons) {
+		this.seasons = seasons;
 	}
-	public Date getTimestamp() {
-		return timestamp;
+
+	public Date getStartDate() {
+		return startDate;
 	}
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getStudyCode() {
+		return studyCode;
+	}
+
+	public void setStudyCode(String studyCode) {
+		this.studyCode = studyCode;
+	}
+
+	public String getStudyDescription() {
+		return studyDescription;
+	}
+
+	public void setStudyDescription(String studyDescription) {
+		this.studyDescription = studyDescription;
+	}
+
+	public String getStudyName() {
+		return studyName;
+	}
+
+	public void setStudyName(String studyName) {
+		this.studyName = studyName;
+	}
+
+	public String getStudyPUI() {
+		return studyPUI;
+	}
+
+	public void setStudyPUI(String studyPUI) {
+		this.studyPUI = studyPUI;
+	}
+
+	public String getStudyType() {
+		return studyType;
+	}
+
+	public void setStudyType(String studyType) {
+		this.studyType = studyType;
+	}
+
+	public TrialEntity getTrial() {
+		return trial;
+	}
+
+	public void setTrial(TrialEntity trial) {
+		this.trial = trial;
 	}
 }

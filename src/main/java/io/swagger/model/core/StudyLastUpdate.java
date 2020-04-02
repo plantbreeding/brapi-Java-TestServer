@@ -15,14 +15,14 @@ import javax.validation.Valid;
 @ApiModel(description = "The date and time when this study was last modified")
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
-public class StudyNewRequestLastUpdate   {
+public class StudyLastUpdate   {
   @JsonProperty("timestamp")
   private OffsetDateTime timestamp = null;
 
   @JsonProperty("version")
   private String version = null;
 
-  public StudyNewRequestLastUpdate timestamp(OffsetDateTime timestamp) {
+  public StudyLastUpdate timestamp(OffsetDateTime timestamp) {
     this.timestamp = timestamp;
     return this;
   }
@@ -42,7 +42,7 @@ public class StudyNewRequestLastUpdate   {
     this.timestamp = timestamp;
   }
 
-  public StudyNewRequestLastUpdate version(String version) {
+  public StudyLastUpdate version(String version) {
     this.version = version;
     return this;
   }
@@ -70,7 +70,7 @@ public class StudyNewRequestLastUpdate   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    StudyNewRequestLastUpdate studyNewRequestLastUpdate = (StudyNewRequestLastUpdate) o;
+    StudyLastUpdate studyNewRequestLastUpdate = (StudyLastUpdate) o;
     return Objects.equals(this.timestamp, studyNewRequestLastUpdate.timestamp) &&
         Objects.equals(this.version, studyNewRequestLastUpdate.version);
   }

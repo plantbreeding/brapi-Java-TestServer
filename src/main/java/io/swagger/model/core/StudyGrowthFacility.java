@@ -13,14 +13,14 @@ import org.springframework.validation.annotation.Validated;
 @ApiModel(description = "Short description of the facility in which the study was carried out.")
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
-public class StudyNewRequestGrowthFacility   {
+public class StudyGrowthFacility   {
   @JsonProperty("PUI")
   private String PUI = null;
 
   @JsonProperty("description")
   private String description = null;
 
-  public StudyNewRequestGrowthFacility PUI(String PUI) {
+  public StudyGrowthFacility PUI(String PUI) {
     this.PUI = PUI;
     return this;
   }
@@ -39,7 +39,7 @@ public class StudyNewRequestGrowthFacility   {
     this.PUI = PUI;
   }
 
-  public StudyNewRequestGrowthFacility description(String description) {
+  public StudyGrowthFacility description(String description) {
     this.description = description;
     return this;
   }
@@ -67,7 +67,7 @@ public class StudyNewRequestGrowthFacility   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    StudyNewRequestGrowthFacility studyNewRequestGrowthFacility = (StudyNewRequestGrowthFacility) o;
+    StudyGrowthFacility studyNewRequestGrowthFacility = (StudyGrowthFacility) o;
     return Objects.equals(this.PUI, studyNewRequestGrowthFacility.PUI) &&
         Objects.equals(this.description, studyNewRequestGrowthFacility.description);
   }
