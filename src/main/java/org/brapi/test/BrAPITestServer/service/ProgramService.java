@@ -70,11 +70,14 @@ public class ProgramService {
 	}
 
 	public Program getProgram(String programDbId) throws BrAPIServerException {
-		Program program = null;
+		return convertFromEntity(getProgramEntity(programDbId));
+	}
+
+	public ProgramEntity getProgramEntity(String programDbId) throws BrAPIServerException {
+		ProgramEntity program = null;
 		Optional<ProgramEntity> entityOpt = programRepository.findById(programDbId);
 		if (entityOpt.isPresent()) {
-			ProgramEntity entity = entityOpt.get();
-			program = convertFromEntity(entity);
+			program = entityOpt.get();
 		} else {
 			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + programDbId);
 		}

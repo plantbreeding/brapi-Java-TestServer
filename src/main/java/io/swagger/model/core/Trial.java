@@ -17,27 +17,6 @@ public class Trial extends TrialNewRequest  {
   @JsonProperty("trialDbId")
   private String trialDbId = null;
 
-  public Trial trialDbId(String trialDbId) {
-    this.trialDbId = trialDbId;
-    return this;
-  }
-
-  /**
-   * The ID which uniquely identifies a trial  MIAPPE V1.1 (DM-2) Investigation unique ID - Identifier comprising the unique name of the institution/database hosting the submission of the investigation data, and the accession number of the investigation in that institution.
-   * @return trialDbId
-  **/
-  @ApiModelProperty(example = "1883b402", required = true, value = "The ID which uniquely identifies a trial  MIAPPE V1.1 (DM-2) Investigation unique ID - Identifier comprising the unique name of the institution/database hosting the submission of the investigation data, and the accession number of the investigation in that institution.")
-      @NotNull
-
-    public String getTrialDbId() {
-    return trialDbId;
-  }
-
-  public void setTrialDbId(String trialDbId) {
-    this.trialDbId = trialDbId;
-  }
-
-
   @Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {
@@ -51,9 +30,36 @@ public class Trial extends TrialNewRequest  {
         super.equals(o);
   }
 
+  /**
+   * The ID which uniquely identifies a trial  MIAPPE V1.1 (DM-2) Investigation unique ID - Identifier comprising the unique name of the institution/database hosting the submission of the investigation data, and the accession number of the investigation in that institution.
+   * @return trialDbId
+  **/
+  @ApiModelProperty(example = "1883b402", required = true, value = "The ID which uniquely identifies a trial  MIAPPE V1.1 (DM-2) Investigation unique ID - Identifier comprising the unique name of the institution/database hosting the submission of the investigation data, and the accession number of the investigation in that institution.")
+      @NotNull
+
+    public String getTrialDbId() {
+    return trialDbId;
+  }
+
   @Override
   public int hashCode() {
     return Objects.hash(trialDbId, super.hashCode());
+  }
+
+
+  public void setTrialDbId(String trialDbId) {
+    this.trialDbId = trialDbId;
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(java.lang.Object o) {
+    if (o == null) {
+      return "null";
+    }
+    return o.toString().replace("\n", "\n    ");
   }
 
   @Override
@@ -66,14 +72,8 @@ public class Trial extends TrialNewRequest  {
     return sb.toString();
   }
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
+  public Trial trialDbId(String trialDbId) {
+    this.trialDbId = trialDbId;
+    return this;
   }
 }

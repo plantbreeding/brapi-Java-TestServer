@@ -19,8 +19,28 @@ public class ServerInfoService {
 	static {
 		services = new ArrayList<>();
 		services.add(buildService("serviceinfo", new MethodsEnum[] { MethodsEnum.GET }));
+		services.add(buildService("commoncropnames", new MethodsEnum[] { MethodsEnum.GET }));
+		services.addAll(buildEntityServices("lists", "listDbId"));
+		services.add(buildService("lists/{listDbId}/items", new MethodsEnum[] { MethodsEnum.POST }));
+		services.addAll(buildEntityServices("locations", "locationDbId"));
+		services.addAll(buildEntityServices("people", "personDbId"));
+		services.addAll(buildEntityServices("programs", "programDbId"));
+		services.add(buildService("seasons", new MethodsEnum[] { MethodsEnum.GET, MethodsEnum.POST }));
+		services.add(buildService("seasons/{seasonDbId}", new MethodsEnum[] { MethodsEnum.GET, MethodsEnum.PUT }));
+		services.addAll(buildEntityServices("studies", "studyDbId"));
+		services.add(buildService("studytypes", new MethodsEnum[] { MethodsEnum.GET }));
+		services.addAll(buildEntityServices("trials", "trialDbId"));
 	}
 
+	public static List<Service> buildEntityServices(String entityName, String dbidName) {
+		List<Service> entityServices = new ArrayList<>();
+		entityServices.add(buildService(entityName, new MethodsEnum[] { MethodsEnum.GET, MethodsEnum.POST }));
+		entityServices.add(buildService(entityName + "/{" + dbidName + "}", new MethodsEnum[] { MethodsEnum.GET, MethodsEnum.PUT }));
+		entityServices.add(buildService("search/" + entityName, new MethodsEnum[] { MethodsEnum.POST }));
+		
+		return entityServices;
+	}
+	
 	public static Service buildService(String servicePath, MethodsEnum[] methods) {
 		Service service = new Service();
 		service.addDataTypesItem(WSMIMEDataTypes.APPLICATION_JSON);

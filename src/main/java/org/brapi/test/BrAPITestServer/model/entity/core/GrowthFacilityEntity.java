@@ -2,7 +2,6 @@ package org.brapi.test.BrAPITestServer.model.entity.core;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 

@@ -77,7 +77,29 @@ public class TrialSearchRequest extends SearchRequestParametersPaging  {
   @Valid
   private List<String> trialPUIs = null;
 
-  public TrialSearchRequest commonCropNames(List<String> commonCropNames) {
+  @JsonProperty("sortBy")
+  private SortBy sortBy = null;
+
+  @JsonProperty("sortOrder")
+  private SortOrder sortOrder = null;
+
+  public SortBy getSortBy() {
+	return sortBy;
+}
+
+public void setSortBy(SortBy sortBy) {
+	this.sortBy = sortBy;
+}
+
+public SortOrder getSortOrder() {
+	return sortOrder;
+}
+
+public void setSortOrder(SortOrder sortOrder) {
+	this.sortOrder = sortOrder;
+}
+
+public TrialSearchRequest commonCropNames(List<String> commonCropNames) {
     this.commonCropNames = commonCropNames;
     return this;
   }

@@ -35,14 +35,14 @@ import io.swagger.model.core.Contact;
 import io.swagger.model.core.EnvironmentParameter;
 import io.swagger.model.core.ObservationUnitHierarchyLevel;
 import io.swagger.model.core.ObservationUnitHierarchyLevel.LevelNameEnum;
+import io.swagger.model.core.SortBy;
+import io.swagger.model.core.SortOrder;
 import io.swagger.model.core.Study;
 import io.swagger.model.core.StudyExperimentalDesign;
 import io.swagger.model.core.StudyGrowthFacility;
 import io.swagger.model.core.StudyNewRequest;
 import io.swagger.model.core.StudyLastUpdate;
 import io.swagger.model.core.StudySearchRequest;
-import io.swagger.model.core.StudySearchRequest.SortByEnum;
-import io.swagger.model.core.StudySearchRequest.SortOrderEnum;
 
 @Service
 public class StudyService {
@@ -101,10 +101,10 @@ public class StudyService {
 			request.addExternalReferenceSourcesItem(externalReferenceSource);
 		if (active != null)
 			request.setActive(active);
-		if (sortBy != null)
-			request.setSortBy(SortByEnum.fromValue(sortBy));
-		if (sortOrder != null)
-			request.setSortOrder(SortOrderEnum.fromValue(sortOrder));
+		if (sortBy != null && SortBy.fromValue(sortBy) != null)
+			request.setSortBy(SortBy.fromValue(sortBy));
+		if (sortOrder != null && SortOrder.fromValue(sortOrder) != null)
+			request.setSortOrder(SortOrder.fromValue(sortOrder));
 
 		return findStudies(request, metadata);
 	}
@@ -135,10 +135,11 @@ public class StudyService {
 				.appendList(request.getObservationVariableNames(), "*observation.observationVariable.name")
 				.appendList(request.getProgramDbIds(), "trial.program.id")
 				.appendList(request.getProgramNames(), "trial.program.name")
-				.appendList(request.getSeasonDbIds(), "season.id").appendList(request.getStudyCodes(), "studyCode")
+				.appendList(request.getSeasonDbIds(), "*season.id").appendList(request.getStudyCodes(), "studyCode")
 				.appendList(request.getStudyDbIds(), "id").appendList(request.getStudyNames(), "studyName")
 				.appendList(request.getStudyPUIs(), "studyPUI").appendList(request.getStudyTypes(), "studyType")
-				.appendList(request.getTrialDbIds(), "trial.id").appendList(request.getTrialNames(), "trial.name");
+				.appendList(request.getTrialDbIds(), "trial.id").appendList(request.getTrialNames(), "trial.name")
+				.withSort(getSortByField(request.getSortBy()), request.getSortOrder());
 
 		Page<StudyEntity> studiesPage = studyRepository.findAllBySearch(searchQuery, pageReq);
 		PagingUtility.calculateMetaData(metaData, studiesPage);
@@ -473,4 +474,48 @@ public class StudyService {
 		}
 		return entity;
 	}
+
+	private String getSortByField(SortBy sortBy) {
+		String sortByStr = "id";
+		if (sortBy != null) {
+			switch (sortBy) {
+			case GERMPLASMDBID:
+				sortByStr = "*obsunit.germplasm.id";
+				break;
+			case LOCATIONDBID:
+				sortByStr = "location.id";
+				break;
+			case OBSERVATIONVARIABLEDBID:
+				sortByStr = "*observation.observationVariable.id";
+				break;
+			case PROGRAMDBID:
+				sortByStr = "trial.program.id";
+				break;
+			case PROGRAMNAME:
+				sortByStr = "trial.program.name";
+				break;
+			case SEASONDBID:
+				sortByStr = "*season.id";
+				break;
+			case STUDYDBID:
+				sortByStr = "id";
+				break;
+			case STUDYLOCATION:
+				sortByStr = "location.id";
+				break;
+			case TRIALDBID:
+				sortByStr = "trial.id ";
+				break;
+			case STUDYTYPE:
+				sortByStr = "studyName";
+				break;
+			case STUDYNAME:
+			default:
+				sortByStr = "studyName";
+				break;
+			}
+		}
+		return sortByStr;
+	}
+
 }

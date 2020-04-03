@@ -2,10 +2,7 @@ package io.swagger.model.core;
 
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import com.fasterxml.jackson.annotation.JsonValue;
 
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.common.SearchRequestParametersPaging;
@@ -87,89 +84,11 @@ public class StudySearchRequest extends SearchRequestParametersPaging  {
   @Valid
   private List<String> seasonDbIds = null;
 
-  /**
-   * Name of one of the fields within the study object on which results can be sorted
-   */
-  public enum SortByEnum {
-    STUDYDBID("studyDbId"),
-    
-    TRIALDBID("trialDbId"),
-    
-    PROGRAMDBID("programDbId"),
-    
-    LOCATIONDBID("locationDbId"),
-    
-    SEASONDBID("seasonDbId"),
-    
-    STUDYTYPE("studyType"),
-    
-    STUDYNAME("studyName"),
-    
-    STUDYLOCATION("studyLocation"),
-    
-    PROGRAMNAME("programName"),
-    
-    GERMPLASMDBID("germplasmDbId"),
-    
-    OBSERVATIONVARIABLEDBID("observationVariableDbId");
-
-    private String value;
-
-    SortByEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static SortByEnum fromValue(String text) {
-      for (SortByEnum b : SortByEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("sortBy")
-  private SortByEnum sortBy = null;
+  private SortBy sortBy = null;
 
-  /**
-   * Order results should be sorted. ex. \"ASC\" or \"DESC\"
-   */
-  public enum SortOrderEnum {
-    ASC("ASC"),
-    
-    DESC("DESC");
-
-    private String value;
-
-    SortOrderEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static SortOrderEnum fromValue(String text) {
-      for (SortOrderEnum b : SortOrderEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("sortOrder")
-  private SortOrderEnum sortOrder = null;
+  private SortOrder sortOrder = null;
 
   @JsonProperty("studyCodes")
   @Valid
@@ -634,7 +553,7 @@ public class StudySearchRequest extends SearchRequestParametersPaging  {
     this.seasonDbIds = seasonDbIds;
   }
 
-  public StudySearchRequest sortBy(SortByEnum sortBy) {
+  public StudySearchRequest sortBy(SortBy sortBy) {
     this.sortBy = sortBy;
     return this;
   }
@@ -645,15 +564,15 @@ public class StudySearchRequest extends SearchRequestParametersPaging  {
   **/
   @ApiModelProperty(value = "Name of one of the fields within the study object on which results can be sorted")
   
-    public SortByEnum getSortBy() {
+    public SortBy getSortBy() {
     return sortBy;
   }
 
-  public void setSortBy(SortByEnum sortBy) {
+  public void setSortBy(SortBy sortBy) {
     this.sortBy = sortBy;
   }
 
-  public StudySearchRequest sortOrder(SortOrderEnum sortOrder) {
+  public StudySearchRequest sortOrder(SortOrder sortOrder) {
     this.sortOrder = sortOrder;
     return this;
   }
@@ -664,11 +583,11 @@ public class StudySearchRequest extends SearchRequestParametersPaging  {
   **/
   @ApiModelProperty(value = "Order results should be sorted. ex. \"ASC\" or \"DESC\"")
   
-    public SortOrderEnum getSortOrder() {
+    public SortOrder getSortOrder() {
     return sortOrder;
   }
 
-  public void setSortOrder(SortOrderEnum sortOrder) {
+  public void setSortOrder(SortOrder sortOrder) {
     this.sortOrder = sortOrder;
   }
 

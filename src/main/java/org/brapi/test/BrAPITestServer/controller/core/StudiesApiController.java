@@ -83,7 +83,7 @@ public class StudiesApiController extends BrAPIController implements StudiesApi 
 	}
 
 	public ResponseEntity<StudySingleResponse> studiesStudyDbIdGet(
-			@ApiParam(value = "Identifier of the study. Usually a number, could be alphanumeric.", required = true) @PathVariable("studyDbId") String studyDbId,
+			@PathVariable("studyDbId") String studyDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
@@ -93,7 +93,7 @@ public class StudiesApiController extends BrAPIController implements StudiesApi 
 	}
 
 	public ResponseEntity<StudySingleResponse> studiesStudyDbIdPut(
-			@ApiParam(value = "Identifier of the study. Usually a number, could be alphanumeric.", required = true) @PathVariable("studyDbId") String studyDbId,
+			@PathVariable("studyDbId") String studyDbId,
 			@Valid @RequestBody StudyNewRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
@@ -116,7 +116,7 @@ public class StudiesApiController extends BrAPIController implements StudiesApi 
 	}
 
 	public ResponseEntity<StudyListResponse> searchStudiesSearchResultsDbIdGet(
-			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
+			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {

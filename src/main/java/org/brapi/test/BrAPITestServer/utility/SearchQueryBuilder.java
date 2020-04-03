@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
 import org.threeten.bp.OffsetDateTime;
 
 import io.swagger.model.common.GeoJSONSearchArea;
+import io.swagger.model.core.SortOrder;
 
 public class SearchQueryBuilder<T> {
 	public static final String LIST_ENTITY = "ListEntity";
@@ -131,4 +131,14 @@ public class SearchQueryBuilder<T> {
 		}
 	}
 
+	public SearchQueryBuilder<T> withSort(String sortByStr, SortOrder sortOrder) {
+		String sortOrderStr = "ASC";
+		if(sortOrder != null) {
+			sortOrderStr = sortOrder.toString();
+		}
+		
+		this.query += " ORDER BY " + entityPrefix(sortByStr) + " " + sortOrderStr;
+		
+		return this;
+	}
 }
