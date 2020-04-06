@@ -5,12 +5,13 @@
  */
 package io.swagger.api.pheno;
 
+import io.swagger.model.WSMIMEDataTypes;
 import io.swagger.model.pheno.ObservationListResponse;
 import io.swagger.model.pheno.ObservationNewRequest;
 import io.swagger.model.pheno.ObservationSingleResponse;
 import io.swagger.model.pheno.ObservationTableResponse;
 import org.threeten.bp.OffsetDateTime;
-import io.swagger.model.common.WSMIMEDataTypes;
+
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

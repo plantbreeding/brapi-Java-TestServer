@@ -5,8 +5,8 @@
  */
 package io.swagger.api.core;
 
+import io.swagger.model.WSMIMEDataTypes;
 import io.swagger.model.core.ServerInfoResponse;
-import io.swagger.model.common.WSMIMEDataTypes;
 import io.swagger.annotations.*;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;

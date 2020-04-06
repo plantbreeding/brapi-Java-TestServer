@@ -5,7 +5,7 @@
  */
 package io.swagger.api.germ;
 
-import io.swagger.model.common.Model202AcceptedSearchResponse;
+import io.swagger.model.Model202AcceptedSearchResponse;
 import io.swagger.model.germ.GermplasmListResponse;
 import io.swagger.model.germ.GermplasmMCPDResponse;
 import io.swagger.model.germ.GermplasmNewRequest;

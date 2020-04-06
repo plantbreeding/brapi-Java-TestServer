@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.common.ExternalReferences;
+import io.swagger.model.ExternalReferences;
 import io.swagger.model.germ.GermplasmNewRequestDonors;
 import io.swagger.model.germ.GermplasmNewRequestStorageTypes;
 import io.swagger.model.germ.GermplasmNewRequestSynonyms;

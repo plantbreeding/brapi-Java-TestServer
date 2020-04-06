@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.common.ExternalReferences;
+import io.swagger.model.ExternalReferences;
 import io.swagger.model.pheno.ObservationTreatment;
 import io.swagger.model.pheno.ObservationUnitPosition;
 import java.util.ArrayList;

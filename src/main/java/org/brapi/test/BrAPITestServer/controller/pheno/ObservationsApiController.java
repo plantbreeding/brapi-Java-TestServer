@@ -1,11 +1,12 @@
 package org.brapi.test.BrAPITestServer.controller.pheno;
 
+import io.swagger.model.WSMIMEDataTypes;
 import io.swagger.model.pheno.ObservationListResponse;
 import io.swagger.model.pheno.ObservationNewRequest;
 import io.swagger.model.pheno.ObservationSingleResponse;
 import io.swagger.model.pheno.ObservationTableResponse;
 import org.threeten.bp.OffsetDateTime;
-import io.swagger.model.common.WSMIMEDataTypes;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import io.swagger.api.pheno.ObservationsApi;

@@ -1,12 +1,12 @@
 package org.brapi.test.BrAPITestServer.controller.core;
 
 import io.swagger.model.core.ServerInfoResponse;
+import io.swagger.model.WSMIMEDataTypes;
 import io.swagger.model.core.ServerInfo;
-import io.swagger.model.common.WSMIMEDataTypes;
 import io.swagger.api.core.ServerinfoApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
-import org.brapi.test.BrAPITestServer.service.ServerInfoService;
+import org.brapi.test.BrAPITestServer.service.core.ServerInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;

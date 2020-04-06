@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.common.Context;
-import io.swagger.model.common.Metadata;
+import io.swagger.model.Context;
+import io.swagger.model.Metadata;
 import io.swagger.model.pheno.Method;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;

@@ -7,7 +7,7 @@ package io.swagger.api.core;
 
 import org.threeten.bp.LocalDate;
 
-import io.swagger.model.common.Model202AcceptedSearchResponse;
+import io.swagger.model.Model202AcceptedSearchResponse;
 import io.swagger.model.core.TrialListResponse;
 import io.swagger.model.core.TrialNewRequest;
 import io.swagger.model.core.TrialSearchRequest;

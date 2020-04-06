@@ -8,8 +8,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.ExternalReferences;
 import io.swagger.model.germ.CrossParent;
-import io.swagger.model.common.ExternalReferences;
+
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.validation.annotation.Validated;

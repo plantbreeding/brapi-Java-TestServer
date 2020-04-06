@@ -1,10 +1,11 @@
 package org.brapi.test.BrAPITestServer.controller.pheno;
 
+import io.swagger.model.WSMIMEDataTypes;
 import io.swagger.model.pheno.ObservationUnitListResponse;
 import io.swagger.model.pheno.ObservationUnitNewRequest;
 import io.swagger.model.pheno.ObservationUnitSingleResponse;
 import io.swagger.model.pheno.ObservationUnitTableResponse;
-import io.swagger.model.common.WSMIMEDataTypes;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import io.swagger.api.pheno.ObservationunitsApi;

@@ -1,12 +1,12 @@
 package org.brapi.test.BrAPITestServer.controller.geno;
 
+import io.swagger.model.Model202AcceptedSearchResponse;
 import io.swagger.model.geno.CallSetsListResponse;
 import io.swagger.model.geno.CallSetsSearchRequest;
 import io.swagger.model.geno.CallsListResponse;
 import io.swagger.model.geno.CallsSearchRequest;
 import io.swagger.model.geno.MarkerPositionListResponse;
 import io.swagger.model.geno.MarkerPositionSearchRequest;
-import io.swagger.model.common.Model202AcceptedSearchResponse;
 import io.swagger.model.geno.ReferenceSetsListResponse;
 import io.swagger.model.geno.ReferenceSetsSearchRequest;
 import io.swagger.model.geno.ReferencesListResponse;

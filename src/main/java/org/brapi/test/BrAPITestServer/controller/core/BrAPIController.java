@@ -10,11 +10,11 @@ import org.brapi.test.BrAPITestServer.exceptions.InvalidPagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import io.swagger.model.common.BrAPIResponse;
-import io.swagger.model.common.BrAPIResponseResult;
-import io.swagger.model.common.IndexPagination;
-import io.swagger.model.common.Metadata;
-import io.swagger.model.common.SearchRequestParametersPaging;
+import io.swagger.model.BrAPIResponse;
+import io.swagger.model.BrAPIResponseResult;
+import io.swagger.model.IndexPagination;
+import io.swagger.model.Metadata;
+import io.swagger.model.SearchRequestParametersPaging;
 
 public class BrAPIController {
 	protected Metadata generateMetaDataTemplateForSearch(Integer originalRequestedPage, Integer newRequestedPage,

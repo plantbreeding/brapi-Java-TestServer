@@ -2,7 +2,7 @@ package org.brapi.test.BrAPITestServer.serializer;
 
 import java.io.IOException;
 
-import org.brapi.test.BrAPITestServer.utility.DateUtility;
+import org.brapi.test.BrAPITestServer.service.DateUtility;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatterBuilder;
 

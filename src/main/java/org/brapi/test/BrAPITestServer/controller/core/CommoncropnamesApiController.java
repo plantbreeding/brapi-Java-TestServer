@@ -1,12 +1,12 @@
 package org.brapi.test.BrAPITestServer.controller.core;
 
-import io.swagger.model.common.Metadata;
+import io.swagger.model.Metadata;
 import io.swagger.model.core.CommonCropNamesResponse;
 import io.swagger.model.core.CommonCropNamesResponseResult;
 import io.swagger.api.core.CommoncropnamesApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
-import org.brapi.test.BrAPITestServer.service.CropService;
+import org.brapi.test.BrAPITestServer.service.core.CropService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

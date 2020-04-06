@@ -5,7 +5,7 @@
  */
 package io.swagger.api.core;
 
-import io.swagger.model.common.Model202AcceptedSearchResponse;
+import io.swagger.model.Model202AcceptedSearchResponse;
 import io.swagger.model.core.StudyListResponse;
 import io.swagger.model.core.StudyNewRequest;
 import io.swagger.model.core.StudySearchRequest;

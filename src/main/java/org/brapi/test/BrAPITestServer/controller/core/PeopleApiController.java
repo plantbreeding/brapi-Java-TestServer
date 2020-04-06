@@ -1,6 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller.core;
 
-import io.swagger.model.common.Metadata;
+import io.swagger.model.Metadata;
 import io.swagger.model.core.Person;
 import io.swagger.model.core.PersonListResponse;
 import io.swagger.model.core.PersonListResponseResult;
@@ -10,7 +10,7 @@ import io.swagger.model.core.PersonSearchRequest;
 import io.swagger.api.core.PeopleApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
-import org.brapi.test.BrAPITestServer.service.PeopleService;
+import org.brapi.test.BrAPITestServer.service.core.PeopleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

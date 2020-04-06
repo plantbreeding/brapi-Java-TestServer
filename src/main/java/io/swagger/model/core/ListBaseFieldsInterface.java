@@ -1,8 +1,9 @@
 package io.swagger.model.core;
 
-import io.swagger.model.common.ExternalReferences;
 import java.util.Map;
 import org.threeten.bp.OffsetDateTime;
+
+import io.swagger.model.ExternalReferences;
 
 public interface ListBaseFieldsInterface {
 

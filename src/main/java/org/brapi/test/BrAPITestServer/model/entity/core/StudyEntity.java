@@ -15,8 +15,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
-import org.brapi.test.BrAPITestServer.model.entity.ContactEntity;
-import org.brapi.test.BrAPITestServer.model.entity.DataLinkEntity;
 
 @Entity
 @Table(name = "study")

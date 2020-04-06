@@ -3,9 +3,10 @@ package io.swagger.model.core;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.common.BrAPIResponse;
-import io.swagger.model.common.Context;
-import io.swagger.model.common.Metadata;
+import io.swagger.model.BrAPIResponse;
+import io.swagger.model.Context;
+import io.swagger.model.Metadata;
+
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;

@@ -5,16 +5,16 @@
  */
 package io.swagger.api.pheno;
 
+import io.swagger.model.Model202AcceptedSearchResponse;
+import io.swagger.model.WSMIMEDataTypes;
 import io.swagger.model.pheno.ImageListResponse;
 import io.swagger.model.pheno.ImageSearchRequest;
-import io.swagger.model.common.Model202AcceptedSearchResponse;
 import io.swagger.model.pheno.ObservationListResponse;
 import io.swagger.model.pheno.ObservationSearchRequest;
 import io.swagger.model.pheno.ObservationUnitListResponse;
 import io.swagger.model.pheno.ObservationUnitSearchRequest;
 import io.swagger.model.pheno.ObservationVariableListResponse;
 import io.swagger.model.pheno.ObservationVariableSearchRequest;
-import io.swagger.model.common.WSMIMEDataTypes;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

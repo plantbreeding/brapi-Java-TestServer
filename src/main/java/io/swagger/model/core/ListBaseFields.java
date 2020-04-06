@@ -3,7 +3,8 @@ package io.swagger.model.core;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.common.ExternalReferences;
+import io.swagger.model.ExternalReferences;
+
 import java.util.HashMap;
 import java.util.Map;
 import org.threeten.bp.OffsetDateTime;

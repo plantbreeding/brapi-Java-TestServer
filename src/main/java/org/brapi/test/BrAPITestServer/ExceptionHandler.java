@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import io.swagger.model.common.Metadata;
-import io.swagger.model.common.Status;
-import io.swagger.model.common.Status.MessageTypeEnum;
+import io.swagger.model.Metadata;
+import io.swagger.model.Status;
+import io.swagger.model.Status.MessageTypeEnum;
 
 @ControllerAdvice
 public class ExceptionHandler extends ResponseEntityExceptionHandler{

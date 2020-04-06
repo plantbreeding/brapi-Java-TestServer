@@ -1,6 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller.core;
 
-import io.swagger.model.common.Metadata;
+import io.swagger.model.Metadata;
 import io.swagger.model.core.Location;
 import io.swagger.model.core.LocationListResponse;
 import io.swagger.model.core.LocationListResponseResult;
@@ -11,7 +11,7 @@ import io.swagger.annotations.*;
 import io.swagger.api.core.LocationsApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
-import org.brapi.test.BrAPITestServer.service.LocationService;
+import org.brapi.test.BrAPITestServer.service.core.LocationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

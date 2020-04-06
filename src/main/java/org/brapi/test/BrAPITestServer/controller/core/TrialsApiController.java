@@ -2,7 +2,7 @@ package org.brapi.test.BrAPITestServer.controller.core;
 
 import org.threeten.bp.LocalDate;
 
-import io.swagger.model.common.Metadata;
+import io.swagger.model.Metadata;
 import io.swagger.model.core.Trial;
 import io.swagger.model.core.TrialListResponse;
 import io.swagger.model.core.TrialListResponseResult;
@@ -12,7 +12,7 @@ import io.swagger.model.core.TrialSingleResponse;
 import io.swagger.api.core.TrialsApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
-import org.brapi.test.BrAPITestServer.service.TrialService;
+import org.brapi.test.BrAPITestServer.service.core.TrialService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

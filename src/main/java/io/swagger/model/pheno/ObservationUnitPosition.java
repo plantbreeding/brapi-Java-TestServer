@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.common.GeoJSON;
+import io.swagger.model.GeoJSON;
 import io.swagger.model.pheno.ObservationUnitLevelRelationship;
 import java.util.ArrayList;
 import java.util.List;

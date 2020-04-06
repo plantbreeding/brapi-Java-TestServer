@@ -1,6 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller.core;
 
-import io.swagger.model.common.Metadata;
+import io.swagger.model.Metadata;
 import io.swagger.model.core.Program;
 import io.swagger.model.core.ProgramListResponse;
 import io.swagger.model.core.ProgramListResponseResult;
@@ -11,7 +11,7 @@ import io.swagger.annotations.*;
 import io.swagger.api.core.ProgramsApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
-import org.brapi.test.BrAPITestServer.service.ProgramService;
+import org.brapi.test.BrAPITestServer.service.core.ProgramService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

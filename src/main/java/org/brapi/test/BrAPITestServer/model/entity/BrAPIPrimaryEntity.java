@@ -12,8 +12,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
 
-import io.swagger.model.common.ExternalReferences;
-import io.swagger.model.common.ExternalReferencesInner;
+import io.swagger.model.ExternalReferences;
+import io.swagger.model.ExternalReferencesInner;
 
 @MappedSuperclass
 public class BrAPIPrimaryEntity extends BrAPIBaseEntity {

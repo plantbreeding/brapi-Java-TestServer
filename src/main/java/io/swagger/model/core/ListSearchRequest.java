@@ -3,7 +3,8 @@ package io.swagger.model.core;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.common.SearchRequestParametersPaging;
+import io.swagger.model.SearchRequestParametersPaging;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.threeten.bp.OffsetDateTime;

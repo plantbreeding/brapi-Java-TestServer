@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.common.SearchRequestParametersPaging;
+import io.swagger.model.SearchRequestParametersPaging;
 import io.swagger.model.pheno.TraitDataType;
 
 import java.util.ArrayList;

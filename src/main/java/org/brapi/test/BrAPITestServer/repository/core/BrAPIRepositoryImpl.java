@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import org.brapi.test.BrAPITestServer.utility.SearchQueryBuilder;
+import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

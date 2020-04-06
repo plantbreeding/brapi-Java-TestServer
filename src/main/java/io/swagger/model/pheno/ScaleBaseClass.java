@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.common.ExternalReferences;
-import io.swagger.model.common.OntologyReference;
+import io.swagger.model.ExternalReferences;
+import io.swagger.model.OntologyReference;
 import io.swagger.model.pheno.ScaleBaseClassValidValues;
 import io.swagger.model.pheno.TraitDataType;
 

@@ -2,7 +2,7 @@ package org.brapi.test.BrAPITestServer.repository.core;
 
 import java.io.Serializable;
 
-import org.brapi.test.BrAPITestServer.utility.SearchQueryBuilder;
+import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

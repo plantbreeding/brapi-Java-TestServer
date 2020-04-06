@@ -5,11 +5,11 @@
  */
 package io.swagger.api.pheno;
 
+import io.swagger.model.WSMIMEDataTypes;
 import io.swagger.model.pheno.ObservationUnitListResponse;
 import io.swagger.model.pheno.ObservationUnitNewRequest;
 import io.swagger.model.pheno.ObservationUnitSingleResponse;
 import io.swagger.model.pheno.ObservationUnitTableResponse;
-import io.swagger.model.common.WSMIMEDataTypes;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

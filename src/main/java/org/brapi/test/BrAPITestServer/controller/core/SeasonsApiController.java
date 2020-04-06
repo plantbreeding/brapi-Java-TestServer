@@ -1,6 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller.core;
 
-import io.swagger.model.common.Metadata;
+import io.swagger.model.Metadata;
 import io.swagger.model.core.Season;
 import io.swagger.model.core.SeasonListResponse;
 import io.swagger.model.core.SeasonListResponseResult;
@@ -8,7 +8,7 @@ import io.swagger.model.core.SeasonSingleResponse;
 import io.swagger.api.core.SeasonsApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
-import org.brapi.test.BrAPITestServer.service.SeasonService;
+import org.brapi.test.BrAPITestServer.service.core.SeasonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;

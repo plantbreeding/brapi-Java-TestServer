@@ -1,6 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller.germ;
 
-import io.swagger.model.common.Metadata;
+import io.swagger.model.Metadata;
 import io.swagger.model.germ.GermplasmAttribute;
 import io.swagger.model.germ.GermplasmAttributeCategoryListResponse;
 import io.swagger.model.germ.GermplasmAttributeCategoryListResponseResult;
@@ -13,7 +13,7 @@ import io.swagger.api.germ.AttributesApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
-import org.brapi.test.BrAPITestServer.service.GermplasmAttributeService;
+import org.brapi.test.BrAPITestServer.service.germ.GermplasmAttributeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
