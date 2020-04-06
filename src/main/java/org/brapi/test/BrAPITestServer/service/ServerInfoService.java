@@ -30,6 +30,7 @@ public class ServerInfoService {
 		services.addAll(buildEntityServices("studies", "studyDbId"));
 		services.add(buildService("studytypes", new MethodsEnum[] { MethodsEnum.GET }));
 		services.addAll(buildEntityServices("trials", "trialDbId"));
+		services.addAll(buildEntityServices("attributes", "attributeDbId"));
 	}
 
 	public static List<Service> buildEntityServices(String entityName, String dbidName) {

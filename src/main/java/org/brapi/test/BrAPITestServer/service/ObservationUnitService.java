@@ -277,17 +277,6 @@ public class ObservationUnitService {
 //		return obe;
 //	}
 
-	private ObservationEntity convertToEntity(Observation observation) {
-		ObservationEntity obe = observationRepository.findById(observation.getObservationDbId())
-				.orElse(new ObservationEntity());
-//		obe.setCollector(observation.getOperator());
-		obe.setObservationTimeStamp(DateUtility.toDate(observation.getObservationTimeStamp()));
-		obe.setValue(observation.getValue());
-		obe.setObservationVariable(
-				observationVariableService.getVariableEntity(observation.getObservationVariableDbId()));
-		return obe;
-	}
-
 	public List<String> getObservationLevels(Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 		Page<String> levelsPage = observationUnitRepository.findObservationLevels(pageReq);
@@ -329,15 +318,15 @@ public class ObservationUnitService {
 	public ObservationTable getStudyObservationUnitTable(String studyDbId, Metadata metadata) {
 		ObservationTable tableWrapper = new ObservationTable();
 
-		tableWrapper.setHeaderRow(buildHeaderRow());
-
-		List<ObservationVariable> variables = observationVariableService.getVariablesForStudy(studyDbId, metadata);
-//		tableWrapper.setObservationVariables(
-//				variables.stream().map(e -> e.getObservationVariableDbId()).collect(Collectors.toList()));
-//		tableWrapper.setObservationVariableNames(variables.stream().map(e -> e.getName()).collect(Collectors.toList()));
-
-		List<ObservationUnitEntity> units = observationUnitRepository.findAllByStudy_Id(studyDbId);
-		tableWrapper.setData(buildDataMatrix(units, variables));
+//		tableWrapper.setHeaderRow(buildHeaderRow());
+//
+//		List<ObservationVariable> variables = observationVariableService.getVariablesForStudy(studyDbId, metadata);
+////		tableWrapper.setObservationVariables(
+////				variables.stream().map(e -> e.getObservationVariableDbId()).collect(Collectors.toList()));
+////		tableWrapper.setObservationVariableNames(variables.stream().map(e -> e.getName()).collect(Collectors.toList()));
+//
+//		List<ObservationUnitEntity> units = observationUnitRepository.findAllByStudy_Id(studyDbId);
+//		tableWrapper.setData(buildDataMatrix(units, variables));
 
 		return tableWrapper;
 	}
@@ -667,18 +656,18 @@ public class ObservationUnitService {
 //	}
 
 	private void updateEntity(ObservationEntity entity, ObservationNewRequest obs) {
-		entity.setCollector(obs.getCollector());
-		entity.setObservationTimeStamp(DateUtility.toDate(obs.getObservationTimeStamp()));
-		entity.setValue(obs.getValue());
-
-		if (entity.getObservationVariable() == null
-				|| entity.getObservationVariable().getId() != obs.getObservationVariableDbId()) {
-			ObservationVariableEntity observationVariable = observationVariableService
-					.getVariableEntity(obs.getObservationVariableDbId());
-			entity.setObservationVariable(observationVariable);
-		}
-
-		entity.setSeason(seasonRepository.findById("1").get());
+//		entity.setCollector(obs.getCollector());
+//		entity.setObservationTimeStamp(DateUtility.toDate(obs.getObservationTimeStamp()));
+//		entity.setValue(obs.getValue());
+//
+//		if (entity.getObservationVariable() == null
+//				|| entity.getObservationVariable().getId() != obs.getObservationVariableDbId()) {
+//			ObservationVariableEntity observationVariable = observationVariableService
+//					.getVariableEntity(obs.getObservationVariableDbId());
+//			entity.setObservationVariable(observationVariable);
+//		}
+//
+//		entity.setSeason(seasonRepository.findById("1").get());
 
 	}
 

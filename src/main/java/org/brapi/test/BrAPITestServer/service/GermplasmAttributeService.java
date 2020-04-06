@@ -1,110 +1,158 @@
 package org.brapi.test.BrAPITestServer.service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.validation.Valid;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.GermplasmAttributeDefinitionEntity;
-import org.brapi.test.BrAPITestServer.model.entity.GermplasmAttributeValueEntity;
-import org.brapi.test.BrAPITestServer.repository.GermplasmAttributeCategoryRepository;
 import org.brapi.test.BrAPITestServer.repository.GermplasmAttributeDefinitionRepository;
-import org.brapi.test.BrAPITestServer.repository.GermplasmAttributeValueRepository;
 import org.brapi.test.BrAPITestServer.utility.PagingUtility;
+import org.brapi.test.BrAPITestServer.utility.SearchQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.common.Metadata;
 import io.swagger.model.germ.GermplasmAttribute;
+import io.swagger.model.germ.GermplasmAttributeNewRequest;
+import io.swagger.model.germ.GermplasmAttributeSearchRequest;
 
 @Service
 public class GermplasmAttributeService {
 
 	private GermplasmAttributeDefinitionRepository attributeRepository;
-	private GermplasmAttributeCategoryRepository categoryRepository;
-	private GermplasmAttributeValueRepository attributeValueRepository;
 	private ObservationVariableService observationVariableService;
 
 	@Autowired
 	public GermplasmAttributeService(GermplasmAttributeDefinitionRepository attributeRepository,
-			GermplasmAttributeCategoryRepository categoryRepository,
-			GermplasmAttributeValueRepository attributeValueRepository,
 			ObservationVariableService observationVariableService) {
-		this.categoryRepository = categoryRepository;
 		this.attributeRepository = attributeRepository;
-		this.attributeValueRepository = attributeValueRepository;
 		this.observationVariableService = observationVariableService;
 	}
 
-	public List<GermplasmAttribute> getGermplasmAttributes(String attributeCategoryDbId, Metadata metaData) {
-		Page<GermplasmAttributeDefinitionEntity> page;
-		Pageable pageReq = PagingUtility.getPageRequest(metaData);
+	public List<GermplasmAttribute> findGermplasmAttributes(@Valid String attributeCategory,
+			@Valid String attributeDbId, @Valid String attributeName, @Valid String germplasmDbId,
+			@Valid String externalReferenceID, @Valid String externalReferenceSource, Metadata metadata) {
+		GermplasmAttributeSearchRequest request = new GermplasmAttributeSearchRequest();
+		if (attributeDbId != null)
+			request.addAttributeDbIdsItem(attributeDbId);
+		if (attributeName != null)
+			request.addAttributeNamesItem(attributeName);
+		if (externalReferenceID != null)
+			request.addExternalReferenceIDsItem(externalReferenceID);
+		if (externalReferenceSource != null)
+			request.addExternalReferenceSourcesItem(externalReferenceSource);
 
-		if (attributeCategoryDbId == null) {
-			page = attributeRepository.findAll(pageReq);
-		} else {
-			page = attributeRepository.findByAttributeCategory_Id(attributeCategoryDbId, pageReq);
-		}
-		PagingUtility.calculateMetaData(metaData, page);
+		return findGermplasmAttributes(request, metadata);
+	}
 
-		List<GermplasmAttribute> attributes = page.map(this::mapFromEntityToAttribute).getContent();
+	public List<GermplasmAttribute> findGermplasmAttributes(@Valid GermplasmAttributeSearchRequest request,
+			Metadata metadata) {
+		Pageable pageReq = PagingUtility.getPageRequest(metadata);
+		SearchQueryBuilder<GermplasmAttributeDefinitionEntity> searchQuery = new SearchQueryBuilder<GermplasmAttributeDefinitionEntity>(
+				GermplasmAttributeDefinitionEntity.class)
+						.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
+						.appendList(request.getAttributeDbIds(), "id").appendList(request.getAttributeNames(), "name")
+						.appendList(request.getMethodDbIds(), "method.id")
+						.appendList(request.getOntologyDbIds(), "ontology.id")
+						.appendList(request.getScaleDbIds(), "scale.id").appendList(request.getStudyDbId(), "study.id")
+						.appendList(request.getTraitClasses(), "trait.traitClass")
+						.appendList(request.getTraitDbIds(), "trait.id");
+
+		Page<GermplasmAttributeDefinitionEntity> page = attributeRepository.findAllBySearch(searchQuery, pageReq);
+		List<GermplasmAttribute> attributes = page.map(this::convertFromEntity).getContent();
+		PagingUtility.calculateMetaData(metadata, page);
 		return attributes;
 	}
 
-	private GermplasmAttribute mapFromEntityToAttribute(GermplasmAttributeDefinitionEntity entity) {
-		GermplasmAttribute attrib = new GermplasmAttribute();
-//		observationVariableService.convertFromBaseEntity(entity, attrib);
-//		
-//		attrib.setAttributeName(entity.getName());
-//		attrib.setAttributeCategoryDbId(entity.getAttributeCategory().getId());
-//		attrib.setAttributeDbId(entity.getId());
-//		attrib.setCode(entity.getCode());
-//		attrib.setDatatype(entity.getDatatype());
-//		attrib.setDescription(entity.getDescription());
-//		attrib.setName(entity.getName());
-//		attrib.setUri(entity.getUri());
-//		attrib.setValues(entity.getValues().get(0).getValue());
-
-		return attrib;
-
+	public GermplasmAttribute getGermplasmAttribute(String attributeDbId) throws BrAPIServerException {
+		return convertFromEntity(getGermplasmAttributeDefinitionEntity(attributeDbId));
 	}
 
-//	public List<GermplasmAttributeCategory> getGermplasmAttributeCategories(Metadata metaData) {
-//
-//		List<GermplasmAttributeCategory> categories = categoryRepository.findAll(PagingUtility.getPageRequest(metaData))
-//				.map(c -> {
-//					GermplasmAttributeCategory cat = new GermplasmAttributeCategory();
-//					cat.setAttributeCategoryDbId(c.getId());
-//					cat.setName(c.getName());
-//					cat.setAttributeCategoryName(c.getName());
-//					return cat;
-//				}).getContent();
-//		PagingUtility.calculateMetaData(metaData);
-//
-//		return categories;
-//	}
-
-	public List<GermplasmAttribute> getGermplasmAttributeValues(String germplasmDbId, List<String> attributeList,
-			Metadata metaData) {
-		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-		Page<GermplasmAttributeValueEntity> valuesPage;
-		if (attributeList == null || attributeList.isEmpty()) {
-			valuesPage = attributeValueRepository.findByGermplasm_Id(germplasmDbId, pageReq);
+	public GermplasmAttributeDefinitionEntity getGermplasmAttributeDefinitionEntity(String attributeDbId)
+			throws BrAPIServerException {
+		GermplasmAttributeDefinitionEntity attribute = null;
+		Optional<GermplasmAttributeDefinitionEntity> entityOpt = attributeRepository.findById(attributeDbId);
+		if (entityOpt.isPresent()) {
+			attribute = entityOpt.get();
 		} else {
-			valuesPage = attributeValueRepository
-					.findByGermplasm_IdAndGermplasmAttributeDefinition_IdIsIn(germplasmDbId, attributeList, pageReq);
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + attributeDbId);
+		}
+		return attribute;
+	}
+
+	public List<GermplasmAttribute> saveGermplasmAttributes(@Valid List<GermplasmAttributeNewRequest> body) throws BrAPIServerException {
+		List<GermplasmAttribute> savedGermplasmAttributes = new ArrayList<>();
+
+		for (GermplasmAttributeNewRequest list : body) {
+
+			GermplasmAttributeDefinitionEntity entity = new GermplasmAttributeDefinitionEntity();
+			updateEntity(entity, list);
+
+			GermplasmAttributeDefinitionEntity savedEntity = attributeRepository.save(entity);
+
+			savedGermplasmAttributes.add(convertFromEntity(savedEntity));
 		}
 
-		PagingUtility.calculateMetaData(metaData, valuesPage);
-		return valuesPage.map(this::mapFromEntityToValue).getContent();
+		return savedGermplasmAttributes;
 	}
 
-	private GermplasmAttribute mapFromEntityToValue(GermplasmAttributeValueEntity entity) {
+	public GermplasmAttribute updateGermplasmAttribute(String attributeDbId, @Valid GermplasmAttributeNewRequest body)
+			throws BrAPIServerException {
+		GermplasmAttributeDefinitionEntity savedEntity;
+		Optional<GermplasmAttributeDefinitionEntity> entityOpt = attributeRepository.findById(attributeDbId);
+		if (entityOpt.isPresent()) {
+			GermplasmAttributeDefinitionEntity entity = entityOpt.get();
+			updateEntity(entity, body);
+
+			savedEntity = attributeRepository.save(entity);
+		} else {
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + attributeDbId);
+		}
+
+		return convertFromEntity(savedEntity);
+	}
+
+	public List<String> getAttributesCategories(Metadata metadata) {
+		List<GermplasmAttributeDefinitionEntity> attributes = attributeRepository.findAll();
+		Set<String> categories = new HashSet<>();
+		for (GermplasmAttributeDefinitionEntity entity : attributes) {
+			if (entity.getAttributeCategory() != null)
+				categories.add(entity.getAttributeCategory());
+		}
+		return PagingUtility.paginateStrings(new ArrayList<>(categories), metadata);
+	}
+
+	private GermplasmAttribute convertFromEntity(GermplasmAttributeDefinitionEntity entity) {
 		GermplasmAttribute attrib = new GermplasmAttribute();
-//		attrib.setAttributeCode(entity.getGermplasmAttributeDefinition().getCode());
-		attrib.setAttributeDbId(entity.getGermplasmAttributeDefinition().getId());
-		attrib.setAttributeName(entity.getGermplasmAttributeDefinition().getName());
-//		attrib.setDeterminedDate(DateUtility.toLocalDate(entity.getDeterminedDate()));
-//		attrib.setValue(entity.getValue());
+		observationVariableService.convertFromBaseEntity(entity, attrib);
+
+		attrib.setAttributeName(entity.getName());
+		attrib.setAttributeCategory(entity.getAttributeCategory());
+		attrib.setAttributeDbId(entity.getId());
+		attrib.setAttributeDescription(entity.getDescription());
+
 		return attrib;
+
+	}
+
+	private void updateEntity(GermplasmAttributeDefinitionEntity entity, @Valid GermplasmAttributeNewRequest body) throws BrAPIServerException {
+
+		observationVariableService.updateBaseEntity(entity, body);
+
+		if (body.getAttributeName() != null)
+			entity.setName(body.getAttributeName());
+		if (body.getAttributeCategory() != null)
+			entity.setAttributeCategory(body.getAttributeCategory());
+		if (body.getAttributeDescription() != null)
+			entity.setDescription(body.getAttributeDescription());
 	}
 
 }

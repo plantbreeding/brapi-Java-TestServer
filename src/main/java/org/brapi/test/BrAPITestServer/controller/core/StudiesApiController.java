@@ -7,8 +7,11 @@ import io.swagger.model.core.StudyListResponseResult;
 import io.swagger.model.core.StudyNewRequest;
 import io.swagger.model.core.StudySearchRequest;
 import io.swagger.model.core.StudySingleResponse;
+import io.swagger.model.core.StudyTypesResponse;
+import io.swagger.model.core.StudyTypesResponseResult;
 import io.swagger.annotations.*;
 import io.swagger.api.core.StudiesApi;
+import io.swagger.api.core.StudytypesApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.StudyService;
@@ -23,11 +26,13 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
 @Controller
-public class StudiesApiController extends BrAPIController implements StudiesApi {
+public class StudiesApiController extends BrAPIController implements StudiesApi, StudytypesApi {
 
 	private static final Logger log = LoggerFactory.getLogger(StudiesApiController.class);
 
@@ -61,20 +66,21 @@ public class StudiesApiController extends BrAPIController implements StudiesApi 
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<Study> data = studyService.findStudies(commonCropName, studyType, programDbId, locationDbId, 
-				seasonDbId, trialDbId, studyDbId, studyName, studyCode, studyPUI, germplasmDbId, observationVariableDbId,
+		List<Study> data = studyService.findStudies(commonCropName, studyType, programDbId, locationDbId, seasonDbId,
+				trialDbId, studyDbId, studyName, studyCode, studyPUI, germplasmDbId, observationVariableDbId,
 				externalReferenceID, externalReferenceSource, active, sortBy, sortOrder, metadata);
 		return responseOK(new StudyListResponse(), new StudyListResponseResult(), data, metadata);
 	}
 
-	public ResponseEntity<StudyListResponse> studiesPost(
-			@Valid @RequestBody List<StudyNewRequest> body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+	public ResponseEntity<StudyListResponse> studiesPost(@Valid @RequestBody List<StudyNewRequest> body,
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -82,9 +88,9 @@ public class StudiesApiController extends BrAPIController implements StudiesApi 
 		return responseOK(new StudyListResponse(), new StudyListResponseResult(), data);
 	}
 
-	public ResponseEntity<StudySingleResponse> studiesStudyDbIdGet(
-			@PathVariable("studyDbId") String studyDbId,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+	public ResponseEntity<StudySingleResponse> studiesStudyDbIdGet(@PathVariable("studyDbId") String studyDbId,
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -92,10 +98,10 @@ public class StudiesApiController extends BrAPIController implements StudiesApi 
 		return responseOK(new StudySingleResponse(), data);
 	}
 
-	public ResponseEntity<StudySingleResponse> studiesStudyDbIdPut(
-			@PathVariable("studyDbId") String studyDbId,
+	public ResponseEntity<StudySingleResponse> studiesStudyDbIdPut(@PathVariable("studyDbId") String studyDbId,
 			@Valid @RequestBody StudyNewRequest body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -103,10 +109,9 @@ public class StudiesApiController extends BrAPIController implements StudiesApi 
 		return responseOK(new StudySingleResponse(), data);
 	}
 
-
-	public ResponseEntity<StudyListResponse> searchStudiesPost(
-			@Valid @RequestBody StudySearchRequest body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+	public ResponseEntity<StudyListResponse> searchStudiesPost(@Valid @RequestBody StudySearchRequest body,
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -119,10 +124,24 @@ public class StudiesApiController extends BrAPIController implements StudiesApi 
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		return new ResponseEntity<StudyListResponse>(HttpStatus.NOT_IMPLEMENTED);
+	}
+
+	public ResponseEntity<StudyTypesResponse> studytypesGet(
+			@Valid @RequestParam(value = "page", required = false) Integer page,
+			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
+
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		List<String> data = studyService.getStudyTypes(metadata);
+		return responseOK(new StudyTypesResponse(), new StudyTypesResponseResult(), data, metadata);
 	}
 }

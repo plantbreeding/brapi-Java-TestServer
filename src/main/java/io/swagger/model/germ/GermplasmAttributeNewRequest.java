@@ -72,9 +72,6 @@ public class GermplasmAttributeNewRequest extends VariableBaseClass  {
    * A human readable name for this attribute
    * @return attributeName
   **/
-  @ApiModelProperty(example = "Plant Height 1", required = true, value = "A human readable name for this attribute")
-      @NotNull
-
     public String getAttributeName() {
     return attributeName;
   }

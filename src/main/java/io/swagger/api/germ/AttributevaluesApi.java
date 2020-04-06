@@ -5,8 +5,10 @@
  */
 package io.swagger.api.germ;
 
+import io.swagger.model.common.Model202AcceptedSearchResponse;
 import io.swagger.model.germ.GermplasmAttributeValueListResponse;
 import io.swagger.model.germ.GermplasmAttributeValueNewRequest;
+import io.swagger.model.germ.GermplasmAttributeValueSearchRequest;
 import io.swagger.model.germ.GermplasmAttributeValueSingleResponse;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -81,6 +83,37 @@ public interface AttributevaluesApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<GermplasmAttributeValueListResponse> attributevaluesPost(
 			@ApiParam(value = "") @Valid @RequestBody List<GermplasmAttributeValueNewRequest> body,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+
+	@ApiOperation(value = "Submit a search request for Germplasm Attribute Values", nickname = "searchAttributevaluesPost", notes = "Search for a set of Germplasm Attribute Values based on some criteria          See Search Services for additional implementation details.", response = GermplasmAttributeValueListResponse.class, authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Germplasm Attribute Values", })
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "OK", response = GermplasmAttributeValueListResponse.class),
+			@ApiResponse(code = 202, message = "Accepted", response = Model202AcceptedSearchResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/search/attributevalues", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.POST)
+	ResponseEntity<GermplasmAttributeValueListResponse> searchAttributevaluesPost(
+			@ApiParam(value = "") @Valid @RequestBody GermplasmAttributeValueSearchRequest body,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+
+	@ApiOperation(value = "Get the results of a Germplasm Attribute Values search request", nickname = "searchAttributevaluesSearchResultsDbIdGet", notes = "Get the results of a Germplasm Attribute Values search request  See Search Services for additional implementation details.", response = GermplasmAttributeValueListResponse.class, authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Germplasm Attribute Values", })
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "OK", response = GermplasmAttributeValueListResponse.class),
+			@ApiResponse(code = 202, message = "Accepted", response = Model202AcceptedSearchResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class),
+			@ApiResponse(code = 404, message = "Not Found", response = String.class) })
+	@RequestMapping(value = "/search/attributevalues/{searchResultsDbId}", produces = {
+			"application/json" }, method = RequestMethod.GET)
+	ResponseEntity<GermplasmAttributeValueListResponse> searchAttributevaluesSearchResultsDbIdGet(
+			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
+			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
 
 }

@@ -1,8 +1,10 @@
 package org.brapi.test.BrAPITestServer.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -188,6 +190,16 @@ public class StudyService {
 		}
 
 		return convertFromEntity(savedEntity);
+	}
+
+	public List<String> getStudyTypes(Metadata metadata) {
+		List<StudyEntity> studies = studyRepository.findAll();
+		Set<String> types = new HashSet<>();
+		for (StudyEntity entity : studies) {
+			if (entity.getStudyType() != null)
+				types.add(entity.getStudyType());
+		}
+		return PagingUtility.paginateStrings(new ArrayList<>(types), metadata);
 	}
 
 	private void updateEntity(StudyEntity entity, @Valid StudyNewRequest body) throws BrAPIServerException {

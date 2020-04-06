@@ -11,8 +11,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name="germplasm_attribute_definition")
 public class GermplasmAttributeDefinitionEntity extends VariableBaseEntity{
-	@ManyToOne
-	private GermplasmAttributeCategoryEntity attributeCategory;
+	@Column
+	private String attributeCategory;
 	@Column
 	private String code;
 	@Column
@@ -27,10 +27,10 @@ public class GermplasmAttributeDefinitionEntity extends VariableBaseEntity{
 	private List<GermplasmAttributeValueEntity> values;
 	
 	
-	public GermplasmAttributeCategoryEntity getAttributeCategory() {
+	public String getAttributeCategory() {
 		return attributeCategory;
 	}
-	public void setAttributeCategory(GermplasmAttributeCategoryEntity attributeCategory) {
+	public void setAttributeCategory(String attributeCategory) {
 		this.attributeCategory = attributeCategory;
 	}
 	public String getCode() {

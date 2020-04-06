@@ -14,7 +14,6 @@ import java.util.Map;
 import org.threeten.bp.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * VariableBaseClass
@@ -52,13 +51,13 @@ public class VariableBaseClass   {
   private String language = null;
 
   @JsonProperty("method")
-  private Object method = null;
+  private Method method = null;
 
   @JsonProperty("ontologyReference")
   private OntologyReference ontologyReference = null;
 
   @JsonProperty("scale")
-  private Object scale = null;
+  private Scale scale = null;
 
   @JsonProperty("scientist")
   private String scientist = null;
@@ -74,7 +73,7 @@ public class VariableBaseClass   {
   private List<String> synonyms = null;
 
   @JsonProperty("trait")
-  private Object trait = null;
+  private Trait trait = null;
 
   public VariableBaseClass additionalInfo(Map<String, String> additionalInfo) {
     this.additionalInfo = additionalInfo;
@@ -264,7 +263,7 @@ public class VariableBaseClass   {
     this.language = language;
   }
 
-  public VariableBaseClass method(Object method) {
+  public VariableBaseClass method(Method method) {
     this.method = method;
     return this;
   }
@@ -273,14 +272,11 @@ public class VariableBaseClass   {
    * Get method
    * @return method
   **/
-  @ApiModelProperty(required = true, value = "")
-      @NotNull
-
-    public Object getMethod() {
+    public Method getMethod() {
     return method;
   }
 
-  public void setMethod(Object method) {
+  public void setMethod(Method method) {
     this.method = method;
   }
 
@@ -304,7 +300,7 @@ public class VariableBaseClass   {
     this.ontologyReference = ontologyReference;
   }
 
-  public VariableBaseClass scale(Object scale) {
+  public VariableBaseClass scale(Scale scale) {
     this.scale = scale;
     return this;
   }
@@ -313,14 +309,11 @@ public class VariableBaseClass   {
    * Get scale
    * @return scale
   **/
-  @ApiModelProperty(required = true, value = "")
-      @NotNull
-
-    public Object getScale() {
+    public Scale getScale() {
     return scale;
   }
 
-  public void setScale(Object scale) {
+  public void setScale(Scale scale) {
     this.scale = scale;
   }
 
@@ -409,7 +402,7 @@ public class VariableBaseClass   {
     this.synonyms = synonyms;
   }
 
-  public VariableBaseClass trait(Object trait) {
+  public VariableBaseClass trait(Trait trait) {
     this.trait = trait;
     return this;
   }
@@ -418,14 +411,11 @@ public class VariableBaseClass   {
    * Get trait
    * @return trait
   **/
-  @ApiModelProperty(required = true, value = "")
-      @NotNull
-
-    public Object getTrait() {
+    public Trait getTrait() {
     return trait;
   }
 
-  public void setTrait(Object trait) {
+  public void setTrait(Trait trait) {
     this.trait = trait;
   }
 

@@ -20,7 +20,7 @@ import org.springframework.data.domain.Pageable;
 
 import io.swagger.model.pheno.ObservationVariableSearchRequest;
 
-public class ObservationVariableRepositoryImpl implements ObservationVariableRepositoryCustom {
+public class ObservationVariableRepositoryImpl {
 
 	@PersistenceContext
 	private EntityManager em;
@@ -32,7 +32,6 @@ public class ObservationVariableRepositoryImpl implements ObservationVariableRep
 		this.customRepositorySearchService = customRepositorySearchService;
 	}
 
-	@Override
 	public Page<ObservationVariableEntity> findBySearch(ObservationVariableSearchRequest request, Pageable pageRequest) {
 		Map<String, Object> params = new HashMap<>();
 		String queryStr = buildQueryString(request, params);

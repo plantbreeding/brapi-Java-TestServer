@@ -3,17 +3,16 @@ package org.brapi.test.BrAPITestServer.model.entity;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="ontology")
-public class OntologyEntity extends BrAPIBaseEntity {
+public class OntologyEntity extends BrAPIPrimaryEntity {
 	@Column
 	private String ontologyName;
-	@Column
-	private String xref;
 	@Column
 	private String authors;
 	@Column
@@ -28,7 +27,15 @@ public class OntologyEntity extends BrAPIBaseEntity {
 	private String documentationURL;
 	@OneToMany(mappedBy="ontology")
 	private List<VariableBaseEntity> variables;
+	@ElementCollection
+	private List<String> documentationLinks;
 
+	public List<String> getDocumentationLinks() {
+		return documentationLinks;
+	}
+	public void setDocumentationLinks(List<String> documentationLinks) {
+		this.documentationLinks = documentationLinks;
+	}
 	public String getDocumentationURL() {
 		return documentationURL;
 	}
@@ -40,13 +47,6 @@ public class OntologyEntity extends BrAPIBaseEntity {
 	}
 	public void setVariables(List<VariableBaseEntity> variables) {
 		this.variables = variables;
-	}
-
-	public String getXref() {
-		return xref;
-	}
-	public void setXref(String xref) {
-		this.xref = xref;
 	}
 	public String getOntologyName() {
 		return ontologyName;

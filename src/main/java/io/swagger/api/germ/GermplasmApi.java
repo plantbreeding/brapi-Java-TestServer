@@ -5,10 +5,12 @@
  */
 package io.swagger.api.germ;
 
+import io.swagger.model.common.Model202AcceptedSearchResponse;
 import io.swagger.model.germ.GermplasmListResponse;
 import io.swagger.model.germ.GermplasmMCPDResponse;
 import io.swagger.model.germ.GermplasmNewRequest;
 import io.swagger.model.germ.GermplasmPedigreeResponse;
+import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.model.germ.GermplasmSingleResponse;
 import io.swagger.model.germ.ProgenyResponse;
 import io.swagger.annotations.*;
@@ -130,6 +132,35 @@ public interface GermplasmApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<GermplasmListResponse> germplasmPost(
 			@ApiParam(value = "") @Valid @RequestBody List<GermplasmNewRequest> body,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+
+	@ApiOperation(value = "Submit a search request for Germplasm", nickname = "searchGermplasmPost", notes = "Search for a set of germplasm based on some criteria  Addresses these needs   - General germplasm search mechanism that accepts POST for complex queries   - Possibility to search germplasm by more parameters than those allowed by the existing germplasm search   - Possibility to get MCPD details by PUID rather than dbId  See Search Services for additional implementation details.", response = GermplasmListResponse.class, authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Germplasm", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = GermplasmListResponse.class),
+			@ApiResponse(code = 202, message = "Accepted", response = Model202AcceptedSearchResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/search/germplasm", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.POST)
+	ResponseEntity<GermplasmListResponse> searchGermplasmPost(
+			@ApiParam(value = "") @Valid @RequestBody GermplasmSearchRequest body,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+
+	@ApiOperation(value = "Get the results of a Germplasm search request", nickname = "searchGermplasmSearchResultsDbIdGet", notes = "See Search Services for additional implementation details.  Addresses these needs:   1. General germplasm search mechanism that accepts POST for complex queries   2. possibility to search germplasm by more parameters than those allowed by the existing germplasm search   3. possibility to get MCPD details by PUID rather than dbId", response = GermplasmListResponse.class, authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Germplasm", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = GermplasmListResponse.class),
+			@ApiResponse(code = 202, message = "Accepted", response = Model202AcceptedSearchResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class),
+			@ApiResponse(code = 404, message = "Not Found", response = String.class) })
+	@RequestMapping(value = "/search/germplasm/{searchResultsDbId}", produces = {
+			"application/json" }, method = RequestMethod.GET)
+	ResponseEntity<GermplasmListResponse> searchGermplasmSearchResultsDbIdGet(
+			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
+			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
 
 }

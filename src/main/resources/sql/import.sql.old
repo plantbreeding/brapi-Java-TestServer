@@ -87,11 +87,6 @@ INSERT INTO trait_ontology_reference(trait_entity_id, ontology_reference_id) VAL
 INSERT INTO trait_ontology_reference(trait_entity_id, ontology_reference_id) VALUES ('t4', 'or12');
 INSERT INTO trait_ontology_reference(trait_entity_id, ontology_reference_id) VALUES ('t5', 'or13');
 
-INSERT INTO germplasm_attribute_category (id, name) VALUES ('1', 'Morphological');
-INSERT INTO germplasm_attribute_category (id, name) VALUES ('2', 'Agronomic');
-INSERT INTO germplasm_attribute_category (id, name) VALUES ('3', 'Biotic stress');
-INSERT INTO germplasm_attribute_category (id, name) VALUES ('4', 'Abiotic stress');
-
 INSERT INTO germplasm_attribute_definition(id, crop, default_value, documentationurl, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id, code, datatype, description, uri, attribute_category_id) VALUES ('ATT01', 'maize', '10', 'https://brapi.org', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100002', 'Rht-B1b',                   't1', 'm1', 's1', 'RHT',     'Categorical', 'Allele of marker 11_4769',      'http://www.brapi.org/ontology/MO_123:1000001', '2');
 INSERT INTO germplasm_attribute_definition(id, crop, default_value, documentationurl, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id, code, datatype, description, uri, attribute_category_id) VALUES ('ATT02', 'maize', '10', 'https://brapi.org', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100003', 'Weevil Resistance',         't3', 'm3', 's3', 'WEV',     'Categorical', 'Resistance allele',             'http://www.brapi.org/ontology/MO_123:1000002', '3');
 INSERT INTO germplasm_attribute_definition(id, crop, default_value, documentationurl, growth_stage, institution, language, scientist, status, submission_timestamp, ontology_id, xref, name, trait_id, method_id, scale_id, code, datatype, description, uri, attribute_category_id) VALUES ('ATT03', 'maize', '10', 'https://brapi.org', '1', 'Cornell', 'English', 'Bob', 'active', '2011-06-14T22:12:51Z', 'MO_123', 'MO_123:100004', 'Flesh Color Orange allele', 't2', 'm2', 's2', 'FLSHORG', 'Categorical', 'Allelele for orange flesh',     'http://www.brapi.org/ontology/MO_123:1000003', '1');
