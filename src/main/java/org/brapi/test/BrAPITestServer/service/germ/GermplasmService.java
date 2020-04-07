@@ -65,12 +65,13 @@ public class GermplasmService {
 
 	public List<Germplasm> search(String germplasmPUI, String germplasmDbId, String germplasmName,
 			String commonCropName, Metadata metaData) {
-		GermplasmSearchRequest request = buildSearchRequest(germplasmPUI, germplasmDbId, germplasmName, commonCropName);
-		Page<Germplasm> results = germplasmRepository.findBySearch(request, PagingUtility.getPageRequest(metaData))
-				.map(this::convertFromEntity);
-
-		PagingUtility.calculateMetaData(metaData, results);
-		return results.getContent();
+//		GermplasmSearchRequest request = buildSearchRequest(germplasmPUI, germplasmDbId, germplasmName, commonCropName);
+//		Page<Germplasm> results = germplasmRepository.findBySearch(request, PagingUtility.getPageRequest(metaData))
+//				.map(this::convertFromEntity);
+//
+//		PagingUtility.calculateMetaData(metaData, results);
+//		return results.getContent();
+		return null;
 	}
 
 	private GermplasmSearchRequest buildSearchRequest(String germplasmPUI, String germplasmDbId, String germplasmName,
@@ -93,11 +94,12 @@ public class GermplasmService {
 
 	public List<Germplasm> search(GermplasmSearchRequest request, Metadata metaData) {
 
-		Page<Germplasm> results = germplasmRepository.findBySearch(request, PagingUtility.getPageRequest(metaData))
-				.map(this::convertFromEntity);
-
-		PagingUtility.calculateMetaData(metaData, results);
-		return results.getContent();
+//		Page<Germplasm> results = germplasmRepository.findBySearch(request, PagingUtility.getPageRequest(metaData))
+//				.map(this::convertFromEntity);
+//
+//		PagingUtility.calculateMetaData(metaData, results);
+//		return results.getContent();
+		return null;
 	}
 
 	private Germplasm convertFromEntity(GermplasmEntity entity) {
@@ -374,5 +376,10 @@ public class GermplasmService {
 						.instituteName(entity.getInstituteName())));
 
 		return mcpd;
+	}
+
+	public GermplasmEntity getGermplasmEntity(String germplasmDbId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

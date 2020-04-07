@@ -13,7 +13,7 @@ import org.springframework.data.domain.Pageable;
 
 import io.swagger.model.germ.GermplasmSearchRequest;
 
-public class GermplasmRepositoryImpl implements GermplasmRepositoryCustom {
+public class GermplasmRepositoryImpl {
 
 	@PersistenceContext
 	private EntityManager em;
@@ -25,7 +25,6 @@ public class GermplasmRepositoryImpl implements GermplasmRepositoryCustom {
 		this.customRepositorySearchService = customRepositorySearchService;
 	}
 
-	@Override
 	public Page<GermplasmEntity> findBySearch(GermplasmSearchRequest request, Pageable pageRequest) {
 		Map<String, Object> params = new HashMap<>();
 		String queryStr = buildQueryString(request, params);

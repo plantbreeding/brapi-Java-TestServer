@@ -7,13 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 
 @Entity
 @Table(name="germplasm_attribute_value")
-public class GermplasmAttributeValueEntity extends BrAPIBaseEntity{
+public class GermplasmAttributeValueEntity extends BrAPIPrimaryEntity{
 	@ManyToOne
-	private GermplasmAttributeDefinitionEntity germplasmAttributeDefinition;
+	private GermplasmAttributeDefinitionEntity attribute;
 	@ManyToOne
 	private GermplasmEntity germplasm;
 	@Column
@@ -22,11 +22,11 @@ public class GermplasmAttributeValueEntity extends BrAPIBaseEntity{
 	private Date determinedDate;
 	
 	
-	public GermplasmAttributeDefinitionEntity getGermplasmAttributeDefinition() {
-		return germplasmAttributeDefinition;
+	public GermplasmAttributeDefinitionEntity getAttribute() {
+		return attribute;
 	}
-	public void setGermplasmAttributeDefinition(GermplasmAttributeDefinitionEntity germplasmAttributeDefinition) {
-		this.germplasmAttributeDefinition = germplasmAttributeDefinition;
+	public void setAttribute(GermplasmAttributeDefinitionEntity attribute) {
+		this.attribute = attribute;
 	}
 	public GermplasmEntity getGermplasm() {
 		return germplasm;

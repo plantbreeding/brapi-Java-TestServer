@@ -25,7 +25,7 @@ public class GermplasmAttributeDefinitionEntity extends VariableBaseEntity{
 	private String description;
 	@Column
 	private String datatype;
-	@OneToMany(mappedBy="germplasmAttributeDefinition", targetEntity=GermplasmAttributeValueEntity.class)
+	@OneToMany(mappedBy="attribute")
 	private List<GermplasmAttributeValueEntity> values;
 	
 	
