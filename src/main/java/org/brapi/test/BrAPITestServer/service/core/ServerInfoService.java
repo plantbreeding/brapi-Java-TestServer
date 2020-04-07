@@ -32,6 +32,8 @@ public class ServerInfoService {
 		services.addAll(buildEntityServices("trials", "trialDbId"));
 		services.addAll(buildEntityServices("attributes", "attributeDbId"));
 		services.addAll(buildEntityServices("attributevalues", "attributeValueDbId"));
+		services.add(buildService("breedingmethods", new MethodsEnum[] { MethodsEnum.GET }));
+		services.add(buildService("breedingmethods/{breedingmethodDbId}", new MethodsEnum[] { MethodsEnum.GET }));
 	}
 
 	public static List<Service> buildEntityServices(String entityName, String dbidName) {

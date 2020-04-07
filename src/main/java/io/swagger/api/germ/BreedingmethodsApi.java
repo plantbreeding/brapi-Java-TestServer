@@ -8,6 +8,8 @@ package io.swagger.api.germ;
 import io.swagger.model.germ.BreedingMethodListResponse;
 import io.swagger.model.germ.BreedingMethodSingleResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -32,7 +34,7 @@ public interface BreedingmethodsApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<BreedingMethodSingleResponse> breedingmethodsBreedingMethodDbIdGet(
 			@ApiParam(value = "Internal database identifier for a breeding method", required = true) @PathVariable("breedingMethodDbId") String breedingMethodDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the Breeding Methods", nickname = "breedingmethodsGet", notes = "Get the list of germplasm breeding methods available in a system.", response = BreedingMethodListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Germplasm", })
@@ -44,6 +46,6 @@ public interface BreedingmethodsApi {
 	ResponseEntity<BreedingMethodListResponse> breedingmethodsGet(
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 }
