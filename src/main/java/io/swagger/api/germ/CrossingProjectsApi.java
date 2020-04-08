@@ -24,7 +24,7 @@ import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:33:36.513Z[GMT]")
 @Api(value = "crossingprojects", description = "the crossingprojects API")
-public interface CrossingprojectsApi {
+public interface CrossingProjectsApi {
 
 	@ApiOperation(value = "Get a filtered list of Crossing Projects", nickname = "crossingprojectsCrossingProjectDbIdGet", notes = "Get a filtered list of Crossing Projects.", response = CrossingProjectsSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Crossing Projects", })

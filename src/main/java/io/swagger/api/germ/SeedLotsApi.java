@@ -5,12 +5,14 @@
  */
 package io.swagger.api.germ;
 
-import io.swagger.model.germ.Body;
 import io.swagger.model.germ.SeedLotListResponse;
 import io.swagger.model.germ.SeedLotNewRequest;
+import io.swagger.model.germ.SeedLotNewTransactionRequest;
 import io.swagger.model.germ.SeedLotSingleResponse;
 import io.swagger.model.germ.SeedLotTransactionListResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +26,7 @@ import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:33:36.513Z[GMT]")
 @Api(value = "seedlots", description = "the seedlots API")
-public interface SeedlotsApi {
+public interface SeedLotsApi {
 
 	@ApiOperation(value = "Get a filtered list of Seed Lot descriptions", nickname = "seedlotsGet", notes = "Get a filtered list of Seed Lot descriptions available in a system.", response = SeedLotListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Seed Lots", })
@@ -40,7 +42,8 @@ public interface SeedlotsApi {
 			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Add new Seed Lot descriptions to a server", nickname = "seedlotsPost", notes = "Add new Seed Lot descriptions to a server", response = SeedLotListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Seed Lots", })
@@ -52,7 +55,8 @@ public interface SeedlotsApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<SeedLotListResponse> seedlotsPost(
 			@ApiParam(value = "") @Valid @RequestBody List<SeedLotNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get a specific Seed Lot", nickname = "seedlotsSeedLotDbIdGet", notes = "Get a specific Seed Lot by seedLotDbId", response = SeedLotSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Seed Lots", })
@@ -64,7 +68,8 @@ public interface SeedlotsApi {
 	@RequestMapping(value = "/seedlots/{seedLotDbId}", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<SeedLotSingleResponse> seedlotsSeedLotDbIdGet(
 			@ApiParam(value = "Unique id for a seed lot on this server", required = true) @PathVariable("seedLotDbId") String seedLotDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Update an existing Seed Lot", nickname = "seedlotsSeedLotDbIdPut", notes = "Update an existing Seed Lot", response = SeedLotSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Seed Lots", })
@@ -78,7 +83,8 @@ public interface SeedlotsApi {
 	ResponseEntity<SeedLotSingleResponse> seedlotsSeedLotDbIdPut(
 			@ApiParam(value = "Unique id for a seed lot on this server", required = true) @PathVariable("seedLotDbId") String seedLotDbId,
 			@ApiParam(value = "") @Valid @RequestBody SeedLotNewRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get all Transactions related to a specific Seed Lot", nickname = "seedlotsSeedLotDbIdTransactionsGet", notes = "Get all Transactions related to a specific Seed Lot", response = SeedLotTransactionListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Seed Lots", })
@@ -95,7 +101,8 @@ public interface SeedlotsApi {
 			@ApiParam(value = "Filter results to only include transactions directed to the specific Seed Lot (TO), away from the specific Seed Lot (FROM), or both (BOTH). The default value for this parameter is BOTH", allowableValues = "TO, FROM, BOTH") @Valid @RequestParam(value = "transactionDirection", required = false) String transactionDirection,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get a filtered list of Seed Lot Transactions", nickname = "seedlotsTransactionsGet", notes = "Get a filtered list of Seed Lot Transactions", response = SeedLotTransactionListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Seed Lots", })
@@ -112,7 +119,8 @@ public interface SeedlotsApi {
 			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Add new Seed Lot Transaction to be recorded", nickname = "seedlotsTransactionsPost", notes = "Add new Seed Lot Transaction to be recorded", response = SeedLotTransactionListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Seed Lots", })
@@ -123,7 +131,8 @@ public interface SeedlotsApi {
 	@RequestMapping(value = "/seedlots/transactions", produces = { "application/json" }, consumes = {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<SeedLotTransactionListResponse> seedlotsTransactionsPost(
-			@ApiParam(value = "") @Valid @RequestBody Body body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "") @Valid @RequestBody List<SeedLotNewTransactionRequest> body,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 }

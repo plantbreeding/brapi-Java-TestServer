@@ -21,7 +21,7 @@ import javax.validation.Valid;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:33:36.513Z[GMT]")
 @Api(value = "breedingmethods", description = "the breedingmethods API")
-public interface BreedingmethodsApi {
+public interface BreedingMethodsApi {
 
 	@ApiOperation(value = "Get the details of a specific Breeding Method", nickname = "breedingmethodsBreedingMethodDbIdGet", notes = "Get the details of a specific Breeding Method used to produce Germplasm", response = BreedingMethodSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Germplasm", })

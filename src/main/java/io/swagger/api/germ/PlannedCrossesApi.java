@@ -23,7 +23,7 @@ import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:33:36.513Z[GMT]")
 @Api(value = "plannedcrosses", description = "the plannedcrosses API")
-public interface PlannedcrossesApi {
+public interface PlannedCrossesApi {
 
 	@ApiOperation(value = "Get a filtered list of Planned Cross entities", nickname = "plannedcrossesGet", notes = "Get a filtered list of Planned Cross entities.", response = PlannedCrossesListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Crosses", })

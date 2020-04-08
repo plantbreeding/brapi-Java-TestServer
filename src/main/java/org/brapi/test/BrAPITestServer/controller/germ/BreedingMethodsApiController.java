@@ -12,7 +12,7 @@ import io.swagger.model.germ.GermplasmAttributeValueSingleResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
-import io.swagger.api.germ.BreedingmethodsApi;
+import io.swagger.api.germ.BreedingMethodsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
@@ -39,16 +39,16 @@ import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:33:36.513Z[GMT]")
 @Controller
-public class BreedingmethodsApiController extends BrAPIController implements BreedingmethodsApi {
+public class BreedingMethodsApiController extends BrAPIController implements BreedingMethodsApi {
 
-	private static final Logger log = LoggerFactory.getLogger(BreedingmethodsApiController.class);
+	private static final Logger log = LoggerFactory.getLogger(BreedingMethodsApiController.class);
 
 	private final BreedingMethodService breedingMethodService;
 
 	private final HttpServletRequest request;
 
 	@org.springframework.beans.factory.annotation.Autowired
-	public BreedingmethodsApiController(BreedingMethodService breedingMethodService, HttpServletRequest request) {
+	public BreedingMethodsApiController(BreedingMethodService breedingMethodService, HttpServletRequest request) {
 		this.breedingMethodService = breedingMethodService;
 		this.request = request;
 	}

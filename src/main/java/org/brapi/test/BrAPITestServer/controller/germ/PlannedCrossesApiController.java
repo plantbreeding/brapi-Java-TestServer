@@ -6,7 +6,7 @@ import io.swagger.model.germ.PlannedCrossNewRequest;
 import io.swagger.model.germ.PlannedCrossesListResponse;
 import io.swagger.model.germ.PlannedCrossesListResponseResult;
 
-import io.swagger.api.germ.PlannedcrossesApi;
+import io.swagger.api.germ.PlannedCrossesApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
@@ -25,16 +25,16 @@ import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:33:36.513Z[GMT]")
 @Controller
-public class PlannedcrossesApiController extends BrAPIController implements PlannedcrossesApi {
+public class PlannedCrossesApiController extends BrAPIController implements PlannedCrossesApi {
 
-	private static final Logger log = LoggerFactory.getLogger(PlannedcrossesApiController.class);
+	private static final Logger log = LoggerFactory.getLogger(PlannedCrossesApiController.class);
 
 	private final CrossService crossService;
 
 	private final HttpServletRequest request;
 
 	@org.springframework.beans.factory.annotation.Autowired
-	public PlannedcrossesApiController(CrossService crossService, HttpServletRequest request) {
+	public PlannedCrossesApiController(CrossService crossService, HttpServletRequest request) {
 		this.crossService = crossService;
 		this.request = request;
 	}

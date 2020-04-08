@@ -6,7 +6,7 @@ import io.swagger.model.germ.CrossingProject;
 import io.swagger.model.germ.CrossingProjectNewRequest;
 import io.swagger.model.germ.CrossingProjectsListResponse;
 import io.swagger.model.germ.CrossingProjectsListResponseResult;
-import io.swagger.api.germ.CrossingprojectsApi;
+import io.swagger.api.germ.CrossingProjectsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
@@ -25,16 +25,16 @@ import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:33:36.513Z[GMT]")
 @Controller
-public class CrossingprojectsApiController extends BrAPIController implements CrossingprojectsApi {
+public class CrossingProjectsApiController extends BrAPIController implements CrossingProjectsApi {
 
-	private static final Logger log = LoggerFactory.getLogger(CrossingprojectsApiController.class);
+	private static final Logger log = LoggerFactory.getLogger(CrossingProjectsApiController.class);
 
 	private final CrossingProjectService crossingProjectService;
 
 	private final HttpServletRequest request;
 
 	@org.springframework.beans.factory.annotation.Autowired
-	public CrossingprojectsApiController(CrossingProjectService crossingProjectService, HttpServletRequest request) {
+	public CrossingProjectsApiController(CrossingProjectService crossingProjectService, HttpServletRequest request) {
 		this.crossingProjectService = crossingProjectService;
 		this.request = request;
 	}
