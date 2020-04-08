@@ -34,6 +34,7 @@ public class ServerInfoService {
 		services.addAll(buildEntityServices("attributevalues", "attributeValueDbId"));
 		services.add(buildService("breedingmethods", new MethodsEnum[] { MethodsEnum.GET }));
 		services.add(buildService("breedingmethods/{breedingmethodDbId}", new MethodsEnum[] { MethodsEnum.GET }));
+		services.add(buildService("crosses", new MethodsEnum[] { MethodsEnum.GET, MethodsEnum.POST, MethodsEnum.PUT }));
 	}
 
 	public static List<Service> buildEntityServices(String entityName, String dbidName) {

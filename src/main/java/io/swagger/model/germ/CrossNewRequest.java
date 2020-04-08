@@ -2,10 +2,7 @@ package io.swagger.model.germ;
 
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import com.fasterxml.jackson.annotation.JsonValue;
 
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.ExternalReferences;
@@ -37,48 +34,8 @@ public class CrossNewRequest   {
   @JsonProperty("crossName")
   private String crossName = null;
 
-  /**
-   * the type of cross
-   */
-  public enum CrossTypeEnum {
-    BIPARENTAL("BIPARENTAL"),
-    
-    SELF("SELF"),
-    
-    OPEN_POLLINATED("OPEN_POLLINATED"),
-    
-    BULK("BULK"),
-    
-    BULK_SELFED("BULK_SELFED"),
-    
-    BULK_OPEN_POLLINATED("BULK_OPEN_POLLINATED"),
-    
-    DOUBLE_HAPLOID("DOUBLE_HAPLOID");
-
-    private String value;
-
-    CrossTypeEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static CrossTypeEnum fromValue(String text) {
-      for (CrossTypeEnum b : CrossTypeEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("crossType")
-  private CrossTypeEnum crossType = null;
+  private CrossType crossType = null;
 
   @JsonProperty("crossingProjectDbId")
   private String crossingProjectDbId = null;
@@ -171,7 +128,7 @@ public class CrossNewRequest   {
     this.crossName = crossName;
   }
 
-  public CrossNewRequest crossType(CrossTypeEnum crossType) {
+  public CrossNewRequest crossType(CrossType crossType) {
     this.crossType = crossType;
     return this;
   }
@@ -182,11 +139,11 @@ public class CrossNewRequest   {
   **/
   @ApiModelProperty(example = "BIPARENTAL", value = "the type of cross")
   
-    public CrossTypeEnum getCrossType() {
+    public CrossType getCrossType() {
     return crossType;
   }
 
-  public void setCrossType(CrossTypeEnum crossType) {
+  public void setCrossType(CrossType crossType) {
     this.crossType = crossType;
   }
 

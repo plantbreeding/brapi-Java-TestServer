@@ -44,6 +44,14 @@ public class SearchQueryBuilder<T> {
 		return this;
 	}
 
+	public SearchQueryBuilder<T> appendSingle(Boolean single, String columnName) {
+		if (single != null) {
+			this.query += "AND " + entityPrefix(columnName) + " = :" + columnName + " ";
+			this.params.put(columnName, single);
+		}
+		return this;
+	}
+
 	public SearchQueryBuilder<T> appendSingle(Integer single, String columnName) {
 		if (single != null) {
 			this.query += "AND " + entityPrefix(columnName) + " = :" + columnName + " ";

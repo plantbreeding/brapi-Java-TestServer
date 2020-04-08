@@ -28,42 +28,8 @@ public class CrossParent   {
   @JsonProperty("observationUnitName")
   private String observationUnitName = null;
 
-  /**
-   * The type of parent ex. 'MALE', 'FEMALE', 'SELF', 'POPULATION', etc.
-   */
-  public enum ParentTypeEnum {
-    MALE("MALE"),
-    
-    FEMALE("FEMALE"),
-    
-    SELF("SELF"),
-    
-    POPULATION("POPULATION");
-
-    private String value;
-
-    ParentTypeEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static ParentTypeEnum fromValue(String text) {
-      for (ParentTypeEnum b : ParentTypeEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("parentType")
-  private ParentTypeEnum parentType = null;
+  private ParentType parentType = null;
 
   public CrossParent germplasmDbId(String germplasmDbId) {
     this.germplasmDbId = germplasmDbId;
@@ -141,7 +107,7 @@ public class CrossParent   {
     this.observationUnitName = observationUnitName;
   }
 
-  public CrossParent parentType(ParentTypeEnum parentType) {
+  public CrossParent parentType(ParentType parentType) {
     this.parentType = parentType;
     return this;
   }
@@ -152,11 +118,11 @@ public class CrossParent   {
   **/
   @ApiModelProperty(example = "MALE", value = "The type of parent ex. 'MALE', 'FEMALE', 'SELF', 'POPULATION', etc.")
   
-    public ParentTypeEnum getParentType() {
+    public ParentType getParentType() {
     return parentType;
   }
 
-  public void setParentType(ParentTypeEnum parentType) {
+  public void setParentType(ParentType parentType) {
     this.parentType = parentType;
   }
 

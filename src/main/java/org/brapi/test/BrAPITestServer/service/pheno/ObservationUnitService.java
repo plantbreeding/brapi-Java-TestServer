@@ -732,4 +732,9 @@ public class ObservationUnitService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public ObservationUnitEntity getObservationUnitEntity(String observationUnitDbId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
