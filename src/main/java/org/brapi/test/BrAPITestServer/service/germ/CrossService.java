@@ -31,6 +31,7 @@ import io.swagger.model.germ.CrossNewRequest;
 import io.swagger.model.germ.CrossNewRequestCrossAttributes;
 import io.swagger.model.germ.CrossParent;
 import io.swagger.model.germ.PlannedCross;
+import io.swagger.model.germ.PlannedCrossNewRequest;
 
 @Service
 public class CrossService {
@@ -94,6 +95,11 @@ public class CrossService {
 		}
 
 		return savedValues;
+	}
+
+	public List<PlannedCross> savePlannedCrosses(@Valid List<PlannedCrossNewRequest> body) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public List<Cross> updateCrosses(@Valid Map<String, CrossNewRequest> body) throws BrAPIServerException {
@@ -238,5 +244,10 @@ public class CrossService {
 			entity.setParentType(parent.getParentType());
 		}
 		return entity;
+	}
+
+	public List<PlannedCross> updatePlannedCrosses(@Valid Map<String, PlannedCrossNewRequest> body) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

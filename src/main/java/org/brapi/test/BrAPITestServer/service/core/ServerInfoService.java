@@ -35,6 +35,8 @@ public class ServerInfoService {
 		services.add(buildService("breedingmethods", new MethodsEnum[] { MethodsEnum.GET }));
 		services.add(buildService("breedingmethods/{breedingmethodDbId}", new MethodsEnum[] { MethodsEnum.GET }));
 		services.add(buildService("crosses", new MethodsEnum[] { MethodsEnum.GET, MethodsEnum.POST, MethodsEnum.PUT }));
+		services.add(buildService("crossingprojects", new MethodsEnum[] { MethodsEnum.GET, MethodsEnum.POST }));
+		services.add(buildService("crossingprojects/{crossingprojectDbId}", new MethodsEnum[] { MethodsEnum.GET, MethodsEnum.PUT }));
 	}
 
 	public static List<Service> buildEntityServices(String entityName, String dbidName) {

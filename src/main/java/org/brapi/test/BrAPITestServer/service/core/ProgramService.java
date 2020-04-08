@@ -38,7 +38,8 @@ public class ProgramService {
 	}
 
 	public List<Program> findPrograms(String commonCropName, String abbreviation, String programName,
-			String programDbId, Metadata metadata) throws BrAPIServerException {
+			String programDbId, @Valid String externalReferenceID, @Valid String externalReferenceSource,
+			Metadata metadata) throws BrAPIServerException {
 		ProgramSearchRequest request = new ProgramSearchRequest();
 		if (abbreviation != null)
 			request.addAbbreviationsItem(abbreviation);
@@ -48,6 +49,10 @@ public class ProgramService {
 			request.addProgramNamesItem(programName);
 		if (programDbId != null)
 			request.addProgramDbIdsItem(programDbId);
+		if (externalReferenceID != null)
+			request.addExternalReferenceIDsItem(externalReferenceID);
+		if (externalReferenceSource != null)
+			request.addExternalReferenceSourcesItem(externalReferenceSource);
 
 		return findPrograms(request, metadata);
 	}
@@ -56,7 +61,7 @@ public class ProgramService {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<ProgramEntity> searchQuery = new SearchQueryBuilder<ProgramEntity>(ProgramEntity.class)
 				.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
-				.appendList(request.getAbbreviations(), "abbreviaion")
+				.appendList(request.getAbbreviations(), "abbreviation")
 				.appendList(request.getCommonCropNames(), "crop.cropName")
 				.appendList(request.getLeadPersonDbIds(), "leadPerson.id")
 				.appendList(request.getLeadPersonNames(), "leadPerson.lastName")
@@ -132,7 +137,7 @@ public class ProgramService {
 			program.setLeadPersonDbId(entity.getLeadPerson().getId());
 			program.setLeadPersonName(entity.getLeadPerson().getName());
 		}
-		
+
 		return program;
 	}
 

@@ -55,7 +55,7 @@ public class ProgramsApiController extends BrAPIController implements ProgramsAp
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<Program> data = programService.findPrograms(commonCropName, abbreviation, programName, programDbId, metadata);
+		List<Program> data = programService.findPrograms(commonCropName, abbreviation, programName, programDbId, externalReferenceID, externalReferenceSource, metadata);
 		return responseOK(new ProgramListResponse(), new ProgramListResponseResult(), data, metadata);
 	}
 

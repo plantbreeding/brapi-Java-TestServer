@@ -37,71 +37,80 @@ public class SearchQueryBuilder<T> {
 	}
 
 	public SearchQueryBuilder<T> appendList(List<String> list, String columnName) {
+		String paramName = paramFilter(columnName);
 		if (list != null && !list.isEmpty()) {
-			this.query += "AND " + entityPrefix(columnName) + " in :" + columnName + " ";
-			this.params.put(columnName, list);
+			this.query += "AND " + entityPrefix(columnName) + " in :" + paramName + " ";
+			this.params.put(paramName, list);
 		}
 		return this;
 	}
 
 	public SearchQueryBuilder<T> appendSingle(Boolean single, String columnName) {
+		String paramName = paramFilter(columnName);
 		if (single != null) {
-			this.query += "AND " + entityPrefix(columnName) + " = :" + columnName + " ";
-			this.params.put(columnName, single);
+			this.query += "AND " + entityPrefix(columnName) + " = :" + paramName + " ";
+			this.params.put(paramName, single);
 		}
 		return this;
 	}
 
 	public SearchQueryBuilder<T> appendSingle(Integer single, String columnName) {
+		String paramName = paramFilter(columnName);
 		if (single != null) {
-			this.query += "AND " + entityPrefix(columnName) + " = :" + columnName + " ";
-			this.params.put(columnName, single);
+			this.query += "AND " + entityPrefix(columnName) + " = :" + paramName + " ";
+			this.params.put(paramName, single);
 		}
 		return this;
 	}
 
 	public SearchQueryBuilder<T> appendSingle(String single, String columnName) {
+		String paramName = paramFilter(columnName);
 		if (single != null && !single.isEmpty()) {
-			this.query += "AND " + entityPrefix(columnName) + " = :" + columnName + " ";
-			this.params.put(columnName, single);
+			this.query += "AND " + entityPrefix(columnName) + " = :" + paramName + " ";
+			this.params.put(paramName, single);
 		}
 		return this;
 	}
 
 	public <E extends Enum<E>> SearchQueryBuilder<T> appendEnum(E enumVal, String columnName) {
+		String paramName = paramFilter(columnName);
 		if (enumVal != null) {
-			this.query += "AND " + entityPrefix(columnName) + " = :" + columnName + " ";
-			this.params.put(columnName, enumVal);
+			this.query += "AND " + entityPrefix(columnName) + " = :" + paramName + " ";
+			this.params.put(paramName, enumVal);
 		}
 		return this;
 	}
 
 	public SearchQueryBuilder<T> appendDateRange(OffsetDateTime start, OffsetDateTime end, String columnName) {
+		String paramNameStart = paramFilter(columnName) + "Start";
+		String paramNameEnd = paramFilter(columnName) + "End";
 		if (start != null && end != null) {
-			query += "AND " + entityPrefix(columnName) + " BETWEEN :" + columnName + "Start AND :" + columnName + "End ";
-			params.put(columnName + "Start", start);
-			params.put(columnName + "End", end);
+			query += "AND " + entityPrefix(columnName) + " BETWEEN :" + paramNameStart + " AND :" + paramNameEnd + " ";
+			params.put(paramNameStart, start);
+			params.put(paramNameEnd, end);
 		} else if (start != null) {
-			query += "AND " + entityPrefix(columnName) + " >= :" + columnName + "Start ";
-			params.put(columnName + "Start", start);
+			query += "AND " + entityPrefix(columnName) + " >= :" + paramNameStart + " ";
+			params.put(paramNameStart, start);
 		} else if (end != null) {
-			query += "AND " + entityPrefix(columnName) + " <= :" + columnName + "End ";
-			params.put(columnName + "End", end);
+			query += "AND " + entityPrefix(columnName) + " <= :" + paramNameEnd + " ";
+			params.put(paramNameEnd, end);
 		}
 		return this;
 	}
 
 	public SearchQueryBuilder<T> appendNumberRange(BigDecimal min, BigDecimal max, String columnName) {
+		String paramNameMin = paramFilter(columnName) + "Min";
+		String paramNameMax = paramFilter(columnName) + "Max";
 		if (min != null && max != null) {
-			query += "AND " + entityPrefix(columnName) + " BETWEEN :" + columnName + "Min AND :" + columnName + "Max ";
-			params.put(columnName + "Min", min);
-			params.put(columnName + "Max", max);
+			query += "AND " + entityPrefix(columnName) + " BETWEEN :" + paramNameMin + " AND :" + paramNameMax + " ";
+			params.put(paramNameMin, min);
+			params.put(paramNameMax, max);
 		} else if (min != null) {
-			query += "AND " + entityPrefix(columnName) + " >= :" + columnName + "Min ";
-			params.put(columnName + "Min", min);
+			query += "AND " + entityPrefix(columnName) + " >= :" + paramNameMin + " ";
+			params.put(paramNameMin, min);
 		} else if (max != null) {
-			query += "AND " + entityPrefix(columnName) + " <= :" + columnName + "Max ";
-			params.put(columnName + "Max", max);
+			query += "AND " + entityPrefix(columnName) + " <= :" + paramNameMax + " ";
+			params.put(paramNameMax, max);
 		}
 		return this;
 	}
@@ -115,19 +124,20 @@ public class SearchQueryBuilder<T> {
 	}
 
 	public SearchQueryBuilder<T> withExRefs(List<String> exRefIds, List<String> exRefSources) {
+		this.join("externalReferences", "externalReference");
 		if (exRefIds != null && !exRefIds.isEmpty()) {
-			this.query += "AND entity.externalReferences.externalReferenceId in :externalReferenceId ";
+			this.query += "AND externalReference.externalReferenceId in :externalReferenceId ";
 			this.params.put("externalReferenceId", exRefIds);
 		}
 		if (exRefSources != null && !exRefSources.isEmpty()) {
-			this.query += "AND entity.externalReferences.externalReferenceSource in :externalReferenceSource ";
+			this.query += "AND externalReference.externalReferenceSource in :externalReferenceSource ";
 			this.params.put("externalReferenceSource", exRefSources);
 		}
 		return this;
 	}
 
 	public SearchQueryBuilder<T> join(String join, String name) {
-		this.query = query.replaceAll("where", "JOIN " + entityPrefix(join) + " " + name + " where");
+		this.query = query.replaceAll("where", "JOIN " + entityPrefix(join) + " " + paramFilter(name) + " where");
 		return this;
 	}
 	
@@ -137,6 +147,12 @@ public class SearchQueryBuilder<T> {
 		}else {
 			return "entity." + field;
 		}
+	}
+	
+	private String paramFilter(String param) {
+		if(param == null)
+			return "";
+		return param.replace('.', '_');
 	}
 
 	public SearchQueryBuilder<T> withSort(String sortByStr, SortOrder sortOrder) {

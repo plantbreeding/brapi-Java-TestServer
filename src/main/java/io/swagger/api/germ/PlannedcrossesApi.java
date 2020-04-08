@@ -8,6 +8,8 @@ package io.swagger.api.germ;
 import io.swagger.model.germ.PlannedCrossNewRequest;
 import io.swagger.model.germ.PlannedCrossesListResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -36,7 +38,8 @@ public interface PlannedcrossesApi {
 			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Create new Planned Cross entities on this server", nickname = "plannedcrossesPost", notes = "Create new Planned Cross entities on this server", response = PlannedCrossesListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Crosses", })
@@ -48,7 +51,8 @@ public interface PlannedcrossesApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<PlannedCrossesListResponse> plannedcrossesPost(
 			@ApiParam(value = "") @Valid @RequestBody List<PlannedCrossNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Update existing Planned Cross entities on this server", nickname = "plannedcrossesPut", notes = "Update existing Planned Cross entities on this server", response = PlannedCrossesListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Crosses", })
@@ -60,6 +64,7 @@ public interface PlannedcrossesApi {
 			"application/json" }, method = RequestMethod.PUT)
 	ResponseEntity<PlannedCrossesListResponse> plannedcrossesPut(
 			@ApiParam(value = "") @Valid @RequestBody Map<String, PlannedCrossNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 }
