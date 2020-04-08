@@ -5,10 +5,12 @@
  */
 package io.swagger.api.germ;
 
-import io.swagger.model.germ.CrossingProjectListResponse;
+import io.swagger.model.germ.CrossingProjectsSingleResponse;
 import io.swagger.model.germ.CrossingProjectNewRequest;
 import io.swagger.model.germ.CrossingProjectsListResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,34 +26,30 @@ import java.util.List;
 @Api(value = "crossingprojects", description = "the crossingprojects API")
 public interface CrossingprojectsApi {
 
-	@ApiOperation(value = "Get a filtered list of Crossing Projects", nickname = "crossingprojectsCrossingProjectDbIdGet", notes = "Get a filtered list of Crossing Projects.", response = CrossingProjectListResponse.class, authorizations = {
+	@ApiOperation(value = "Get a filtered list of Crossing Projects", nickname = "crossingprojectsCrossingProjectDbIdGet", notes = "Get a filtered list of Crossing Projects.", response = CrossingProjectsSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Crossing Projects", })
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = CrossingProjectListResponse.class),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = CrossingProjectsSingleResponse.class),
 			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
 			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/crossingprojects/{crossingProjectDbId}", produces = {
 			"application/json" }, method = RequestMethod.GET)
-	ResponseEntity<CrossingProjectListResponse> crossingprojectsCrossingProjectDbIdGet(
+	ResponseEntity<CrossingProjectsSingleResponse> crossingprojectsCrossingProjectDbIdGet(
 			@ApiParam(value = "Search for Crossing Projects with this unique id", required = true) @PathVariable("crossingProjectDbId") String crossingProjectDbId,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
-	@ApiOperation(value = "Update an existing Crossing Project", nickname = "crossingprojectsCrossingProjectDbIdPut", notes = "Update an existing Crossing Project entity on this server", response = CrossingProjectListResponse.class, authorizations = {
+	@ApiOperation(value = "Update an existing Crossing Project", nickname = "crossingprojectsCrossingProjectDbIdPut", notes = "Update an existing Crossing Project entity on this server", response = CrossingProjectsSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Crossing Projects", })
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = CrossingProjectListResponse.class),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = CrossingProjectsSingleResponse.class),
 			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
 			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/crossingprojects/{crossingProjectDbId}", produces = { "application/json" }, consumes = {
 			"application/json" }, method = RequestMethod.PUT)
-	ResponseEntity<CrossingProjectListResponse> crossingprojectsCrossingProjectDbIdPut(
+	ResponseEntity<CrossingProjectsSingleResponse> crossingprojectsCrossingProjectDbIdPut(
 			@ApiParam(value = "Search for Crossing Projects with this unique id", required = true) @PathVariable("crossingProjectDbId") String crossingProjectDbId,
 			@ApiParam(value = "") @Valid @RequestBody CrossingProjectNewRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 	@ApiOperation(value = "Get a filtered list of Crossing Projects", nickname = "crossingprojectsGet", notes = "Get a filtered list of Crossing Projects.", response = CrossingProjectsListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Crossing Projects", })
@@ -62,9 +60,11 @@ public interface CrossingprojectsApi {
 	@RequestMapping(value = "/crossingprojects", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<CrossingProjectsListResponse> crossingprojectsGet(
 			@ApiParam(value = "Search for Crossing Projects with this unique id") @Valid @RequestParam(value = "crossingProjectDbId", required = false) String crossingProjectDbId,
+			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 	@ApiOperation(value = "Create new Crossing Project entities on this server", nickname = "crossingprojectsPost", notes = "Create new Crossing Project entities on this server", response = CrossingProjectsListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Crossing Projects", })
@@ -76,6 +76,6 @@ public interface CrossingprojectsApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<CrossingProjectsListResponse> crossingprojectsPost(
 			@ApiParam(value = "") @Valid @RequestBody List<CrossingProjectNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 }

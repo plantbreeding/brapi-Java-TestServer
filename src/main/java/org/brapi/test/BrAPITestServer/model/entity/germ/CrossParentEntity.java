@@ -19,7 +19,15 @@ public class CrossParentEntity extends BrAPIBaseEntity {
 	private ObservationUnitEntity observationUnit;
 	@Column
 	private ParentType parentType;
+	@ManyToOne
+	private CrossEntity cross;
 	
+	public CrossEntity getCross() {
+		return cross;
+	}
+	public void setCross(CrossEntity cross) {
+		this.cross = cross;
+	}
 	public GermplasmEntity getGermplasm() {
 		return germplasm;
 	}

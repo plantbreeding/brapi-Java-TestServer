@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Context;
 import io.swagger.model.Metadata;
 import io.swagger.model.germ.CrossingProject;
@@ -18,7 +19,7 @@ import javax.validation.constraints.*;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:33:36.513Z[GMT]")
-public class CrossingProjectListResponse   {
+public class CrossingProjectsSingleResponse implements BrAPIResponse<CrossingProject>  {
   @JsonProperty("@context")
   private Context _atContext = null;
 
@@ -28,7 +29,7 @@ public class CrossingProjectListResponse   {
   @JsonProperty("result")
   private CrossingProject result = null;
 
-  public CrossingProjectListResponse _atContext(Context _atContext) {
+  public CrossingProjectsSingleResponse _atContext(Context _atContext) {
     this._atContext = _atContext;
     return this;
   }
@@ -39,7 +40,7 @@ public class CrossingProjectListResponse   {
     this._atContext = _atContext;
   }
 
-  public CrossingProjectListResponse metadata(Metadata metadata) {
+  public CrossingProjectsSingleResponse metadata(Metadata metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -60,7 +61,7 @@ public class CrossingProjectListResponse   {
     this.metadata = metadata;
   }
 
-  public CrossingProjectListResponse result(CrossingProject result) {
+  public CrossingProjectsSingleResponse result(CrossingProject result) {
     this.result = result;
     return this;
   }
@@ -90,7 +91,7 @@ public class CrossingProjectListResponse   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CrossingProjectListResponse crossingProjectListResponse = (CrossingProjectListResponse) o;
+    CrossingProjectsSingleResponse crossingProjectListResponse = (CrossingProjectsSingleResponse) o;
     return Objects.equals(this._atContext, crossingProjectListResponse._atContext) &&
         Objects.equals(this.metadata, crossingProjectListResponse.metadata) &&
         Objects.equals(this.result, crossingProjectListResponse.result);

@@ -16,7 +16,7 @@ import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import io.swagger.model.germ.CrossType;
 
 @Entity
-@Table(name="germplasm_cross")
+@Table(name="cross_entity")
 public class CrossEntity extends BrAPIPrimaryEntity {
 	@Column
     private CrossType crossType;
@@ -24,7 +24,7 @@ public class CrossEntity extends BrAPIPrimaryEntity {
     private CrossingProjectEntity crossingProject;
     @Column
     private String name;
-    @OneToMany
+    @OneToMany(mappedBy = "cross")
     private List<CrossParentEntity> parents;
     @Column
     private Date pollinationTimeStamp;

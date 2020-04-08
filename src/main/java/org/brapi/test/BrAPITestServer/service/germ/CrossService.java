@@ -80,7 +80,7 @@ public class CrossService {
 		return page;
 	}
 
-	public List<Cross> saveCrosses(@Valid List<CrossNewRequest> body) {
+	public List<Cross> saveCrosses(@Valid List<CrossNewRequest> body) throws BrAPIServerException {
 		List<Cross> savedValues = new ArrayList<>();
 
 		for (CrossNewRequest cross : body) {
@@ -155,7 +155,7 @@ public class CrossService {
 		return cross;
 	}
 
-	private void updateEntity(CrossEntity entity, CrossNewRequest cross) {
+	private void updateEntity(CrossEntity entity, CrossNewRequest cross) throws BrAPIServerException {
 		if (cross.getAdditionalInfo() != null)
 			entity.setAdditionalInfo(cross.getAdditionalInfo());
 		if (cross.getCrossAttributes() != null)
