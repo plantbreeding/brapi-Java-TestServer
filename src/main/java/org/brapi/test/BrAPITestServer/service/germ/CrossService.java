@@ -97,9 +97,20 @@ public class CrossService {
 		return savedValues;
 	}
 
-	public List<PlannedCross> savePlannedCrosses(@Valid List<PlannedCrossNewRequest> body) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<PlannedCross> savePlannedCrosses(@Valid List<PlannedCrossNewRequest> body) throws BrAPIServerException {
+		List<PlannedCross> savedValues = new ArrayList<>();
+
+		for (PlannedCrossNewRequest cross : body) {
+
+			CrossEntity entity = new CrossEntity();
+			updateEntity(entity, cross);
+
+			CrossEntity savedEntity = crossRepository.save(entity);
+
+			savedValues.add(convertToPlanned(savedEntity));
+		}
+
+		return savedValues;
 	}
 
 	public List<Cross> updateCrosses(@Valid Map<String, CrossNewRequest> body) throws BrAPIServerException {
@@ -111,6 +122,23 @@ public class CrossService {
 				CrossEntity entity = entityOpt.get();
 				updateEntity(entity, crossEntry.getValue());
 				savedValues.add(convertToCross(crossRepository.save(entity)));
+			} else {
+				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + crossEntry.getKey());
+			}
+		}
+
+		return savedValues;
+	}
+
+	public List<PlannedCross> updatePlannedCrosses(@Valid Map<String, PlannedCrossNewRequest> body) throws BrAPIServerException {
+		List<PlannedCross> savedValues = new ArrayList<>();
+
+		for (Entry<String, PlannedCrossNewRequest> crossEntry : body.entrySet()) {
+			Optional<CrossEntity> entityOpt = crossRepository.findById(crossEntry.getKey());
+			if (entityOpt.isPresent()) {
+				CrossEntity entity = entityOpt.get();
+				updateEntity(entity, crossEntry.getValue());
+				savedValues.add(convertToPlanned(crossRepository.save(entity)));
 			} else {
 				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + crossEntry.getKey());
 			}
@@ -187,6 +215,27 @@ public class CrossService {
 
 	}
 
+	private void updateEntity(CrossEntity entity, PlannedCrossNewRequest cross) throws BrAPIServerException {
+		if (cross.getAdditionalInfo() != null)
+			entity.setAdditionalInfo(cross.getAdditionalInfo());
+		if (cross.getCrossingProjectDbId() != null) {
+			CrossingProjectEntity project = crossingProjectService
+					.getCrossingProjectEntity(cross.getCrossingProjectDbId());
+			entity.setCrossingProject(project);
+		}
+		if (cross.getPlannedCrossName() != null)
+			entity.setName(cross.getPlannedCrossName());
+		if (cross.getCrossType() != null)
+			entity.setCrossType(cross.getCrossType());
+		if (cross.getExternalReferences() != null)
+			entity.setExternalReferences(entity.getExternalReferences());
+		if (cross.getParent1() != null)
+			entity.addParentItem(convertToEntity(cross.getParent1()));
+		if (cross.getParent2() != null)
+			entity.addParentItem(convertToEntity(cross.getParent2()));
+		entity.setPlanned(true);
+	}
+
 	private List<CrossNewRequestCrossAttributes> convertFromEntity(List<String> entities) {
 		List<CrossNewRequestCrossAttributes> attributes = new ArrayList<>();
 		if (entities != null) {
@@ -244,10 +293,5 @@ public class CrossService {
 			entity.setParentType(parent.getParentType());
 		}
 		return entity;
-	}
-
-	public List<PlannedCross> updatePlannedCrosses(@Valid Map<String, PlannedCrossNewRequest> body) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
