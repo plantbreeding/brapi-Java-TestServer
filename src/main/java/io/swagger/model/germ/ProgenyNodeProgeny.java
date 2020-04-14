@@ -2,10 +2,7 @@ package io.swagger.model.germ;
 
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import com.fasterxml.jackson.annotation.JsonValue;
 
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
@@ -23,42 +20,8 @@ public class ProgenyNodeProgeny   {
   @JsonProperty("germplasmName")
   private String germplasmName = null;
 
-  /**
-   * Given a germplasm A having a progeny B and C, 'parentType' for progeny B item refers to the 'parentType' of A toward B.
-   */
-  public enum ParentTypeEnum {
-    MALE("MALE"),
-    
-    FEMALE("FEMALE"),
-    
-    SELF("SELF"),
-    
-    POPULATION("POPULATION");
-
-    private String value;
-
-    ParentTypeEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static ParentTypeEnum fromValue(String text) {
-      for (ParentTypeEnum b : ParentTypeEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("parentType")
-  private ParentTypeEnum parentType = null;
+  private ParentType parentType = null;
 
   public ProgenyNodeProgeny germplasmDbId(String germplasmDbId) {
     this.germplasmDbId = germplasmDbId;
@@ -99,7 +62,7 @@ public class ProgenyNodeProgeny   {
     this.germplasmName = germplasmName;
   }
 
-  public ProgenyNodeProgeny parentType(ParentTypeEnum parentType) {
+  public ProgenyNodeProgeny parentType(ParentType parentType) {
     this.parentType = parentType;
     return this;
   }
@@ -111,11 +74,11 @@ public class ProgenyNodeProgeny   {
   @ApiModelProperty(example = "FEMALE", required = true, value = "Given a germplasm A having a progeny B and C, 'parentType' for progeny B item refers to the 'parentType' of A toward B.")
       @NotNull
 
-    public ParentTypeEnum getParentType() {
+    public ParentType getParentType() {
     return parentType;
   }
 
-  public void setParentType(ParentTypeEnum parentType) {
+  public void setParentType(ParentType parentType) {
     this.parentType = parentType;
   }
 

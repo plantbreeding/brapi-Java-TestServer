@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Context;
 import io.swagger.model.Metadata;
 import io.swagger.model.germ.ProgenyNode;
@@ -17,7 +18,7 @@ import javax.validation.constraints.*;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:33:36.513Z[GMT]")
-public class ProgenyResponse   {
+public class GermplasmProgenyResponse implements BrAPIResponse<ProgenyNode>  {
   @JsonProperty("@context")
   private Context _atContext = null;
 
@@ -27,7 +28,7 @@ public class ProgenyResponse   {
   @JsonProperty("result")
   private ProgenyNode result = null;
 
-  public ProgenyResponse _atContext(Context _atContext) {
+  public GermplasmProgenyResponse _atContext(Context _atContext) {
     this._atContext = _atContext;
     return this;
   }
@@ -38,7 +39,7 @@ public class ProgenyResponse   {
     this._atContext = _atContext;
   }
 
-  public ProgenyResponse metadata(Metadata metadata) {
+  public GermplasmProgenyResponse metadata(Metadata metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -59,7 +60,7 @@ public class ProgenyResponse   {
     this.metadata = metadata;
   }
 
-  public ProgenyResponse result(ProgenyNode result) {
+  public GermplasmProgenyResponse result(ProgenyNode result) {
     this.result = result;
     return this;
   }
@@ -89,7 +90,7 @@ public class ProgenyResponse   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ProgenyResponse progenyResponse = (ProgenyResponse) o;
+    GermplasmProgenyResponse progenyResponse = (GermplasmProgenyResponse) o;
     return Objects.equals(this._atContext, progenyResponse._atContext) &&
         Objects.equals(this.metadata, progenyResponse.metadata) &&
         Objects.equals(this.result, progenyResponse.result);

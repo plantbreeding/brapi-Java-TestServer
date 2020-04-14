@@ -135,9 +135,7 @@ public class LocationService {
 		location.setSiteStatus(entity.getSiteStatus());
 		location.setSlope(entity.getSlope());
 		location.setTopography(entity.getTopography());
-
-		GeoJSONUtility utility = new GeoJSONUtility();
-		location.setCoordinates(utility.convertFromEntity(entity.getCoordinates()));
+		location.setCoordinates(GeoJSONUtility.convertFromEntity(entity.getCoordinates()));
 
 		return location;
 	}
@@ -177,11 +175,8 @@ public class LocationService {
 			entity.setSlope(request.getSlope());
 		if (request.getTopography() != null)
 			entity.setTopography(request.getTopography());
-
-		if (request.getCoordinates() != null) {
-			GeoJSONUtility utility = new GeoJSONUtility();
-			entity.setCoordinates(utility.convertToEntity(request.getCoordinates()));
-		}
+		if (request.getCoordinates() != null)
+			entity.setCoordinates(GeoJSONUtility.convertToEntity(request.getCoordinates()));
 
 	}
 

@@ -124,7 +124,9 @@ public class SearchQueryBuilder<T> {
 	}
 
 	public SearchQueryBuilder<T> withExRefs(List<String> exRefIds, List<String> exRefSources) {
-		this.join("externalReferences", "externalReference");
+		if ((exRefIds != null && !exRefIds.isEmpty()) || (exRefSources != null && !exRefSources.isEmpty())) {
+			this.join("externalReferences", "externalReference");
+		}
 		if (exRefIds != null && !exRefIds.isEmpty()) {
 			this.query += "AND externalReference.externalReferenceId in :externalReferenceId ";
 			this.params.put("externalReferenceId", exRefIds);
@@ -140,29 +142,29 @@ public class SearchQueryBuilder<T> {
 		this.query = query.replaceAll("where", "JOIN " + entityPrefix(join) + " " + paramFilter(name) + " where");
 		return this;
 	}
-	
+
 	private String entityPrefix(String field) {
-		if(field.startsWith("*")) {
+		if (field.startsWith("*")) {
 			return field.substring(1);
-		}else {
+		} else {
 			return "entity." + field;
 		}
 	}
-	
+
 	private String paramFilter(String param) {
-		if(param == null)
+		if (param == null)
 			return "";
 		return param.replace('.', '_');
 	}
 
 	public SearchQueryBuilder<T> withSort(String sortByStr, SortOrder sortOrder) {
 		String sortOrderStr = "ASC";
-		if(sortOrder != null) {
+		if (sortOrder != null) {
 			sortOrderStr = sortOrder.toString();
 		}
-		
+
 		this.query += " ORDER BY " + entityPrefix(sortByStr) + " " + sortOrderStr;
-		
+
 		return this;
 	}
 }

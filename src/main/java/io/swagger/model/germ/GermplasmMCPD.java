@@ -39,47 +39,26 @@ public class GermplasmMCPD   {
    */
   public enum AcquisitionSourceCodeEnum {
     _10("10"),
-    
     _11("11"),
-    
     _12("12"),
-    
     _13("13"),
-    
     _14("14"),
-    
     _15("15"),
-    
     _20("20"),
-    
     _21("21"),
-    
     _22("22"),
-    
     _23("23"),
-    
     _24("24"),
-    
     _25("25"),
-    
     _26("26"),
-    
     _27("27"),
-    
     _28("28"),
-    
     _30("30"),
-    
     _40("40"),
-    
     _50("50"),
-    
     _60("60"),
-    
     _61("61"),
-    
     _62("62"),
-    
     _99("99");
 
     private String value;
@@ -114,76 +93,8 @@ public class GermplasmMCPD   {
   @JsonProperty("ancestralData")
   private String ancestralData = null;
 
-  /**
-   * MCPD (v2.1) (SAMPSTAT) 19. The coding scheme proposed can be used at 3 different levels of detail: either by using the general codes such as 100, 200, 300, 400, or by using the more specific codes such as 110, 120, etc.   100) Wild  110) Natural  120) Semi-natural/wild  130) Semi-natural/sown  200) Weedy  300) Traditional cultivar/landrace  400) Breeding/research material  410) Breeders line  411) Synthetic population  412) Hybrid  413) Founder stock/base population  414) Inbred line (parent of hybrid cultivar)  415) Segregating population  416) Clonal selection  420) Genetic stock  421) Mutant (e.g. induced/insertion mutants, tilling populations)  422) Cytogenetic stocks (e.g. chromosome addition/substitution, aneuploids,  amphiploids)  423) Other genetic stocks (e.g. mapping populations)  500) Advanced or improved cultivar (conventional breeding methods)  600) GMO (by genetic engineering)  999) Other (Elaborate in REMARKS field)
-   */
-  public enum BiologicalStatusOfAccessionCodeEnum {
-    _100("100"),
-    
-    _110("110"),
-    
-    _120("120"),
-    
-    _130("130"),
-    
-    _200("200"),
-    
-    _300("300"),
-    
-    _400("400"),
-    
-    _410("410"),
-    
-    _411("411"),
-    
-    _412("412"),
-    
-    _413("413"),
-    
-    _414("414"),
-    
-    _415("415"),
-    
-    _416("416"),
-    
-    _420("420"),
-    
-    _421("421"),
-    
-    _422("422"),
-    
-    _423("423"),
-    
-    _500("500"),
-    
-    _600("600"),
-    
-    _999("999");
-
-    private String value;
-
-    BiologicalStatusOfAccessionCodeEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static BiologicalStatusOfAccessionCodeEnum fromValue(String text) {
-      for (BiologicalStatusOfAccessionCodeEnum b : BiologicalStatusOfAccessionCodeEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("biologicalStatusOfAccessionCode")
-  private BiologicalStatusOfAccessionCodeEnum biologicalStatusOfAccessionCode = null;
+  private BiologicalStatusOfAccessionCode biologicalStatusOfAccessionCode = null;
 
   @JsonProperty("breedingInstitutes")
   @Valid
@@ -263,53 +174,9 @@ public class GermplasmMCPD   {
   @JsonProperty("speciesAuthority")
   private String speciesAuthority = null;
 
-  /**
-   * Gets or Sets storageTypeCodes
-   */
-  public enum StorageTypeCodesEnum {
-    _10("10"),
-    
-    _11("11"),
-    
-    _12("12"),
-    
-    _13("13"),
-    
-    _20("20"),
-    
-    _30("30"),
-    
-    _40("40"),
-    
-    _50("50"),
-    
-    _99("99");
-
-    private String value;
-
-    StorageTypeCodesEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static StorageTypeCodesEnum fromValue(String text) {
-      for (StorageTypeCodesEnum b : StorageTypeCodesEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("storageTypeCodes")
   @Valid
-  private List<StorageTypeCodesEnum> storageTypeCodes = null;
+  private List<GermplasmStorageTypes> storageTypeCodes = null;
 
   @JsonProperty("subtaxon")
   private String subtaxon = null;
@@ -448,7 +315,7 @@ public class GermplasmMCPD   {
     this.ancestralData = ancestralData;
   }
 
-  public GermplasmMCPD biologicalStatusOfAccessionCode(BiologicalStatusOfAccessionCodeEnum biologicalStatusOfAccessionCode) {
+  public GermplasmMCPD biologicalStatusOfAccessionCode(BiologicalStatusOfAccessionCode biologicalStatusOfAccessionCode) {
     this.biologicalStatusOfAccessionCode = biologicalStatusOfAccessionCode;
     return this;
   }
@@ -459,11 +326,11 @@ public class GermplasmMCPD   {
   **/
   @ApiModelProperty(example = "421", value = "MCPD (v2.1) (SAMPSTAT) 19. The coding scheme proposed can be used at 3 different levels of detail: either by using the general codes such as 100, 200, 300, 400, or by using the more specific codes such as 110, 120, etc.   100) Wild  110) Natural  120) Semi-natural/wild  130) Semi-natural/sown  200) Weedy  300) Traditional cultivar/landrace  400) Breeding/research material  410) Breeders line  411) Synthetic population  412) Hybrid  413) Founder stock/base population  414) Inbred line (parent of hybrid cultivar)  415) Segregating population  416) Clonal selection  420) Genetic stock  421) Mutant (e.g. induced/insertion mutants, tilling populations)  422) Cytogenetic stocks (e.g. chromosome addition/substitution, aneuploids,  amphiploids)  423) Other genetic stocks (e.g. mapping populations)  500) Advanced or improved cultivar (conventional breeding methods)  600) GMO (by genetic engineering)  999) Other (Elaborate in REMARKS field)")
   
-    public BiologicalStatusOfAccessionCodeEnum getBiologicalStatusOfAccessionCode() {
+    public BiologicalStatusOfAccessionCode getBiologicalStatusOfAccessionCode() {
     return biologicalStatusOfAccessionCode;
   }
 
-  public void setBiologicalStatusOfAccessionCode(BiologicalStatusOfAccessionCodeEnum biologicalStatusOfAccessionCode) {
+  public void setBiologicalStatusOfAccessionCode(BiologicalStatusOfAccessionCode biologicalStatusOfAccessionCode) {
     this.biologicalStatusOfAccessionCode = biologicalStatusOfAccessionCode;
   }
 
@@ -751,14 +618,14 @@ public class GermplasmMCPD   {
     this.speciesAuthority = speciesAuthority;
   }
 
-  public GermplasmMCPD storageTypeCodes(List<StorageTypeCodesEnum> storageTypeCodes) {
+  public GermplasmMCPD storageTypeCodes(List<GermplasmStorageTypes> storageTypeCodes) {
     this.storageTypeCodes = storageTypeCodes;
     return this;
   }
 
-  public GermplasmMCPD addStorageTypeCodesItem(StorageTypeCodesEnum storageTypeCodesItem) {
+  public GermplasmMCPD addStorageTypeCodesItem(GermplasmStorageTypes storageTypeCodesItem) {
     if (this.storageTypeCodes == null) {
-      this.storageTypeCodes = new ArrayList<StorageTypeCodesEnum>();
+      this.storageTypeCodes = new ArrayList<GermplasmStorageTypes>();
     }
     this.storageTypeCodes.add(storageTypeCodesItem);
     return this;
@@ -770,11 +637,11 @@ public class GermplasmMCPD   {
   **/
   @ApiModelProperty(example = "[\"11\",\"13\"]", value = "MCPD (v2.1) (STORAGE) 26. If germplasm is maintained under different types of storage, multiple choices are allowed, separated by a semicolon (e.g. 20;30). (Refer to FAO/IPGRI Genebank Standards 1994 for details on storage type.) 10) Seed collection 11) Short term 12) Medium term 13) Long term 20) Field collection 30) In vitro collection 40) Cryo-preserved collection 50) DNA collection 99) Other (elaborate in REMARKS field)")
   
-    public List<StorageTypeCodesEnum> getStorageTypeCodes() {
+    public List<GermplasmStorageTypes> getStorageTypeCodes() {
     return storageTypeCodes;
   }
 
-  public void setStorageTypeCodes(List<StorageTypeCodesEnum> storageTypeCodes) {
+  public void setStorageTypeCodes(List<GermplasmStorageTypes> storageTypeCodes) {
     this.storageTypeCodes = storageTypeCodes;
   }
 

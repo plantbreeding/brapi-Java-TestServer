@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.BrAPIResponseResult;
 import io.swagger.model.germ.Germplasm;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ import javax.validation.constraints.*;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:33:36.513Z[GMT]")
-public class GermplasmListResponseResult   {
+public class GermplasmListResponseResult implements BrAPIResponseResult<Germplasm>  {
   @JsonProperty("data")
   @Valid
   private List<Germplasm> data = new ArrayList<Germplasm>();

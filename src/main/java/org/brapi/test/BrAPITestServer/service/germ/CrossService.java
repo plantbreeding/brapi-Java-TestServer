@@ -278,7 +278,7 @@ public class CrossService {
 		return parent;
 	}
 
-	private CrossParentEntity convertToEntity(@Valid CrossParent parent) {
+	private CrossParentEntity convertToEntity(@Valid CrossParent parent) throws BrAPIServerException {
 		CrossParentEntity entity = new CrossParentEntity();
 		if (parent.getGermplasmDbId() != null) {
 			GermplasmEntity germ = germplasmService.getGermplasmEntity(parent.getGermplasmDbId());

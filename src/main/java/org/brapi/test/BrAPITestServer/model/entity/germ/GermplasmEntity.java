@@ -1,10 +1,12 @@
 package org.brapi.test.BrAPITestServer.model.entity.germ;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -13,288 +15,347 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
-import org.brapi.test.BrAPITestServer.model.entity.geno.MarkerProfileEntity;
-import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
+import org.brapi.test.BrAPITestServer.model.entity.germ.GermplasmInstituteEntity.InstituteTypeEnum;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.TaxonEntity;
 
-import javax.persistence.JoinColumn;
+import io.swagger.model.germ.BiologicalStatusOfAccessionCode;
+import io.swagger.model.germ.GermplasmMCPD.AcquisitionSourceCodeEnum;
+import io.swagger.model.germ.GermplasmMCPD.MlsStatusEnum;
+import io.swagger.model.germ.GermplasmStorageTypes;
 
 @Entity
-@Table(name="germplasm")
-public class GermplasmEntity extends BrAPIBaseEntity{
+@Table(name = "germplasm")
+public class GermplasmEntity extends BrAPIPrimaryEntity {
 	@Column
-    private String germplasmPUI;
+	private String accessionNumber;
 	@Column
-    private String germplasmName;
+	private Date acquisitionDate;
 	@Column
-    private String defaultDisplayName;
-	@Column
-	private String commonCropName;
-	@Column
-    private String accessionNumber;
-	@OneToOne(cascade=CascadeType.ALL, mappedBy="germplasm")
-    private PedigreeEntity pedigree;
-	@ManyToOne(cascade=CascadeType.DETACH)
-    private BreedingMethodEntity breedingMethod;
-	@Column
-    private String germplasmSeedSource;
-	@Column
-    private String synonyms;
-	@Column
-    private String instituteCode;
-	@Column
-    private String instituteName;
-	@Column
-    private String biologicalStatusOfAccessionCode;
-	@Column
-    private String countryOfOriginCode;
-	@Column
-    private String genus;
-	@Column
-    private String species;
-	@Column
-    private String speciesAuthority;
-	@Column
-    private String subtaxa;
-	@Column
-    private String subtaxaAuthority;
-	@Column
-    private Date acquisitionDate;
-	@Column
-    private String documentationURL;
-
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "germplasm_germplasm_type_storage_code", joinColumns = { @JoinColumn(name = "germplasm_dbid", referencedColumnName="id") }, inverseJoinColumns = { @JoinColumn(name = "germplasm_type_storage_code_dbid", referencedColumnName="id") })
-    private List<GermplasmTypeStorageCodeEntity> typeOfGermplasmStorageCode;
-	
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "germplasm_taxon", joinColumns = { @JoinColumn(name = "germplasm_dbid", referencedColumnName="id") }, inverseJoinColumns = { @JoinColumn(name = "taxon_dbid", referencedColumnName="id") })
-    private List<TaxonEntity> taxonIds;
-	
-	@OneToMany(mappedBy="germplasmDbId", targetEntity=DonorEntity.class)
-    private List<DonorEntity> donors;
-	
-	@OneToMany(mappedBy="germplasm", targetEntity=GermplasmAttributeValueEntity.class)
+	private AcquisitionSourceCodeEnum acquisitionSourceCode;
+	@OneToMany(mappedBy = "germplasm")
 	private List<GermplasmAttributeValueEntity> attributes;
-
-	@OneToMany(mappedBy="germplasmDbId", targetEntity=MarkerProfileEntity.class)
-	private List<MarkerProfileEntity> markerProfiles;
-	
-	@OneToMany(mappedBy="germplasm")
-	private List<ObservationUnitEntity> observationUnits;
-	
+	@Column
+	private BiologicalStatusOfAccessionCode biologicalStatusOfAccessionCode;
+	@ManyToOne(cascade = CascadeType.DETACH)
+	private BreedingMethodEntity breedingMethod;
+	@Column
+	private String collection;
+	@Column
+	private String countryOfOriginCode;
+	@ManyToOne(cascade = CascadeType.DETACH)
+	private CropEntity crop;
+	@Column
+	private String defaultDisplayName;
+	@Column
+	private String documentationURL;
+	@OneToMany(mappedBy = "germplasm")
+	private List<DonorEntity> donors;
+	@Column
+	private String genus;
+	@Column
+	private String germplasmName;
+	@OneToMany(mappedBy = "germplasm")
+	private List<GermplasmOriginEntity> germplasmOrigin;
+	@Column
+	private String germplasmPreprocessing;
+	@Column
+	private String germplasmPUI;
+	@OneToMany(mappedBy = "germplasm")
+	private List<GermplasmInstituteEntity> institutes;
+	@Column
+	private MlsStatusEnum mlsStatus;
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "germplasm")
+	private PedigreeEntity pedigree;
 	@ManyToMany
 	@JoinTable
 	private List<SearchRequestEntity> searchResults;
+	@Column
+	private String seedSource;
+	@Column
+	private String seedSourceDescription;
+	@Column
+	private String species;
+	@Column
+	private String speciesAuthority;
+	@Column
+	private String subtaxa;
+	@Column
+	private String subtaxaAuthority;
+	@OneToMany(mappedBy = "germplasm")
+	private List<GermplasmSynonymEntity> synonyms;
+	@OneToMany(mappedBy = "germplasm")
+	private List<TaxonEntity> taxonIds;
+	@ElementCollection
+	private List<GermplasmStorageTypes> typeOfGermplasmStorageCode;
 
-	public String getDocumentationURL() {
-		return documentationURL;
+	public GermplasmInstituteEntity getHostInstitute() {
+		if (getInstitutes() != null) {
+			for (GermplasmInstituteEntity institute : getInstitutes()) {
+				if (InstituteTypeEnum.HOST.equals(institute.getInstituteType())) {
+					return institute;
+				}
+			}
+		}
+		return null;
 	}
 
-	public void setDocumentationURL(String documentationURL) {
-		this.documentationURL = documentationURL;
+	public void setHostInstitute(String code, String name) {
+		if (getInstitutes() == null)
+			setInstitutes(new ArrayList<>());
+		if (getHostInstitute() == null) {
+			GermplasmInstituteEntity entity = new GermplasmInstituteEntity();
+			entity.setGermplasm(this);
+			entity.setInstituteCode(code);
+			entity.setInstituteName(name);
+			entity.setInstituteType(InstituteTypeEnum.HOST);
+			getInstitutes().add(entity);
+		} else {
+			getHostInstitute().setInstituteCode(code);
+			getHostInstitute().setInstituteName(name);
+		}
 	}
 
-	public BreedingMethodEntity getBreedingMethod() {
-		return breedingMethod;
+	public MlsStatusEnum getMlsStatus() {
+		return mlsStatus;
 	}
 
-	public void setBreedingMethod(BreedingMethodEntity breedingMethod) {
-		this.breedingMethod = breedingMethod;
+	public void setMlsStatus(MlsStatusEnum mlsStatus) {
+		this.mlsStatus = mlsStatus;
 	}
 
-	public List<ObservationUnitEntity> getObservationUnits() {
-		return observationUnits;
+	public AcquisitionSourceCodeEnum getAcquisitionSourceCode() {
+		return acquisitionSourceCode;
 	}
 
-	public void setObservationUnits(List<ObservationUnitEntity> observationUnits) {
-		this.observationUnits = observationUnits;
+	public void setAcquisitionSourceCode(AcquisitionSourceCodeEnum acquisitionSourceCode) {
+		this.acquisitionSourceCode = acquisitionSourceCode;
 	}
 
-	public List<MarkerProfileEntity> getMarkerProfiles() {
-		return markerProfiles;
+	public List<GermplasmInstituteEntity> getInstitutes() {
+		return institutes;
 	}
 
-	public void setMarkerProfiles(List<MarkerProfileEntity> markerProfiles) {
-		this.markerProfiles = markerProfiles;
+	public void setInstitutes(List<GermplasmInstituteEntity> institutes) {
+		this.institutes = institutes;
 	}
 
-	public String getGermplasmPUI() {
-		return germplasmPUI;
+	public String getGermplasmPreprocessing() {
+		return germplasmPreprocessing;
 	}
 
-	public void setGermplasmPUI(String germplasmPUI) {
-		this.germplasmPUI = germplasmPUI;
+	public void setGermplasmPreprocessing(String germplasmPreprocessing) {
+		this.germplasmPreprocessing = germplasmPreprocessing;
 	}
 
-	public String getGermplasmName() {
-		return germplasmName;
+	public List<GermplasmOriginEntity> getGermplasmOrigin() {
+		return germplasmOrigin;
 	}
 
-	public void setGermplasmName(String germplasmName) {
-		this.germplasmName = germplasmName;
+	public void setGermplasmOrigin(List<GermplasmOriginEntity> germplasmOrigin) {
+		this.germplasmOrigin = germplasmOrigin;
 	}
 
-	public String getDefaultDisplayName() {
-		return defaultDisplayName;
+	public String getCollection() {
+		return collection;
 	}
 
-	public void setDefaultDisplayName(String defaultDisplayName) {
-		this.defaultDisplayName = defaultDisplayName;
+	public void setCollection(String collection) {
+		this.collection = collection;
 	}
 
 	public String getAccessionNumber() {
 		return accessionNumber;
 	}
 
-	public void setAccessionNumber(String accessionNumber) {
-		this.accessionNumber = accessionNumber;
-	}
-
-	public PedigreeEntity getPedigree() {
-		return pedigree;
-	}
-
-	public void setPedigree(PedigreeEntity pedigree) {
-		this.pedigree = pedigree;
-	}
-
-	public String getGermplasmSeedSource() {
-		return germplasmSeedSource;
-	}
-
-	public void setGermplasmSeedSource(String germplasmSeedSource) {
-		this.germplasmSeedSource = germplasmSeedSource;
-	}
-
-	public String getSynonyms() {
-		return synonyms;
-	}
-
-	public void setSynonyms(String synonyms) {
-		this.synonyms = synonyms;
-	}
-
-	public String getInstituteCode() {
-		return instituteCode;
-	}
-
-	public void setInstituteCode(String instituteCode) {
-		this.instituteCode = instituteCode;
-	}
-
-	public String getInstituteName() {
-		return instituteName;
-	}
-
-	public void setInstituteName(String instituteName) {
-		this.instituteName = instituteName;
-	}
-
-	public String getBiologicalStatusOfAccessionCode() {
-		return biologicalStatusOfAccessionCode;
-	}
-
-	public void setBiologicalStatusOfAccessionCode(String biologicalStatusOfAccessionCode) {
-		this.biologicalStatusOfAccessionCode = biologicalStatusOfAccessionCode;
-	}
-
-	public String getCountryOfOriginCode() {
-		return countryOfOriginCode;
-	}
-
-	public void setCountryOfOriginCode(String countryOfOriginCode) {
-		this.countryOfOriginCode = countryOfOriginCode;
-	}
-
-	public String getGenus() {
-		return genus;
-	}
-
-	public void setGenus(String genus) {
-		this.genus = genus;
-	}
-
-	public String getSpecies() {
-		return species;
-	}
-
-	public void setSpecies(String species) {
-		this.species = species;
-	}
-
-	public String getSpeciesAuthority() {
-		return speciesAuthority;
-	}
-
-	public void setSpeciesAuthority(String speciesAuthority) {
-		this.speciesAuthority = speciesAuthority;
-	}
-
-	public String getSubtaxa() {
-		return subtaxa;
-	}
-
-	public void setSubtaxa(String subtaxa) {
-		this.subtaxa = subtaxa;
-	}
-
-	public String getSubtaxaAuthority() {
-		return subtaxaAuthority;
-	}
-
-	public void setSubtaxaAuthority(String subtaxaAuthority) {
-		this.subtaxaAuthority = subtaxaAuthority;
-	}
-
 	public Date getAcquisitionDate() {
 		return acquisitionDate;
-	}
-
-	public void setAcquisitionDate(Date acquisitionDate) {
-		this.acquisitionDate = acquisitionDate;
-	}
-
-	public List<GermplasmTypeStorageCodeEntity> getTypeOfGermplasmStorageCode() {
-		return typeOfGermplasmStorageCode;
-	}
-
-	public void setTypeOfGermplasmStorageCode(List<GermplasmTypeStorageCodeEntity> typeOfGermplasmStorageCode) {
-		this.typeOfGermplasmStorageCode = typeOfGermplasmStorageCode;
-	}
-
-	public List<TaxonEntity> getTaxonIds() {
-		return taxonIds;
-	}
-
-	public void setTaxonIds(List<TaxonEntity> taxonIds) {
-		this.taxonIds = taxonIds;
-	}
-
-	public List<DonorEntity> getDonors() {
-		return donors;
-	}
-
-	public void setDonors(List<DonorEntity> donors) {
-		this.donors = donors;
 	}
 
 	public List<GermplasmAttributeValueEntity> getAttributes() {
 		return attributes;
 	}
 
+	public BiologicalStatusOfAccessionCode getBiologicalStatusOfAccessionCode() {
+		return biologicalStatusOfAccessionCode;
+	}
+
+	public BreedingMethodEntity getBreedingMethod() {
+		return breedingMethod;
+	}
+
+	public String getCountryOfOriginCode() {
+		return countryOfOriginCode;
+	}
+
+	public CropEntity getCrop() {
+		return crop;
+	}
+
+	public String getDefaultDisplayName() {
+		return defaultDisplayName;
+	}
+
+	public String getDocumentationURL() {
+		return documentationURL;
+	}
+
+	public List<DonorEntity> getDonors() {
+		return donors;
+	}
+
+	public String getGenus() {
+		return genus;
+	}
+
+	public String getGermplasmName() {
+		return germplasmName;
+	}
+
+	public String getGermplasmPUI() {
+		return germplasmPUI;
+	}
+
+	public PedigreeEntity getPedigree() {
+		return pedigree;
+	}
+
+	public List<SearchRequestEntity> getSearchResults() {
+		return searchResults;
+	}
+
+	public String getSpecies() {
+		return species;
+	}
+
+	public String getSpeciesAuthority() {
+		return speciesAuthority;
+	}
+
+	public String getSubtaxa() {
+		return subtaxa;
+	}
+
+	public String getSubtaxaAuthority() {
+		return subtaxaAuthority;
+	}
+
+	public List<GermplasmSynonymEntity> getSynonyms() {
+		return synonyms;
+	}
+
+	public List<TaxonEntity> getTaxonIds() {
+		return taxonIds;
+	}
+
+	public List<GermplasmStorageTypes> getTypeOfGermplasmStorageCode() {
+		return typeOfGermplasmStorageCode;
+	}
+
+	public void setAccessionNumber(String accessionNumber) {
+		this.accessionNumber = accessionNumber;
+	}
+
+	public void setAcquisitionDate(Date acquisitionDate) {
+		this.acquisitionDate = acquisitionDate;
+	}
+
 	public void setAttributes(List<GermplasmAttributeValueEntity> attributes) {
 		this.attributes = attributes;
 	}
 
-	public String getCommonCropName() {
-		return commonCropName;
+	public void setBiologicalStatusOfAccessionCode(BiologicalStatusOfAccessionCode biologicalStatusOfAccessionCode) {
+		this.biologicalStatusOfAccessionCode = biologicalStatusOfAccessionCode;
 	}
 
-	public void setCommonCropName(String commonCropName) {
-		this.commonCropName = commonCropName;
+	public void setBreedingMethod(BreedingMethodEntity breedingMethod) {
+		this.breedingMethod = breedingMethod;
 	}
-    
+
+	public void setCountryOfOriginCode(String countryOfOriginCode) {
+		this.countryOfOriginCode = countryOfOriginCode;
+	}
+
+	public void setCrop(CropEntity crop) {
+		this.crop = crop;
+	}
+
+	public void setDefaultDisplayName(String defaultDisplayName) {
+		this.defaultDisplayName = defaultDisplayName;
+	}
+
+	public void setDocumentationURL(String documentationURL) {
+		this.documentationURL = documentationURL;
+	}
+
+	public void setDonors(List<DonorEntity> donors) {
+		this.donors = donors;
+	}
+
+	public void setGenus(String genus) {
+		this.genus = genus;
+	}
+
+	public void setGermplasmName(String germplasmName) {
+		this.germplasmName = germplasmName;
+	}
+
+	public void setGermplasmPUI(String germplasmPUI) {
+		this.germplasmPUI = germplasmPUI;
+	}
+
+	public String getSeedSource() {
+		return seedSource;
+	}
+
+	public void setSeedSource(String seedSource) {
+		this.seedSource = seedSource;
+	}
+
+	public String getSeedSourceDescription() {
+		return seedSourceDescription;
+	}
+
+	public void setSeedSourceDescription(String seedSourceDescription) {
+		this.seedSourceDescription = seedSourceDescription;
+	}
+
+	public void setPedigree(PedigreeEntity pedigree) {
+		this.pedigree = pedigree;
+	}
+
+	public void setSearchResults(List<SearchRequestEntity> searchResults) {
+		this.searchResults = searchResults;
+	}
+
+	public void setSpecies(String species) {
+		this.species = species;
+	}
+
+	public void setSpeciesAuthority(String speciesAuthority) {
+		this.speciesAuthority = speciesAuthority;
+	}
+
+	public void setSubtaxa(String subtaxa) {
+		this.subtaxa = subtaxa;
+	}
+
+	public void setSubtaxaAuthority(String subtaxaAuthority) {
+		this.subtaxaAuthority = subtaxaAuthority;
+	}
+
+	public void setSynonyms(List<GermplasmSynonymEntity> synonyms) {
+		this.synonyms = synonyms;
+	}
+
+	public void setTaxonIds(List<TaxonEntity> taxonIds) {
+		this.taxonIds = taxonIds;
+	}
+
+	public void setTypeOfGermplasmStorageCode(List<GermplasmStorageTypes> typeOfGermplasmStorageCode) {
+		this.typeOfGermplasmStorageCode = typeOfGermplasmStorageCode;
+	}
+
 }

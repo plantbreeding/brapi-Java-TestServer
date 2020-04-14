@@ -1,12 +1,11 @@
 package org.brapi.test.BrAPITestServer.service;
 
-import java.util.ArrayList;
-
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import org.brapi.test.BrAPITestServer.model.entity.CoordinateEntity;
 import org.brapi.test.BrAPITestServer.model.entity.GeoJSONEntity;
 
 import io.swagger.model.GeoJSON;
-import io.swagger.model.GeoJSONGeometry;
 import io.swagger.model.LinearRing;
 import io.swagger.model.PointGeometry;
 import io.swagger.model.Polygon;
@@ -17,7 +16,7 @@ public class GeoJSONUtility {
 	public final static String POINT = "Point";
 	public final static String POLYGON = "Polygon";
 
-	public GeoJSONEntity convertToEntity(GeoJSON geojson) {
+	public static GeoJSONEntity convertToEntity(GeoJSON geojson) {
 		GeoJSONEntity entity = new GeoJSONEntity();
 		if (geojson.getGeometry() instanceof PointGeometry) {
 			entity.setType(POINT);
@@ -39,7 +38,7 @@ public class GeoJSONUtility {
 		return entity;
 	}
 
-	private CoordinateEntity convertToEntiy(Position pointArray) {
+	private  static CoordinateEntity convertToEntiy(Position pointArray) {
 		CoordinateEntity pointEntity = new CoordinateEntity();
 		pointEntity.setLatitude(pointArray.get(0));
 		pointEntity.setLongitude(pointArray.get(1));
@@ -50,7 +49,7 @@ public class GeoJSONUtility {
 		return pointEntity;
 	}
 
-	public GeoJSON convertFromEntity(GeoJSONEntity entity) {
+	public static GeoJSON convertFromEntity(GeoJSONEntity entity) {
 		GeoJSON geojson = null;
 		if (entity != null) {
 			geojson = new GeoJSON();
@@ -73,7 +72,7 @@ public class GeoJSONUtility {
 		return geojson;
 	}
 
-	private Position convertFromEntity(CoordinateEntity entity) {
+	private static Position convertFromEntity(CoordinateEntity entity) {
 		Position point = new Position();
 		point.add(entity.getLatitude());
 		point.add(entity.getLongitude());
@@ -81,5 +80,60 @@ public class GeoJSONUtility {
 			point.add(entity.getAltitude());
 		}
 		return point;
+	}
+
+	public static BigDecimal getLat(GeoJSONEntity entity) {
+		BigDecimal avg = BigDecimal.ZERO;
+		if (entity != null && entity.getCoordinates() != null && entity.getCoordinates().size() > 0) {
+			if (POINT.equals(entity.getType())) {
+				avg = entity.getCoordinates().get(0).getLatitude();
+			} else if (POLYGON.equals(entity.getType())) {
+				for(CoordinateEntity coord: entity.getCoordinates()) {
+					avg = avg.add(coord.getLatitude());
+				}
+				avg = avg.divide(new BigDecimal(entity.getCoordinates().size()));
+			}
+		}
+		return avg;
+	}
+	
+	public static String getDegreesStr(BigDecimal signedValue) {
+		BigDecimal sixty = new BigDecimal(60);
+		BigDecimal sign = new BigDecimal(signedValue.signum());
+		BigDecimal value = signedValue.abs();
+		BigDecimal degrees = value.setScale(0, RoundingMode.FLOOR);
+		BigDecimal minutes = value.subtract(degrees).multiply(sixty).setScale(0, RoundingMode.FLOOR);
+		BigDecimal seconds = value.subtract(degrees).multiply(sixty).subtract(minutes).multiply(sixty).setScale(3, RoundingMode.FLOOR);
+		return degrees.multiply(sign).toPlainString() + "° " + minutes.toPlainString() + "' " + seconds.toPlainString() + "\"";
+	}
+
+	public static BigDecimal getLon(GeoJSONEntity entity) {
+		BigDecimal avg = BigDecimal.ZERO;
+		if (entity != null && entity.getCoordinates() != null && entity.getCoordinates().size() > 0) {
+			if (POINT.equals(entity.getType())) {
+				avg = entity.getCoordinates().get(0).getLongitude();
+			} else if (POLYGON.equals(entity.getType())) {
+				for(CoordinateEntity coord: entity.getCoordinates()) {
+					avg = avg.add(coord.getLongitude());
+				}
+				avg = avg.divide(new BigDecimal(entity.getCoordinates().size()));
+			}
+		}
+		return avg;
+	}
+
+	public static BigDecimal getElv(GeoJSONEntity entity) {
+		BigDecimal avg = BigDecimal.ZERO;
+		if (entity != null && entity.getCoordinates() != null && entity.getCoordinates().size() > 0) {
+			if (POINT.equals(entity.getType())) {
+				avg = entity.getCoordinates().get(0).getAltitude();
+			} else if (POLYGON.equals(entity.getType())) {
+				for(CoordinateEntity coord: entity.getCoordinates()) {
+					avg = avg.add(coord.getAltitude());
+				}
+				avg = avg.divide(new BigDecimal(entity.getCoordinates().size()));
+			}
+		}
+		return avg;
 	}
 }

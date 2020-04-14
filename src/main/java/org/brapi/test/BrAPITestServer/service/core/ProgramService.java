@@ -108,12 +108,9 @@ public class ProgramService {
 		List<Program> savedPrograms = new ArrayList<>();
 
 		for (ProgramNewRequest list : body) {
-
 			ProgramEntity entity = new ProgramEntity();
 			updateEntity(entity, list);
-
 			ProgramEntity savedEntity = programRepository.save(entity);
-
 			savedPrograms.add(convertFromEntity(savedEntity));
 		}
 

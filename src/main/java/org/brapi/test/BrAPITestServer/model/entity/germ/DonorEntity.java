@@ -2,22 +2,31 @@ package org.brapi.test.BrAPITestServer.model.entity.germ;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 
 @Entity
-@Table(name="donor")
+@Table(name="germplasm_donor")
 public class DonorEntity extends BrAPIBaseEntity{
-	@Column
-	private String germplasmDbId;
+	@ManyToOne
+	private GermplasmEntity germplasm;
 	@Column
 	private String donorAccessionNumber;
 	@Column
 	private String donorInstituteCode;
 	@Column
+	private String donorInstituteName;
+	@Column
 	private String germplasmPUI;
 	
+	public String getDonorInstituteName() {
+		return donorInstituteName;
+	}
+	public void setDonorInstituteName(String donorInstituteName) {
+		this.donorInstituteName = donorInstituteName;
+	}
 	public String getDonorAccessionNumber() {
 		return donorAccessionNumber;
 	}
@@ -36,11 +45,11 @@ public class DonorEntity extends BrAPIBaseEntity{
 	public void setGermplasmPUI(String germplasmPUI) {
 		this.germplasmPUI = germplasmPUI;
 	}
-	public String getGermplasmDbId() {
-		return germplasmDbId;
+	public GermplasmEntity getGermplasm() {
+		return germplasm;
 	}
-	public void setGermplasmDbId(String germplasmDbId) {
-		this.germplasmDbId = germplasmDbId;
+	public void setGermplasm(GermplasmEntity germplasm) {
+		this.germplasm = germplasm;
 	}
 	
 }

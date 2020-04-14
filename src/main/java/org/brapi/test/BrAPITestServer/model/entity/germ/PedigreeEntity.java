@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.model.entity.germ;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -8,38 +9,37 @@ import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 
+import io.swagger.model.germ.ParentType;
+
 @Entity
 @Table(name="pedigree")
 public class PedigreeEntity extends BrAPIBaseEntity{
-	@OneToOne
-    @JoinColumn(name = "germplasm_db_id")
+	@OneToOne(cascade = CascadeType.ALL)
     private GermplasmEntity germplasm;
-	@Column
-    private String crossingPlan;
+	@OneToOne
+    private CrossingProjectEntity crossingProject;
 	@Column
     private Integer crossingYear;
 	@Column
     private String familyCode;
 	@Column
     private String pedigree;
-	@OneToOne
-    @JoinColumn(name = "parent1_db_id")
+	@OneToOne(cascade = CascadeType.ALL)
     private PedigreeEntity parent1;
 	@Column
-	private String parent1Type;
-	@OneToOne
-    @JoinColumn(name = "parent2_db_id")
+	private ParentType parent1Type;
+	@OneToOne(cascade = CascadeType.ALL)
     private PedigreeEntity parent2;
 	@Column
-	private String parent2Type;
+	private ParentType parent2Type;
 	@Column
 	private String notation;
     
-	public String getCrossingPlan() {
-		return crossingPlan;
+	public CrossingProjectEntity getCrossingProject() {
+		return crossingProject;
 	}
-	public void setCrossingPlan(String crossingPlan) {
-		this.crossingPlan = crossingPlan;
+	public void setCrossingProject(CrossingProjectEntity crossingProject) {
+		this.crossingProject = crossingProject;
 	}
 	public Integer getCrossingYear() {
 		return crossingYear;
@@ -53,16 +53,16 @@ public class PedigreeEntity extends BrAPIBaseEntity{
 	public void setFamilyCode(String familyCode) {
 		this.familyCode = familyCode;
 	}
-	public String getParent1Type() {
+	public ParentType getParent1Type() {
 		return parent1Type;
 	}
-	public void setParent1Type(String parent1Type) {
+	public void setParent1Type(ParentType parent1Type) {
 		this.parent1Type = parent1Type;
 	}
-	public String getParent2Type() {
+	public ParentType getParent2Type() {
 		return parent2Type;
 	}
-	public void setParent2Type(String parent2Type) {
+	public void setParent2Type(ParentType parent2Type) {
 		this.parent2Type = parent2Type;
 	}
 	public GermplasmEntity getGermplasm() {

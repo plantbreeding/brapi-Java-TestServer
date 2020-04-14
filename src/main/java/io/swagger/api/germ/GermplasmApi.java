@@ -12,8 +12,10 @@ import io.swagger.model.germ.GermplasmNewRequest;
 import io.swagger.model.germ.GermplasmPedigreeResponse;
 import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.model.germ.GermplasmSingleResponse;
-import io.swagger.model.germ.ProgenyResponse;
+import io.swagger.model.germ.GermplasmProgenyResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,7 +41,8 @@ public interface GermplasmApi {
 	@RequestMapping(value = "/germplasm/{germplasmDbId}", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<GermplasmSingleResponse> germplasmGermplasmDbIdGet(
 			@ApiParam(value = "The internal id of the germplasm", required = true) @PathVariable("germplasmDbId") String germplasmDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the details of a specific Germplasm in MCPD format", nickname = "germplasmGermplasmDbIdMcpdGet", notes = "Get all MCPD details of a germplasm  <a target=\"_blank\" href=\"https://www.bioversityInternational.org/fileadmin/user_upload/online_library/publications/pdfs/FAOBIOVERSITY_MULTI-CROP_PASSPORT_DESCRIPTORS_V.2.1_2015_2020.pdf\"> MCPD v2.1 spec can be found here </a>  Implementation Notes  - When the MCPD spec identifies a field which can have multiple values returned, the JSON response should be an array instead of a semi-colon separated string.", response = GermplasmMCPDResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Germplasm", })
@@ -52,7 +55,8 @@ public interface GermplasmApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<GermplasmMCPDResponse> germplasmGermplasmDbIdMcpdGet(
 			@ApiParam(value = "the internal id of the germplasm", required = true) @PathVariable("germplasmDbId") String germplasmDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the pedigree details of a specific Germplasm", nickname = "germplasmGermplasmDbIdPedigreeGet", notes = "Get the parentage information of a specific Germplasm", response = GermplasmPedigreeResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Germplasm", })
@@ -67,20 +71,22 @@ public interface GermplasmApi {
 			@ApiParam(value = "the internal id of the germplasm", required = true) @PathVariable("germplasmDbId") String germplasmDbId,
 			@ApiParam(value = "text representation of the pedigree") @Valid @RequestParam(value = "notation", required = false) String notation,
 			@ApiParam(value = "include array of siblings in response") @Valid @RequestParam(value = "includeSiblings", required = false) Boolean includeSiblings,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
-	@ApiOperation(value = "Get the progeny details of a specific Germplasm", nickname = "germplasmGermplasmDbIdProgenyGet", notes = "Get the germplasmDbIds for all the Progeny of a particular germplasm.  Implementation Notes  - Regarding the ''parentType'' field in the progeny object. Given a germplasm A having a progeny B and C, ''parentType'' for progeny B refers to the ''parentType'' of A toward B.", response = ProgenyResponse.class, authorizations = {
+	@ApiOperation(value = "Get the progeny details of a specific Germplasm", nickname = "germplasmGermplasmDbIdProgenyGet", notes = "Get the germplasmDbIds for all the Progeny of a particular germplasm.  Implementation Notes  - Regarding the ''parentType'' field in the progeny object. Given a germplasm A having a progeny B and C, ''parentType'' for progeny B refers to the ''parentType'' of A toward B.", response = GermplasmProgenyResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Germplasm", })
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = ProgenyResponse.class),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = GermplasmProgenyResponse.class),
 			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
 			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class),
 			@ApiResponse(code = 404, message = "Not Found", response = String.class) })
 	@RequestMapping(value = "/germplasm/{germplasmDbId}/progeny", produces = {
 			"application/json" }, method = RequestMethod.GET)
-	ResponseEntity<ProgenyResponse> germplasmGermplasmDbIdProgenyGet(
+	ResponseEntity<GermplasmProgenyResponse> germplasmGermplasmDbIdProgenyGet(
 			@ApiParam(value = "the internal id of the germplasm", required = true) @PathVariable("germplasmDbId") String germplasmDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Update the details of an existing Germplasm", nickname = "germplasmGermplasmDbIdPut", notes = "Germplasm Details by germplasmDbId was merged with Germplasm Multi Crop Passport Data. The MCPD fields are optional and marked with the prefix [MCPD].", response = GermplasmSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Germplasm", })
@@ -94,7 +100,8 @@ public interface GermplasmApi {
 	ResponseEntity<GermplasmSingleResponse> germplasmGermplasmDbIdPut(
 			@ApiParam(value = "The internal id of the germplasm", required = true) @PathVariable("germplasmDbId") String germplasmDbId,
 			@ApiParam(value = "") @Valid @RequestBody GermplasmNewRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get a filtered list of Germplasm", nickname = "germplasmGet", notes = "Addresses these needs  - General germplasm search mechanism that accepts POST for complex queries   - Possibility to search germplasm by more parameters than those allowed by the existing germplasm search   - Possibility to get MCPD details by PUID rather than dbId", response = GermplasmListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Germplasm", })
@@ -120,7 +127,8 @@ public interface GermplasmApi {
 			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Create new Germplasm entities on this server", nickname = "germplasmPost", notes = "Create new Germplasm entities on this server", response = GermplasmListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Germplasm", })
@@ -132,7 +140,8 @@ public interface GermplasmApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<GermplasmListResponse> germplasmPost(
 			@ApiParam(value = "") @Valid @RequestBody List<GermplasmNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Submit a search request for Germplasm", nickname = "searchGermplasmPost", notes = "Search for a set of germplasm based on some criteria  Addresses these needs   - General germplasm search mechanism that accepts POST for complex queries   - Possibility to search germplasm by more parameters than those allowed by the existing germplasm search   - Possibility to get MCPD details by PUID rather than dbId  See Search Services for additional implementation details.", response = GermplasmListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Germplasm", })
@@ -145,7 +154,8 @@ public interface GermplasmApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<GermplasmListResponse> searchGermplasmPost(
 			@ApiParam(value = "") @Valid @RequestBody GermplasmSearchRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the results of a Germplasm search request", nickname = "searchGermplasmSearchResultsDbIdGet", notes = "See Search Services for additional implementation details.  Addresses these needs:   1. General germplasm search mechanism that accepts POST for complex queries   2. possibility to search germplasm by more parameters than those allowed by the existing germplasm search   3. possibility to get MCPD details by PUID rather than dbId", response = GermplasmListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Germplasm", })
@@ -161,6 +171,7 @@ public interface GermplasmApi {
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 }

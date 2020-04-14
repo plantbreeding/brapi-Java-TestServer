@@ -9,7 +9,6 @@ import io.swagger.model.core.StudySearchRequest;
 import io.swagger.model.core.StudySingleResponse;
 import io.swagger.model.core.StudyTypesResponse;
 import io.swagger.model.core.StudyTypesResponseResult;
-import io.swagger.annotations.*;
 import io.swagger.api.core.StudiesApi;
 import io.swagger.api.core.StudytypesApi;
 
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")

@@ -76,7 +76,7 @@ public class VendorSampleService {
 		sample.setConcentration(new Measurement()
 				.value(new BigDecimal(entity.getConcentration()))
 				.units("ppm"));
-		sample.setOrganismName(entity.getObservationUnit().getGermplasm().getCommonCropName());
+		sample.setOrganismName(entity.getObservationUnit().getGermplasm().getCrop().getCropName());
 		sample.setSpeciesName(entity.getObservationUnit().getGermplasm().getSpecies());
 		sample.setTaxonomyOntologyReference(new OntologyReference());
 		sample.setTissueType(entity.getTissueType());

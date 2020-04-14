@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.pheno.VariableBaseClass;
 
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
 
 /**
  * GermplasmAttributeNewRequest

@@ -1,0 +1,4 @@
+
+INSERT INTO pedigree (id, crossing_year, family_code, notation, parent1type, parent2type, pedigree, crossing_project_id, germplasm_id, parent1_id, parent2_id) VALUES('pedigree1', 2000, 'FAKEFAM', 'PURDY', 2, 2, 'A2342345/A1231234', 'crossing_project1', 'germplasm1', null, null);
+INSERT INTO pedigree (id, crossing_year, family_code, notation, parent1type, parent2type, pedigree, crossing_project_id, germplasm_id, parent1_id, parent2_id) VALUES('pedigree2', 2000, 'FAKEFAM', 'PURDY', 2, 2, 'A2342345/A3453456', 'crossing_project1', 'germplasm2', null, null);
+INSERT INTO pedigree (id, crossing_year, family_code, notation, parent1type, parent2type, pedigree, crossing_project_id, germplasm_id, parent1_id, parent2_id) VALUES('pedigree3', 2000, 'FAKEFAM', 'PURDY', 0, 1, 'A0000001/A0000002', 'crossing_project1', 'germplasm3', 'pedigree1', 'pedigree2');

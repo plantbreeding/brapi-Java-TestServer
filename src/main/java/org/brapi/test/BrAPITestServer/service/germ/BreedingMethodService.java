@@ -36,7 +36,7 @@ public class BreedingMethodService {
 		return convertFromEntity(getBreedingMethodEntity(breedingMethodDbId));
 	}
 
-	private BreedingMethodEntity getBreedingMethodEntity(String breedingMethodDbId) throws BrAPIServerException {
+	public BreedingMethodEntity getBreedingMethodEntity(String breedingMethodDbId) throws BrAPIServerException {
 		BreedingMethodEntity breedingMethodEntity = null;
 		Optional<BreedingMethodEntity> entityOpt = breedingMethodRepository.findById(breedingMethodDbId);
 		if (entityOpt.isPresent()) {
