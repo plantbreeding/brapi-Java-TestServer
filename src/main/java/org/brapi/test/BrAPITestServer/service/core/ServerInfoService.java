@@ -37,6 +37,10 @@ public class ServerInfoService {
 		services.add(buildService("crosses", new MethodsEnum[] { MethodsEnum.GET, MethodsEnum.POST, MethodsEnum.PUT }));
 		services.add(buildService("crossingprojects", new MethodsEnum[] { MethodsEnum.GET, MethodsEnum.POST }));
 		services.add(buildService("crossingprojects/{crossingprojectDbId}", new MethodsEnum[] { MethodsEnum.GET, MethodsEnum.PUT }));
+		services.addAll(buildEntityServices("germplasm", "germplasmDbId"));
+		services.add(buildService("germplasm/{germplasmDbId}/mcpd", new MethodsEnum[] { MethodsEnum.GET}));
+		services.add(buildService("germplasm/{germplasmDbId}/pedigree", new MethodsEnum[] { MethodsEnum.GET}));
+		services.add(buildService("germplasm/{germplasmDbId}/progeny", new MethodsEnum[] { MethodsEnum.GET}));
 	}
 
 	public static List<Service> buildEntityServices(String entityName, String dbidName) {
