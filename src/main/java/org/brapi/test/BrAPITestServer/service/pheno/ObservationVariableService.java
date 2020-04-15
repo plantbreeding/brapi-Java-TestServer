@@ -1,5 +1,7 @@
 package org.brapi.test.BrAPITestServer.service.pheno;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
 
@@ -11,11 +13,18 @@ import org.brapi.test.BrAPITestServer.model.entity.pheno.TraitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.VariableBaseEntity;
 import org.brapi.test.BrAPITestServer.repository.pheno.ObservationVariableRepository;
 import org.brapi.test.BrAPITestServer.service.DateUtility;
+import org.brapi.test.BrAPITestServer.service.PagingUtility;
+import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
 import org.brapi.test.BrAPITestServer.service.core.CropService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import io.swagger.model.Metadata;
 import io.swagger.model.pheno.ObservationVariable;
+import io.swagger.model.pheno.ObservationVariableNewRequest;
 import io.swagger.model.pheno.ObservationVariableSearchRequest;
 import io.swagger.model.pheno.VariableBaseClass;
 
@@ -40,74 +49,91 @@ public class ObservationVariableService {
 		this.traitService = traitService;
 	}
 
-	// public List<String> getDataTypes(Metadata metaData) {
-	// Pageable pageReq = PagingUtility.getPageRequest(metaData);
-	//
-	// Page<String> dataTypesPage =
-	// observationVariableRepository.findDistinctScale_DatatypeAll(pageReq);
-	//
-	// PagingUtility.calculateMetaData(metaData, dataTypesPage);
-	// return dataTypesPage.getContent();
-	// }
-	//
-	// public List<ObservationVariable> getVariables(String traitClass, Metadata
-	// metaData) {
-	// Pageable pageReq = PagingUtility.getPageRequest(metaData);
-	//
-	// Page<ObservationVariableEntity> variablesPage;
-	// if (traitClass == null) {
-	// variablesPage = observationVariableRepository.findAll(pageReq);
-	// } else {
-	// variablesPage =
-	// observationVariableRepository.findAllByTrait_TraitClass(traitClass, pageReq);
-	// }
-	// List<ObservationVariable> variables =
-	// variablesPage.map(this::convertFromEntity).getContent();
-	//
-	// PagingUtility.calculateMetaData(metaData, variablesPage);
-	//
-	// return variables;
-	// }
+	public List<ObservationVariable> findObservationVariables(@Valid String observationVariableDbId,
+			@Valid String traitClass, @Valid String studyDbId, @Valid String externalReferenceID,
+			@Valid String externalReferenceSource, Metadata metadata) {
+		ObservationVariableSearchRequest request = new ObservationVariableSearchRequest();
+		if (traitClass != null)
+			request.addTraitClassesItem(traitClass);
+		if (studyDbId != null)
+			request.addStudyDbIdItem(studyDbId);
+		if (observationVariableDbId != null)
+			request.addObservationVariableDbIdsItem(observationVariableDbId);
+		if (externalReferenceID != null)
+			request.addExternalReferenceIDsItem(externalReferenceID);
+		if (externalReferenceSource != null)
+			request.addExternalReferenceSourcesItem(externalReferenceSource);
 
-	public ObservationVariable getVariable(String observationVariableDbId) {
-		Optional<ObservationVariableEntity> entityOption = observationVariableRepository
-				.findById(observationVariableDbId);
-		ObservationVariable var = null;
-		if (entityOption.isPresent()) {
-			var = convertFromEntity(entityOption.get());
-		}
-		return var;
+		return findObservationVariables(request, metadata);
+	}
+	
+	public List<ObservationVariable> findObservationVariables(ObservationVariableSearchRequest request,	Metadata metadata) {
+		Pageable pageReq = PagingUtility.getPageRequest(metadata);
+		SearchQueryBuilder<ObservationVariableEntity> searchQuery = new SearchQueryBuilder<ObservationVariableEntity>(ObservationVariableEntity.class)
+				.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
+				.appendList(request.getMethodDbIds(), "method.id")
+				.appendList(request.getObservationVariableDbIds(), "id")
+				.appendList(request.getObservationVariableNames(), "name")
+				.appendList(request.getOntologyDbIds(), "ontology.id")
+				.appendList(request.getScaleDbIds(), "scale.id")
+				.appendList(request.getStudyDbId(), "study.id")
+				.appendList(request.getTraitClasses(), "trait.traitClass")
+				.appendList(request.getTraitDbIds(), "trait.id")
+				.appendEnumList(request.getDataTypes(), "scale.dataType");
+
+		Page<ObservationVariableEntity> page = observationVariableRepository.findAllBySearch(searchQuery, pageReq);
+		List<ObservationVariable> observationVariables = page.map(this::convertFromEntity).getContent();
+		PagingUtility.calculateMetaData(metadata, page);
+		return observationVariables;
 	}
 
-	// public List<ObservationVariable>
-	// getVariables(ObservationVariableSearchRequest request, Metadata metaData) {
-	// Pageable pageReq = PagingUtility.getPageRequest(metaData);
-	//
-	// ObservationVariableSearchRequest req = convertSearchRequest(request);
-	// Page<ObservationVariableEntity> variablesPage =
-	// observationVariableRepository.findBySearch(req, pageReq);
-	//
-	// PagingUtility.calculateMetaData(metaData, variablesPage);
-	// return variablesPage.map(this::convertFromEntity).getContent();
-	// }
+	public List<ObservationVariable> saveObservationVariables(@Valid List<ObservationVariableNewRequest> body) throws BrAPIServerException {
+		List<ObservationVariable> savedObservationVariables = new ArrayList<>();
 
-	private ObservationVariableSearchRequest convertSearchRequest(ObservationVariableSearchRequest request) {
-		ObservationVariableSearchRequest req = new ObservationVariableSearchRequest();
-		req.setDataTypes(request.getDataTypes());
-		req.setMethodDbIds(request.getMethodDbIds());
-		req.setObservationVariableDbIds(request.getObservationVariableDbIds());
-		// req.setObservationVariableXrefs(request.getObservationVariableXrefs());
-		req.setOntologyDbIds(request.getOntologyDbIds());
-		req.setScaleDbIds(request.getScaleDbIds());
-		req.setTraitClasses(request.getTraitClasses());
-		return req;
+		for (ObservationVariableNewRequest list : body) {
+			ObservationVariableEntity entity = new ObservationVariableEntity();
+			updateEntity(entity, list);
+			ObservationVariableEntity savedEntity = observationVariableRepository.save(entity);
+			savedObservationVariables.add(convertFromEntity(savedEntity));
+		}
+
+		return savedObservationVariables;
+	}
+
+	public ObservationVariable updateObservationVariable(String observationVariableDbId,
+			@Valid ObservationVariableNewRequest body) throws BrAPIServerException {
+		ObservationVariableEntity savedEntity;
+		Optional<ObservationVariableEntity> entityOpt = observationVariableRepository.findById(observationVariableDbId);
+		if (entityOpt.isPresent()) {
+			ObservationVariableEntity entity = entityOpt.get();
+			updateEntity(entity, body);
+
+			savedEntity = observationVariableRepository.save(entity);
+		} else {
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + observationVariableDbId);
+		}
+
+		return convertFromEntity(savedEntity);
+	}
+
+	public ObservationVariable getObservationVariable(String observationVariableDbId) throws BrAPIServerException {
+		return convertFromEntity(getObservationVariableEntity(observationVariableDbId));
+	}
+
+	public ObservationVariableEntity getObservationVariableEntity(String observationVariableDbId) throws BrAPIServerException {
+		ObservationVariableEntity observationVariable = null;
+		Optional<ObservationVariableEntity> entityOpt = observationVariableRepository.findById(observationVariableDbId);
+		if (entityOpt.isPresent()) {
+			observationVariable = entityOpt.get();
+		} else {
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + observationVariableDbId);
+		}
+		return observationVariable;
 	}
 
 	private ObservationVariable convertFromEntity(ObservationVariableEntity entity) {
 		ObservationVariable var = new ObservationVariable();
 		convertFromBaseEntity(entity, var);
-		// var.setDate(DateUtility.toDateString(new Date()));
-		// var.setName(entity.getName());
 		var.setObservationVariableName(entity.getName());
 		var.setObservationVariableDbId(entity.getId());
 
@@ -135,6 +161,13 @@ public class ObservationVariableService {
 		var.setTrait(traitService.convertFromEntity(entity.getTrait()));
 	}
 
+
+	private void updateEntity(ObservationVariableEntity entity, ObservationVariableNewRequest request) throws BrAPIServerException {
+		updateBaseEntity(entity, request);
+		if(request.getObservationVariableName() != null)
+			entity.setName(request.getObservationVariableName());
+	}
+	
 	public void updateBaseEntity(VariableBaseEntity entity, @Valid VariableBaseClass request)
 			throws BrAPIServerException {
 
@@ -181,34 +214,5 @@ public class ObservationVariableService {
 				entity.setTrait(new TraitEntity());
 			traitService.updateEntity(entity.getTrait(), request.getTrait());
 		}
-
 	}
-
-	// public List<ObservationVariable> getVariablesForStudy(String studyDbId,
-	// Metadata metadata) {
-	// Pageable pageReq = PagingUtility.getPageRequest(metadata);
-	// Page<ObservationVariableEntity> page =
-	// observationVariableRepository.findAllForStudy(studyDbId, pageReq);
-	// PagingUtility.calculateMetaData(metadata, page);
-	// return page.map(this::convertFromEntity).getContent();
-	// }
-	//
-	// public ObservationVariableEntity getVariableEntity(String
-	// observationVariableDbId) {
-	// return
-	// observationVariableRepository.findById(observationVariableDbId).orElse(null);
-	// }
-	//
-	// public List<ObservationVariable> search(ObservationVariableSearchRequest
-	// request, Metadata metadata)
-	// throws BrAPIServerException {
-	// Pageable pageReq = PagingUtility.getPageRequest(metadata);
-	// Page<ObservationVariableEntity> page =
-	// observationVariableRepository.findBySearch(request, pageReq);
-	// List<ObservationVariable> programs =
-	// page.map(this::convertFromEntity).getContent();
-	// PagingUtility.calculateMetaData(metadata, page);
-	// return programs;
-	// }
-
 }

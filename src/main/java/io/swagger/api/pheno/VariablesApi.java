@@ -11,6 +11,8 @@ import io.swagger.model.pheno.ObservationVariableNewRequest;
 import io.swagger.model.pheno.ObservationVariableSearchRequest;
 import io.swagger.model.pheno.ObservationVariableSingleResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,7 +43,7 @@ public interface VariablesApi {
 			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the details for a specific Observation Variable", nickname = "variablesObservationVariableDbIdGet", notes = "Retrieve variable details", response = ObservationVariableSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Observation Variables", })
@@ -55,7 +57,7 @@ public interface VariablesApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ObservationVariableSingleResponse> variablesObservationVariableDbIdGet(
 			@ApiParam(value = "string id of the variable", required = true) @PathVariable("observationVariableDbId") String observationVariableDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 	@ApiOperation(value = "Update an existing Observation Variable", nickname = "variablesObservationVariableDbIdPut", notes = "Update an existing Observation Variable", response = ObservationVariableSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Observation Variables", })
@@ -68,8 +70,9 @@ public interface VariablesApi {
 	@RequestMapping(value = "/variables/{observationVariableDbId}", produces = {
 			"application/json" }, method = RequestMethod.PUT)
 	ResponseEntity<ObservationVariableSingleResponse> variablesObservationVariableDbIdPut(
+			@Valid @RequestBody ObservationVariableNewRequest body,
 			@ApiParam(value = "string id of the variable", required = true) @PathVariable("observationVariableDbId") String observationVariableDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 	@ApiOperation(value = "Add new Observation Variables", nickname = "variablesPost", notes = "Add new Observation Variables to the system.", response = ObservationVariableListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Observation Variables", })
@@ -81,7 +84,7 @@ public interface VariablesApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<ObservationVariableListResponse> variablesPost(
 			@ApiParam(value = "") @Valid @RequestBody List<ObservationVariableNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 	@ApiOperation(value = "Submit a search request for Observation Variables", nickname = "searchVariablesPost", notes = "Search observation variables.  See Search Services for additional implementation details.", response = ObservationVariableListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Observation Variables", })
@@ -94,7 +97,7 @@ public interface VariablesApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<ObservationVariableListResponse> searchVariablesPost(
 			@ApiParam(value = "") @Valid @RequestBody ObservationVariableSearchRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the results of a Observation Variable search request", nickname = "searchVariablesSearchResultsDbIdGet", notes = "Search observation variables.  See Search Services for additional implementation details.", response = ObservationVariableListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Observation Variables", })
@@ -110,6 +113,6 @@ public interface VariablesApi {
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 }

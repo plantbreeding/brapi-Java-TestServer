@@ -50,6 +50,15 @@ public class SearchQueryBuilder<T> {
 		return this;
 	}
 
+	public <E extends Enum<E>> SearchQueryBuilder<T> appendEnumList(List<E> list, String columnName) {
+		String paramName = paramFilter(columnName);
+		if (list != null && !list.isEmpty()) {
+			this.query += "AND " + entityPrefix(columnName) + " in :" + paramName + " ";
+			this.params.put(paramName, list);
+		}
+		return this;
+	}
+
 	public SearchQueryBuilder<T> appendSingle(Boolean single, String columnName) {
 		String paramName = paramFilter(columnName);
 		if (single != null) {

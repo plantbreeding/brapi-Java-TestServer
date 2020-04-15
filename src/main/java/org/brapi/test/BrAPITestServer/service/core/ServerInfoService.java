@@ -47,6 +47,7 @@ public class ServerInfoService {
 		services.addAll(buildEntityServices("traits", "traitDbId"));
 		services.addAll(buildEntityServices("methods", "methodDbId"));
 		services.addAll(buildEntityServices("scales", "scaleDbId"));
+		services.addAll(buildEntityServicesWithSearch("variables", "observationVariableDbId"));
 	}
 
 	public static List<Service> buildEntityServicesWithSearch(String entityName, String dbidName) {
