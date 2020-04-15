@@ -10,28 +10,25 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
+
+import io.swagger.model.pheno.TraitDataType;
 
 @Entity
 @Table(name="scale")
-public class ScaleEntity extends BrAPIBaseEntity implements OntologyInterface{
+public class ScaleEntity extends BrAPIPrimaryEntity implements OntologyReferenceHolder{
 	@Column
-	private String name;
+	private String scaleName;
 	@Column
-	private String dataType;
+	private TraitDataType dataType;
 	@Column
 	private Integer decimalPlaces;
-	@Column
-	private String xref;
-
-
 	@Column
 	private Integer validValueMin;
 	@Column
 	private Integer validValueMax;
 	@OneToMany(mappedBy="scale", cascade = CascadeType.ALL)
 	private List<ScaleValidValueCategoryEntity> validValueCategories;
-	
 	@OneToMany(mappedBy="scale", cascade = CascadeType.DETACH)
 	private List<VariableBaseEntity> variables;
 	@OneToOne
@@ -78,19 +75,11 @@ public class ScaleEntity extends BrAPIBaseEntity implements OntologyInterface{
 		this.variables = variables;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDataType() {
+	public TraitDataType getDataType() {
 		return dataType;
 	}
 
-	public void setDataType(String dataType) {
+	public void setDataType(TraitDataType dataType) {
 		this.dataType = dataType;
 	}
 
@@ -101,12 +90,10 @@ public class ScaleEntity extends BrAPIBaseEntity implements OntologyInterface{
 	public void setDecimalPlaces(Integer decimalPlaces) {
 		this.decimalPlaces = decimalPlaces;
 	}
-
-	public String getXref() {
-		return xref;
+	public String getScaleName() {
+		return scaleName;
 	}
-
-	public void setXref(String xref) {
-		this.xref = xref;
+	public void setScaleName(String scaleName) {
+		this.scaleName = scaleName;
 	}
 }

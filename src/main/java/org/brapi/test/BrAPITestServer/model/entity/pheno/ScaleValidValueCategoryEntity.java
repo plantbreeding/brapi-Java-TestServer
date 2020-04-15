@@ -13,7 +13,9 @@ public class ScaleValidValueCategoryEntity extends BrAPIBaseEntity{
 	@ManyToOne
 	private ScaleEntity scale;
 	@Column
-	private String category;
+	private String label;
+	@Column
+	private String value;
 
 	public ScaleEntity getScale() {
 		return scale;
@@ -21,10 +23,16 @@ public class ScaleValidValueCategoryEntity extends BrAPIBaseEntity{
 	public void setScale(ScaleEntity scale) {
 		this.scale = scale;
 	}
-	public String getCategory() {
-		return category;
+	public String getLabel() {
+		return label;
 	}
-	public void setCategory(String category) {
-		this.category = category;
+	public void setLabel(String label) {
+		this.label = label;
+	}
+	public String getValue() {
+		return value;
+	}
+	public void setValue(String value) {
+		this.value = value;
 	}
 }

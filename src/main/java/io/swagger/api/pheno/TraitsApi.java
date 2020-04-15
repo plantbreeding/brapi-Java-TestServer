@@ -7,9 +7,10 @@ package io.swagger.api.pheno;
 
 import io.swagger.model.pheno.TraitBaseClass;
 import io.swagger.model.pheno.TraitListResponse;
-import io.swagger.model.pheno.TraitNewRequest;
 import io.swagger.model.pheno.TraitSingleResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,7 +40,8 @@ public interface TraitsApi {
 			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Add a new Trait", nickname = "traitsPost", notes = "Create a new trait object in the database", response = TraitListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Traits", })
@@ -49,8 +51,9 @@ public interface TraitsApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/traits", produces = { "application/json" }, consumes = {
 			"application/json" }, method = RequestMethod.POST)
-	ResponseEntity<TraitListResponse> traitsPost(@ApiParam(value = "") @Valid @RequestBody List<TraitNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+	ResponseEntity<TraitListResponse> traitsPost(@ApiParam(value = "") @Valid @RequestBody List<TraitBaseClass> body,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the details of a specific Trait", nickname = "traitsTraitDbIdGet", notes = "Retrieve the details of a single trait  An Observation Variable has 3 critical parts: A Trait being observed, a Method for making the observation, and a Scale on which the observation can be measured and compared with other observations.", response = TraitSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Traits", })
@@ -62,7 +65,8 @@ public interface TraitsApi {
 	@RequestMapping(value = "/traits/{traitDbId}", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<TraitSingleResponse> traitsTraitDbIdGet(
 			@ApiParam(value = "Id of the trait to retrieve details of.", required = true) @PathVariable("traitDbId") String traitDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Update an existing Trait", nickname = "traitsTraitDbIdPut", notes = "Update an existing trait", response = TraitSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Traits", })
@@ -76,6 +80,7 @@ public interface TraitsApi {
 	ResponseEntity<TraitSingleResponse> traitsTraitDbIdPut(
 			@ApiParam(value = "Id of the trait to retrieve details of.", required = true) @PathVariable("traitDbId") String traitDbId,
 			@ApiParam(value = "") @Valid @RequestBody TraitBaseClass body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 }

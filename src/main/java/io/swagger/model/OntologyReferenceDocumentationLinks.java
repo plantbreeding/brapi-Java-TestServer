@@ -2,10 +2,7 @@ package io.swagger.model;
 
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import com.fasterxml.jackson.annotation.JsonValue;
 
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
@@ -19,40 +16,8 @@ public class OntologyReferenceDocumentationLinks   {
   @JsonProperty("URL")
   private String URL = null;
 
-  /**
-   * Gets or Sets type
-   */
-  public enum TypeEnum {
-    OBO("OBO"),
-    
-    RDF("RDF"),
-    
-    WEBPAGE("WEBPAGE");
-
-    private String value;
-
-    TypeEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static TypeEnum fromValue(String text) {
-      for (TypeEnum b : TypeEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("type")
-  private TypeEnum type = null;
+  private OntologyReferenceTypeEnum type = null;
 
   public OntologyReferenceDocumentationLinks URL(String URL) {
     this.URL = URL;
@@ -73,7 +38,7 @@ public class OntologyReferenceDocumentationLinks   {
     this.URL = URL;
   }
 
-  public OntologyReferenceDocumentationLinks type(TypeEnum type) {
+  public OntologyReferenceDocumentationLinks type(OntologyReferenceTypeEnum type) {
     this.type = type;
     return this;
   }
@@ -84,11 +49,11 @@ public class OntologyReferenceDocumentationLinks   {
   **/
   @ApiModelProperty(example = "OBO", value = "")
   
-    public TypeEnum getType() {
+    public OntologyReferenceTypeEnum getType() {
     return type;
   }
 
-  public void setType(TypeEnum type) {
+  public void setType(OntologyReferenceTypeEnum type) {
     this.type = type;
   }
 

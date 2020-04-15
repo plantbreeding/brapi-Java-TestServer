@@ -4,159 +4,114 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 
 @Entity
 @Table(name = "trait")
-public class TraitEntity extends BrAPIBaseEntity implements OntologyInterface{
-	@Column
-	private String name;
-	@Column
-	private String traitClass;
-	@Column
-	private String description;
-	@Column
-	private String mainAbbreviation;
-	@Column
-	private String entity;
+public class TraitEntity extends BrAPIPrimaryEntity implements OntologyReferenceHolder{
+	@ElementCollection
+	private List<String> alternativeAbbreviations;
 	@Column
 	private String attribute;
 	@Column
-	private String status;
+	private String entity;
 	@Column
-	private String xref;
-	@Column
-	private String defaultValue;
-
-	@OneToMany(mappedBy = "trait", cascade = CascadeType.ALL)
-	private List<TraitSynonymEntity> synonyms;
-	@OneToMany(mappedBy = "trait", cascade = CascadeType.ALL)
-	private List<TraitAbbreviationEntity> alternativeAbbreviations;
-	@OneToMany(mappedBy = "trait")
-	private List<VariableBaseEntity> variables;
+	private String mainAbbreviation;
 	@OneToOne
 	private OntologyEntity ontology;
 	@JoinTable
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<OntologyReferenceEntity> ontologyReference;
+	@Column
+	private String status;
+	@ElementCollection
+	private List<String> synonyms;
+	@Column
+	private String traitClass;
+	@Column
+	private String traitDescription;
+	@Column
+	private String traitName;
+	@OneToMany(mappedBy = "trait")
+	private List<VariableBaseEntity> variables;
 	
-	
-	public OntologyEntity getOntology() {
-		return ontology;
-	}
-
-	public void setOntology(OntologyEntity ontology) {
-		this.ontology = ontology;
-	}
-
-	public List<OntologyReferenceEntity> getOntologyReference() {
-		return ontologyReference;
-	}
-
-	public void setOntologyReference(List<OntologyReferenceEntity> ontologyReference) {
-		this.ontologyReference = ontologyReference;
-	}
-
-	public List<TraitAbbreviationEntity> getAlternativeAbbreviations() {
+	public List<String> getAlternativeAbbreviations() {
 		return alternativeAbbreviations;
 	}
-
+	public void setAlternativeAbbreviations(List<String> alternativeAbbreviations) {
+		this.alternativeAbbreviations = alternativeAbbreviations;
+	}
 	public String getAttribute() {
 		return attribute;
 	}
-
-	public String getDefaultValue() {
-		return defaultValue;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public String getEntity() {
-		return entity;
-	}
-
-	public String getMainAbbreviation() {
-		return mainAbbreviation;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public List<TraitSynonymEntity> getSynonyms() {
-		return synonyms;
-	}
-
-	public List<VariableBaseEntity> getVariables() {
-		return variables;
-	}
-
-	public String getXref() {
-		return xref;
-	}
-
-	public void setAlternativeAbbreviations(List<TraitAbbreviationEntity> alternativeAbbreviations) {
-		this.alternativeAbbreviations = alternativeAbbreviations;
-	}
-
 	public void setAttribute(String attribute) {
 		this.attribute = attribute;
 	}
-
-	public void setDefaultValue(String defaultValue) {
-		this.defaultValue = defaultValue;
+	public String getEntity() {
+		return entity;
 	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public void setEntity(String entity) {
 		this.entity = entity;
 	}
-
+	public String getMainAbbreviation() {
+		return mainAbbreviation;
+	}
 	public void setMainAbbreviation(String mainAbbreviation) {
 		this.mainAbbreviation = mainAbbreviation;
 	}
-
-	public void setName(String name) {
-		this.name = name;
+	public OntologyEntity getOntology() {
+		return ontology;
 	}
-
+	public void setOntology(OntologyEntity ontology) {
+		this.ontology = ontology;
+	}
+	public List<OntologyReferenceEntity> getOntologyReference() {
+		return ontologyReference;
+	}
+	public void setOntologyReference(List<OntologyReferenceEntity> ontologyReference) {
+		this.ontologyReference = ontologyReference;
+	}
+	public String getStatus() {
+		return status;
+	}
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
-	public void setSynonyms(List<TraitSynonymEntity> synonyms) {
+	public List<String> getSynonyms() {
+		return synonyms;
+	}
+	public void setSynonyms(List<String> synonyms) {
 		this.synonyms = synonyms;
 	}
-
-	public void setVariables(List<VariableBaseEntity> variables) {
-		this.variables = variables;
-	}
-
-	public void setXref(String xref) {
-		this.xref = xref;
-	}
-
 	public String getTraitClass() {
 		return traitClass;
 	}
-
 	public void setTraitClass(String traitClass) {
 		this.traitClass = traitClass;
 	}
-
+	public String getTraitDescription() {
+		return traitDescription;
+	}
+	public void setTraitDescription(String traitDescription) {
+		this.traitDescription = traitDescription;
+	}
+	public String getTraitName() {
+		return traitName;
+	}
+	public void setTraitName(String traitName) {
+		this.traitName = traitName;
+	}
+	public List<VariableBaseEntity> getVariables() {
+		return variables;
+	}
+	public void setVariables(List<VariableBaseEntity> variables) {
+		this.variables = variables;
+	}
 }

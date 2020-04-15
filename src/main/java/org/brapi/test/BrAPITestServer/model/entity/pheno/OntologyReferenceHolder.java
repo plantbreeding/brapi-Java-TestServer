@@ -2,7 +2,7 @@ package org.brapi.test.BrAPITestServer.model.entity.pheno;
 
 import java.util.List;
 
-public interface OntologyInterface {
+public interface OntologyReferenceHolder {
 	public OntologyEntity getOntology() ;
 	public void setOntology(OntologyEntity ontology) ;
 	public List<OntologyReferenceEntity> getOntologyReference() ;

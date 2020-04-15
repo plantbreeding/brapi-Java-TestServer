@@ -3,24 +3,22 @@ package org.brapi.test.BrAPITestServer.service.pheno;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
 import javax.validation.Valid;
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.OntologyEntity;
-import org.brapi.test.BrAPITestServer.model.entity.pheno.OntologyInterface;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.OntologyReferenceEntity;
-import org.brapi.test.BrAPITestServer.model.entity.pheno.OntologyReferenceEntity.OntologyReferenceTypeEnum;
+import org.brapi.test.BrAPITestServer.model.entity.pheno.OntologyReferenceHolder;
 import org.brapi.test.BrAPITestServer.repository.pheno.OntologyRepository;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Metadata;
 import io.swagger.model.OntologyReference;
 import io.swagger.model.OntologyReferenceDocumentationLinks;
-import io.swagger.model.OntologyReferenceDocumentationLinks.TypeEnum;
 import io.swagger.model.pheno.Ontology;
 
 @Service
@@ -41,7 +39,7 @@ public class OntologyService {
 			ontologies = ontologiesPage.map(this::convertFromEntity).getContent();
 		} else {
 			Optional<OntologyEntity> ontologyOpt = ontologyRepository.findById(ontologyDbId);
-			if(ontologyOpt.isPresent()) {
+			if (ontologyOpt.isPresent()) {
 				ontologies.add(convertFromEntity(ontologyOpt.get()));
 				metadata.getPagination().setCurrentPage(0);
 				metadata.getPagination().setTotalCount(1);
@@ -65,43 +63,52 @@ public class OntologyService {
 		return ontology;
 	}
 
-	public OntologyReference convertFromEntityToRef(OntologyEntity ontology) {
-		OntologyReference oRef = null;
-		if (ontology != null) {
-			oRef = new OntologyReference();
-			oRef.setOntologyDbId(ontology.getId());
-			oRef.setOntologyName(ontology.getOntologyName());
-			oRef.setVersion(ontology.getVersion());
-			oRef.setDocumentationLinks(ontology.getDocumentationLinks().stream().map((entity -> {
-				OntologyReferenceDocumentationLinks link = new OntologyReferenceDocumentationLinks();
-				link.setType(TypeEnum.WEBPAGE);
-				link.setURL(entity);
-				return link;
-			})).collect(Collectors.toList()));
+	public OntologyEntity getOntologyEntity(String ontologyDbId) throws BrAPIServerException {
+		OntologyEntity method = null;
+		if (ontologyDbId != null) {
+			Optional<OntologyEntity> entityOpt = ontologyRepository.findById(ontologyDbId);
+			if (entityOpt.isPresent()) {
+				method = entityOpt.get();
+			} else {
+				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found " + ontologyDbId);
+			}
 		}
-		return oRef;
+		return method;
 	}
 
-	private void updateOntologyReference(OntologyInterface entity, OntologyReference ontologyReference) {
-		if (entity != null && ontologyReference != null) {
-			Optional<OntologyEntity> ontologyOpt = ontologyRepository.findById(ontologyReference.getOntologyDbId());
-			if (ontologyOpt.isPresent()) {
-				// if (ontologyOpt.isPresent() && entity.getId() != null &&
-				// !entity.getId().isEmpty()) {
-				entity.setOntology(ontologyOpt.get());
-				entity.setOntologyReference(ontologyReference.getDocumentationLinks().stream().map((link) -> {
-					OntologyReferenceEntity e = new OntologyReferenceEntity();
-					e.setType(OntologyReferenceTypeEnum.fromValue(link.getType().toString()));
-					e.setURL(link.getURL());
-					return e;
-				}).collect(Collectors.toList()));
+	public void updateOntologyReference(OntologyReferenceHolder entity, @Valid OntologyReference ontologyReference)
+			throws BrAPIServerException {
+		if (ontologyReference.getOntologyDbId() != null) {
+			OntologyEntity ontology = getOntologyEntity(ontologyReference.getOntologyDbId());
+			entity.setOntology(ontology);
+		}
+		entity.setOntologyReference(new ArrayList<>());
+		if (ontologyReference.getDocumentationLinks() != null) {
+			for (OntologyReferenceDocumentationLinks docLink : ontologyReference.getDocumentationLinks()) {
+				OntologyReferenceEntity ref = new OntologyReferenceEntity();
+				ref.setType(docLink.getType());
+				ref.setURL(docLink.getURL());
+				entity.getOntologyReference().add(ref);
 			}
 		}
 	}
 
-	public OntologyEntity updateEntityFromRef(@Valid OntologyReference ontologyReference) {
-		// TODO Auto-generated method stub
-		return null;
+	public OntologyReference convertFromEntity(OntologyReferenceHolder entity) {
+		OntologyReference ontologyReference = new OntologyReference();
+		if (entity.getOntology() != null) {
+			ontologyReference.setOntologyDbId(entity.getOntology().getId());
+			ontologyReference.setOntologyName(entity.getOntology().getOntologyName());
+			ontologyReference.setVersion(entity.getOntology().getVersion());
+		}
+		if (entity.getOntologyReference() != null) {
+			ontologyReference.setDocumentationLinks(new ArrayList<>());
+			for (OntologyReferenceEntity refEntity : entity.getOntologyReference()) {
+				OntologyReferenceDocumentationLinks docLink = new OntologyReferenceDocumentationLinks();
+				docLink.setType(refEntity.getType());
+				docLink.setURL(refEntity.getURL());
+				ontologyReference.getDocumentationLinks().add(docLink);
+			}
+		}
+		return ontologyReference;
 	}
-
 }

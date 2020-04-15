@@ -3,8 +3,8 @@ package io.swagger.model.pheno;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.BrAPIResponseResult;
 import io.swagger.model.pheno.Trait;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,72 +17,72 @@ import javax.validation.constraints.*;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:22.556Z[GMT]")
-public class TraitListResponseResult   {
-  @JsonProperty("data")
-  @Valid
-  private List<Trait> data = new ArrayList<Trait>();
+public class TraitListResponseResult implements BrAPIResponseResult<Trait> {
+	@JsonProperty("data")
+	@Valid
+	private List<Trait> data = new ArrayList<Trait>();
 
-  public TraitListResponseResult data(List<Trait> data) {
-    this.data = data;
-    return this;
-  }
+	public TraitListResponseResult data(List<Trait> data) {
+		this.data = data;
+		return this;
+	}
 
-  public TraitListResponseResult addDataItem(Trait dataItem) {
-    this.data.add(dataItem);
-    return this;
-  }
+	public TraitListResponseResult addDataItem(Trait dataItem) {
+		this.data.add(dataItem);
+		return this;
+	}
 
-  /**
-   * Get data
-   * @return data
-  **/
-  @ApiModelProperty(required = true, value = "")
-      @NotNull
-    @Valid
-    public List<Trait> getData() {
-    return data;
-  }
+	/**
+	 * Get data
+	 * 
+	 * @return data
+	 **/
+	@ApiModelProperty(required = true, value = "")
+	@NotNull
+	@Valid
+	public List<Trait> getData() {
+		return data;
+	}
 
-  public void setData(List<Trait> data) {
-    this.data = data;
-  }
+	public void setData(List<Trait> data) {
+		this.data = data;
+	}
 
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		TraitListResponseResult traitListResponseResult = (TraitListResponseResult) o;
+		return Objects.equals(this.data, traitListResponseResult.data);
+	}
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    TraitListResponseResult traitListResponseResult = (TraitListResponseResult) o;
-    return Objects.equals(this.data, traitListResponseResult.data);
-  }
+	@Override
+	public int hashCode() {
+		return Objects.hash(data);
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(data);
-  }
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class TraitListResponseResult {\n");
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class TraitListResponseResult {\n");
-    
-    sb.append("    data: ").append(toIndentedString(data)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
+		sb.append("    data: ").append(toIndentedString(data)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
 }

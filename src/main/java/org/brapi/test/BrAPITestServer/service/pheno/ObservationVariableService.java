@@ -4,7 +4,10 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.pheno.MethodEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationVariableEntity;
+import org.brapi.test.BrAPITestServer.model.entity.pheno.ScaleEntity;
+import org.brapi.test.BrAPITestServer.model.entity.pheno.TraitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.VariableBaseEntity;
 import org.brapi.test.BrAPITestServer.repository.pheno.ObservationVariableRepository;
 import org.brapi.test.BrAPITestServer.service.DateUtility;
@@ -123,7 +126,7 @@ public class ObservationVariableService {
 		var.setInstitution(entity.getInstitution());
 		var.setLanguage(entity.getLanguage());
 		var.setMethod(methodService.convertFromEntity(entity.getMethod()));
-		var.setOntologyReference(ontologyService.convertFromEntityToRef(entity.getOntology()));
+		var.setOntologyReference(ontologyService.convertFromEntity(entity));
 		var.setScale(scaleService.convertFromEntity(entity.getScale()));
 		var.setScientist(entity.getScientist());
 		var.setStatus(entity.getStatus());
@@ -153,12 +156,18 @@ public class ObservationVariableService {
 			entity.setInstitution(request.getInstitution());
 		if (request.getLanguage() != null)
 			entity.setLanguage(request.getLanguage());
-		if (request.getMethod() != null)
-			entity.setMethod(methodService.updateEntity(request.getMethod()));
+		if (request.getMethod() != null) {
+			if (entity.getMethod() == null)
+				entity.setMethod(new MethodEntity());
+			methodService.updateEntity(entity.getMethod(), request.getMethod());
+		}
 		if (request.getOntologyReference() != null)
-			entity.setOntology(ontologyService.updateEntityFromRef(request.getOntologyReference()));
-		if (request.getScale() != null)
-			entity.setScale(scaleService.updateEntity(request.getScale()));
+			ontologyService.updateOntologyReference(entity, request.getOntologyReference());
+		if (request.getScale() != null) {
+			if (entity.getScale() == null)
+				entity.setScale(new ScaleEntity());
+			scaleService.updateEntity(entity.getScale(), request.getScale());
+		}
 		if (request.getScientist() != null)
 			entity.setScientist(request.getScientist());
 		if (request.getStatus() != null)
@@ -167,8 +176,11 @@ public class ObservationVariableService {
 			entity.setSubmissionTimestamp(DateUtility.toDate(request.getSubmissionTimestamp()));
 		if (request.getSynonyms() != null)
 			entity.setSynonyms(request.getSynonyms());
-		if (request.getTrait() != null)
-			entity.setTrait(traitService.updateEntity(request.getTrait()));
+		if (request.getTrait() != null){
+			if (entity.getTrait() == null)
+				entity.setTrait(new TraitEntity());
+			traitService.updateEntity(entity.getTrait(), request.getTrait());
+		}
 
 	}
 

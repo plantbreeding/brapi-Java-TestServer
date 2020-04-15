@@ -1,5 +1,7 @@
 package io.swagger.model.pheno;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,7 +14,6 @@ import io.swagger.model.pheno.TraitDataType;
 
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * Scale metadata
@@ -20,190 +21,218 @@ import javax.validation.constraints.*;
 @ApiModel(description = "Scale metadata")
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
-public class ScaleBaseClass   {
-  @JsonProperty("dataType")
-  private TraitDataType dataType = null;
+public class ScaleBaseClass {
+	@JsonProperty("additionalInfo")
+	@Valid
+	private Map<String, String> additionalInfo = null;
+	@JsonProperty("dataType")
+	private TraitDataType dataType = null;
 
-  @JsonProperty("decimalPlaces")
-  private Integer decimalPlaces = null;
+	@JsonProperty("decimalPlaces")
+	private Integer decimalPlaces = null;
 
-  @JsonProperty("externalReferences")
-  private ExternalReferences externalReferences = null;
+	@JsonProperty("externalReferences")
+	private ExternalReferences externalReferences = null;
 
-  @JsonProperty("ontologyReference")
-  private OntologyReference ontologyReference = null;
+	@JsonProperty("ontologyReference")
+	private OntologyReference ontologyReference = null;
 
-  @JsonProperty("scaleName")
-  private String scaleName = null;
+	@JsonProperty("scaleName")
+	private String scaleName = null;
 
-  @JsonProperty("validValues")
-  private ScaleBaseClassValidValues validValues = null;
+	@JsonProperty("validValues")
+	private ScaleBaseClassValidValues validValues = null;
 
-  public ScaleBaseClass dataType(TraitDataType dataType) {
-    this.dataType = dataType;
-    return this;
-  }
+	public ScaleBaseClass additionalInfo(Map<String, String> additionalInfo) {
+		this.additionalInfo = additionalInfo;
+		return this;
+	}
 
-  /**
-   * Get dataType
-   * @return dataType
-  **/
-  @ApiModelProperty(value = "")
-  
-    @Valid
-    public TraitDataType getDataType() {
-    return dataType;
-  }
+	public ScaleBaseClass putAdditionalInfoItem(String key, String additionalInfoItem) {
+		if (this.additionalInfo == null) {
+			this.additionalInfo = new HashMap<String, String>();
+		}
+		this.additionalInfo.put(key, additionalInfoItem);
+		return this;
+	}
 
-  public void setDataType(TraitDataType dataType) {
-    this.dataType = dataType;
-  }
+	/**
+	 * Additional arbitrary info
+	 * 
+	 * @return additionalInfo
+	 **/
+	@ApiModelProperty(value = "Additional arbitrary info")
 
-  public ScaleBaseClass decimalPlaces(Integer decimalPlaces) {
-    this.decimalPlaces = decimalPlaces;
-    return this;
-  }
+	public Map<String, String> getAdditionalInfo() {
+		return additionalInfo;
+	}
 
-  /**
-   * For numerical, number of decimal places to be reported
-   * @return decimalPlaces
-  **/
-  @ApiModelProperty(example = "2", value = "For numerical, number of decimal places to be reported")
-  
-    public Integer getDecimalPlaces() {
-    return decimalPlaces;
-  }
+	public void setAdditionalInfo(Map<String, String> additionalInfo) {
+		this.additionalInfo = additionalInfo;
+	}
 
-  public void setDecimalPlaces(Integer decimalPlaces) {
-    this.decimalPlaces = decimalPlaces;
-  }
+	public ScaleBaseClass dataType(TraitDataType dataType) {
+		this.dataType = dataType;
+		return this;
+	}
 
-  public ScaleBaseClass externalReferences(ExternalReferences externalReferences) {
-    this.externalReferences = externalReferences;
-    return this;
-  }
+	/**
+	 * Get dataType
+	 * 
+	 * @return dataType
+	 **/
+	@ApiModelProperty(value = "")
 
-  /**
-   * Get externalReferences
-   * @return externalReferences
-  **/
-  @ApiModelProperty(value = "")
-  
-    @Valid
-    public ExternalReferences getExternalReferences() {
-    return externalReferences;
-  }
+	@Valid
+	public TraitDataType getDataType() {
+		return dataType;
+	}
 
-  public void setExternalReferences(ExternalReferences externalReferences) {
-    this.externalReferences = externalReferences;
-  }
+	public void setDataType(TraitDataType dataType) {
+		this.dataType = dataType;
+	}
 
-  public ScaleBaseClass ontologyReference(OntologyReference ontologyReference) {
-    this.ontologyReference = ontologyReference;
-    return this;
-  }
+	public ScaleBaseClass decimalPlaces(Integer decimalPlaces) {
+		this.decimalPlaces = decimalPlaces;
+		return this;
+	}
 
-  /**
-   * Get ontologyReference
-   * @return ontologyReference
-  **/
-  @ApiModelProperty(value = "")
-  
-    @Valid
-    public OntologyReference getOntologyReference() {
-    return ontologyReference;
-  }
+	/**
+	 * For numerical, number of decimal places to be reported
+	 * 
+	 * @return decimalPlaces
+	 **/
+	@ApiModelProperty(example = "2", value = "For numerical, number of decimal places to be reported")
 
-  public void setOntologyReference(OntologyReference ontologyReference) {
-    this.ontologyReference = ontologyReference;
-  }
+	public Integer getDecimalPlaces() {
+		return decimalPlaces;
+	}
 
-  public ScaleBaseClass scaleName(String scaleName) {
-    this.scaleName = scaleName;
-    return this;
-  }
+	public void setDecimalPlaces(Integer decimalPlaces) {
+		this.decimalPlaces = decimalPlaces;
+	}
 
-  /**
-   * Name of the scale  MIAPPE V1.1 (DM-92) Scale Name of the scale associated with the variable
-   * @return scaleName
-  **/
-  @ApiModelProperty(example = "Meters", required = true, value = "Name of the scale  MIAPPE V1.1 (DM-92) Scale Name of the scale associated with the variable")
-      @NotNull
+	public ScaleBaseClass externalReferences(ExternalReferences externalReferences) {
+		this.externalReferences = externalReferences;
+		return this;
+	}
 
-    public String getScaleName() {
-    return scaleName;
-  }
+	/**
+	 * Get externalReferences
+	 * 
+	 * @return externalReferences
+	 **/
+	@ApiModelProperty(value = "")
 
-  public void setScaleName(String scaleName) {
-    this.scaleName = scaleName;
-  }
+	@Valid
+	public ExternalReferences getExternalReferences() {
+		return externalReferences;
+	}
 
-  public ScaleBaseClass validValues(ScaleBaseClassValidValues validValues) {
-    this.validValues = validValues;
-    return this;
-  }
+	public void setExternalReferences(ExternalReferences externalReferences) {
+		this.externalReferences = externalReferences;
+	}
 
-  /**
-   * Get validValues
-   * @return validValues
-  **/
-  @ApiModelProperty(value = "")
-  
-    @Valid
-    public ScaleBaseClassValidValues getValidValues() {
-    return validValues;
-  }
+	public ScaleBaseClass ontologyReference(OntologyReference ontologyReference) {
+		this.ontologyReference = ontologyReference;
+		return this;
+	}
 
-  public void setValidValues(ScaleBaseClassValidValues validValues) {
-    this.validValues = validValues;
-  }
+	/**
+	 * Get ontologyReference
+	 * 
+	 * @return ontologyReference
+	 **/
+	@ApiModelProperty(value = "")
 
+	@Valid
+	public OntologyReference getOntologyReference() {
+		return ontologyReference;
+	}
 
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    ScaleBaseClass scaleBaseClass = (ScaleBaseClass) o;
-    return Objects.equals(this.dataType, scaleBaseClass.dataType) &&
-        Objects.equals(this.decimalPlaces, scaleBaseClass.decimalPlaces) &&
-        Objects.equals(this.externalReferences, scaleBaseClass.externalReferences) &&
-        Objects.equals(this.ontologyReference, scaleBaseClass.ontologyReference) &&
-        Objects.equals(this.scaleName, scaleBaseClass.scaleName) &&
-        Objects.equals(this.validValues, scaleBaseClass.validValues);
-  }
+	public void setOntologyReference(OntologyReference ontologyReference) {
+		this.ontologyReference = ontologyReference;
+	}
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(dataType, decimalPlaces, externalReferences, ontologyReference, scaleName, validValues);
-  }
+	public ScaleBaseClass scaleName(String scaleName) {
+		this.scaleName = scaleName;
+		return this;
+	}
 
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class ScaleBaseClass {\n");
-    
-    sb.append("    dataType: ").append(toIndentedString(dataType)).append("\n");
-    sb.append("    decimalPlaces: ").append(toIndentedString(decimalPlaces)).append("\n");
-    sb.append("    externalReferences: ").append(toIndentedString(externalReferences)).append("\n");
-    sb.append("    ontologyReference: ").append(toIndentedString(ontologyReference)).append("\n");
-    sb.append("    scaleName: ").append(toIndentedString(scaleName)).append("\n");
-    sb.append("    validValues: ").append(toIndentedString(validValues)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
+	public String getScaleName() {
+		return scaleName;
+	}
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	public void setScaleName(String scaleName) {
+		this.scaleName = scaleName;
+	}
+
+	public ScaleBaseClass validValues(ScaleBaseClassValidValues validValues) {
+		this.validValues = validValues;
+		return this;
+	}
+
+	/**
+	 * Get validValues
+	 * 
+	 * @return validValues
+	 **/
+	@ApiModelProperty(value = "")
+
+	@Valid
+	public ScaleBaseClassValidValues getValidValues() {
+		return validValues;
+	}
+
+	public void setValidValues(ScaleBaseClassValidValues validValues) {
+		this.validValues = validValues;
+	}
+
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		ScaleBaseClass scaleBaseClass = (ScaleBaseClass) o;
+		return Objects.equals(this.dataType, scaleBaseClass.dataType)
+				&& Objects.equals(this.decimalPlaces, scaleBaseClass.decimalPlaces)
+				&& Objects.equals(this.externalReferences, scaleBaseClass.externalReferences)
+				&& Objects.equals(this.ontologyReference, scaleBaseClass.ontologyReference)
+				&& Objects.equals(this.scaleName, scaleBaseClass.scaleName)
+				&& Objects.equals(this.validValues, scaleBaseClass.validValues);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(dataType, decimalPlaces, externalReferences, ontologyReference, scaleName, validValues);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class ScaleBaseClass {\n");
+
+		sb.append("    dataType: ").append(toIndentedString(dataType)).append("\n");
+		sb.append("    decimalPlaces: ").append(toIndentedString(decimalPlaces)).append("\n");
+		sb.append("    externalReferences: ").append(toIndentedString(externalReferences)).append("\n");
+		sb.append("    ontologyReference: ").append(toIndentedString(ontologyReference)).append("\n");
+		sb.append("    scaleName: ").append(toIndentedString(scaleName)).append("\n");
+		sb.append("    validValues: ").append(toIndentedString(validValues)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
+
+	/**
+	 * Convert the given object to string with each line indented by 4 spaces
+	 * (except the first line).
+	 */
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
 }

@@ -1,10 +1,13 @@
 package org.brapi.test.BrAPITestServer.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.validation.Valid;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -141,6 +144,17 @@ public class SearchQueryBuilder<T> {
 		// this.params.put(columnName, single);
 		// }
 		return this;
+	}
+
+	public SearchQueryBuilder<T> withExRefs(@Valid String externalReferenceID,
+			@Valid String externalReferenceSource) {
+		List<String> exRefIds = new ArrayList<>();
+		List<String> exRefSources = new ArrayList<>();
+		if(externalReferenceID != null)
+			exRefIds.add(externalReferenceID);
+		if(externalReferenceSource != null)
+			exRefSources.add(externalReferenceSource);
+		return withExRefs(exRefIds, exRefSources);
 	}
 
 	public SearchQueryBuilder<T> withExRefs(List<String> exRefIds, List<String> exRefSources) {

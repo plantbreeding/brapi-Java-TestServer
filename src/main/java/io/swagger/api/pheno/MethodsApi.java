@@ -7,9 +7,10 @@ package io.swagger.api.pheno;
 
 import io.swagger.model.pheno.MethodBaseClass;
 import io.swagger.model.pheno.MethodListResponse;
-import io.swagger.model.pheno.MethodNewRequest;
 import io.swagger.model.pheno.MethodSingleResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,7 +40,8 @@ public interface MethodsApi {
 			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the details for a specific Method", nickname = "methodsMethodDbIdGet", notes = "Retrieve details about a specific method  An Observation Variable has 3 critical parts; A Trait being observed, a Method for making the observation, and a Scale on which the observation can be measured and compared with other observations.", response = MethodSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Methods", })
@@ -51,7 +53,8 @@ public interface MethodsApi {
 	@RequestMapping(value = "/methods/{methodDbId}", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<MethodSingleResponse> methodsMethodDbIdGet(
 			@ApiParam(value = "Id of the method to retrieve details of.", required = true) @PathVariable("methodDbId") String methodDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Update an existing Method", nickname = "methodsMethodDbIdPut", notes = "Update the details of an existing method", response = MethodSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Methods", })
@@ -65,7 +68,8 @@ public interface MethodsApi {
 	ResponseEntity<MethodSingleResponse> methodsMethodDbIdPut(
 			@ApiParam(value = "Id of the method to retrieve details of.", required = true) @PathVariable("methodDbId") String methodDbId,
 			@ApiParam(value = "") @Valid @RequestBody MethodBaseClass body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Add a new Method", nickname = "methodsPost", notes = "Create a new method object in the database", response = MethodListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Methods", })
@@ -76,7 +80,8 @@ public interface MethodsApi {
 	@RequestMapping(value = "/methods", produces = { "application/json" }, consumes = {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<MethodListResponse> methodsPost(
-			@ApiParam(value = "") @Valid @RequestBody List<MethodNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "") @Valid @RequestBody List<MethodBaseClass> body,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 }

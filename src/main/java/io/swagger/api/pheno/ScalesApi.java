@@ -7,9 +7,10 @@ package io.swagger.api.pheno;
 
 import io.swagger.model.pheno.ScaleBaseClass;
 import io.swagger.model.pheno.ScaleListResponse;
-import io.swagger.model.pheno.ScaleNewRequest;
 import io.swagger.model.pheno.ScaleSingleResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,7 +40,8 @@ public interface ScalesApi {
 			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Add a new Scale", nickname = "scalesPost", notes = "Create a new scale object in the database", response = ScaleListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Scales", })
@@ -49,8 +51,9 @@ public interface ScalesApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/scales", produces = { "application/json" }, consumes = {
 			"application/json" }, method = RequestMethod.POST)
-	ResponseEntity<ScaleListResponse> scalesPost(@ApiParam(value = "") @Valid @RequestBody List<ScaleNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+	ResponseEntity<ScaleListResponse> scalesPost(@ApiParam(value = "") @Valid @RequestBody List<ScaleBaseClass> body,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the details of a specific Scale", nickname = "scalesScaleDbIdGet", notes = "Retrieve details about a specific scale  An Observation Variable has 3 critical parts: A Trait being observed, a Method for making the observation, and a Scale on which the observation can be measured and compared with other observations.", response = ScaleSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Scales", })
@@ -62,7 +65,8 @@ public interface ScalesApi {
 	@RequestMapping(value = "/scales/{scaleDbId}", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ScaleSingleResponse> scalesScaleDbIdGet(
 			@ApiParam(value = "Id of the scale to retrieve details of.", required = true) @PathVariable("scaleDbId") String scaleDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Update an existing Scale", nickname = "scalesScaleDbIdPut", notes = "Update the details of an existing scale", response = ScaleSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Scales", })
@@ -76,6 +80,7 @@ public interface ScalesApi {
 	ResponseEntity<ScaleSingleResponse> scalesScaleDbIdPut(
 			@ApiParam(value = "Id of the scale to retrieve details of.", required = true) @PathVariable("scaleDbId") String scaleDbId,
 			@ApiParam(value = "") @Valid @RequestBody ScaleBaseClass body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 }

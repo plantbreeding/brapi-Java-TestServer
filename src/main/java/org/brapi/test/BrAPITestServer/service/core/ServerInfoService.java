@@ -20,38 +20,48 @@ public class ServerInfoService {
 		services = new ArrayList<>();
 		services.add(buildService("serviceinfo", new MethodsEnum[] { MethodsEnum.GET }));
 		services.add(buildService("commoncropnames", new MethodsEnum[] { MethodsEnum.GET }));
-		services.addAll(buildEntityServices("lists", "listDbId"));
+		services.addAll(buildEntityServicesWithSearch("lists", "listDbId"));
 		services.add(buildService("lists/{listDbId}/items", new MethodsEnum[] { MethodsEnum.POST }));
-		services.addAll(buildEntityServices("locations", "locationDbId"));
-		services.addAll(buildEntityServices("people", "personDbId"));
-		services.addAll(buildEntityServices("programs", "programDbId"));
-		services.add(buildService("seasons", new MethodsEnum[] { MethodsEnum.GET, MethodsEnum.POST }));
-		services.add(buildService("seasons/{seasonDbId}", new MethodsEnum[] { MethodsEnum.GET, MethodsEnum.PUT }));
-		services.addAll(buildEntityServices("studies", "studyDbId"));
+		services.addAll(buildEntityServicesWithSearch("locations", "locationDbId"));
+		services.addAll(buildEntityServicesWithSearch("people", "personDbId"));
+		services.addAll(buildEntityServicesWithSearch("programs", "programDbId"));
+		services.addAll(buildEntityServices("seasons", "seasonDbId"));
+		services.addAll(buildEntityServicesWithSearch("studies", "studyDbId"));
 		services.add(buildService("studytypes", new MethodsEnum[] { MethodsEnum.GET }));
-		services.addAll(buildEntityServices("trials", "trialDbId"));
-		services.addAll(buildEntityServices("attributes", "attributeDbId"));
-		services.addAll(buildEntityServices("attributevalues", "attributeValueDbId"));
+		services.addAll(buildEntityServicesWithSearch("trials", "trialDbId"));
+		services.addAll(buildEntityServicesWithSearch("attributes", "attributeDbId"));
+		services.addAll(buildEntityServicesWithSearch("attributevalues", "attributeValueDbId"));
 		services.add(buildService("breedingmethods", new MethodsEnum[] { MethodsEnum.GET }));
 		services.add(buildService("breedingmethods/{breedingmethodDbId}", new MethodsEnum[] { MethodsEnum.GET }));
 		services.add(buildService("crosses", new MethodsEnum[] { MethodsEnum.GET, MethodsEnum.POST, MethodsEnum.PUT }));
-		services.add(buildService("crossingprojects", new MethodsEnum[] { MethodsEnum.GET, MethodsEnum.POST }));
-		services.add(buildService("crossingprojects/{crossingprojectDbId}", new MethodsEnum[] { MethodsEnum.GET, MethodsEnum.PUT }));
-		services.addAll(buildEntityServices("germplasm", "germplasmDbId"));
+		services.add(buildService("plannedcrosses", new MethodsEnum[] { MethodsEnum.GET, MethodsEnum.POST, MethodsEnum.PUT }));
+		services.addAll(buildEntityServices("crossingprojects", "crossingprojectDbId"));
+		services.addAll(buildEntityServicesWithSearch("germplasm", "germplasmDbId"));
 		services.add(buildService("germplasm/{germplasmDbId}/mcpd", new MethodsEnum[] { MethodsEnum.GET}));
 		services.add(buildService("germplasm/{germplasmDbId}/pedigree", new MethodsEnum[] { MethodsEnum.GET}));
 		services.add(buildService("germplasm/{germplasmDbId}/progeny", new MethodsEnum[] { MethodsEnum.GET}));
 		services.add(buildService("events", new MethodsEnum[] { MethodsEnum.GET}));
-		services.addAll(buildEntityServices("images", "imageDbId"));
+		services.addAll(buildEntityServicesWithSearch("images", "imageDbId"));
 		services.add(buildService("images/{imageDbId}/imagecontent", new MethodsEnum[] { MethodsEnum.PUT }));
 		services.add(buildService("ontologies", new MethodsEnum[] { MethodsEnum.GET}));
+		services.addAll(buildEntityServices("traits", "traitDbId"));
+		services.addAll(buildEntityServices("methods", "methodDbId"));
+		services.addAll(buildEntityServices("scales", "scaleDbId"));
+	}
+
+	public static List<Service> buildEntityServicesWithSearch(String entityName, String dbidName) {
+		List<Service> entityServices = new ArrayList<>();
+		entityServices.add(buildService(entityName, new MethodsEnum[] { MethodsEnum.GET, MethodsEnum.POST }));
+		entityServices.add(buildService(entityName + "/{" + dbidName + "}", new MethodsEnum[] { MethodsEnum.GET, MethodsEnum.PUT }));
+		entityServices.add(buildService("search/" + entityName, new MethodsEnum[] { MethodsEnum.POST }));
+		
+		return entityServices;
 	}
 
 	public static List<Service> buildEntityServices(String entityName, String dbidName) {
 		List<Service> entityServices = new ArrayList<>();
 		entityServices.add(buildService(entityName, new MethodsEnum[] { MethodsEnum.GET, MethodsEnum.POST }));
 		entityServices.add(buildService(entityName + "/{" + dbidName + "}", new MethodsEnum[] { MethodsEnum.GET, MethodsEnum.PUT }));
-		entityServices.add(buildService("search/" + entityName, new MethodsEnum[] { MethodsEnum.POST }));
 		
 		return entityServices;
 	}

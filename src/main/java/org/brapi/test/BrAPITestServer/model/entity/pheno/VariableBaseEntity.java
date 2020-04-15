@@ -3,19 +3,22 @@ package org.brapi.test.BrAPITestServer.model.entity.pheno;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class VariableBaseEntity extends BrAPIPrimaryEntity {
+public class VariableBaseEntity extends BrAPIPrimaryEntity implements OntologyReferenceHolder {
 
 	@ManyToOne
 	private CropEntity crop;
@@ -47,7 +50,16 @@ public class VariableBaseEntity extends BrAPIPrimaryEntity {
 	private List<String> synonyms;
 	@ManyToOne
 	private TraitEntity trait;
+	@JoinTable
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<OntologyReferenceEntity> ontologyReference;
 	
+	public List<OntologyReferenceEntity> getOntologyReference() {
+		return ontologyReference;
+	}
+	public void setOntologyReference(List<OntologyReferenceEntity> ontologyReference) {
+		this.ontologyReference = ontologyReference;
+	}
 	public CropEntity getCrop() {
 		return crop;
 	}
