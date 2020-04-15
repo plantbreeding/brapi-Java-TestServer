@@ -21,7 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.threeten.bp.LocalDate;
+import java.time.LocalDate;
 
 import io.swagger.model.Metadata;
 import io.swagger.model.core.Contact;
@@ -104,9 +104,12 @@ public class TrialService {
 				.appendList(request.getLocationDbIds(), "*study.location.id")
 				.appendList(request.getLocationNames(), "*study.location.locationName")
 				.appendList(request.getProgramDbIds(), "program.id")
-				.appendList(request.getProgramNames(), "program.name").appendList(request.getStudyDbIds(), "*study.id")
-				.appendList(request.getStudyNames(), "*study.studyName").appendList(request.getTrialDbIds(), "id")
+				.appendList(request.getProgramNames(), "program.name")
+				.appendList(request.getStudyDbIds(), "*study.id")
+				.appendList(request.getStudyNames(), "*study.studyName")
+				.appendList(request.getTrialDbIds(), "id")
 				.appendList(request.getTrialNames(), "trialName")
+				.appendDateRange(request.getSearchDateRangeStart(), request.getSearchDateRangeEnd(), "startDate")
 				.withSort(getSortByField(request.getSortBy()), request.getSortOrder());
 
 		Page<TrialEntity> trialsPage = trialRepository.findAllBySearch(searchQuery, pageReq);

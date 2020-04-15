@@ -3,14 +3,16 @@ package org.brapi.test.BrAPITestServer.controller.pheno;
 import io.swagger.model.WSMIMEDataTypes;
 import io.swagger.model.pheno.ObservationListResponse;
 import io.swagger.model.pheno.ObservationNewRequest;
+import io.swagger.model.pheno.ObservationSearchRequest;
 import io.swagger.model.pheno.ObservationSingleResponse;
 import io.swagger.model.pheno.ObservationTableResponse;
-import org.threeten.bp.OffsetDateTime;
+import java.time.OffsetDateTime;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import io.swagger.api.pheno.ObservationsApi;
 
+import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -33,7 +35,7 @@ import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:22.556Z[GMT]")
 @Controller
-public class ObservationsApiController implements ObservationsApi {
+public class ObservationsApiController extends BrAPIController implements ObservationsApi {
 
 	private static final Logger log = LoggerFactory.getLogger(ObservationsApiController.class);
 
@@ -48,24 +50,24 @@ public class ObservationsApiController implements ObservationsApi {
 	}
 
 	public ResponseEntity<ObservationListResponse> observationsGet(
-			@ApiParam(value = "The unique ID of an Observation Unit") @Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
-			@ApiParam(value = "The unique ID of a germplasm (accession) to filter on") @Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
-			@ApiParam(value = "The unique ID of an observation variable") @Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
-			@ApiParam(value = "The unique ID of a studies to filter on") @Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
-			@ApiParam(value = "The unique ID of a location where these observations were collected") @Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
-			@ApiParam(value = "The unique ID of a trial to filter on") @Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
-			@ApiParam(value = "The unique ID of a program to filter on") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
-			@ApiParam(value = "The year or Phenotyping campaign of a multi-annual study (trees, grape, ...)") @Valid @RequestParam(value = "seasonDbId", required = false) String seasonDbId,
-			@ApiParam(value = "The Observation Unit Level. Returns only the observation unit of the specified Level. References ObservationUnit->observationUnitPosition->observationLevel->levelName") @Valid @RequestParam(value = "observationUnitLevelName", required = false) String observationUnitLevelName,
-			@ApiParam(value = "The Observation Unit Level Order Number. Returns only the observation unit of the specified Level. References ObservationUnit->observationUnitPosition->observationLevel->levelOrder") @Valid @RequestParam(value = "observationUnitLevelOrder", required = false) String observationUnitLevelOrder,
-			@ApiParam(value = "The Observation Unit Level Code. This parameter should be used together with `observationUnitLevelName` or `observationUnitLevelOrder`. References ObservationUnit->observationUnitPosition->observationLevel->levelCode") @Valid @RequestParam(value = "observationUnitLevelCode", required = false) String observationUnitLevelCode,
-			@ApiParam(value = "Timestamp range start") @Valid @RequestParam(value = "observationTimeStampRangeStart", required = false) OffsetDateTime observationTimeStampRangeStart,
-			@ApiParam(value = "Timestamp range end") @Valid @RequestParam(value = "observationTimeStampRangeEnd", required = false) OffsetDateTime observationTimeStampRangeEnd,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) {
+			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
+			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
+			@Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
+			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
+			@Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
+			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@Valid @RequestParam(value = "seasonDbId", required = false) String seasonDbId,
+			@Valid @RequestParam(value = "observationUnitLevelName", required = false) String observationUnitLevelName,
+			@Valid @RequestParam(value = "observationUnitLevelOrder", required = false) String observationUnitLevelOrder,
+			@Valid @RequestParam(value = "observationUnitLevelCode", required = false) String observationUnitLevelCode,
+			@Valid @RequestParam(value = "observationTimeStampRangeStart", required = false) OffsetDateTime observationTimeStampRangeStart,
+			@Valid @RequestParam(value = "observationTimeStampRangeEnd", required = false) OffsetDateTime observationTimeStampRangeEnd,
+			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@Valid @RequestParam(value = "page", required = false) Integer page,
+			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestHeader(value = "Authorization", required = false) String authorization) {
 		String accept = request.getHeader("Accept");
 		if (accept != null && accept.contains("application/json")) {
 			try {
@@ -82,8 +84,8 @@ public class ObservationsApiController implements ObservationsApi {
 	}
 
 	public ResponseEntity<ObservationSingleResponse> observationsObservationDbIdGet(
-			@ApiParam(value = "The unique ID of an observation", required = true) @PathVariable("observationDbId") String observationDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) {
+			@PathVariable("observationDbId") String observationDbId,
+			@RequestHeader(value = "Authorization", required = false) String authorization) {
 		String accept = request.getHeader("Accept");
 		if (accept != null && accept.contains("application/json")) {
 			try {
@@ -100,9 +102,9 @@ public class ObservationsApiController implements ObservationsApi {
 	}
 
 	public ResponseEntity<ObservationSingleResponse> observationsObservationDbIdPut(
-			@ApiParam(value = "The unique ID of an observation", required = true) @PathVariable("observationDbId") String observationDbId,
-			@ApiParam(value = "") @Valid @RequestBody ObservationNewRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) {
+			@PathVariable("observationDbId") String observationDbId,
+			@Valid @RequestBody ObservationNewRequest body,
+			@RequestHeader(value = "Authorization", required = false) String authorization) {
 		String accept = request.getHeader("Accept");
 		if (accept != null && accept.contains("application/json")) {
 			try {
@@ -119,8 +121,8 @@ public class ObservationsApiController implements ObservationsApi {
 	}
 
 	public ResponseEntity<ObservationListResponse> observationsPost(
-			@ApiParam(value = "") @Valid @RequestBody List<ObservationNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) {
+			@Valid @RequestBody List<ObservationNewRequest> body,
+			@RequestHeader(value = "Authorization", required = false) String authorization) {
 		String accept = request.getHeader("Accept");
 		if (accept != null && accept.contains("application/json")) {
 			try {
@@ -137,8 +139,8 @@ public class ObservationsApiController implements ObservationsApi {
 	}
 
 	public ResponseEntity<ObservationListResponse> observationsPut(
-			@ApiParam(value = "") @Valid @RequestBody Map<String, ObservationNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) {
+			@Valid @RequestBody Map<String, ObservationNewRequest> body,
+			@RequestHeader(value = "Authorization", required = false) String authorization) {
 		String accept = request.getHeader("Accept");
 		if (accept != null && accept.contains("application/json")) {
 			try {
@@ -155,20 +157,20 @@ public class ObservationsApiController implements ObservationsApi {
 	}
 
 	public ResponseEntity<ObservationTableResponse> observationsTableGet(
-			@ApiParam(value = "The requested content type which should be returned by the server", required = true) @RequestHeader(value = "Accept", required = true) WSMIMEDataTypes accept,
-			@ApiParam(value = "The unique ID of an Observation Unit") @Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
-			@ApiParam(value = "The unique ID of a germplasm (accession) to filter on") @Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
-			@ApiParam(value = "The unique ID of an observation variable") @Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
-			@ApiParam(value = "The unique ID of a studies to filter on") @Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
-			@ApiParam(value = "The unique ID of a location where these observations were collected") @Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
-			@ApiParam(value = "The unique ID of a trial to filter on") @Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
-			@ApiParam(value = "The unique ID of a program to filter on") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
-			@ApiParam(value = "The year or Phenotyping campaign of a multi-annual study (trees, grape, ...)") @Valid @RequestParam(value = "seasonDbId", required = false) String seasonDbId,
-			@ApiParam(value = "The type of the observationUnit. Returns only the observation unit of the specified type; the parent levels ID can be accessed through observationUnitStructure.") @Valid @RequestParam(value = "observationLevel", required = false) String observationLevel,
-			@ApiParam(value = "Permanent unique identifier which references the search results") @Valid @RequestParam(value = "searchResultsDbId", required = false) String searchResultsDbId,
-			@ApiParam(value = "Timestamp range start") @Valid @RequestParam(value = "observationTimeStampRangeStart", required = false) OffsetDateTime observationTimeStampRangeStart,
-			@ApiParam(value = "Timestamp range end") @Valid @RequestParam(value = "observationTimeStampRangeEnd", required = false) OffsetDateTime observationTimeStampRangeEnd,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) {
+			@RequestHeader(value = "Accept", required = true) WSMIMEDataTypes accept,
+			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
+			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
+			@Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
+			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
+			@Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
+			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@Valid @RequestParam(value = "seasonDbId", required = false) String seasonDbId,
+			@Valid @RequestParam(value = "observationLevel", required = false) String observationLevel,
+			@Valid @RequestParam(value = "searchResultsDbId", required = false) String searchResultsDbId,
+			@Valid @RequestParam(value = "observationTimeStampRangeStart", required = false) OffsetDateTime observationTimeStampRangeStart,
+			@Valid @RequestParam(value = "observationTimeStampRangeEnd", required = false) OffsetDateTime observationTimeStampRangeEnd,
+			@RequestHeader(value = "Authorization", required = false) String authorization) {
 
 		if (accept != null) {
 			try {
@@ -182,6 +184,44 @@ public class ObservationsApiController implements ObservationsApi {
 		}
 
 		return new ResponseEntity<ObservationTableResponse>(HttpStatus.NOT_IMPLEMENTED);
+	}
+
+	public ResponseEntity<ObservationListResponse> searchObservationsPost(
+			@Valid @RequestBody ObservationSearchRequest body,
+			@RequestHeader(value = "Authorization", required = false) String authorization) {
+		String accept = request.getHeader("Accept");
+		if (accept != null && accept.contains("application/json")) {
+			try {
+				return new ResponseEntity<ObservationListResponse>(objectMapper.readValue(
+						"{\n  \"result\" : {\n    \"data\" : [ \"\", \"\" ]\n  },\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}",
+						ObservationListResponse.class), HttpStatus.NOT_IMPLEMENTED);
+			} catch (IOException e) {
+				log.error("Couldn't serialize response for content type application/json", e);
+				return new ResponseEntity<ObservationListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
+
+		return new ResponseEntity<ObservationListResponse>(HttpStatus.NOT_IMPLEMENTED);
+	}
+
+	public ResponseEntity<ObservationListResponse> searchObservationsSearchResultsDbIdGet(
+			@RequestHeader(value = "Accept", required = true) WSMIMEDataTypes accept,
+			@PathVariable("searchResultsDbId") String searchResultsDbId,
+			@RequestHeader(value = "Authorization", required = false) String authorization,
+			@Valid @RequestParam(value = "page", required = false) Integer page,
+			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+		if (accept != null) {
+			try {
+				return new ResponseEntity<ObservationListResponse>(objectMapper.readValue(
+						"{\n  \"result\" : {\n    \"data\" : [ \"\", \"\" ]\n  },\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}",
+						ObservationListResponse.class), HttpStatus.NOT_IMPLEMENTED);
+			} catch (IOException e) {
+				log.error("Couldn't serialize response for content type application/json", e);
+				return new ResponseEntity<ObservationListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
+
+		return new ResponseEntity<ObservationListResponse>(HttpStatus.NOT_IMPLEMENTED);
 	}
 
 }

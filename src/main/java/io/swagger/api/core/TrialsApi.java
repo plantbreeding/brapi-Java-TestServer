@@ -5,8 +5,6 @@
  */
 package io.swagger.api.core;
 
-import org.threeten.bp.LocalDate;
-
 import io.swagger.model.Model202AcceptedSearchResponse;
 import io.swagger.model.core.TrialListResponse;
 import io.swagger.model.core.TrialNewRequest;
@@ -43,8 +41,8 @@ public interface TrialsApi {
 			@ApiParam(value = "Contact entities associated with this trial") @Valid @RequestParam(value = "contactDbId", required = false) String contactDbId,
 			@ApiParam(value = "Program filter to only return trials associated with given program id.") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
 			@ApiParam(value = "Filter by location") @Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
-			@ApiParam(value = "The start of the overlapping search date range. `searchDateRangeStart` must be before `searchDateRangeEnd`.  Return a Trial entity if any of the following cases are true  - `searchDateRangeStart` is before `trial.endDate` AND `searchDateRangeEnd` is null   - `searchDateRangeStart` is before `trial.endDate` AND `searchDateRangeEnd` is after `trial.startDate`  - `searchDateRangeEnd` is after `trial.startDate` AND `searchDateRangeStart` is null  - `searchDateRangeEnd` is after `trial.startDate` AND `searchDateRangeStart` is before `trial.endDate`") @Valid @RequestParam(value = "searchDateRangeStart", required = false) LocalDate searchDateRangeStart,
-			@ApiParam(value = "The start of the overlapping search date range. `searchDateRangeStart` must be before `searchDateRangeEnd`.  Return a Trial entity if any of the following cases are true  - `searchDateRangeStart` is before `trial.endDate` AND `searchDateRangeEnd` is null   - `searchDateRangeStart` is before `trial.endDate` AND `searchDateRangeEnd` is after `trial.startDate`  - `searchDateRangeEnd` is after `trial.startDate` AND `searchDateRangeStart` is null  - `searchDateRangeEnd` is after `trial.startDate` AND `searchDateRangeStart` is before `trial.endDate`") @Valid @RequestParam(value = "searchDateRangeEnd", required = false) LocalDate searchDateRangeEnd,
+			@ApiParam(value = "The start of the overlapping search date range. `searchDateRangeStart` must be before `searchDateRangeEnd`.  Return a Trial entity if any of the following cases are true  - `searchDateRangeStart` is before `trial.endDate` AND `searchDateRangeEnd` is null   - `searchDateRangeStart` is before `trial.endDate` AND `searchDateRangeEnd` is after `trial.startDate`  - `searchDateRangeEnd` is after `trial.startDate` AND `searchDateRangeStart` is null  - `searchDateRangeEnd` is after `trial.startDate` AND `searchDateRangeStart` is before `trial.endDate`") @Valid @RequestParam(value = "searchDateRangeStart", required = false) String searchDateRangeStart,
+			@ApiParam(value = "The start of the overlapping search date range. `searchDateRangeStart` must be before `searchDateRangeEnd`.  Return a Trial entity if any of the following cases are true  - `searchDateRangeStart` is before `trial.endDate` AND `searchDateRangeEnd` is null   - `searchDateRangeStart` is before `trial.endDate` AND `searchDateRangeEnd` is after `trial.startDate`  - `searchDateRangeEnd` is after `trial.startDate` AND `searchDateRangeStart` is null  - `searchDateRangeEnd` is after `trial.startDate` AND `searchDateRangeStart` is before `trial.endDate`") @Valid @RequestParam(value = "searchDateRangeEnd", required = false) String searchDateRangeEnd,
 			@ApiParam(value = "Filter by connected studyDbId") @Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
 			@ApiParam(value = "Filter by trialDbId") @Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
 			@ApiParam(value = "Filter by trial name") @Valid @RequestParam(value = "trialName", required = false) String trialName,

@@ -5,8 +5,10 @@
  */
 package io.swagger.api.pheno;
 
+import io.swagger.model.Model202AcceptedSearchResponse;
 import io.swagger.model.pheno.ObservationVariableListResponse;
 import io.swagger.model.pheno.ObservationVariableNewRequest;
+import io.swagger.model.pheno.ObservationVariableSearchRequest;
 import io.swagger.model.pheno.ObservationVariableSingleResponse;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -79,6 +81,35 @@ public interface VariablesApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<ObservationVariableListResponse> variablesPost(
 			@ApiParam(value = "") @Valid @RequestBody List<ObservationVariableNewRequest> body,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+
+	@ApiOperation(value = "Submit a search request for Observation Variables", nickname = "searchVariablesPost", notes = "Search observation variables.  See Search Services for additional implementation details.", response = ObservationVariableListResponse.class, authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Observation Variables", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = ObservationVariableListResponse.class),
+			@ApiResponse(code = 202, message = "Accepted", response = Model202AcceptedSearchResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/search/variables", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.POST)
+	ResponseEntity<ObservationVariableListResponse> searchVariablesPost(
+			@ApiParam(value = "") @Valid @RequestBody ObservationVariableSearchRequest body,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+
+	@ApiOperation(value = "Get the results of a Observation Variable search request", nickname = "searchVariablesSearchResultsDbIdGet", notes = "Search observation variables.  See Search Services for additional implementation details.", response = ObservationVariableListResponse.class, authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Observation Variables", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = ObservationVariableListResponse.class),
+			@ApiResponse(code = 202, message = "Accepted", response = Model202AcceptedSearchResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class),
+			@ApiResponse(code = 404, message = "Not Found", response = String.class) })
+	@RequestMapping(value = "/search/variables/{searchResultsDbId}", produces = {
+			"application/json" }, method = RequestMethod.GET)
+	ResponseEntity<ObservationVariableListResponse> searchVariablesSearchResultsDbIdGet(
+			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
+			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
 
 }

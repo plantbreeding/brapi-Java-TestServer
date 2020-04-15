@@ -1,7 +1,5 @@
 package org.brapi.test.BrAPITestServer.controller.core;
 
-import org.threeten.bp.LocalDate;
-
 import io.swagger.model.Metadata;
 import io.swagger.model.core.Trial;
 import io.swagger.model.core.TrialListResponse;
@@ -12,6 +10,7 @@ import io.swagger.model.core.TrialSingleResponse;
 import io.swagger.api.core.TrialsApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.service.DateUtility;
 import org.brapi.test.BrAPITestServer.service.core.TrialService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,8 +46,8 @@ public class TrialsApiController extends BrAPIController implements TrialsApi {
 			@Valid @RequestParam(value = "contactDbId", required = false) String contactDbId,
 			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
 			@Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
-			@Valid @RequestParam(value = "searchDateRangeStart", required = false) LocalDate searchDateRangeStart,
-			@Valid @RequestParam(value = "searchDateRangeEnd", required = false) LocalDate searchDateRangeEnd,
+			@Valid @RequestParam(value = "searchDateRangeStart", required = false) String searchDateRangeStart,
+			@Valid @RequestParam(value = "searchDateRangeEnd", required = false) String searchDateRangeEnd,
 			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
 			@Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
 			@Valid @RequestParam(value = "trialName", required = false) String trialName,
@@ -66,7 +65,7 @@ public class TrialsApiController extends BrAPIController implements TrialsApi {
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<Trial> data = trialService.findTrials(commonCropName, contactDbId, programDbId, locationDbId,
-				searchDateRangeStart, searchDateRangeEnd, studyDbId, trialDbId, trialName, trialPUI,
+				DateUtility.toLocalDate(searchDateRangeStart), DateUtility.toLocalDate(searchDateRangeEnd), studyDbId, trialDbId, trialName, trialPUI,
 				externalReferenceID, externalReferenceSource, active, sortBy, sortOrder, metadata);
 		return responseOK(new TrialListResponse(), new TrialListResponseResult(), data, metadata);
 	}

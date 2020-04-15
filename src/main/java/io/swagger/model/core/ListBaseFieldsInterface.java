@@ -1,7 +1,7 @@
 package io.swagger.model.core;
 
 import java.util.Map;
-import org.threeten.bp.OffsetDateTime;
+import java.time.OffsetDateTime;
 
 import io.swagger.model.ExternalReferences;
 

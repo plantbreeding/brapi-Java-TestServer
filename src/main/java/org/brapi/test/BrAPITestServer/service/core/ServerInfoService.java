@@ -41,6 +41,9 @@ public class ServerInfoService {
 		services.add(buildService("germplasm/{germplasmDbId}/mcpd", new MethodsEnum[] { MethodsEnum.GET}));
 		services.add(buildService("germplasm/{germplasmDbId}/pedigree", new MethodsEnum[] { MethodsEnum.GET}));
 		services.add(buildService("germplasm/{germplasmDbId}/progeny", new MethodsEnum[] { MethodsEnum.GET}));
+		services.add(buildService("events", new MethodsEnum[] { MethodsEnum.GET}));
+		services.addAll(buildEntityServices("images", "imageDbId"));
+		services.add(buildService("images/{imageDbId}/imagecontent", new MethodsEnum[] { MethodsEnum.PUT }));
 	}
 
 	public static List<Service> buildEntityServices(String entityName, String dbidName) {

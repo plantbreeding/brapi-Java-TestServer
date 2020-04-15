@@ -3,8 +3,8 @@ package org.brapi.test.BrAPITestServer.serializer;
 import java.io.IOException;
 
 import org.brapi.test.BrAPITestServer.service.DateUtility;
-import org.threeten.bp.OffsetDateTime;
-import org.threeten.bp.format.DateTimeFormatterBuilder;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatterBuilder;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;

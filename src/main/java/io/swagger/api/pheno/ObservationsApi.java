@@ -5,12 +5,14 @@
  */
 package io.swagger.api.pheno;
 
+import io.swagger.model.Model202AcceptedSearchResponse;
 import io.swagger.model.WSMIMEDataTypes;
 import io.swagger.model.pheno.ObservationListResponse;
 import io.swagger.model.pheno.ObservationNewRequest;
+import io.swagger.model.pheno.ObservationSearchRequest;
 import io.swagger.model.pheno.ObservationSingleResponse;
 import io.swagger.model.pheno.ObservationTableResponse;
-import org.threeten.bp.OffsetDateTime;
+import java.time.OffsetDateTime;
 
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -132,5 +134,34 @@ public interface ObservationsApi {
 			@ApiParam(value = "Timestamp range start") @Valid @RequestParam(value = "observationTimeStampRangeStart", required = false) OffsetDateTime observationTimeStampRangeStart,
 			@ApiParam(value = "Timestamp range end") @Valid @RequestParam(value = "observationTimeStampRangeEnd", required = false) OffsetDateTime observationTimeStampRangeEnd,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+
+	@ApiOperation(value = "Submit a search request for a set of Observations", nickname = "searchObservationsPost", notes = "Submit a search request for a set of Observations. Returns an Id which reference the results of this search", response = ObservationListResponse.class, authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Observations", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = ObservationListResponse.class),
+			@ApiResponse(code = 202, message = "Accepted", response = Model202AcceptedSearchResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/search/observations", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.POST)
+	ResponseEntity<ObservationListResponse> searchObservationsPost(
+			@ApiParam(value = "") @Valid @RequestBody ObservationSearchRequest body,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+
+	@ApiOperation(value = "Returns a list of Observations based on search criteria.", nickname = "searchObservationsSearchResultsDbIdGet", notes = "Returns a list of Observations based on search criteria.  observationTimeStamp - Iso Standard 8601.  observationValue data type inferred from the ontology", response = ObservationListResponse.class, authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Observations", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = ObservationListResponse.class),
+			@ApiResponse(code = 202, message = "Accepted", response = Model202AcceptedSearchResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/search/observations/{searchResultsDbId}", produces = {
+			"application/json" }, method = RequestMethod.GET)
+	ResponseEntity<ObservationListResponse> searchObservationsSearchResultsDbIdGet(
+			@ApiParam(value = "The requested content type which should be returned by the server", required = true) @RequestHeader(value = "Accept", required = true) WSMIMEDataTypes accept,
+			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization,
+			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize);
 
 }

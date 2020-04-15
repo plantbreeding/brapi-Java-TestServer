@@ -1,31 +1,26 @@
 package org.brapi.test.BrAPITestServer.service.pheno;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ImageEntity;
+import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.repository.pheno.ImageRepository;
-import org.brapi.test.BrAPITestServer.repository.pheno.ObservationUnitRepository;
 import org.brapi.test.BrAPITestServer.service.DateUtility;
+import org.brapi.test.BrAPITestServer.service.GeoJSONUtility;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
-import org.brapi.test.BrAPITestServer.service.SearchService;
+import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import io.swagger.model.GeoJSON;
 import io.swagger.model.Metadata;
 import io.swagger.model.pheno.Image;
 import io.swagger.model.pheno.ImageNewRequest;
@@ -35,50 +30,130 @@ import io.swagger.model.pheno.ImageSearchRequest;
 public class ImageService {
 
 	private ImageRepository imageRepository;
-	private ObservationUnitRepository observationUnitRepository;
-	private SearchService searchService;
+	private ObservationService observationService;
+	private ObservationUnitService observationUnitService;
 
 	@Value("${app.baseurl}")
 	private String baseUrlProperty;
 
-	public ImageService(ImageRepository imageRepository, ObservationUnitRepository observationUnitRepository,
-			SearchService searchService) {
+	public ImageService(ImageRepository imageRepository, ObservationService observationService,
+			ObservationUnitService observationUnitService) {
 		this.imageRepository = imageRepository;
-		this.observationUnitRepository = observationUnitRepository;
-		this.searchService = searchService;
+		this.observationService = observationService;
+		this.observationUnitService = observationUnitService;
 	}
 
-	public Image getImage(String imageDbId) {
-		Image image = null;
-
-		if (imageDbId != null && !imageDbId.isEmpty()) {
-			Optional<ImageEntity> imageOption = imageRepository.findById(imageDbId);
-			if (imageOption.isPresent()) {
-				image = convertFromEntiy(imageOption.get());
-			}
-		}
-
-		return image;
-	}
-
-	public List<Image> findImages(String imageDbId, String imageName, String observationUnitDbId,
-			String observationDbId, String descriptiveOntologyTerm, Metadata metaData) {
-		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-
+	public List<Image> findImages(@Valid String imageDbId, @Valid String imageName, @Valid String observationUnitDbId,
+			@Valid String observationDbId, @Valid String descriptiveOntologyTerm, @Valid String externalReferenceID,
+			@Valid String externalReferenceSource, Metadata metadata) {
 		ImageSearchRequest request = new ImageSearchRequest();
+		if (imageDbId != null)
+			request.addImageDbIdsItem(imageDbId);
+		if (imageName != null)
+			request.addImageNamesItem(imageName);
 		if (observationUnitDbId != null)
 			request.addObservationUnitDbIdsItem(observationUnitDbId);
 		if (observationDbId != null)
 			request.addObservationDbIdsItem(observationDbId);
 		if (descriptiveOntologyTerm != null)
 			request.addDescriptiveOntologyTermsItem(descriptiveOntologyTerm);
+		if (externalReferenceID != null)
+			request.addExternalReferenceIDsItem(externalReferenceID);
+		if (externalReferenceSource != null)
+			request.addExternalReferenceSourcesItem(externalReferenceSource);
 
-		Page<ImageEntity> imagePage = imageRepository.findBySearch(request, pageReq);
-		PagingUtility.calculateMetaData(metaData, imagePage);
+		return findImages(request, metadata);
+	}
 
-		List<Image> images = imagePage.map(this::convertFromEntiy).getContent();
+	public List<Image> findImages(@Valid ImageSearchRequest request, Metadata metadata) {
+		Pageable pageReq = PagingUtility.getPageRequest(metadata);
+		SearchQueryBuilder<ImageEntity> searchQuery = new SearchQueryBuilder<ImageEntity>(ImageEntity.class);
+		if (request.getDescriptiveOntologyTerms() != null) {
+			searchQuery = searchQuery.join("descriptiveOntologyTerms", "term");
+		}
+		if (request.getObservationDbIds() != null) {
+			searchQuery = searchQuery.join("observations", "observation");
+		}
+		searchQuery = searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
+				.appendList(request.getDescriptiveOntologyTerms(), "*term").appendList(request.getImageDbIds(), "id")
+				.appendList(request.getImageFileNames(), "imageFileName").appendList(request.getImageNames(), "name")
+				.appendList(request.getMimeTypes(), "imageMIMEType")
+				.appendList(request.getObservationDbIds(), "*observation.id")
+				.appendList(request.getObservationUnitDbIds(), "observationUnit.id")
+				.appendNumberRange(request.getImageFileSizeMin(), request.getImageFileSizeMax(), "imageFileSize")
+				.appendNumberRange(request.getImageHeightMin(), request.getImageHeightMax(), "imageHeight")
+				.appendNumberRange(request.getImageWidthMin(), request.getImageWidthMax(), "imageWidth")
+				.appendDateRange(request.getImageTimeStampRangeStart(), request.getImageTimeStampRangeEnd(),
+						"timeStamp")
+				.appendGeoJSONArea(request.getImageLocation());
 
+		Page<ImageEntity> imagePage = imageRepository.findAllBySearch(searchQuery, pageReq);
+		PagingUtility.calculateMetaData(metadata, imagePage);
+
+		List<Image> images = imagePage.map(this::convertFromEntity).getContent();
 		return images;
+	}
+
+	public Image getImage(String imageDbId) throws BrAPIServerException {
+		Image image = null;
+
+		if (imageDbId != null && !imageDbId.isEmpty()) {
+			Optional<ImageEntity> imageOption = imageRepository.findById(imageDbId);
+			if (imageOption.isPresent()) {
+				image = convertFromEntity(imageOption.get());
+			} else {
+				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + imageDbId);
+			}
+		}
+
+		return image;
+	}
+
+	public Image updateImageContent(String imageDbId, String requestURL, byte[] imageData) throws BrAPIServerException {
+		Image result = null;
+		if (imageDbId != null && !imageDbId.isEmpty()) {
+			Optional<ImageEntity> imageOption = imageRepository.findById(imageDbId);
+			if (imageOption.isPresent()) {
+				ImageEntity newEntity = imageOption.get();
+				newEntity.setImageData(imageData);
+				newEntity.setImageURL(constructURL(newEntity, requestURL));
+
+				ImageEntity saved = imageRepository.save(newEntity);
+
+				result = convertFromEntity(saved);
+			} else {
+				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "ImageDbId not found");
+			}
+
+		}
+		return result;
+	}
+
+	public Image updateImage(String imageDbId, @Valid ImageNewRequest body) throws BrAPIServerException {
+		ImageEntity savedEntity;
+		Optional<ImageEntity> entityOpt = imageRepository.findById(imageDbId);
+		if (entityOpt.isPresent()) {
+			ImageEntity entity = entityOpt.get();
+			updateEntity(entity, body);
+
+			savedEntity = imageRepository.save(entity);
+		} else {
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + imageDbId);
+		}
+
+		return convertFromEntity(savedEntity);
+	}
+
+	public List<Image> saveImages(@Valid List<ImageNewRequest> body) {
+		List<Image> savedImages = new ArrayList<>();
+		for (ImageNewRequest request : body) {
+			ImageEntity newEntity = new ImageEntity();
+			updateEntity(newEntity, request);
+			ImageEntity saved = imageRepository.save(newEntity);
+			savedImages.add(convertFromEntity(saved));
+		}
+
+		return savedImages;
 	}
 
 	public byte[] getImageData(String imageDbId) {
@@ -92,37 +167,7 @@ public class ImageService {
 		return bytes;
 	}
 
-	public Image saveImageMetaData(ImageNewRequest imageMetadata) {
-		ImageEntity newEntity = new ImageEntity();
-		updateEntity(newEntity, imageMetadata);
-
-		ImageEntity saved = imageRepository.save(newEntity);
-		Image result = convertFromEntiy(saved);
-
-		return result;
-	}
-
-	public Image saveImageData(String imageDbId, byte[] imageData) throws BrAPIServerException {
-		Image result = null;
-		if (imageDbId != null && !imageDbId.isEmpty()) {
-			Optional<ImageEntity> imageOption = imageRepository.findById(imageDbId);
-			if (imageOption.isPresent()) {
-				ImageEntity newEntity = imageOption.get();
-				newEntity.setImageData(imageData);
-				newEntity.setImageURL(constructURL(newEntity));
-
-				ImageEntity saved = imageRepository.save(newEntity);
-
-				result = convertFromEntiy(saved);
-			} else {
-				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "ImageDbId not found");
-			}
-
-		}
-		return result;
-	}
-
-	private String constructURL(ImageEntity newEntity) {
+	private String constructURL(ImageEntity newEntity, String requestURL) {
 		String name = "image";
 		if (newEntity.getImageFileName() != null && !newEntity.getImageFileName().isEmpty()) {
 			name = newEntity.getImageFileName().replaceAll(" ", "_");
@@ -130,151 +175,79 @@ public class ImageService {
 			if (newEntity.getName() != null && !newEntity.getName().isEmpty()) {
 				name = newEntity.getName().replaceAll(" ", "_");
 			}
-			if (newEntity.getImageType() != null && !newEntity.getImageType().isEmpty()) {
-				name = name + "." + newEntity.getImageType();
+			if (newEntity.getImageMIMEType() != null && !newEntity.getImageMIMEType().isEmpty()) {
+				name = name + "." + newEntity.getImageMIMEType();
 			}
 		}
-		return baseUrlProperty + "/images/" + newEntity.getId() + "/" + name;
+		return requestURL + "/images/" + newEntity.getId() + "/" + name;
 	}
 
 	private void updateEntity(ImageEntity entity, ImageNewRequest image) {
-
-		if (image.getObservationUnitDbId() != null && !image.getObservationUnitDbId().isEmpty()) {
-			Optional<ObservationUnitEntity> unitOption = this.observationUnitRepository
-					.findById(image.getObservationUnitDbId());
-			if (unitOption.isPresent()) {
-				entity.setObservationUnit(unitOption.get());
+		if (image.getAdditionalInfo() != null)
+			entity.setAdditionalInfo(image.getAdditionalInfo());
+		if (image.getCopyright() != null)
+			entity.setCopyright(image.getCopyright());
+		if (image.getDescription() != null)
+			entity.setDescription(image.getDescription());
+		if (image.getDescriptiveOntologyTerms() != null)
+			entity.setDescriptiveOntologyTerms(image.getDescriptiveOntologyTerms());
+		if (image.getExternalReferences() != null)
+			entity.setExternalReferences(image.getExternalReferences());
+		if (image.getImageFileName() != null)
+			entity.setImageFileName(image.getImageFileName());
+		if (image.getImageFileSize() != null)
+			entity.setImageFileSize(image.getImageFileSize());
+		if (image.getImageHeight() != null)
+			entity.setImageHeight(image.getImageHeight());
+		if (image.getImageLocation() != null)
+			entity.setCoordinates(GeoJSONUtility.convertToEntity(image.getImageLocation()));
+		if (image.getImageTimeStamp() != null)
+			entity.setTimeStamp(DateUtility.toDate(image.getImageTimeStamp()));
+		if (image.getImageName() != null)
+			entity.setName(image.getImageName());
+		if (image.getMimeType() != null)
+			entity.setImageMIMEType(image.getMimeType());
+		if (image.getImageWidth() != null)
+			entity.setImageWidth(image.getImageWidth());
+		if (image.getObservationDbIds() != null) {
+			entity.setObservations(new ArrayList<>());
+			for (String observationDbId : image.getObservationDbIds()) {
+				ObservationEntity observation = observationService.getObservationEntity(observationDbId);
+				entity.getObservations().add(observation);
 			}
 		}
-
-		entity.setCopyright(image.getCopyright());
-		entity.setDescription(image.getDescription());
-		entity.setDescriptiveOntologyTerms(arrayToString(image.getDescriptiveOntologyTerms()));
-		entity.setImageFileName(image.getImageFileName());
-		entity.setImageFileSize(image.getImageFileSize());
-		entity.setImageHeight(image.getImageHeight());
-		entity.setName(image.getImageName());
-		entity.setImageType(image.getMimeType());
-		entity.setImageWidth(image.getImageWidth());
-		entity.setObservationDbIds(arrayToString(image.getObservationDbIds()));
-		entity.setTimeStamp(DateUtility.toDate(image.getImageTimeStamp()));
-		entity.setImageURL("");
-
-		if (image.getImageLocation() != null && image.getImageLocation().getGeometry() != null
-				&& image.getImageLocation().getGeometry() instanceof Map) {
-			try {
-				Map<String, Object> geo = (Map<String, Object>) image.getImageLocation().getGeometry();
-				ArrayList<Double> coords = (ArrayList<Double>) geo.get("coordinates");
-				entity.setLatitude(coords.get(0).floatValue());
-				entity.setLongitude(coords.get(1).floatValue());
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-			}
+		if (image.getObservationUnitDbId() != null) {
+			ObservationUnitEntity observationUnit = observationUnitService
+					.getObservationUnitEntity(image.getObservationUnitDbId());
+			entity.setObservationUnit(observationUnit);
 		}
-
 	}
 
-	private Image convertFromEntiy(ImageEntity entity) {
+	private Image convertFromEntity(ImageEntity entity) {
 		Image img = new Image();
-		img.setAdditionalInfo(new HashMap<String, String>());
+		img.setAdditionalInfo(entity.getAdditionalInfoMap());
 		img.setCopyright(entity.getCopyright());
 		img.setDescription(entity.getDescription());
+		img.setDescriptiveOntologyTerms(entity.getDescriptiveOntologyTerms());
+		img.setExternalReferences(entity.getExternalReferencesMap());
 		img.setImageDbId(entity.getId());
 		img.setImageFileName(entity.getImageFileName());
 		img.setImageFileSize(entity.getImageFileSize());
 		img.setImageHeight(entity.getImageHeight());
+		img.setImageLocation(GeoJSONUtility.convertFromEntity(entity.getCoordinates()));
 		img.setImageName(entity.getName());
-		img.setMimeType(entity.getImageType());
+		img.setImageTimeStamp(DateUtility.toOffsetDateTime(entity.getTimeStamp()));
 		img.setImageURL(entity.getImageURL());
 		img.setImageWidth(entity.getImageWidth());
-		img.setImageTimeStamp(DateUtility.toOffsetDateTime(entity.getTimeStamp()));
-
-		if (entity.getLatitude() != null && entity.getLongitude() != null) {
-//			img.setImageLocation(new GeoJSON()
-//					.geometry(new Geometry(entity.getLatitude(), entity.getLongitude())));
-		} else {
-//			img.setImageLocation(new GeoJSON().geometry(new Geometry(0F, 0F)));
+		img.setMimeType(entity.getImageMIMEType());
+		if (entity.getObservations() != null) {
+			img.setObservationDbIds(entity.getObservations().stream().map(o -> {
+				return o.getId();
+			}).collect(Collectors.toList()));
 		}
-
-		if (entity.getDescriptiveOntologyTerms() != null && !entity.getDescriptiveOntologyTerms().isEmpty()) {
-			img.setDescriptiveOntologyTerms(Arrays.asList(entity.getDescriptiveOntologyTerms().split(",")));
-		}
-
-		if (entity.getObservationDbIds() != null && !entity.getObservationDbIds().isEmpty()) {
-			img.setObservationDbIds(Arrays.asList(entity.getObservationDbIds().split(",")));
-		}
-
-		if (entity.getObservationUnit() != null) {
+		if (entity.getObservationUnit() != null)
 			img.setObservationUnitDbId(entity.getObservationUnit().getId());
-		}
+
 		return img;
-	}
-
-	private String arrayToString(List<String> list) {
-		String str = "";
-		if (list != null && !list.isEmpty()) {
-			for (String item : list) {
-				str = str + item + ",";
-			}
-		}
-		return str;
-	}
-
-	public Image updateImageMetaData(String imageDbId, @Valid ImageNewRequest imageMetadata) {
-		Image result = null;
-
-		if (imageDbId != null) {
-			Optional<ImageEntity> imageOption = imageRepository.findById(imageDbId);
-			if (imageOption.isPresent()) {
-				ImageEntity newEntity = imageOption.get();
-				updateEntity(newEntity, imageMetadata);
-				ImageEntity saved = imageRepository.save(newEntity);
-				result = convertFromEntiy(saved);
-			}
-		}
-
-		return result;
-	}
-
-	private class Geometry {
-		@JsonProperty("type")
-		private String type;
-		@JsonProperty("coordinates")
-		private List<Float> coordinates;
-
-		public Geometry() {
-			type = "Point";
-			coordinates = new ArrayList<>();
-		}
-
-		public Geometry(Float latitude, Float longitude) {
-			type = "Point";
-			coordinates = Arrays.asList(latitude, longitude);
-		}
-
-		@JsonIgnore
-		public Float getLat() {
-			if (coordinates != null && coordinates.size() >= 1) {
-				return coordinates.get(0);
-			}
-			return null;
-		}
-
-		@JsonIgnore
-		public Float getLong() {
-			if (coordinates != null && coordinates.size() >= 2) {
-				return coordinates.get(1);
-			}
-			return null;
-		}
-	}
-
-	public List<Image> search(ImageSearchRequest request, Metadata metadata) throws BrAPIServerException {
-		Pageable pageReq = PagingUtility.getPageRequest(metadata);
-		Page<ImageEntity> imagesPage = imageRepository.findBySearch(request, pageReq);
-		PagingUtility.calculateMetaData(metadata, imagesPage);
-		List<Image> images = imagesPage.map(this::convertFromEntiy).getContent();
-
-		return images;
 	}
 }

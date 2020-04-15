@@ -10,7 +10,7 @@ import io.swagger.model.ExternalReferences;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import org.threeten.bp.OffsetDateTime;
+import java.time.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 

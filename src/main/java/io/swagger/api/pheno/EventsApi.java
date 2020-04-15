@@ -6,8 +6,9 @@
 package io.swagger.api.pheno;
 
 import io.swagger.model.pheno.EventsResponse;
-import org.threeten.bp.OffsetDateTime;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,24 +21,22 @@ import javax.validation.Valid;
 @Api(value = "events", description = "the events API")
 public interface EventsApi {
 
-    @ApiOperation(value = "Get the Events", nickname = "eventsGet", notes = "Get list of events", response = EventsResponse.class, authorizations = {
-        @Authorization(value = "AuthorizationToken")    }, tags={ "Events", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK", response = EventsResponse.class),
-        @ApiResponse(code = 400, message = "Bad Request", response = String.class),
-        @ApiResponse(code = 401, message = "Unauthorized", response = String.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = String.class) })
-    @RequestMapping(value = "/events",
-        produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    ResponseEntity<EventsResponse> eventsGet(@ApiParam(value = "Filter based on study unique identifier in which the events occured") @Valid @RequestParam(value = "studyDbId", required = false) String studyDbId
-,@ApiParam(value = "Filter based on an ObservationUnit unique identifier in which the events occured") @Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId
-,@ApiParam(value = "Filter based on an Event Type") @Valid @RequestParam(value = "eventType", required = false) String eventType
-,@ApiParam(value = "Filter based on an Date Range") @Valid @RequestParam(value = "dateRangeStart", required = false) OffsetDateTime dateRangeStart
-,@ApiParam(value = "Filter based on an Date Range") @Valid @RequestParam(value = "dateRangeEnd", required = false) OffsetDateTime dateRangeEnd
-,@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page
-,@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize
-,@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>" ) @RequestHeader(value="Authorization", required=false) String authorization
-);
+	@ApiOperation(value = "Get the Events", nickname = "eventsGet", notes = "Get list of events", response = EventsResponse.class, authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Events", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = EventsResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/events", produces = { "application/json" }, method = RequestMethod.GET)
+	ResponseEntity<EventsResponse> eventsGet(
+			@ApiParam(value = "Filter based on study unique identifier in which the events occured") @Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@ApiParam(value = "Filter based on an ObservationUnit unique identifier in which the events occured") @Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
+			@ApiParam(value = "Filter based on an Event Type") @Valid @RequestParam(value = "eventType", required = false) String eventType,
+			@ApiParam(value = "Filter based on an Date Range") @Valid @RequestParam(value = "dateRangeStart", required = false) String dateRangeStart,
+			@ApiParam(value = "Filter based on an Date Range") @Valid @RequestParam(value = "dateRangeEnd", required = false) String dateRangeEnd,
+			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 }

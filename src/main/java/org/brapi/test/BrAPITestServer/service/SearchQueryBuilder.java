@@ -1,11 +1,13 @@
 package org.brapi.test.BrAPITestServer.service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.threeten.bp.OffsetDateTime;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 import io.swagger.model.GeoJSONSearchArea;
 import io.swagger.model.core.SortOrder;
@@ -81,7 +83,15 @@ public class SearchQueryBuilder<T> {
 		return this;
 	}
 
+	public SearchQueryBuilder<T> appendDateRange(LocalDate start, LocalDate end, String columnName) {
+		return appendDateRange(DateUtility.toDate(start), DateUtility.toDate(end), columnName);
+	}
+
 	public SearchQueryBuilder<T> appendDateRange(OffsetDateTime start, OffsetDateTime end, String columnName) {
+		return appendDateRange(DateUtility.toDate(start), DateUtility.toDate(end), columnName);
+	}
+
+	public SearchQueryBuilder<T> appendDateRange(Date start, Date end, String columnName) {
 		String paramNameStart = paramFilter(columnName) + "Start";
 		String paramNameEnd = paramFilter(columnName) + "End";
 		if (start != null && end != null) {
@@ -96,6 +106,16 @@ public class SearchQueryBuilder<T> {
 			params.put(paramNameEnd, end);
 		}
 		return this;
+	}
+
+	public SearchQueryBuilder<T> appendNumberRange(Integer min, Integer max, String columnName) {
+		BigDecimal minBD = null;
+		BigDecimal maxBD = null;
+		if (min != null)
+			minBD = new BigDecimal(min);
+		if (max != null)
+			maxBD = new BigDecimal(max);
+		return appendNumberRange(minBD, maxBD, columnName);
 	}
 
 	public SearchQueryBuilder<T> appendNumberRange(BigDecimal min, BigDecimal max, String columnName) {
@@ -154,7 +174,7 @@ public class SearchQueryBuilder<T> {
 	private String paramFilter(String param) {
 		if (param == null)
 			return "";
-		return param.replace('.', '_');
+		return param.replace('.', '_').replace('*', '_');
 	}
 
 	public SearchQueryBuilder<T> withSort(String sortByStr, SortOrder sortOrder) {

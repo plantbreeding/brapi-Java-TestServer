@@ -9,7 +9,7 @@ import io.swagger.model.ExternalReferences;
 import io.swagger.model.pheno.Season;
 import java.util.HashMap;
 import java.util.Map;
-import org.threeten.bp.OffsetDateTime;
+import java.time.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 

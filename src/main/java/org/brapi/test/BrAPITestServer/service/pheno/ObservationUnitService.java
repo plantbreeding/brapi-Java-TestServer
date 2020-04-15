@@ -559,7 +559,7 @@ public class ObservationUnitService {
 //	}
 
 	private ObservationUnitEntity buildEntityFromRow(List<String> row, @Valid ObservationTable request,
-			String studyDbId) {
+			String studyDbId) throws BrAPIServerException {
 		ObservationUnitEntity entity = new ObservationUnitEntity();
 		Date observationTimeStamp = new Date();
 		for (int i = 0; i < row.size(); i++) {
