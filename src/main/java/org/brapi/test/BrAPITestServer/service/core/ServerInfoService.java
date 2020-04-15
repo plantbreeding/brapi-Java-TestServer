@@ -44,6 +44,7 @@ public class ServerInfoService {
 		services.add(buildService("events", new MethodsEnum[] { MethodsEnum.GET}));
 		services.addAll(buildEntityServices("images", "imageDbId"));
 		services.add(buildService("images/{imageDbId}/imagecontent", new MethodsEnum[] { MethodsEnum.PUT }));
+		services.add(buildService("ontologies", new MethodsEnum[] { MethodsEnum.GET}));
 	}
 
 	public static List<Service> buildEntityServices(String entityName, String dbidName) {
