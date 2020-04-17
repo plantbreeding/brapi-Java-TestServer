@@ -2,8 +2,6 @@ package org.brapi.test.BrAPITestServer;
 
 import org.brapi.test.BrAPITestServer.repository.core.BrAPIRepositoryImpl;
 import org.brapi.test.BrAPITestServer.serializer.CustomDateSerializer;
-import org.brapi.test.BrAPITestServer.serializer.CustomObservationUnitPositionSerializer;
-import org.brapi.test.BrAPITestServer.serializer.CustomObservationUnitSerializer;
 import org.brapi.test.BrAPITestServer.serializer.CustomSerializationModule;
 import org.brapi.test.BrAPITestServer.serializer.CustomTimeStampSerializer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -13,8 +11,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import io.swagger.model.pheno.ObservationUnit;
-import io.swagger.model.pheno.ObservationUnitPosition;
 
 @Configuration
 @EnableJpaRepositories(basePackages="org.brapi.test.BrAPITestServer.repository", repositoryBaseClass=BrAPIRepositoryImpl.class)
@@ -26,8 +22,8 @@ public class BrapiTestServerConfig{
 		CustomSerializationModule module = new CustomSerializationModule();
 		module.addSerializer(OffsetDateTime.class, new CustomTimeStampSerializer());
 		module.addSerializer(LocalDate.class, new CustomDateSerializer());
-		module.addSerializer(ObservationUnitPosition.class, new CustomObservationUnitPositionSerializer());
-		module.addSerializer(ObservationUnit.class, new CustomObservationUnitSerializer());
+//		module.addSerializer(ObservationUnitPosition.class, new CustomObservationUnitPositionSerializer());
+//		module.addSerializer(ObservationUnit.class, new CustomObservationUnitSerializer());
 		return module;
 	}
 	

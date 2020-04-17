@@ -2,35 +2,29 @@ package org.brapi.test.BrAPITestServer.service.pheno;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
-import org.brapi.test.BrAPITestServer.model.entity.core.SeasonEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.GermplasmEntity;
-import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationEntity;
+import org.brapi.test.BrAPITestServer.model.entity.germ.SeedLotEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
-import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationVariableEntity;
+import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitLevelRelationshipEntity;
+import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitPositionEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.TreatmentEntity;
-import org.brapi.test.BrAPITestServer.repository.core.SeasonRepository;
-import org.brapi.test.BrAPITestServer.repository.core.StudyRepository;
-import org.brapi.test.BrAPITestServer.repository.germ.GermplasmRepository;
-import org.brapi.test.BrAPITestServer.repository.pheno.ObservationRepository;
 import org.brapi.test.BrAPITestServer.repository.pheno.ObservationUnitRepository;
-import org.brapi.test.BrAPITestServer.repository.pheno.ObservationVariableRepository;
-import org.brapi.test.BrAPITestServer.service.DateUtility;
+import org.brapi.test.BrAPITestServer.service.GeoJSONUtility;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
-import org.brapi.test.BrAPITestServer.service.SearchService;
-import org.brapi.test.BrAPITestServer.service.core.ContactService;
-import org.brapi.test.BrAPITestServer.service.core.LocationService;
+import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
+import org.brapi.test.BrAPITestServer.service.core.StudyService;
 import org.brapi.test.BrAPITestServer.service.germ.GermplasmService;
+import org.brapi.test.BrAPITestServer.service.germ.SeedLotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,80 +32,382 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Metadata;
-import io.swagger.model.core.Season;
-import io.swagger.model.core.Study;
-import io.swagger.model.core.StudyNewRequest;
-import io.swagger.model.core.StudySearchRequest;
+import io.swagger.model.WSMIMEDataTypes;
 import io.swagger.model.pheno.Observation;
-import io.swagger.model.pheno.ObservationNewRequest;
-import io.swagger.model.pheno.ObservationTable;
-import io.swagger.model.pheno.ObservationTable.HeaderRowEnum;
+import io.swagger.model.pheno.ObservationTableHeaderRowEnum;
 import io.swagger.model.pheno.ObservationTableObservationVariables;
+import io.swagger.model.pheno.ObservationTreatment;
 import io.swagger.model.pheno.ObservationUnit;
+import io.swagger.model.pheno.ObservationUnitHierarchyLevelEnum;
+import io.swagger.model.pheno.ObservationUnitLevelRelationship;
 import io.swagger.model.pheno.ObservationUnitNewRequest;
 import io.swagger.model.pheno.ObservationUnitPosition;
+import io.swagger.model.pheno.ObservationUnitSearchRequest;
+import io.swagger.model.pheno.ObservationUnitTable;
 import io.swagger.model.pheno.ObservationVariable;
-
+import io.swagger.model.pheno.ObservationVariableSearchRequest;
 
 @Service
 public class ObservationUnitService {
-	private SeasonRepository seasonRepository;
-	private StudyRepository studyRepository;
-	private ObservationUnitRepository observationUnitRepository;
-	private ObservationRepository observationRepository;
-	private ObservationVariableRepository observationVariableRepository;
-	private GermplasmRepository germplasmRepository;
-
-	private ObservationVariableService observationVariableService;
-	private LocationService locationService;
-	private SearchService searchService;
-	private GermplasmService germplasmService;
-	private ContactService contactService;
+	private final ObservationUnitRepository observationUnitRepository;
+	private final GermplasmService germplasmService;
+	private final ObservationService observationService;
+	private final StudyService studyService;
+	private final SeedLotService seedLotService;
+	private final ObservationVariableService observationVariableService;
 
 	@Autowired
-	public ObservationUnitService(SeasonRepository seasonRepository, 
-			StudyRepository studyRepository, ObservationUnitRepository observationUnitRepository,
-			ObservationRepository observationRepository, GermplasmRepository germplasmRepository,
-			ObservationVariableService observationVariableService, LocationService locationService,
-			ContactService contactService, SearchService searchService, GermplasmService germplasmService,
-			ObservationVariableRepository observationVariableRepository) {
-		this.seasonRepository = seasonRepository;
-		this.studyRepository = studyRepository;
+	public ObservationUnitService(ObservationUnitRepository observationUnitRepository, StudyService studyService,
+			ObservationService observationService, GermplasmService germplasmService, SeedLotService seedLotService,
+			ObservationVariableService observationVariableService) {
 		this.observationUnitRepository = observationUnitRepository;
-		this.observationRepository = observationRepository;
-		this.germplasmRepository = germplasmRepository;
-		this.observationVariableRepository = observationVariableRepository;
-
-		this.observationVariableService = observationVariableService;
-		this.locationService = locationService;
-		this.contactService = contactService;
-		this.searchService = searchService;
+		this.studyService = studyService;
 		this.germplasmService = germplasmService;
+		this.observationService = observationService;
+		this.seedLotService = seedLotService;
+		this.observationVariableService = observationVariableService;
 	}
 
-	private List<List<String>> buildDataMatrix(List<ObservationUnitEntity> units, List<ObservationVariable> variables) {
+	public List<ObservationUnit> findObservationUnits(@Valid String germplasmDbId, @Valid String studyDbId,
+			@Valid String locationDbId, @Valid String trialDbId, @Valid String programDbId, @Valid String seasonDbId,
+			@Valid String observationUnitLevelName, @Valid String observationUnitLevelOrder,
+			@Valid String observationUnitLevelCode, @Valid Boolean includeObservations,
+			@Valid String externalReferenceID, @Valid String externalReferenceSource, Metadata metadata) {
+		ObservationUnitSearchRequest request = new ObservationUnitSearchRequest();
+		if (germplasmDbId != null)
+			request.addGermplasmDbIdsItem(germplasmDbId);
+		if (studyDbId != null)
+			request.addStudyDbIdsItem(studyDbId);
+		if (locationDbId != null)
+			request.addLocationDbIdsItem(locationDbId);
+		if (trialDbId != null)
+			request.addTrialDbIdsItem(trialDbId);
+		if (programDbId != null)
+			request.addProgramDbIdsItem(programDbId);
+		if (seasonDbId != null)
+			request.addSeasonDbIdsItem(seasonDbId);
+		if (observationUnitLevelName != null || observationUnitLevelOrder != null || observationUnitLevelCode != null) {
+			ObservationUnitLevelRelationship level = new ObservationUnitLevelRelationship();
+			if (observationUnitLevelName != null)
+				level.setLevelName(ObservationUnitHierarchyLevelEnum.fromValue(observationUnitLevelName));
+			if (observationUnitLevelOrder != null)
+				level.setLevelOrder(Integer.decode(observationUnitLevelOrder));
+			if (observationUnitLevelCode != null)
+				level.setLevelCode(observationUnitLevelCode);
+			request.addObservationLevelsItem(level);
+		}
+		if (includeObservations != null)
+			request.setIncludeObservations(includeObservations);
+		if (externalReferenceID != null)
+			request.addExternalReferenceIDsItem(externalReferenceID);
+		if (externalReferenceSource != null)
+			request.addExternalReferenceSourcesItem(externalReferenceSource);
+
+		return findObservationUnits(request, metadata);
+	}
+
+	public ObservationUnitTable findObservationUnitsTable(WSMIMEDataTypes accept, @Valid String observationUnitDbId,
+			@Valid String germplasmDbId, @Valid String observationVariableDbId, @Valid String studyDbId,
+			@Valid String locationDbId, @Valid String trialDbId, @Valid String programDbId, @Valid String seasonDbId,
+			@Valid String observationLevel) {
+		List<ObservationUnit> observationUnits = findObservationUnits(germplasmDbId, studyDbId, locationDbId, trialDbId,
+				programDbId, seasonDbId, null, null, null, true, null, null, null);
+		ObservationVariableSearchRequest request = new ObservationVariableSearchRequest();
+		request.setObservationUnitDbIds(
+				observationUnits.stream().map(ou -> ou.getObservationUnitDbId()).collect(Collectors.toList()));
+		List<ObservationVariable> variables = observationVariableService.findObservationVariables(request, null);
+		ObservationUnitTable table = new ObservationUnitTable();
+		table.setData(buildDataMatrix(observationUnits, variables));
+		table.setHeaderRow(buildHeaderRow());
+		table.setObservationVariables(variables.stream().map(this::convertVariables).collect(Collectors.toList()));
+		return table;
+	}
+
+	public List<ObservationUnit> findObservationUnits(@Valid ObservationUnitSearchRequest request, Metadata metadata) {
+		Pageable pageReq = PagingUtility.getPageRequest(metadata);
+		SearchQueryBuilder<ObservationUnitEntity> searchQuery = new SearchQueryBuilder<ObservationUnitEntity>(
+				ObservationUnitEntity.class);
+		if (request.getObservationVariableDbIds() != null || request.getObservationVariableNames() != null) {
+			searchQuery = searchQuery.join("observations", "observation")
+					.appendList(request.getObservationVariableDbIds(), "*observation.variable.id")
+					.appendList(request.getObservationVariableNames(), "*observation.variable.name");
+		}
+		if (request.getSeasonDbIds() != null) {
+			searchQuery = searchQuery.join("study.seasons", "season").appendList(request.getSeasonDbIds(),
+					"*season.id");
+
+		}
+		if (request.getObservationLevels() != null) {
+			searchQuery = searchQuery
+					.appendEnumList(request.getObservationLevels().stream().filter(r -> r.getLevelName() != null)
+							.map(r -> r.getLevelName()).collect(Collectors.toList()), "level.name")
+					.appendList(request.getObservationLevels().stream().filter(r -> r.getLevelCode() != null)
+							.map(r -> r.getLevelCode()).collect(Collectors.toList()), "level.code")
+					.appendIntList(request.getObservationLevels().stream().filter(r -> r.getLevelOrder() != null)
+							.map(r -> r.getLevelOrder()).collect(Collectors.toList()), "level.order");
+		}
+		if (request.getObservationLevelRelationships() != null) {
+			searchQuery = searchQuery.join("levelRelationships", "levelRelationship")
+					.appendEnumList(
+							request.getObservationLevelRelationships().stream().filter(r -> r.getLevelName() != null)
+									.map(r -> r.getLevelName()).collect(Collectors.toList()),
+							"levelRelationship.name")
+					.appendList(
+							request.getObservationLevelRelationships().stream().filter(r -> r.getLevelCode() != null)
+									.map(r -> r.getLevelCode()).collect(Collectors.toList()),
+							"levelRelationship.code")
+					.appendIntList(
+							request.getObservationLevelRelationships().stream().filter(r -> r.getLevelOrder() != null)
+									.map(r -> r.getLevelOrder()).collect(Collectors.toList()),
+							"levelRelationship.order");
+		}
+		searchQuery = searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
+				.appendList(request.getGermplasmDbIds(), "germplasm.id")
+				.appendList(request.getGermplasmNames(), "germplasm.name")
+				.appendList(request.getLocationDbIds(), "study.location.id")
+				.appendList(request.getLocationNames(), "study.location.name")
+				.appendList(request.getObservationUnitDbIds(), "id")
+				.appendList(request.getProgramDbIds(), "study.trial.program.id")
+				.appendList(request.getProgramNames(), "study.trial.program.name")
+				.appendList(request.getStudyDbIds(), "study.id").appendList(request.getStudyNames(), "study.name")
+				.appendList(request.getTrialDbIds(), "study.trial.id")
+				.appendList(request.getTrialNames(), "study.trial.name");
+
+		Page<ObservationUnitEntity> page = observationUnitRepository.findAllBySearch(searchQuery, pageReq);
+		List<ObservationUnit> observationUnits = page.map(this::convertFromEntity).getContent();
+		PagingUtility.calculateMetaData(metadata, page);
+		return observationUnits;
+	}
+
+	public ObservationUnit getObservationUnit(String observationUnitDbId) throws BrAPIServerException {
+		return convertFromEntity(getObservationUnitEntity(observationUnitDbId));
+	}
+
+	public ObservationUnitEntity getObservationUnitEntity(String observationUnitDbId) throws BrAPIServerException {
+		ObservationUnitEntity observationUnit = null;
+		Optional<ObservationUnitEntity> entityOpt = observationUnitRepository.findById(observationUnitDbId);
+		if (entityOpt.isPresent()) {
+			observationUnit = entityOpt.get();
+		} else {
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + observationUnitDbId);
+		}
+		return observationUnit;
+	}
+
+	public List<ObservationUnit> saveObservationUnits(@Valid List<ObservationUnitNewRequest> requests)
+			throws BrAPIServerException {
+		List<ObservationUnit> savedObservationUnits = new ArrayList<>();
+
+		for (ObservationUnitNewRequest request : requests) {
+			ObservationUnitEntity entity = new ObservationUnitEntity();
+			updateEntity(entity, request);
+			ObservationUnitEntity savedEntity = observationUnitRepository.save(entity);
+			savedObservationUnits.add(convertFromEntity(savedEntity));
+		}
+
+		return savedObservationUnits;
+	}
+
+	public List<ObservationUnit> updateObservationUnits(@Valid Map<String, ObservationUnitNewRequest> requests)
+			throws BrAPIServerException {
+		List<ObservationUnit> savedObservationUnits = new ArrayList<>();
+
+		for (Entry<String, ObservationUnitNewRequest> entry : requests.entrySet()) {
+			ObservationUnit saved = updateObservationUnit(entry.getKey(), entry.getValue());
+			savedObservationUnits.add(saved);
+		}
+
+		return savedObservationUnits;
+	}
+
+	public ObservationUnit updateObservationUnit(String observationUnitDbId, @Valid ObservationUnitNewRequest request)
+			throws BrAPIServerException {
+		ObservationUnitEntity savedEntity;
+		Optional<ObservationUnitEntity> entityOpt = observationUnitRepository.findById(observationUnitDbId);
+		if (entityOpt.isPresent()) {
+			ObservationUnitEntity entity = entityOpt.get();
+			updateEntity(entity, request);
+
+			savedEntity = observationUnitRepository.save(entity);
+		} else {
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + observationUnitDbId);
+		}
+
+		return convertFromEntity(savedEntity);
+	}
+
+	private ObservationUnit convertFromEntity(ObservationUnitEntity entity) {
+		ObservationUnit unit = new ObservationUnit();
+		unit.setAdditionalInfo(entity.getAdditionalInfoMap());
+		unit.setExternalReferences(entity.getExternalReferencesMap());
+		if (entity.getGermplasm() != null) {
+			unit.setGermplasmDbId(entity.getGermplasm().getId());
+			unit.setGermplasmName(entity.getGermplasm().getGermplasmName());
+		}
+		if (entity.getStudy() != null) {
+			unit.setStudyDbId(entity.getStudy().getId());
+			unit.setStudyName(entity.getStudy().getStudyName());
+			if (entity.getStudy().getLocation() != null) {
+				unit.setLocationDbId(entity.getStudy().getLocation().getId());
+				unit.setLocationName(entity.getStudy().getLocation().getLocationName());
+			}
+			if (entity.getStudy().getTrial() != null) {
+				unit.setTrialDbId(entity.getStudy().getTrial().getId());
+				unit.setTrialName(entity.getStudy().getTrial().getTrialName());
+				if (entity.getStudy().getTrial().getProgram() != null) {
+					unit.setProgramDbId(entity.getStudy().getTrial().getProgram().getId());
+					unit.setProgramName(entity.getStudy().getTrial().getProgram().getName());
+				}
+			}
+		}
+		if (entity.getObservations() != null) {
+			unit.setObservations(entity.getObservations().stream().map(this.observationService::convertFromEntity)
+					.collect(Collectors.toList()));
+		}
+		unit.setObservationUnitDbId(entity.getId());
+		unit.setObservationUnitName(entity.getObservationUnitName());
+		unit.setObservationUnitPosition(convertFromEntity(entity.getPosition()));
+		unit.setObservationUnitPUI(entity.getObservationUnitPUI());
+		if (entity.getSeedLot() != null)
+			unit.setSeedLotDbId(entity.getSeedLot().getId());
+		if (entity.getTreatments() != null)
+			unit.setTreatments(
+					entity.getTreatments().stream().map(this::convertFromEntity).collect(Collectors.toList()));
+
+		return unit;
+
+	}
+
+	private ObservationUnitPosition convertFromEntity(ObservationUnitPositionEntity entity) {
+		ObservationUnitPosition position = null;
+		if (entity != null) {
+			position = new ObservationUnitPosition();
+			position.setEntryType(entity.getEntryType());
+			position.setGeoCoordinates(GeoJSONUtility.convertFromEntity(entity.getGeoCoordinates()));
+			ObservationUnitLevelRelationship level = new ObservationUnitLevelRelationship();
+			level.setLevelCode(entity.getLevelCode());
+			level.setLevelName(entity.getLevelName());
+			level.setLevelOrder(entity.getLevelOrder());
+			position.setObservationLevel(level);
+			if(entity.getObservationLevelRelationships() != null) {
+			position.setObservationLevelRelationships(entity.getObservationLevelRelationships().stream()
+					.map(this::convertFromEntity).collect(Collectors.toList()));
+			}
+			position.setPositionCoordinateX(entity.getPositionCoordinateX());
+			position.setPositionCoordinateXType(entity.getPositionCoordinateXType());
+			position.setPositionCoordinateY(entity.getPositionCoordinateY());
+			position.setPositionCoordinateYType(entity.getPositionCoordinateYType());
+		}
+		return position;
+	}
+
+	private ObservationTreatment convertFromEntity(TreatmentEntity entity) {
+		ObservationTreatment treatment = new ObservationTreatment();
+		treatment.setFactor(entity.getFactor());
+		treatment.setModality(entity.getModality());
+		return treatment;
+	}
+
+	private ObservationUnitLevelRelationship convertFromEntity(ObservationUnitLevelRelationshipEntity entity) {
+		ObservationUnitLevelRelationship level = new ObservationUnitLevelRelationship();
+		level.setLevelCode(entity.getLevelCode());
+		level.setLevelName(entity.getLevelName());
+		level.setLevelOrder(entity.getLevelOrder());
+		return level;
+	}
+
+	private ObservationUnitEntity updateEntity(ObservationUnitEntity entity, ObservationUnitNewRequest unit)
+			throws BrAPIServerException {
+		if (unit.getAdditionalInfo() != null)
+			entity.setAdditionalInfo(unit.getAdditionalInfo());
+		if (unit.getExternalReferences() != null)
+			entity.setExternalReferences(unit.getExternalReferences());
+		if (unit.getGermplasmDbId() != null) {
+			GermplasmEntity germplasm = germplasmService.getGermplasmEntity(unit.getGermplasmDbId());
+			entity.setGermplasm(germplasm);
+		}
+		if (unit.getObservationUnitName() != null)
+			entity.setObservationUnitName(unit.getObservationUnitName());
+		if (unit.getObservationUnitPUI() != null)
+			entity.setObservationUnitPUI(unit.getObservationUnitPUI());
+		if (unit.getObservationUnitPosition() != null) {
+			if (entity.getPosition() == null)
+				entity.setPosition(new ObservationUnitPositionEntity());
+			updateEntity(entity.getPosition(), unit.getObservationUnitPosition());
+		}
+		if (unit.getSeedLotDbId() != null) {
+			SeedLotEntity seedLot = seedLotService.getSeedLotEntity(unit.getSeedLotDbId());
+			entity.setSeedLot(seedLot);
+		}
+		if (unit.getStudyDbId() != null) {
+			StudyEntity study = studyService.getStudyEntity(unit.getStudyDbId());
+			entity.setStudy(study);
+		}
+		if (unit.getTreatments() != null)
+			entity.setTreatments(unit.getTreatments().stream().map(t -> {
+				TreatmentEntity e = new TreatmentEntity();
+				e.setFactor(t.getFactor());
+				e.setModality(t.getFactor());
+				return e;
+			}).collect(Collectors.toList()));
+
+		return entity;
+	}
+
+	private void updateEntity(ObservationUnitPositionEntity entity, ObservationUnitPosition position) {
+		if (position.getEntryType() != null)
+			entity.setEntryType(position.getEntryType());
+		if (position.getGeoCoordinates() != null)
+			entity.setGeoCoordinates(GeoJSONUtility.convertToEntity(position.getGeoCoordinates()));
+		if (position.getObservationLevel() != null) {
+			if (position.getObservationLevel().getLevelCode() != null)
+				entity.setLevelCode(position.getObservationLevel().getLevelCode());
+			if (position.getObservationLevel().getLevelName() != null)
+				entity.setLevelName(position.getObservationLevel().getLevelName());
+			if (position.getObservationLevel().getLevelOrder() != null)
+				entity.setLevelOrder(position.getObservationLevel().getLevelOrder());
+		}
+		if (position.getObservationLevelRelationships() != null)
+			entity.setObservationLevelRelationships(position.getObservationLevelRelationships().stream()
+					.map(this::convertToEntity).collect(Collectors.toList()));
+		if (position.getPositionCoordinateX() != null)
+			entity.setPositionCoordinateX(position.getPositionCoordinateX());
+		if (position.getPositionCoordinateXType() != null)
+			entity.setPositionCoordinateXType(position.getPositionCoordinateXType());
+		if (position.getPositionCoordinateY() != null)
+			entity.setPositionCoordinateY(position.getPositionCoordinateY());
+		if (position.getPositionCoordinateYType() != null)
+			entity.setPositionCoordinateYType(position.getPositionCoordinateYType());
+	}
+
+	private ObservationUnitLevelRelationshipEntity convertToEntity(ObservationUnitLevelRelationship level) {
+		ObservationUnitLevelRelationshipEntity entity = new ObservationUnitLevelRelationshipEntity();
+		entity.setLevelCode(level.getLevelCode());
+		entity.setLevelName(level.getLevelName());
+		entity.setLevelOrder(level.getLevelOrder());
+		return entity;
+	}
+
+	private List<List<String>> buildDataMatrix(List<ObservationUnit> observationUnits,
+			List<ObservationVariable> variables) {
 		List<List<String>> data = new ArrayList<>();
-		for (ObservationUnitEntity unit : units) {
+		for (ObservationUnit unit : observationUnits) {
 			List<String> row = new ArrayList<>();
 			row.add(unit.getObservations().get(0).getSeason().getYear().toString());
-			row.add(unit.getStudy().getId());
-			row.add(unit.getStudy().getStudyName());
-			row.add(unit.getStudy().getLocation().getId());
-			row.add(unit.getStudy().getLocation().getCountryName());
-			row.add(unit.getGermplasm().getId());
-			row.add(unit.getGermplasm().getGermplasmName());
-			row.add(unit.getId());
-			row.add(unit.getPlotNumber().toString());
-			row.add(unit.getReplicate());
-			row.add(unit.getBlockNumber().toString());
-			row.add(DateUtility.toTimeString(unit.getObservations().get(0).getObservationTimeStamp()));
-			row.add(unit.getEntryType());
-			row.add(unit.getX());
-			row.add(unit.getY());
+			row.add(unit.getStudyDbId());
+			row.add(unit.getStudyName());
+			row.add(unit.getLocationDbId());
+			row.add(unit.getLocationName());
+			row.add(unit.getGermplasmDbId());
+			row.add(unit.getGermplasmName());
+			row.add(unit.getObservationUnitDbId());
+			row.add(unit.getObservationUnitPosition().getEntryType().toString());
+			row.add(unit.getObservationUnitPosition().getPositionCoordinateX());
+			row.add(unit.getObservationUnitPosition().getPositionCoordinateY());
 
 			for (ObservationVariable var : variables) {
-				Optional<ObservationEntity> obsOption = unit.getObservations().stream().filter((obs) -> {
-					return obs.getObservationVariable().getId() == var.getObservationVariableDbId();
+				Optional<Observation> obsOption = unit.getObservations().stream().filter((obs) -> {
+					return obs.getObservationVariableDbId() == var.getObservationVariableDbId();
 				}).findFirst();
 				if (obsOption.isPresent()) {
 					row.add(obsOption.get().getValue());
@@ -124,222 +420,16 @@ public class ObservationUnitService {
 		return data;
 	}
 
-	private Map<String, String> buildEntryMap(List<ObservationUnitEntity> observationUnitsPage) {
-		Map<String, String> entryMap = new HashMap<>();
-		for (ObservationUnitEntity obs : observationUnitsPage) {
-			if (obs.getGermplasm() != null)
-				entryMap.put(obs.getGermplasm().getId(), obs.getEntryNumber());
-		}
-		return entryMap;
+	private List<ObservationTableHeaderRowEnum> buildHeaderRow() {
+		List<ObservationTableHeaderRowEnum> headers = Arrays.asList(ObservationTableHeaderRowEnum.values());
+		headers.remove(ObservationTableHeaderRowEnum.OBSERVATIONTIMESTAMP);
+		return headers;
 	}
 
-	private List<HeaderRowEnum> buildHeaderRow() {
-		return Arrays.asList(HeaderRowEnum.values());
-	}
-
-	private Observation convertFromEntity(ObservationEntity entity) {
-		Observation unit = new Observation();
-		unit.setGermplasmDbId(entity.getObservationUnit().getGermplasm().getId());
-		unit.setGermplasmName(entity.getObservationUnit().getGermplasm().getGermplasmName());
-		unit.setObservationDbId(entity.getId());
-//		unit.setObservationLevel(entity.getObservationUnit().getObservationLevel());
-		unit.setObservationTimeStamp(DateUtility.toOffsetDateTime(entity.getObservationTimeStamp()));
-		unit.setObservationUnitDbId(entity.getObservationUnit().getId());
-		unit.setObservationUnitName(entity.getObservationUnit().getObservationUnitName());
-		if (entity.getObservationVariable() != null) {
-			unit.setObservationVariableDbId(entity.getObservationVariable().getId());
-			unit.setObservationVariableName(entity.getObservationVariable().getName());
-		}
-//		unit.setOperator(entity.getObservationUnit().getOperator());
-		unit.setStudyDbId(entity.getObservationUnit().getStudy().getId());
-//		unit.setSeason(convertFromEntity(entity.getSeason()));
-		unit.setUploadedBy(entity.getObservationUnit().getUploadedBy());
-		unit.setValue(entity.getValue());
-
-		return unit;
-	}
-
-	private ObservationUnit convertFromEntity(ObservationUnitEntity entity) {
-		ObservationUnit observation = new ObservationUnit();
-//		observation.setBlockNumber(entity.getBlockNumber() == null ? "0" : entity.getBlockNumber().toString());
-//		observation.setEntryNumber(entity.getEntryNumber());
-//		observation.setEntryType(entity.getEntryType());
-		if (entity.getGermplasm() != null) {
-			observation.setGermplasmDbId(entity.getGermplasm().getId());
-			observation.setGermplasmName(entity.getGermplasm().getGermplasmName());
-		}
-		if (entity.getStudy() != null) {
-			observation.setStudyDbId(entity.getStudy().getId());
-			observation.setStudyName(entity.getStudy().getStudyName());
-			if (entity.getStudy().getLocation() != null) {
-				observation.setLocationDbId(entity.getStudy().getLocation().getId());
-				observation.setLocationName(entity.getStudy().getLocation().getLocationName());
-			}
-			if (entity.getStudy().getTrial() != null) {
-				observation.setTrialDbId(entity.getStudy().getTrial().getId());
-				observation.setTrialName(entity.getStudy().getTrial().getTrialName());
-				if (entity.getStudy().getTrial().getProgram() != null) {
-					observation.setProgramDbId(entity.getStudy().getTrial().getProgram().getId());
-					observation.setProgramName(entity.getStudy().getTrial().getProgram().getName());
-				}
-			}
-		}
-//		observation.setObservationLevel(entity.getObservationLevel());
-//		observation.setObservationLevels(entity.getObservationLevels());
-		observation.setObservationUnitDbId(entity.getId());
-		observation.setObservationUnitName(entity.getObservationUnitName());
-//		if (entity.getPedigree() != null)
-//			observation.setPedigree(entity.getPedigree().getPedigree());
-//		observation.setPlantNumber(entity.getPlantNumber() == null ? "0" : entity.getPlantNumber().toString());
-//		observation.setPlotNumber(entity.getPlotNumber() == null ? "0" : entity.getPlotNumber().toString());
-//		observation.setReplicate(entity.getReplicate());
-//		observation.setX(entity.getX());
-//		observation.setPositionCoordinateX(entity.getX());
-//		observation.setPositionCoordinateXType(PositionCoordinateXTypeEnum.GRID_COL);
-//		observation.setY(entity.getY());
-//		observation.setPositionCoordinateY(entity.getY());
-//		observation.setPositionCoordinateYType(PositionCoordinateYTypeEnum.GRID_ROW);
-
-//		observation.setObservations(
-//				entity.getObservations().stream().map(this::convertFromEntityToSummary).collect(Collectors.toList()));
-
-//		observation.setObservationUnitXref(entity.getObservationUnitXref().stream().map(e -> {
-//			ObservationUnitXref xref = new ObservationUnitXref();
-//			xref.setId(e.getXref());
-//			xref.setSource(e.getSource());
-//			return xref;
-//		}).collect(Collectors.toList()));
-//		
-//		observation.setTreatments(entity.getTreatments().stream().map(e -> {
-//			ObservationTreatment treatment = new ObservationTreatment();
-//			treatment.setFactor(e.getFactor());
-//			treatment.setModality(e.getModality());
-//			return treatment;
-//		}).collect(Collectors.toList()));
-
-		return observation;
-
-	}
-
-	private Season convertFromEntity(SeasonEntity entity) {
-		Season season = new Season();
-		if (entity != null) {
-			season.setSeasonName(entity.getSeason());
-			season.setSeasonDbId(entity.getId());
-			season.setYear(entity.getYear());
-		}
-		return season;
-	}
-
-	private ObservationUnitPosition convertFromEntityToPosition(ObservationUnitEntity entity) {
-		ObservationUnitPosition plot = new ObservationUnitPosition();
-//		plot.setBlockNumber(entity.getBlockNumber() == null ? null : entity.getBlockNumber().toString());
-//		plot.setEntryType(EntryTypeEnum.valueOf(entity.getEntryType()));
-		plot.setObservationLevel(entity.getObservationLevel());
-//		plot.setObservationUnitDbId(entity.getId());
-//		plot.setObservationUnitName(entity.getObservationUnitName());
-//		plot.setReplicate(entity.getReplicate());
-//		plot.setStudyDbId(entity.getStudy().getId());
-//		plot.setX(entity.getX());
-		plot.setPositionCoordinateX(entity.getX());
-//		plot.setPositionCoordinateXType(io.swagger.model.ObservationUnitPosition.PositionCoordinateXTypeEnum.GRID_COL);
-//		plot.setY(entity.getY());
-		plot.setPositionCoordinateY(entity.getY());
-//		plot.setPositionCoordinateYType(io.swagger.model.ObservationUnitPosition.PositionCoordinateYTypeEnum.GRID_ROW);
-//		plot.setAdditionalInfo(new HashMap<>());
-
-		if (entity.getGermplasm() != null) {
-//			plot.setGermplasmDbId(entity.getGermplasm().getId());
-//			plot.setGermplasmName(entity.getGermplasm().getGermplasmName());
-		}
-
-		return plot;
-	}
-
-	private Observation convertFromEntityToSummary(ObservationEntity entity) {
-		Observation ob = new Observation();
-		ob.setCollector(entity.getCollector());
-		ob.setObservationDbId(entity.getId());
-		ob.setObservationTimeStamp(DateUtility.toOffsetDateTime(entity.getObservationTimeStamp()));
-//		ob.setSeason(convertFromEntity(entity.getSeason()));
-		ob.setValue(entity.getValue());
-		if (entity.getObservationVariable() != null) {
-			ob.setObservationVariableDbId(entity.getObservationVariable().getId());
-			ob.setObservationVariableName(entity.getObservationVariable().getName());
-		}
-		return ob;
-	}
-
-//	private ObservationEntity convertToEntity(NewObservationsRequestObservations observation) {
-//		ObservationEntity obe = observationRepository.findById(observation.getObservationDbId())
-//				.orElse(new ObservationEntity());
-//		obe.setCollector(observation.getCollector());
-//		obe.setObservationTimeStamp(DateUtility.toDate(observation.getObservationTimeStamp()));
-//		obe.setValue(observation.getValue());
-//		obe.setObservationVariable(
-//				observationVariableService.getVariableEntity(observation.getObservationVariableDbId()));
-//		return obe;
-//	}
-
-	public List<String> getObservationLevels(Metadata metaData) {
-		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-		Page<String> levelsPage = observationUnitRepository.findObservationLevels(pageReq);
-		PagingUtility.calculateMetaData(metaData, levelsPage);
-		return levelsPage.getContent();
-	}
-
-	public List<Observation> getObservationUnits(String studyDbId, List<String> observationVariableDbIds,
-			Metadata metaData) {
-		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-		Page<ObservationEntity> observationsPage;
-		if (observationVariableDbIds == null || observationVariableDbIds.isEmpty()) {
-			observationsPage = observationRepository.findAllByObservationUnit_Study_Id(studyDbId, pageReq);
-		} else {
-			observationsPage = observationRepository.findAllByObservationUnit_Study_IdAndObservationVariable_IdIn(
-					studyDbId, observationVariableDbIds, pageReq);
-		}
-		PagingUtility.calculateMetaData(metaData, observationsPage);
-		List<Observation> units = observationsPage.map(this::convertFromEntity).getContent();
-
-		return units;
-	}
-
-	public List<ObservationUnit> getStudyObservations(String studyDbId, String observationLevel, Metadata metaData) {
-		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-		Page<ObservationUnitEntity> unitsPage;
-		if (observationLevel == null) {
-			unitsPage = observationUnitRepository.findAllByStudy_Id(studyDbId, pageReq);
-		} else {
-			unitsPage = observationUnitRepository.findAllByStudy_IdAndObservationLevel(studyDbId, observationLevel,
-					pageReq);
-		}
-		PagingUtility.calculateMetaData(metaData, unitsPage);
-		List<ObservationUnit> observations = unitsPage.map(this::convertFromEntity).getContent();
-
-		return observations;
-	}
-
-	public ObservationTable getStudyObservationUnitTable(String studyDbId, Metadata metadata) {
-		ObservationTable tableWrapper = new ObservationTable();
-
-//		tableWrapper.setHeaderRow(buildHeaderRow());
-//
-//		List<ObservationVariable> variables = observationVariableService.getVariablesForStudy(studyDbId, metadata);
-////		tableWrapper.setObservationVariables(
-////				variables.stream().map(e -> e.getObservationVariableDbId()).collect(Collectors.toList()));
-////		tableWrapper.setObservationVariableNames(variables.stream().map(e -> e.getName()).collect(Collectors.toList()));
-//
-//		List<ObservationUnitEntity> units = observationUnitRepository.findAllByStudy_Id(studyDbId);
-//		tableWrapper.setData(buildDataMatrix(units, variables));
-
-		return tableWrapper;
-	}
-
-	public String getStudyObservationUnitTableText(String studyDbId, String sep) {
-		ObservationTable table = getStudyObservationUnitTable(studyDbId, new Metadata());
+	public String getObservationUnitTableText(ObservationUnitTable table, String sep) {
 		StringBuilder responseBuilder = new StringBuilder();
 
-		for (HeaderRowEnum header : table.getHeaderRow()) {
+		for (ObservationTableHeaderRowEnum header : table.getHeaderRow()) {
 			responseBuilder.append("\"" + header.toString() + "\"");
 			responseBuilder.append(sep);
 		}
@@ -368,373 +458,10 @@ public class ObservationUnitService {
 		return responseBuilder.toString();
 	}
 
-	public List<ObservationUnitPosition> getStudyPlotLayouts(String studyDbId, Metadata metaData) {
-		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-		Page<ObservationUnitEntity> unitsPage = observationUnitRepository.findAllByStudy_Id(studyDbId, pageReq);
-		PagingUtility.calculateMetaData(metaData, unitsPage);
-		List<ObservationUnitPosition> plots = unitsPage.map(this::convertFromEntityToPosition).getContent();
-		return plots;
-	}
-
-//	public List<StudyType> getStudyTypes(String studyTypeDbId, Metadata metaData) {
-//		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-//		List<StudyType> studyTypes = new ArrayList<>();
-//
-//		if (studyTypeDbId == null) {
-//			Page<StudyTypeEntity> page = studyTypeRepository.findAll(pageReq);
-//			PagingUtility.calculateMetaData(metaData, page);
-//			studyTypes = page.map(this::convertFromEntity).getContent();
-//		} else {
-//			Optional<StudyTypeEntity> studyOption = studyTypeRepository.findById(studyTypeDbId);
-//			if (studyOption.isPresent()) {
-//				metaData.getPagination().setTotalCount(1);
-//				PagingUtility.calculateMetaData(metaData);
-//				studyTypes.add(convertFromEntity(studyOption.get()));
-//			}
-//		}
-//
-//		return studyTypes;
-//	}
-//
-//	private StudyType convertFromEntity(StudyTypeEntity entity) {
-//		StudyType studyType = new StudyType();
-//		studyType.setDescription(entity.getDescription());
-//		studyType.setName(entity.getName());
-//		studyType.setStudyTypeDbId(entity.getId());
-//		studyType.setStudyTypeName(entity.getName());
-//		return studyType;
-//	}
-
-	public Observation saveObservations(String studyDbId, @Valid List<ObservationNewRequest> newObservations) {
-		Observation newObsIds = new Observation();
-		Optional<StudyEntity> studyOpt = studyRepository.findById(studyDbId);
-		if (studyOpt.isPresent()) {
-			for (ObservationNewRequest newObs : newObservations) {
-				Optional<ObservationUnitEntity> unitOpt = observationUnitRepository
-						.findById(newObs.getObservationUnitDbId());
-				if (unitOpt.isPresent()) {
-					ObservationEntity newObsEntity = null;
-
-					List<ObservationEntity> obsEntities = unitOpt.get().getObservations();
-//					for (ObservationEntity obsEntity : obsEntities) {
-//						if (obsEntity.getId().equals(newObs.getObservationDbId())) {
-//							newObsEntity = obsEntity;
-//							break;
-//						}
-//					}
-					if (newObsEntity == null) {
-						newObsEntity = new ObservationEntity();
-						newObsEntity.setObservationUnit(unitOpt.get());
-					}
-
-					updateEntity(newObsEntity, newObs);
-					ObservationEntity savedObsEntity = observationRepository.save(newObsEntity);
-
-//					Observation newId = new Observation()
-//							.observationDbId(savedObsEntity.getId())
-//							.observationUnitDbId(savedObsEntity.getObservationUnit().getId());
-//					if (savedObsEntity.getObservationVariable() != null)
-//						newId.setObservationVariableDbId(savedObsEntity.getObservationVariable().getId());
-
-//					newObsIds.addObservationsItem(newId);
-				}
-			}
-		}
-
-		return newObsIds;
-	}
-
-	public ObservationUnit saveObservationUnit(@Valid List<ObservationUnitNewRequest> request, String studyDbId)
-			throws BrAPIServerException {
-
-		Optional<StudyEntity> studyEntityOpt = studyRepository.findById(studyDbId);
-		if (!studyEntityOpt.isPresent()) {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "No study found for the given studyDbId");
-		}
-
-		ObservationUnit response = new ObservationUnit();
-		for (ObservationUnitNewRequest unit : request) {
-			ObservationUnitEntity unitEntity;
-			Optional<ObservationUnitEntity> unitEntityOpt = observationUnitRepository.findById("");
-//					.findById(unit.getObservationUnitDbId() == null ? "" : unit.getObservationUnitDbId());
-			if (unitEntityOpt.isPresent()) {
-				unitEntity = updateEntity(unitEntityOpt.get(), unit);
-			} else {
-				unitEntity = updateEntity(new ObservationUnitEntity(), unit);
-			}
-
-			unitEntity.setStudy(studyEntityOpt.get());
-
-			final ObservationUnitEntity newUnitEntity = observationUnitRepository.save(unitEntity);
-
-//			if (unit.getObservationUnitXref() == null) {
-//				newUnitEntity.setObservationUnitXref(null);
-//			} else {
-//				newUnitEntity.setObservationUnitXref(unit.getObservationUnitXref().stream().map((xref) -> {
-//					ObservationUnitXrefEntity entity = new ObservationUnitXrefEntity();
-//					entity.setObservationUnitDbId(newUnitEntity.getId());
-//					entity.setXref(xref.getId());
-//					entity.setSource(xref.getSource());
-//					return entity;
-//				}).collect(Collectors.toList()));
-//			}
-
-			if (unit.getTreatments() == null) {
-				newUnitEntity.setTreatments(null);
-			} else {
-				newUnitEntity.setTreatments(unit.getTreatments().stream().map((treatment) -> {
-					TreatmentEntity entity = new TreatmentEntity();
-					entity.setFactor(treatment.getFactor());
-					entity.setModality(treatment.getModality());
-					entity.setObservationUnitDbId(newUnitEntity.getId());
-					return entity;
-				}).collect(Collectors.toList()));
-			}
-
-			ObservationUnitEntity newNewUnitEntity = observationUnitRepository.save(newUnitEntity);
-
-//			if (unit.getObservations() != null) {
-//				for (Observation observation : unit.getObservations()) {
-//					ObservationEntity observationEntity = convertToEntity(observation);
-//					observationEntity.setObservationUnit(newNewUnitEntity);
-//					observationRepository.save(observationEntity);
-//				}
-//			}
-//
-//			response.addObservationUnitDbIdsItem(newNewUnitEntity.getId());
-		}
-		return response;
-	}
-
-//	public List<String> saveObservationUnits(String studyDbId, NewObservationsRequestWrapperDeprecated requestDep)
-//			throws BrAPIServerException {
-//		List<String> newUnitDbIds = new ArrayList<>();
-//		Optional<StudyEntity> studyOpt = studyRepository.findById(studyDbId);
-//		if (studyOpt.isPresent()) {
-//			List<NewObservationUnitRequest> requests = new ArrayList<>();
-//			for (NewObservationsRequestDeprecatedData unit : requestDep.getResult().getData()) {
-//				NewObservationUnitRequest request = new NewObservationUnitRequest();
-//				request.setStudyDbId(studyOpt.get().getId());
-//				request.setObservationUnitDbId(unit.getObservatioUnitDbId());
-//				request.setObservations(unit.getObservations().stream().map((oDep) -> {
-//					Observation o = new Observation();
-//					o.setObservationDbId(oDep.getObservationDbId());
-//					o.setObservationTimeStamp(oDep.getObservationTimeStamp());
-//					o.setObservationUnitDbId(unit.getObservatioUnitDbId());
-//					o.setObservationVariableDbId(oDep.getObservationVariableDbId());
-//					o.setValue(oDep.getValue());
-//					return o;
-//				}).collect(Collectors.toList()));
-//
-//				requests.add(request);
-//
-//				newUnitDbIds.addAll(saveObservationUnit(requests, studyDbId).getObservationUnitDbIds());
-//			}
-//		}
-//		return newUnitDbIds;
-//	}
-
-//	public NewObservationDbIds saveStudyObservationUnitsTable(String studyDbId,
-//			@Valid NewObservationsTableRequest request) {
-//		Optional<StudyEntity> studyOpt = studyRepository.findById(studyDbId);
-//		Set<NewObservationDbIdsObservations> observationDbIds = new HashSet<>();
-//		if (studyOpt.isPresent()) {
-//			for (List<String> row : request.getData()) {
-//				ObservationUnitEntity entity = buildEntityFromRow(row, request, studyDbId);
-//				if (entity.getStudy() == null) {
-//					entity.setStudy(studyOpt.get());
-//				}
-//				ObservationUnitEntity savedEntity = observationUnitRepository.save(entity);
-//				observationDbIds.addAll(savedEntity.getObservations().stream().map(e -> {
-//					return new NewObservationDbIdsObservations().observationDbId(e.getId())
-//							.observationUnitDbId(e.getObservationUnit().getId())
-//							.observationVariableDbId(e.getObservationVariable().getId());
-//				}).collect(Collectors.toSet()));
-//			}
-//		}
-//		NewObservationDbIds response = new NewObservationDbIds();
-//		response.setObservations(new ArrayList<>());
-//		response.getObservations().addAll(observationDbIds);
-//		return response;
-//	}
-
-	private ObservationUnitEntity buildEntityFromRow(List<String> row, @Valid ObservationTable request,
-			String studyDbId) throws BrAPIServerException {
-		ObservationUnitEntity entity = new ObservationUnitEntity();
-		Date observationTimeStamp = new Date();
-		for (int i = 0; i < row.size(); i++) {
-			int varIndex = i - request.getHeaderRow().size();
-			if (varIndex < 0) {
-				HeaderRowEnum header = request.getHeaderRow().get(i);
-				if (header != null) {
-					switch (header) {
-//					case BLOCKNUMBER:
-//						entity.setBlockNumber(Integer.parseInt(row.get(i)));
-//						break;
-//					case ENTRYTYPE:
-//						entity.setEntryType(row.get(i));
-//						break;
-					case GERMPLASMDBID:
-					case GERMPLASMNAME:
-						Optional<GermplasmEntity> germOpt = germplasmRepository.findById(row.get(i));
-						if (germOpt.isPresent())
-							entity.setGermplasm(germOpt.get());
-						break;
-					case OBSERVATIONTIMESTAMP:
-						observationTimeStamp = DateUtility.toDate(row.get(i));
-						break;
-					case OBSERVATIONUNITDBID:
-						Optional<ObservationUnitEntity> unitOpt = observationUnitRepository.findById(row.get(i));
-						if (unitOpt.isPresent()) {
-							entity.setId(unitOpt.get().getId());
-							entity.setObservations(unitOpt.get().getObservations());
-						}
-						break;
-//					case PLOTNUMBER:
-//						entity.setPlotNumber(Integer.parseInt(row.get(i)));
-//						break;
-//					case REPLICATE:
-//						entity.setReplicate(row.get(i));
-//						break;
-					case STUDYDBID:
-					case STUDYNAME:
-						Optional<StudyEntity> studyOpt = studyRepository.findById(row.get(i));
-						if (studyOpt.isPresent())
-							entity.setStudy(studyOpt.get());
-						break;
-//					case X:
-//						entity.setX(row.get(i));
-//						break;
-//					case Y:
-//						entity.setY(row.get(i));
-//						break;
-					case YEAR:
-//					case LOCATIONDBID:
-//					case LOCATIONNAME:
-					default:
-						break;
-					}
-				}
-			} else {
-				Optional<ObservationVariableEntity> varOpt = observationVariableRepository
-						.findById(request.getObservationVariables().get(varIndex).getObservationVariableDbId());
-				if (varOpt.isPresent()) {
-					ObservationEntity observation = new ObservationEntity();
-					observation.setObservationTimeStamp(observationTimeStamp);
-					observation.setObservationUnit(entity);
-					observation.setObservationVariable(varOpt.get());
-					observation.setValue(row.get(i));
-					if (entity.getObservations() == null)
-						entity.setObservations(new ArrayList<>());
-					entity.getObservations().add(observation);
-				}
-			}
-		}
-		return entity;
-	}
-
-//	public List<ObservationUnitPosition> saveStudyPlotLayout(String studyDbId,
-//			@Valid StudyLayoutRequest studyLayoutRequest) {
-//		List<ObservationUnitPosition> positions = new ArrayList<>();
-//		Optional<StudyEntity> studyOpt = studyRepository.findById(studyDbId);
-//		if (studyOpt.isPresent()) {
-//			for (StudyLayoutRequestLayout layout : studyLayoutRequest.getLayout()) {
-//				Optional<ObservationUnitEntity> unitOpt = observationUnitRepository
-//						.findById(layout.getObservationUnitDbId());
-//				if (unitOpt.isPresent()) {
-//					ObservationUnitEntity unit = unitOpt.get();
-//					unit.setBlockNumber(layout.getBlockNumber());
-//					unit.setX(layout.getX());
-//					unit.setX(layout.getPositionCoordinateX());
-//					unit.setY(layout.getY());
-//					unit.setY(layout.getPositionCoordinateY());
-//					unit.setEntryType(layout.getEntryType().name());
-//					unit.setReplicate(layout.getReplicate().toString());
-//
-//					ObservationUnitEntity newUnit = observationUnitRepository.save(unit);
-//					positions.add(convertFromEntityToPosition(newUnit));
-//				}
-//			}
-//		}
-//		return positions;
-//	}
-
-	private void updateEntity(ObservationEntity entity, ObservationNewRequest obs) {
-//		entity.setCollector(obs.getCollector());
-//		entity.setObservationTimeStamp(DateUtility.toDate(obs.getObservationTimeStamp()));
-//		entity.setValue(obs.getValue());
-//
-//		if (entity.getObservationVariable() == null
-//				|| entity.getObservationVariable().getId() != obs.getObservationVariableDbId()) {
-//			ObservationVariableEntity observationVariable = observationVariableService
-//					.getVariableEntity(obs.getObservationVariableDbId());
-//			entity.setObservationVariable(observationVariable);
-//		}
-//
-//		entity.setSeason(seasonRepository.findById("1").get());
-
-	}
-
-	private ObservationUnitEntity updateEntity(ObservationUnitEntity observationUnitEntity,
-			ObservationUnitNewRequest unit) {
-//		observationUnitEntity.setBlockNumber(NumberUtils.toInt(unit.getBlockNumber()));
-//		observationUnitEntity.setEntryNumber(unit.getEntryNumber());
-//		observationUnitEntity.setEntryType(unit.getEntryType());
-//		observationUnitEntity.setObservationLevel(unit.getObservationLevel());
-		observationUnitEntity.setObservationUnitName(unit.getObservationUnitName());
-//		observationUnitEntity.setPlantNumber(NumberUtils.toInt(unit.getPlantNumber()));
-//		observationUnitEntity.setPlotNumber(NumberUtils.toInt(unit.getPlotNumber()));
-//		observationUnitEntity.setReplicate(unit.getReplicate());
-//		observationUnitEntity.setX(unit.getX());
-//		observationUnitEntity.setY(unit.getY());
-
-		if (unit.getGermplasmDbId() == null) {
-			observationUnitEntity.setGermplasm(null);
-		} else {
-			Optional<GermplasmEntity> germOpt = germplasmRepository.findById(unit.getGermplasmDbId());
-			if (germOpt.isPresent()) {
-				observationUnitEntity.setGermplasm(germOpt.get());
-			}
-		}
-		if (unit.getStudyDbId() == null) {
-			observationUnitEntity.setStudy(null);
-		} else {
-			Optional<StudyEntity> studyOpt = studyRepository.findById(unit.getStudyDbId());
-			if (studyOpt.isPresent()) {
-				observationUnitEntity.setStudy(studyOpt.get());
-			}
-		}
-
-		return observationUnitEntity;
-	}
-
-	public List<Study> findStudies(@Valid String commonCropName, @Valid String studyType, @Valid String programDbId,
-			@Valid String locationDbId, @Valid String seasonDbId, @Valid String trialDbId, @Valid String studyDbId,
-			@Valid String studyName, @Valid String studyCode, @Valid String studyPUI, @Valid String germplasmDbId,
-			@Valid String observationVariableDbId, @Valid String externalReferenceID,
-			@Valid String externalReferenceSource, @Valid Boolean active, @Valid String sortBy, @Valid String sortOrder,
-			Metadata metadata) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Study> saveStudies(@Valid List<StudyNewRequest> body) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Study updateStudy(String studyDbId, @Valid StudyNewRequest body) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Study> findStudies(@Valid StudySearchRequest body, Metadata metadata) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public ObservationUnitEntity getObservationUnitEntity(String observationUnitDbId) {
-		// TODO Auto-generated method stub
-		return null;
+	private ObservationTableObservationVariables convertVariables(ObservationVariable variable) {
+		ObservationTableObservationVariables header = new ObservationTableObservationVariables();
+		header.setObservationVariableDbId(variable.getObservationVariableDbId());
+		header.setObservationVariableName(variable.getObservationVariableName());
+		return header;
 	}
 }

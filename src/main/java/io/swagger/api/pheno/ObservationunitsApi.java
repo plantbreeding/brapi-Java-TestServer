@@ -13,6 +13,8 @@ import io.swagger.model.pheno.ObservationUnitSearchRequest;
 import io.swagger.model.pheno.ObservationUnitSingleResponse;
 import io.swagger.model.pheno.ObservationUnitTableResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,7 +53,8 @@ public interface ObservationunitsApi {
 			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the details of a specific Observation Unit", nickname = "observationunitsObservationUnitDbIdGet", notes = "Get the details of a specific Observation Unit", response = ObservationUnitSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Observation Units", })
@@ -63,7 +66,8 @@ public interface ObservationunitsApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ObservationUnitSingleResponse> observationunitsObservationUnitDbIdGet(
 			@ApiParam(value = "The unique ID of the specific Observation Unit", required = true) @PathVariable("observationUnitDbId") String observationUnitDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Update an existing Observation Units", nickname = "observationunitsObservationUnitDbIdPut", notes = "Update an existing Observation Units", response = ObservationUnitSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Observation Units", })
@@ -76,7 +80,8 @@ public interface ObservationunitsApi {
 	ResponseEntity<ObservationUnitSingleResponse> observationunitsObservationUnitDbIdPut(
 			@ApiParam(value = "The unique ID of the specific Observation Unit", required = true) @PathVariable("observationUnitDbId") String observationUnitDbId,
 			@ApiParam(value = "") @Valid @RequestBody ObservationUnitNewRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Add new Observation Units", nickname = "observationunitsPost", notes = "Add new Observation Units", response = ObservationUnitListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Observation Units", })
@@ -88,7 +93,8 @@ public interface ObservationunitsApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<ObservationUnitListResponse> observationunitsPost(
 			@ApiParam(value = "") @Valid @RequestBody List<ObservationUnitNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Update a set of Observation Units", nickname = "observationunitsPut", notes = "Update a set of Observation Units  Note - In strictly typed languages, this structure can be represented as a Map or Dictionary of objects and parsed directly to JSON.", response = ObservationUnitListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Observation Units", })
@@ -100,7 +106,8 @@ public interface ObservationunitsApi {
 			"application/json" }, method = RequestMethod.PUT)
 	ResponseEntity<ObservationUnitListResponse> observationunitsPut(
 			@ApiParam(value = "") @Valid @RequestBody Map<String, ObservationUnitNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get a list of Observations in a table format", nickname = "observationunitsTableGet", notes = "<p>This service is designed to retrieve a table for observation values as a matrix of Observation Units and Observation Variables.</p> <p>The table may be represented by JSON, CSV, or TSV. The \"Accept\" HTTP header is used for the client to request different return formats.  By default, if the \"Accept\" header is not included in the request, the server should return JSON as described below.</p> <p>The table is REQUIRED to have the following columns</p> <ul>   <li>observationUnitDbId - Each row is related to one Observation Unit</li>   <li>At least one column with an observationVariableDbId</li> </ul> <p>The table may have any or all of the following OPTIONAL columns. Included columns are decided by the server developer</p> <ul>   <li>observationUnitName</li>   <li>studyDbId</li>   <li>studyName</li>   <li>germplasmDbId</li>   <li>germplasmName</li>   <li>positionCoordinateX</li>   <li>positionCoordinateY</li>   <li>year</li> </ul> <p>The table also may have any number of Observation Unit Hierarchy Level columns. For example:</p> <ul>   <li>field</li>   <li>plot</li>   <li>sub-plot</li>   <li>plant</li>   <li>pot</li>   <li>block</li>   <li>entry</li>   <li>rep</li> </ul> <p>The JSON representation provides a pair of extra arrays for defining the headers of the table.  The first array \"headerRow\" will always contain \"observationUnitDbId\" and any or all of the OPTIONAL column header names.  The second array \"observationVariables\" contains the names and DbIds for the Observation Variables represented in the table.  By appending the two arrays, you can construct the complete header row of the table. </p> <p>For CSV and TSV representations of the table, an extra header row is needed to describe both the Observation Variable DbId and the Observation Variable Name for each data column.  See the example responses below</p> ", response = ObservationUnitTableResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Observation Units", })
@@ -121,7 +128,8 @@ public interface ObservationunitsApi {
 			@ApiParam(value = "The unique ID of a program to filter on") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
 			@ApiParam(value = "The year or Phenotyping campaign of a multi-annual study (trees, grape, ...)") @Valid @RequestParam(value = "seasonDbId", required = false) String seasonDbId,
 			@ApiParam(value = "The type of the observationUnit. Returns only the observation unit of the specified type; the parent levels ID can be accessed through observationUnitStructure.") @Valid @RequestParam(value = "observationLevel", required = false) String observationLevel,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Submit a search request for Observation Units", nickname = "searchObservationunitsPost", notes = "Returns a list of observationUnit with the observed Phenotypes.  See Search Services for additional implementation details.  Use case - this section allows to get a dataset from multiple studies. It allows to integrate data from several databases.  Example Use cases   - Study a panel of germplasm across multiple studies  - Get all data for a specific study   - Get simple atomic phenotyping values   - Study Locations for adaptation to climate change  - Find phenotypes that are from after a certain timestamp  observationTimeStampRangeStart and observationTimeStampRangeEnd use Iso Standard 8601.  observationValue data type inferred from the ontology", response = ObservationUnitListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Observation Units", })
@@ -134,7 +142,8 @@ public interface ObservationunitsApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<ObservationUnitListResponse> searchObservationunitsPost(
 			@ApiParam(value = "") @Valid @RequestBody ObservationUnitSearchRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Observation Unit Search", nickname = "searchObservationunitsSearchResultsDbIdGet", notes = "Returns a list of observationUnit with the observed Phenotypes.  See Search Services for additional implementation details.", response = ObservationUnitListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Observation Units", })
@@ -150,6 +159,7 @@ public interface ObservationunitsApi {
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 }

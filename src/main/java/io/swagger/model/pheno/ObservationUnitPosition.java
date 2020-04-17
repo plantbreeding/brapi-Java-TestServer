@@ -2,10 +2,7 @@ package io.swagger.model.pheno;
 
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import com.fasterxml.jackson.annotation.JsonValue;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -23,38 +20,7 @@ import javax.validation.Valid;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:22.556Z[GMT]")
 public class ObservationUnitPosition   {
-  /**
-   * The type of entry for this observation unit. ex. \"CHECK\", \"TEST\", \"FILLER\"
-   */
-  public enum EntryTypeEnum {
-    CHECK("CHECK"),
-    
-    TEST("TEST"),
-    
-    FILLER("FILLER");
 
-    private String value;
-
-    EntryTypeEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static EntryTypeEnum fromValue(String text) {
-      for (EntryTypeEnum b : EntryTypeEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("entryType")
   private EntryTypeEnum entryType = null;
 
@@ -62,7 +28,7 @@ public class ObservationUnitPosition   {
   private GeoJSON geoCoordinates = null;
 
   @JsonProperty("observationLevel")
-  private Object observationLevel = null;
+  private ObservationUnitLevelRelationship observationLevel = null;
 
   @JsonProperty("observationLevelRelationships")
   @Valid
@@ -71,98 +37,14 @@ public class ObservationUnitPosition   {
   @JsonProperty("positionCoordinateX")
   private String positionCoordinateX = null;
 
-  /**
-   * The type of positional coordinate used. Must be one of the following values  LONGITUDE - ISO 6709 standard, WGS84 geodetic datum. See 'Location Coordinate Encoding' for details  LATITUDE - ISO 6709 standard, WGS84 geodetic datum. See 'Location Coordinate Encoding' for details  PLANTED_ROW - The physical planted row number   PLANTED_INDIVIDUAL - The physical counted number, could be independant or within a planted row  GRID_ROW - The row index number of a square grid overlay  GRID_COL - The column index number of a square grid overlay  MEASURED_ROW - The distance in meters from a defined 0-th row  MEASURED_COL - The distance in meters from a defined 0-th column
-   */
-  public enum PositionCoordinateXTypeEnum {
-    LONGITUDE("LONGITUDE"),
-    
-    LATITUDE("LATITUDE"),
-    
-    PLANTED_ROW("PLANTED_ROW"),
-    
-    PLANTED_INDIVIDUAL("PLANTED_INDIVIDUAL"),
-    
-    GRID_ROW("GRID_ROW"),
-    
-    GRID_COL("GRID_COL"),
-    
-    MEASURED_ROW("MEASURED_ROW"),
-    
-    MEASURED_COL("MEASURED_COL");
-
-    private String value;
-
-    PositionCoordinateXTypeEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static PositionCoordinateXTypeEnum fromValue(String text) {
-      for (PositionCoordinateXTypeEnum b : PositionCoordinateXTypeEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("positionCoordinateXType")
-  private PositionCoordinateXTypeEnum positionCoordinateXType = null;
+  private PositionCoordinateTypeEnum positionCoordinateXType = null;
 
   @JsonProperty("positionCoordinateY")
   private String positionCoordinateY = null;
 
-  /**
-   * The type of positional coordinate used. Must be one of the following values  LONGITUDE - ISO 6709 standard, WGS84 geodetic datum. See 'Location Coordinate Encoding' for details  LATITUDE - ISO 6709 standard, WGS84 geodetic datum. See 'Location Coordinate Encoding' for details  PLANTED_ROW - The physical planted row number   PLANTED_INDIVIDUAL - The physical counted number, could be independant or within a planted row  GRID_ROW - The row index number of a square grid overlay  GRID_COL - The column index number of a square grid overlay  MEASURED_ROW - The distance in meters from a defined 0-th row  MEASURED_COL - The distance in meters from a defined 0-th column
-   */
-  public enum PositionCoordinateYTypeEnum {
-    LONGITUDE("LONGITUDE"),
-    
-    LATITUDE("LATITUDE"),
-    
-    PLANTED_ROW("PLANTED_ROW"),
-    
-    PLANTED_INDIVIDUAL("PLANTED_INDIVIDUAL"),
-    
-    GRID_ROW("GRID_ROW"),
-    
-    GRID_COL("GRID_COL"),
-    
-    MEASURED_ROW("MEASURED_ROW"),
-    
-    MEASURED_COL("MEASURED_COL");
-
-    private String value;
-
-    PositionCoordinateYTypeEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static PositionCoordinateYTypeEnum fromValue(String text) {
-      for (PositionCoordinateYTypeEnum b : PositionCoordinateYTypeEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("positionCoordinateYType")
-  private PositionCoordinateYTypeEnum positionCoordinateYType = null;
+  private PositionCoordinateTypeEnum positionCoordinateYType = null;
 
   public ObservationUnitPosition entryType(EntryTypeEnum entryType) {
     this.entryType = entryType;
@@ -203,7 +85,7 @@ public class ObservationUnitPosition   {
     this.geoCoordinates = geoCoordinates;
   }
 
-  public ObservationUnitPosition observationLevel(Object observationLevel) {
+  public ObservationUnitPosition observationLevel(ObservationUnitLevelRelationship observationLevel) {
     this.observationLevel = observationLevel;
     return this;
   }
@@ -214,11 +96,11 @@ public class ObservationUnitPosition   {
   **/
   @ApiModelProperty(value = "")
   
-    public Object getObservationLevel() {
+    public ObservationUnitLevelRelationship getObservationLevel() {
     return observationLevel;
   }
 
-  public void setObservationLevel(Object observationLevel) {
+  public void setObservationLevel(ObservationUnitLevelRelationship observationLevel) {
     this.observationLevel = observationLevel;
   }
 
@@ -268,7 +150,7 @@ public class ObservationUnitPosition   {
     this.positionCoordinateX = positionCoordinateX;
   }
 
-  public ObservationUnitPosition positionCoordinateXType(PositionCoordinateXTypeEnum positionCoordinateXType) {
+  public ObservationUnitPosition positionCoordinateXType(PositionCoordinateTypeEnum positionCoordinateXType) {
     this.positionCoordinateXType = positionCoordinateXType;
     return this;
   }
@@ -279,11 +161,11 @@ public class ObservationUnitPosition   {
   **/
   @ApiModelProperty(example = "GRID_COL", value = "The type of positional coordinate used. Must be one of the following values  LONGITUDE - ISO 6709 standard, WGS84 geodetic datum. See 'Location Coordinate Encoding' for details  LATITUDE - ISO 6709 standard, WGS84 geodetic datum. See 'Location Coordinate Encoding' for details  PLANTED_ROW - The physical planted row number   PLANTED_INDIVIDUAL - The physical counted number, could be independant or within a planted row  GRID_ROW - The row index number of a square grid overlay  GRID_COL - The column index number of a square grid overlay  MEASURED_ROW - The distance in meters from a defined 0-th row  MEASURED_COL - The distance in meters from a defined 0-th column")
   
-    public PositionCoordinateXTypeEnum getPositionCoordinateXType() {
+    public PositionCoordinateTypeEnum getPositionCoordinateXType() {
     return positionCoordinateXType;
   }
 
-  public void setPositionCoordinateXType(PositionCoordinateXTypeEnum positionCoordinateXType) {
+  public void setPositionCoordinateXType(PositionCoordinateTypeEnum positionCoordinateXType) {
     this.positionCoordinateXType = positionCoordinateXType;
   }
 
@@ -306,7 +188,7 @@ public class ObservationUnitPosition   {
     this.positionCoordinateY = positionCoordinateY;
   }
 
-  public ObservationUnitPosition positionCoordinateYType(PositionCoordinateYTypeEnum positionCoordinateYType) {
+  public ObservationUnitPosition positionCoordinateYType(PositionCoordinateTypeEnum positionCoordinateYType) {
     this.positionCoordinateYType = positionCoordinateYType;
     return this;
   }
@@ -317,11 +199,11 @@ public class ObservationUnitPosition   {
   **/
   @ApiModelProperty(example = "GRID_ROW", value = "The type of positional coordinate used. Must be one of the following values  LONGITUDE - ISO 6709 standard, WGS84 geodetic datum. See 'Location Coordinate Encoding' for details  LATITUDE - ISO 6709 standard, WGS84 geodetic datum. See 'Location Coordinate Encoding' for details  PLANTED_ROW - The physical planted row number   PLANTED_INDIVIDUAL - The physical counted number, could be independant or within a planted row  GRID_ROW - The row index number of a square grid overlay  GRID_COL - The column index number of a square grid overlay  MEASURED_ROW - The distance in meters from a defined 0-th row  MEASURED_COL - The distance in meters from a defined 0-th column")
   
-    public PositionCoordinateYTypeEnum getPositionCoordinateYType() {
+    public PositionCoordinateTypeEnum getPositionCoordinateYType() {
     return positionCoordinateYType;
   }
 
-  public void setPositionCoordinateYType(PositionCoordinateYTypeEnum positionCoordinateYType) {
+  public void setPositionCoordinateYType(PositionCoordinateTypeEnum positionCoordinateYType) {
     this.positionCoordinateYType = positionCoordinateYType;
   }
 

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.DataLink;
 import io.swagger.model.ExternalReferences;
+import io.swagger.model.pheno.ObservationUnitHierarchyLevel;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -2,10 +2,7 @@ package io.swagger.model.pheno;
 
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import com.fasterxml.jackson.annotation.JsonValue;
 
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.pheno.ObservationTableObservationVariables;
@@ -24,71 +21,9 @@ public class ObservationTable   {
   @Valid
   private List<List<String>> data = null;
 
-  /**
-   * valid header fields
-   */
-  public enum HeaderRowEnum {
-    OBSERVATIONTIMESTAMP("observationTimeStamp"),
-    
-    OBSERVATIONUNITDBID("observationUnitDbId"),
-    
-    OBSERVATIONUNITNAME("observationUnitName"),
-    
-    STUDYDBID("studyDbId"),
-    
-    STUDYNAME("studyName"),
-    
-    GERMPLASMDBID("germplasmDbId"),
-    
-    GERMPLASMNAME("germplasmName"),
-    
-    POSITIONCOORDINATEX("positionCoordinateX"),
-    
-    POSITIONCOORDINATEY("positionCoordinateY"),
-    
-    YEAR("year"),
-    
-    FIELD("field"),
-    
-    PLOT("plot"),
-    
-    SUB_PLOT("sub-plot"),
-    
-    PLANT("plant"),
-    
-    POT("pot"),
-    
-    BLOCK("block"),
-    
-    ENTRY("entry"),
-    
-    REP("rep");
-
-    private String value;
-
-    HeaderRowEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static HeaderRowEnum fromValue(String text) {
-      for (HeaderRowEnum b : HeaderRowEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("headerRow")
   @Valid
-  private List<HeaderRowEnum> headerRow = null;
+  private List<ObservationTableHeaderRowEnum> headerRow = null;
 
   @JsonProperty("observationVariables")
   @Valid
@@ -121,14 +56,14 @@ public class ObservationTable   {
     this.data = data;
   }
 
-  public ObservationTable headerRow(List<HeaderRowEnum> headerRow) {
+  public ObservationTable headerRow(List<ObservationTableHeaderRowEnum> headerRow) {
     this.headerRow = headerRow;
     return this;
   }
 
-  public ObservationTable addHeaderRowItem(HeaderRowEnum headerRowItem) {
+  public ObservationTable addHeaderRowItem(ObservationTableHeaderRowEnum headerRowItem) {
     if (this.headerRow == null) {
-      this.headerRow = new ArrayList<HeaderRowEnum>();
+      this.headerRow = new ArrayList<ObservationTableHeaderRowEnum>();
     }
     this.headerRow.add(headerRowItem);
     return this;
@@ -140,11 +75,11 @@ public class ObservationTable   {
   **/
   @ApiModelProperty(example = "[\"observationTimeStamp\",\"observationUnitDbId\",\"observationUnitName\",\"studyDbId\",\"studyName\",\"germplasmDbId\",\"germplasmName\",\"positionCoordinateX\",\"positionCoordinateY\",\"year\",\"field\",\"plot\",\"sub-plot\",\"plant\",\"pot\",\"block\",\"entry\",\"rep\"]", value = "<p>The table is REQUIRED to have the following columns</p> <ul>   <li>observationUnitDbId - Each row is related to one Observation Unit</li>   <li>observationTimeStamp - Each row is has a time stamp for when the observation was taken</li>   <li>At least one column with an observationVariableDbId</li> </ul> <p>The table may have any or all of the following OPTIONAL columns. Included columns are decided by the server developer</p> <ul>   <li>observationUnitName</li>   <li>studyDbId</li>   <li>studyName</li>   <li>germplasmDbId</li>   <li>germplasmName</li>   <li>positionCoordinateX</li>   <li>positionCoordinateY</li>   <li>year</li> </ul> <p>The table also may have any number of Observation Unit Hierarchy Level columns. For example:</p> <ul>   <li>field</li>   <li>plot</li>   <li>sub-plot</li>   <li>plant</li>   <li>pot</li>   <li>block</li>   <li>entry</li>   <li>rep</li> </ul> <p>The JSON representation provides a pair of extra arrays for defining the headers of the table.  The first array \"headerRow\" will always contain \"observationUnitDbId\" and any or all of the OPTIONAL column header names.  The second array \"observationVariables\" contains the names and DbIds for the Observation Variables represented in the table.  By appending the two arrays, you can construct the complete header row of the table. </p>")
   
-    public List<HeaderRowEnum> getHeaderRow() {
+    public List<ObservationTableHeaderRowEnum> getHeaderRow() {
     return headerRow;
   }
 
-  public void setHeaderRow(List<HeaderRowEnum> headerRow) {
+  public void setHeaderRow(List<ObservationTableHeaderRowEnum> headerRow) {
     this.headerRow = headerRow;
   }
 

@@ -18,61 +18,14 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:22.556Z[GMT]")
 public class ObservationUnitHierarchyLevel   {
-  /**
-   * A name for this level
-   */
-  public enum LevelNameEnum {
-    STUDY("study"),
-    
-    FIELD("field"),
-    
-    ENTRY("entry"),
-    
-    REP("rep"),
-    
-    BLOCK("block"),
-    
-    SUB_BLOCK("sub-block"),
-    
-    PLOT("plot"),
-    
-    SUB_PLOT("sub-plot"),
-    
-    PLANT("plant"),
-    
-    POT("pot"),
-    
-    SAMPLE("sample");
 
-    private String value;
-
-    LevelNameEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static LevelNameEnum fromValue(String text) {
-      for (LevelNameEnum b : LevelNameEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("levelName")
-  private LevelNameEnum levelName = null;
+  private ObservationUnitHierarchyLevelEnum levelName = null;
 
   @JsonProperty("levelOrder")
   private Integer levelOrder = null;
 
-  public ObservationUnitHierarchyLevel levelName(LevelNameEnum levelName) {
+  public ObservationUnitHierarchyLevel levelName(ObservationUnitHierarchyLevelEnum levelName) {
     this.levelName = levelName;
     return this;
   }
@@ -83,11 +36,11 @@ public class ObservationUnitHierarchyLevel   {
   **/
   @ApiModelProperty(example = "plot", value = "A name for this level")
   
-    public LevelNameEnum getLevelName() {
+    public ObservationUnitHierarchyLevelEnum getLevelName() {
     return levelName;
   }
 
-  public void setLevelName(LevelNameEnum levelName) {
+  public void setLevelName(ObservationUnitHierarchyLevelEnum levelName) {
     this.levelName = levelName;
   }
 

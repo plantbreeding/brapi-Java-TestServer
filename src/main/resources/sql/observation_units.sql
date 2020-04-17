@@ -1,4 +1,47 @@
 
-INSERT INTO observation_unit (study_id, germplasm_id, id, observation_unit_name, observation_level, observation_levels, entry_number, entry_type, plot_number, block_number, plant_number, x, y, replicate, pedigree_id, uploaded_by, operator) VALUES ('study1', 'germplasm1', 'observation_unit1', 'Plot 1', 'plot', 'block:1;plot:1', '1', 'TEST', '1', '1', NULL, '1', '1', '0', null, 'Bob', 'Bob');
-INSERT INTO observation_unit (study_id, germplasm_id, id, observation_unit_name, observation_level, observation_levels, entry_number, entry_type, plot_number, block_number, plant_number, x, y, replicate, pedigree_id, uploaded_by, operator) VALUES ('study1', 'germplasm2', 'observation_unit2', 'Plot 1', 'plot', 'block:1;plot:1', '1', 'TEST', '1', '1', NULL, '1', '1', '0', null, 'Bob', 'Bob');
-INSERT INTO observation_unit (study_id, germplasm_id, id, observation_unit_name, observation_level, observation_levels, entry_number, entry_type, plot_number, block_number, plant_number, x, y, replicate, pedigree_id, uploaded_by, operator) VALUES ('study1', 'germplasm3', 'observation_unit3', 'Plot 1', 'plot', 'block:1;plot:1', '1', 'TEST', '1', '1', NULL, '1', '1', '0', null, 'Bob', 'Bob');
+-- unit 1
+INSERT INTO observation_unit(id, observation_unit_name, observation_unitpui, germplasm_id, seed_lot_id, study_id) VALUES('observation_unit1', 'Plot 1', 'doi:10.12345/plot/1a9afc14', 'germplasm1', 'seed_lot1', 'study1');
+INSERT INTO observation_unit_treatment (id, factor, modality, observation_unit_id) VALUES('observation_unit_treatment1', 'fertilizer', 'low fertilizer', 'observation_unit1');
+INSERT INTO geojson(id, type) VALUES ('observation_unit_geo_1', 'Point');
+INSERT INTO coordinate(id, altitude, latitude, longitude, geojson_id) VALUES ('observation_unit_coor_1', 123, -76.46313, 42.44423, 'observation_unit_geo_1');
+INSERT INTO observation_unit_position (id, entry_type, level_code, level_name, level_order, position_coordinatex, position_coordinatextype, position_coordinatey, position_coordinateytype, geo_coordinates_id, observation_unit_id) VALUES('observation_unit_position1', 1, 'plot_1', 6, 4, '1', 2, '1', 3, 'observation_unit_geo_1', 'observation_unit1');
+INSERT INTO observation_unit_level (id, level_code, level_name, level_order, position_id)VALUES('observation_unit_level1', 'fieldA', 1, 1, 'observation_unit_position1');
+INSERT INTO observation_unit_level (id, level_code, level_name, level_order, position_id)VALUES('observation_unit_level2', 'rep1', 3, 2, 'observation_unit_position1');
+INSERT INTO observation_unit_level (id, level_code, level_name, level_order, position_id)VALUES('observation_unit_level3', 'block1', 4, 3, 'observation_unit_position1');
+
+INSERT INTO additional_info(id, key, value) VALUES ('observation_unit_ai_1', 'dummyData', 'True');
+INSERT INTO observation_unit_additional_info(observation_unit_entity_id, additional_info_id) VALUES ('observation_unit1', 'observation_unit_ai_1');
+INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('observation_unit_er_1', 'https://brapi.org/specification', 'BrAPI Doc');
+INSERT INTO observation_unit_external_references(observation_unit_entity_id, external_references_id) VALUES ('observation_unit1', 'observation_unit_er_1');
+
+
+-- unit 2
+INSERT INTO observation_unit(id, observation_unit_name, observation_unitpui, germplasm_id, seed_lot_id, study_id) VALUES('observation_unit2', 'Plot 2', 'doi:10.12345/plot/2a9afc24', 'germplasm2', 'seed_lot1', 'study1');
+INSERT INTO observation_unit_treatment (id, factor, modality, observation_unit_id) VALUES('observation_unit_treatment2', 'fertilizer', 'low fertilizer', 'observation_unit2');
+INSERT INTO geojson(id, type) VALUES ('observation_unit_geo_2', 'Point');
+INSERT INTO coordinate(id, altitude, latitude, longitude, geojson_id) VALUES ('observation_unit_coor_2', 123, -76.46313, 42.44423, 'observation_unit_geo_2');
+INSERT INTO observation_unit_position (id, entry_type, level_code, level_name, level_order, position_coordinatex, position_coordinatextype, position_coordinatey, position_coordinateytype, geo_coordinates_id, observation_unit_id) VALUES('observation_unit_position2', 1, 'plot_2', 6, 4, '1', 2, '2', 3, 'observation_unit_geo_2', 'observation_unit2');
+INSERT INTO observation_unit_level (id, level_code, level_name, level_order, position_id)VALUES('observation_unit_level4', 'fieldA', 1, 1, 'observation_unit_position2');
+INSERT INTO observation_unit_level (id, level_code, level_name, level_order, position_id)VALUES('observation_unit_level5', 'rep1', 3, 2, 'observation_unit_position2');
+INSERT INTO observation_unit_level (id, level_code, level_name, level_order, position_id)VALUES('observation_unit_level6', 'block2', 4, 3, 'observation_unit_position2');
+
+INSERT INTO additional_info(id, key, value) VALUES ('observation_unit_ai_2', 'dummyData', 'True');
+INSERT INTO observation_unit_additional_info(observation_unit_entity_id, additional_info_id) VALUES ('observation_unit2', 'observation_unit_ai_2');
+INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('observation_unit_er_2', 'https://brapi.org/specification', 'BrAPI Doc');
+INSERT INTO observation_unit_external_references(observation_unit_entity_id, external_references_id) VALUES ('observation_unit2', 'observation_unit_er_2');
+
+
+-- unit 3
+INSERT INTO observation_unit(id, observation_unit_name, observation_unitpui, germplasm_id, seed_lot_id, study_id) VALUES('observation_unit3', 'Plot 3', 'doi:10.12345/plot/3a9afc34', 'germplasm3', 'seed_lot1', 'study1');
+INSERT INTO observation_unit_treatment (id, factor, modality, observation_unit_id) VALUES('observation_unit_treatment3', 'fertilizer', 'low fertilizer', 'observation_unit3');
+INSERT INTO geojson(id, type) VALUES ('observation_unit_geo_3', 'Point');
+INSERT INTO coordinate(id, altitude, latitude, longitude, geojson_id) VALUES ('observation_unit_coor_3', 123, -76.46313, 42.44423, 'observation_unit_geo_3');
+INSERT INTO observation_unit_position (id, entry_type, level_code, level_name, level_order, position_coordinatex, position_coordinatextype, position_coordinatey, position_coordinateytype, geo_coordinates_id, observation_unit_id) VALUES('observation_unit_position3', 1, 'plot_3', 6, 4, '1', 2, '3', 3, 'observation_unit_geo_3', 'observation_unit3');
+INSERT INTO observation_unit_level (id, level_code, level_name, level_order, position_id)VALUES('observation_unit_level7', 'fieldA', 1, 1, 'observation_unit_position3');
+INSERT INTO observation_unit_level (id, level_code, level_name, level_order, position_id)VALUES('observation_unit_level8', 'rep2', 3, 2, 'observation_unit_position3');
+INSERT INTO observation_unit_level (id, level_code, level_name, level_order, position_id)VALUES('observation_unit_level9', 'block1', 4, 3, 'observation_unit_position3');
+
+INSERT INTO additional_info(id, key, value) VALUES ('observation_unit_ai_3', 'dummyData', 'True');
+INSERT INTO observation_unit_additional_info(observation_unit_entity_id, additional_info_id) VALUES ('observation_unit3', 'observation_unit_ai_3');
+INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('observation_unit_er_3', 'https://brapi.org/specification', 'BrAPI Doc');
+INSERT INTO observation_unit_external_references(observation_unit_entity_id, external_references_id) VALUES ('observation_unit3', 'observation_unit_er_3');

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Context;
 import io.swagger.model.Metadata;
 import io.swagger.model.pheno.ObservationUnitTable;
@@ -17,7 +18,7 @@ import javax.validation.constraints.*;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:22.556Z[GMT]")
-public class ObservationUnitTableResponse   {
+public class ObservationUnitTableResponse implements BrAPIResponse<ObservationUnitTable>  {
   @JsonProperty("@context")
   private Context _atContext = null;
 

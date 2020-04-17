@@ -144,7 +144,7 @@ public class ImageService {
 		return convertFromEntity(savedEntity);
 	}
 
-	public List<Image> saveImages(@Valid List<ImageNewRequest> body) {
+	public List<Image> saveImages(@Valid List<ImageNewRequest> body) throws BrAPIServerException {
 		List<Image> savedImages = new ArrayList<>();
 		for (ImageNewRequest request : body) {
 			ImageEntity newEntity = new ImageEntity();
@@ -182,7 +182,7 @@ public class ImageService {
 		return requestURL + "/images/" + newEntity.getId() + "/" + name;
 	}
 
-	private void updateEntity(ImageEntity entity, ImageNewRequest image) {
+	private void updateEntity(ImageEntity entity, ImageNewRequest image) throws BrAPIServerException {
 		if (image.getAdditionalInfo() != null)
 			entity.setAdditionalInfo(image.getAdditionalInfo());
 		if (image.getCopyright() != null)

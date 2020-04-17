@@ -35,8 +35,6 @@ import io.swagger.model.DataLink;
 import io.swagger.model.Metadata;
 import io.swagger.model.core.Contact;
 import io.swagger.model.core.EnvironmentParameter;
-import io.swagger.model.core.ObservationUnitHierarchyLevel;
-import io.swagger.model.core.ObservationUnitHierarchyLevel.LevelNameEnum;
 import io.swagger.model.core.SortBy;
 import io.swagger.model.core.SortOrder;
 import io.swagger.model.core.Study;
@@ -45,6 +43,8 @@ import io.swagger.model.core.StudyGrowthFacility;
 import io.swagger.model.core.StudyNewRequest;
 import io.swagger.model.core.StudyLastUpdate;
 import io.swagger.model.core.StudySearchRequest;
+import io.swagger.model.pheno.ObservationUnitHierarchyLevel;
+import io.swagger.model.pheno.ObservationUnitHierarchyLevelEnum;
 
 @Service
 public class StudyService {
@@ -149,12 +149,16 @@ public class StudyService {
 		List<Study> studies = studiesPage.map(this::convertFromEntity).getContent();
 		return studies;
 	}
-
+	
 	public Study getStudy(String studyDbId) throws BrAPIServerException {
+		return convertFromEntity(getStudyEntity(studyDbId));
+	}
+
+	public StudyEntity getStudyEntity(String studyDbId) throws BrAPIServerException {
 		Optional<StudyEntity> entityOption = studyRepository.findById(studyDbId);
-		Study study = null;
+		StudyEntity study = null;
 		if (entityOption.isPresent()) {
-			study = convertFromEntity(entityOption.get());
+			study = entityOption.get();
 		} else {
 			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + studyDbId);
 		}
@@ -349,7 +353,7 @@ public class StudyService {
 		ObservationUnitHierarchyLevel level = null;
 		if (entity != null) {
 			level = new ObservationUnitHierarchyLevel();
-			level.setLevelName(LevelNameEnum.fromValue(entity.getLevelName()));
+			level.setLevelName(ObservationUnitHierarchyLevelEnum.fromValue(entity.getLevelName()));
 			level.setLevelOrder(entity.getLevelOrder());
 		}
 		return level;
