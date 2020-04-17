@@ -203,7 +203,7 @@ public class StudyService {
 			if (entity.getStudyType() != null)
 				types.add(entity.getStudyType());
 		}
-		return PagingUtility.paginateStrings(new ArrayList<>(types), metadata);
+		return PagingUtility.paginateSimpleList(new ArrayList<>(types), metadata);
 	}
 
 	private void updateEntity(StudyEntity entity, @Valid StudyNewRequest body) throws BrAPIServerException {

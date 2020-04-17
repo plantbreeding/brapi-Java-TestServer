@@ -128,7 +128,7 @@ public class GermplasmAttributeService {
 			if (entity.getAttributeCategory() != null)
 				categories.add(entity.getAttributeCategory());
 		}
-		return PagingUtility.paginateStrings(new ArrayList<>(categories), metadata);
+		return PagingUtility.paginateSimpleList(new ArrayList<>(categories), metadata);
 	}
 
 	private GermplasmAttribute convertFromEntity(GermplasmAttributeDefinitionEntity entity) {

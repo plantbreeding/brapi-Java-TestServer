@@ -52,12 +52,12 @@ public class PagingUtility {
 		metaData.getPagination().setTotalPages((int) page.getTotalPages());
 	}
 
-	public static List<String> paginateStrings(List<String> list, Metadata metadata) {
+	public static <T> List<T> paginateSimpleList(List<T> list, Metadata metadata) {
 		if (list != null && metadata != null) {
 			metadata.getPagination().setTotalCount(list.size());
 			calculateMetaData(metadata);
 			
-			List<String> subList = new ArrayList<>();
+			List<T> subList = new ArrayList<>();
 			int fromIndex = metadata.getPagination().getCurrentPage() * metadata.getPagination().getPageSize();
 			int toIndex = fromIndex + metadata.getPagination().getPageSize();
 			if(fromIndex < list.size()) {

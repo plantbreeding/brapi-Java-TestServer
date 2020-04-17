@@ -31,6 +31,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import io.swagger.model.IndexPagination;
 import io.swagger.model.Metadata;
 import io.swagger.model.WSMIMEDataTypes;
 import io.swagger.model.pheno.Observation;
@@ -38,6 +39,7 @@ import io.swagger.model.pheno.ObservationTableHeaderRowEnum;
 import io.swagger.model.pheno.ObservationTableObservationVariables;
 import io.swagger.model.pheno.ObservationTreatment;
 import io.swagger.model.pheno.ObservationUnit;
+import io.swagger.model.pheno.ObservationUnitHierarchyLevel;
 import io.swagger.model.pheno.ObservationUnitHierarchyLevelEnum;
 import io.swagger.model.pheno.ObservationUnitLevelRelationship;
 import io.swagger.model.pheno.ObservationUnitNewRequest;
@@ -236,6 +238,31 @@ public class ObservationUnitService {
 		return convertFromEntity(savedEntity);
 	}
 
+	public List<ObservationUnitHierarchyLevel> findObservationLevels(@Valid String studyDbId, @Valid String trialDbId,
+			@Valid String programDbId, Metadata metadata) {
+		List<ObservationUnit> units = findObservationUnits(null, studyDbId, null, trialDbId, programDbId,
+				null, null, null, null, false, null, null, new Metadata().pagination(new IndexPagination()));
+		List<ObservationUnitHierarchyLevel> levels = units.stream()
+				.filter(unit -> unit.getObservationUnitPosition() != null)
+				.filter(unit -> unit.getObservationUnitPosition().getObservationLevelRelationships() != null)
+				.filter(unit -> unit.getObservationUnitPosition().getObservationLevel() != null)
+				.map(unit -> {
+					List<ObservationUnitLevelRelationship> list = unit.getObservationUnitPosition().getObservationLevelRelationships();
+					list.add(unit.getObservationUnitPosition().getObservationLevel());
+					return list;
+				})
+				.flatMap(list -> list.stream())
+				.map(level -> level.getLevelName()).distinct().sorted()
+				.map(levelName -> {
+					ObservationUnitHierarchyLevel level = new ObservationUnitHierarchyLevel();
+					level.setLevelName(levelName);
+					level.setLevelOrder(levelName.ordinal());
+					return level;
+				}).collect(Collectors.toList());
+
+		return PagingUtility.paginateSimpleList(levels, metadata);
+	}
+
 	private ObservationUnit convertFromEntity(ObservationUnitEntity entity) {
 		ObservationUnit unit = new ObservationUnit();
 		unit.setAdditionalInfo(entity.getAdditionalInfoMap());
@@ -289,9 +316,9 @@ public class ObservationUnitService {
 			level.setLevelName(entity.getLevelName());
 			level.setLevelOrder(entity.getLevelOrder());
 			position.setObservationLevel(level);
-			if(entity.getObservationLevelRelationships() != null) {
-			position.setObservationLevelRelationships(entity.getObservationLevelRelationships().stream()
-					.map(this::convertFromEntity).collect(Collectors.toList()));
+			if (entity.getObservationLevelRelationships() != null) {
+				position.setObservationLevelRelationships(entity.getObservationLevelRelationships().stream()
+						.map(this::convertFromEntity).collect(Collectors.toList()));
 			}
 			position.setPositionCoordinateX(entity.getPositionCoordinateX());
 			position.setPositionCoordinateXType(entity.getPositionCoordinateXType());
