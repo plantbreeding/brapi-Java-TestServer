@@ -142,26 +142,26 @@ public class ObservationUnitService {
 		if (request.getObservationLevels() != null) {
 			searchQuery = searchQuery
 					.appendEnumList(request.getObservationLevels().stream().filter(r -> r.getLevelName() != null)
-							.map(r -> r.getLevelName()).collect(Collectors.toList()), "level.name")
+							.map(r -> r.getLevelName()).collect(Collectors.toList()), "position.level.name")
 					.appendList(request.getObservationLevels().stream().filter(r -> r.getLevelCode() != null)
-							.map(r -> r.getLevelCode()).collect(Collectors.toList()), "level.code")
+							.map(r -> r.getLevelCode()).collect(Collectors.toList()), "position.level.code")
 					.appendIntList(request.getObservationLevels().stream().filter(r -> r.getLevelOrder() != null)
-							.map(r -> r.getLevelOrder()).collect(Collectors.toList()), "level.order");
+							.map(r -> r.getLevelOrder()).collect(Collectors.toList()), "position.level.order");
 		}
 		if (request.getObservationLevelRelationships() != null) {
-			searchQuery = searchQuery.join("levelRelationships", "levelRelationship")
+			searchQuery = searchQuery.join("position.levelRelationships", "levelRelationship")
 					.appendEnumList(
 							request.getObservationLevelRelationships().stream().filter(r -> r.getLevelName() != null)
 									.map(r -> r.getLevelName()).collect(Collectors.toList()),
-							"levelRelationship.name")
+							"*levelRelationship.name")
 					.appendList(
 							request.getObservationLevelRelationships().stream().filter(r -> r.getLevelCode() != null)
 									.map(r -> r.getLevelCode()).collect(Collectors.toList()),
-							"levelRelationship.code")
+							"*levelRelationship.code")
 					.appendIntList(
 							request.getObservationLevelRelationships().stream().filter(r -> r.getLevelOrder() != null)
 									.map(r -> r.getLevelOrder()).collect(Collectors.toList()),
-							"levelRelationship.order");
+							"*levelRelationship.order");
 		}
 		searchQuery = searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
 				.appendList(request.getGermplasmDbIds(), "germplasm.id")

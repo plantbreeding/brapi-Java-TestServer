@@ -5,11 +5,14 @@
  */
 package io.swagger.api.geno;
 
+import io.swagger.model.Model202AcceptedSearchResponse;
 import io.swagger.model.geno.ReferenceSetsListResponse;
+import io.swagger.model.geno.ReferenceSetsSearchRequest;
 import io.swagger.model.geno.ReferenceSetsSingleResponse;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,5 +48,33 @@ public interface ReferencesetsApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ReferenceSetsSingleResponse> referencesetsReferenceSetDbIdGet(
 			@ApiParam(value = "The ID of the `ReferenceSet` to be retrieved.", required = true) @PathVariable("referenceSetDbId") String referenceSetDbId);
+
+	@ApiOperation(value = "Gets a list of `ReferenceSet` matching the search criteria.", nickname = "searchReferencesetsPost", notes = "Gets a list of `ReferenceSet` matching the search criteria.", response = ReferenceSetsListResponse.class, authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Reference Sets", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = ReferenceSetsListResponse.class),
+			@ApiResponse(code = 202, message = "Accepted", response = Model202AcceptedSearchResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/search/referencesets", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.POST)
+	ResponseEntity<ReferenceSetsListResponse> searchReferencesetsPost(
+			@ApiParam(value = "", required = true) @Valid @RequestBody ReferenceSetsSearchRequest body,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+
+	@ApiOperation(value = "Gets a list of `ReferenceSet` matching the search criteria.", nickname = "searchReferencesetsSearchResultsDbIdGet", notes = "Gets a list of `ReferenceSet` matching the search criteria.", response = ReferenceSetsListResponse.class, authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Reference Sets", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = ReferenceSetsListResponse.class),
+			@ApiResponse(code = 202, message = "Accepted", response = Model202AcceptedSearchResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/search/referencesets/{searchResultsDbId}", produces = {
+			"application/json" }, method = RequestMethod.GET)
+	ResponseEntity<ReferenceSetsListResponse> searchReferencesetsSearchResultsDbIdGet(
+			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
+			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
 
 }

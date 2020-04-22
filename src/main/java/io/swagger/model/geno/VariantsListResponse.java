@@ -5,8 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Context;
-import io.swagger.model.MetadataTokenPagination;
+import io.swagger.model.Metadata;
 
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
@@ -17,12 +18,12 @@ import javax.validation.constraints.*;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
-public class VariantsListResponse   {
+public class VariantsListResponse implements BrAPIResponse<VariantsListResponseResult>  {
   @JsonProperty("@context")
   private Context _atContext = null;
 
   @JsonProperty("metadata")
-  private MetadataTokenPagination metadata = null;
+  private Metadata metadata = null;
 
   @JsonProperty("result")
   private VariantsListResponseResult result = null;
@@ -38,7 +39,7 @@ public class VariantsListResponse   {
     this._atContext = _atContext;
   }
 
-  public VariantsListResponse metadata(MetadataTokenPagination metadata) {
+  public VariantsListResponse metadata(Metadata metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -51,11 +52,11 @@ public class VariantsListResponse   {
       @NotNull
 
     @Valid
-    public MetadataTokenPagination getMetadata() {
+    public Metadata getMetadata() {
     return metadata;
   }
 
-  public void setMetadata(MetadataTokenPagination metadata) {
+  public void setMetadata(Metadata metadata) {
     this.metadata = metadata;
   }
 

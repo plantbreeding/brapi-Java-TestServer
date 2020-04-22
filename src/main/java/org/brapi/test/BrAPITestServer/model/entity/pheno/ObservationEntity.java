@@ -7,26 +7,33 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.SeasonEntity;
 
 @Entity
 @Table(name="observation")
-public class ObservationEntity extends BrAPIBaseEntity{
-	@Column
-	private Date observationTimeStamp;
+public class ObservationEntity extends BrAPIPrimaryEntity{
 	@Column
 	private String collector;
 	@Column
-	private String value;
-
-	@ManyToOne
-	private ObservationVariableEntity observationVariable;
+	private Date observationTimeStamp;
 	@ManyToOne
 	private ObservationUnitEntity observationUnit;
 	@ManyToOne
+	private ObservationVariableEntity observationVariable;
+	@ManyToOne
 	private SeasonEntity season;
+	@Column
+	private String uploadedBy;
+	@Column
+	private String value;
 	
+	public String getUploadedBy() {
+		return uploadedBy;
+	}
+	public void setUploadedBy(String uploadedBy) {
+		this.uploadedBy = uploadedBy;
+	}
 	public ObservationUnitEntity getObservationUnit() {
 		return observationUnit;
 	}

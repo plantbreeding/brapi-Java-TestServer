@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Context;
 import io.swagger.model.Metadata;
+
 import io.swagger.model.germ.SeedLotTransactionListResponseResult;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;

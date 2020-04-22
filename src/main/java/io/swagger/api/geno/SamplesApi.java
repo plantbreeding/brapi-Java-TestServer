@@ -5,8 +5,10 @@
  */
 package io.swagger.api.geno;
 
+import io.swagger.model.Model202AcceptedSearchResponse;
 import io.swagger.model.geno.SampleListResponse;
 import io.swagger.model.geno.SampleNewRequest;
+import io.swagger.model.geno.SampleSearchRequest;
 import io.swagger.model.geno.SampleSingleResponse;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -79,6 +81,35 @@ public interface SamplesApi {
 	ResponseEntity<SampleSingleResponse> samplesSampleDbIdPut(
 			@ApiParam(value = "the internal DB id for a sample", required = true) @PathVariable("sampleDbId") String sampleDbId,
 			@ApiParam(value = "") @Valid @RequestBody SampleNewRequest body,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+
+	@ApiOperation(value = "Submit a search request for Samples", nickname = "searchSamplesPost", notes = "Used to retrieve list of Samples from a Sample Tracking system based on some search criteria.  See Search Services for additional implementation details.", response = SampleListResponse.class, authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Samples", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = SampleListResponse.class),
+			@ApiResponse(code = 202, message = "Accepted", response = Model202AcceptedSearchResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/search/samples", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.POST)
+	ResponseEntity<SampleListResponse> searchSamplesPost(
+			@ApiParam(value = "") @Valid @RequestBody SampleSearchRequest body,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+
+	@ApiOperation(value = "Get the results of a Samples search request", nickname = "searchSamplesSearchResultsDbIdGet", notes = "Used to retrieve list of Samples from a Sample Tracking system based on some search criteria.  See Search Services for additional implementation details.", response = SampleListResponse.class, authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Samples", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = SampleListResponse.class),
+			@ApiResponse(code = 202, message = "Accepted", response = Model202AcceptedSearchResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class),
+			@ApiResponse(code = 404, message = "Not Found", response = String.class) })
+	@RequestMapping(value = "/search/samples/{searchResultsDbId}", produces = {
+			"application/json" }, method = RequestMethod.GET)
+	ResponseEntity<SampleListResponse> searchSamplesSearchResultsDbIdGet(
+			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
+			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
 
 }

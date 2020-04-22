@@ -6,7 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.ExternalReferences;
-import io.swagger.model.pheno.Season;
+import io.swagger.model.core.Season;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.time.OffsetDateTime;

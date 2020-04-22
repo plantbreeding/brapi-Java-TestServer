@@ -5,12 +5,15 @@
  */
 package io.swagger.api.geno;
 
+import io.swagger.model.Model202AcceptedSearchResponse;
 import io.swagger.model.geno.CallSetResponse1;
 import io.swagger.model.geno.CallsListResponse;
 import io.swagger.model.geno.VariantsListResponse;
+import io.swagger.model.geno.VariantsSearchRequest;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -64,6 +67,34 @@ public interface VariantsApi {
 	@RequestMapping(value = "/variants/{variantDbId}", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<CallSetResponse1> variantsVariantDbIdGet(
 			@ApiParam(value = "The ID of the `Variant` to be retrieved.", required = true) @PathVariable("variantDbId") String variantDbId,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+
+	@ApiOperation(value = "Gets a list of `Variant` matching the search criteria.", nickname = "searchVariantsPost", notes = "Gets a list of `Variant` matching the search criteria.  ** THIS ENDPOINT USES TOKEN BASED PAGING **", response = VariantsListResponse.class, authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Variants", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = VariantsListResponse.class),
+			@ApiResponse(code = 202, message = "Accepted", response = Model202AcceptedSearchResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/search/variants", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.POST)
+	ResponseEntity<VariantsListResponse> searchVariantsPost(
+			@ApiParam(value = "Study Search request") @Valid @RequestBody VariantsSearchRequest body,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+
+	@ApiOperation(value = "Gets a list of `Variant` matching the search criteria.", nickname = "searchVariantsSearchResultsDbIdGet", notes = "Gets a list of `Variant` matching the search criteria.  ** THIS ENDPOINT USES TOKEN BASED PAGING **", response = VariantsListResponse.class, authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Variants", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = VariantsListResponse.class),
+			@ApiResponse(code = 202, message = "Accepted", response = Model202AcceptedSearchResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/search/variants/{searchResultsDbId}", produces = {
+			"application/json" }, method = RequestMethod.GET)
+	ResponseEntity<VariantsListResponse> searchVariantsSearchResultsDbIdGet(
+			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
+			@ApiParam(value = "Used to request a specific page of data to be returned.  Tokenized pages are for large data sets which can not be efficiently broken into indexed pages. Use the nextPageToken and prevPageToken from a prior response to construct a query and move to the next or previous page respectively. ") @Valid @RequestParam(value = "pageToken", required = false) String pageToken,
+			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
 
 }

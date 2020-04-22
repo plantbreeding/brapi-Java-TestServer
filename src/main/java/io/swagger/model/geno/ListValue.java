@@ -19,16 +19,16 @@ import javax.validation.Valid;
 public class ListValue   {
   @JsonProperty("values")
   @Valid
-  private List<OneOfListValueValuesItems> values = null;
+  private List<String> values = null;
 
-  public ListValue values(List<OneOfListValueValuesItems> values) {
+  public ListValue values(List<String> values) {
     this.values = values;
     return this;
   }
 
-  public ListValue addValuesItem(OneOfListValueValuesItems valuesItem) {
+  public ListValue addValuesItem(String valuesItem) {
     if (this.values == null) {
-      this.values = new ArrayList<OneOfListValueValuesItems>();
+      this.values = new ArrayList<String>();
     }
     this.values.add(valuesItem);
     return this;
@@ -40,11 +40,11 @@ public class ListValue   {
   **/
   @ApiModelProperty(example = "[\"AA\"]", value = "Repeated field of dynamically typed values.")
   
-    public List<OneOfListValueValuesItems> getValues() {
+    public List<String> getValues() {
     return values;
   }
 
-  public void setValues(List<OneOfListValueValuesItems> values) {
+  public void setValues(List<String> values) {
     this.values = values;
   }
 

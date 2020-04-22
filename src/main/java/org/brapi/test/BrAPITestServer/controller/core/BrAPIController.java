@@ -15,6 +15,7 @@ import io.swagger.model.BrAPIResponseResult;
 import io.swagger.model.IndexPagination;
 import io.swagger.model.Metadata;
 import io.swagger.model.SearchRequestParametersPaging;
+import io.swagger.model.TokenPagination;
 
 public class BrAPIController {
 	protected Metadata generateMetaDataTemplateForSearch(Integer originalRequestedPage, Integer newRequestedPage,
@@ -34,6 +35,17 @@ public class BrAPIController {
 
 	protected Metadata generateMetaDataTemplate(SearchRequestParametersPaging request) throws BrAPIServerException {
 		return generateMetaDataTemplate(request.getPage(), request.getPageSize());
+	}
+
+	protected Metadata generateMetaDataTemplate(String pageToken, Integer pageSize) {
+		if (pageSize == null) {
+			pageSize = 1000;
+		}
+
+		Metadata metaData = generateEmptyMetadataToken();
+		metaData.getPagination().setCurrentPage(pageToken);
+		metaData.getPagination().setPageSize(pageSize);
+		return metaData;
 	}
 
 	protected Metadata generateMetaDataTemplate(Integer page, Integer pageSize) throws BrAPIServerException {
@@ -67,11 +79,29 @@ public class BrAPIController {
 		Metadata metaData = new Metadata();
 		metaData.setDatafiles(new ArrayList<>());
 		metaData.setStatus(new ArrayList<>());
-		metaData.setPagination(new IndexPagination());
-		metaData.getPagination().setCurrentPage(0);
-		metaData.getPagination().setPageSize(0);
-		metaData.getPagination().setTotalCount(0);
-		metaData.getPagination().setTotalPages(0);
+		IndexPagination pagination = new IndexPagination();
+		pagination.setCurrentPage(0);
+		pagination.setPageSize(0);
+		pagination.setTotalCount(0);
+		pagination.setTotalPages(0);
+		
+		metaData.setPagination(pagination);
+		return metaData;
+	}
+
+	protected Metadata generateEmptyMetadataToken() {
+		Metadata metaData = new Metadata();
+		metaData.setDatafiles(new ArrayList<>());
+		metaData.setStatus(new ArrayList<>());
+		TokenPagination pagination = new TokenPagination();
+		pagination.setCurrentPageToken("");
+		pagination.setNextPageToken("");
+		pagination.setPrevPageToken("");
+		pagination.setPageSize(0);
+		pagination.setTotalCount(0);
+		pagination.setTotalPages(0);
+		
+		metaData.setPagination(pagination);
 		return metaData;
 	}
 
@@ -101,8 +131,7 @@ public class BrAPIController {
 		return responseOK(response, result, data, generateEmptyMetadata());
 	}
 
-	public <T extends BrAPIResponse<R>, R extends BrAPIResponseResult<S>, S> ResponseEntity<T> responseOK(T response,
-			R result, List<S> data, Metadata metadata) {
+	public <T extends BrAPIResponse<R>, R extends BrAPIResponseResult<S>, S> ResponseEntity<T> responseOK(T response, R result, List<S> data, Metadata metadata) {
 		result.setData(data);
 		response.setMetadata(metadata);
 		response.setResult(result);

@@ -5,12 +5,15 @@
  */
 package io.swagger.api.geno;
 
+import io.swagger.model.Model202AcceptedSearchResponse;
 import io.swagger.model.geno.ReferenceBasesResponse;
 import io.swagger.model.geno.ReferenceSingleResponse;
 import io.swagger.model.geno.ReferencesListResponse;
+import io.swagger.model.geno.ReferencesSearchRequest;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -70,5 +73,33 @@ public interface ReferencesApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ReferenceSingleResponse> referencesReferenceDbIdGet(
 			@ApiParam(value = "The ID of the `Reference` to be retrieved.", required = true) @PathVariable("referenceDbId") String referenceDbId);
+
+	@ApiOperation(value = "Gets a list of `Reference` matching the search criteria.", nickname = "searchReferencesPost", notes = "`POST /references/search` must accept a JSON version of `SearchReferencesRequest` as the post body and will return a JSON version of `SearchReferencesResponse`.", response = ReferencesListResponse.class, authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "References", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = ReferencesListResponse.class),
+			@ApiResponse(code = 202, message = "Accepted", response = Model202AcceptedSearchResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/search/references", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.POST)
+	ResponseEntity<ReferencesListResponse> searchReferencesPost(
+			@ApiParam(value = "References Search request") @Valid @RequestBody ReferencesSearchRequest body,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+
+	@ApiOperation(value = "Gets a list of `Reference` matching the search criteria.", nickname = "searchReferencesSearchResultsDbIdGet", notes = "`POST /references/search` must accept a JSON version of `SearchReferencesRequest` as the post body and will return a JSON version of `SearchReferencesResponse`.", response = ReferencesListResponse.class, authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "References", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = ReferencesListResponse.class),
+			@ApiResponse(code = 202, message = "Accepted", response = Model202AcceptedSearchResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/search/references/{searchResultsDbId}", produces = {
+			"application/json" }, method = RequestMethod.GET)
+	ResponseEntity<ReferencesListResponse> searchReferencesSearchResultsDbIdGet(
+			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
+			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
 
 }
