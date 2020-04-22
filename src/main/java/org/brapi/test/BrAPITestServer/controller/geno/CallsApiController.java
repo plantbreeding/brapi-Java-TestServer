@@ -56,9 +56,9 @@ public class CallsApiController extends BrAPIController implements CallsApi {
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(pageToken, pageSize);
-		List<Call> data = callService.findCalls(callSetDbId, variantDbId, variantSetDbId, expandHomozygotes,
+		CallsListResponseResult data = callService.findCalls(callSetDbId, variantDbId, variantSetDbId, expandHomozygotes,
 				unknownString, sepPhased, sepUnphased, metadata);
-		return responseOK(new CallsListResponse(), new CallsListResponseResult(), data, metadata);
+		return responseOK(new CallsListResponse(), data, metadata);
 	}
 
 	public ResponseEntity<CallsListResponse> searchCallsPost(@Valid @RequestBody CallsSearchRequest body,
@@ -67,8 +67,8 @@ public class CallsApiController extends BrAPIController implements CallsApi {
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body.getPageToken(), body.getPageSize());
-		List<Call> data = callService.findCalls(body, metadata);
-		return responseOK(new CallsListResponse(), new CallsListResponseResult(), data, metadata);
+		CallsListResponseResult data = callService.findCalls(body, metadata);
+		return responseOK(new CallsListResponse(), data, metadata);
 	}
 
 	public ResponseEntity<CallsListResponse> searchCallsSearchResultsDbIdGet(

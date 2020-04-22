@@ -15,7 +15,7 @@ public class CallEntity extends BrAPIPrimaryEntity {
 	@Column
 	private String genotype;
 	@Column
-	private String genotypeLikelihood;
+	private Double genotypeLikelihood;
 	@Column 
 	private String phaseSet;
 	@ManyToOne
@@ -33,10 +33,10 @@ public class CallEntity extends BrAPIPrimaryEntity {
 	public void setGenotype(String genotype) {
 		this.genotype = genotype;
 	}
-	public String getGenotypeLikelihood() {
+	public Double getGenotypeLikelihood() {
 		return genotypeLikelihood;
 	}
-	public void setGenotypeLikelihood(String genotypeLikelihood) {
+	public void setGenotypeLikelihood(Double genotypeLikelihood) {
 		this.genotypeLikelihood = genotypeLikelihood;
 	}
 	public String getPhaseSet() {

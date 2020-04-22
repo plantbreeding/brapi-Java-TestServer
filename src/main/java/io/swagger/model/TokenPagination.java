@@ -43,9 +43,12 @@ public class TokenPagination extends Pagination {
 
 	@Override
 	public Integer getCurrentPage() {
-		return Integer.parseInt(currentPageToken);
+		if (currentPageToken != null)
+			return Integer.parseInt(currentPageToken);
+		return 0;
 
 	}
+
 	public String getCurrentPageToken() {
 		return currentPageToken;
 	}
