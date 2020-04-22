@@ -9,6 +9,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
+import org.brapi.test.BrAPITestServer.model.entity.germ.GermplasmEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.TaxonEntity;
 
@@ -37,7 +39,23 @@ public class SampleEntity extends BrAPIBaseEntity{
 	private TaxonEntity taxonId;
 	@ManyToOne
 	private ObservationUnitEntity observationUnit;
+	@ManyToOne
+	private StudyEntity study;
+	@ManyToOne
+	private GermplasmEntity germplasm;
 	
+	public StudyEntity getStudy() {
+		return study;
+	}
+	public void setStudy(StudyEntity study) {
+		this.study = study;
+	}
+	public GermplasmEntity getGermplasm() {
+		return germplasm;
+	}
+	public void setGermplasm(GermplasmEntity germplasm) {
+		this.germplasm = germplasm;
+	}
 	public String getConcentration() {
 		return concentration;
 	}

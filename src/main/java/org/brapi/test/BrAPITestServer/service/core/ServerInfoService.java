@@ -47,6 +47,7 @@ public class ServerInfoService {
 				.setBase("observationlevels").GET().build()
 				//GENOTYPING
 				.setBase("calls").GET().withSearch()
+				.setBase("callsets").GET().addPath("{callSetDbId}").GET().addPath("calls").GET().withSearch()
 				
 				
 				;

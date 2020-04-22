@@ -147,7 +147,7 @@ public class SampleService {
 	private List<Sample> searchSamples(SampleSearchRequest request, Metadata metaData) {
 
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
-		Page<SampleEntity> entitiesPage = sampleRepository.findBySearch(request, pageReq);
+		Page<SampleEntity> entitiesPage = sampleRepository.findAllBySearch(null, null);
 
 		PagingUtility.calculateMetaData(metaData, entitiesPage);
 

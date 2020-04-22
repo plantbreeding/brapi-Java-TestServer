@@ -1,7 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller.geno;
 
 import io.swagger.model.Metadata;
-import io.swagger.model.geno.Call;
 import io.swagger.model.geno.CallsListResponse;
 import io.swagger.model.geno.CallsListResponseResult;
 import io.swagger.model.geno.CallsSearchRequest;
@@ -13,6 +12,7 @@ import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.geno.CallService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
 @Controller
@@ -34,7 +33,7 @@ public class CallsApiController extends BrAPIController implements CallsApi {
 
 	private final HttpServletRequest request;
 
-	@org.springframework.beans.factory.annotation.Autowired
+	@Autowired
 	public CallsApiController(CallService callService, HttpServletRequest request) {
 		this.callService = callService;
 		this.request = request;

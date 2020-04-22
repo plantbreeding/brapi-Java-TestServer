@@ -11,6 +11,8 @@ import io.swagger.model.geno.CallSetsListResponse;
 import io.swagger.model.geno.CallSetsSearchRequest;
 import io.swagger.model.geno.CallsListResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,7 +43,7 @@ public interface CallsetsApi {
 			@ApiParam(value = "The string to use as a separator for unphased allele calls") @Valid @RequestParam(value = "sepUnphased", required = false) String sepUnphased,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  Tokenized pages are for large data sets which can not be efficiently broken into indexed pages. Use the nextPageToken and prevPageToken from a prior response to construct a query and move to the next or previous page respectively. ") @Valid @RequestParam(value = "pageToken", required = false) String pageToken,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 	@ApiOperation(value = "Gets a `CallSet` by ID.", nickname = "callsetsCallSetDbIdGet", notes = "Gets a `CallSet` by ID.", response = CallSetResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Call Sets", })
@@ -53,7 +55,7 @@ public interface CallsetsApi {
 	@RequestMapping(value = "/callsets/{callSetDbId}", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<CallSetResponse> callsetsCallSetDbIdGet(
 			@ApiParam(value = "The ID of the `CallSet` to be retrieved.", required = true) @PathVariable("callSetDbId") String callSetDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 	@ApiOperation(value = "Gets a filtered list of `CallSet` JSON objects.", nickname = "callsetsGet", notes = "Gets a filtered list of `CallSet` JSON objects.", response = CallSetsListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Call Sets", })
@@ -70,7 +72,7 @@ public interface CallsetsApi {
 			@ApiParam(value = "Return only call sets generated from the Sample of this Germplasm") @Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 	@ApiOperation(value = "Gets a list of call sets matching the search criteria.", nickname = "searchCallsetsPost", notes = "Gets a list of call sets matching the search criteria.", response = CallSetsListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Call Sets", })
@@ -83,7 +85,7 @@ public interface CallsetsApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<CallSetsListResponse> searchCallsetsPost(
 			@ApiParam(value = "Study Search request") @Valid @RequestBody CallSetsSearchRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 	@ApiOperation(value = "Gets a list of call sets matching the search criteria.", nickname = "searchCallsetsSearchResultsDbIdGet", notes = "Gets a list of call sets matching the search criteria.", response = CallSetsListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Call Sets", })
@@ -98,6 +100,6 @@ public interface CallsetsApi {
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 }
