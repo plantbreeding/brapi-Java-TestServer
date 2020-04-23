@@ -9,6 +9,8 @@ import io.swagger.model.geno.GenomeMapListResponse;
 import io.swagger.model.geno.GenomeMapSingleResponse;
 import io.swagger.model.geno.LinkageGroupListResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -39,7 +41,8 @@ public interface MapsApi {
 			@ApiParam(value = "Unique Id to filter by Study") @Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the details of a specific Genomic Map", nickname = "mapsMapDbIdGet", notes = "Provides the number of markers on each linkageGroup and the max position on the linkageGroup", response = GenomeMapSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Genome Maps", })
@@ -51,9 +54,8 @@ public interface MapsApi {
 	@RequestMapping(value = "/maps/{mapDbId}", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<GenomeMapSingleResponse> mapsMapDbIdGet(
 			@ApiParam(value = "The internal db id of a selected map", required = true) @PathVariable("mapDbId") String mapDbId,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the Linkage Groups of a specific Genomic Map", nickname = "mapsMapDbIdLinkagegroupsGet", notes = "Get the Linkage Groups of a specific Genomic Map. A Linkage Group is the BrAPI generic term for a named section of a map. A Linkage Group can represent a Chromosome, Scaffold, or Linkage Group.", response = LinkageGroupListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Genome Maps", })
@@ -68,6 +70,7 @@ public interface MapsApi {
 			@ApiParam(value = "The internal db id of a selected map", required = true) @PathVariable("mapDbId") String mapDbId,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 }

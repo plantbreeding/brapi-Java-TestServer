@@ -5,41 +5,48 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 
 @Entity
 @Table(name="genome_map")
-public class GenomeMapEntity extends BrAPIBaseEntity{
-
+public class GenomeMapEntity extends BrAPIPrimaryEntity{
 	@Column
-	private String name;
-	@Column
-	private String commonCropName;
+	private String comments;
+	@ManyToOne
+	private CropEntity crop;
 	@Column
 	private String documentationURL;
+	@OneToMany(mappedBy="genomeMap")
+	private List<LinkageGroupEntity> linkageGroups;
+	@Column
+	private String mapName;
+	@Column
+	private String mapPUI;
+	@Column
+	private Date publishedDate;
 	@Column
 	private String scientificName;
-	@Column
-	private String species;
 	@Column
 	private String type;
 	@Column
 	private String unit;
-	@Column
-	private Date publishedDate;
-	@Column
-	private String comments;
-	@OneToMany(mappedBy="genomeMapDbId")
-	private List<LinkageGroupEntity> linkageGroups;
 	
-	public String getCommonCropName() {
-		return commonCropName;
+	public String getComments() {
+		return comments;
 	}
-	public void setCommonCropName(String commonCropName) {
-		this.commonCropName = commonCropName;
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+	public CropEntity getCrop() {
+		return crop;
+	}
+	public void setCrop(CropEntity crop) {
+		this.crop = crop;
 	}
 	public String getDocumentationURL() {
 		return documentationURL;
@@ -47,52 +54,47 @@ public class GenomeMapEntity extends BrAPIBaseEntity{
 	public void setDocumentationURL(String documentationURL) {
 		this.documentationURL = documentationURL;
 	}
+	public List<LinkageGroupEntity> getLinkageGroups() {
+		return linkageGroups;
+	}
+	public void setLinkageGroups(List<LinkageGroupEntity> linkageGroups) {
+		this.linkageGroups = linkageGroups;
+	}
+	public String getMapName() {
+		return mapName;
+	}
+	public void setMapName(String mapName) {
+		this.mapName = mapName;
+	}
+	public String getMapPUI() {
+		return mapPUI;
+	}
+	public void setMapPUI(String mapPUI) {
+		this.mapPUI = mapPUI;
+	}
+	public Date getPublishedDate() {
+		return publishedDate;
+	}
+	public void setPublishedDate(Date publishedDate) {
+		this.publishedDate = publishedDate;
+	}
 	public String getScientificName() {
 		return scientificName;
 	}
 	public void setScientificName(String scientificName) {
 		this.scientificName = scientificName;
 	}
-	public String getComments() {
-		return comments;
-	}
-	public List<LinkageGroupEntity> getLinkageGroups() {
-		return linkageGroups;
-	}
-	public String getName() {
-		return name;
-	}
-	public Date getPublishedDate() {
-		return publishedDate;
-	}
-	public String getSpecies() {
-		return species;
-	}
 	public String getType() {
 		return type;
-	}
-	public String getUnit() {
-		return unit;
-	}
-	public void setComments(String comments) {
-		this.comments = comments;
-	}
-	public void setLinkageGroups(List<LinkageGroupEntity> linkageGroups) {
-		this.linkageGroups = linkageGroups;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public void setPublishedDate(Date publishedDate) {
-		this.publishedDate = publishedDate;
-	}
-	public void setSpecies(String species) {
-		this.species = species;
 	}
 	public void setType(String type) {
 		this.type = type;
 	}
+	public String getUnit() {
+		return unit;
+	}
 	public void setUnit(String unit) {
 		this.unit = unit;
 	}
+	
 }

@@ -48,6 +48,7 @@ public class ServerInfoService {
 				//GENOTYPING
 				.setBase("calls").GET().withSearch()
 				.setBase("callsets").GET().addPath("{callSetDbId}").GET().addPath("calls").GET().withSearch()
+				.setBase("maps").GET().addPath("{mapDbId}").GET().addPath("linkagegroups").GET().build()
 				
 				
 				;

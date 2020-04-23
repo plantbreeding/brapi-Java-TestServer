@@ -4,16 +4,17 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 
 @Entity
 @Table(name="linkageGroup")
-public class LinkageGroupEntity extends BrAPIBaseEntity{
-	@Column
-	private String genomeMapDbId;
+public class LinkageGroupEntity extends BrAPIPrimaryEntity{
+	@ManyToOne
+	private GenomeMapEntity genomeMap;
 	@Column
 	private String linkageGroupName; 
 	@Column
@@ -27,11 +28,11 @@ public class LinkageGroupEntity extends BrAPIBaseEntity{
 	public void setMaxMarkerPosition(Integer maxMarkerPosition) {
 		this.maxMarkerPosition = maxMarkerPosition;
 	}
-	public String getGenomeMapDbId() {
-		return genomeMapDbId;
+	public GenomeMapEntity getGenomeMap() {
+		return genomeMap;
 	}
-	public void setGenomeMapDbId(String genomeMapDbId) {
-		this.genomeMapDbId = genomeMapDbId;
+	public void setGenomeMap(GenomeMapEntity genomeMap) {
+		this.genomeMap = genomeMap;
 	}
 	public String getLinkageGroupName() {
 		return linkageGroupName;
