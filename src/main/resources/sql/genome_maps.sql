@@ -6,3 +6,15 @@ INSERT INTO genome_map_additional_info(genome_map_entity_id, additional_info_id)
 INSERT INTO linkage_group (id, linkage_group_name, max_marker_position, genome_map_id) VALUES('linkage_group1', 'Chromosome 1', 50000000, 'genome_map1');
 INSERT INTO additional_info(id, key, value) VALUES ('linkage_group_ai_1', 'dummyData', 'True');
 INSERT INTO linkage_group_additional_info(linkage_group_entity_id, additional_info_id) VALUES ('linkage_group1', 'linkage_group_ai_1');
+
+INSERT INTO marker_position (id, "position", linkage_group_id, variant_id) VALUES('marker_position1', 200, 'linkage_group1', 'variant01');
+INSERT INTO additional_info(id, key, value) VALUES ('marker_position_ai_1', 'dummyData', 'True');
+INSERT INTO marker_position_additional_info(marker_position_entity_id, additional_info_id) VALUES ('marker_position1', 'marker_position_ai_1');
+
+INSERT INTO marker_position (id, "position", linkage_group_id, variant_id) VALUES('marker_position2', 4000, 'linkage_group1', 'variant02');
+INSERT INTO additional_info(id, key, value) VALUES ('marker_position_ai_2', 'dummyData', 'True');
+INSERT INTO marker_position_additional_info(marker_position_entity_id, additional_info_id) VALUES ('marker_position2', 'marker_position_ai_2');
+
+INSERT INTO marker_position (id, "position", linkage_group_id, variant_id) VALUES('marker_position3', 60000, 'linkage_group1', 'variant03');
+INSERT INTO additional_info(id, key, value) VALUES ('marker_position_ai_3', 'dummyData', 'True');
+INSERT INTO marker_position_additional_info(marker_position_entity_id, additional_info_id) VALUES ('marker_position3', 'marker_position_ai_3');

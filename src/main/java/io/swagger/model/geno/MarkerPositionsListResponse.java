@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Context;
 import io.swagger.model.Metadata;
 
@@ -17,7 +18,7 @@ import javax.validation.constraints.*;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
-public class MarkerPositionListResponse   {
+public class MarkerPositionsListResponse implements BrAPIResponse<MarkerPositionsListResponseResult>  {
   @JsonProperty("@context")
   private Context _atContext = null;
 
@@ -25,9 +26,9 @@ public class MarkerPositionListResponse   {
   private Metadata metadata = null;
 
   @JsonProperty("result")
-  private MarkerPositionListResponseResult result = null;
+  private MarkerPositionsListResponseResult result = null;
 
-  public MarkerPositionListResponse _atContext(Context _atContext) {
+  public MarkerPositionsListResponse _atContext(Context _atContext) {
     this._atContext = _atContext;
     return this;
   }
@@ -38,7 +39,7 @@ public class MarkerPositionListResponse   {
     this._atContext = _atContext;
   }
 
-  public MarkerPositionListResponse metadata(Metadata metadata) {
+  public MarkerPositionsListResponse metadata(Metadata metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -59,7 +60,7 @@ public class MarkerPositionListResponse   {
     this.metadata = metadata;
   }
 
-  public MarkerPositionListResponse result(MarkerPositionListResponseResult result) {
+  public MarkerPositionsListResponse result(MarkerPositionsListResponseResult result) {
     this.result = result;
     return this;
   }
@@ -72,11 +73,11 @@ public class MarkerPositionListResponse   {
       @NotNull
 
     @Valid
-    public MarkerPositionListResponseResult getResult() {
+    public MarkerPositionsListResponseResult getResult() {
     return result;
   }
 
-  public void setResult(MarkerPositionListResponseResult result) {
+  public void setResult(MarkerPositionsListResponseResult result) {
     this.result = result;
   }
 
@@ -89,7 +90,7 @@ public class MarkerPositionListResponse   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    MarkerPositionListResponse markerPositionListResponse = (MarkerPositionListResponse) o;
+    MarkerPositionsListResponse markerPositionListResponse = (MarkerPositionsListResponse) o;
     return Objects.equals(this._atContext, markerPositionListResponse._atContext) &&
         Objects.equals(this.metadata, markerPositionListResponse.metadata) &&
         Objects.equals(this.result, markerPositionListResponse.result);

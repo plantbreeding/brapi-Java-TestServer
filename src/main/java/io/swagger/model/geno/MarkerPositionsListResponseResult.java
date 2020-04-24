@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.BrAPIResponseResult;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
@@ -16,17 +18,17 @@ import javax.validation.constraints.*;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
-public class MarkerPositionListResponseResult   {
+public class MarkerPositionsListResponseResult implements BrAPIResponseResult<MarkerPosition>  {
   @JsonProperty("data")
   @Valid
   private List<MarkerPosition> data = new ArrayList<MarkerPosition>();
 
-  public MarkerPositionListResponseResult data(List<MarkerPosition> data) {
+  public MarkerPositionsListResponseResult data(List<MarkerPosition> data) {
     this.data = data;
     return this;
   }
 
-  public MarkerPositionListResponseResult addDataItem(MarkerPosition dataItem) {
+  public MarkerPositionsListResponseResult addDataItem(MarkerPosition dataItem) {
     this.data.add(dataItem);
     return this;
   }
@@ -55,7 +57,7 @@ public class MarkerPositionListResponseResult   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    MarkerPositionListResponseResult markerPositionListResponseResult = (MarkerPositionListResponseResult) o;
+    MarkerPositionsListResponseResult markerPositionListResponseResult = (MarkerPositionsListResponseResult) o;
     return Objects.equals(this.data, markerPositionListResponseResult.data);
   }
 

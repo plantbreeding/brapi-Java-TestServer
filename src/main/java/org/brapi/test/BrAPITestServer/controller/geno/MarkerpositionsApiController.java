@@ -1,32 +1,28 @@
 package org.brapi.test.BrAPITestServer.controller.geno;
 
-import io.swagger.model.geno.MarkerPositionListResponse;
+import io.swagger.model.Metadata;
+import io.swagger.model.geno.MarkerPosition;
+import io.swagger.model.geno.MarkerPositionsListResponse;
+import io.swagger.model.geno.MarkerPositionsListResponseResult;
 import io.swagger.model.geno.MarkerPositionSearchRequest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.annotations.*;
 import io.swagger.api.geno.MarkerpositionsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.service.geno.MarkerPositionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.constraints.*;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
 @Controller
@@ -34,17 +30,17 @@ public class MarkerpositionsApiController extends BrAPIController implements Mar
 
 	private static final Logger log = LoggerFactory.getLogger(MarkerpositionsApiController.class);
 
-	private final ObjectMapper objectMapper;
+	private final MarkerPositionService markerPositionService;
 
 	private final HttpServletRequest request;
 
 	@org.springframework.beans.factory.annotation.Autowired
-	public MarkerpositionsApiController(ObjectMapper objectMapper, HttpServletRequest request) {
-		this.objectMapper = objectMapper;
+	public MarkerpositionsApiController(MarkerPositionService markerPositionService, HttpServletRequest request) {
+		this.markerPositionService = markerPositionService;
 		this.request = request;
 	}
 
-	public ResponseEntity<MarkerPositionListResponse> markerpositionsGet(
+	public ResponseEntity<MarkerPositionsListResponse> markerpositionsGet(
 			@Valid @RequestParam(value = "mapDbId", required = false) String mapDbId,
 			@Valid @RequestParam(value = "linkageGroupName", required = false) String linkageGroupName,
 			@Valid @RequestParam(value = "variantDbId", required = false) String variantDbId,
@@ -52,58 +48,36 @@ public class MarkerpositionsApiController extends BrAPIController implements Mar
 			@Valid @RequestParam(value = "maxPosition", required = false) Integer maxPosition,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<MarkerPositionListResponse>(objectMapper.readValue(
-						"{\n  \"result\" : {\n    \"data\" : [ {\n      \"mapDbId\" : \"3d52bdf3\",\n      \"linkageGroupName\" : \"Chromosome 3\",\n      \"additionalInfo\" : {\n        \"key\" : \"additionalInfo\"\n      },\n      \"variantDbId\" : \"a1eb250a\",\n      \"mapName\" : \"Genome Map 1\",\n      \"position\" : 2390,\n      \"variantName\" : \"Marker_2390\"\n    }, {\n      \"mapDbId\" : \"3d52bdf3\",\n      \"linkageGroupName\" : \"Chromosome 3\",\n      \"additionalInfo\" : {\n        \"key\" : \"additionalInfo\"\n      },\n      \"variantDbId\" : \"a1eb250a\",\n      \"mapName\" : \"Genome Map 1\",\n      \"position\" : 2390,\n      \"variantName\" : \"Marker_2390\"\n    } ]\n  },\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}",
-						MarkerPositionListResponse.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<MarkerPositionListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
+			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
-		return new ResponseEntity<MarkerPositionListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		List<MarkerPosition> data = markerPositionService.findMarkerPositions(mapDbId, linkageGroupName, variantDbId, maxPosition,
+				minPosition, metadata);
+		return responseOK(new MarkerPositionsListResponse(), new MarkerPositionsListResponseResult(), data, metadata);
 	}
 
-	public ResponseEntity<MarkerPositionListResponse> searchMarkerpositionsPost(
+	public ResponseEntity<MarkerPositionsListResponse> searchMarkerpositionsPost(
 			@Valid @RequestBody MarkerPositionSearchRequest body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<MarkerPositionListResponse>(objectMapper.readValue(
-						"{\n  \"result\" : {\n    \"data\" : [ {\n      \"mapDbId\" : \"3d52bdf3\",\n      \"linkageGroupName\" : \"Chromosome 3\",\n      \"additionalInfo\" : {\n        \"key\" : \"additionalInfo\"\n      },\n      \"variantDbId\" : \"a1eb250a\",\n      \"mapName\" : \"Genome Map 1\",\n      \"position\" : 2390,\n      \"variantName\" : \"Marker_2390\"\n    }, {\n      \"mapDbId\" : \"3d52bdf3\",\n      \"linkageGroupName\" : \"Chromosome 3\",\n      \"additionalInfo\" : {\n        \"key\" : \"additionalInfo\"\n      },\n      \"variantDbId\" : \"a1eb250a\",\n      \"mapName\" : \"Genome Map 1\",\n      \"position\" : 2390,\n      \"variantName\" : \"Marker_2390\"\n    } ]\n  },\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}",
-						MarkerPositionListResponse.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<MarkerPositionListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
+			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
-		return new ResponseEntity<MarkerPositionListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		Metadata metadata = generateMetaDataTemplate(body);
+		List<MarkerPosition> data = markerPositionService.findMarkerPositions(body, metadata);
+		return responseOK(new MarkerPositionsListResponse(), new MarkerPositionsListResponseResult(), data, metadata);
 	}
 
-	public ResponseEntity<MarkerPositionListResponse> searchMarkerpositionsSearchResultsDbIdGet(
+	public ResponseEntity<MarkerPositionsListResponse> searchMarkerpositionsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<MarkerPositionListResponse>(objectMapper.readValue(
-						"{\n  \"result\" : {\n    \"data\" : [ {\n      \"mapDbId\" : \"3d52bdf3\",\n      \"linkageGroupName\" : \"Chromosome 3\",\n      \"additionalInfo\" : {\n        \"key\" : \"additionalInfo\"\n      },\n      \"variantDbId\" : \"a1eb250a\",\n      \"mapName\" : \"Genome Map 1\",\n      \"position\" : 2390,\n      \"variantName\" : \"Marker_2390\"\n    }, {\n      \"mapDbId\" : \"3d52bdf3\",\n      \"linkageGroupName\" : \"Chromosome 3\",\n      \"additionalInfo\" : {\n        \"key\" : \"additionalInfo\"\n      },\n      \"variantDbId\" : \"a1eb250a\",\n      \"mapName\" : \"Genome Map 1\",\n      \"position\" : 2390,\n      \"variantName\" : \"Marker_2390\"\n    } ]\n  },\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}",
-						MarkerPositionListResponse.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<MarkerPositionListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
+			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
-		return new ResponseEntity<MarkerPositionListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		return new ResponseEntity<MarkerPositionsListResponse>(HttpStatus.NOT_IMPLEMENTED);
 	}
 
 }

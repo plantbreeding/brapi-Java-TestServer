@@ -20,7 +20,7 @@ public class LinkageGroupEntity extends BrAPIPrimaryEntity{
 	@Column
 	private Integer maxMarkerPosition;
 	@OneToMany(mappedBy="linkageGroup")
-	private List<MarkerEntity> markers;
+	private List<MarkerPositionEntity> markers;
 	
 	public Integer getMaxMarkerPosition() {
 		return maxMarkerPosition;
@@ -40,10 +40,10 @@ public class LinkageGroupEntity extends BrAPIPrimaryEntity{
 	public void setLinkageGroupName(String linkageGroupName) {
 		this.linkageGroupName = linkageGroupName;
 	}
-	public List<MarkerEntity> getMarkers() {
+	public List<MarkerPositionEntity> getMarkers() {
 		return markers;
 	}
-	public void setMarkers(List<MarkerEntity> markers) {
+	public void setMarkers(List<MarkerPositionEntity> markers) {
 		this.markers = markers;
 	}
 }
