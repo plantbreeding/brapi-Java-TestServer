@@ -83,8 +83,8 @@ public class CallSetService {
 		callSet.setCreated(DateUtility.toOffsetDateTime(entity.getCreated()));
 		if (entity.getSample() != null) {
 			callSet.setSampleDbId(entity.getSample().getId());
-			if (entity.getSample().getStudy() != null)
-				callSet.setStudyDbId(entity.getSample().getStudy().getId());
+			if (entity.getSample().getObservationUnit() != null && entity.getSample().getObservationUnit().getStudy() != null)
+				callSet.setStudyDbId(entity.getSample().getObservationUnit().getStudy().getId());
 		}
 		callSet.setUpdated(DateUtility.toOffsetDateTime(entity.getUpdated()));
 		if (entity.getVariantSets() != null)

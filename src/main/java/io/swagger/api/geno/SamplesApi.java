@@ -11,6 +11,8 @@ import io.swagger.model.geno.SampleNewRequest;
 import io.swagger.model.geno.SampleSearchRequest;
 import io.swagger.model.geno.SampleSingleResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,7 +45,8 @@ public interface SamplesApi {
 			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Add new Samples", nickname = "samplesPost", notes = "Call to register the event of a sample being taken. Sample ID is assigned as a result of the operation and returned in response.", response = SampleListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Samples", })
@@ -55,7 +58,8 @@ public interface SamplesApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<SampleListResponse> samplesPost(
 			@ApiParam(value = "") @Valid @RequestBody List<SampleNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the details of a specific Sample", nickname = "samplesSampleDbIdGet", notes = "Used to retrieve the details of a single Sample from a Sample Tracking system.", response = SampleSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Samples", })
@@ -67,7 +71,8 @@ public interface SamplesApi {
 	@RequestMapping(value = "/samples/{sampleDbId}", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<SampleSingleResponse> samplesSampleDbIdGet(
 			@ApiParam(value = "the internal DB id for a sample", required = true) @PathVariable("sampleDbId") String sampleDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Update the details of an existing Sample", nickname = "samplesSampleDbIdPut", notes = "Update the details of an existing Sample", response = SampleSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Samples", })
@@ -81,7 +86,8 @@ public interface SamplesApi {
 	ResponseEntity<SampleSingleResponse> samplesSampleDbIdPut(
 			@ApiParam(value = "the internal DB id for a sample", required = true) @PathVariable("sampleDbId") String sampleDbId,
 			@ApiParam(value = "") @Valid @RequestBody SampleNewRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Submit a search request for Samples", nickname = "searchSamplesPost", notes = "Used to retrieve list of Samples from a Sample Tracking system based on some search criteria.  See Search Services for additional implementation details.", response = SampleListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Samples", })
@@ -94,7 +100,8 @@ public interface SamplesApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<SampleListResponse> searchSamplesPost(
 			@ApiParam(value = "") @Valid @RequestBody SampleSearchRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the results of a Samples search request", nickname = "searchSamplesSearchResultsDbIdGet", notes = "Used to retrieve list of Samples from a Sample Tracking system based on some search criteria.  See Search Services for additional implementation details.", response = SampleListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Samples", })
@@ -110,6 +117,7 @@ public interface SamplesApi {
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 }

@@ -1,19 +1,19 @@
 INSERT INTO variantset (id) VALUES('variantset1');
 
-INSERT INTO callset (id, call_set_name) VALUES('callset00', 'P1');
-INSERT INTO callset (id, call_set_name) VALUES('callset01', 'P2');
-INSERT INTO callset (id, call_set_name) VALUES('callset02', 'F1-1');
-INSERT INTO callset (id, call_set_name) VALUES('callset03', 'F1-2');
-INSERT INTO callset (id, call_set_name) VALUES('callset04', 'F1-3');
-INSERT INTO callset (id, call_set_name) VALUES('callset05', 'F1-4');
-INSERT INTO callset (id, call_set_name) VALUES('callset06', 'F1-5');
-INSERT INTO callset (id, call_set_name) VALUES('callset07', 'F1-6');
-INSERT INTO callset (id, call_set_name) VALUES('callset08', 'F1-7');
-INSERT INTO callset (id, call_set_name) VALUES('callset09', 'F1-8');
-INSERT INTO callset (id, call_set_name) VALUES('callset10', 'F1-9');
-INSERT INTO callset (id, call_set_name) VALUES('callset11', 'F1-10');
-INSERT INTO callset (id, call_set_name) VALUES('callset12', 'F1-11');
-INSERT INTO callset (id, call_set_name) VALUES('callset13', 'F1-12');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset00', 'P1', '2019-11-22', '2019-11-23', 'sample1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset01', 'P2', '2019-11-22', '2019-11-23', 'sample1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset02', 'F1-1', '2019-11-22', '2019-11-23', 'sample1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset03', 'F1-2', '2019-11-22', '2019-11-23', 'sample1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset04', 'F1-3', '2019-11-22', '2019-11-23', 'sample1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset05', 'F1-4', '2019-11-22', '2019-11-23', 'sample1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset06', 'F1-5', '2019-11-22', '2019-11-23', 'sample1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset07', 'F1-6', '2019-11-22', '2019-11-23', 'sample1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset08', 'F1-7', '2019-11-22', '2019-11-23', 'sample1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset09', 'F1-8', '2019-11-22', '2019-11-23', 'sample1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset10', 'F1-9', '2019-11-22', '2019-11-23', 'sample1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset11', 'F1-10', '2019-11-22', '2019-11-23', 'sample1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset12', 'F1-11', '2019-11-22', '2019-11-23', 'sample1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset13', 'F1-12', '2019-11-22', '2019-11-23', 'sample1');
 
 INSERT INTO variant (id, variant_name, variant_set_id) VALUES('variant01', 'M1', 'variantset1');
 INSERT INTO variant (id, variant_name, variant_set_id) VALUES('variant02', 'M2', 'variantset1');

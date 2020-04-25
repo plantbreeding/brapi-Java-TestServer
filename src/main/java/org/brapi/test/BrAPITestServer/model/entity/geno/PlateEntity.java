@@ -23,6 +23,8 @@ public class PlateEntity extends BrAPIBaseEntity{
 	@Column
     private String clientPlateBarcode;
 	@Column
+    private String plateName;
+	@Column
     private PlateFormat sampleSubmissionFormat;
 	@Column
     private Date statusTimeStamp;
@@ -31,6 +33,12 @@ public class PlateEntity extends BrAPIBaseEntity{
 	@ManyToOne
 	private VendorPlateSubmissionEntity submission;	
 	
+	public String getPlateName() {
+		return plateName;
+	}
+	public void setPlateName(String plateName) {
+		this.plateName = plateName;
+	}
 	public VendorPlateSubmissionEntity getSubmission() {
 		return submission;
 	}

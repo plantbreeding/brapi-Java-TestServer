@@ -52,6 +52,7 @@ public class ServerInfoService {
 				.setBase("markerpositions").GET().withSearch()
 				.setBase("references").GET().addPath("{referenceDbId}").GET().addPath("bases").withSearch()
 				.setBase("referencesets").GET().addPath("{referenceSetDbId}").GET().withSearch()
+				.setBase("samples").GET().POST().addPath("{sampleDbId}").GET().PUT().withSearch()
 				
 				;
 	}

@@ -8,71 +8,65 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
-import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
-import org.brapi.test.BrAPITestServer.model.entity.germ.GermplasmEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.TaxonEntity;
 
 @Entity
 @Table(name="sample")
-public class SampleEntity extends BrAPIBaseEntity{
+public class SampleEntity extends BrAPIPrimaryEntity{
+	@Column
+	private Integer plateColumn; 
+	@Column
+	private String concentration;
+	@ManyToOne
+	private ObservationUnitEntity observationUnit;
 	@ManyToOne
 	private PlateEntity plate;
 	@Column
-	private Integer plateIndex; 
+	private String plateRow; 
 	@Column
-	private String takenBy;
+	private String sampleBarcode; 
+	@Column
+	private String sampleDescription;
+	@Column
+	private String sampleGroupDbId;
+	@Column
+	private String sampleName;
+	@Column
+	private String samplePUI;
 	@Column
 	private Date sampleTimestamp;
 	@Column
 	private String sampleType;
 	@Column
-	private String tissueType;
-	@Column
-	private String notes;
-	@Column
-	private String concentration;
-	@Column
-	private String volume;
+	private String takenBy;
 	@OneToOne
 	private TaxonEntity taxonId;
-	@ManyToOne
-	private ObservationUnitEntity observationUnit;
-	@ManyToOne
-	private StudyEntity study;
-	@ManyToOne
-	private GermplasmEntity germplasm;
+	@Column
+	private String tissueType;
+	@Column
+	private String volume;
+	@Column
+	private String well;
 	
-	public StudyEntity getStudy() {
-		return study;
+	public String getWell() {
+		return well;
 	}
-	public void setStudy(StudyEntity study) {
-		this.study = study;
+	public void setWell(String well) {
+		this.well = well;
 	}
-	public GermplasmEntity getGermplasm() {
-		return germplasm;
+	public String getSampleGroupDbId() {
+		return sampleGroupDbId;
 	}
-	public void setGermplasm(GermplasmEntity germplasm) {
-		this.germplasm = germplasm;
+	public void setSampleGroupDbId(String sampleGroupDbId) {
+		this.sampleGroupDbId = sampleGroupDbId;
 	}
 	public String getConcentration() {
 		return concentration;
 	}
 	public void setConcentration(String concentration) {
 		this.concentration = concentration;
-	}
-	public String getVolume() {
-		return volume;
-	}
-	public void setVolume(String volume) {
-		this.volume = volume;
-	}
-	public TaxonEntity getTaxonId() {
-		return taxonId;
-	}
-	public void setTaxonId(TaxonEntity taxonId) {
-		this.taxonId = taxonId;
 	}
 	public ObservationUnitEntity getObservationUnit() {
 		return observationUnit;
@@ -86,11 +80,41 @@ public class SampleEntity extends BrAPIBaseEntity{
 	public void setPlate(PlateEntity plate) {
 		this.plate = plate;
 	}
-	public Integer getPlateIndex() {
-		return plateIndex;
+	public Integer getPlateColumn() {
+		return plateColumn;
 	}
-	public void setPlateIndex(Integer plateIndex) {
-		this.plateIndex = plateIndex;
+	public void setPlateColumn(Integer plateColumn) {
+		this.plateColumn = plateColumn;
+	}
+	public String getPlateRow() {
+		return plateRow;
+	}
+	public void setPlateRow(String plateRow) {
+		this.plateRow = plateRow;
+	}
+	public String getSampleBarcode() {
+		return sampleBarcode;
+	}
+	public void setSampleBarcode(String sampleBarcode) {
+		this.sampleBarcode = sampleBarcode;
+	}
+	public String getSampleDescription() {
+		return sampleDescription;
+	}
+	public void setSampleDescription(String sampleDescription) {
+		this.sampleDescription = sampleDescription;
+	}
+	public String getSampleName() {
+		return sampleName;
+	}
+	public void setSampleName(String sampleName) {
+		this.sampleName = sampleName;
+	}
+	public String getSamplePUI() {
+		return samplePUI;
+	}
+	public void setSamplePUI(String samplePUI) {
+		this.samplePUI = samplePUI;
 	}
 	public Date getSampleTimestamp() {
 		return sampleTimestamp;
@@ -98,17 +122,23 @@ public class SampleEntity extends BrAPIBaseEntity{
 	public void setSampleTimestamp(Date sampleTimestamp) {
 		this.sampleTimestamp = sampleTimestamp;
 	}
+	public String getSampleType() {
+		return sampleType;
+	}
+	public void setSampleType(String sampleType) {
+		this.sampleType = sampleType;
+	}
 	public String getTakenBy() {
 		return takenBy;
 	}
 	public void setTakenBy(String takenBy) {
 		this.takenBy = takenBy;
 	}
-	public String getSampleType() {
-		return sampleType;
+	public TaxonEntity getTaxonId() {
+		return taxonId;
 	}
-	public void setSampleType(String sampleType) {
-		this.sampleType = sampleType;
+	public void setTaxonId(TaxonEntity taxonId) {
+		this.taxonId = taxonId;
 	}
 	public String getTissueType() {
 		return tissueType;
@@ -116,11 +146,10 @@ public class SampleEntity extends BrAPIBaseEntity{
 	public void setTissueType(String tissueType) {
 		this.tissueType = tissueType;
 	}
-	public String getNotes() {
-		return notes;
+	public String getVolume() {
+		return volume;
 	}
-	public void setNotes(String notes) {
-		this.notes = notes;
+	public void setVolume(String volume) {
+		this.volume = volume;
 	}
-
 }

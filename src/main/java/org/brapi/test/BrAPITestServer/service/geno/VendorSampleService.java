@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.geno.PlateEntity;
 import org.brapi.test.BrAPITestServer.model.entity.geno.SampleEntity;
 import org.brapi.test.BrAPITestServer.model.entity.geno.vendor.VendorFileEntity;
@@ -24,7 +23,6 @@ import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Metadata;
@@ -36,9 +34,7 @@ import io.swagger.model.geno.VendorOrderListResponseResult;
 import io.swagger.model.geno.VendorOrderStatusResponseResult.StatusEnum;
 import io.swagger.model.geno.VendorOrderSubmissionRequest;
 import io.swagger.model.geno.VendorPlate;
-import io.swagger.model.geno.VendorPlateListResponse;
 import io.swagger.model.geno.VendorPlateListResponseResult;
-import io.swagger.model.geno.VendorPlateSubmissionSingleResponse;
 import io.swagger.model.geno.VendorResultFile;
 import io.swagger.model.geno.VendorSample;
 import io.swagger.model.geno.VendorSpecification;
@@ -72,7 +68,7 @@ public class VendorSampleService {
 		VendorSample sample = new VendorSample();
 		sample.setClientSampleBarCode(entity.getId());
 		sample.setClientSampleId(entity.getId());
-		sample.setComments(entity.getNotes());
+		sample.setComments(entity.getSampleDescription());
 		sample.setConcentration(new Measurement()
 				.value(new BigDecimal(entity.getConcentration()))
 				.units("ppm"));
@@ -85,9 +81,9 @@ public class VendorSampleService {
 				.value(new BigDecimal(entity.getVolume()))
 				.units("ml"));
 
-		sample.setColumn((entity.getPlateIndex() % 12) + 1);
-		sample.setRow(String.valueOf((entity.getPlateIndex() / 8) + 1));
-		sample.setWell(String.valueOf((entity.getPlateIndex()) + 1));
+		sample.setColumn(entity.getPlateColumn());
+		sample.setRow(entity.getPlateRow());
+		sample.setWell(entity.getWell());
 		
 		return sample;
 	}
