@@ -51,6 +51,7 @@ public class ServerInfoService {
 				.setBase("maps").GET().addPath("{mapDbId}").GET().addPath("linkagegroups").GET().build()
 				.setBase("markerpositions").GET().withSearch()
 				.setBase("references").GET().addPath("{referenceDbId}").GET().addPath("bases").withSearch()
+				.setBase("referencesets").GET().addPath("{referenceSetDbId}").GET().withSearch()
 				
 				;
 	}

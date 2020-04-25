@@ -91,31 +91,36 @@ public class ReferenceService {
 	private Reference convertFromEntity(ReferenceEntity entity) {
 		Reference ref = new Reference();
 		ref.setAdditionalInfo(entity.getAdditionalInfoMap());
-		ref.setIsDerived(entity.getIsDerived());
 		ref.setLength(entity.getLength());
 		ref.setMd5checksum(entity.getMd5checksum());
 		ref.setReferenceDbId(entity.getId());
 		ref.setReferenceName(entity.getReferenceName());
-		if (entity.getReferenceSet() != null)
+		if (entity.getReferenceSet() != null) {
 			ref.setReferenceSetDbId(entity.getReferenceSet().getId());
-		if (entity.getSourceGermplasm() != null && entity.getSourceGermplasm().getAccessionNumber() != null)
-			ref.setSourceAccessions(Arrays.asList(entity.getSourceGermplasm().getAccessionNumber()));
+			ref.setIsDerived(entity.getReferenceSet().getIsDerived());
+			if (entity.getReferenceSet().getSourceGermplasm() != null
+					&& entity.getReferenceSet().getSourceGermplasm().getAccessionNumber() != null)
+				ref.setSourceAccessions(
+						Arrays.asList(entity.getReferenceSet().getSourceGermplasm().getAccessionNumber()));
+			ref.setSourceURI(entity.getReferenceSet().getSourceURI());
+			OntologyTerm term = new OntologyTerm().term(entity.getReferenceSet().getSpeciesOntologyTerm())
+					.termURI(entity.getReferenceSet().getSpeciesOntologyTermURI());
+			ref.setSpecies(term);
+		}
 		if (entity.getSourceDivergence() != null)
 			ref.setSourceDivergence(entity.getSourceDivergence().floatValue());
-		ref.setSourceURI(entity.getSourceURI());
-		OntologyTerm term = new OntologyTerm().term(entity.getSpeciesOntologyTerm())
-				.termURI(entity.getSpeciesOntologyTermURI());
-		ref.setSpecies(term);
+
 		return ref;
 	}
 
-	public ReferenceBases getReferenceBases(String referenceDbId, Integer start, Integer end, String pageTokenStr) throws BrAPIServerException {
+	public ReferenceBases getReferenceBases(String referenceDbId, Integer start, Integer end, String pageTokenStr)
+			throws BrAPIServerException {
 		ReferenceEntity ref = getReferenceEntity(referenceDbId);
 		Integer[] inputs = verifyInput(ref, start, end, pageTokenStr);
 		start = inputs[0];
 		end = inputs[1];
 		int pageToken = inputs[2];
-		
+
 		int pageNumber = calculateDbPageNumber(start, pageToken);
 		String bases = getBases(referenceDbId, pageNumber);
 		bases = getPaginateBases(bases, start, end, pageNumber);
@@ -132,39 +137,40 @@ public class ReferenceService {
 	private String getPaginateBases(String bases, Integer start, Integer end, int pageNumber) {
 		int pageStart = start % pageSize;
 		int pageEnd = pageStart + pageSize;
-		if ((end - (pageNumber * pageSize)) < pageEnd) 
+		if ((end - (pageNumber * pageSize)) < pageEnd)
 			pageEnd = end - (pageNumber * pageSize);
-		if (bases.length() < pageEnd) 
+		if (bases.length() < pageEnd)
 			pageEnd = bases.length();
-		
+
 		return bases.substring(pageStart, pageEnd);
 	}
 
-	private Integer[] verifyInput(ReferenceEntity ref, Integer start, Integer end, String pageTokenStr) throws BrAPIServerException {
-		if(start == null)
+	private Integer[] verifyInput(ReferenceEntity ref, Integer start, Integer end, String pageTokenStr)
+			throws BrAPIServerException {
+		if (start == null)
 			start = 0;
-		if(end == null) {
-			if(ref.getLength() != null)
+		if (end == null) {
+			if (ref.getLength() != null)
 				end = ref.getLength();
 			else
 				end = 0;
 		}
-		if(ref.getLength() != null && end > ref.getLength())
+		if (ref.getLength() != null && end > ref.getLength())
 			end = ref.getLength();
-		if (!NumberUtils.isParsable(pageTokenStr)) 
+		if (!NumberUtils.isParsable(pageTokenStr))
 			pageTokenStr = "0";
-		if(start > end)
+		if (start > end)
 			throw new BrAPIServerException(HttpStatus.BAD_REQUEST, "start cannot be greater that end");
-		if(start < 0 || end < 0 || Integer.parseInt(pageTokenStr) < 0)
+		if (start < 0 || end < 0 || Integer.parseInt(pageTokenStr) < 0)
 			throw new BrAPIServerException(HttpStatus.BAD_REQUEST, "must be positive integer");
-		
-		return new Integer[] {start, end, Integer.parseInt(pageTokenStr)};
+
+		return new Integer[] { start, end, Integer.parseInt(pageTokenStr) };
 	}
 
 	private int calculateDbPageNumber(Integer start, int pageToken) {
 		int pageNumber = start / pageSize;
 		pageNumber = pageNumber + pageToken;
-		
+
 		return pageNumber;
 	}
 
