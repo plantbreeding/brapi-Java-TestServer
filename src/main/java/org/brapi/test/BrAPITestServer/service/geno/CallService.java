@@ -53,12 +53,12 @@ public class CallService {
 		List<Call> calls = page.map(e -> {
 			return convertFromEntityWithFormatting(e, request);
 		}).getContent();
-		CallsListResponseResult result = builtResult(request, calls);
+		CallsListResponseResult result = buildResult(request, calls);
 		PagingUtility.calculateMetaData(metadata, page);
 		return result;
 	}
 
-	private CallsListResponseResult builtResult(CallsSearchRequest request, List<Call> calls) {
+	private CallsListResponseResult buildResult(CallsSearchRequest request, List<Call> calls) {
 		CallsListResponseResult result = new CallsListResponseResult();
 		result.setData(calls);
 		result.setExpandHomozygotes(false);

@@ -6,11 +6,13 @@
 package io.swagger.api.geno;
 
 import io.swagger.model.Model202AcceptedSearchResponse;
-import io.swagger.model.geno.CallSetResponse1;
+import io.swagger.model.geno.VariantSingleResponse;
 import io.swagger.model.geno.CallsListResponse;
 import io.swagger.model.geno.VariantsListResponse;
 import io.swagger.model.geno.VariantsSearchRequest;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,7 +39,8 @@ public interface VariantsApi {
 			@ApiParam(value = "The ID of the `VariantSet` to be retrieved.") @Valid @RequestParam(value = "variantSetDbId", required = false) String variantSetDbId,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  Tokenized pages are for large data sets which can not be efficiently broken into indexed pages. Use the nextPageToken and prevPageToken from a prior response to construct a query and move to the next or previous page respectively. ") @Valid @RequestParam(value = "pageToken", required = false) String pageToken,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+					throws BrAPIServerException;
 
 	@ApiOperation(value = "Gets a list of `Calls` associated with a `Variant`.", nickname = "variantsVariantDbIdCallsGet", notes = "The variant calls for this particular variant. Each one represents the determination of genotype with respect to this variant. `Calls` in this array are implicitly associated with this `Variant`.  ** THIS ENDPOINT USES TOKEN BASED PAGING **", response = CallsListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Variants", })
@@ -55,19 +58,21 @@ public interface VariantsApi {
 			@ApiParam(value = "The string to use as a separator for unphased allele calls") @Valid @RequestParam(value = "sepUnphased", required = false) String sepUnphased,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  Tokenized pages are for large data sets which can not be efficiently broken into indexed pages. Use the nextPageToken and prevPageToken from a prior response to construct a query and move to the next or previous page respectively. ") @Valid @RequestParam(value = "pageToken", required = false) String pageToken,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
-	@ApiOperation(value = "Gets a `Variant` by ID.", nickname = "variantsVariantDbIdGet", notes = "`GET /variants/{id}` will return a JSON version of `Variant`.", response = CallSetResponse1.class, authorizations = {
+	@ApiOperation(value = "Gets a `Variant` by ID.", nickname = "variantsVariantDbIdGet", notes = "`GET /variants/{id}` will return a JSON version of `Variant`.", response = VariantSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Variants", })
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = CallSetResponse1.class),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = VariantSingleResponse.class),
 			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
 			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class),
 			@ApiResponse(code = 404, message = "Not Found", response = String.class) })
 	@RequestMapping(value = "/variants/{variantDbId}", produces = { "application/json" }, method = RequestMethod.GET)
-	ResponseEntity<CallSetResponse1> variantsVariantDbIdGet(
+	ResponseEntity<VariantSingleResponse> variantsVariantDbIdGet(
 			@ApiParam(value = "The ID of the `Variant` to be retrieved.", required = true) @PathVariable("variantDbId") String variantDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+					throws BrAPIServerException;
 
 	@ApiOperation(value = "Gets a list of `Variant` matching the search criteria.", nickname = "searchVariantsPost", notes = "Gets a list of `Variant` matching the search criteria.  ** THIS ENDPOINT USES TOKEN BASED PAGING **", response = VariantsListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Variants", })
@@ -80,7 +85,8 @@ public interface VariantsApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<VariantsListResponse> searchVariantsPost(
 			@ApiParam(value = "Study Search request") @Valid @RequestBody VariantsSearchRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+					throws BrAPIServerException;
 
 	@ApiOperation(value = "Gets a list of `Variant` matching the search criteria.", nickname = "searchVariantsSearchResultsDbIdGet", notes = "Gets a list of `Variant` matching the search criteria.  ** THIS ENDPOINT USES TOKEN BASED PAGING **", response = VariantsListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Variants", })
@@ -95,6 +101,7 @@ public interface VariantsApi {
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  Tokenized pages are for large data sets which can not be efficiently broken into indexed pages. Use the nextPageToken and prevPageToken from a prior response to construct a query and move to the next or previous page respectively. ") @Valid @RequestParam(value = "pageToken", required = false) String pageToken,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+					throws BrAPIServerException;
 
 }

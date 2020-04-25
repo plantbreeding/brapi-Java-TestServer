@@ -1,34 +1,35 @@
 package org.brapi.test.BrAPITestServer.controller.geno;
 
-import io.swagger.model.geno.CallSetResponse1;
-import io.swagger.model.geno.CallsListResponse;
+import io.swagger.model.Metadata;
+import io.swagger.model.geno.Variant;
+import io.swagger.model.geno.VariantSingleResponse;
 import io.swagger.model.geno.VariantsListResponse;
+import io.swagger.model.geno.VariantsListResponseResult;
+import io.swagger.model.geno.CallsListResponse;
+import io.swagger.model.geno.CallsListResponseResult;
 import io.swagger.model.geno.VariantsSearchRequest;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.annotations.*;
 import io.swagger.api.geno.VariantsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.service.geno.CallService;
+import org.brapi.test.BrAPITestServer.service.geno.VariantService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.constraints.*;
 import javax.validation.Valid;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+
 import java.util.List;
-import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
 @Controller
@@ -36,13 +37,15 @@ public class VariantsApiController extends BrAPIController implements VariantsAp
 
 	private static final Logger log = LoggerFactory.getLogger(VariantsApiController.class);
 
-	private final ObjectMapper objectMapper;
+	private final VariantService variantService;
+	private final CallService callService;
 
 	private final HttpServletRequest request;
 
-	@org.springframework.beans.factory.annotation.Autowired
-	public VariantsApiController(ObjectMapper objectMapper, HttpServletRequest request) {
-		this.objectMapper = objectMapper;
+	@Autowired
+	public VariantsApiController(VariantService variantService, CallService callService, HttpServletRequest request) {
+		this.variantService = variantService;
+		this.callService = callService;
 		this.request = request;
 	}
 
@@ -51,20 +54,14 @@ public class VariantsApiController extends BrAPIController implements VariantsAp
 			@Valid @RequestParam(value = "variantSetDbId", required = false) String variantSetDbId,
 			@Valid @RequestParam(value = "pageToken", required = false) String pageToken,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<VariantsListResponse>(objectMapper.readValue(
-						"{\n  \"result\" : {\n    \"data\" : [ {\n      \"created\" : \"2000-01-23T04:56:07.000+00:00\",\n      \"referenceBases\" : \"TAGGATTGAGCTCTATAT\",\n      \"start\" : 500,\n      \"cipos\" : [ -12000, 1000 ],\n      \"variantType\" : \"DUP\",\n      \"ciend\" : [ -1000, 0 ],\n      \"alternate_bases\" : [ \"TAGGATTGAGCTCTATAT\" ],\n      \"additionalInfo\" : {\n        \"key\" : \"additionalInfo\"\n      },\n      \"variantSetDbId\" : [ \"c8ae400b\", \"ef2c204b\" ],\n      \"filtersFailed\" : [ \"d629a669\", \"3f14f578\" ],\n      \"svlen\" : 1500,\n      \"variantDbId\" : \"628e89c5\",\n      \"variantNames\" : [ \"RefSNP_ID_1\", \"06ea312e\" ],\n      \"end\" : 518,\n      \"filtersApplied\" : true,\n      \"filtersPassed\" : true,\n      \"updated\" : \"2000-01-23T04:56:07.000+00:00\",\n      \"referenceName\" : \"chr_20\"\n    }, {\n      \"created\" : \"2000-01-23T04:56:07.000+00:00\",\n      \"referenceBases\" : \"TAGGATTGAGCTCTATAT\",\n      \"start\" : 500,\n      \"cipos\" : [ -12000, 1000 ],\n      \"variantType\" : \"DUP\",\n      \"ciend\" : [ -1000, 0 ],\n      \"alternate_bases\" : [ \"TAGGATTGAGCTCTATAT\" ],\n      \"additionalInfo\" : {\n        \"key\" : \"additionalInfo\"\n      },\n      \"variantSetDbId\" : [ \"c8ae400b\", \"ef2c204b\" ],\n      \"filtersFailed\" : [ \"d629a669\", \"3f14f578\" ],\n      \"svlen\" : 1500,\n      \"variantDbId\" : \"628e89c5\",\n      \"variantNames\" : [ \"RefSNP_ID_1\", \"06ea312e\" ],\n      \"end\" : 518,\n      \"filtersApplied\" : true,\n      \"filtersPassed\" : true,\n      \"updated\" : \"2000-01-23T04:56:07.000+00:00\",\n      \"referenceName\" : \"chr_20\"\n    } ]\n  },\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}",
-						VariantsListResponse.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<VariantsListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
-		return new ResponseEntity<VariantsListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		Metadata metadata = generateMetaDataTemplate(pageToken, pageSize);
+		List<Variant> data = variantService.findVariants(variantDbId, variantSetDbId, metadata);
+		return responseOK(new VariantsListResponse(), new VariantsListResponseResult(), data, metadata);
 	}
 
 	public ResponseEntity<CallsListResponse> variantsVariantDbIdCallsGet(
@@ -75,75 +72,47 @@ public class VariantsApiController extends BrAPIController implements VariantsAp
 			@Valid @RequestParam(value = "sepUnphased", required = false) String sepUnphased,
 			@Valid @RequestParam(value = "pageToken", required = false) String pageToken,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<CallsListResponse>(objectMapper.readValue(
-						"{\n  \"result\" : {\n    \"data\" : [ {\n      \"genotype_likelihood\" : [ 1 ],\n      \"phaseSet\" : \"6410afc5\",\n      \"callSetName\" : \"Sample_123_DNA_Run_456\",\n      \"additionalInfo\" : {\n        \"key\" : \"additionalInfo\"\n      },\n      \"callSetDbId\" : \"16466f55\",\n      \"variantDbId\" : \"538c8ecf\",\n      \"variantName\" : \"Marker A\",\n      \"genotype\" : {\n        \"values\" : [ \"AA\" ]\n      }\n    }, {\n      \"genotype_likelihood\" : [ 1 ],\n      \"phaseSet\" : \"6410afc5\",\n      \"callSetName\" : \"Sample_123_DNA_Run_456\",\n      \"additionalInfo\" : {\n        \"key\" : \"additionalInfo\"\n      },\n      \"callSetDbId\" : \"16466f55\",\n      \"variantDbId\" : \"538c8ecf\",\n      \"variantName\" : \"Marker A\",\n      \"genotype\" : {\n        \"values\" : [ \"AA\" ]\n      }\n    } ],\n    \"unknownString\" : \"-\",\n    \"expandHomozygotes\" : true,\n    \"sepPhased\" : \"~\",\n    \"sepUnphased\" : \"|\"\n  },\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}",
-						CallsListResponse.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<CallsListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
-		return new ResponseEntity<CallsListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		Metadata metadata = generateMetaDataTemplate(pageToken, pageSize);
+		CallsListResponseResult data = callService.findCalls(null, variantDbId, null, expandHomozygotes, unknownString,
+				sepPhased, sepUnphased, metadata);
+		return responseOK(new CallsListResponse(), data, metadata);
 	}
 
-	public ResponseEntity<CallSetResponse1> variantsVariantDbIdGet(
-			@PathVariable("variantDbId") String variantDbId,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<CallSetResponse1>(objectMapper.readValue(
-						"{\n  \"result\" : {\n    \"created\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"referenceBases\" : \"TAGGATTGAGCTCTATAT\",\n    \"start\" : 500,\n    \"cipos\" : [ -12000, 1000 ],\n    \"variantType\" : \"DUP\",\n    \"ciend\" : [ -1000, 0 ],\n    \"alternate_bases\" : [ \"TAGGATTGAGCTCTATAT\" ],\n    \"additionalInfo\" : {\n      \"key\" : \"additionalInfo\"\n    },\n    \"variantSetDbId\" : [ \"c8ae400b\", \"ef2c204b\" ],\n    \"filtersFailed\" : [ \"d629a669\", \"3f14f578\" ],\n    \"svlen\" : 1500,\n    \"variantDbId\" : \"628e89c5\",\n    \"variantNames\" : [ \"RefSNP_ID_1\", \"06ea312e\" ],\n    \"end\" : 518,\n    \"filtersApplied\" : true,\n    \"filtersPassed\" : true,\n    \"updated\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"referenceName\" : \"chr_20\"\n  },\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}",
-						CallSetResponse1.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<CallSetResponse1>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
+	public ResponseEntity<VariantSingleResponse> variantsVariantDbIdGet(@PathVariable("variantDbId") String variantDbId,
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
-		return new ResponseEntity<CallSetResponse1>(HttpStatus.NOT_IMPLEMENTED);
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		Variant data = variantService.getVariant(variantDbId);
+		return responseOK(new VariantSingleResponse(), data);
 	}
 
-	public ResponseEntity<VariantsListResponse> searchVariantsPost(
-			@Valid @RequestBody VariantsSearchRequest body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<VariantsListResponse>(objectMapper.readValue(
-						"{\n  \"result\" : {\n    \"data\" : [ {\n      \"created\" : \"2000-01-23T04:56:07.000+00:00\",\n      \"referenceBases\" : \"TAGGATTGAGCTCTATAT\",\n      \"start\" : 500,\n      \"cipos\" : [ -12000, 1000 ],\n      \"variantType\" : \"DUP\",\n      \"ciend\" : [ -1000, 0 ],\n      \"alternate_bases\" : [ \"TAGGATTGAGCTCTATAT\" ],\n      \"additionalInfo\" : {\n        \"key\" : \"additionalInfo\"\n      },\n      \"variantSetDbId\" : [ \"c8ae400b\", \"ef2c204b\" ],\n      \"filtersFailed\" : [ \"d629a669\", \"3f14f578\" ],\n      \"svlen\" : 1500,\n      \"variantDbId\" : \"628e89c5\",\n      \"variantNames\" : [ \"RefSNP_ID_1\", \"06ea312e\" ],\n      \"end\" : 518,\n      \"filtersApplied\" : true,\n      \"filtersPassed\" : true,\n      \"updated\" : \"2000-01-23T04:56:07.000+00:00\",\n      \"referenceName\" : \"chr_20\"\n    }, {\n      \"created\" : \"2000-01-23T04:56:07.000+00:00\",\n      \"referenceBases\" : \"TAGGATTGAGCTCTATAT\",\n      \"start\" : 500,\n      \"cipos\" : [ -12000, 1000 ],\n      \"variantType\" : \"DUP\",\n      \"ciend\" : [ -1000, 0 ],\n      \"alternate_bases\" : [ \"TAGGATTGAGCTCTATAT\" ],\n      \"additionalInfo\" : {\n        \"key\" : \"additionalInfo\"\n      },\n      \"variantSetDbId\" : [ \"c8ae400b\", \"ef2c204b\" ],\n      \"filtersFailed\" : [ \"d629a669\", \"3f14f578\" ],\n      \"svlen\" : 1500,\n      \"variantDbId\" : \"628e89c5\",\n      \"variantNames\" : [ \"RefSNP_ID_1\", \"06ea312e\" ],\n      \"end\" : 518,\n      \"filtersApplied\" : true,\n      \"filtersPassed\" : true,\n      \"updated\" : \"2000-01-23T04:56:07.000+00:00\",\n      \"referenceName\" : \"chr_20\"\n    } ]\n  },\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}",
-						VariantsListResponse.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<VariantsListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
+	public ResponseEntity<VariantsListResponse> searchVariantsPost(@Valid @RequestBody VariantsSearchRequest body,
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
-		return new ResponseEntity<VariantsListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		Metadata metadata = generateMetaDataTemplate(body.getPageToken(), body.getPageSize());
+		List<Variant> data = variantService.findVariants(body, metadata);
+		return responseOK(new VariantsListResponse(), new VariantsListResponseResult(), data, metadata);
 	}
 
 	public ResponseEntity<VariantsListResponse> searchVariantsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "pageToken", required = false) String pageToken,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<VariantsListResponse>(objectMapper.readValue(
-						"{\n  \"result\" : {\n    \"data\" : [ {\n      \"created\" : \"2000-01-23T04:56:07.000+00:00\",\n      \"referenceBases\" : \"TAGGATTGAGCTCTATAT\",\n      \"start\" : 500,\n      \"cipos\" : [ -12000, 1000 ],\n      \"variantType\" : \"DUP\",\n      \"ciend\" : [ -1000, 0 ],\n      \"alternate_bases\" : [ \"TAGGATTGAGCTCTATAT\" ],\n      \"additionalInfo\" : {\n        \"key\" : \"additionalInfo\"\n      },\n      \"variantSetDbId\" : [ \"c8ae400b\", \"ef2c204b\" ],\n      \"filtersFailed\" : [ \"d629a669\", \"3f14f578\" ],\n      \"svlen\" : 1500,\n      \"variantDbId\" : \"628e89c5\",\n      \"variantNames\" : [ \"RefSNP_ID_1\", \"06ea312e\" ],\n      \"end\" : 518,\n      \"filtersApplied\" : true,\n      \"filtersPassed\" : true,\n      \"updated\" : \"2000-01-23T04:56:07.000+00:00\",\n      \"referenceName\" : \"chr_20\"\n    }, {\n      \"created\" : \"2000-01-23T04:56:07.000+00:00\",\n      \"referenceBases\" : \"TAGGATTGAGCTCTATAT\",\n      \"start\" : 500,\n      \"cipos\" : [ -12000, 1000 ],\n      \"variantType\" : \"DUP\",\n      \"ciend\" : [ -1000, 0 ],\n      \"alternate_bases\" : [ \"TAGGATTGAGCTCTATAT\" ],\n      \"additionalInfo\" : {\n        \"key\" : \"additionalInfo\"\n      },\n      \"variantSetDbId\" : [ \"c8ae400b\", \"ef2c204b\" ],\n      \"filtersFailed\" : [ \"d629a669\", \"3f14f578\" ],\n      \"svlen\" : 1500,\n      \"variantDbId\" : \"628e89c5\",\n      \"variantNames\" : [ \"RefSNP_ID_1\", \"06ea312e\" ],\n      \"end\" : 518,\n      \"filtersApplied\" : true,\n      \"filtersPassed\" : true,\n      \"updated\" : \"2000-01-23T04:56:07.000+00:00\",\n      \"referenceName\" : \"chr_20\"\n    } ]\n  },\n  \"metadata\" : \"\",\n  \"@context\" : [ \"https://brapi.org/jsonld/context/metadata.jsonld\" ]\n}",
-						VariantsListResponse.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<VariantsListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
 		return new ResponseEntity<VariantsListResponse>(HttpStatus.NOT_IMPLEMENTED);
 	}
 

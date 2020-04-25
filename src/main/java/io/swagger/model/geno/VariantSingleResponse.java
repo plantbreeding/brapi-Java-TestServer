@@ -3,6 +3,7 @@ package io.swagger.model.geno;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Context;
 import io.swagger.model.Metadata;
 
@@ -10,12 +11,9 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
-/**
- * CallSetResponse1
- */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
-public class CallSetResponse1   {
+public class VariantSingleResponse implements BrAPIResponse<Variant>  {
   @JsonProperty("@context")
   private Context _atContext = null;
 
@@ -25,7 +23,7 @@ public class CallSetResponse1   {
   @JsonProperty("result")
   private Variant result = null;
 
-  public CallSetResponse1 _atContext(Context _atContext) {
+  public VariantSingleResponse _atContext(Context _atContext) {
     this._atContext = _atContext;
     return this;
   }
@@ -36,7 +34,7 @@ public class CallSetResponse1   {
     this._atContext = _atContext;
   }
 
-  public CallSetResponse1 metadata(Metadata metadata) {
+  public VariantSingleResponse metadata(Metadata metadata) {
     this.metadata = metadata;
     return this;
   }
@@ -57,7 +55,7 @@ public class CallSetResponse1   {
     this.metadata = metadata;
   }
 
-  public CallSetResponse1 result(Variant result) {
+  public VariantSingleResponse result(Variant result) {
     this.result = result;
     return this;
   }
@@ -87,7 +85,7 @@ public class CallSetResponse1   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CallSetResponse1 callSetResponse1 = (CallSetResponse1) o;
+    VariantSingleResponse callSetResponse1 = (VariantSingleResponse) o;
     return Objects.equals(this._atContext, callSetResponse1._atContext) &&
         Objects.equals(this.metadata, callSetResponse1.metadata) &&
         Objects.equals(this.result, callSetResponse1.result);

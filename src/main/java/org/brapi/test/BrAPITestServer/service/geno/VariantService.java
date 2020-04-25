@@ -1,0 +1,94 @@
+package org.brapi.test.BrAPITestServer.service.geno;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.geno.VariantEntity;
+import org.brapi.test.BrAPITestServer.repository.geno.VariantRepository;
+import org.brapi.test.BrAPITestServer.service.DateUtility;
+import org.brapi.test.BrAPITestServer.service.PagingUtility;
+import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
+import io.swagger.model.Metadata;
+import io.swagger.model.geno.Variant;
+import io.swagger.model.geno.VariantsSearchRequest;
+
+@Service
+public class VariantService {
+
+	private final VariantRepository variantRepository;
+
+	public VariantService(VariantRepository variantRepository) {
+		this.variantRepository = variantRepository;
+	}
+
+	public List<Variant> findVariants(String variantDbId, String variantSetDbId, Metadata metadata) {
+		VariantsSearchRequest request = new VariantsSearchRequest();
+		if (variantSetDbId != null)
+			request.addVariantSetDbIdsItem(variantSetDbId);
+		if (variantDbId != null)
+			request.addVariantDbIdsItem(variantDbId);
+
+		return findVariants(request, metadata);
+	}
+
+	public List<Variant> findVariants(VariantsSearchRequest request, Metadata metadata) {
+		Pageable pageReq = PagingUtility.getPageRequest(metadata);
+		SearchQueryBuilder<VariantEntity> searchQuery = new SearchQueryBuilder<VariantEntity>(VariantEntity.class)
+				.appendList(request.getVariantSetDbIds(), "variantSet.id")
+				.appendList(request.getVariantDbIds(), "variant.id")
+				.appendList(request.getVariantSetDbIds(), "variant.variantSet.id");
+
+		Page<VariantEntity> page = variantRepository.findAllBySearch(searchQuery, pageReq);
+		List<Variant> variants = page.map(this::convertFromEntity).getContent();
+		PagingUtility.calculateMetaData(metadata, page);
+		return variants;
+	}
+
+	public Variant getVariant(String variantDbId) throws BrAPIServerException {
+		return convertFromEntity(getVariantEntity(variantDbId));
+	}
+
+	public VariantEntity getVariantEntity(String variantDbId) throws BrAPIServerException {
+		VariantEntity variant = null;
+		Optional<VariantEntity> entityOpt = variantRepository.findById(variantDbId);
+		if (entityOpt.isPresent()) {
+			variant = entityOpt.get();
+		} else {
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + variantDbId);
+		}
+		return variant;
+	}
+
+	private Variant convertFromEntity(VariantEntity entity) {
+		Variant variant = new Variant();
+		variant.setAdditionalInfo(entity.getAdditionalInfoMap());
+		variant.setAlternateBases(entity.getAlternateBases());
+		variant.setCiend(entity.getCiend());
+		variant.setCipos(entity.getCipos());
+		variant.setCreated(DateUtility.toOffsetDateTime(entity.getCreated()));
+		variant.setEnd(entity.getEnd());
+		variant.setFiltersApplied(entity.getFiltersApplied());
+		variant.setFiltersFailed(entity.getFiltersFailed());
+		variant.setFiltersPassed(entity.getFiltersPassed());
+		variant.setReferenceBases(entity.getReferenceBases());
+		if (entity.getReferenceSet() != null)
+			variant.setReferenceName(entity.getReferenceSet().getReferenceSetName());
+		variant.setStart(entity.getStart());
+		variant.setSvlen(entity.getSvlen());
+		variant.setUpdated(DateUtility.toOffsetDateTime(entity.getUpdated()));
+		variant.setVariantDbId(entity.getId());
+		variant.setVariantNames(Arrays.asList(entity.getVariantName()));
+		variant.setVariantSetDbId(Arrays.asList(entity.getVariantSet().getId()));
+		variant.setVariantType(entity.getVariantType());
+
+		return variant;
+	}
+
+}

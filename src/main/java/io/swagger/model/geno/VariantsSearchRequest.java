@@ -35,6 +35,10 @@ public class VariantsSearchRequest extends SearchRequestParametersTokenPaging  {
   @Valid
   private List<String> variantSetDbIds = null;
 
+  @JsonProperty("variantDbIds")
+  @Valid
+  private List<String> variantDbIds = null;
+
   public VariantsSearchRequest callSetDbIds(List<String> callSetDbIds) {
     this.callSetDbIds = callSetDbIds;
     return this;
@@ -47,13 +51,6 @@ public class VariantsSearchRequest extends SearchRequestParametersTokenPaging  {
     this.callSetDbIds.add(callSetDbIdsItem);
     return this;
   }
-
-  /**
-   * Only return variant calls which belong to call sets with these IDs. If unspecified, return all variants and no variant call objects.
-   * @return callSetDbIds
-  **/
-  @ApiModelProperty(example = "[\"4639fe3e\",\"b60d900b\"]", value = "Only return variant calls which belong to call sets with these IDs. If unspecified, return all variants and no variant call objects.")
-  
     public List<String> getCallSetDbIds() {
     return callSetDbIds;
   }
@@ -131,19 +128,32 @@ public class VariantsSearchRequest extends SearchRequestParametersTokenPaging  {
     this.variantSetDbIds.add(variantSetDbIdsItem);
     return this;
   }
-
-  /**
-   * The `VariantSet` to search.
-   * @return variantSetDbIds
-  **/
-  @ApiModelProperty(example = "[\"ba63d810\",\"434d1760\"]", value = "The `VariantSet` to search.")
-  
     public List<String> getVariantSetDbIds() {
     return variantSetDbIds;
   }
 
   public void setVariantSetDbIds(List<String> variantSetDbIds) {
     this.variantSetDbIds = variantSetDbIds;
+  }
+
+  public VariantsSearchRequest variantDbIds(List<String> variantDbIds) {
+    this.variantDbIds = variantDbIds;
+    return this;
+  }
+
+  public VariantsSearchRequest addVariantDbIdsItem(String variantDbIdsItem) {
+    if (this.variantDbIds == null) {
+      this.variantDbIds = new ArrayList<String>();
+    }
+    this.variantDbIds.add(variantDbIdsItem);
+    return this;
+  }
+    public List<String> getVariantDbIds() {
+    return variantDbIds;
+  }
+
+  public void setVariantDbIds(List<String> variantDbIds) {
+    this.variantDbIds = variantDbIds;
   }
 
 
