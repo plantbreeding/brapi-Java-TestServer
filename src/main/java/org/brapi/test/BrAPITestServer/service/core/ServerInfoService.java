@@ -50,7 +50,7 @@ public class ServerInfoService {
 				.setBase("callsets").GET().addPath("{callSetDbId}").GET().addPath("calls").GET().withSearch()
 				.setBase("maps").GET().addPath("{mapDbId}").GET().addPath("linkagegroups").GET().build()
 				.setBase("markerpositions").GET().withSearch()
-				
+				.setBase("references").GET().addPath("{referenceDbId}").GET().addPath("bases").withSearch()
 				
 				;
 	}

@@ -11,6 +11,8 @@ import io.swagger.model.geno.ReferenceSingleResponse;
 import io.swagger.model.geno.ReferencesListResponse;
 import io.swagger.model.geno.ReferencesSearchRequest;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,7 +44,8 @@ public interface ReferencesApi {
 			@ApiParam(value = "The maximum length of the reference sequences to be retrieved.") @Valid @RequestParam(value = "maxLength", required = false) Integer maxLength,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Lists `Reference` bases by ID and optional range.", nickname = "referencesReferenceDbIdBasesGet", notes = "Lists `Reference` bases by ID and optional range.", response = ReferenceBasesResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "References", })
@@ -59,7 +62,8 @@ public interface ReferencesApi {
 			@ApiParam(value = "The start position (0-based) of this query. Defaults to 0. Genomic positions are non-negative integers less than reference length. Requests spanning the join of circular genomes are represented as two requests one on each side of the join (position 0).") @Valid @RequestParam(value = "start", required = false) Integer start,
 			@ApiParam(value = "The end position (0-based, exclusive) of this query. Defaults to the length of this `Reference`.") @Valid @RequestParam(value = "end", required = false) Integer end,
 			@ApiParam(value = "The continuation token, which is used to page through large result sets. To get the next page of results, set this parameter to the value of `next_page_token` from the previous response.") @Valid @RequestParam(value = "pageToken", required = false) String pageToken,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+					throws BrAPIServerException;
 
 	@ApiOperation(value = "Gets a `Reference` by ID.", nickname = "referencesReferenceDbIdGet", notes = "`GET /references/{reference_id}` will return a JSON version of `Reference`.", response = ReferenceSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "References", })
@@ -72,7 +76,9 @@ public interface ReferencesApi {
 	@RequestMapping(value = "/references/{referenceDbId}", produces = {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ReferenceSingleResponse> referencesReferenceDbIdGet(
-			@ApiParam(value = "The ID of the `Reference` to be retrieved.", required = true) @PathVariable("referenceDbId") String referenceDbId);
+			@ApiParam(value = "The ID of the `Reference` to be retrieved.", required = true) @PathVariable("referenceDbId") String referenceDbId,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+					throws BrAPIServerException;
 
 	@ApiOperation(value = "Gets a list of `Reference` matching the search criteria.", nickname = "searchReferencesPost", notes = "`POST /references/search` must accept a JSON version of `SearchReferencesRequest` as the post body and will return a JSON version of `SearchReferencesResponse`.", response = ReferencesListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "References", })
@@ -85,7 +91,8 @@ public interface ReferencesApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<ReferencesListResponse> searchReferencesPost(
 			@ApiParam(value = "References Search request") @Valid @RequestBody ReferencesSearchRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+					throws BrAPIServerException;;
 
 	@ApiOperation(value = "Gets a list of `Reference` matching the search criteria.", nickname = "searchReferencesSearchResultsDbIdGet", notes = "`POST /references/search` must accept a JSON version of `SearchReferencesRequest` as the post body and will return a JSON version of `SearchReferencesResponse`.", response = ReferencesListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "References", })
@@ -100,6 +107,7 @@ public interface ReferencesApi {
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+					throws BrAPIServerException;;
 
 }
