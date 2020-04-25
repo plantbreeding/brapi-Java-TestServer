@@ -14,6 +14,8 @@ import io.swagger.model.geno.VariantSetsListResponse;
 import io.swagger.model.geno.VariantSetsSearchRequest;
 import io.swagger.model.geno.VariantsListResponse;
 import io.swagger.annotations.*;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,7 +41,8 @@ public interface VariantsetsApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<VariantSetResponse> variantsetsExtractPost(
 			@ApiParam(value = "Study Search request") @Valid @RequestBody VariantSetsExtractRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Gets a filtered list of `VariantSets`.", nickname = "variantsetsGet", notes = "Will return a filtered list of `VariantSet`.", response = VariantSetsListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Variant Sets", })
@@ -56,7 +59,8 @@ public interface VariantsetsApi {
 			@ApiParam(value = "Filter by study name") @Valid @RequestParam(value = "studyName", required = false) String studyName,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Gets a list of `Calls` associated with a `VariantSet`.", nickname = "variantsetsVariantSetDbIdCallsGet", notes = "Gets a list of `Calls` associated with a `VariantSet`.  ** THIS ENDPOINT USES TOKEN BASED PAGING **", response = CallsListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Variant Sets", })
@@ -74,7 +78,8 @@ public interface VariantsetsApi {
 			@ApiParam(value = "The string to use as a separator for unphased allele calls") @Valid @RequestParam(value = "sepUnphased", required = false) String sepUnphased,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  Tokenized pages are for large data sets which can not be efficiently broken into indexed pages. Use the nextPageToken and prevPageToken from a prior response to construct a query and move to the next or previous page respectively. ") @Valid @RequestParam(value = "pageToken", required = false) String pageToken,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Gets a list of `CallSets` associated with a `VariantSet`.", nickname = "variantsetsVariantSetDbIdCallsetsGet", notes = "Gets a list of `CallSets` associated with a `VariantSet`.", response = CallSetsListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Variant Sets", })
@@ -90,7 +95,8 @@ public interface VariantsetsApi {
 			@ApiParam(value = "The human readable name of the `CallSet` to be retrieved.") @Valid @RequestParam(value = "callSetName", required = false) String callSetName,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Gets a `VariantSet` by ID.", nickname = "variantsetsVariantSetDbIdGet", notes = "This call will return a JSON version of a `VariantSet`.", response = VariantSetResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Variant Sets", })
@@ -103,7 +109,8 @@ public interface VariantsetsApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<VariantSetResponse> variantsetsVariantSetDbIdGet(
 			@ApiParam(value = "The ID of the `Variant` to be retrieved.", required = true) @PathVariable("variantSetDbId") String variantSetDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Gets a `Variants` for a given `VariantSet`.", nickname = "variantsetsVariantSetDbIdVariantsGet", notes = "This call will return an array of `Variants`.  ** THIS ENDPOINT USES TOKEN BASED PAGING **", response = VariantsListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Variant Sets", })
@@ -118,7 +125,8 @@ public interface VariantsetsApi {
 			@ApiParam(value = "The ID of the `Variant` to be retrieved.") @Valid @RequestParam(value = "variantDbId", required = false) String variantDbId,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  Tokenized pages are for large data sets which can not be efficiently broken into indexed pages. Use the nextPageToken and prevPageToken from a prior response to construct a query and move to the next or previous page respectively. ") @Valid @RequestParam(value = "pageToken", required = false) String pageToken,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Gets a list of `VariantSet` matching the search criteria.", nickname = "searchVariantsetsPost", notes = "Gets a list of `VariantSet` matching the search criteria.", response = VariantSetsListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Variant Sets", })
@@ -131,7 +139,8 @@ public interface VariantsetsApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<VariantSetsListResponse> searchVariantsetsPost(
 			@ApiParam(value = "Study Search request") @Valid @RequestBody VariantSetsSearchRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Gets a list of `VariantSet` matching the search criteria.", nickname = "searchVariantsetsSearchResultsDbIdGet", notes = "Gets a list of `VariantSet` matching the search criteria.", response = VariantSetsListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Variant Sets", })
@@ -146,6 +155,7 @@ public interface VariantsetsApi {
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization);
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 }

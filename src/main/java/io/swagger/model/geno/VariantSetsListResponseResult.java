@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.BrAPIResponseResult;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
@@ -16,7 +18,7 @@ import javax.validation.constraints.*;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
-public class VariantSetsListResponseResult   {
+public class VariantSetsListResponseResult implements BrAPIResponseResult<VariantSet>  {
   @JsonProperty("data")
   @Valid
   private List<VariantSet> data = new ArrayList<VariantSet>();

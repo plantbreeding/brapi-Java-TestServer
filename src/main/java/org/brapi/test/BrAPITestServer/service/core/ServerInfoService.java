@@ -54,6 +54,8 @@ public class ServerInfoService {
 				.setBase("referencesets").GET().addPath("{referenceSetDbId}").GET().withSearch()
 				.setBase("samples").GET().POST().addPath("{sampleDbId}").GET().PUT().withSearch()
 				.setBase("variants").GET().addPath("{variantDbId}").GET().addPath("calls").GET().withSearch()
+				.setBase("variantsets").GET().addPath("extract").POST().setPath("{variantSetDbId}").GET()
+				  .addPath("calls").GET().setPath("callsets").GET().setPath("variants").GET().withSearch()
 				
 				;
 	}

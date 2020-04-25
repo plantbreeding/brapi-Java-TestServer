@@ -12,7 +12,9 @@ public enum WSMIMEDataTypes {
   APPLICATION_JSON("application/json"),
     TEXT_CSV("text/csv"),
     TEXT_TSV("text/tsv"),
-    APPLICATION_FLAPJACK("application/flapjack");
+    APPLICATION_FLAPJACK("application/flapjack"),
+    APPLICATION_EXCEL("application/excel"),
+    APPLICATION_ZIP("application/zip");
 
   private String value;
 
