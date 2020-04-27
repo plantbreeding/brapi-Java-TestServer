@@ -2,10 +2,7 @@ package io.swagger.model.geno;
 
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import com.fasterxml.jackson.annotation.JsonValue;
 
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
@@ -29,38 +26,8 @@ public class VendorSpecificationService   {
   @JsonProperty("serviceName")
   private String serviceName = null;
 
-  /**
-   * The type of markers used in this services platform
-   */
-  public enum ServicePlatformMarkerTypeEnum {
-    FIXED("FIXED"),
-    
-    DISCOVERABLE("DISCOVERABLE");
-
-    private String value;
-
-    ServicePlatformMarkerTypeEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static ServicePlatformMarkerTypeEnum fromValue(String text) {
-      for (ServicePlatformMarkerTypeEnum b : ServicePlatformMarkerTypeEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
   @JsonProperty("servicePlatformMarkerType")
-  private ServicePlatformMarkerTypeEnum servicePlatformMarkerType = null;
+  private VendorServicePlatformMarkerTypeEnum servicePlatformMarkerType = null;
 
   @JsonProperty("servicePlatformName")
   private String servicePlatformName = null;
@@ -128,7 +95,7 @@ public class VendorSpecificationService   {
     this.serviceName = serviceName;
   }
 
-  public VendorSpecificationService servicePlatformMarkerType(ServicePlatformMarkerTypeEnum servicePlatformMarkerType) {
+  public VendorSpecificationService servicePlatformMarkerType(VendorServicePlatformMarkerTypeEnum servicePlatformMarkerType) {
     this.servicePlatformMarkerType = servicePlatformMarkerType;
     return this;
   }
@@ -139,11 +106,11 @@ public class VendorSpecificationService   {
   **/
   @ApiModelProperty(example = "FIXED", value = "The type of markers used in this services platform")
   
-    public ServicePlatformMarkerTypeEnum getServicePlatformMarkerType() {
+    public VendorServicePlatformMarkerTypeEnum getServicePlatformMarkerType() {
     return servicePlatformMarkerType;
   }
 
-  public void setServicePlatformMarkerType(ServicePlatformMarkerTypeEnum servicePlatformMarkerType) {
+  public void setServicePlatformMarkerType(VendorServicePlatformMarkerTypeEnum servicePlatformMarkerType) {
     this.servicePlatformMarkerType = servicePlatformMarkerType;
   }
 
