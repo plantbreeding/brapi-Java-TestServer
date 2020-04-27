@@ -33,9 +33,6 @@ public class ImageService {
 	private ObservationService observationService;
 	private ObservationUnitService observationUnitService;
 
-	@Value("${app.baseurl}")
-	private String baseUrlProperty;
-
 	public ImageService(ImageRepository imageRepository, ObservationService observationService,
 			ObservationUnitService observationUnitService) {
 		this.imageRepository = imageRepository;
