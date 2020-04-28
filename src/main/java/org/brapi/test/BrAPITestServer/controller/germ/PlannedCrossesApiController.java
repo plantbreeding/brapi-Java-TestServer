@@ -5,7 +5,6 @@ import io.swagger.model.germ.PlannedCross;
 import io.swagger.model.germ.PlannedCrossNewRequest;
 import io.swagger.model.germ.PlannedCrossesListResponse;
 import io.swagger.model.germ.PlannedCrossesListResponseResult;
-
 import io.swagger.api.germ.PlannedCrossesApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -40,6 +39,7 @@ public class PlannedCrossesApiController extends BrAPIController implements Plan
 	}
 
 	public ResponseEntity<PlannedCrossesListResponse> plannedcrossesGet(
+			@Valid @RequestParam(value = "plannedCrossDbId", required = false) String plannedCrossDbId,
 			@Valid @RequestParam(value = "crossingProjectDbId", required = false) String crossingProjectDbId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
@@ -51,7 +51,7 @@ public class PlannedCrossesApiController extends BrAPIController implements Plan
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<PlannedCross> data = crossService.findPlannedCrosses(crossingProjectDbId, externalReferenceID,
+		List<PlannedCross> data = crossService.findPlannedCrosses(plannedCrossDbId, crossingProjectDbId, externalReferenceID,
 				externalReferenceSource, metadata);
 		return responseOK(new PlannedCrossesListResponse(), new PlannedCrossesListResponseResult(), data, metadata);
 	}

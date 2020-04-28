@@ -33,6 +33,7 @@ public interface PlannedCrossesApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/plannedcrosses", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<PlannedCrossesListResponse> plannedcrossesGet(
+			@ApiParam(value = "Search for Crossing Projects with this unique id") @Valid @RequestParam(value = "plannedCrossDbId", required = false) String plannedCrossDbId,
 			@ApiParam(value = "Search for Crossing Projects with this unique id") @Valid @RequestParam(value = "crossingProjectDbId", required = false) String crossingProjectDbId,
 			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,

@@ -41,6 +41,7 @@ public class LocationsApiController extends BrAPIController implements Locations
 	}
 
 	public ResponseEntity<LocationListResponse> locationsGet(
+			@Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
 			@Valid @RequestParam(value = "locationType", required = false) String locationType,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
@@ -51,7 +52,7 @@ public class LocationsApiController extends BrAPIController implements Locations
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<Location> data = locationService.findLocations(locationType, externalReferenceID, externalReferenceSource, metadata);
+		List<Location> data = locationService.findLocations(locationDbId, locationType, externalReferenceID, externalReferenceSource, metadata);
 		return responseOK(new LocationListResponse(), new LocationListResponseResult(), data, metadata);
 	}
 

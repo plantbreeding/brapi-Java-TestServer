@@ -57,13 +57,12 @@ public class ObservationService {
 		this.observationVariableService = observationVariableService;
 	}
 
-	public List<Observation> findObservations(@Valid String observationUnitDbId, @Valid String germplasmDbId,
-			@Valid String observationVariableDbId, @Valid String studyDbId, @Valid String locationDbId,
-			@Valid String trialDbId, @Valid String programDbId, @Valid String seasonDbId,
-			@Valid String observationUnitLevelName, @Valid String observationUnitLevelOrder,
-			@Valid String observationUnitLevelCode, @Valid OffsetDateTime observationTimeStampRangeStart,
-			@Valid OffsetDateTime observationTimeStampRangeEnd, @Valid String externalReferenceID,
-			@Valid String externalReferenceSource, Metadata metadata) {
+	public List<Observation> findObservations(String observationDbId, String observationUnitDbId, String germplasmDbId,
+			String observationVariableDbId, String studyDbId, String locationDbId, String trialDbId, String programDbId,
+			String seasonDbId, String observationUnitLevelName, String observationUnitLevelOrder,
+			String observationUnitLevelCode, OffsetDateTime observationTimeStampRangeStart,
+			OffsetDateTime observationTimeStampRangeEnd, String externalReferenceID, String externalReferenceSource,
+			Metadata metadata) {
 		ObservationSearchRequest request = new ObservationSearchRequest();
 		if (germplasmDbId != null)
 			request.addGermplasmDbIdsItem(germplasmDbId);
@@ -77,6 +76,8 @@ public class ObservationService {
 			request.addProgramDbIdsItem(programDbId);
 		if (seasonDbId != null)
 			request.addSeasonDbIdsItem(seasonDbId);
+		if (observationDbId != null)
+			request.addObservationDbIdsItem(observationDbId);
 		if (observationUnitDbId != null)
 			request.addObservationUnitDbIdsItem(observationUnitDbId);
 		if (observationVariableDbId != null)
@@ -103,12 +104,12 @@ public class ObservationService {
 		return findObservations(request, metadata);
 	}
 
-	public ObservationTable findObservationsTable(WSMIMEDataTypes accept, @Valid String observationUnitDbId,
-			@Valid String germplasmDbId, @Valid String observationVariableDbId, @Valid String studyDbId,
-			@Valid String locationDbId, @Valid String trialDbId, @Valid String programDbId, @Valid String seasonDbId,
-			@Valid OffsetDateTime observationTimeStampRangeStart, @Valid OffsetDateTime observationTimeStampRangeEnd) {
-		List<Observation> observations = findObservations(observationUnitDbId, germplasmDbId, observationVariableDbId,
-				studyDbId, locationDbId, trialDbId, programDbId, seasonDbId, null, null, null,
+	public ObservationTable findObservationsTable(WSMIMEDataTypes accept, String observationUnitDbId,
+			String germplasmDbId, String observationVariableDbId, String studyDbId, String locationDbId,
+			String trialDbId, String programDbId, String seasonDbId, OffsetDateTime observationTimeStampRangeStart,
+			OffsetDateTime observationTimeStampRangeEnd) {
+		List<Observation> observations = findObservations(null, observationUnitDbId, germplasmDbId,
+				observationVariableDbId, studyDbId, locationDbId, trialDbId, programDbId, seasonDbId, null, null, null,
 				observationTimeStampRangeStart, observationTimeStampRangeEnd, null, null, null);
 		ObservationVariableSearchRequest request = new ObservationVariableSearchRequest();
 		request.setObservationVariableDbIds(

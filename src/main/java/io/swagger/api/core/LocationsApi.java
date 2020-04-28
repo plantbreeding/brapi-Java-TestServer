@@ -36,6 +36,7 @@ public interface LocationsApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/locations", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<LocationListResponse> locationsGet(
+			@ApiParam(value = "Filter by location type specified.") @Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
 			@ApiParam(value = "Filter by location type specified.") @Valid @RequestParam(value = "locationType", required = false) String locationType,
 			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,

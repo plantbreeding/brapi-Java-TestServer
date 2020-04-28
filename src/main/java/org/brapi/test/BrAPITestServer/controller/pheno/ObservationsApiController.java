@@ -49,6 +49,7 @@ public class ObservationsApiController extends BrAPIController implements Observ
 	}
 
 	public ResponseEntity<ObservationListResponse> observationsGet(
+			@Valid @RequestParam(value = "observationDbId", required = false) String observationDbId,
 			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
 			@Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
@@ -71,7 +72,7 @@ public class ObservationsApiController extends BrAPIController implements Observ
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<Observation> data = observationService.findObservations(observationUnitDbId, germplasmDbId,
+		List<Observation> data = observationService.findObservations(observationDbId, observationUnitDbId, germplasmDbId,
 				observationVariableDbId, studyDbId, locationDbId, trialDbId, programDbId, seasonDbId,
 				observationUnitLevelName, observationUnitLevelOrder, observationUnitLevelCode,
 				observationTimeStampRangeStart, observationTimeStampRangeEnd, externalReferenceID,

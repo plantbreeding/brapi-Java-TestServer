@@ -39,6 +39,7 @@ public interface ObservationunitsApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/observationunits", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ObservationUnitListResponse> observationunitsGet(
+			@ApiParam(value = "The unique ID of an Observation Unit") @Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
 			@ApiParam(value = "The unique ID of a germplasm (accession) to filter on") @Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
 			@ApiParam(value = "The unique ID of a studies to filter on") @Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
 			@ApiParam(value = "The unique ID of a location where these observations were collected") @Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,

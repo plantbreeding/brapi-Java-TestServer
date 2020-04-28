@@ -29,6 +29,7 @@ public interface EventsApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/events", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<EventsResponse> eventsGet(
+			@ApiParam(value = "Filter based on study unique identifier in which the events occured") @Valid @RequestParam(value = "eventDbId", required = false) String eventDbId,
 			@ApiParam(value = "Filter based on study unique identifier in which the events occured") @Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
 			@ApiParam(value = "Filter based on an ObservationUnit unique identifier in which the events occured") @Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
 			@ApiParam(value = "Filter based on an Event Type") @Valid @RequestParam(value = "eventType", required = false) String eventType,

@@ -37,7 +37,8 @@ import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:22.556Z[GMT]")
 @Controller
-public class ObservationunitsApiController extends BrAPIController implements ObservationunitsApi, ObservationlevelsApi {
+public class ObservationunitsApiController extends BrAPIController
+		implements ObservationunitsApi, ObservationlevelsApi {
 
 	private static final Logger log = LoggerFactory.getLogger(ObservationunitsApiController.class);
 
@@ -52,6 +53,7 @@ public class ObservationunitsApiController extends BrAPIController implements Ob
 	}
 
 	public ResponseEntity<ObservationUnitListResponse> observationunitsGet(
+			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
 			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
 			@Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
@@ -72,9 +74,10 @@ public class ObservationunitsApiController extends BrAPIController implements Ob
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<ObservationUnit> data = observationUnitService.findObservationUnits(germplasmDbId, studyDbId, locationDbId,
-				trialDbId, programDbId, seasonDbId, observationUnitLevelName, observationUnitLevelOrder,
-				observationUnitLevelCode, includeObservations, externalReferenceID, externalReferenceSource, metadata);
+		List<ObservationUnit> data = observationUnitService.findObservationUnits(observationUnitDbId, germplasmDbId,
+				studyDbId, locationDbId, trialDbId, programDbId, seasonDbId, observationUnitLevelName,
+				observationUnitLevelOrder, observationUnitLevelCode, includeObservations, externalReferenceID,
+				externalReferenceSource, metadata);
 		return responseOK(new ObservationUnitListResponse(), new ObservationUnitListResponseResult(), data, metadata);
 	}
 
@@ -168,17 +171,20 @@ public class ObservationunitsApiController extends BrAPIController implements Ob
 		validateAcceptHeader(request);
 		return new ResponseEntity<ObservationUnitListResponse>(HttpStatus.NOT_IMPLEMENTED);
 	}
+
 	public ResponseEntity<ObservationLevelListResponse> observationlevelsGet(
 			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
 			@Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
 			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<ObservationUnitHierarchyLevel> data = observationUnitService.findObservationLevels(studyDbId, trialDbId, programDbId, metadata);
+		List<ObservationUnitHierarchyLevel> data = observationUnitService.findObservationLevels(studyDbId, trialDbId,
+				programDbId, metadata);
 		return responseOK(new ObservationLevelListResponse(), new ObservationLevelListResponseResult(), data, metadata);
 	}
 

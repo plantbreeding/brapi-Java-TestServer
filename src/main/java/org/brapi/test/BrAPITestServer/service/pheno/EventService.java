@@ -3,8 +3,6 @@ package org.brapi.test.BrAPITestServer.service.pheno;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.validation.Valid;
-
 import org.brapi.test.BrAPITestServer.model.entity.pheno.EventEntity;
 import org.brapi.test.BrAPITestServer.repository.pheno.EventRepository;
 import org.brapi.test.BrAPITestServer.service.DateUtility;
@@ -28,20 +26,21 @@ public class EventService {
 		this.eventRepository = eventRepository;
 	}
 
-	public List<Event> findEvents(@Valid String studyDbId, @Valid String observationUnitDbId, @Valid String eventType,
-			@Valid OffsetDateTime dateRangeStart, @Valid OffsetDateTime dateRangeEnd, Metadata metadata) {
+	public List<Event> findEvents(String eventDbId, String studyDbId, String observationUnitDbId, String eventType,
+			OffsetDateTime dateRangeStart, OffsetDateTime dateRangeEnd, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<EventEntity> searchQuery = new SearchQueryBuilder<EventEntity>(EventEntity.class);
 
+		searchQuery = searchQuery.appendSingle(eventDbId, "id");
 		searchQuery = searchQuery.appendSingle(studyDbId, "study.id");
-		if (observationUnitDbId != null) {
-			searchQuery = searchQuery.join("observationUnits", "observationUnit").appendSingle(observationUnitDbId,
-					"*observationUnit.id");
-		}
 		searchQuery = searchQuery.appendSingle(eventType, "eventType");
+		if (observationUnitDbId != null) {
+			searchQuery = searchQuery.join("observationUnits", "observationUnit")
+					.appendSingle(observationUnitDbId,	"*observationUnit.id");
+		}
 		if (dateRangeStart != null || dateRangeEnd != null) {
-			searchQuery = searchQuery.join("dates", "dateOccured").appendDateRange(dateRangeStart, dateRangeEnd,
-					"*dateOccured");
+			searchQuery = searchQuery.join("dates", "dateOccured")
+					.appendDateRange(dateRangeStart, dateRangeEnd,	"*dateOccured");
 		}
 
 		Page<EventEntity> page = eventRepository.findAllBySearch(searchQuery, pageReq);

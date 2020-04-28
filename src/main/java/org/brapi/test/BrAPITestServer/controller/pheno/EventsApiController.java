@@ -4,7 +4,6 @@ import io.swagger.model.Metadata;
 import io.swagger.model.pheno.Event;
 import io.swagger.model.pheno.EventsResponse;
 import io.swagger.model.pheno.EventsResponseResult;
-
 import io.swagger.api.pheno.EventsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -39,6 +38,7 @@ public class EventsApiController extends BrAPIController implements EventsApi {
 	}
 
 	public ResponseEntity<EventsResponse> eventsGet(
+			@Valid @RequestParam(value = "eventDbId", required = false) String eventDbId,
 			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
 			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
 			@Valid @RequestParam(value = "eventType", required = false) String eventType,
@@ -52,7 +52,7 @@ public class EventsApiController extends BrAPIController implements EventsApi {
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<Event> data = eventService.findEvents(studyDbId, observationUnitDbId, eventType,
+		List<Event> data = eventService.findEvents(eventDbId, studyDbId, observationUnitDbId, eventType,
 				DateUtility.toOffsetDateTime(dateRangeStart), DateUtility.toOffsetDateTime(dateRangeEnd), metadata);
 		return responseOK(new EventsResponse(), new EventsResponseResult(), data, metadata);
 	}

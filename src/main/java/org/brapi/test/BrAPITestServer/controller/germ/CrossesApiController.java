@@ -39,6 +39,7 @@ public class CrossesApiController extends BrAPIController implements CrossesApi 
 	}
 
 	public ResponseEntity<CrossesListResponse> crossesGet(
+			@Valid @RequestParam(value = "crossDbId", required = false) String crossDbId,
 			@Valid @RequestParam(value = "crossingProjectDbId", required = false) String crossingProjectDbId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
@@ -49,7 +50,7 @@ public class CrossesApiController extends BrAPIController implements CrossesApi 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<Cross> data = crossService.findCrosses(crossingProjectDbId, externalReferenceID, externalReferenceSource, metadata);
+		List<Cross> data = crossService.findCrosses(crossDbId, crossingProjectDbId, externalReferenceID, externalReferenceSource, metadata);
 		return responseOK(new CrossesListResponse(), new CrossesListResponseResult(), data, metadata);
 	}
 

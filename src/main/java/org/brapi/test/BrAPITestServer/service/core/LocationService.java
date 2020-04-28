@@ -33,18 +33,17 @@ public class LocationService {
 		this.locationRepository = locationRepository;
 	}
 
-	public List<Location> findLocations(@Valid String locationType, @Valid String externalReferenceID,
-			@Valid String externalReferenceSource, Metadata metadata) {
+	public List<Location> findLocations(String locationDbId, String locationType, String externalReferenceID,
+			String externalReferenceSource, Metadata metadata) {
 		LocationSearchRequest request = new LocationSearchRequest();
-		if (locationType != null) {
+		if (locationType != null) 
 			request.addLocationTypesItem(locationType);
-		}
-		if (externalReferenceID != null) {
+		if (locationDbId != null) 
+			request.addLocationDbIdsItem(locationDbId);
+		if (externalReferenceID != null) 
 			request.addExternalReferenceIDsItem(externalReferenceID);
-		}
-		if (externalReferenceSource != null) {
+		if (externalReferenceSource != null) 
 			request.addExternalReferenceSourcesItem(externalReferenceSource);
-		}
 		return findLocations(request, metadata);
 	}
 

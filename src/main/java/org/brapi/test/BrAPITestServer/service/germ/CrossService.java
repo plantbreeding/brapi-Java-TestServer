@@ -49,25 +49,27 @@ public class CrossService {
 		this.observationUnitService = observationUnitService;
 	}
 
-	public List<Cross> findCrosses(@Valid String crossingProjectDbId, @Valid String externalReferenceID,
-			@Valid String externalReferenceSource, Metadata metadata) {
-		List<Cross> crosses = findCrosses(crossingProjectDbId, externalReferenceID, externalReferenceSource, false,
+	public List<Cross> findCrosses(String crossDbId, String crossingProjectDbId, String externalReferenceID,
+			String externalReferenceSource, Metadata metadata) {
+		List<Cross> crosses = findCrosses(crossDbId, crossingProjectDbId, externalReferenceID, externalReferenceSource, false,
 				metadata).map(this::convertToCross).getContent();
 		return crosses;
 	}
 
-	public List<PlannedCross> findPlannedCrosses(@Valid String crossingProjectDbId, @Valid String externalReferenceID,
-			@Valid String externalReferenceSource, Metadata metadata) {
-		List<PlannedCross> crosses = findCrosses(crossingProjectDbId, externalReferenceID, externalReferenceSource,
+	public List<PlannedCross> findPlannedCrosses(String crossDbId, String crossingProjectDbId, String externalReferenceID,
+			String externalReferenceSource, Metadata metadata) {
+		List<PlannedCross> crosses = findCrosses(crossDbId, crossingProjectDbId, externalReferenceID, externalReferenceSource,
 				true, metadata).map(this::convertToPlanned).getContent();
 		return crosses;
 	}
 
-	public Page<CrossEntity> findCrosses(@Valid String crossingProjectDbId, @Valid String externalReferenceID,
-			@Valid String externalReferenceSource, Boolean plannedCross, Metadata metadata) {
+	public Page<CrossEntity> findCrosses(String crossDbId, String crossingProjectDbId, String externalReferenceID,
+			String externalReferenceSource, Boolean plannedCross, Metadata metadata) {
 
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<CrossEntity> searchQuery = new SearchQueryBuilder<CrossEntity>(CrossEntity.class);
+		if (crossDbId != null)
+			searchQuery = searchQuery.appendSingle(crossDbId, "id");
 		if (crossingProjectDbId != null)
 			searchQuery = searchQuery.appendSingle(crossingProjectDbId, "crossingProject.id");
 		if (externalReferenceID != null && externalReferenceSource != null)

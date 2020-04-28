@@ -33,6 +33,7 @@ public interface CrossesApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/crosses", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<CrossesListResponse> crossesGet(
+			@ApiParam(value = "Search for Crossing Projects with this unique id") @Valid @RequestParam(value = "crossDbId", required = false) String crossDbId,
 			@ApiParam(value = "Search for Crossing Projects with this unique id") @Valid @RequestParam(value = "crossingProjectDbId", required = false) String crossingProjectDbId,
 			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,

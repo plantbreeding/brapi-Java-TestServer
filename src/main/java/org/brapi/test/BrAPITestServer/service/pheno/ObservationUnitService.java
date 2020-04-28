@@ -70,12 +70,14 @@ public class ObservationUnitService {
 		this.observationVariableService = observationVariableService;
 	}
 
-	public List<ObservationUnit> findObservationUnits(@Valid String germplasmDbId, @Valid String studyDbId,
-			@Valid String locationDbId, @Valid String trialDbId, @Valid String programDbId, @Valid String seasonDbId,
-			@Valid String observationUnitLevelName, @Valid String observationUnitLevelOrder,
-			@Valid String observationUnitLevelCode, @Valid Boolean includeObservations,
-			@Valid String externalReferenceID, @Valid String externalReferenceSource, Metadata metadata) {
+	public List<ObservationUnit> findObservationUnits(String observationUnitDbId, String germplasmDbId,
+			String studyDbId, String locationDbId, String trialDbId, String programDbId, String seasonDbId,
+			String observationUnitLevelName, String observationUnitLevelOrder, String observationUnitLevelCode,
+			Boolean includeObservations, String externalReferenceID, String externalReferenceSource,
+			Metadata metadata) {
 		ObservationUnitSearchRequest request = new ObservationUnitSearchRequest();
+		if (observationUnitDbId != null)
+			request.addObservationUnitDbIdsItem(observationUnitDbId);
 		if (germplasmDbId != null)
 			request.addGermplasmDbIdsItem(germplasmDbId);
 		if (studyDbId != null)
@@ -112,8 +114,8 @@ public class ObservationUnitService {
 			@Valid String germplasmDbId, @Valid String observationVariableDbId, @Valid String studyDbId,
 			@Valid String locationDbId, @Valid String trialDbId, @Valid String programDbId, @Valid String seasonDbId,
 			@Valid String observationLevel) {
-		List<ObservationUnit> observationUnits = findObservationUnits(germplasmDbId, studyDbId, locationDbId, trialDbId,
-				programDbId, seasonDbId, null, null, null, true, null, null, null);
+		List<ObservationUnit> observationUnits = findObservationUnits(null, germplasmDbId, studyDbId, locationDbId,
+				trialDbId, programDbId, seasonDbId, null, null, null, true, null, null, null);
 		ObservationVariableSearchRequest request = new ObservationVariableSearchRequest();
 		request.setObservationUnitDbIds(
 				observationUnits.stream().map(ou -> ou.getObservationUnitDbId()).collect(Collectors.toList()));
@@ -238,21 +240,19 @@ public class ObservationUnitService {
 		return convertFromEntity(savedEntity);
 	}
 
-	public List<ObservationUnitHierarchyLevel> findObservationLevels(@Valid String studyDbId, @Valid String trialDbId,
-			@Valid String programDbId, Metadata metadata) {
-		List<ObservationUnit> units = findObservationUnits(null, studyDbId, null, trialDbId, programDbId,
-				null, null, null, null, false, null, null, new Metadata().pagination(new IndexPagination()));
+	public List<ObservationUnitHierarchyLevel> findObservationLevels(String studyDbId, String trialDbId,
+			String programDbId, Metadata metadata) {
+		List<ObservationUnit> units = findObservationUnits(null, null, studyDbId, null, trialDbId, programDbId, null,
+				null, null, null, false, null, null, new Metadata().pagination(new IndexPagination()));
 		List<ObservationUnitHierarchyLevel> levels = units.stream()
 				.filter(unit -> unit.getObservationUnitPosition() != null)
 				.filter(unit -> unit.getObservationUnitPosition().getObservationLevelRelationships() != null)
-				.filter(unit -> unit.getObservationUnitPosition().getObservationLevel() != null)
-				.map(unit -> {
-					List<ObservationUnitLevelRelationship> list = unit.getObservationUnitPosition().getObservationLevelRelationships();
+				.filter(unit -> unit.getObservationUnitPosition().getObservationLevel() != null).map(unit -> {
+					List<ObservationUnitLevelRelationship> list = unit.getObservationUnitPosition()
+							.getObservationLevelRelationships();
 					list.add(unit.getObservationUnitPosition().getObservationLevel());
 					return list;
-				})
-				.flatMap(list -> list.stream())
-				.map(level -> level.getLevelName()).distinct().sorted()
+				}).flatMap(list -> list.stream()).map(level -> level.getLevelName()).distinct().sorted()
 				.map(levelName -> {
 					ObservationUnitHierarchyLevel level = new ObservationUnitHierarchyLevel();
 					level.setLevelName(levelName);
