@@ -9,7 +9,6 @@ import io.swagger.model.Metadata;
 
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * CallsResponse
@@ -47,7 +46,7 @@ public class ServerInfoResponse implements BrAPIResponse<ServerInfo>  {
    * @return metadata
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public Metadata getMetadata() {
@@ -68,7 +67,7 @@ public class ServerInfoResponse implements BrAPIResponse<ServerInfo>  {
    * @return result
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public ServerInfo getResult() {

@@ -12,7 +12,7 @@ import io.swagger.model.Metadata;
 import io.swagger.model.pheno.ObservationUnit;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * ObservationUnitSingleResponse
@@ -50,7 +50,7 @@ public class ObservationUnitSingleResponse implements BrAPIResponse<ObservationU
    * @return metadata
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public Metadata getMetadata() {
@@ -71,7 +71,7 @@ public class ObservationUnitSingleResponse implements BrAPIResponse<ObservationU
    * @return result
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public ObservationUnit getResult() {

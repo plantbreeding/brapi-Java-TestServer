@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
+
 
 /**
  * Scale
@@ -28,7 +28,7 @@ public class Scale extends ScaleBaseClass  {
    * @return scaleDbId
   **/
   @ApiModelProperty(example = "af730171", required = true, value = "Unique identifier of the scale. If left blank, the upload system will automatically generate a scale ID.")
-      @NotNull
+      
 
     public String getScaleDbId() {
     return scaleDbId;

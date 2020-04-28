@@ -12,7 +12,7 @@ import io.swagger.model.Metadata;
 import io.swagger.model.germ.PlannedCrossesListResponseResult;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * PlannedCrossesListResponse
@@ -50,7 +50,7 @@ public class PlannedCrossesListResponse implements BrAPIResponse<PlannedCrossesL
    * @return metadata
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public Metadata getMetadata() {
@@ -71,7 +71,7 @@ public class PlannedCrossesListResponse implements BrAPIResponse<PlannedCrossesL
    * @return result
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public PlannedCrossesListResponseResult getResult() {

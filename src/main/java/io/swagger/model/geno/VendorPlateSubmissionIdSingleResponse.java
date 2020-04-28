@@ -11,7 +11,7 @@ import io.swagger.model.Metadata;
 
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * VendorPlateSubmissionIdSingleResponse
@@ -49,7 +49,7 @@ public class VendorPlateSubmissionIdSingleResponse implements BrAPIResponse<Vend
    * @return metadata
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public Metadata getMetadata() {
@@ -70,7 +70,7 @@ public class VendorPlateSubmissionIdSingleResponse implements BrAPIResponse<Vend
    * @return result
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public VendorPlateSubmissionId getResult() {

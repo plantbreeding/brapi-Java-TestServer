@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * Request object structure to submit plate data to a vendor
@@ -77,7 +77,7 @@ public class VendorPlateSubmissionRequest   {
    * @return clientId
   **/
   @ApiModelProperty(example = "b8aac350", required = true, value = "A unique, alpha-numeric ID which identifies the client to the vendor. Used to connect the order to the contract, billing, and contact info.")
-      @NotNull
+      
 
     public String getClientId() {
     return clientId;
@@ -97,7 +97,7 @@ public class VendorPlateSubmissionRequest   {
    * @return numberOfSamples
   **/
   @ApiModelProperty(example = "180", required = true, value = "The total number of samples contained in this request. Used for billing and basic validation of the request.")
-      @NotNull
+      
 
     public Integer getNumberOfSamples() {
     return numberOfSamples;
@@ -122,7 +122,7 @@ public class VendorPlateSubmissionRequest   {
    * @return plates
   **/
   @ApiModelProperty(required = true, value = "Array of new plates to be submitted to a vendor")
-      @NotNull
+      
     @Valid
     public List<VendorPlateSubmissionRequestPlates> getPlates() {
     return plates;
@@ -142,7 +142,7 @@ public class VendorPlateSubmissionRequest   {
    * @return sampleType
   **/
   @ApiModelProperty(example = "Tissue", required = true, value = "The type of Samples being submitted")
-      @NotNull
+      
 
     public SampleTypeEnum getSampleType() {
     return sampleType;

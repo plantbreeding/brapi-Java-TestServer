@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
+
 
 /**
  * ShipmentForm
@@ -71,7 +71,7 @@ public class ShipmentForm   {
    * @return fileURL
   **/
   @ApiModelProperty(example = "https://vendor.org/forms/manifest.pdf", required = true, value = "The URL to download this form")
-      @NotNull
+      
 
     public String getFileURL() {
     return fileURL;

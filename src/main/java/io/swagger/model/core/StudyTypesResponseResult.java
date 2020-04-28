@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * StudyTypesResponseResult
@@ -38,7 +37,7 @@ public class StudyTypesResponseResult implements BrAPIResponseResult<String>  {
    * @return data
   **/
   @ApiModelProperty(example = "[\"Crossing Nursery\",\"Yield study\"]", required = true, value = "")
-      @NotNull
+      
 
     public List<String> getData() {
     return data;

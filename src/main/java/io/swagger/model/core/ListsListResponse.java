@@ -9,7 +9,6 @@ import io.swagger.model.Metadata;
 
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * ListsListResponse
@@ -46,7 +45,7 @@ public class ListsListResponse implements BrAPIResponse<ListsListResponseResult>
 	 * @return metadata
 	 **/
 	@ApiModelProperty(required = true, value = "")
-	@NotNull
+	
 
 	@Valid
 	public Metadata getMetadata() {
@@ -68,7 +67,7 @@ public class ListsListResponse implements BrAPIResponse<ListsListResponseResult>
 	 * @return result
 	 **/
 	@ApiModelProperty(required = true, value = "")
-	@NotNull
+	
 
 	@Valid
 	public ListsListResponseResult getResult() {

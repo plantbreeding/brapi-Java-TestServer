@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
+
 
 /**
  * BreedingMethod
@@ -55,7 +55,7 @@ public class BreedingMethod   {
    * @return breedingMethodDbId
   **/
   @ApiModelProperty(example = "ffcce7ef", required = true, value = "the unique identifier for this breeding method")
-      @NotNull
+      
 
     public String getBreedingMethodDbId() {
     return breedingMethodDbId;

@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * Ontology
@@ -177,7 +177,7 @@ public class Ontology   {
    * @return ontologyDbId
   **/
   @ApiModelProperty(example = "18e186cd", required = true, value = "Ontology database unique identifier")
-      @NotNull
+      
 
     public String getOntologyDbId() {
     return ontologyDbId;
@@ -197,7 +197,7 @@ public class Ontology   {
    * @return ontologyName
   **/
   @ApiModelProperty(example = "The Official Ontology", required = true, value = "Ontology name")
-      @NotNull
+      
 
     public String getOntologyName() {
     return ontologyName;

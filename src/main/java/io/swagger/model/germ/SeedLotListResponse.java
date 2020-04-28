@@ -12,7 +12,7 @@ import io.swagger.model.Metadata;
 import io.swagger.model.germ.SeedLotListResponseResult;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * SeedLotListResponse
@@ -50,7 +50,7 @@ public class SeedLotListResponse implements BrAPIResponse<SeedLotListResponseRes
    * @return metadata
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public Metadata getMetadata() {
@@ -71,7 +71,7 @@ public class SeedLotListResponse implements BrAPIResponse<SeedLotListResponseRes
    * @return result
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public SeedLotListResponseResult getResult() {

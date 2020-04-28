@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * LinkageGroupListResponseResult
@@ -38,7 +38,7 @@ public class LinkageGroupListResponseResult implements BrAPIResponseResult<Linka
    * @return data
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
     @Valid
     public List<LinkageGroup> getData() {
     return data;

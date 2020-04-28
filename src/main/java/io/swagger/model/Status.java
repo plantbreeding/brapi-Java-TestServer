@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
 
 /**
  * An array of status messages to convey technical logging information from the server to the client.
@@ -69,7 +68,7 @@ public class Status   {
    * @return message
   **/
   @ApiModelProperty(example = "Request accepted, response successful", required = true, value = "A short message concerning the status of this request/response")
-      @NotNull
+      
 
     public String getMessage() {
     return message;
@@ -89,7 +88,7 @@ public class Status   {
    * @return messageType
   **/
   @ApiModelProperty(example = "INFO", required = true, value = "The logging level for the attached message")
-      @NotNull
+      
 
     public MessageTypeEnum getMessageType() {
     return messageType;

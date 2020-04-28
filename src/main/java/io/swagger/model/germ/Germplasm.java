@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.germ.GermplasmNewRequest;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
+
 
 /**
  * Germplasm
@@ -32,7 +32,7 @@ public class Germplasm extends GermplasmNewRequest {
 	 * @return germplasmDbId
 	 **/
 	@ApiModelProperty(example = "d4076594", required = true, value = "The ID which uniquely identifies a germplasm within the given database server  MIAPPE V1.1 (DM-41) Biological material ID - Code used to identify the biological material in the data file. Should be unique within the Investigation. Can correspond to experimental plant ID, seed lot ID, etc. This material identification is different from a BiosampleID which corresponds to Observation Unit or Samples sections below.")
-	@NotNull
+	
 
 	public String getGermplasmDbId() {
 		return germplasmDbId;

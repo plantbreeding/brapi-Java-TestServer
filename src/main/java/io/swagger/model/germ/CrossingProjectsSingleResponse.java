@@ -13,7 +13,7 @@ import io.swagger.model.germ.CrossingProject;
 
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * CrossingProjectListResponse
@@ -51,7 +51,7 @@ public class CrossingProjectsSingleResponse implements BrAPIResponse<CrossingPro
    * @return metadata
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public Metadata getMetadata() {
@@ -72,7 +72,7 @@ public class CrossingProjectsSingleResponse implements BrAPIResponse<CrossingPro
    * @return result
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public CrossingProject getResult() {

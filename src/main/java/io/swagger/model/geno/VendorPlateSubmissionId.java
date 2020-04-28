@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
+
 
 /**
  * Response to an order request
@@ -28,7 +28,7 @@ public class VendorPlateSubmissionId   {
    * @return submissionId
   **/
   @ApiModelProperty(example = "f8f409e0", required = true, value = "A unique, alpha-numeric ID which identifies a set of plates which have been successfully submitted.")
-      @NotNull
+      
 
     public String getSubmissionId() {
     return submissionId;

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
 
 /**
  * A dataFile contains a URL and the relevant file metadata to represent a file
@@ -138,7 +137,7 @@ public class DataFile   {
    * @return fileURL
   **/
   @ApiModelProperty(example = "https://wiki.brapi.org/examples/datafile.xlsx", required = true, value = "The absolute URL where the file is located")
-      @NotNull
+      
 
     public String getFileURL() {
     return fileURL;

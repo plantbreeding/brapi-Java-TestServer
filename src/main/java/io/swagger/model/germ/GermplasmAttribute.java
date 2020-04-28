@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.germ.GermplasmAttributeNewRequest;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
+
 
 /**
  * GermplasmAttribute
@@ -28,7 +28,7 @@ public class GermplasmAttribute extends GermplasmAttributeNewRequest  {
    * @return attributeDbId
   **/
   @ApiModelProperty(example = "2f08b902", required = true, value = "The ID which uniquely identifies this attribute within the given database server")
-      @NotNull
+      
 
     public String getAttributeDbId() {
     return attributeDbId;

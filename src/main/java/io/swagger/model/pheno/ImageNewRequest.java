@@ -15,7 +15,8 @@ import java.util.Map;
 import java.time.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Pattern;
+
 
 /**
  * ImageNewRequest
@@ -351,7 +352,8 @@ public class ImageNewRequest   {
   **/
   @ApiModelProperty(example = "image/jpeg", value = "The file type of the image. Examples 'image/jpeg', 'image/png', 'image/svg', etc")
   
-  @Pattern(regexp="image/.*")   public String getMimeType() {
+  @Pattern(regexp="image/.*")   
+  public String getMimeType() {
     return mimeType;
   }
 

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * VendorSpecificationService
@@ -65,7 +65,7 @@ public class VendorSpecificationService   {
    * @return serviceId
   **/
   @ApiModelProperty(example = "085d298f", required = true, value = "Unique identifier for this service")
-      @NotNull
+      
 
     public String getServiceId() {
     return serviceId;
@@ -85,7 +85,7 @@ public class VendorSpecificationService   {
    * @return serviceName
   **/
   @ApiModelProperty(example = "The Deluxe Service", required = true, value = "The human readable name of a platform")
-      @NotNull
+      
 
     public String getServiceName() {
     return serviceName;

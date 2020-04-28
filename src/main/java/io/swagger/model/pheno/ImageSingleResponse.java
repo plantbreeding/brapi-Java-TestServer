@@ -13,7 +13,7 @@ import io.swagger.model.pheno.Image;
 
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * ImageSingleResponse
@@ -51,7 +51,7 @@ public class ImageSingleResponse implements BrAPIResponse<Image>  {
    * @return metadata
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public Metadata getMetadata() {
@@ -72,7 +72,7 @@ public class ImageSingleResponse implements BrAPIResponse<Image>  {
    * @return result
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public Image getResult() {

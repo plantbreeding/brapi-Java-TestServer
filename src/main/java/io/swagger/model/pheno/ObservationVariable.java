@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
+
 
 /**
  * ObservationVariable
@@ -31,7 +31,7 @@ public class ObservationVariable extends VariableBaseClass  {
    * @return observationVariableDbId
   **/
   @ApiModelProperty(example = "b9b7edd1", required = true, value = "Variable unique identifier  MIAPPE V1.1 (DM-83) Variable ID - Code used to identify the variable in the data file. We recommend using a variable definition from the Crop Ontology where possible. Otherwise, the Crop Ontology naming convention is recommended: <trait abbreviation>_<method abbreviation>_<scale abbreviation>). A variable ID must be unique within a given investigation.")
-      @NotNull
+      
 
     public String getObservationVariableDbId() {
     return observationVariableDbId;
@@ -51,7 +51,7 @@ public class ObservationVariable extends VariableBaseClass  {
    * @return observationVariableName
   **/
   @ApiModelProperty(example = "Variable Name", required = true, value = "Variable name (usually a short name)  MIAPPE V1.1 (DM-84) Variable name - Name of the variable.")
-      @NotNull
+      
 
     public String getObservationVariableName() {
     return observationVariableName;

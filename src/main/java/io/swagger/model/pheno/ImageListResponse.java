@@ -13,7 +13,7 @@ import io.swagger.model.pheno.ImageListResponseResult;
 
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * ImageListResponse
@@ -51,7 +51,7 @@ public class ImageListResponse implements BrAPIResponse<ImageListResponseResult>
    * @return metadata
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public Metadata getMetadata() {
@@ -72,7 +72,7 @@ public class ImageListResponse implements BrAPIResponse<ImageListResponseResult>
    * @return result
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public ImageListResponseResult getResult() {

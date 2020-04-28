@@ -4,7 +4,6 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
 
 /**
  * Contact
@@ -40,7 +39,7 @@ public class Contact   {
    * @return contactDbId
   **/
   @ApiModelProperty(example = "5f4e5509", required = true, value = "The ID which uniquely identifies this contact  MIAPPE V1.1 (DM-33) Person ID - An identifier for the data submitter. If that submitter is an individual, ORCID identifiers are recommended.")
-      @NotNull
+      
 
     public String getContactDbId() {
     return contactDbId;

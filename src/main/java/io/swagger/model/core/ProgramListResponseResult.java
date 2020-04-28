@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * ProgramListResponseResult
@@ -38,7 +37,7 @@ public class ProgramListResponseResult implements BrAPIResponseResult<Program>  
    * @return data
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
     @Valid
     public List<Program> getData() {
     return data;

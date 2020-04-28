@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
+
 
 /**
  * VendorContact
@@ -165,7 +165,7 @@ public class VendorContact   {
    * @return vendorName
   **/
   @ApiModelProperty(example = "The Example Vendor Lab", required = true, value = "The human readable name of the vendor")
-      @NotNull
+      
 
     public String getVendorName() {
     return vendorName;

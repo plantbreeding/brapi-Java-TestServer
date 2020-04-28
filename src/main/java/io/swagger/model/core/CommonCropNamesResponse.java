@@ -9,7 +9,6 @@ import io.swagger.model.Metadata;
 
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * CommonCropNamesResponse
@@ -47,7 +46,7 @@ public class CommonCropNamesResponse implements BrAPIResponse<CommonCropNamesRes
    * @return metadata
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public Metadata getMetadata() {
@@ -68,7 +67,7 @@ public class CommonCropNamesResponse implements BrAPIResponse<CommonCropNamesRes
    * @return result
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public CommonCropNamesResponseResult getResult() {

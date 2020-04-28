@@ -9,7 +9,7 @@ import io.swagger.model.OntologyReference;
 
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * VendorSample
@@ -85,7 +85,7 @@ public class VendorSample   {
    * @return clientSampleId
   **/
   @ApiModelProperty(example = "bd96bd69", required = true, value = "The ID which uniquely identifies this sample to the client making the request")
-      @NotNull
+      
 
     public String getClientSampleId() {
     return clientSampleId;
@@ -107,8 +107,7 @@ public class VendorSample   {
    * @return column
   **/
   @ApiModelProperty(example = "6", value = "The Column identifier for this samples location in the plate")
-  
-  @Min(1) @Max(12)   public Integer getColumn() {
+  public Integer getColumn() {
     return column;
   }
 

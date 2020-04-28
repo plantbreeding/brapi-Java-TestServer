@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * ObservationLevelListResponseResult
@@ -38,7 +38,7 @@ public class ObservationLevelListResponseResult implements BrAPIResponseResult<O
    * @return data
   **/
   @ApiModelProperty(example = "[{\"levelName\":\"field\",\"levelOrder\":0},{\"levelName\":\"block\",\"levelOrder\":1},{\"levelName\":\"plot\",\"levelOrder\":2},{\"levelName\":\"sub-plot\",\"levelOrder\":3},{\"levelName\":\"plant\",\"levelOrder\":4}]", required = true, value = "")
-      @NotNull
+      
     @Valid
     public List<ObservationUnitHierarchyLevel> getData() {
     return data;

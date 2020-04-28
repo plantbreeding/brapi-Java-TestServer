@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * PlannedCrossesListResponseResult
@@ -38,7 +38,7 @@ public class PlannedCrossesListResponseResult implements BrAPIResponseResult<Pla
    * @return data
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
     @Valid
     public List<PlannedCross> getData() {
     return data;

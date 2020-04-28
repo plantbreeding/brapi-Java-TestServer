@@ -12,7 +12,7 @@ import io.swagger.model.Metadata;
 import io.swagger.model.germ.ProgenyNode;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * ProgenyResponse
@@ -50,7 +50,7 @@ public class GermplasmProgenyResponse implements BrAPIResponse<ProgenyNode>  {
    * @return metadata
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public Metadata getMetadata() {
@@ -71,7 +71,7 @@ public class GermplasmProgenyResponse implements BrAPIResponse<ProgenyNode>  {
    * @return result
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public ProgenyNode getResult() {

@@ -11,7 +11,6 @@ import io.swagger.model.Metadata;
 
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * LocationSingleResponse
@@ -49,7 +48,7 @@ public class LocationSingleResponse implements BrAPIResponse<Location>  {
    * @return metadata
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public Metadata getMetadata() {
@@ -70,7 +69,7 @@ public class LocationSingleResponse implements BrAPIResponse<Location>  {
    * @return result
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public Location getResult() {

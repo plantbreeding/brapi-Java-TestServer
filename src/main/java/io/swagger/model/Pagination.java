@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
 
 /**
  * BasePagination
@@ -36,7 +35,7 @@ public abstract class Pagination {
 	 * @return pageSize
 	 **/
 	@ApiModelProperty(example = "1000", required = true, value = "The number of data elements returned, aka the size of the current page. If the requested page does not have enough elements to fill a page at the requested page size, this field should indicate the actual number of elements returned.")
-	@NotNull
+	
 
 	public Integer getPageSize() {
 		return pageSize;

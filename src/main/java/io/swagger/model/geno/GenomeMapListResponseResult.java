@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * GenomeMapListResponseResult
@@ -38,7 +38,7 @@ public class GenomeMapListResponseResult implements BrAPIResponseResult<GenomeMa
    * @return data
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
     @Valid
     public List<GenomeMap> getData() {
     return data;

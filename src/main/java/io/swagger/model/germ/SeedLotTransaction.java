@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.germ.SeedLotNewTransactionRequest;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
+
 
 /**
  * SeedLotTransaction
@@ -28,7 +28,7 @@ public class SeedLotTransaction extends SeedLotNewTransactionRequest  {
    * @return transactionDbId
   **/
   @ApiModelProperty(example = "28e46db9", required = true, value = "Unique DbId for the Seed Lot Transaction")
-      @NotNull
+      
 
     public String getTransactionDbId() {
     return transactionDbId;

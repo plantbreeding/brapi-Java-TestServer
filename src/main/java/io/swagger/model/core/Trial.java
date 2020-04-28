@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
+
 
 /**
  * Trial
@@ -35,7 +35,7 @@ public class Trial extends TrialNewRequest  {
    * @return trialDbId
   **/
   @ApiModelProperty(example = "1883b402", required = true, value = "The ID which uniquely identifies a trial  MIAPPE V1.1 (DM-2) Investigation unique ID - Identifier comprising the unique name of the institution/database hosting the submission of the investigation data, and the accession number of the investigation in that institution.")
-      @NotNull
+      
 
     public String getTrialDbId() {
     return trialDbId;

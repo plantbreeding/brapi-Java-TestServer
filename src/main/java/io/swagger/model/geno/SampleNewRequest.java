@@ -12,7 +12,7 @@ import java.util.Map;
 import java.time.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * SampleNewRequest
@@ -123,8 +123,7 @@ public class SampleNewRequest   {
    * @return column
   **/
   @ApiModelProperty(example = "6", value = "The Column identifier for this samples location in the plate")
-  
-  @Min(1) @Max(12)   public Integer getColumn() {
+  public Integer getColumn() {
     return column;
   }
 

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * LocationListResponseResult
@@ -36,7 +35,7 @@ public class LocationListResponseResult implements BrAPIResponseResult<Location>
    * @return data
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
     @Valid
     public List<Location> getData() {
     return data;

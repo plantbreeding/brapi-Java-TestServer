@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * GermplasmAttributeCategoryListResponseResult
@@ -38,7 +38,7 @@ public class GermplasmAttributeCategoryListResponseResult implements BrAPIRespon
    * @return data
   **/
   @ApiModelProperty(example = "[\"Morphological\",\"Agronomic\"]", required = true, value = "")
-      @NotNull
+      
 
     public List<String> getData() {
     return data;

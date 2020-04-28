@@ -12,7 +12,7 @@ import io.swagger.model.Metadata;
 import io.swagger.model.pheno.ObservationLevelListResponseResult;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * ObservationLevelListResponse
@@ -50,7 +50,7 @@ public class ObservationLevelListResponse implements BrAPIResponse<ObservationLe
    * @return metadata
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public Metadata getMetadata() {
@@ -71,7 +71,7 @@ public class ObservationLevelListResponse implements BrAPIResponse<ObservationLe
    * @return result
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public ObservationLevelListResponseResult getResult() {

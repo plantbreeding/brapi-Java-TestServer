@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * VendorResultFile
@@ -81,7 +81,7 @@ public class VendorResultFile   {
    * @return clientSampleIds
   **/
   @ApiModelProperty(example = "[\"3968733e\",\"e0de6391\",\"66854172\"]", required = true, value = "The list of sampleDbIds included in the file")
-      @NotNull
+      
 
     public List<String> getClientSampleIds() {
     return clientSampleIds;
@@ -101,7 +101,7 @@ public class VendorResultFile   {
    * @return fileName
   **/
   @ApiModelProperty(example = "sequence_data_ce640bd3.csv", required = true, value = "Name of the file")
-      @NotNull
+      
 
     public String getFileName() {
     return fileName;
@@ -121,7 +121,7 @@ public class VendorResultFile   {
    * @return fileType
   **/
   @ApiModelProperty(example = "text/csv", required = true, value = "Format of the file")
-      @NotNull
+      
 
     public String getFileType() {
     return fileType;
@@ -141,7 +141,7 @@ public class VendorResultFile   {
    * @return fileURL
   **/
   @ApiModelProperty(example = "https://vendor.org/data/sequence_data_ce640bd3.csv", required = true, value = "The URL to a file with the results of a vendor analysis")
-      @NotNull
+      
 
     public String getFileURL() {
     return fileURL;

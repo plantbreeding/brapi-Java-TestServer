@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * VendorOrderSubmissionRequest
@@ -68,7 +68,7 @@ public class VendorOrderSubmissionRequest extends VendorPlateSubmissionRequest  
    * @return serviceIds
   **/
   @ApiModelProperty(example = "[\"e8f60f64\",\"05bd925a\",\"b698fb5e\"]", required = true, value = "A list of unique, alpha-numeric ID which identify the requested services to be applied to this order.  A Vendor Service defines what platform, technology, and markers will be used.  A list of available service IDs can be retrieved from the Vendor Specs.")
-      @NotNull
+      
 
     public List<String> getServiceIds() {
     return serviceIds;

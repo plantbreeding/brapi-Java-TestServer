@@ -13,7 +13,7 @@ import io.swagger.model.germ.GermplasmMCPD;
 
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * GermplasmMCPDResponse
@@ -51,7 +51,7 @@ public class GermplasmMCPDResponse implements BrAPIResponse<GermplasmMCPD>  {
    * @return metadata
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public Metadata getMetadata() {
@@ -72,7 +72,7 @@ public class GermplasmMCPDResponse implements BrAPIResponse<GermplasmMCPD>  {
    * @return result
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public GermplasmMCPD getResult() {

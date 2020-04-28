@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
 
 /**
  * Program
@@ -27,7 +26,7 @@ public class Program extends ProgramNewRequest  {
    * @return programDbId
   **/
   @ApiModelProperty(example = "f60f15b2", required = true, value = "The ID which uniquely identifies the program")
-      @NotNull
+      
 
     public String getProgramDbId() {
     return programDbId;

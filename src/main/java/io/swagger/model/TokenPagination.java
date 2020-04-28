@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Pagination;
 
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
 
 /**
  * TokenPagination
@@ -68,7 +67,7 @@ public class TokenPagination extends Pagination {
 	 * @return nextPageToken
 	 **/
 	@ApiModelProperty(example = "cb668f63", required = true, value = "The string token used to query the next page of data.")
-	@NotNull
+	
 
 	public String getNextPageToken() {
 		return nextPageToken;

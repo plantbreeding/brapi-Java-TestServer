@@ -13,7 +13,7 @@ import io.swagger.model.pheno.EventsResponseResult;
 
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * EventsResponse
@@ -51,7 +51,7 @@ public class EventsResponse implements BrAPIResponse<EventsResponseResult>  {
    * @return metadata
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public Metadata getMetadata() {
@@ -72,7 +72,7 @@ public class EventsResponse implements BrAPIResponse<EventsResponseResult>  {
    * @return result
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public EventsResponseResult getResult() {

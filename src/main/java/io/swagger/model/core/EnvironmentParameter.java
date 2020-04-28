@@ -4,7 +4,6 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
 
 /**
  * EnvironmentParameter
@@ -43,7 +42,7 @@ public class EnvironmentParameter   {
    * @return description
   **/
   @ApiModelProperty(example = "the soil type was clay", required = true, value = "Human-readable value of the environment parameter (defined above) constant within the experiment")
-      @NotNull
+      
 
     public String getDescription() {
     return description;
@@ -63,7 +62,7 @@ public class EnvironmentParameter   {
    * @return parameterName
   **/
   @ApiModelProperty(example = "soil type", required = true, value = "Name of the environment parameter constant within the experiment")
-      @NotNull
+      
 
     public String getParameterName() {
     return parameterName;

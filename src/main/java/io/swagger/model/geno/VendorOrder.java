@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * The details of a vendor order
@@ -47,7 +47,7 @@ public class VendorOrder   {
    * @return clientId
   **/
   @ApiModelProperty(example = "7b51ad15", required = true, value = "A unique, alpha-numeric ID which identifies the client to the vendor. Used to connect the order to the correct billing and contact info.")
-      @NotNull
+      
 
     public String getClientId() {
     return clientId;
@@ -67,7 +67,7 @@ public class VendorOrder   {
    * @return numberOfSamples
   **/
   @ApiModelProperty(example = "180", required = true, value = "The total number of samples contained in this request. Used for billing and basic validation of the request.")
-      @NotNull
+      
 
     public Integer getNumberOfSamples() {
     return numberOfSamples;
@@ -87,7 +87,7 @@ public class VendorOrder   {
    * @return orderId
   **/
   @ApiModelProperty(example = "96ba0ca3", required = true, value = "The order id returned by the vendor when the order was successfully submitted.")
-      @NotNull
+      
 
     public String getOrderId() {
     return orderId;
@@ -139,7 +139,7 @@ public class VendorOrder   {
    * @return serviceIds
   **/
   @ApiModelProperty(example = "[\"e8f60f64\",\"05bd925a\",\"b698fb5e\"]", required = true, value = "A list of unique, alpha-numeric ID which identify the requested services to be applied to this order.  A Vendor Service defines what platform, technology, and markers will be used.  A list of available service IDs can be retrieved from the Vendor Specs.")
-      @NotNull
+      
 
     public List<String> getServiceIds() {
     return serviceIds;

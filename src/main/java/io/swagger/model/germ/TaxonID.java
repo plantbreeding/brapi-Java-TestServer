@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
+
 
 /**
  * TaxonID
@@ -30,7 +30,7 @@ public class TaxonID   {
    * @return sourceName
   **/
   @ApiModelProperty(example = "NCBI", required = true, value = "The human readable name of the taxonomy provider")
-      @NotNull
+      
 
     public String getSourceName() {
     return sourceName;
@@ -50,7 +50,7 @@ public class TaxonID   {
    * @return taxonId
   **/
   @ApiModelProperty(example = "2026747", required = true, value = "The identifier (name, ID, URI) of a particular taxonomy within the source provider")
-      @NotNull
+      
 
     public String getTaxonId() {
     return taxonId;

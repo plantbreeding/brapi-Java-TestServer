@@ -12,7 +12,7 @@ import io.swagger.model.germ.GermplasmAttributeListResponseResult;
 
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * GermplasmAttributeListResponse
@@ -49,7 +49,7 @@ public class GermplasmAttributeListResponse implements BrAPIResponse<GermplasmAt
 	 * @return metadata
 	 **/
 	@ApiModelProperty(required = true, value = "")
-	@NotNull
+	
 
 	@Valid
 	public Metadata getMetadata() {
@@ -71,7 +71,7 @@ public class GermplasmAttributeListResponse implements BrAPIResponse<GermplasmAt
 	 * @return result
 	 **/
 	@ApiModelProperty(required = true, value = "")
-	@NotNull
+	
 
 	@Valid
 	public GermplasmAttributeListResponseResult getResult() {

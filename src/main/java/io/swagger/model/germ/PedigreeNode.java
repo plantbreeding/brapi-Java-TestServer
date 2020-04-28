@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * PedigreeNode
@@ -112,7 +112,7 @@ public class PedigreeNode   {
    * @return germplasmDbId
   **/
   @ApiModelProperty(example = "1098ebaf", required = true, value = "The ID which uniquely identifies a germplasm")
-      @NotNull
+      
 
     public String getGermplasmDbId() {
     return germplasmDbId;

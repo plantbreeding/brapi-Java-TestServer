@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * CommonCropNamesResponseResult
@@ -36,7 +35,7 @@ public class CommonCropNamesResponseResult implements BrAPIResponseResult<String
    * @return data
   **/
   @ApiModelProperty(example = "[\"Tomatillo\",\"Paw Paw\"]", required = true, value = "array of crop names available on the server")
-      @NotNull
+      
 
     public List<String> getData() {
     return data;

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * GermplasmAttributeListResponseResult
@@ -38,7 +38,7 @@ public class GermplasmAttributeListResponseResult implements BrAPIResponseResult
 	 * @return data
 	 **/
 	@ApiModelProperty(required = true, value = "")
-	@NotNull
+	
 	@Valid
 	public List<GermplasmAttribute> getData() {
 		return data;

@@ -11,7 +11,7 @@ import io.swagger.model.Metadata;
 
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * LinkageGroupListResponse
@@ -49,7 +49,7 @@ public class LinkageGroupListResponse implements BrAPIResponse<LinkageGroupListR
    * @return metadata
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public Metadata getMetadata() {
@@ -70,7 +70,7 @@ public class LinkageGroupListResponse implements BrAPIResponse<LinkageGroupListR
    * @return result
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public LinkageGroupListResponseResult getResult() {

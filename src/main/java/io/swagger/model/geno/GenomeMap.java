@@ -10,7 +10,7 @@ import java.util.Map;
 import java.time.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * GenomeMap
@@ -114,7 +114,7 @@ public class GenomeMap   {
    * @return commonCropName
   **/
   @ApiModelProperty(example = "Paw Paw", required = true, value = "The common name of the crop")
-      @NotNull
+      
 
     public String getCommonCropName() {
     return commonCropName;
@@ -172,7 +172,7 @@ public class GenomeMap   {
    * @return mapDbId
   **/
   @ApiModelProperty(example = "142cffd5", required = true, value = "The ID which uniquely identifies this genomic map")
-      @NotNull
+      
 
     public String getMapDbId() {
     return mapDbId;
@@ -288,7 +288,7 @@ public class GenomeMap   {
    * @return type
   **/
   @ApiModelProperty(example = "Genetic", required = true, value = "The type of map this represents, usually \"Genetic\"")
-      @NotNull
+      
 
     public String getType() {
     return type;

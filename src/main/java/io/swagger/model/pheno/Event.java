@@ -13,7 +13,7 @@ import java.util.Map;
 import java.time.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * Event
@@ -116,7 +116,7 @@ public class Event   {
    * @return eventDbId
   **/
   @ApiModelProperty(example = "8566d4cb", required = true, value = "Internal database identifier")
-      @NotNull
+      
 
     public String getEventDbId() {
     return eventDbId;
@@ -182,7 +182,7 @@ public class Event   {
    * @return eventType
   **/
   @ApiModelProperty(example = "Watering", required = true, value = "General category for this event (e.g. Sowing, Watering, Rain). Each eventType should correspond to exactly one eventTypeDbId, if provided.  MIAPPE V1.1 (DM-65) Event type - Short name of the event.")
-      @NotNull
+      
 
     public String getEventType() {
     return eventType;

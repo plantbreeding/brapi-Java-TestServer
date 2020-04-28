@@ -13,7 +13,7 @@ import io.swagger.model.germ.BreedingMethodListResponseResult;
 
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * BreedingMethodListResponse
@@ -51,7 +51,7 @@ public class BreedingMethodListResponse implements BrAPIResponse<BreedingMethodL
    * @return metadata
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public Metadata getMetadata() {
@@ -72,7 +72,7 @@ public class BreedingMethodListResponse implements BrAPIResponse<BreedingMethodL
    * @return result
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public BreedingMethodListResponseResult getResult() {

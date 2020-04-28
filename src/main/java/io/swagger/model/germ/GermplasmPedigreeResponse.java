@@ -12,7 +12,7 @@ import io.swagger.model.Metadata;
 import io.swagger.model.germ.PedigreeNode;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * GermplasmPedigreeResponse
@@ -50,7 +50,7 @@ public class GermplasmPedigreeResponse implements BrAPIResponse<PedigreeNode>  {
    * @return metadata
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public Metadata getMetadata() {
@@ -71,7 +71,7 @@ public class GermplasmPedigreeResponse implements BrAPIResponse<PedigreeNode>  {
    * @return result
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public PedigreeNode getResult() {

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * ObservationVariableListResponseResult
@@ -38,7 +38,7 @@ public class ObservationVariableListResponseResult implements BrAPIResponseResul
    * @return data
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
     @Valid
     public List<ObservationVariable> getData() {
     return data;

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * PersonListResponseResult
@@ -38,7 +37,7 @@ public class PersonListResponseResult implements BrAPIResponseResult<Person>  {
    * @return data
   **/
   @ApiModelProperty(required = true, value = "Array of people")
-      @NotNull
+      
     @Valid
     public List<Person> getData() {
     return data;

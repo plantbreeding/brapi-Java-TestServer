@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
 
 /**
  * Person
@@ -27,7 +26,7 @@ public class Person extends PersonNewRequest  {
    * @return personDbId
   **/
   @ApiModelProperty(example = "14340a54", required = true, value = "Unique ID for a person")
-      @NotNull
+      
 
     public String getPersonDbId() {
     return personDbId;

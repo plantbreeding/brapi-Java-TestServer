@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * ImageListResponseResult
@@ -38,7 +38,7 @@ public class ImageListResponseResult implements BrAPIResponseResult<Image>  {
    * @return data
   **/
   @ApiModelProperty(required = true, value = "Array of image meta data")
-      @NotNull
+      
     @Valid
     public List<Image> getData() {
     return data;

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * Service
@@ -157,7 +156,7 @@ public class Service {
 	 * @return methods
 	 **/
 	@ApiModelProperty(example = "[\"GET\",\"POST\"]", required = true, value = "The possible HTTP Methods to be used with the available call")
-	@NotNull
+	
 
 	public List<MethodsEnum> getMethods() {
 		return methods;
@@ -169,7 +168,7 @@ public class Service {
 	 * @return service
 	 **/
 	@ApiModelProperty(example = "germplasm/{germplasmDbId}/pedigree", required = true, value = "The name of the available call as recorded in the documentation")
-	@NotNull
+	
 
 	public String getService() {
 		return service;
@@ -181,7 +180,7 @@ public class Service {
 	 * @return versions
 	 **/
 	@ApiModelProperty(example = "[\"2.0\",\"2.1\"]", required = true, value = "The supported versions of a particular call")
-	@NotNull
+	
 
 	public List<VersionsEnum> getVersions() {
 		return versions;

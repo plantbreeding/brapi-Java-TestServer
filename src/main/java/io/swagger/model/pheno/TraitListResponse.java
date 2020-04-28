@@ -10,7 +10,7 @@ import io.swagger.model.Metadata;
 import io.swagger.model.pheno.TraitListResponseResult;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * TraitListResponse
@@ -47,7 +47,7 @@ public class TraitListResponse implements BrAPIResponse<TraitListResponseResult>
 	 * @return metadata
 	 **/
 	@ApiModelProperty(required = true, value = "")
-	@NotNull
+	
 
 	@Valid
 	public Metadata getMetadata() {
@@ -69,7 +69,7 @@ public class TraitListResponse implements BrAPIResponse<TraitListResponseResult>
 	 * @return result
 	 **/
 	@ApiModelProperty(required = true, value = "")
-	@NotNull
+	
 
 	@Valid
 	public TraitListResponseResult getResult() {

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * ServerInfo
@@ -57,7 +56,7 @@ public class ServerInfo   {
    * @return calls
   **/
   @ApiModelProperty(required = true, value = "Array of available calls on this server")
-      @NotNull
+      
     @Valid
     public List<Service> getCalls() {
     return calls;

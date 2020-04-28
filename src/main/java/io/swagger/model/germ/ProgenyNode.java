@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * ProgenyNode
@@ -38,7 +38,7 @@ public class ProgenyNode   {
    * @return germplasmDbId
   **/
   @ApiModelProperty(example = "01b974dc", required = true, value = "The ID which uniquely identifies a germplasm")
-      @NotNull
+      
 
     public String getGermplasmDbId() {
     return germplasmDbId;
@@ -82,7 +82,7 @@ public class ProgenyNode   {
    * @return progeny
   **/
   @ApiModelProperty(example = "[{\"germplasmDbId\":\"e8d5dad7\",\"germplasmName\":\"A0021011\",\"parentType\":\"FEMALE\"},{\"germplasmDbId\":\"ac07fbd8\",\"germplasmName\":\"A0021012\",\"parentType\":\"FEMALE\"},{\"germplasmDbId\":\"07f45f67\",\"germplasmName\":\"A0021013\",\"parentType\":\"FEMALE\"}]", required = true, value = "List of germplasm entities which are direct children of this germplasm")
-      @NotNull
+      
     @Valid
     public List<ProgenyNodeProgeny> getProgeny() {
     return progeny;

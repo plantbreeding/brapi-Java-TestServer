@@ -4,7 +4,6 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
 
 /**
  * ListSummary
@@ -25,7 +24,7 @@ public class ListSummary extends ListBaseFields  {
    * @return listDbId
   **/
   @ApiModelProperty(example = "6f621cfa", required = true, value = "The unique identifier for a List")
-      @NotNull
+      
 
     public String getListDbId() {
     return listDbId;

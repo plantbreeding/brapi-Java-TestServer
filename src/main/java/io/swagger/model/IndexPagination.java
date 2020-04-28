@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Pagination;
 
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
 
 /**
  * IndexPagination
@@ -30,7 +29,7 @@ public class IndexPagination extends Pagination {
 	 * @return currentPage
 	 **/
 	@ApiModelProperty(example = "0", required = true, value = "The index number for the returned page of data. This should always match the requested page number or the default page (0).")
-	@NotNull
+	
 
 	public Integer getCurrentPage() {
 		return currentPage;

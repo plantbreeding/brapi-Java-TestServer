@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * Response to an order request
@@ -35,7 +35,7 @@ public class VendorOrderSubmission   {
    * @return orderId
   **/
   @ApiModelProperty(example = "b5144468", required = true, value = "A unique, alpha-numeric ID which identifies the order")
-      @NotNull
+      
 
     public String getOrderId() {
     return orderId;

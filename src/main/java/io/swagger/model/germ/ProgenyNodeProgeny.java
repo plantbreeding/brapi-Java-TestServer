@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
+
 
 /**
  * ProgenyNodeProgeny
@@ -33,7 +33,7 @@ public class ProgenyNodeProgeny   {
    * @return germplasmDbId
   **/
   @ApiModelProperty(example = "e8d5dad7", required = true, value = "The unique identifier of a progeny germplasm")
-      @NotNull
+      
 
     public String getGermplasmDbId() {
     return germplasmDbId;
@@ -72,7 +72,7 @@ public class ProgenyNodeProgeny   {
    * @return parentType
   **/
   @ApiModelProperty(example = "FEMALE", required = true, value = "Given a germplasm A having a progeny B and C, 'parentType' for progeny B item refers to the 'parentType' of A toward B.")
-      @NotNull
+      
 
     public ParentType getParentType() {
     return parentType;

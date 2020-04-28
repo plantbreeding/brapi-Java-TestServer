@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * MIAPPE V1.1  (DM-85) Variable accession number - Accession number of the variable in the Crop Ontology  (DM-87) Trait accession number - Accession number of the trait in a suitable controlled vocabulary (Crop Ontology, Trait Ontology).  (DM-89) Method accession number - Accession number of the method in a suitable controlled vocabulary (Crop Ontology, Trait Ontology).  (DM-93) Scale accession number - Accession number of the scale in a suitable controlled vocabulary (Crop Ontology).
@@ -70,7 +69,7 @@ public class OntologyReference   {
    * @return ontologyDbId
   **/
   @ApiModelProperty(example = "6b071868", required = true, value = "Ontology database unique identifier")
-      @NotNull
+      
 
     public String getOntologyDbId() {
     return ontologyDbId;
@@ -90,7 +89,7 @@ public class OntologyReference   {
    * @return ontologyName
   **/
   @ApiModelProperty(example = "The Crop Ontology", required = true, value = "Ontology name")
-      @NotNull
+      
 
     public String getOntologyName() {
     return ontologyName;

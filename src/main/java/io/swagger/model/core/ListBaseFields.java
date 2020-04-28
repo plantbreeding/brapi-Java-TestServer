@@ -10,7 +10,6 @@ import java.util.Map;
 import java.time.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * ListBaseFields
@@ -263,7 +262,7 @@ public class ListBaseFields implements ListBaseFieldsInterface  {
    * @return listType
   **/
   @ApiModelProperty(required = true, value = "")
-      @NotNull
+      
 
     @Valid
     public ListTypes getListType() {

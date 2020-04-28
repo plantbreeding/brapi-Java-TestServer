@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.constraints.*;
 
 /**
  * Study
@@ -35,7 +34,7 @@ public class Study extends StudyNewRequest  {
    * @return studyDbId
   **/
   @ApiModelProperty(example = "175ac75a", required = true, value = "The ID which uniquely identifies a study within the given database server  MIAPPE V1.1 (DM-11) Study unique ID - Unique identifier comprising the name or identifier for the institution/database hosting the submission of the study data, and the identifier of the study in that institution.")
-      @NotNull
+      
 
     public String getStudyDbId() {
     return studyDbId;

@@ -11,7 +11,7 @@ import io.swagger.model.Metadata;
 import io.swagger.model.pheno.Scale;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+
 
 /**
  * ScaleSingleResponse
@@ -48,7 +48,7 @@ public class ScaleSingleResponse implements BrAPIResponse<Scale> {
 	 * @return metadata
 	 **/
 	@ApiModelProperty(required = true, value = "")
-	@NotNull
+	
 
 	@Valid
 	public Metadata getMetadata() {
@@ -70,7 +70,7 @@ public class ScaleSingleResponse implements BrAPIResponse<Scale> {
 	 * @return result
 	 **/
 	@ApiModelProperty(required = true, value = "")
-	@NotNull
+	
 
 	@Valid
 	public Scale getResult() {
