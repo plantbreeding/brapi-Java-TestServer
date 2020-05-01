@@ -90,7 +90,7 @@ public class VendorSampleService {
 		sample.setTissueType(entity.getTissueType());
 		sample.setTissueTypeOntologyReference(new OntologyReference());
 		if (entity.getVolume() != null)
-			sample.setVolume(new Measurement().value(new BigDecimal(entity.getVolume())).units("ml"));
+			sample.setVolume(new Measurement().value(new BigDecimal(entity.getVolume())).units("ul"));
 
 		sample.setColumn(entity.getPlateColumn());
 		sample.setRow(entity.getPlateRow());
