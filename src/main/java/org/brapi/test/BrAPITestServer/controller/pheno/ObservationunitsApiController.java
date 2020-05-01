@@ -1,7 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller.pheno;
 
 import io.swagger.model.Metadata;
-import io.swagger.model.WSMIMEDataTypes;
 import io.swagger.model.pheno.ObservationUnitListResponse;
 import io.swagger.model.pheno.ObservationUnitNewRequest;
 import io.swagger.model.pheno.ObservationUnitSearchRequest;
@@ -127,7 +126,7 @@ public class ObservationunitsApiController extends BrAPIController
 	}
 
 	public ResponseEntity<ObservationUnitTableResponse> observationunitsTableGet(
-			@RequestHeader(value = "Accept", required = true) WSMIMEDataTypes accept,
+			@RequestHeader(value = "Accept", required = false) String accept,
 			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
 			@Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,

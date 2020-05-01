@@ -121,7 +121,7 @@ public class ObservationsApiController extends BrAPIController implements Observ
 	}
 
 	public ResponseEntity<ObservationTableResponse> observationsTableGet(
-			@RequestHeader(value = "Accept", required = true) WSMIMEDataTypes accept,
+			@RequestHeader(value = "Accept", required = false) String accept,
 			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
 			@Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,

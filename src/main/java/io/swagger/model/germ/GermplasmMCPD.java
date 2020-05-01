@@ -176,7 +176,7 @@ public class GermplasmMCPD   {
 
   @JsonProperty("storageTypeCodes")
   @Valid
-  private List<GermplasmStorageTypes> storageTypeCodes = null;
+  private List<GermplasmStorageTypesEnum> storageTypeCodes = null;
 
   @JsonProperty("subtaxon")
   private String subtaxon = null;
@@ -618,14 +618,14 @@ public class GermplasmMCPD   {
     this.speciesAuthority = speciesAuthority;
   }
 
-  public GermplasmMCPD storageTypeCodes(List<GermplasmStorageTypes> storageTypeCodes) {
+  public GermplasmMCPD storageTypeCodes(List<GermplasmStorageTypesEnum> storageTypeCodes) {
     this.storageTypeCodes = storageTypeCodes;
     return this;
   }
 
-  public GermplasmMCPD addStorageTypeCodesItem(GermplasmStorageTypes storageTypeCodesItem) {
+  public GermplasmMCPD addStorageTypeCodesItem(GermplasmStorageTypesEnum storageTypeCodesItem) {
     if (this.storageTypeCodes == null) {
-      this.storageTypeCodes = new ArrayList<GermplasmStorageTypes>();
+      this.storageTypeCodes = new ArrayList<GermplasmStorageTypesEnum>();
     }
     this.storageTypeCodes.add(storageTypeCodesItem);
     return this;
@@ -637,11 +637,11 @@ public class GermplasmMCPD   {
   **/
   @ApiModelProperty(example = "[\"11\",\"13\"]", value = "MCPD (v2.1) (STORAGE) 26. If germplasm is maintained under different types of storage, multiple choices are allowed, separated by a semicolon (e.g. 20;30). (Refer to FAO/IPGRI Genebank Standards 1994 for details on storage type.) 10) Seed collection 11) Short term 12) Medium term 13) Long term 20) Field collection 30) In vitro collection 40) Cryo-preserved collection 50) DNA collection 99) Other (elaborate in REMARKS field)")
   
-    public List<GermplasmStorageTypes> getStorageTypeCodes() {
+    public List<GermplasmStorageTypesEnum> getStorageTypeCodes() {
     return storageTypeCodes;
   }
 
-  public void setStorageTypeCodes(List<GermplasmStorageTypes> storageTypeCodes) {
+  public void setStorageTypeCodes(List<GermplasmStorageTypesEnum> storageTypeCodes) {
     this.storageTypeCodes = storageTypeCodes;
   }
 

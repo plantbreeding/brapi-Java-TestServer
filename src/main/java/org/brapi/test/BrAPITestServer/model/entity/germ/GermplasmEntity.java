@@ -24,7 +24,7 @@ import org.brapi.test.BrAPITestServer.model.entity.pheno.TaxonEntity;
 import io.swagger.model.germ.BiologicalStatusOfAccessionCode;
 import io.swagger.model.germ.GermplasmMCPD.AcquisitionSourceCodeEnum;
 import io.swagger.model.germ.GermplasmMCPD.MlsStatusEnum;
-import io.swagger.model.germ.GermplasmStorageTypes;
+import io.swagger.model.germ.GermplasmStorageTypesEnum;
 
 @Entity
 @Table(name = "germplasm")
@@ -89,7 +89,7 @@ public class GermplasmEntity extends BrAPIPrimaryEntity {
 	@OneToMany(mappedBy = "germplasm")
 	private List<TaxonEntity> taxonIds;
 	@ElementCollection
-	private List<GermplasmStorageTypes> typeOfGermplasmStorageCode;
+	private List<GermplasmStorageTypesEnum> typeOfGermplasmStorageCode;
 
 	public GermplasmInstituteEntity getHostInstitute() {
 		if (getInstitutes() != null) {
@@ -250,7 +250,7 @@ public class GermplasmEntity extends BrAPIPrimaryEntity {
 		return taxonIds;
 	}
 
-	public List<GermplasmStorageTypes> getTypeOfGermplasmStorageCode() {
+	public List<GermplasmStorageTypesEnum> getTypeOfGermplasmStorageCode() {
 		return typeOfGermplasmStorageCode;
 	}
 
@@ -354,7 +354,7 @@ public class GermplasmEntity extends BrAPIPrimaryEntity {
 		this.taxonIds = taxonIds;
 	}
 
-	public void setTypeOfGermplasmStorageCode(List<GermplasmStorageTypes> typeOfGermplasmStorageCode) {
+	public void setTypeOfGermplasmStorageCode(List<GermplasmStorageTypesEnum> typeOfGermplasmStorageCode) {
 		this.typeOfGermplasmStorageCode = typeOfGermplasmStorageCode;
 	}
 

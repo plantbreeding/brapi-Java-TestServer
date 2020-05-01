@@ -50,7 +50,6 @@ import io.swagger.model.geno.VendorServicePlatformMarkerTypeEnum;
 import io.swagger.model.geno.VendorSpecification;
 import io.swagger.model.geno.VendorSpecificationService;
 
-
 @Service
 public class VendorSampleService {
 	private VendorPlateRepository vendorPlateRepository;
@@ -58,7 +57,8 @@ public class VendorSampleService {
 	private VendorSpecRepository vendorSpecRepository;
 
 	@Autowired
-	public VendorSampleService(VendorPlateRepository vendorPlateRepository, VendorSpecRepository vendorSpecRepository, VendorOrderRepository vendorOrderRepository) {
+	public VendorSampleService(VendorPlateRepository vendorPlateRepository, VendorSpecRepository vendorSpecRepository,
+			VendorOrderRepository vendorOrderRepository) {
 		this.vendorPlateRepository = vendorPlateRepository;
 		this.vendorSpecRepository = vendorSpecRepository;
 		this.vendorOrderRepository = vendorOrderRepository;
@@ -70,7 +70,7 @@ public class VendorSampleService {
 		plate.setClientPlateId(entity.getClientPlateDbId());
 		plate.setSampleSubmissionFormat(entity.getSampleSubmissionFormat());
 		plate.setSamples(entity.getSamples().stream().map(this::convertFromEntity).collect(Collectors.toList()));
-		
+
 		return plate;
 	}
 
@@ -79,29 +79,31 @@ public class VendorSampleService {
 		sample.setClientSampleBarCode(entity.getId());
 		sample.setClientSampleId(entity.getId());
 		sample.setComments(entity.getSampleDescription());
-		sample.setConcentration(new Measurement()
-				.value(new BigDecimal(entity.getConcentration()))
-				.units("ppm"));
-		sample.setOrganismName(entity.getObservationUnit().getGermplasm().getCrop().getCropName());
-		sample.setSpeciesName(entity.getObservationUnit().getGermplasm().getSpecies());
+		if (entity.getConcentration() != null)
+			sample.setConcentration(new Measurement().value(new BigDecimal(entity.getConcentration())).units("ppm"));
+		if (entity.getObservationUnit() != null && entity.getObservationUnit().getGermplasm() != null) {
+			sample.setSpeciesName(entity.getObservationUnit().getGermplasm().getSpecies());
+			if (entity.getObservationUnit().getGermplasm().getCrop() != null)
+				sample.setOrganismName(entity.getObservationUnit().getGermplasm().getCrop().getCropName());
+		}
 		sample.setTaxonomyOntologyReference(new OntologyReference());
 		sample.setTissueType(entity.getTissueType());
 		sample.setTissueTypeOntologyReference(new OntologyReference());
-		sample.setVolume(new Measurement()
-				.value(new BigDecimal(entity.getVolume()))
-				.units("ml"));
+		if (entity.getVolume() != null)
+			sample.setVolume(new Measurement().value(new BigDecimal(entity.getVolume())).units("ml"));
 
 		sample.setColumn(entity.getPlateColumn());
 		sample.setRow(entity.getPlateRow());
 		sample.setWell(entity.getWell());
-		
+
 		return sample;
 	}
 
 	private VendorResultFile convertFromEntity(VendorFileEntity entity) {
 		VendorResultFile file = new VendorResultFile();
 		file.setAdditionalInfo(new HashMap<>());
-		file.setClientSampleIds(entity.getSamples().stream().map(e -> e.getId()).collect(Collectors.toList()));
+		if (entity.getSamples() != null)
+			file.setClientSampleIds(entity.getSamples().stream().map(e -> e.getId()).collect(Collectors.toList()));
 		file.setFileName(entity.getFilename());
 		file.setFileType(entity.getFileType());
 		file.setFileURL(entity.getURL());
@@ -110,12 +112,10 @@ public class VendorSampleService {
 	}
 
 	private VendorOrder convertFromEntity(VendorOrderEntity entity) {
-		VendorOrder order = new VendorOrder()
-				.clientId(entity.getClientPlateDbId())
-				.numberOfSamples(entity.getPlateSubmission().getNumberOfSamples())
-				.orderId(entity.getId())
+		VendorOrder order = new VendorOrder().clientId(entity.getClientPlateDbId())
+				.numberOfSamples(entity.getPlateSubmission().getNumberOfSamples()).orderId(entity.getId())
 				.requiredServiceInfo(entity.getRequiredServiceInfo());
-		if(entity.getServiceIds() != null && !entity.getServiceIds().isEmpty())
+		if (entity.getServiceIds() != null && !entity.getServiceIds().isEmpty())
 			order.setServiceIds(Arrays.asList(entity.getServiceIds().get(0)));
 
 		return order;
@@ -125,8 +125,9 @@ public class VendorSampleService {
 		VendorPlateSubmission response = new VendorPlateSubmission();
 		response.setClientId(entity.getClientId());
 		response.setNumberOfSamples(entity.getNumberOfSamples());
-		response.setPlates(entity.getPlates().stream().map(this::convertFromEntityToSummary).collect(Collectors.toList()));
-		
+		response.setPlates(
+				entity.getPlates().stream().map(this::convertFromEntityToSummary).collect(Collectors.toList()));
+
 		return response;
 	}
 
@@ -141,12 +142,10 @@ public class VendorSampleService {
 
 		spec.setServices(specEntity.getPlatforms().stream().map((platformEntity) -> {
 			VendorSpecificationService service = new VendorSpecificationService()
-					.serviceDescription(platformEntity.getPlatformURL())
-					.serviceId(platformEntity.getId())
+					.serviceDescription(platformEntity.getPlatformURL()).serviceId(platformEntity.getId())
 					.serviceName(platformEntity.getPlatformName())
 					.servicePlatformMarkerType(VendorServicePlatformMarkerTypeEnum.FIXED)
-					.servicePlatformName(platformEntity.getPlatformName())
-					.specificRequirements(new ArrayList<>());
+					.servicePlatformName(platformEntity.getPlatformName()).specificRequirements(new ArrayList<>());
 
 			return service;
 		}).collect(Collectors.toList()));
@@ -170,16 +169,16 @@ public class VendorSampleService {
 		entity.setRequiredServiceInfo(request.getRequiredServiceInfo());
 		entity.setSampleType(request.getSampleType());
 		entity.setServiceIds(request.getServiceIds());
-		
-		if(request.getClientId().contains("reject")) {
+
+		if (request.getClientId() != null && request.getClientId().contains("reject")) {
 			entity.setStatus(StatusEnum.REJECTED);
-		}else {
+		} else {
 			entity.setStatus(StatusEnum.RECEIVED);
 		}
 		entity.setStatusTimeStamp(new Date());
 
 		entity.setPlateSubmission(convertToEntity(request, entity));
-		
+
 		return entity;
 	}
 
@@ -205,26 +204,25 @@ public class VendorSampleService {
 		VendorOrderEntity entity = new VendorOrderEntity();
 		entity.setClientPlateBarcode(request.getClientId());
 		entity.setClientPlateDbId(request.getClientId());
-		entity.setSampleType(SampleTypeEnum.fromValue(request.getSampleType().toString()));
+		entity.setSampleType(request.getSampleType());
 		entity.setStatus(StatusEnum.RECEIVED);
 		entity.setStatusTimeStamp(new Date());
 
 		entity.setPlateSubmission(convertToEntity(request, entity));
-		
+
 		return entity;
 	}
 
-	private VendorPlateSubmissionEntity convertToEntity(VendorPlateSubmissionRequest plates,
-			VendorOrderEntity order) {
+	private VendorPlateSubmissionEntity convertToEntity(VendorPlateSubmissionRequest plates, VendorOrderEntity order) {
 		VendorPlateSubmissionEntity entity = new VendorPlateSubmissionEntity();
 		entity.setClientId(order.getClientPlateDbId());
 		entity.setNumberOfSamples(plates.getNumberOfSamples());
 		entity.setOrder(order);
-		entity.setSampleType(SampleTypeEnum.fromValue(plates.getSampleType().toString()));
+		entity.setSampleType(plates.getSampleType());
 		entity.setPlates(plates.getPlates().stream().map(this::convertToEntity).collect(Collectors.toList()));
 		return entity;
 	}
-	
+
 	public List<VendorOrder> getOrders(@Valid String orderId, @Valid String submissionId, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		List<VendorOrder> orders = new ArrayList<>();
@@ -258,7 +256,7 @@ public class VendorSampleService {
 		}
 		return status;
 	}
-	
+
 	public List<VendorPlate> getPlates(String orderId, Metadata metadata) {
 		List<VendorPlate> plates = new ArrayList<>();
 		if (orderId != null) {
@@ -275,9 +273,9 @@ public class VendorSampleService {
 
 	public VendorPlateSubmission getPlateSubmission(String submissionId) {
 		VendorPlateSubmission response = null;
-		if(submissionId != null) {
+		if (submissionId != null) {
 			Optional<VendorPlateSubmissionEntity> submissionEntity = vendorPlateRepository.findById(submissionId);
-			if(submissionEntity.isPresent()) {
+			if (submissionEntity.isPresent()) {
 				response = convertFromEntity(submissionEntity.get());
 			}
 		}
@@ -289,8 +287,7 @@ public class VendorSampleService {
 		if (orderId != null) {
 			Optional<VendorOrderEntity> orderEntity = vendorOrderRepository.findById(orderId);
 			if (orderEntity.isPresent()) {
-				files = orderEntity.get().getFiles().stream().map(this::convertFromEntity)
-						.collect(Collectors.toList());
+				files = orderEntity.get().getFiles().stream().map(this::convertFromEntity).collect(Collectors.toList());
 				metadata.getPagination().setTotalCount(files.size());
 				metadata.getPagination().setTotalPages(1);
 			}
@@ -312,7 +309,7 @@ public class VendorSampleService {
 
 		VendorOrderSubmission result = new VendorOrderSubmission();
 		result.setOrderId(newEntity.getId());
-		
+
 		return result;
 	}
 
@@ -325,7 +322,7 @@ public class VendorSampleService {
 		VendorOrderEntity newEntity = vendorOrderRepository.save(entity);
 		VendorPlateSubmissionId submissionId = new VendorPlateSubmissionId();
 		submissionId.setSubmissionId(newEntity.getPlateSubmission().getId());
-		
+
 		return submissionId;
 	}
 
@@ -363,10 +360,11 @@ public class VendorSampleService {
 		entity.setMd5sum("8DEA19500BC44D35E2D7B6A68ABA552B");
 		entity.setURL("https://brapi.org/" + entity.getFilename());
 		entity.setOrder(order);
-		if(order.getPlateSubmission() != null && order.getPlateSubmission().getPlates() != null && !order.getPlateSubmission().getPlates().isEmpty()) {
+		if (order.getPlateSubmission() != null && order.getPlateSubmission().getPlates() != null
+				&& !order.getPlateSubmission().getPlates().isEmpty()) {
 			entity.setSamples(order.getPlateSubmission().getPlates().get(0).getSamples());
 		}
-		
+
 		files.add(entity);
 		order.setFiles(files);
 		System.out.println(order.getFiles().get(0).getSamples());

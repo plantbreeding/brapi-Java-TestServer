@@ -40,10 +40,13 @@ public class VariantService {
 
 	public List<Variant> findVariants(VariantsSearchRequest request, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
-		SearchQueryBuilder<VariantEntity> searchQuery = new SearchQueryBuilder<VariantEntity>(VariantEntity.class)
-				.appendList(request.getVariantSetDbIds(), "variantSet.id")
-				.appendList(request.getVariantDbIds(), "variant.id")
-				.appendList(request.getVariantSetDbIds(), "variant.variantSet.id");
+		SearchQueryBuilder<VariantEntity> searchQuery = new SearchQueryBuilder<VariantEntity>(VariantEntity.class);
+		if (request.getCallSetDbIds() != null && !request.getCallSetDbIds().isEmpty()) {
+			searchQuery = searchQuery.join("variantSet.callSets", "callSet")
+					.appendList(request.getCallSetDbIds(), "*callSet.id");
+		}
+		searchQuery = searchQuery.appendList(request.getVariantSetDbIds(), "variantSet.id")
+				.appendList(request.getVariantDbIds(), "id");
 
 		Page<VariantEntity> page = variantRepository.findAllBySearch(searchQuery, pageReq);
 		List<Variant> variants = page.map(this::convertFromEntity).getContent();

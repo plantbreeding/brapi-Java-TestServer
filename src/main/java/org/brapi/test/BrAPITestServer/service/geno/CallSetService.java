@@ -47,12 +47,18 @@ public class CallSetService {
 
 	public List<CallSet> findCallSets(CallSetsSearchRequest request, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
-		SearchQueryBuilder<CallSetEntity> searchQuery = new SearchQueryBuilder<CallSetEntity>(CallSetEntity.class)
-				.appendList(request.getCallSetDbIds(), "id").appendList(request.getCallSetNames(), "callSetName")
+		SearchQueryBuilder<CallSetEntity> searchQuery = new SearchQueryBuilder<CallSetEntity>(CallSetEntity.class);
+		if(request.getVariantSetDbIds() != null) {
+			searchQuery = searchQuery.join("variantSets", "variantSet")
+					.appendList(request.getVariantSetDbIds(), "*variantSet.id");
+		}
+		
+		searchQuery = searchQuery.appendList(request.getCallSetDbIds(), "id")
+				.appendList(request.getCallSetNames(), "callSetName")
 				.appendList(request.getGermplasmDbIds(), "sample.germplasm.id")
 				.appendList(request.getGermplasmNames(), "sample.germplasm.germplasmName")
-				.appendList(request.getSampleDbIds(), "sample.id").appendList(request.getSampleNames(), "sample.name")
-				.appendList(request.getVariantSetDbIds(), "variantSet.id");
+				.appendList(request.getSampleDbIds(), "sample.id")
+				.appendList(request.getSampleNames(), "sample.name");
 
 		Page<CallSetEntity> page = callSetRepository.findAllBySearch(searchQuery, pageReq);
 		List<CallSet> callSets = page.map(this::convertFromEntity).getContent();

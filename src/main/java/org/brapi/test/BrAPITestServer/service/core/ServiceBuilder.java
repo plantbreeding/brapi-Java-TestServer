@@ -25,11 +25,8 @@ public class ServiceBuilder extends ArrayList<Service>{
 		build();
 		
 		String[] pathParts = this.path.split("/");
-		this.path = "";
-		for(int i = 0; i < pathParts.length - 1; i++) {
-			this.path = this.path + '/' + pathParts[i];
-		}
-		this.path = this.path + '/' + newPath;
+		String oldPath = pathParts[pathParts.length - 1].replaceAll("\\{", "\\\\{").replaceAll("\\}", "\\\\}");
+		this.path = this.path.replaceFirst(oldPath, newPath);
 		this.methods.clear();
 		return this;
 	}
@@ -62,7 +59,7 @@ public class ServiceBuilder extends ArrayList<Service>{
 	public ServiceBuilder withSearch() {
 		build();
 		this.add(buildService("search/" + base, Arrays.asList(MethodsEnum.POST)));
-		this.add(buildService("search/" + base, Arrays.asList(MethodsEnum.GET)));
+		this.add(buildService("search/" + base + "/{searchResultsDbId}", Arrays.asList(MethodsEnum.GET)));
 		return this;
 	}
 	public Service buildService(String path, List<MethodsEnum> methods) {

@@ -4,7 +4,7 @@ INSERT INTO germplasm (id, accession_number, acquisition_date, acquisition_sourc
 
 INSERT INTO germplasm_donor (id, donor_accession_number, donor_institute_code, donor_institute_name, germplasmpui, germplasm_id) VALUES('germplasm_donor1', 'A1111111', 'USA999', 'BrAPI Science Institute', 'doi:10.12345/A1111111', 'germplasm1');
 INSERT INTO geojson(id, type) VALUES ('germplasm_origin_geo_1', 'Point');
-INSERT INTO coordinate(id, altitude, latitude, longitude, geojson_id) VALUES ('germplasm_origin_coor_1', 123.0998, -76.55404, 42.53514, 'germplasm_origin_geo_1');
+INSERT INTO coordinate(id, altitude, latitude, longitude, geojson_id) VALUES ('germplasm_origin_coor_1', 123.0998, 42.53514, -76.55404, 'germplasm_origin_geo_1');
 INSERT INTO germplasm_origin (id, coordinate_uncertainty, coordinates_id, germplasm_id) VALUES('germplasm_origin1', '20', 'germplasm_origin_geo_1', 'germplasm1');
 INSERT INTO germplasm_institute (id, institute_address, institute_code, institute_name, institute_type, germplasm_id) VALUES('germplasm_institute1', '123 Main St, Freeville, New York, USA', 'USA999', 'BrAPI Science Institute', 0, 'germplasm1');
 INSERT INTO germplasm_entity_type_of_germplasm_storage_code (germplasm_entity_id, type_of_germplasm_storage_code) VALUES('germplasm1', 0);
@@ -21,7 +21,7 @@ INSERT INTO germplasm (id, accession_number, acquisition_date, acquisition_sourc
 
 INSERT INTO germplasm_donor (id, donor_accession_number, donor_institute_code, donor_institute_name, germplasmpui, germplasm_id) VALUES('germplasm_donor2', 'A2222222', 'USA999', 'BrAPI Science Institute', 'doi:10.12345/A2222222', 'germplasm2');
 INSERT INTO geojson(id, type) VALUES ('germplasm_origin_geo_2', 'Point');
-INSERT INTO coordinate(id, altitude, latitude, longitude, geojson_id) VALUES ('germplasm_origin_coor_2', 123.0998, -76.55404, 42.53514, 'germplasm_origin_geo_2');
+INSERT INTO coordinate(id, altitude, latitude, longitude, geojson_id) VALUES ('germplasm_origin_coor_2', 123.0998, 42.53514, -76.55404, 'germplasm_origin_geo_2');
 INSERT INTO germplasm_origin (id, coordinate_uncertainty, coordinates_id, germplasm_id) VALUES('germplasm_origin2', '20', 'germplasm_origin_geo_2', 'germplasm2');
 INSERT INTO germplasm_institute (id, institute_address, institute_code, institute_name, institute_type, germplasm_id) VALUES('germplasm_institute2', '123 Main St, Freeville, New York, USA', 'USA999', 'BrAPI Science Institute', 0, 'germplasm2');
 INSERT INTO germplasm_entity_type_of_germplasm_storage_code (germplasm_entity_id, type_of_germplasm_storage_code) VALUES('germplasm2', 0);
@@ -38,7 +38,7 @@ INSERT INTO germplasm (id, accession_number, acquisition_date, acquisition_sourc
 
 INSERT INTO germplasm_donor (id, donor_accession_number, donor_institute_code, donor_institute_name, germplasmpui, germplasm_id) VALUES('germplasm_donor3', 'A3333333', 'USA999', 'BrAPI Science Institute', 'doi:10.12345/A3333333', 'germplasm3');
 INSERT INTO geojson(id, type) VALUES ('germplasm_origin_geo_3', 'Point');
-INSERT INTO coordinate(id, altitude, latitude, longitude, geojson_id) VALUES ('germplasm_origin_coor_3', 123.0998, -76.55404, 42.53514, 'germplasm_origin_geo_3');
+INSERT INTO coordinate(id, altitude, latitude, longitude, geojson_id) VALUES ('germplasm_origin_coor_3', 123.0998, 42.53514, -76.55404, 'germplasm_origin_geo_3');
 INSERT INTO germplasm_origin (id, coordinate_uncertainty, coordinates_id, germplasm_id) VALUES('germplasm_origin3', '20', 'germplasm_origin_geo_3', 'germplasm3');
 INSERT INTO germplasm_institute (id, institute_address, institute_code, institute_name, institute_type, germplasm_id) VALUES('germplasm_institute3', '123 Main St, Freeville, New York, USA', 'USA999', 'BrAPI Science Institute', 0, 'germplasm3');
 INSERT INTO germplasm_entity_type_of_germplasm_storage_code (germplasm_entity_id, type_of_germplasm_storage_code) VALUES('germplasm3', 0);

@@ -11,9 +11,13 @@ import io.swagger.model.core.Service;
 public class ServerInfoService {
 
 	static List<Service> services;
-
+	
 	static {
-		services = new ServiceBuilder()
+		services = buildServices();
+	}
+
+	public static List<Service> buildServices(){
+		 return new ServiceBuilder()
 				//CORE
 				.setBase("serviceinfo").GET().build()
 				.setBase("commoncropnames").GET().build()
@@ -26,14 +30,15 @@ public class ServerInfoService {
 				.setBase("studytypes").GET().build()
 				.setBase("trials").GET().POST().addPath("{trialDbId}").GET().PUT().withSearch()
 				//GERMPLASM
-				.setBase("attributes").GET().POST().addPath("{attributeDbId}").GET().PUT().withSearch()
+				.setBase("attributes").GET().POST().addPath("{attributeDbId}").GET().PUT().setPath("categories").GET().withSearch()
 				.setBase("attributevalues").GET().POST().addPath("{attributeValueDbId}").GET().PUT().withSearch()
-				.setBase("breedingmethods").GET().addPath("{breedingmethodDbId}").GET().build()
+				.setBase("breedingmethods").GET().addPath("{breedingMethodDbId}").GET().build()
 				.setBase("crosses").GET().POST().PUT().build()
 				.setBase("plannedcrosses").GET().POST().PUT().build()
-				.setBase("crossingprojects").GET().POST().addPath("{crossingprojectDbId}").GET().PUT().build()
+				.setBase("crossingprojects").GET().POST().addPath("{crossingProjectDbId}").GET().PUT().build()
+				.setBase("seedlots").GET().POST().addPath("transactions").GET().POST().setPath("{seedLotDbId}").GET().PUT().addPath("transactions").GET().build()
 				.setBase("germplasm").GET().POST().addPath("{germplasmDbId}").GET().PUT()
-				  .setPath("mcpd").GET().setPath("pedigree").GET().setPath("progeny").GET().withSearch()
+				  .addPath("mcpd").GET().setPath("pedigree").GET().setPath("progeny").GET().withSearch()
 				//PHENOTYPING
 				.setBase("events").GET().build()
 				.setBase("images").GET().POST().addPath("{imageDbId}").GET().PUT().addPath("imagecontent").PUT().withSearch()
@@ -56,7 +61,8 @@ public class ServerInfoService {
 				.setBase("variants").GET().addPath("{variantDbId}").GET().addPath("calls").GET().withSearch()
 				.setBase("variantsets").GET().addPath("extract").POST().setPath("{variantSetDbId}").GET()
 				  .addPath("calls").GET().setPath("callsets").GET().setPath("variants").GET().withSearch()
-				
+				.setBase("vendor").addPath("specifications").GET().setPath("plates").POST().addPath("{submissionId}").build()
+				.setBase("vendor/orders").GET().POST().addPath("{orderId}").addPath("plates").GET().setPath("results").GET().setPath("status").GET().build()
 				;
 	}
 
@@ -79,6 +85,7 @@ public class ServerInfoService {
 				.serverName("BrAPI Community Test Server").serverDescription("BrAPI Community Test Server");
 
 		info.setCalls(filterCalls(ServerInfoService.services, dataType));
+//		info.setCalls(filterCalls(ServerInfoService.buildServices(), dataType));
 		return info;
 	}
 	

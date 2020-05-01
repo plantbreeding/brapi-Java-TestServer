@@ -82,8 +82,8 @@ public class OntologyService {
 			OntologyEntity ontology = getOntologyEntity(ontologyReference.getOntologyDbId());
 			entity.setOntology(ontology);
 		}
-		entity.setOntologyReference(new ArrayList<>());
 		if (ontologyReference.getDocumentationLinks() != null) {
+			entity.setOntologyReference(new ArrayList<>());
 			for (OntologyReferenceDocumentationLinks docLink : ontologyReference.getDocumentationLinks()) {
 				OntologyReferenceEntity ref = new OntologyReferenceEntity();
 				ref.setType(docLink.getType());
@@ -94,21 +94,23 @@ public class OntologyService {
 	}
 
 	public OntologyReference convertFromEntity(OntologyReferenceHolder entity) {
-		OntologyReference ontologyReference = new OntologyReference();
+		OntologyReference ontologyReference = null;
 		if (entity.getOntology() != null) {
+			ontologyReference = new OntologyReference();
 			ontologyReference.setOntologyDbId(entity.getOntology().getId());
 			ontologyReference.setOntologyName(entity.getOntology().getOntologyName());
 			ontologyReference.setVersion(entity.getOntology().getVersion());
-		}
-		if (entity.getOntologyReference() != null) {
-			ontologyReference.setDocumentationLinks(new ArrayList<>());
-			for (OntologyReferenceEntity refEntity : entity.getOntologyReference()) {
-				OntologyReferenceDocumentationLinks docLink = new OntologyReferenceDocumentationLinks();
-				docLink.setType(refEntity.getType());
-				docLink.setURL(refEntity.getURL());
-				ontologyReference.getDocumentationLinks().add(docLink);
+			if (entity.getOntologyReference() != null) {
+				ontologyReference.setDocumentationLinks(new ArrayList<>());
+				for (OntologyReferenceEntity refEntity : entity.getOntologyReference()) {
+					OntologyReferenceDocumentationLinks docLink = new OntologyReferenceDocumentationLinks();
+					docLink.setType(refEntity.getType());
+					docLink.setURL(refEntity.getURL());
+					ontologyReference.getDocumentationLinks().add(docLink);
+				}
 			}
 		}
+
 		return ontologyReference;
 	}
 }

@@ -33,7 +33,6 @@ import org.springframework.stereotype.Service;
 
 import io.swagger.model.IndexPagination;
 import io.swagger.model.Metadata;
-import io.swagger.model.WSMIMEDataTypes;
 import io.swagger.model.pheno.Observation;
 import io.swagger.model.pheno.ObservationTableHeaderRowEnum;
 import io.swagger.model.pheno.ObservationTableObservationVariables;
@@ -110,10 +109,9 @@ public class ObservationUnitService {
 		return findObservationUnits(request, metadata);
 	}
 
-	public ObservationUnitTable findObservationUnitsTable(WSMIMEDataTypes accept, @Valid String observationUnitDbId,
-			@Valid String germplasmDbId, @Valid String observationVariableDbId, @Valid String studyDbId,
-			@Valid String locationDbId, @Valid String trialDbId, @Valid String programDbId, @Valid String seasonDbId,
-			@Valid String observationLevel) {
+	public ObservationUnitTable findObservationUnitsTable(String accept, String observationUnitDbId,
+			String germplasmDbId, String observationVariableDbId, String studyDbId, String locationDbId,
+			String trialDbId, String programDbId, String seasonDbId, String observationLevel) {
 		List<ObservationUnit> observationUnits = findObservationUnits(null, germplasmDbId, studyDbId, locationDbId,
 				trialDbId, programDbId, seasonDbId, null, null, null, true, null, null, null);
 		ObservationVariableSearchRequest request = new ObservationVariableSearchRequest();
@@ -420,17 +418,21 @@ public class ObservationUnitService {
 		List<List<String>> data = new ArrayList<>();
 		for (ObservationUnit unit : observationUnits) {
 			List<String> row = new ArrayList<>();
-			row.add(unit.getObservations().get(0).getSeason().getYear().toString());
-			row.add(unit.getStudyDbId());
-			row.add(unit.getStudyName());
-			row.add(unit.getLocationDbId());
-			row.add(unit.getLocationName());
-			row.add(unit.getGermplasmDbId());
-			row.add(unit.getGermplasmName());
-			row.add(unit.getObservationUnitDbId());
-			row.add(unit.getObservationUnitPosition().getEntryType().toString());
-			row.add(unit.getObservationUnitPosition().getPositionCoordinateX());
-			row.add(unit.getObservationUnitPosition().getPositionCoordinateY());
+			if (unit.getObservations() != null && !unit.getObservations().isEmpty()
+					&& unit.getObservations().get(0).getSeason() != null)
+				row.add(printIfNotNull(unit.getObservations().get(0).getSeason().getYear()));
+			row.add(printIfNotNull(unit.getStudyDbId()));
+			row.add(printIfNotNull(unit.getStudyName()));
+			row.add(printIfNotNull(unit.getLocationDbId()));
+			row.add(printIfNotNull(unit.getLocationName()));
+			row.add(printIfNotNull(unit.getGermplasmDbId()));
+			row.add(printIfNotNull(unit.getGermplasmName()));
+			row.add(printIfNotNull(unit.getObservationUnitDbId()));
+			if (unit.getObservationUnitPosition() != null) {
+				row.add(printIfNotNull(unit.getObservationUnitPosition().getEntryType()));
+				row.add(printIfNotNull(unit.getObservationUnitPosition().getPositionCoordinateX()));
+				row.add(printIfNotNull(unit.getObservationUnitPosition().getPositionCoordinateY()));
+			}
 
 			for (ObservationVariable var : variables) {
 				Optional<Observation> obsOption = unit.getObservations().stream().filter((obs) -> {
@@ -447,9 +449,16 @@ public class ObservationUnitService {
 		return data;
 	}
 
+	private String printIfNotNull(Object toPrint) {
+		if (toPrint == null) {
+			return "";
+		}
+		return toPrint.toString();
+	}
+
 	private List<ObservationTableHeaderRowEnum> buildHeaderRow() {
-		List<ObservationTableHeaderRowEnum> headers = Arrays.asList(ObservationTableHeaderRowEnum.values());
-		headers.remove(ObservationTableHeaderRowEnum.OBSERVATIONTIMESTAMP);
+		List<ObservationTableHeaderRowEnum> headers = Arrays.asList(ObservationTableHeaderRowEnum.values()).stream()
+				.filter(h -> h != ObservationTableHeaderRowEnum.OBSERVATIONTIMESTAMP).collect(Collectors.toList());
 		return headers;
 	}
 

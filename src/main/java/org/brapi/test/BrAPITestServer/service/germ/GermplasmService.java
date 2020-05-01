@@ -51,6 +51,7 @@ import io.swagger.model.germ.GermplasmNewRequestDonors;
 import io.swagger.model.germ.GermplasmNewRequestSynonyms;
 import io.swagger.model.germ.GermplasmOrigin;
 import io.swagger.model.germ.GermplasmSearchRequest;
+import io.swagger.model.germ.GermplasmStorageTypes;
 import io.swagger.model.germ.ParentType;
 import io.swagger.model.germ.PedigreeNode;
 import io.swagger.model.germ.PedigreeNodeParents;
@@ -251,7 +252,11 @@ public class GermplasmService {
 		germ.setSeedSourceDescription(entity.getSeedSourceDescription());
 		germ.setSpecies(entity.getSpecies());
 		germ.setSpeciesAuthority(entity.getSpeciesAuthority());
-		germ.setStorageTypes(entity.getTypeOfGermplasmStorageCode());
+		if (entity.getTypeOfGermplasmStorageCode() != null) {
+			germ.setStorageTypes(entity.getTypeOfGermplasmStorageCode().stream().map(e -> {
+				return new GermplasmStorageTypes(e);
+			}).collect(Collectors.toList()));
+		}
 		germ.setSubtaxa(entity.getSubtaxa());
 		germ.setSubtaxaAuthority(entity.getSubtaxaAuthority());
 		if (entity.getSynonyms() != null)
@@ -319,7 +324,8 @@ public class GermplasmService {
 		if (request.getSpeciesAuthority() != null)
 			entity.setSpeciesAuthority(request.getSpeciesAuthority());
 		if (request.getStorageTypes() != null)
-			entity.setTypeOfGermplasmStorageCode(request.getStorageTypes());
+			entity.setTypeOfGermplasmStorageCode(
+					request.getStorageTypes().stream().map(st -> st.getValue()).collect(Collectors.toList()));
 		if (request.getSubtaxa() != null)
 			entity.setSubtaxa(request.getSubtaxa());
 		if (request.getSubtaxaAuthority() != null)
@@ -616,7 +622,7 @@ public class GermplasmService {
 			site.setLatitudeDecimal(lat.toPlainString());
 			site.setLatitudeDegrees(GeoJSONUtility.getDegreesStr(lat));
 			site.setLongitudeDecimal(lon.toPlainString());
-			site.setLatitudeDegrees(GeoJSONUtility.getDegreesStr(lon));
+			site.setLongitudeDegrees(GeoJSONUtility.getDegreesStr(lon));
 			if (getCollectingInstitutes(entity.getInstitutes()).size() > 0)
 				site.setLocationDescription(
 						getCollectingInstitutes(entity.getInstitutes()).get(0).getInstituteAddress());

@@ -128,7 +128,7 @@ public interface ObservationsApi {
 	@RequestMapping(value = "/observations/table", produces = { "application/json", "text/csv",
 			"text/tsv" }, method = RequestMethod.GET)
 	ResponseEntity<ObservationTableResponse> observationsTableGet(
-			@ApiParam(value = "The requested content type which should be returned by the server", required = true) @RequestHeader(value = "Accept", required = true) WSMIMEDataTypes accept,
+			@ApiParam(value = "The requested content type which should be returned by the server", required = true) @RequestHeader(value = "Accept", required = false) String accept,
 			@ApiParam(value = "The unique ID of an Observation Unit") @Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
 			@ApiParam(value = "The unique ID of a germplasm (accession) to filter on") @Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
 			@ApiParam(value = "The unique ID of an observation variable") @Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,

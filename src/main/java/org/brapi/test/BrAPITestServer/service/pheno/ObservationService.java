@@ -28,7 +28,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Metadata;
-import io.swagger.model.WSMIMEDataTypes;
 import io.swagger.model.pheno.Observation;
 import io.swagger.model.pheno.ObservationNewRequest;
 import io.swagger.model.pheno.ObservationSearchRequest;
@@ -104,16 +103,16 @@ public class ObservationService {
 		return findObservations(request, metadata);
 	}
 
-	public ObservationTable findObservationsTable(WSMIMEDataTypes accept, String observationUnitDbId,
-			String germplasmDbId, String observationVariableDbId, String studyDbId, String locationDbId,
-			String trialDbId, String programDbId, String seasonDbId, OffsetDateTime observationTimeStampRangeStart,
+	public ObservationTable findObservationsTable(String accept, String observationUnitDbId, String germplasmDbId,
+			String observationVariableDbId, String studyDbId, String locationDbId, String trialDbId, String programDbId,
+			String seasonDbId, OffsetDateTime observationTimeStampRangeStart,
 			OffsetDateTime observationTimeStampRangeEnd) {
 		List<Observation> observations = findObservations(null, observationUnitDbId, germplasmDbId,
 				observationVariableDbId, studyDbId, locationDbId, trialDbId, programDbId, seasonDbId, null, null, null,
 				observationTimeStampRangeStart, observationTimeStampRangeEnd, null, null, null);
 		ObservationVariableSearchRequest request = new ObservationVariableSearchRequest();
-		request.setObservationVariableDbIds(
-				observations.stream().map(ou -> ou.getObservationVariableDbId()).collect(Collectors.toList()));
+		request.setObservationVariableDbIds(observations.stream().map(ou -> ou.getObservationVariableDbId())
+				.filter(vid -> vid != null).distinct().collect(Collectors.toList()));
 		List<ObservationVariable> variables = observationVariableService.findObservationVariables(request, null);
 		ObservationTable table = new ObservationTable();
 		table.setData(buildDataMatrix(observations, variables));
@@ -304,12 +303,13 @@ public class ObservationService {
 		List<List<String>> data = new ArrayList<>();
 		for (Observation obs : observations) {
 			List<String> row = new ArrayList<>();
-			row.add(obs.getSeason().getYear().toString());
-			row.add(obs.getStudyDbId());
-			row.add(obs.getGermplasmDbId());
-			row.add(obs.getGermplasmName());
-			row.add(obs.getObservationUnitDbId());
-			row.add(obs.getObservationTimeStamp().toString());
+			if (obs.getSeason() != null)
+				row.add(printIfNotNull(obs.getSeason().getYear()));
+			row.add(printIfNotNull(obs.getStudyDbId()));
+			row.add(printIfNotNull(obs.getGermplasmDbId()));
+			row.add(printIfNotNull(obs.getGermplasmName()));
+			row.add(printIfNotNull(obs.getObservationUnitDbId()));
+			row.add(printIfNotNull(obs.getObservationTimeStamp()));
 
 			for (ObservationVariable var : variables) {
 				if (obs.getObservationVariableDbId() == var.getObservationVariableDbId()) {
@@ -321,6 +321,13 @@ public class ObservationService {
 			data.add(row);
 		}
 		return data;
+	}
+
+	private String printIfNotNull(Object toPrint) {
+		if (toPrint == null) {
+			return "";
+		}
+		return toPrint.toString();
 	}
 
 	private List<ObservationTableHeaderRowEnum> buildHeaderRow() {

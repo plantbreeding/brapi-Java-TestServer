@@ -104,7 +104,7 @@ public class GeoJSONUtility {
 		BigDecimal degrees = value.setScale(0, RoundingMode.FLOOR);
 		BigDecimal minutes = value.subtract(degrees).multiply(sixty).setScale(0, RoundingMode.FLOOR);
 		BigDecimal seconds = value.subtract(degrees).multiply(sixty).subtract(minutes).multiply(sixty).setScale(3, RoundingMode.FLOOR);
-		return degrees.multiply(sign).toPlainString() + "° " + minutes.toPlainString() + "' " + seconds.toPlainString() + "\"";
+		return degrees.multiply(sign).toPlainString() + " " + minutes.toPlainString() + "' " + seconds.toPlainString() + "\"";
 	}
 
 	public static BigDecimal getLon(GeoJSONEntity entity) {
