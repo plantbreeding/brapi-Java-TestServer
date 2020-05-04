@@ -28,7 +28,7 @@ import javax.validation.Valid;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
 @Api(value = "variantsets", description = "the variantsets API")
-public interface VariantsetsApi {
+public interface VariantSetsApi {
 
 	@ApiOperation(value = "Create new `VariantSet` based on search results", nickname = "variantsetsExtractPost", notes = "Will perform a search for `Calls` which match the search criteria in `variantSetsExtractRequest`. The results of the search will be used to create a new `VariantSet` on the server. The new `VariantSet` will be returned.", response = VariantSetResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Variant Sets", })

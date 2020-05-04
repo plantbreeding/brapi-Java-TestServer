@@ -25,7 +25,7 @@ import javax.validation.Valid;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
 @Api(value = "callsets", description = "the callsets API")
-public interface CallsetsApi {
+public interface CallSetsApi {
 
 	@ApiOperation(value = "Gets a list of `Calls` associated with a `CallSet`.", nickname = "callsetsCallSetDbIdCallsGet", notes = "Gets a list of `Calls` associated with a `CallSet`.  ** THIS ENDPOINT USES TOKEN BASED PAGING **", response = CallsListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Call Sets", })

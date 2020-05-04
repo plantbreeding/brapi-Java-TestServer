@@ -23,7 +23,7 @@ import javax.validation.Valid;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
 @Api(value = "markerpositions", description = "the markerpositions API")
-public interface MarkerpositionsApi {
+public interface MarkerPositionsApi {
 
 	@ApiOperation(value = "Get marker position info", nickname = "markerpositionsGet", notes = "Get marker position information, based on Map, Linkage Group, and Marker ID", response = MarkerPositionsListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Genome Maps", })

@@ -20,7 +20,7 @@ import javax.validation.Valid;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
 @Api(value = "serverinfo", description = "the serverinfo API")
-public interface ServerinfoApi {
+public interface ServerInfoApi {
 
 	@ApiOperation(value = "Get the list of implemented Calls", nickname = "serverinfoGet", notes = "Implementation Notes  Having a consistent structure for the path string of each call is very  important for teams to be able to connect and find errors. Read more on Github.  Here are the rules for the path of each call that should be returned  Every word in the call path should match the documentation exactly, both in  spelling and capitalization. Note that path strings are all lower case, but  path parameters are camel case.  Each path should start relative to \\\"/\\\" and therefore should not include \\\"/\\\"  No leading or trailing slashes (\\\"/\\\")   Path parameters are wrapped in curly braces (\\\"{}\\\"). The name of the path parameter  should be spelled exactly as it is specified in the documentation.  Examples   GOOD   \"call\": \"germplasm/{germplasmDbId}/pedigree\"   BAD    \"call\": \"germplasm/{id}/pedigree\"  BAD    \"call\": \"germplasm/{germplasmDBid}/pedigree\"   BAD    \"call\": \"brapi/v2/germplasm/{germplasmDbId}/pedigree\"   BAD    \"call\": \"/germplasm/{germplasmDbId}/pedigree/\"   BAD    \"call\": \"germplasm/<germplasmDbId>/pedigree\"", response = ServerInfoResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Server Info", })

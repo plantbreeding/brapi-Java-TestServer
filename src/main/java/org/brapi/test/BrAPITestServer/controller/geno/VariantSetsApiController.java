@@ -16,7 +16,7 @@ import io.swagger.model.geno.VariantSetsSearchRequest;
 import io.swagger.model.geno.VariantsListResponse;
 import io.swagger.model.geno.VariantsListResponseResult;
 
-import io.swagger.api.geno.VariantsetsApi;
+import io.swagger.api.geno.VariantSetsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
@@ -40,9 +40,9 @@ import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
 @Controller
-public class VariantsetsApiController extends BrAPIController implements VariantsetsApi {
+public class VariantSetsApiController extends BrAPIController implements VariantSetsApi {
 
-	private static final Logger log = LoggerFactory.getLogger(VariantsetsApiController.class);
+	private static final Logger log = LoggerFactory.getLogger(VariantSetsApiController.class);
 
 	private final CallService callService;
 	private final CallSetService callSetService;
@@ -52,7 +52,7 @@ public class VariantsetsApiController extends BrAPIController implements Variant
 	private final HttpServletRequest request;
 
 	@Autowired
-	public VariantsetsApiController(CallService callService, CallSetService callSetService,
+	public VariantSetsApiController(CallService callService, CallSetService callSetService,
 			VariantService variantService, VariantSetService variantSetService, HttpServletRequest request) {
 		this.callService = callService;
 		this.callSetService = callSetService;

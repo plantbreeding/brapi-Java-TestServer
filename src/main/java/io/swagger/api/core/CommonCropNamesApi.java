@@ -19,7 +19,7 @@ import javax.validation.Valid;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
 @Api(value = "commoncropnames", description = "the commoncropnames API")
-public interface CommoncropnamesApi {
+public interface CommonCropNamesApi {
 
 	@ApiOperation(value = "Get the Common Crop Names", nickname = "commoncropnamesGet", notes = "List the common crop names for the crops available in a database server.   This call is ** required ** for multi-crop systems where data from multiple  crops may be stored in the same database server. A distinct database server  is defined by everything in the URL before \"/brapi/v2\", including host  name and base path.  This call is recommended for single crop systems to be compatible with  multi-crop clients. For a single crop system the response should contain  an array with exactly 1 element.   The common crop name can be used as a search parameter for Programs,  Studies, and Germplasm.", response = CommonCropNamesResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Common Crop Names", })

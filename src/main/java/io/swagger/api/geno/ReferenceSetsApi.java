@@ -24,7 +24,7 @@ import javax.validation.Valid;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
 @Api(value = "referencesets", description = "the referencesets API")
-public interface ReferencesetsApi {
+public interface ReferenceSetsApi {
 
 	@ApiOperation(value = "Gets a list of `ReferenceSets`.", nickname = "referencesetsGet", notes = "Gets a filtered list of `ReferenceSets`.", response = ReferenceSetsListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Reference Sets", })

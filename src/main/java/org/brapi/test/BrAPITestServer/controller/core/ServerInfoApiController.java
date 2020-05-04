@@ -3,7 +3,7 @@ package org.brapi.test.BrAPITestServer.controller.core;
 import io.swagger.model.core.ServerInfoResponse;
 import io.swagger.model.WSMIMEDataTypes;
 import io.swagger.model.core.ServerInfo;
-import io.swagger.api.core.ServerinfoApi;
+import io.swagger.api.core.ServerInfoApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.core.ServerInfoService;
@@ -18,16 +18,16 @@ import javax.servlet.http.HttpServletRequest;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
 @Controller
-public class ServerinfoApiController extends BrAPIController implements ServerinfoApi {
+public class ServerInfoApiController extends BrAPIController implements ServerInfoApi {
 
-	private static final Logger log = LoggerFactory.getLogger(ServerinfoApiController.class);
+	private static final Logger log = LoggerFactory.getLogger(ServerInfoApiController.class);
 
 	private final ServerInfoService serverInfoService;
 
 	private final HttpServletRequest request;
 
 	@org.springframework.beans.factory.annotation.Autowired
-	public ServerinfoApiController(ServerInfoService serverInfoService, HttpServletRequest request) {
+	public ServerInfoApiController(ServerInfoService serverInfoService, HttpServletRequest request) {
 		this.serverInfoService = serverInfoService;
 		this.request = request;
 	}

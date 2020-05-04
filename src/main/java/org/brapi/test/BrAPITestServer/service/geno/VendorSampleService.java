@@ -43,7 +43,6 @@ import io.swagger.model.geno.VendorPlateSubmissionId;
 import io.swagger.model.geno.VendorPlateSubmissionPlates;
 import io.swagger.model.geno.VendorPlateSubmissionRequest;
 import io.swagger.model.geno.VendorPlateSubmissionRequestPlates;
-import io.swagger.model.geno.VendorPlateSubmissionRequest.SampleTypeEnum;
 import io.swagger.model.geno.VendorResultFile;
 import io.swagger.model.geno.VendorSample;
 import io.swagger.model.geno.VendorServicePlatformMarkerTypeEnum;

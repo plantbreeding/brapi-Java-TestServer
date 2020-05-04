@@ -9,7 +9,7 @@ import io.swagger.model.geno.CallSetsSearchRequest;
 import io.swagger.model.geno.CallsListResponse;
 import io.swagger.model.geno.CallsListResponseResult;
 
-import io.swagger.api.geno.CallsetsApi;
+import io.swagger.api.geno.CallSetsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
@@ -31,9 +31,9 @@ import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
 @Controller
-public class CallsetsApiController extends BrAPIController implements CallsetsApi {
+public class CallSetsApiController extends BrAPIController implements CallSetsApi {
 
-	private static final Logger log = LoggerFactory.getLogger(CallsetsApiController.class);
+	private static final Logger log = LoggerFactory.getLogger(CallSetsApiController.class);
 
 	private final CallSetService callSetService;
 	private final CallService callService;
@@ -41,7 +41,7 @@ public class CallsetsApiController extends BrAPIController implements CallsetsAp
 	private final HttpServletRequest request;
 
 	@Autowired
-	public CallsetsApiController(CallSetService callSetService, CallService callService, HttpServletRequest request) {
+	public CallSetsApiController(CallSetService callSetService, CallService callService, HttpServletRequest request) {
 		this.callSetService = callSetService;
 		this.callService = callService;
 		this.request = request;

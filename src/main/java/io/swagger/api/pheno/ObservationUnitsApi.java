@@ -28,7 +28,7 @@ import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:22.556Z[GMT]")
 @Api(value = "observationunits", description = "the observationunits API")
-public interface ObservationunitsApi {
+public interface ObservationUnitsApi {
 
 	@ApiOperation(value = "Get a filtered set of Observation Units", nickname = "observationunitsGet", notes = "Get a filtered set of Observation Units", response = ObservationUnitListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Observation Units", })

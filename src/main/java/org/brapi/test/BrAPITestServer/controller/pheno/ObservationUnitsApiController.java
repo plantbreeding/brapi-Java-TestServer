@@ -12,8 +12,8 @@ import io.swagger.model.pheno.ObservationLevelListResponseResult;
 import io.swagger.model.pheno.ObservationUnit;
 import io.swagger.model.pheno.ObservationUnitHierarchyLevel;
 import io.swagger.model.pheno.ObservationUnitListResponseResult;
-import io.swagger.api.pheno.ObservationlevelsApi;
-import io.swagger.api.pheno.ObservationunitsApi;
+import io.swagger.api.pheno.ObservationLevelsApi;
+import io.swagger.api.pheno.ObservationUnitsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
@@ -36,17 +36,17 @@ import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:22.556Z[GMT]")
 @Controller
-public class ObservationunitsApiController extends BrAPIController
-		implements ObservationunitsApi, ObservationlevelsApi {
+public class ObservationUnitsApiController extends BrAPIController
+		implements ObservationUnitsApi, ObservationLevelsApi {
 
-	private static final Logger log = LoggerFactory.getLogger(ObservationunitsApiController.class);
+	private static final Logger log = LoggerFactory.getLogger(ObservationUnitsApiController.class);
 
 	private final ObservationUnitService observationUnitService;
 
 	private final HttpServletRequest request;
 
 	@Autowired
-	public ObservationunitsApiController(ObservationUnitService observationUnitService, HttpServletRequest request) {
+	public ObservationUnitsApiController(ObservationUnitService observationUnitService, HttpServletRequest request) {
 		this.observationUnitService = observationUnitService;
 		this.request = request;
 	}

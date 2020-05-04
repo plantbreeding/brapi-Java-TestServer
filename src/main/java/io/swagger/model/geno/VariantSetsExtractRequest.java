@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.SearchRequestParametersStudies;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +16,7 @@ import javax.validation.Valid;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
-public class VariantSetsExtractRequest extends SearchRequestParametersStudies  {
+public class VariantSetsExtractRequest {
   @JsonProperty("callSetDbIds")
   @Valid
   private List<String> callSetDbIds = null;

@@ -6,7 +6,7 @@ import io.swagger.model.geno.MarkerPositionsListResponse;
 import io.swagger.model.geno.MarkerPositionsListResponseResult;
 import io.swagger.model.geno.MarkerPositionSearchRequest;
 
-import io.swagger.api.geno.MarkerpositionsApi;
+import io.swagger.api.geno.MarkerPositionsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
@@ -26,16 +26,16 @@ import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
 @Controller
-public class MarkerpositionsApiController extends BrAPIController implements MarkerpositionsApi {
+public class MarkerPositionsApiController extends BrAPIController implements MarkerPositionsApi {
 
-	private static final Logger log = LoggerFactory.getLogger(MarkerpositionsApiController.class);
+	private static final Logger log = LoggerFactory.getLogger(MarkerPositionsApiController.class);
 
 	private final MarkerPositionService markerPositionService;
 
 	private final HttpServletRequest request;
 
 	@org.springframework.beans.factory.annotation.Autowired
-	public MarkerpositionsApiController(MarkerPositionService markerPositionService, HttpServletRequest request) {
+	public MarkerPositionsApiController(MarkerPositionService markerPositionService, HttpServletRequest request) {
 		this.markerPositionService = markerPositionService;
 		this.request = request;
 	}

@@ -7,7 +7,7 @@ import io.swagger.model.geno.ReferenceSetsListResponseResult;
 import io.swagger.model.geno.ReferenceSetsSearchRequest;
 import io.swagger.model.geno.ReferenceSetsSingleResponse;
 
-import io.swagger.api.geno.ReferencesetsApi;
+import io.swagger.api.geno.ReferenceSetsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
@@ -28,7 +28,7 @@ import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
 @Controller
-public class ReferenceSetsApiController extends BrAPIController implements ReferencesetsApi {
+public class ReferenceSetsApiController extends BrAPIController implements ReferenceSetsApi {
 
 	private static final Logger log = LoggerFactory.getLogger(ReferenceSetsApiController.class);
 

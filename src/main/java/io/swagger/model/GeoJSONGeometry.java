@@ -4,6 +4,6 @@ package io.swagger.model;
 /**
 * OneOfgeoJSONGeometry
 */
-public interface GeoJSONGeometry {
+interface GeoJSONGeometry {
 
 }

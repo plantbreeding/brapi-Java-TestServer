@@ -3,7 +3,7 @@ package org.brapi.test.BrAPITestServer.controller.core;
 import io.swagger.model.Metadata;
 import io.swagger.model.core.CommonCropNamesResponse;
 import io.swagger.model.core.CommonCropNamesResponseResult;
-import io.swagger.api.core.CommoncropnamesApi;
+import io.swagger.api.core.CommonCropNamesApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.core.CropService;
@@ -21,15 +21,15 @@ import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
 @Controller
-public class CommoncropnamesApiController extends BrAPIController implements CommoncropnamesApi {
+public class CommonCropNamesApiController extends BrAPIController implements CommonCropNamesApi {
 
-	private static final Logger log = LoggerFactory.getLogger(CommoncropnamesApiController.class);
+	private static final Logger log = LoggerFactory.getLogger(CommonCropNamesApiController.class);
 
 	private final CropService cropService;
 	private final HttpServletRequest request;
 
 	@Autowired
-	public CommoncropnamesApiController(CropService cropService, HttpServletRequest request) {
+	public CommonCropNamesApiController(CropService cropService, HttpServletRequest request) {
 		this.cropService = cropService;
 		this.request = request;
 	}
