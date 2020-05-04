@@ -1,9 +1,15 @@
 package org.brapi.test.BrAPITestServer.model.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -11,6 +17,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name="image")
 public class ImageEntity extends BaseEntity{
+	@ElementCollection
+	private List<String> additionalInfo;
 	@Column
 	private byte[] imageData;
 	@ManyToOne(cascade=CascadeType.DETACH)
@@ -43,9 +51,21 @@ public class ImageEntity extends BaseEntity{
 	private Float longitude;
 	@Column
 	private Float latitude;
-	
-	
-	
+
+	public Map<String, String> getAdditionalInfo() {
+		Map<String, String> map = new HashMap<>();
+		for(String entry: additionalInfo) {
+			String[] splitEntry = entry.split("-:-");
+			map.put(splitEntry[0], splitEntry[1]);
+		}
+		return map;
+	}
+	public void setAdditionalInfo(Map<String, String> additionalInfo) {
+		this.additionalInfo = new ArrayList<>();
+		for(Entry<String, String> entry: additionalInfo.entrySet()) {
+			this.additionalInfo.add(entry.getKey() + "-:-" + entry.getValue());
+		}
+	}
 	public String getCopyright() {
 		return copyright;
 	}

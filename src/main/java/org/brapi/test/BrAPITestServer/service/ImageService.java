@@ -135,7 +135,9 @@ public class ImageService {
 	}
 
 	private void updateEntity(ImageEntity entity, NewImageRequest image) {
-
+		if (image.getAdditionalInfo() != null)
+			entity.setAdditionalInfo(image.getAdditionalInfo());
+		
 		if (image.getObservationUnitDbId() != null && !image.getObservationUnitDbId().isEmpty()) {
 			Optional<ObservationUnitEntity> unitOption = this.observationUnitRepository
 					.findById(image.getObservationUnitDbId());
@@ -173,7 +175,7 @@ public class ImageService {
 
 	private Image convertFromEntiy(ImageEntity entity) {
 		Image img = new Image();
-		img.setAdditionalInfo(new HashMap<String, String>());
+		img.setAdditionalInfo(entity.getAdditionalInfo());
 		img.setCopyright(entity.getCopyright());
 		img.setDescription(entity.getDescription());
 		img.setImageDbId(entity.getId());
