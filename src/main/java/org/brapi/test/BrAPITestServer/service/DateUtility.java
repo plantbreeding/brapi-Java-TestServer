@@ -4,8 +4,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.OffsetDateTime;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
 
 public class DateUtility {
@@ -64,6 +65,7 @@ public class DateUtility {
 	public static Date toDate(LocalDate localDate) {
 		if(localDate == null)
 			return null;
-		return new Date(localDate.toEpochDay());
+		ZoneId defaultZoneId = ZoneId.systemDefault();
+		return Date.from(localDate.atStartOfDay(defaultZoneId).toInstant());
 	}
 }

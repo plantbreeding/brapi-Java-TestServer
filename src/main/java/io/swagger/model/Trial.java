@@ -11,7 +11,7 @@ import io.swagger.model.TrialStudies;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.threeten.bp.LocalDate;
+import java.time.LocalDate;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 

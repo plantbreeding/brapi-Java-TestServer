@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.threeten.bp.OffsetDateTime;
+import java.time.OffsetDateTime;
 import org.brapi.test.BrAPITestServer.service.DateUtility;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;

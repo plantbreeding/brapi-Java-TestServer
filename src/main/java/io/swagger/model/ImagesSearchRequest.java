@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.GeoJSON;
 import java.util.ArrayList;
 import java.util.List;
-import org.threeten.bp.LocalDate;
+import java.time.LocalDate;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 
