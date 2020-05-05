@@ -203,6 +203,8 @@ public class ImageService {
 			entity.setName(image.getImageName());
 		if (image.getMimeType() != null)
 			entity.setImageMIMEType(image.getMimeType());
+		if (image.getImageURL() != null)
+			entity.setImageURL(image.getImageURL());
 		if (image.getImageWidth() != null)
 			entity.setImageWidth(image.getImageWidth());
 		if (image.getObservationDbIds() != null) {
