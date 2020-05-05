@@ -20,7 +20,18 @@ public class CallEntity extends BrAPIPrimaryEntity {
 	private String phaseSet;
 	@ManyToOne
 	private VariantEntity variant;
-	
+
+	public CallEntity() {
+		super();
+	}
+	public CallEntity(CallEntity call) {
+		this.setCallSet(call.getCallSet());
+		this.setGenotype(call.getGenotype());
+		this.setGenotypeLikelihood(call.getGenotypeLikelihood());
+		this.setId(call.getId());
+		this.setPhaseSet(call.getPhaseSet());
+		this.setVariant(call.getVariant());
+	}
 	public CallSetEntity getCallSet() {
 		return callSet;
 	}

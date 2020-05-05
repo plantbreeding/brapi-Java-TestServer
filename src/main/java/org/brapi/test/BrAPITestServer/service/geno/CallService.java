@@ -2,6 +2,7 @@ package org.brapi.test.BrAPITestServer.service.geno;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.brapi.test.BrAPITestServer.model.entity.geno.CallEntity;
 import org.brapi.test.BrAPITestServer.repository.geno.CallRepository;
@@ -44,18 +45,22 @@ public class CallService {
 	}
 
 	public CallsListResponseResult findCalls(CallsSearchRequest request, Metadata metadata) {
+		List<Call> calls = findCallEntities(request, metadata).stream().map(e -> {
+			return convertFromEntityWithFormatting(e, request);
+		}).collect(Collectors.toList());
+		CallsListResponseResult result = buildResult(request, calls);
+		return result;
+	}
+
+	public List<CallEntity> findCallEntities(CallsSearchRequest request, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<CallEntity> searchQuery = new SearchQueryBuilder<CallEntity>(CallEntity.class)
 				.appendList(request.getCallSetDbIds(), "callSet.id").appendList(request.getVariantDbIds(), "variant.id")
 				.appendList(request.getVariantSetDbIds(), "variant.variantSet.id");
 
 		Page<CallEntity> page = callRepository.findAllBySearch(searchQuery, pageReq);
-		List<Call> calls = page.map(e -> {
-			return convertFromEntityWithFormatting(e, request);
-		}).getContent();
-		CallsListResponseResult result = buildResult(request, calls);
 		PagingUtility.calculateMetaData(metadata, page);
-		return result;
+		return page.getContent();
 	}
 
 	private CallsListResponseResult buildResult(CallsSearchRequest request, List<Call> calls) {
@@ -102,6 +107,10 @@ public class CallService {
 			call.setVariantName(entity.getVariant().getVariantName());
 		}
 		return call;
+	}
+
+	public void save(List<CallEntity> entities) {
+		callRepository.saveAll(entities);
 	}
 
 }

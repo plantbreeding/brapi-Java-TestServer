@@ -46,6 +46,10 @@ public class CallSetService {
 	}
 
 	public List<CallSet> findCallSets(CallSetsSearchRequest request, Metadata metadata) {
+		return findCallSetEntities(request, metadata).stream().map(this::convertFromEntity).collect(Collectors.toList());
+	}
+
+	public List<CallSetEntity> findCallSetEntities(CallSetsSearchRequest request, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<CallSetEntity> searchQuery = new SearchQueryBuilder<CallSetEntity>(CallSetEntity.class);
 		if(request.getVariantSetDbIds() != null) {
@@ -61,9 +65,8 @@ public class CallSetService {
 				.appendList(request.getSampleNames(), "sample.name");
 
 		Page<CallSetEntity> page = callSetRepository.findAllBySearch(searchQuery, pageReq);
-		List<CallSet> callSets = page.map(this::convertFromEntity).getContent();
 		PagingUtility.calculateMetaData(metadata, page);
-		return callSets;
+		return page.getContent();
 	}
 
 	public CallSet getCallSet(String callSetDbId) throws BrAPIServerException {
@@ -97,5 +100,9 @@ public class CallSetService {
 			callSet.setVariantSetIds(entity.getVariantSets().stream().map(e -> e.getId()).collect(Collectors.toList()));
 
 		return callSet;
+	}
+
+	public CallSetEntity save(CallSetEntity entity) {
+		return callSetRepository.save(entity);
 	}
 }

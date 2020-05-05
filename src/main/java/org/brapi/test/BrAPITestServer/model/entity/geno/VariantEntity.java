@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.model.entity.geno;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -45,6 +46,34 @@ public class VariantEntity extends BrAPIPrimaryEntity {
 	private VariantSetEntity variantSet;
 	@Column
 	private String variantType;
+
+	public VariantEntity() {
+		super();
+	}
+
+	public VariantEntity(VariantEntity variant) {
+		this.setAlternateBases(new ArrayList<>());
+		this.getAlternateBases().addAll(variant.getAlternateBases());
+		this.setCiend(new ArrayList<>());
+		this.getCiend().addAll(variant.getCiend());
+		this.setCipos(new ArrayList<>());
+		this.getCipos().addAll(variant.getCipos());
+		this.setCreated(variant.getCreated());
+		this.setEnd(variant.getEnd());
+		this.setFiltersApplied(variant.getFiltersApplied());
+		this.setFiltersFailed(new ArrayList<>());
+		this.getFiltersFailed().addAll(variant.getFiltersFailed());
+		this.setFiltersPassed(variant.getFiltersPassed());
+		this.setId(variant.getId());
+		this.setReferenceBases(variant.getReferenceBases());
+		this.setReferenceSet(variant.getReferenceSet());
+		this.setStart(variant.getStart());
+		this.setSvlen(variant.getSvlen());
+		this.setUpdated(variant.getUpdated());
+		this.setVariantName(variant.getVariantName());
+		this.setVariantSet(variant.getVariantSet());
+		this.setVariantType(variant.getVariantType());
+	}
 
 	public List<String> getAlternateBases() {
 		return alternateBases;

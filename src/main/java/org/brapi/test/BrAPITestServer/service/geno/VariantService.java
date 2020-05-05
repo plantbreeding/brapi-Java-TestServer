@@ -3,6 +3,7 @@ package org.brapi.test.BrAPITestServer.service.geno;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.geno.VariantEntity;
@@ -39,6 +40,10 @@ public class VariantService {
 	}
 
 	public List<Variant> findVariants(VariantsSearchRequest request, Metadata metadata) {
+		return findVariantEntities(request, metadata).stream().map(this::convertFromEntity).collect(Collectors.toList());
+	}
+
+	public List<VariantEntity> findVariantEntities(VariantsSearchRequest request, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<VariantEntity> searchQuery = new SearchQueryBuilder<VariantEntity>(VariantEntity.class);
 		if (request.getCallSetDbIds() != null && !request.getCallSetDbIds().isEmpty()) {
@@ -49,9 +54,8 @@ public class VariantService {
 				.appendList(request.getVariantDbIds(), "id");
 
 		Page<VariantEntity> page = variantRepository.findAllBySearch(searchQuery, pageReq);
-		List<Variant> variants = page.map(this::convertFromEntity).getContent();
 		PagingUtility.calculateMetaData(metadata, page);
-		return variants;
+		return page.getContent();
 	}
 
 	public Variant getVariant(String variantDbId) throws BrAPIServerException {
@@ -92,6 +96,10 @@ public class VariantService {
 		variant.setVariantType(entity.getVariantType());
 
 		return variant;
+	}
+
+	public VariantEntity save(VariantEntity entity) {
+		return variantRepository.save(entity);
 	}
 
 }
