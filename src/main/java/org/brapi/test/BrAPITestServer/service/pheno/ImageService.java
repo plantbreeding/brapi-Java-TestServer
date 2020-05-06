@@ -175,7 +175,7 @@ public class ImageService {
 				name = name + "." + newEntity.getImageMIMEType();
 			}
 		}
-		return requestURL + "/images/" + newEntity.getId() + "/" + name;
+		return requestURL.replaceAll("imagecontent", name);
 	}
 
 	private void updateEntity(ImageEntity entity, ImageNewRequest image) throws BrAPIServerException {

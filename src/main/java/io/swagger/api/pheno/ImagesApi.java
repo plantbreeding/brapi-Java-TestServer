@@ -61,6 +61,13 @@ public interface ImagesApi {
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
 
+	@RequestMapping(value = "/images/{imageDbId}/{imageName}", method = RequestMethod.GET)
+	ResponseEntity<byte[]> imagesImageDbIdContentGet(
+			@ApiParam(value = "The unique identifier for a image", required = true) @PathVariable("imageDbId") String imageDbId,
+			@ApiParam(value = "The unique identifier for a image", required = true) @PathVariable("imageName") String imageName,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong>Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
+
 	@ApiOperation(value = "Update an image with the image file content", nickname = "imagesImageDbIdImagecontentPut", notes = "Update an image with the image file content  Implementation Notes  - This call should be paired with 'PUT /images/{imageDbId}' for full capability  - A server may choose to modify the image meta data object based on the actually image which has been uploaded.   - Image data may be stored in a database or file system. Servers should generate and provide the \"imageURL\" for retrieving the image, wherever it happens to live.", response = ImageSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Images", })
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = ImageSingleResponse.class),
@@ -69,8 +76,8 @@ public interface ImagesApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class),
 			@ApiResponse(code = 404, message = "Not Found", response = String.class) })
 	@RequestMapping(value = "/images/{imageDbId}/imagecontent", produces = { "application/json" }, consumes = {
-			"image/_*" }, method = RequestMethod.PUT)
-	ResponseEntity<ImageSingleResponse> imagesImageDbIdImagecontentPut(
+			"image/*" }, method = RequestMethod.PUT)
+	ResponseEntity<ImageSingleResponse> imagesImageDbIdImageContentPut(
 			@ApiParam(value = "The unique identifier for a image", required = true) @PathVariable("imageDbId") String imageDbId,
 			@ApiParam(value = "") @Valid @RequestBody byte[] body,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
