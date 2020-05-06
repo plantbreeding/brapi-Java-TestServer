@@ -137,7 +137,7 @@ public class ImageService {
 	private void updateEntity(ImageEntity entity, NewImageRequest image) {
 		if (image.getAdditionalInfo() != null)
 			entity.setAdditionalInfo(image.getAdditionalInfo());
-		
+
 		if (image.getObservationUnitDbId() != null && !image.getObservationUnitDbId().isEmpty()) {
 			Optional<ObservationUnitEntity> unitOption = this.observationUnitRepository
 					.findById(image.getObservationUnitDbId());
@@ -146,17 +146,28 @@ public class ImageService {
 			}
 		}
 
-		entity.setCopyright(image.getCopyright());
-		entity.setDescription(image.getDescription());
-		entity.setDescriptiveOntologyTerms(arrayToString(image.getDescriptiveOntologyTerms()));
-		entity.setImageFileName(image.getImageFileName());
-		entity.setImageFileSize(image.getImageFileSize());
-		entity.setImageHeight(image.getImageHeight());
-		entity.setName(image.getImageName());
-		entity.setImageType(image.getMimeType());
-		entity.setImageWidth(image.getImageWidth());
-		entity.setObservationDbIds(arrayToString(image.getObservationDbIds()));
-		entity.setTimeStamp(DateUtility.toDate(image.getImageTimeStamp()));
+		if (image.getCopyright() != null)
+			entity.setCopyright(image.getCopyright());
+		if (image.getDescription() != null)
+			entity.setDescription(image.getDescription());
+		if (image.getDescriptiveOntologyTerms() != null)
+			entity.setDescriptiveOntologyTerms(arrayToString(image.getDescriptiveOntologyTerms()));
+		if (image.getImageFileName() != null)
+			entity.setImageFileName(image.getImageFileName());
+		if (image.getImageFileSize() != null)
+			entity.setImageFileSize(image.getImageFileSize());
+		if (image.getImageHeight() != null)
+			entity.setImageHeight(image.getImageHeight());
+		if (image.getImageName() != null)
+			entity.setName(image.getImageName());
+		if (image.getMimeType() != null)
+			entity.setImageType(image.getMimeType());
+		if (image.getImageWidth() != null)
+			entity.setImageWidth(image.getImageWidth());
+		if (image.getObservationDbIds() != null)
+			entity.setObservationDbIds(arrayToString(image.getObservationDbIds()));
+		if (image.getImageTimeStamp() != null)
+			entity.setTimeStamp(DateUtility.toDate(image.getImageTimeStamp()));
 		entity.setImageURL("");
 
 		if (image.getImageLocation() != null && image.getImageLocation().getGeometry() != null
@@ -245,6 +256,7 @@ public class ImageService {
 			type = "Point";
 			coordinates = new ArrayList<>();
 		}
+
 		public Geometry(Float latitude, Float longitude) {
 			type = "Point";
 			coordinates = Arrays.asList(latitude, longitude);
@@ -267,8 +279,7 @@ public class ImageService {
 		}
 	}
 
-	public List<Image> search(ImagesSearchRequest request, Metadata metadata)
-			throws BrAPIServerException {
+	public List<Image> search(ImagesSearchRequest request, Metadata metadata) throws BrAPIServerException {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		Page<ImageEntity> imagesPage = imageRepository.findBySearch(request, pageReq);
 		PagingUtility.calculateMetaData(metadata, imagesPage);

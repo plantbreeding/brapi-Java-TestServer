@@ -165,13 +165,18 @@ public class ListService {
 	}
 
 	private void updateEntity(ListEntity entity, @Valid NewListRequest list) {
-
-		entity.setDescription(list.getDescription());
-		entity.setListName(list.getListName());
-		entity.setListOwnerName(list.getListOwnerName());
-		entity.setListOwnerPersonDbId(list.getListOwnerPersonDbId());
-		entity.setListSource(list.getListSource());
-		entity.setListType(list.getListType());
+		if (list.getDescription() != null)
+			entity.setDescription(list.getDescription());
+		if (list.getListName() != null)
+			entity.setListName(list.getListName());
+		if (list.getListOwnerName() != null)
+			entity.setListOwnerName(list.getListOwnerName());
+		if (list.getListOwnerPersonDbId() != null)
+			entity.setListOwnerPersonDbId(list.getListOwnerPersonDbId());
+		if (list.getListSource() != null)
+			entity.setListSource(list.getListSource());
+		if (list.getListType() != null)
+			entity.setListType(list.getListType());
 
 		if (entity.getData() != null) {
 			entity.getData().stream().forEach((item) -> {

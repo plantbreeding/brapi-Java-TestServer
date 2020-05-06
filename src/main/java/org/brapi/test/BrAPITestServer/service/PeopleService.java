@@ -91,7 +91,7 @@ public class PeopleService {
 
 	private Person convertFromEntity(PersonEntity entity) {
 		Person person = new Person();
-		
+
 		person.setDescription(entity.getDescription());
 		person.setEmailAddress(entity.getEmailAddress());
 		person.setFirstName(entity.getFirstName());
@@ -106,14 +106,22 @@ public class PeopleService {
 	}
 
 	private void updateEntity(PersonEntity entity, NewPersonRequest person) {
-		entity.setDescription(person.getDescription());
-		entity.setEmailAddress(person.getEmailAddress());
-		entity.setFirstName(person.getFirstName());
-		entity.setLastName(person.getLastName());
-		entity.setMailingAddress(person.getMailingAddress());
-		entity.setMiddleName(person.getMiddleName());
-		entity.setPhoneNumber(person.getPhoneNumber());
-		entity.setUserID(person.getUserID());
+		if (person.getDescription() != null)
+			entity.setDescription(person.getDescription());
+		if (person.getEmailAddress() != null)
+			entity.setEmailAddress(person.getEmailAddress());
+		if (person.getFirstName() != null)
+			entity.setFirstName(person.getFirstName());
+		if (person.getLastName() != null)
+			entity.setLastName(person.getLastName());
+		if (person.getMailingAddress() != null)
+			entity.setMailingAddress(person.getMailingAddress());
+		if (person.getMiddleName() != null)
+			entity.setMiddleName(person.getMiddleName());
+		if (person.getPhoneNumber() != null)
+			entity.setPhoneNumber(person.getPhoneNumber());
+		if (person.getUserID() != null)
+			entity.setUserID(person.getUserID());
 	}
 
 }

@@ -235,7 +235,7 @@ public class StudyService {
 			xref.setSource(e.getSource());
 			return xref;
 		}).collect(Collectors.toList()));
-		
+
 		observation.setTreatments(entity.getTreatments().stream().map(e -> {
 			ObservationTreatment treatment = new ObservationTreatment();
 			treatment.setFactor(e.getFactor());
@@ -874,13 +874,20 @@ public class StudyService {
 						.findById(layout.getObservationUnitDbId());
 				if (unitOpt.isPresent()) {
 					ObservationUnitEntity unit = unitOpt.get();
-					unit.setBlockNumber(layout.getBlockNumber());
-					unit.setX(layout.getX());
-					unit.setX(layout.getPositionCoordinateX());
-					unit.setY(layout.getY());
-					unit.setY(layout.getPositionCoordinateY());
-					unit.setEntryType(layout.getEntryType().name());
-					unit.setReplicate(layout.getReplicate().toString());
+					if (layout.getBlockNumber() != null)
+						unit.setBlockNumber(layout.getBlockNumber());
+					if (layout.getX() != null)
+						unit.setX(layout.getX());
+					if (layout.getPositionCoordinateX() != null)
+						unit.setX(layout.getPositionCoordinateX());
+					if (layout.getY() != null)
+						unit.setY(layout.getY());
+					if (layout.getPositionCoordinateY() != null)
+						unit.setY(layout.getPositionCoordinateY());
+					if (layout.getEntryType() != null)
+						unit.setEntryType(layout.getEntryType().name());
+					if (layout.getReplicate() != null)
+						unit.setReplicate(layout.getReplicate().toString());
 
 					ObservationUnitEntity newUnit = observationUnitRepository.save(unit);
 					positions.add(convertFromEntityToPosition(newUnit));
@@ -901,9 +908,12 @@ public class StudyService {
 	}
 
 	private void updateEntity(ObservationEntity entity, NewObservationsRequestObservations obs) {
-		entity.setCollector(obs.getCollector());
-		entity.setObservationTimeStamp(DateUtility.toDate(obs.getObservationTimeStamp()));
-		entity.setValue(obs.getValue());
+		if (obs.getCollector() != null)
+			entity.setCollector(obs.getCollector());
+		if (obs.getObservationTimeStamp() != null)
+			entity.setObservationTimeStamp(DateUtility.toDate(obs.getObservationTimeStamp()));
+		if (obs.getValue() != null)
+			entity.setValue(obs.getValue());
 
 		if (entity.getObservationVariable() == null
 				|| entity.getObservationVariable().getId() != obs.getObservationVariableDbId()) {
@@ -918,16 +928,26 @@ public class StudyService {
 
 	private ObservationUnitEntity updateEntity(ObservationUnitEntity observationUnitEntity,
 			NewObservationUnitRequest unit) {
-		observationUnitEntity.setBlockNumber(NumberUtils.toInt(unit.getBlockNumber()));
-		observationUnitEntity.setEntryNumber(unit.getEntryNumber());
-		observationUnitEntity.setEntryType(unit.getEntryType());
-		observationUnitEntity.setObservationLevel(unit.getObservationLevel());
-		observationUnitEntity.setObservationUnitName(unit.getObservationUnitName());
-		observationUnitEntity.setPlantNumber(NumberUtils.toInt(unit.getPlantNumber()));
-		observationUnitEntity.setPlotNumber(NumberUtils.toInt(unit.getPlotNumber()));
-		observationUnitEntity.setReplicate(unit.getReplicate());
-		observationUnitEntity.setX(unit.getX());
-		observationUnitEntity.setY(unit.getY());
+		if (unit.getBlockNumber() != null)
+			observationUnitEntity.setBlockNumber(NumberUtils.toInt(unit.getBlockNumber()));
+		if (unit.getEntryNumber() != null)
+			observationUnitEntity.setEntryNumber(unit.getEntryNumber());
+		if (unit.getEntryType() != null)
+			observationUnitEntity.setEntryType(unit.getEntryType());
+		if (unit.getObservationLevel() != null)
+			observationUnitEntity.setObservationLevel(unit.getObservationLevel());
+		if (unit.getObservationUnitName() != null)
+			observationUnitEntity.setObservationUnitName(unit.getObservationUnitName());
+		if (unit.getPlantNumber() != null)
+			observationUnitEntity.setPlantNumber(NumberUtils.toInt(unit.getPlantNumber()));
+		if (unit.getPlotNumber() != null)
+			observationUnitEntity.setPlotNumber(NumberUtils.toInt(unit.getPlotNumber()));
+		if (unit.getReplicate() != null)
+			observationUnitEntity.setReplicate(unit.getReplicate());
+		if (unit.getX() != null)
+			observationUnitEntity.setX(unit.getX());
+		if (unit.getY() != null)
+			observationUnitEntity.setY(unit.getY());
 
 		if (unit.getGermplasmDbId() == null) {
 			observationUnitEntity.setGermplasm(null);

@@ -11,7 +11,6 @@ import org.brapi.test.BrAPITestServer.model.entity.MethodEntity;
 import org.brapi.test.BrAPITestServer.model.entity.OntologyEntity;
 import org.brapi.test.BrAPITestServer.model.entity.OntologyInterface;
 import org.brapi.test.BrAPITestServer.model.entity.OntologyReferenceEntity;
-import org.brapi.test.BrAPITestServer.model.entity.OntologyReferenceEntity.OntologyReferenceTypeEnum;
 import org.brapi.test.BrAPITestServer.model.entity.ScaleEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ScaleValidValueCategoryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.TraitAbbreviationEntity;
@@ -84,7 +83,8 @@ public class OntologyService {
 		return ontology;
 	}
 
-	public OntologyReference convertFromEntity(OntologyEntity ontology, List<OntologyReferenceEntity> ontologyReference) {
+	public OntologyReference convertFromEntity(OntologyEntity ontology,
+			List<OntologyReferenceEntity> ontologyReference) {
 		OntologyReference oRef = null;
 		if (ontology != null && ontologyReference != null && !ontologyReference.isEmpty()) {
 			oRef = new OntologyReference();
@@ -93,7 +93,7 @@ public class OntologyService {
 			oRef.setVersion(ontology.getVersion());
 			oRef.setDocumentationLinks(ontologyReference.stream().map((entity -> {
 				OntologyReferenceDocumentationLinks link = new OntologyReferenceDocumentationLinks();
-				link.setType(TypeEnum.fromValue(entity.getType().toString()));
+				link.setType(entity.getType());
 				link.setURL(entity.getURL());
 				return link;
 			})).collect(Collectors.toList()));
@@ -224,12 +224,18 @@ public class OntologyService {
 	}
 
 	private MethodEntity updateEntity(MethodEntity entity, @Valid NewMethodRequest method) {
-		entity.setDescription(method.getDescription());
-		entity.setFormula(method.getFormula());
-		entity.setMethodClass(method.getPropertyClass());
-		entity.setName(method.getMethodName());
-		entity.setReference(method.getReference());
-		updateOntologyReference(entity, method.getOntologyReference());
+		if (method.getDescription() != null)
+			entity.setDescription(method.getDescription());
+		if (method.getFormula() != null)
+			entity.setFormula(method.getFormula());
+		if (method.getPropertyClass() != null)
+			entity.setMethodClass(method.getPropertyClass());
+		if (method.getMethodName() != null)
+			entity.setName(method.getMethodName());
+		if (method.getReference() != null)
+			entity.setReference(method.getReference());
+		if (method.getOntologyReference() != null)
+			updateOntologyReference(entity, method.getOntologyReference());
 
 		return entity;
 	}
@@ -237,14 +243,28 @@ public class OntologyService {
 	private void updateOntologyReference(OntologyInterface entity, OntologyReference ontologyReference) {
 		if (entity != null && ontologyReference != null) {
 			Optional<OntologyEntity> ontologyOpt = ontologyRepository.findById(ontologyReference.getOntologyDbId());
+			OntologyEntity ontology = null;
 			if (ontologyOpt.isPresent()) {
-				// if (ontologyOpt.isPresent() && entity.getId() != null &&
-				// !entity.getId().isEmpty()) {
-				entity.setOntology(ontologyOpt.get());
+				ontology = ontologyOpt.get();
+			} else {
+				if (ontologyReference.getOntologyName() != null || ontologyReference.getVersion() != null) {
+					ontology = new OntologyEntity();
+					if (ontologyReference.getOntologyName() != null)
+						ontology.setOntologyName(ontologyReference.getOntologyName());
+					if (ontologyReference.getVersion() != null)
+						ontology.setVersion(ontologyReference.getVersion());
+					ontology = ontologyRepository.save(ontology);
+				}
+			}
+			entity.setOntology(ontology);
+
+			if (ontologyReference.getDocumentationLinks() != null) {
 				entity.setOntologyReference(ontologyReference.getDocumentationLinks().stream().map((link) -> {
 					OntologyReferenceEntity e = new OntologyReferenceEntity();
-					e.setType(OntologyReferenceTypeEnum.fromValue(link.getType().toString()));
-					e.setURL(link.getURL());
+					if (link.getType() != null)
+						e.setType(link.getType());
+					if (link.getURL() != null)
+						e.setURL(link.getURL());
 					return e;
 				}).collect(Collectors.toList()));
 			}
@@ -258,20 +278,30 @@ public class OntologyService {
 	}
 
 	private ScaleEntity updateEntity(ScaleEntity entity, @Valid NewScaleRequest scale) {
-		entity.setDataType(scale.getDataType().toString());
-		entity.setDecimalPlaces(scale.getDecimalPlaces());
-		entity.setName(scale.getScaleName());
-		entity.setXref(scale.getXref());
-		entity.setValidValueMax(scale.getValidValues().getMax());
-		entity.setValidValueMin(scale.getValidValues().getMin());
-		entity.setValidValueCategories(scale.getValidValues().getCategories().stream().map((categoryString) -> {
-			ScaleValidValueCategoryEntity e = new ScaleValidValueCategoryEntity();
-			e.setCategory(categoryString);
-			e.setScale(entity);
-			return e;
-		}).collect(Collectors.toList()));
+		if (scale.getDataType() != null)
+			entity.setDataType(scale.getDataType().toString());
+		if (scale.getDecimalPlaces() != null)
+			entity.setDecimalPlaces(scale.getDecimalPlaces());
+		if (scale.getScaleName() != null)
+			entity.setName(scale.getScaleName());
+		if (scale.getXref() != null)
+			entity.setXref(scale.getXref());
+		if (scale.getValidValues() != null) {
+			if (scale.getValidValues().getMax() != null)
+				entity.setValidValueMax(scale.getValidValues().getMax());
+			if (scale.getValidValues().getMin() != null)
+				entity.setValidValueMin(scale.getValidValues().getMin());
+			if (scale.getValidValues().getCategories() != null)
+				entity.setValidValueCategories(scale.getValidValues().getCategories().stream().map((categoryString) -> {
+					ScaleValidValueCategoryEntity e = new ScaleValidValueCategoryEntity();
+					e.setCategory(categoryString);
+					e.setScale(entity);
+					return e;
+				}).collect(Collectors.toList()));
+		}
 
-		updateOntologyReference(entity, scale.getOntologyReference());
+		if (scale.getOntologyReference() != null)
+			updateOntologyReference(entity, scale.getOntologyReference());
 
 		return entity;
 	}
@@ -283,27 +313,38 @@ public class OntologyService {
 	}
 
 	private TraitEntity updateEntity(TraitEntity entity, @Valid NewTraitRequest trait) {
-		entity.setAlternativeAbbreviations(trait.getAlternativeAbbreviations().stream().map((aa) -> {
-			TraitAbbreviationEntity e = new TraitAbbreviationEntity();
-			e.setAbbreviation(aa);
-			e.setTrait(entity);
-			return e;
-		}).collect(Collectors.toList()));
-		entity.setAttribute(trait.getAttribute());
-		entity.setDescription(trait.getDescription());
-		entity.setEntity(trait.getEntity());
-		entity.setMainAbbreviation(trait.getMainAbbreviation());
-		entity.setName(trait.getTraitName());
-		entity.setStatus(trait.getStatus());
-		entity.setSynonyms(trait.getSynonyms().stream().map(syn -> {
-			TraitSynonymEntity e = new TraitSynonymEntity();
-			e.setSynonym(syn);
-			e.setTrait(entity);
-			return e;
-		}).collect(Collectors.toList()));
-		entity.setTraitClass(trait.getPropertyClass());
-		entity.setXref(trait.getXref());
-		updateOntologyReference(entity, trait.getOntologyReference());
+		if (trait.getAlternativeAbbreviations() != null)
+			entity.setAlternativeAbbreviations(trait.getAlternativeAbbreviations().stream().map((aa) -> {
+				TraitAbbreviationEntity e = new TraitAbbreviationEntity();
+				e.setAbbreviation(aa);
+				e.setTrait(entity);
+				return e;
+			}).collect(Collectors.toList()));
+		if (trait.getAttribute() != null)
+			entity.setAttribute(trait.getAttribute());
+		if (trait.getDescription() != null)
+			entity.setDescription(trait.getDescription());
+		if (trait.getEntity() != null)
+			entity.setEntity(trait.getEntity());
+		if (trait.getMainAbbreviation() != null)
+			entity.setMainAbbreviation(trait.getMainAbbreviation());
+		if (trait.getTraitName() != null)
+			entity.setName(trait.getTraitName());
+		if (trait.getStatus() != null)
+			entity.setStatus(trait.getStatus());
+		if (trait.getSynonyms() != null)
+			entity.setSynonyms(trait.getSynonyms().stream().map(syn -> {
+				TraitSynonymEntity e = new TraitSynonymEntity();
+				e.setSynonym(syn);
+				e.setTrait(entity);
+				return e;
+			}).collect(Collectors.toList()));
+		if (trait.getPropertyClass() != null)
+			entity.setTraitClass(trait.getPropertyClass());
+		if (trait.getXref() != null)
+			entity.setXref(trait.getXref());
+		if (trait.getOntologyReference() != null)
+			updateOntologyReference(entity, trait.getOntologyReference());
 		return entity;
 	}
 
