@@ -28,7 +28,7 @@ public class ListEntity extends BaseEntity {
 	@Column
 	private String listSource;
 	@Column
-	private ListTypes listType;
+	private ListTypes listType = ListTypes.GERMPLASM;
 	
 	@OneToMany(mappedBy="list", cascade = CascadeType.ALL)
 	private List<ListItemEntity> data;

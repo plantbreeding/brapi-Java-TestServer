@@ -114,16 +114,18 @@ public class OntologyService {
 		ValidValues validValues = new ValidValues();
 		validValues.setMax(entity.getValidValueMax());
 		validValues.setMin(entity.getValidValueMin());
-		validValues.setCategories(
-				entity.getValidValueCategories().stream().map(e -> e.getCategory()).collect(Collectors.toList()));
+		if (entity.getValidValueCategories() != null)
+			validValues.setCategories(
+					entity.getValidValueCategories().stream().map(e -> e.getCategory()).collect(Collectors.toList()));
 		scale.setValidValues(validValues);
 		return scale;
 	}
 
 	public Trait convertFromEntity(TraitEntity entity) {
 		Trait trait = new Trait();
-		trait.setAlternativeAbbreviations(entity.getAlternativeAbbreviations().stream().map(e -> e.getAbbreviation())
-				.collect(Collectors.toList()));
+		if (entity.getAlternativeAbbreviations() != null)
+			trait.setAlternativeAbbreviations(entity.getAlternativeAbbreviations().stream()
+					.map(e -> e.getAbbreviation()).collect(Collectors.toList()));
 		trait.setAttribute(entity.getAttribute());
 		trait.setDescription(entity.getDescription());
 		trait.setEntity(entity.getEntity());
@@ -131,7 +133,8 @@ public class OntologyService {
 		trait.setTraitName(entity.getName());
 		trait.setName(entity.getName());
 		trait.setStatus(entity.getStatus());
-		trait.setSynonyms(entity.getSynonyms().stream().map(e -> e.getSynonym()).collect(Collectors.toList()));
+		if (entity.getSynonyms() != null)
+			trait.setSynonyms(entity.getSynonyms().stream().map(e -> e.getSynonym()).collect(Collectors.toList()));
 		trait.setPropertyClass(entity.getTraitClass());
 		trait.setTraitDbId(entity.getId());
 		trait.setXref(entity.getXref());
@@ -278,8 +281,11 @@ public class OntologyService {
 	}
 
 	private ScaleEntity updateEntity(ScaleEntity entity, @Valid NewScaleRequest scale) {
-		if (scale.getDataType() != null)
+		if (scale.getDataType() != null) {
 			entity.setDataType(scale.getDataType().toString());
+		} else {
+			entity.setDataType(TraitDataType.TEXT.toString());
+		}
 		if (scale.getDecimalPlaces() != null)
 			entity.setDecimalPlaces(scale.getDecimalPlaces());
 		if (scale.getScaleName() != null)

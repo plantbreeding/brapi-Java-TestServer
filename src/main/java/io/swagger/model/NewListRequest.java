@@ -200,7 +200,6 @@ public class NewListRequest   {
    * @return listType
   **/
   @ApiModelProperty(required = true, value = "")
-  @NotNull
 
   @Valid
 

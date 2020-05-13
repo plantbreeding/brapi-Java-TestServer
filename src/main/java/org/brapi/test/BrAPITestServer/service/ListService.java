@@ -90,6 +90,8 @@ public class ListService {
 				return itemEntity;
 			}).collect(Collectors.toList());
 
+			if (entity.getData() == null)
+				entity.setData(new ArrayList<>());
 			entity.getData().addAll(itemEntities);
 
 			savedEntity = listRepository.save(entity);
@@ -137,13 +139,15 @@ public class ListService {
 		details.setListName(entity.getListName());
 		details.setListOwnerName(entity.getListOwnerName());
 		details.setListOwnerPersonDbId(entity.getListOwnerPersonDbId());
-		details.setListSize(entity.getData().size());
 		details.setListSource(entity.getListSource());
 		details.setListType(entity.getListType());
 
-		details.setData(entity.getData().stream().map((e) -> {
-			return e.getItem();
-		}).collect(Collectors.toList()));
+		if (entity.getData() != null) {
+			details.setListSize(entity.getData().size());
+			details.setData(entity.getData().stream().map((e) -> {
+				return e.getItem();
+			}).collect(Collectors.toList()));
+		}
 
 		return details;
 	}
@@ -157,7 +161,8 @@ public class ListService {
 		summary.setListName(entity.getListName());
 		summary.setListOwnerName(entity.getListOwnerName());
 		summary.setListOwnerPersonDbId(entity.getListOwnerPersonDbId());
-		summary.setListSize(entity.getData().size());
+		if (entity.getData() != null)
+			summary.setListSize(entity.getData().size());
 		summary.setListSource(entity.getListSource());
 		summary.setListType(entity.getListType());
 

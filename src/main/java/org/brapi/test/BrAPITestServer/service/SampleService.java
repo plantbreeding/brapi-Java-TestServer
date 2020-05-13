@@ -38,47 +38,35 @@ public class SampleService {
 	}
 
 	public NewSampleDbIdResult saveSample(Sample sample) {
-		Optional<ObservationUnitEntity> unitOpt = this.observationUnitRepository
-				.findById(sample.getObservationUnitDbId());
-		Optional<PlateEntity> plateOpt = plateRepository.findById(sample.getPlateDbId());
-		NewSampleDbIdResult id = new NewSampleDbIdResult();
-		if (validateInput(sample, unitOpt)) {
-			ObservationUnitEntity unit = unitOpt.get();
-			SampleEntity entity = new SampleEntity();
-			entity.setNotes(sample.getNotes());
-			entity.setObservationUnit(unit);
-			entity.setPlateIndex(sample.getPlateIndex());
-			entity.setSampleTimestamp(DateUtility.toDate(sample.getSampleTimestamp()));
-			entity.setSampleType(sample.getSampleType());
-			entity.setTakenBy(sample.getTakenBy());
-			entity.setTissueType(sample.getTissueType());
+		SampleEntity entity = new SampleEntity();
+		entity.setNotes(sample.getNotes());
+		entity.setPlateIndex(sample.getPlateIndex());
+		entity.setSampleTimestamp(DateUtility.toDate(sample.getSampleTimestamp()));
+		entity.setSampleType(sample.getSampleType());
+		entity.setTakenBy(sample.getTakenBy());
+		entity.setTissueType(sample.getTissueType());
+		if (sample.getPlateDbId() != null) {
+			Optional<PlateEntity> plateOpt = plateRepository.findById(sample.getPlateDbId());
 			if (plateOpt.isPresent()) {
 				entity.setPlate(plateOpt.get());
 			}
-
-			entity = sampleRepository.save(entity);
-
-			id.setSampleId(entity.getId());
-			id.setSampleDbId(entity.getId());
 		}
+		if (sample.getObservationUnitDbId() != null) {
+			Optional<ObservationUnitEntity> unitOpt = this.observationUnitRepository
+					.findById(sample.getObservationUnitDbId());
+			if (unitOpt.isPresent()) {
+				entity.setObservationUnit(unitOpt.get());
+			}
+		}
+
+		entity = sampleRepository.save(entity);
+
+		NewSampleDbIdResult id = new NewSampleDbIdResult();
+		id.setSampleId(entity.getId());
+		id.setSampleDbId(entity.getId());
+
 		return id;
 
-	}
-
-	private boolean validateInput(Sample sample, Optional<ObservationUnitEntity> unitOpt) {
-		boolean valid = unitOpt.isPresent();
-		if (valid) {
-			ObservationUnitEntity unit = unitOpt.get();
-			valid = valid && isNullEmptyOrEqual(sample.getGermplasmDbId(), unit.getGermplasm().getId());
-			valid = valid && isNullEmptyOrEqual(sample.getStudyDbId(), unit.getStudy().getId());
-			valid = valid && isNullEmptyOrEqual(sample.getPlotDbId(), String.valueOf(unit.getPlotNumber()));
-			valid = valid && isNullEmptyOrEqual(sample.getPlantDbId(), String.valueOf(unit.getPlantNumber()));
-		}
-		return valid;
-	}
-
-	private boolean isNullEmptyOrEqual(String actual, String expected) {
-		return actual == null || actual.equalsIgnoreCase("") || actual.equals(expected);
 	}
 
 	public Sample getSample(String sampleId) {
@@ -122,19 +110,19 @@ public class SampleService {
 	public List<Sample> getSampleSearch(String sampleDbId, String observationUnitDbId, String plateDbId,
 			String germplasmDbId, Metadata metaData) {
 		SampleSearchRequestDep request = new SampleSearchRequestDep();
-		if(sampleDbId != null) {
+		if (sampleDbId != null) {
 			request.addSampleDbIdItem(sampleDbId);
 		}
-		if(observationUnitDbId != null) {
+		if (observationUnitDbId != null) {
 			request.addObservationUnitDbIdItem(observationUnitDbId);
 		}
-		if(plateDbId != null) {
+		if (plateDbId != null) {
 			request.addPlateDbIdItem(plateDbId);
 		}
-		if(germplasmDbId != null) {
+		if (germplasmDbId != null) {
 			request.addGermplasmDbIdItem(germplasmDbId);
 		}
-		
+
 		return searchSamples(request, metaData);
 	}
 

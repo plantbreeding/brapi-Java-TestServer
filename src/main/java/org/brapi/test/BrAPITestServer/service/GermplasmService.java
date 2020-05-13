@@ -112,7 +112,8 @@ public class GermplasmService {
 		germ.setBiologicalStatusOfAccessionCode(Integer.decode(entity.getBiologicalStatusOfAccessionCode()));
 		germ.setCommonCropName(entity.getCommonCropName());
 		germ.setCountryOfOriginCode(entity.getCountryOfOriginCode());
-		germ.setBreedingMethodDbId(entity.getBreedingMethod().getId());
+		if (entity.getBreedingMethod() != null)
+			germ.setBreedingMethodDbId(entity.getBreedingMethod().getId());
 		germ.setDefaultDisplayName(entity.getDefaultDisplayName());
 		germ.setDocumentationURL(entity.getDocumentationURL());
 		germ.setGenus(entity.getGenus());
@@ -170,7 +171,8 @@ public class GermplasmService {
 		germ.setBiologicalStatusOfAccessionCode(Integer.decode(entity.getBiologicalStatusOfAccessionCode()));
 		germ.setCommonCropName(entity.getCommonCropName());
 		germ.setCountryOfOriginCode(entity.getCountryOfOriginCode());
-		germ.setBreedingMethodDbId(entity.getBreedingMethod().getId());
+		if (entity.getBreedingMethod() != null)
+			germ.setBreedingMethodDbId(entity.getBreedingMethod().getId());
 		germ.setDefaultDisplayName(entity.getDefaultDisplayName());
 		germ.setDocumentationURL(entity.getDocumentationURL());
 		germ.setEntryNumber(entryMap.get(entity.getId()));
@@ -236,8 +238,10 @@ public class GermplasmService {
 		}
 		Pedigree pedigree = new Pedigree();
 		pedigree.setCrossingPlan(entity.getCrossingPlan());
-		pedigree.setCrossingYear(entity.getCrossingYear().toString());
-		pedigree.setDefaultDisplayName(entity.getGermplasm().getDefaultDisplayName());
+		if (entity.getCrossingYear() != null)
+			pedigree.setCrossingYear(entity.getCrossingYear().toString());
+		if (entity.getGermplasm() != null)
+			pedigree.setDefaultDisplayName(entity.getGermplasm().getDefaultDisplayName());
 		pedigree.setFamilyCode(entity.getFamilyCode());
 		pedigree.setGermplasmDbId(germplasmDbId);
 		pedigree.setPedigree(entity.getPedigree());
@@ -262,8 +266,10 @@ public class GermplasmService {
 			for (PedigreeEntity sibEntity : siblingsPage) {
 				if (sibEntity.getId() != entity.getId()) {
 					PedigreeSiblings siblingsItem = new PedigreeSiblings();
-					siblingsItem.setDefaultDisplayName(sibEntity.getGermplasm().getDefaultDisplayName());
-					siblingsItem.setGermplasmDbId(sibEntity.getGermplasm().getId());
+					if (sibEntity.getGermplasm() != null) {
+						siblingsItem.setDefaultDisplayName(sibEntity.getGermplasm().getDefaultDisplayName());
+						siblingsItem.setGermplasmDbId(sibEntity.getGermplasm().getId());
+					}
 					pedigree.addSiblingsItem(siblingsItem);
 				}
 			}
@@ -277,19 +283,25 @@ public class GermplasmService {
 		Progeny result = new Progeny();
 		result.setProgeny(new ArrayList<>());
 		result.setGermplasmDbId(germplasmDbId);
-		progenyPage.forEach(entity -> {
+		for(PedigreeEntity entity: progenyPage) {
 			ProgenyProgeny progeny = new ProgenyProgeny();
-			progeny.setDefaultDisplayName(entity.getGermplasm().getDefaultDisplayName());
-			progeny.setGermplasmDbId(entity.getGermplasm().getId());
-			if (entity.getParent1().getGermplasm().getId() == germplasmDbId) {
+			if (entity.getGermplasm() != null) {
+				progeny.setDefaultDisplayName(entity.getGermplasm().getDefaultDisplayName());
+				progeny.setGermplasmDbId(entity.getGermplasm().getId());
+			}
+			if (entity.getParent1() != null && entity.getParent1().getGermplasm() != null
+					&& germplasmDbId.equals(entity.getParent1().getGermplasm().getId())) {
 				progeny.setParentType(ParentTypeEnum.fromValue(entity.getParent1Type()));
 				result.setDefaultDisplayName(entity.getParent1().getGermplasm().getDefaultDisplayName());
-			} else {
+			} else if (entity.getParent2() != null && entity.getParent2().getGermplasm() != null
+					&& germplasmDbId.equals(entity.getParent2().getGermplasm().getId())) {
 				progeny.setParentType(ParentTypeEnum.fromValue(entity.getParent2Type()));
 				result.setDefaultDisplayName(entity.getParent2().getGermplasm().getDefaultDisplayName());
+			} else {
+				progeny.setParentType(ParentTypeEnum.SELF);
 			}
 			result.getProgeny().add(progeny);
-		});
+		}
 
 		return result;
 	}
@@ -365,10 +377,12 @@ public class GermplasmService {
 		mcpd.setSubtaxon(entity.getSubtaxa());
 		mcpd.setSubtaxonAuthority(entity.getSubtaxaAuthority());
 
-		mcpd.setStorageTypeCodes(entity.getTypeOfGermplasmStorageCode().stream().map((e) -> {
-			StorageTypeCodesEnum code = StorageTypeCodesEnum.fromValue(e.getStorageCode().toString());
-			return code;
-		}).collect(Collectors.toList()));
+		if (entity.getTypeOfGermplasmStorageCode() != null) {
+			mcpd.setStorageTypeCodes(entity.getTypeOfGermplasmStorageCode().stream().map((e) -> {
+				StorageTypeCodesEnum code = StorageTypeCodesEnum.fromValue(e.getStorageCode().toString());
+				return code;
+			}).collect(Collectors.toList()));
+		}
 
 		mcpd.setCollectingInfo(
 				new GermplasmMCPDCollectingInfo().collectingDate(DateUtility.toDateString(entity.getAcquisitionDate()))
@@ -376,15 +390,10 @@ public class GermplasmService {
 								.instituteAddress(entity.getInstituteName()).instituteCode(entity.getInstituteCode())
 								.instituteName(entity.getInstituteName())))
 						.collectingMissionIdentifier(entity.getId()).collectingNumber(entity.getAccessionNumber())
-						.collectingSite(new GermplasmMCPDCollectingInfoCollectingSite()
-								.coordinateUncertainty("20m")
-								.elevation("20m")
-								.georeferencingMethod("WGS84")
-								.latitudeDecimal("+42.445295")
-								.longitudeDecimal("-076.471934")
-								.latitudeDegrees("42 26 43.1 N")
-								.longitudeDegrees("76 28 19.0 W")
-								.locationDescription(entity.getInstituteName())
+						.collectingSite(new GermplasmMCPDCollectingInfoCollectingSite().coordinateUncertainty("20m")
+								.elevation("20m").georeferencingMethod("WGS84").latitudeDecimal("+42.445295")
+								.longitudeDecimal("-076.471934").latitudeDegrees("42 26 43.1 N")
+								.longitudeDegrees("76 28 19.0 W").locationDescription(entity.getInstituteName())
 								.spatialReferenceSystem("WGS84")));
 
 		mcpd.setDonorInfo(new GermplasmMCPDDonorInfo().donorAccessionNumber(entity.getAccessionNumber())

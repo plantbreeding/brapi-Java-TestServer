@@ -68,8 +68,8 @@ public class PhenotypeService {
 
 	public List<ObservationUnitPhenotype> getPhenotypes(String germplasmDbId, String observationVariableDbId,
 			String studyDbId, String locationDbId, String trialDbId, String programDbId, String seasonDbId,
-			String observationLevel, Date observationTimeStampRangeStart,
-			Date observationTimeStampRangeEnd, Metadata metaData) {
+			String observationLevel, Date observationTimeStampRangeStart, Date observationTimeStampRangeEnd,
+			Metadata metaData) {
 		PhenotypesSearchRequest request = new PhenotypesSearchRequest();
 		request.setObservationLevel(observationLevel);
 		request.setObservationTimeStampRangeEnd(DateUtility.toOffsetDateTime(observationTimeStampRangeEnd));
@@ -106,9 +106,13 @@ public class PhenotypeService {
 					ObservationEntity obsEntity = convertToEntity(observation, unitEntity);
 					ObservationEntity newObsEntity = observationRepository.save(obsEntity);
 
-					newObservations.add(new NewObservationDbIdsObservations().observationDbId(newObsEntity.getId())
-							.observationUnitDbId(newObsEntity.getObservationUnit().getId())
-							.observationVariableDbId(newObsEntity.getObservationVariable().getId()));
+					NewObservationDbIdsObservations obsId = new NewObservationDbIdsObservations();
+					obsId.setObservationDbId(newObsEntity.getId());
+					if (newObsEntity.getObservationUnit() != null)
+						obsId.setObservationUnitDbId(newObsEntity.getObservationUnit().getId());
+					if (newObsEntity.getObservationVariable() != null)
+						obsId.setObservationVariableDbId(newObsEntity.getObservationVariable().getId());
+					newObservations.add(obsId);
 
 				}
 			}
@@ -138,15 +142,12 @@ public class PhenotypeService {
 	private SeasonEntity getSeasonFromString(String season) {
 		if (season != null) {
 			// check dbid
-			List<SeasonEntity> seasonEntities = seasonRepository
-					.findBySearch(season, null, null, PageRequest.of(0, 1))
+			List<SeasonEntity> seasonEntities = seasonRepository.findBySearch(season, null, null, PageRequest.of(0, 1))
 					.getContent();
 
 			if (seasonEntities.isEmpty()) {
 				// dbid not found, try name
-				seasonEntities = seasonRepository
-						.findBySearch(null, season, null, PageRequest.of(0, 1))
-						.getContent();
+				seasonEntities = seasonRepository.findBySearch(null, season, null, PageRequest.of(0, 1)).getContent();
 			}
 
 			if (seasonEntities.isEmpty()) {
@@ -254,48 +255,58 @@ public class PhenotypeService {
 		pheno.setReplicate(entity.getReplicate());
 		pheno.setX(entity.getX());
 		pheno.setPositionCoordinateX(entity.getX());
-		pheno.setPositionCoordinateXType(io.swagger.model.ObservationUnitPhenotype.PositionCoordinateXTypeEnum.GRID_COL);
+		pheno.setPositionCoordinateXType(
+				io.swagger.model.ObservationUnitPhenotype.PositionCoordinateXTypeEnum.GRID_COL);
 		pheno.setY(entity.getY());
 		pheno.setPositionCoordinateY(entity.getY());
-		pheno.setPositionCoordinateYType(io.swagger.model.ObservationUnitPhenotype.PositionCoordinateYTypeEnum.GRID_ROW);
+		pheno.setPositionCoordinateYType(
+				io.swagger.model.ObservationUnitPhenotype.PositionCoordinateYTypeEnum.GRID_ROW);
 		pheno.setObservationLevel(entity.getObservationLevel());
 		pheno.setObservationLevels(entity.getObservationLevels());
-		pheno.setProgramName(entity.getStudy().getTrial().getProgram().getName());
-		pheno.setStudyDbId(entity.getStudy().getId());
-		pheno.setStudyLocation(entity.getStudy().getLocation().getCountryName());
-		pheno.setStudyLocationDbId(entity.getStudy().getLocation().getId());
-		pheno.setStudyName(entity.getStudy().getStudyName());
+		if (entity.getStudy() != null) {
+			pheno.setProgramName(entity.getStudy().getTrial().getProgram().getName());
+			pheno.setStudyDbId(entity.getStudy().getId());
+			pheno.setStudyLocation(entity.getStudy().getLocation().getCountryName());
+			pheno.setStudyLocationDbId(entity.getStudy().getLocation().getId());
+			pheno.setStudyName(entity.getStudy().getStudyName());
+		}
 
-		pheno.setTreatments(entity.getTreatments().stream().map(e -> {
-			ObservationTreatment treatment = new ObservationTreatment();
-			treatment.setFactor(e.getFactor());
-			treatment.setModality(e.getModality());
-			return treatment;
-		}).collect(Collectors.toList()));
+		if (entity.getTreatments() != null) {
+			pheno.setTreatments(entity.getTreatments().stream().map(e -> {
+				ObservationTreatment treatment = new ObservationTreatment();
+				treatment.setFactor(e.getFactor());
+				treatment.setModality(e.getModality());
+				return treatment;
+			}).collect(Collectors.toList()));
+		}
 
-		pheno.setObservations(entity.getObservations().stream().map(e -> {
-			ObservationSummaryPhenotype ob = new ObservationSummaryPhenotype();
-			ob.setCollector(e.getCollector());
-			ob.setObservationDbId(e.getId());
-			ob.setObservationTimeStamp(DateUtility.toOffsetDateTime(e.getObservationTimeStamp()));
-			ob.setValue(e.getValue());
+		if (entity.getObservations() != null) {
+			pheno.setObservations(entity.getObservations().stream().map(e -> {
+				ObservationSummaryPhenotype ob = new ObservationSummaryPhenotype();
+				ob.setCollector(e.getCollector());
+				ob.setObservationDbId(e.getId());
+				ob.setObservationTimeStamp(DateUtility.toOffsetDateTime(e.getObservationTimeStamp()));
+				ob.setValue(e.getValue());
 
-			if (e.getObservationVariable() != null) {
-				ob.setObservationVariableDbId(e.getObservationVariable().getId());
-				ob.setObservationVariableName(e.getObservationVariable().getName());
-			}
-			if (e.getSeason() != null) {
-				ob.setSeason(e.getSeason().getSeason() + " " + e.getSeason().getYear());
-			}
-			return ob;
-		}).collect(Collectors.toList()));
+				if (e.getObservationVariable() != null) {
+					ob.setObservationVariableDbId(e.getObservationVariable().getId());
+					ob.setObservationVariableName(e.getObservationVariable().getName());
+				}
+				if (e.getSeason() != null) {
+					ob.setSeason(e.getSeason().getSeason() + " " + e.getSeason().getYear());
+				}
+				return ob;
+			}).collect(Collectors.toList()));
+		}
 
-		pheno.setObservationUnitXref(entity.getObservationUnitXref().stream().map(e -> {
-			ObservationUnitXref xref = new ObservationUnitXref();
-			xref.setId(e.getXref());
-			xref.setSource(e.getSource());
-			return xref;
-		}).collect(Collectors.toList()));
+		if (entity.getObservationUnitXref() != null) {
+			pheno.setObservationUnitXref(entity.getObservationUnitXref().stream().map(e -> {
+				ObservationUnitXref xref = new ObservationUnitXref();
+				xref.setId(e.getXref());
+				xref.setSource(e.getSource());
+				return xref;
+			}).collect(Collectors.toList()));
+		}
 
 		return pheno;
 	}

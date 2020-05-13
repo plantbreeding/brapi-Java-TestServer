@@ -117,18 +117,46 @@ public class StudyService {
 		List<List<String>> data = new ArrayList<>();
 		for (ObservationUnitEntity unit : units) {
 			List<String> row = new ArrayList<>();
-			row.add(unit.getObservations().get(0).getSeason().getYear().toString());
-			row.add(unit.getStudy().getId());
-			row.add(unit.getStudy().getStudyName());
-			row.add(unit.getStudy().getLocation().getId());
-			row.add(unit.getStudy().getLocation().getCountryName());
-			row.add(unit.getGermplasm().getId());
-			row.add(unit.getGermplasm().getGermplasmName());
+			if (unit.getObservations() != null && !unit.getObservations().isEmpty()) {
+				row.add(unit.getObservations().get(0).getSeason().getYear().toString());
+				row.add(DateUtility.toTimeString(unit.getObservations().get(0).getObservationTimeStamp()));
+			}else {
+				row.add("");
+				row.add("");
+			}
+			if (unit.getStudy() != null) {
+				row.add(unit.getStudy().getId());
+				row.add(unit.getStudy().getStudyName());
+				if (unit.getStudy().getLocation() != null) {
+					row.add(unit.getStudy().getLocation().getId());
+					row.add(unit.getStudy().getLocation().getCountryName());
+				}else {
+					row.add("");
+					row.add("");
+				}
+			}else {
+				row.add("");
+				row.add("");
+				row.add("");
+				row.add("");
+			}
+			if (unit.getGermplasm() != null) {
+				row.add(unit.getGermplasm().getId());
+				row.add(unit.getGermplasm().getGermplasmName());
+			}else {
+				row.add("");
+				row.add("");
+			}
 			row.add(unit.getId());
-			row.add(unit.getPlotNumber().toString());
+			if (unit.getPlotNumber() != null)
+				row.add(unit.getPlotNumber().toString());
+			else 
+				row.add("");
 			row.add(unit.getReplicate());
-			row.add(unit.getBlockNumber().toString());
-			row.add(DateUtility.toTimeString(unit.getObservations().get(0).getObservationTimeStamp()));
+			if (unit.getBlockNumber() != null)
+				row.add(unit.getBlockNumber().toString());
+			else 
+				row.add("");
 			row.add(unit.getEntryType());
 			row.add(unit.getX());
 			row.add(unit.getY());
@@ -143,6 +171,13 @@ public class StudyService {
 					row.add("");
 				}
 			}
+			
+			for(int i = 0; i < row.size(); i++) {
+				if(row.get(i) == null) {
+					row.set(i, "");
+				}
+			}
+			
 			data.add(row);
 		}
 		return data;
@@ -162,25 +197,31 @@ public class StudyService {
 	}
 
 	private Observation convertFromEntity(ObservationEntity entity) {
-		Observation unit = new Observation();
-		unit.setGermplasmDbId(entity.getObservationUnit().getGermplasm().getId());
-		unit.setGermplasmName(entity.getObservationUnit().getGermplasm().getGermplasmName());
-		unit.setObservationDbId(entity.getId());
-		unit.setObservationLevel(entity.getObservationUnit().getObservationLevel());
-		unit.setObservationTimeStamp(DateUtility.toOffsetDateTime(entity.getObservationTimeStamp()));
-		unit.setObservationUnitDbId(entity.getObservationUnit().getId());
-		unit.setObservationUnitName(entity.getObservationUnit().getObservationUnitName());
-		if (entity.getObservationVariable() != null) {
-			unit.setObservationVariableDbId(entity.getObservationVariable().getId());
-			unit.setObservationVariableName(entity.getObservationVariable().getName());
+		Observation obs = new Observation();
+		if (entity.getObservationUnit() != null) {
+			ObservationUnitEntity unit = entity.getObservationUnit();
+			obs.setObservationLevel(unit.getObservationLevel());
+			obs.setObservationUnitDbId(unit.getId());
+			obs.setObservationUnitName(unit.getObservationUnitName());
+			obs.setOperator(unit.getOperator());
+			obs.setUploadedBy(unit.getUploadedBy());
+			if (unit.getGermplasm() != null) {
+				obs.setGermplasmDbId(unit.getGermplasm().getId());
+				obs.setGermplasmName(unit.getGermplasm().getGermplasmName());
+			}
+			if (unit.getStudy() != null)
+				obs.setStudyDbId(unit.getStudy().getId());
 		}
-		unit.setOperator(entity.getObservationUnit().getOperator());
-		unit.setStudyDbId(entity.getObservationUnit().getStudy().getId());
-		unit.setSeason(convertFromEntity(entity.getSeason()));
-		unit.setUploadedBy(entity.getObservationUnit().getUploadedBy());
-		unit.setValue(entity.getValue());
+		if (entity.getObservationVariable() != null) {
+			obs.setObservationVariableDbId(entity.getObservationVariable().getId());
+			obs.setObservationVariableName(entity.getObservationVariable().getName());
+		}
+		obs.setObservationDbId(entity.getId());
+		obs.setObservationTimeStamp(DateUtility.toOffsetDateTime(entity.getObservationTimeStamp()));
+		obs.setSeason(convertFromEntity(entity.getSeason()));
+		obs.setValue(entity.getValue());
 
-		return unit;
+		return obs;
 	}
 
 	private ObservationUnit convertFromEntity(ObservationUnitEntity entity) {
@@ -226,22 +267,27 @@ public class StudyService {
 		observation.setPositionCoordinateY(entity.getY());
 		observation.setPositionCoordinateYType(PositionCoordinateYTypeEnum.GRID_ROW);
 
-		observation.setObservations(
-				entity.getObservations().stream().map(this::convertFromEntityToSummary).collect(Collectors.toList()));
+		if (entity.getObservations() != null)
+			observation.setObservations(entity.getObservations().stream().map(this::convertFromEntityToSummary)
+					.collect(Collectors.toList()));
 
-		observation.setObservationUnitXref(entity.getObservationUnitXref().stream().map(e -> {
-			ObservationUnitXref xref = new ObservationUnitXref();
-			xref.setId(e.getXref());
-			xref.setSource(e.getSource());
-			return xref;
-		}).collect(Collectors.toList()));
+		if (entity.getObservationUnitXref() != null) {
+			observation.setObservationUnitXref(entity.getObservationUnitXref().stream().map(e -> {
+				ObservationUnitXref xref = new ObservationUnitXref();
+				xref.setId(e.getXref());
+				xref.setSource(e.getSource());
+				return xref;
+			}).collect(Collectors.toList()));
+		}
 
-		observation.setTreatments(entity.getTreatments().stream().map(e -> {
-			ObservationTreatment treatment = new ObservationTreatment();
-			treatment.setFactor(e.getFactor());
-			treatment.setModality(e.getModality());
-			return treatment;
-		}).collect(Collectors.toList()));
+		if (entity.getTreatments() != null) {
+			observation.setTreatments(entity.getTreatments().stream().map(e -> {
+				ObservationTreatment treatment = new ObservationTreatment();
+				treatment.setFactor(e.getFactor());
+				treatment.setModality(e.getModality());
+				return treatment;
+			}).collect(Collectors.toList()));
+		}
 
 		return observation;
 
@@ -252,7 +298,8 @@ public class StudyService {
 		if (entity != null) {
 			season.setSeason(entity.getSeason());
 			season.setSeasonDbId(entity.getId());
-			season.setYear(entity.getYear().toString());
+			if (entity.getYear() != null)
+				season.setYear(entity.getYear().toString());
 		}
 		return season;
 	}
@@ -261,16 +308,21 @@ public class StudyService {
 		Study study = new Study();
 
 		study.setActive(String.valueOf(entity.isActive()));
-		study.setCommonCropName(entity.getTrial().getProgram().getCrop().getCropName());
 		study.setDocumentationURL(entity.getDocumentationURL());
 		study.setEndDate(DateUtility.toLocalDate(entity.getEndDate()));
 		study.setStartDate(DateUtility.toLocalDate(entity.getStartDate()));
 		study.setStudyDbId(entity.getId());
-		study.setStudyType(entity.getStudyType().getName());
-		study.setStudyTypeName(entity.getStudyType().getName());
-		study.setStudyTypeDbId(entity.getStudyType().getId());
-		study.setTrialDbId(entity.getTrial().getId());
-		study.setTrialName(entity.getTrial().getTrialName());
+		if (entity.getStudyType() != null) {
+			study.setStudyType(entity.getStudyType().getName());
+			study.setStudyTypeName(entity.getStudyType().getName());
+			study.setStudyTypeDbId(entity.getStudyType().getId());
+		}
+		if (entity.getTrial() != null) {
+			study.setTrialDbId(entity.getTrial().getId());
+			study.setTrialName(entity.getTrial().getTrialName());
+			if (entity.getTrial().getProgram() != null && entity.getTrial().getProgram().getCrop() != null)
+				study.setCommonCropName(entity.getTrial().getProgram().getCrop().getCropName());
+		}
 		study.setLicense(entity.getLicence());
 		study.setLocation(locationService.convertFromEntity(entity.getLocation()));
 		study.setStudyDescription(entity.getStudyDescription());
@@ -280,21 +332,27 @@ public class StudyService {
 		study.getLastUpdate().setTimestamp(DateUtility.toOffsetDateTime(entity.getTimestamp()));
 		study.getLastUpdate().setVersion(entity.getVersion());
 
-		study.setContacts(
-				entity.getContacts().stream().map(this.contactService::convertFromEntity).collect(Collectors.toList()));
+		if (entity.getContacts() != null) {
+			study.setContacts(entity.getContacts().stream().map(this.contactService::convertFromEntity)
+					.collect(Collectors.toList()));
+		}
 
-		study.setDataLinks(entity.getDataLinks().stream().map(e -> {
-			DataLink dataLink = new DataLink();
-			dataLink.setName(e.getName());
-			dataLink.setDataLinkName(e.getName());
-			dataLink.setType(e.getType());
-			dataLink.setUrl(e.getUrl());
-			return dataLink;
-		}).collect(Collectors.toList()));
+		if (entity.getDataLinks() != null) {
+			study.setDataLinks(entity.getDataLinks().stream().map(e -> {
+				DataLink dataLink = new DataLink();
+				dataLink.setName(e.getName());
+				dataLink.setDataLinkName(e.getName());
+				dataLink.setType(e.getType());
+				dataLink.setUrl(e.getUrl());
+				return dataLink;
+			}).collect(Collectors.toList()));
+		}
 
-		study.setSeasons(entity.getSeasons().stream().map(e -> {
-			return e.getSeason() + " " + e.getYear();
-		}).collect(Collectors.toList()));
+		if (entity.getSeasons() != null) {
+			study.setSeasons(entity.getSeasons().stream().map(e -> {
+				return e.getSeason() + " " + e.getYear();
+			}).collect(Collectors.toList()));
+		}
 
 		study.setAdditionalInfo(new HashMap<>());
 		for (StudyAddtionalInfoEntity e : entity.getAdditionalInfo()) {
@@ -306,12 +364,14 @@ public class StudyService {
 	private ObservationUnitPosition convertFromEntityToPosition(ObservationUnitEntity entity) {
 		ObservationUnitPosition plot = new ObservationUnitPosition();
 		plot.setBlockNumber(entity.getBlockNumber() == null ? null : entity.getBlockNumber().toString());
-		plot.setEntryType(EntryTypeEnum.valueOf(entity.getEntryType()));
+		if (entity.getEntryType() != null)
+			plot.setEntryType(EntryTypeEnum.valueOf(entity.getEntryType()));
 		plot.setObservationLevel(entity.getObservationLevel());
 		plot.setObservationUnitDbId(entity.getId());
 		plot.setObservationUnitName(entity.getObservationUnitName());
 		plot.setReplicate(entity.getReplicate());
-		plot.setStudyDbId(entity.getStudy().getId());
+		if (entity.getStudy() != null)
+			plot.setStudyDbId(entity.getStudy().getId());
 		plot.setX(entity.getX());
 		plot.setPositionCoordinateX(entity.getX());
 		plot.setPositionCoordinateXType(io.swagger.model.ObservationUnitPosition.PositionCoordinateXTypeEnum.GRID_COL);
@@ -345,24 +405,34 @@ public class StudyService {
 	private StudySummary convertFromEntityToSummary(StudyEntity entity) {
 		StudySummary sum = new StudySummary();
 		sum.setActive(String.valueOf(entity.isActive()));
-		sum.setCommonCropName(entity.getTrial().getProgram().getCrop().getCropName());
 		sum.setDocumentationURL(entity.getDocumentationURL());
 		sum.setEndDate(DateUtility.toLocalDate(entity.getEndDate()));
-		sum.setLocationDbId(entity.getLocation().getId());
-		sum.setLocationName(entity.getLocation().getName());
 		sum.setName(entity.getStudyName());
-		sum.setProgramDbId(entity.getTrial().getProgram().getId());
-		sum.setProgramName(entity.getTrial().getProgram().getName());
 		sum.setStartDate(DateUtility.toLocalDate(entity.getStartDate()));
 		sum.setStudyDbId(entity.getId());
 		sum.setStudyName(entity.getStudyName());
-		sum.setStudyType(entity.getStudyType().getName());
-		sum.setStudyTypeName(entity.getStudyType().getName());
-		sum.setStudyTypeDbId(entity.getStudyType().getId());
-		sum.setTrialDbId(entity.getTrial().getId());
-		sum.setTrialName(entity.getTrial().getTrialName());
+		if (entity.getLocation() != null) {
+			sum.setLocationDbId(entity.getLocation().getId());
+			sum.setLocationName(entity.getLocation().getName());
+		}
+		if (entity.getStudyType() != null) {
+			sum.setStudyType(entity.getStudyType().getName());
+			sum.setStudyTypeName(entity.getStudyType().getName());
+			sum.setStudyTypeDbId(entity.getStudyType().getId());
+		}
+		if (entity.getTrial() != null) {
+			sum.setTrialDbId(entity.getTrial().getId());
+			sum.setTrialName(entity.getTrial().getTrialName());
+			if (entity.getTrial().getProgram() != null) {
+				sum.setProgramDbId(entity.getTrial().getProgram().getId());
+				sum.setProgramName(entity.getTrial().getProgram().getName());
+				if (entity.getTrial().getProgram().getCrop() != null)
+					sum.setCommonCropName(entity.getTrial().getProgram().getCrop().getCropName());
+			}
+		}
 
-		sum.setSeasons(entity.getSeasons().stream().map(this::convertFromEntity).collect(Collectors.toList()));
+		if (entity.getSeasons() != null)
+			sum.setSeasons(entity.getSeasons().stream().map(this::convertFromEntity).collect(Collectors.toList()));
 
 		sum.setAdditionalInfo(new HashMap<>());
 		for (StudyAddtionalInfoEntity e : entity.getAdditionalInfo()) {
@@ -398,7 +468,8 @@ public class StudyService {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 		Page<String> levelsPage = observationUnitRepository.findObservationLevels(pageReq);
 		PagingUtility.calculateMetaData(metaData, levelsPage);
-		return levelsPage.getContent();
+		List<String> levels = levelsPage.stream().filter(l -> l != null).distinct().collect(Collectors.toList());
+		return levels;
 	}
 
 	public List<Observation> getObservationUnits(String studyDbId, List<String> observationVariableDbIds,
@@ -769,7 +840,7 @@ public class StudyService {
 			@Valid NewObservationsTableRequest request) {
 		Optional<StudyEntity> studyOpt = studyRepository.findById(studyDbId);
 		Set<NewObservationDbIdsObservations> observationDbIds = new HashSet<>();
-		if (studyOpt.isPresent()) {
+		if (studyOpt.isPresent() && request.getData() != null) {
 			for (List<String> row : request.getData()) {
 				ObservationUnitEntity entity = buildEntityFromRow(row, request, studyDbId);
 				if (entity.getStudy() == null) {

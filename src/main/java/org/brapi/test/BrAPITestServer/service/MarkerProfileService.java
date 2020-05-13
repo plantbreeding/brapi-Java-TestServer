@@ -29,7 +29,8 @@ public class MarkerProfileService {
 	private AlleleMatrixRepository alleleMatrixRepository;
 	private AlleleRepository alleleRepository;
 
-	public MarkerProfileService(MarkerProfileRepository markerProfileRepository, AlleleMatrixRepository alleleMatrixRepository, AlleleRepository alleleRepository) {
+	public MarkerProfileService(MarkerProfileRepository markerProfileRepository,
+			AlleleMatrixRepository alleleMatrixRepository, AlleleRepository alleleRepository) {
 		this.markerProfileRepository = markerProfileRepository;
 		this.alleleMatrixRepository = alleleMatrixRepository;
 		this.alleleRepository = alleleRepository;
@@ -40,19 +41,19 @@ public class MarkerProfileService {
 
 		Page<MarkerProfileEntity> profilePage = markerProfileRepository.findBySearchOptions(germplasmDbId, studyDbId,
 				sampleDbId, extractDbId, PagingUtility.getPageRequest(metaData));
-		
+
 		List<MarkerProfileDescription> summaries = profilePage.map((entity) -> {
 			MarkerProfileDescription summary = new MarkerProfileDescription();
-					summary.setAnalysisMethod(entity.getAnalysisMethod());
-					summary.setExtractDbId(entity.getExtractDbId());
-					summary.setGermplasmDbId(entity.getGermplasmDbId());
-					summary.setMarkerprofileDbId(entity.getId());
-					summary.setMarkerProfileDbId(entity.getId());
-					summary.setResultCount(entity.getResultCount());
-					summary.setSampleDbId(entity.getSampleDbId());
-					summary.setUniqueDisplayName(entity.getUniqueDisplayName());
-					return summary;
-				}).getContent();
+			summary.setAnalysisMethod(entity.getAnalysisMethod());
+			summary.setExtractDbId(entity.getExtractDbId());
+			summary.setGermplasmDbId(entity.getGermplasmDbId());
+			summary.setMarkerprofileDbId(entity.getId());
+			summary.setMarkerProfileDbId(entity.getId());
+			summary.setResultCount(entity.getResultCount());
+			summary.setSampleDbId(entity.getSampleDbId());
+			summary.setUniqueDisplayName(entity.getUniqueDisplayName());
+			return summary;
+		}).getContent();
 
 		PagingUtility.calculateMetaData(metaData, profilePage);
 		return summaries;
@@ -78,7 +79,7 @@ public class MarkerProfileService {
 
 	private List<Map<String, String>> buildAlleleDataMap(AlleleFormatParams params, String markerProfileDbId,
 			Metadata metaData) {
-		
+
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 		Page<AlleleEntity> allelePage = alleleRepository.findAllByMarkerProfile_Id(markerProfileDbId, pageReq);
 		PagingUtility.calculateMetaData(metaData, allelePage);
@@ -121,16 +122,16 @@ public class MarkerProfileService {
 		List<List<String>> matrix = new ArrayList<>();
 		Page<AlleleEntity> allelePage;
 
-		if(markerProfileDbIds != null && !markerProfileDbIds.isEmpty()) {
+		if (markerProfileDbIds != null && !markerProfileDbIds.isEmpty()) {
 			allelePage = alleleRepository.findAllByMarkerProfile_IdIn(markerProfileDbIds, pageReq);
-		}else if(markerDbIds != null && !markerDbIds.isEmpty()) {
+		} else if (markerDbIds != null && !markerDbIds.isEmpty()) {
 			allelePage = alleleRepository.findAllByMarker_IdIn(markerDbIds, pageReq);
-		}else if(matrixDbIds != null && !matrixDbIds.isEmpty()) {
+		} else if (matrixDbIds != null && !matrixDbIds.isEmpty()) {
 			allelePage = alleleRepository.findAllByMatrix_IdIn(matrixDbIds, pageReq);
-		}else {
+		} else {
 			allelePage = alleleRepository.findAll(pageReq);
 		}
-		
+
 		allelePage.forEach((allele) -> {
 			List<String> alleleEntry = new ArrayList<>();
 			alleleEntry.add(allele.getMarker().getId());
@@ -140,21 +141,21 @@ public class MarkerProfileService {
 		});
 
 		PagingUtility.calculateMetaData(metaData, allelePage);
-		
+
 		return matrix;
 	}
 
 	public List<AlleleMatrixDetails> getAlleleMatrixDetailsByStudyDbId(String studyDbId, Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 		Page<AlleleMatrixEntity> page;
-		if(studyDbId == null || studyDbId.isEmpty()) {
+		if (studyDbId == null || studyDbId.isEmpty()) {
 			page = alleleMatrixRepository.findAll(pageReq);
-		}else {
+		} else {
 			page = alleleMatrixRepository.findAllByStudy_Id(studyDbId, pageReq);
 		}
-		
+
 		PagingUtility.calculateMetaData(metaData, page);
-		
+
 		List<AlleleMatrixDetails> details = page.map((entity) -> {
 			AlleleMatrixDetails detail = new AlleleMatrixDetails();
 			detail.setDescription(entity.getDescription());
@@ -162,7 +163,8 @@ public class MarkerProfileService {
 			detail.setMatrixDbId(entity.getId());
 			detail.setMatrixName(entity.getName());
 			detail.setName(entity.getName());
-			detail.setStudyDbId(entity.getStudy().getId());
+			if (entity.getStudy() != null)
+				detail.setStudyDbId(entity.getStudy().getId());
 			return detail;
 		}).getContent();
 

@@ -19,21 +19,21 @@ import io.swagger.model.Metadata;
 public class LocationService {
 
 	private LocationRepository locationRepository;
-	
+
 	@Autowired
 	public LocationService(LocationRepository locationRepository) {
 		this.locationRepository = locationRepository;
 	}
-	
+
 	public List<Location> getLocations(String locationType, Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 		Page<LocationEntity> locationsPage;
-		if(locationType == null) {
+		if (locationType == null) {
 			locationsPage = locationRepository.findAll(pageReq);
-		}else {
+		} else {
 			locationsPage = locationRepository.findByLocationType(locationType, pageReq);
 		}
-		
+
 		List<Location> locations = locationsPage.map(this::convertFromEntity).getContent();
 		PagingUtility.calculateMetaData(metaData, locationsPage);
 		return locations;
@@ -43,7 +43,7 @@ public class LocationService {
 		LocationEntity entity = locationRepository.findById(locationDbId).get();
 		return convertFromEntity(entity);
 	}
-	
+
 	public Location convertFromEntity(LocationEntity locationEntity) {
 		Location location = new Location();
 		location.setAbbreviation(locationEntity.getAbbreviation());
@@ -61,13 +61,15 @@ public class LocationService {
 		location.setName(locationEntity.getName());
 		location.setLocationName(locationEntity.getName());
 		location.setDocumentationURL(locationEntity.getDocumentationURL());
-		
-		Map<String, String> additionalInfo = new HashMap<>();
-		locationEntity.getAdditionalInfo().forEach((entity) -> {
-			additionalInfo.put(entity.getKey(), entity.getValue());
-		});
-		location.setAdditionalInfo(additionalInfo);
-		
+
+		if (locationEntity.getAdditionalInfo() != null) {
+			Map<String, String> additionalInfo = new HashMap<>();
+			locationEntity.getAdditionalInfo().forEach((entity) -> {
+				additionalInfo.put(entity.getKey(), entity.getValue());
+			});
+			location.setAdditionalInfo(additionalInfo);
+		}
+
 		return location;
 	}
 

@@ -110,25 +110,33 @@ public class ObservationVariableService {
 	}
 
 	public void convertFromBaseEntity(VariableBaseEntity entity, VariableBaseClass var) {
-		var.setContextOfUse(entity.getContextOfUse().stream().map(e -> e.getContext()).collect(Collectors.toList()));
+		if (entity.getContextOfUse() != null)
+			var.setContextOfUse(
+					entity.getContextOfUse().stream().map(e -> e.getContext()).collect(Collectors.toList()));
 		var.setCrop(entity.getCrop());
 		var.setDefaultValue(entity.getDefaultValue());
 		var.setDocumentationURL(entity.getDocumentationURL());
 		var.setGrowthStage(entity.getGrowthStage());
 		var.setInstitution(entity.getGrowthStage());
 		var.setLanguage(entity.getLanguage());
-		var.setOntologyDbId(entity.getOntology().getId());
-		var.setOntologyName(entity.getOntology().getOntologyName());
+		if (entity.getOntology() != null) {
+			var.setOntologyDbId(entity.getOntology().getId());
+			var.setOntologyName(entity.getOntology().getOntologyName());
+		}
 		var.setScientist(entity.getScientist());
 		var.setStatus(entity.getStatus());
 		var.setSubmissionTimestamp(DateUtility.toOffsetDateTime(entity.getSubmissionTimestamp()));
-		var.setSynonyms(entity.getSynonyms().stream().map(e -> e.getSynonym()).collect(Collectors.toList()));
+		if (entity.getSynonyms() != null)
+			var.setSynonyms(entity.getSynonyms().stream().map(e -> e.getSynonym()).collect(Collectors.toList()));
 		var.setXref(entity.getXref());
 
 		OntologyReference oRef = ontologyService.convertFromEntity(entity.getOntology(), entity.getOntologyReference());
 		if (oRef != null) {
-			oRef.setDocumentationLinks(Arrays.asList(new OntologyReferenceDocumentationLinks()
-					.URL(entity.getOntology().getXref()).type(TypeEnum.WEBPAGE)));
+			OntologyReferenceDocumentationLinks links = new OntologyReferenceDocumentationLinks();
+			links.setType(TypeEnum.WEBPAGE);
+			if (entity.getOntology() != null)
+				links.setURL(entity.getOntology().getXref());
+			oRef.setDocumentationLinks(Arrays.asList(links));
 			var.setOntologyReference(oRef);
 		}
 
@@ -153,7 +161,8 @@ public class ObservationVariableService {
 		return observationVariableRepository.findById(observationVariableDbId).orElse(null);
 	}
 
-	public List<ObservationVariable> search(ObservationVariableSearchRequest request, Metadata metadata) throws BrAPIServerException {
+	public List<ObservationVariable> search(ObservationVariableSearchRequest request, Metadata metadata)
+			throws BrAPIServerException {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		Page<ObservationVariableEntity> page = observationVariableRepository.findBySearch(request, pageReq);
 		List<ObservationVariable> programs = page.map(this::convertFromEntity).getContent();

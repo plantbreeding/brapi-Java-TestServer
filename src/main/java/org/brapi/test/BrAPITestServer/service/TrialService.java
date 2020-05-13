@@ -31,8 +31,8 @@ public class TrialService {
 		this.contactService = contactService;
 	}
 
-	public List<TrialSummary> getTrialSummaries(String commonCropName, String programDbId, String locationDbId, Boolean active, String sortBy,
-			String sortOrder, Metadata metaData) {
+	public List<TrialSummary> getTrialSummaries(String commonCropName, String programDbId, String locationDbId,
+			Boolean active, String sortBy, String sortOrder, Metadata metaData) {
 		Sort sort = buildSort(sortBy, sortOrder);
 		Pageable pageReq = PagingUtility.getPageRequest(metaData, sort);
 
@@ -45,8 +45,8 @@ public class TrialService {
 		locationDbId = null == locationDbId ? "" : locationDbId;
 		commonCropName = null == commonCropName ? "" : commonCropName;
 
-		Page<TrialEntity> trialsPage = trialRepository.findBySearch(commonCropName, programDbId, locationDbId, applyActiveFilter,
-				active, pageReq);
+		Page<TrialEntity> trialsPage = trialRepository.findBySearch(commonCropName, programDbId, locationDbId,
+				applyActiveFilter, active, pageReq);
 
 		List<TrialSummary> summaries = trialsPage.map(this::convertFromEntityToSummary).getContent();
 
@@ -103,11 +103,13 @@ public class TrialService {
 	private Trial convertFromEntity(TrialEntity entity) {
 		Trial trial = new Trial();
 		trial.setActive(entity.isActive());
-		trial.setCommonCropName(entity.getProgram().getCrop().getCropName());
 		trial.setDocumentationURL(entity.getDocumentationURL());
 		trial.setEndDate(DateUtility.toLocalDate(entity.getEndDate()));
-		trial.setProgramDbId(entity.getProgram().getId());
-		trial.setProgramName(entity.getProgram().getName());
+		if (entity.getProgram() != null) {
+			trial.setCommonCropName(entity.getProgram().getCrop().getCropName());
+			trial.setProgramDbId(entity.getProgram().getId());
+			trial.setProgramName(entity.getProgram().getName());
+		}
 		trial.setStartDate(DateUtility.toLocalDate(entity.getStartDate()));
 		trial.setTrialDbId(entity.getId());
 		trial.setTrialName(entity.getTrialName());
@@ -116,18 +118,22 @@ public class TrialService {
 				new TrialDatasetAuthorship().datasetPUI(entity.getDatasetPUI()).license(entity.getDatasetLicence()));
 		trial.addDatasetAuthorshipsItem(
 				new TrialDatasetAuthorships().datasetPUI(entity.getDatasetPUI()).license(entity.getDatasetLicence()));
-		trial.addPublicationsItem(new TrialPublications().publicationPUI(entity.getDatasetPUI()).publicationReference(entity.getDocumentationURL()));
-		trial.setContacts(
-				entity.getContacts().stream().map(this.contactService::convertFromEntity).collect(Collectors.toList()));
+		trial.addPublicationsItem(new TrialPublications().publicationPUI(entity.getDatasetPUI())
+				.publicationReference(entity.getDocumentationURL()));
+		if (entity.getContacts() != null)
+			trial.setContacts(entity.getContacts().stream().map(this.contactService::convertFromEntity)
+					.collect(Collectors.toList()));
 
-		trial.setStudies(entity.getStudies().stream().map((e) -> {
-			TrialStudies id = new TrialStudies();
-			id.setLocationDbId(e.getLocation().getId());
-			id.setLocationName(e.getLocation().getName());
-			id.setStudyDbId(e.getId());
-			id.setStudyName(e.getStudyName());
-			return id;
-		}).collect(Collectors.toList()));
+		if (entity.getStudies() != null) {
+			trial.setStudies(entity.getStudies().stream().map((e) -> {
+				TrialStudies id = new TrialStudies();
+				id.setLocationDbId(e.getLocation().getId());
+				id.setLocationName(e.getLocation().getName());
+				id.setStudyDbId(e.getId());
+				id.setStudyName(e.getStudyName());
+				return id;
+			}).collect(Collectors.toList()));
+		}
 
 		trial.setAdditionalInfo(new HashMap<>());
 		for (TrialAdditionalInfoEntity e : entity.getAdditionalInfo()) {
@@ -140,28 +146,34 @@ public class TrialService {
 	private TrialSummary convertFromEntityToSummary(TrialEntity entity) {
 		TrialSummary summary = new TrialSummary();
 		summary.setActive(entity.isActive());
-		summary.setCommonCropName(entity.getProgram().getCrop().getCropName());
 		summary.setDocumentationURL(entity.getDocumentationURL());
 		summary.setEndDate(DateUtility.toLocalDate(entity.getEndDate()));
-		summary.setProgramDbId(entity.getProgram().getId());
-		summary.setProgramName(entity.getProgram().getName());
+		if (entity.getProgram() != null) {
+			summary.setCommonCropName(entity.getProgram().getCrop().getCropName());
+			summary.setProgramDbId(entity.getProgram().getId());
+			summary.setProgramName(entity.getProgram().getName());
+		}
 		summary.setStartDate(DateUtility.toLocalDate(entity.getStartDate()));
 		summary.setTrialDbId(entity.getId());
 		summary.setTrialName(entity.getTrialName());
 
-		summary.setStudies(entity.getStudies().stream().map((e) -> {
-			TrialStudies id = new TrialStudies();
-			id.setLocationDbId(e.getLocation().getId());
-			id.setLocationName(e.getLocation().getName());
-			id.setStudyDbId(e.getId());
-			id.setStudyName(e.getStudyName());
-			return id;
-		}).collect(Collectors.toList()));
+		if (entity.getStudies() != null) {
+			summary.setStudies(entity.getStudies().stream().map((e) -> {
+				TrialStudies id = new TrialStudies();
+				id.setLocationDbId(e.getLocation().getId());
+				id.setLocationName(e.getLocation().getName());
+				id.setStudyDbId(e.getId());
+				id.setStudyName(e.getStudyName());
+				return id;
+			}).collect(Collectors.toList()));
+		}
 
-		summary.setAdditionalInfo(new HashMap<>());
-		entity.getAdditionalInfo().forEach((e) -> {
-			summary.getAdditionalInfo().put(e.getKey(), e.getValue());
-		});
+		if (entity.getAdditionalInfo() != null) {
+			summary.setAdditionalInfo(new HashMap<>());
+			entity.getAdditionalInfo().forEach((e) -> {
+				summary.getAdditionalInfo().put(e.getKey(), e.getValue());
+			});
+		}
 
 		return summary;
 	}

@@ -17,9 +17,9 @@ import io.swagger.model.ProgramsSearchRequest;
 @Service
 public class ProgramService {
 	private ProgramRepository programRepository;
-	
+
 	@Autowired
-	public ProgramService( ProgramRepository programRepository) {
+	public ProgramService(ProgramRepository programRepository) {
 		this.programRepository = programRepository;
 	}
 
@@ -40,27 +40,30 @@ public class ProgramService {
 			request.addObjectivesItem(objective);
 		if (programDbId != null)
 			request.addProgramDbIdsItem(programDbId);
-		
+
 		Page<ProgramEntity> page = programRepository.findAllBySearch(request, pageReq);
 		List<Program> programs = page.map(this::convertFromEntity).getContent();
 
 		PagingUtility.calculateMetaData(metaData, page);
 		return programs;
 	}
-	
+
 	private Program convertFromEntity(ProgramEntity entity) {
 		Program program = new Program();
 		program.setAbbreviation(entity.getAbbreviation());
-		program.setCommonCropName(entity.getCrop().getCropName());
+		if (entity.getCrop() != null)
+			program.setCommonCropName(entity.getCrop().getCropName());
 		program.setDocumentationURL(entity.getDocumentationURL());
-		program.setLeadPerson(entity.getLeadPerson().getName());
-		program.setLeadPersonDbId(entity.getLeadPerson().getId());
-		program.setLeadPersonName(entity.getLeadPerson().getName());
+		if (entity.getLeadPerson() != null) {
+			program.setLeadPerson(entity.getLeadPerson().getName());
+			program.setLeadPersonDbId(entity.getLeadPerson().getId());
+			program.setLeadPersonName(entity.getLeadPerson().getName());
+		}
 		program.setName(entity.getName());
 		program.setObjective(entity.getObjective());
 		program.setProgramDbId(entity.getId());
 		program.setProgramName(entity.getName());
-		
+
 		return program;
 	}
 

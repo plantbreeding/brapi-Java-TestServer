@@ -27,17 +27,17 @@ public class MarkersService {
 	public MarkersService(MarkerRepository markerRepository, SearchService searchService) {
 		this.markerRepository = markerRepository;
 		this.searchService = searchService;
-		
+
 	}
 
 	public List<Marker> getMarkers(String name, String type, List<String> markerDbIds, MatchMethodEnum matchMethod,
-			 Boolean includeSynonyms, Metadata metaData) {
+			Boolean includeSynonyms, Metadata metaData) {
 		Pageable pageReq = PagingUtility.getPageRequest(metaData);
 
 		MarkersSearchRequest request = new MarkersSearchRequest();
-		if(name != null)
+		if (name != null)
 			request.addMarkerNamesItem(name);
-		if(type != null)
+		if (type != null)
 			request.addTypesItem(type);
 		request.setIncludeSynonyms(includeSynonyms);
 		request.setMarkerDbIds(markerDbIds);
@@ -66,12 +66,16 @@ public class MarkersService {
 		marker.setMarkerName(markerEntity.getMarkerName());
 		marker.setMarkerDbId(markerEntity.getId());
 		marker.setType(markerEntity.getType());
-		marker.setAnalysisMethods(markerEntity.getAnalysisMethods().stream().map(entity -> entity.getMethodName())
-				.collect(Collectors.toList()));
-		marker.setRefAlt(
-				markerEntity.getRefAlt().stream().map(entity -> entity.getReference()).collect(Collectors.toList()));
+		if (markerEntity.getAnalysisMethods() != null)
+			marker.setAnalysisMethods(markerEntity.getAnalysisMethods().stream().map(entity -> entity.getMethodName())
+					.collect(Collectors.toList()));
+		if (markerEntity.getRefAlt() != null)
+			marker.setRefAlt(markerEntity.getRefAlt().stream().map(entity -> entity.getReference())
+					.collect(Collectors.toList()));
 
-		if (includeSynonyms == null || includeSynonyms) {
+		if (includeSynonyms == null)
+			includeSynonyms = true;
+		if (markerEntity.getSynonyms() != null && includeSynonyms) {
 			marker.setSynonyms(markerEntity.getSynonyms().stream().map(entity -> entity.getSynonym())
 					.collect(Collectors.toList()));
 		}

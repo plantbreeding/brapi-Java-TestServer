@@ -53,16 +53,18 @@ public class GermplasmAttributeService {
 	private GermplasmAttributeDef mapFromEntityToAttribute(GermplasmAttributeDefinitionEntity entity) {
 		GermplasmAttributeDef attrib = new GermplasmAttributeDef();
 		observationVariableService.convertFromBaseEntity(entity, attrib);
-		
+
 		attrib.setAttributeName(entity.getName());
-		attrib.setAttributeCategoryDbId(entity.getAttributeCategory().getId());
+		if (entity.getAttributeCategory() != null)
+			attrib.setAttributeCategoryDbId(entity.getAttributeCategory().getId());
 		attrib.setAttributeDbId(entity.getId());
 		attrib.setCode(entity.getCode());
 		attrib.setDatatype(entity.getDatatype());
 		attrib.setDescription(entity.getDescription());
 		attrib.setName(entity.getName());
 		attrib.setUri(entity.getUri());
-		attrib.setValues(entity.getValues().get(0).getValue());
+		if (entity.getValues() != null && !entity.getValues().isEmpty())
+			attrib.setValues(entity.getValues().get(0).getValue());
 
 		return attrib;
 
@@ -100,9 +102,11 @@ public class GermplasmAttributeService {
 
 	private GermplasmAttribute mapFromEntityToValue(GermplasmAttributeValueEntity entity) {
 		GermplasmAttribute attrib = new GermplasmAttribute();
-		attrib.setAttributeCode(entity.getGermplasmAttributeDefinition().getCode());
-		attrib.setAttributeDbId(entity.getGermplasmAttributeDefinition().getId());
-		attrib.setAttributeName(entity.getGermplasmAttributeDefinition().getName());
+		if (entity.getGermplasmAttributeDefinition() != null) {
+			attrib.setAttributeCode(entity.getGermplasmAttributeDefinition().getCode());
+			attrib.setAttributeDbId(entity.getGermplasmAttributeDefinition().getId());
+			attrib.setAttributeName(entity.getGermplasmAttributeDefinition().getName());
+		}
 		attrib.setDeterminedDate(DateUtility.toLocalDate(entity.getDeterminedDate()));
 		attrib.setValue(entity.getValue());
 		return attrib;
