@@ -85,9 +85,9 @@ public class VendorSampleService {
 			if (entity.getObservationUnit().getGermplasm().getCrop() != null)
 				sample.setOrganismName(entity.getObservationUnit().getGermplasm().getCrop().getCropName());
 		}
-		sample.setTaxonomyOntologyReference(new OntologyReference());
+		sample.setTaxonomyOntologyReference(null);
 		sample.setTissueType(entity.getTissueType());
-		sample.setTissueTypeOntologyReference(new OntologyReference());
+		sample.setTissueTypeOntologyReference(null);
 		if (entity.getVolume() != null)
 			sample.setVolume(new Measurement().value(new BigDecimal(entity.getVolume())).units("ul"));
 
