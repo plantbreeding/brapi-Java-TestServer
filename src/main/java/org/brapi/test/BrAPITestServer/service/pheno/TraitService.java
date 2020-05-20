@@ -54,7 +54,7 @@ public class TraitService {
 			TraitEntity entity = entityOpt.get();
 			updateEntity(entity, body);
 
-			savedEntity = traitRepository.save(entity);
+			savedEntity = saveTraitEntity(entity);
 		} else {
 			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + traitDbId);
 		}
@@ -67,11 +67,15 @@ public class TraitService {
 		for (TraitBaseClass request : body) {
 			TraitEntity newEntity = new TraitEntity();
 			updateEntity(newEntity, request);
-			TraitEntity saved = traitRepository.save(newEntity);
+			TraitEntity saved = saveTraitEntity(newEntity);
 			savedTraits.add(convertFromEntity(saved));
 		}
 
 		return savedTraits;
+	}
+
+	public TraitEntity saveTraitEntity(TraitEntity traitEntity) {
+		return traitRepository.save(traitEntity);
 	}
 
 	public TraitEntity getTraitEntity(String traitDbId) throws BrAPIServerException {

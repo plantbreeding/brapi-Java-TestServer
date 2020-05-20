@@ -53,8 +53,7 @@ public class MethodService {
 		if (entityOpt.isPresent()) {
 			MethodEntity entity = entityOpt.get();
 			updateEntity(entity, body);
-
-			savedEntity = methodRepository.save(entity);
+			savedEntity = saveMethodEntity(entity);
 		} else {
 			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + methodDbId);
 		}
@@ -67,11 +66,15 @@ public class MethodService {
 		for (MethodBaseClass request : body) {
 			MethodEntity newEntity = new MethodEntity();
 			updateEntity(newEntity, request);
-			MethodEntity saved = methodRepository.save(newEntity);
+			MethodEntity saved = saveMethodEntity(newEntity);
 			savedMethods.add(convertFromEntity(saved));
 		}
 
 		return savedMethods;
+	}
+	
+	public MethodEntity saveMethodEntity(MethodEntity entity) {
+		return methodRepository.save(entity);
 	}
 
 	public MethodEntity getMethodEntity(String methodDbId) throws BrAPIServerException {

@@ -190,16 +190,28 @@ public class ObservationVariableService {
 		if (request.getLanguage() != null)
 			entity.setLanguage(request.getLanguage());
 		if (request.getMethod() != null) {
-			if (entity.getMethod() == null)
-				entity.setMethod(new MethodEntity());
-			methodService.updateEntity(entity.getMethod(), request.getMethod());
+			MethodEntity methodEntity;
+			if(request.getMethod().getMethodDbId() == null) {
+				methodEntity = new MethodEntity();
+				methodService.updateEntity(methodEntity, request.getMethod());
+				methodEntity = methodService.saveMethodEntity(methodEntity);
+			}else {
+				methodEntity = methodService.getMethodEntity(request.getMethod().getMethodDbId());
+			}
+			entity.setMethod(methodEntity);
 		}
 		if (request.getOntologyReference() != null)
 			ontologyService.updateOntologyReference(entity, request.getOntologyReference());
 		if (request.getScale() != null) {
-			if (entity.getScale() == null)
-				entity.setScale(new ScaleEntity());
-			scaleService.updateEntity(entity.getScale(), request.getScale());
+			ScaleEntity scaleEntity;
+			if(request.getScale().getScaleDbId() == null) {
+				scaleEntity = new ScaleEntity();
+				scaleService.updateEntity(scaleEntity, request.getScale());
+				scaleEntity = scaleService.saveScaleEntity(scaleEntity);
+			}else {
+				scaleEntity = scaleService.getScaleEntity(request.getScale().getScaleDbId());
+			}
+			entity.setScale(scaleEntity);
 		}
 		if (request.getScientist() != null)
 			entity.setScientist(request.getScientist());
@@ -210,9 +222,15 @@ public class ObservationVariableService {
 		if (request.getSynonyms() != null)
 			entity.setSynonyms(request.getSynonyms());
 		if (request.getTrait() != null){
-			if (entity.getTrait() == null)
-				entity.setTrait(new TraitEntity());
-			traitService.updateEntity(entity.getTrait(), request.getTrait());
+			TraitEntity traitEntity;
+			if(request.getTrait().getTraitDbId() == null) {
+				traitEntity = new TraitEntity();
+				traitService.updateEntity(traitEntity, request.getTrait());
+				traitEntity = traitService.saveTraitEntity(traitEntity);
+			}else {
+				traitEntity = traitService.getTraitEntity(request.getTrait().getTraitDbId());
+			}
+			entity.setTrait(traitEntity);
 		}
 	}
 }
