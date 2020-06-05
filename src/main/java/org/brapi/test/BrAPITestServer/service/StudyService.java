@@ -871,7 +871,7 @@ public class StudyService {
 				if (header != null) {
 					switch (header) {
 					case BLOCKNUMBER:
-						entity.setBlockNumber(Integer.parseInt(row.get(i)));
+						entity.setBlockNumber(row.get(i));
 						break;
 					case ENTRYTYPE:
 						entity.setEntryType(row.get(i));
@@ -893,7 +893,7 @@ public class StudyService {
 						}
 						break;
 					case PLOTNUMBER:
-						entity.setPlotNumber(Integer.parseInt(row.get(i)));
+						entity.setPlotNumber(row.get(i));
 						break;
 					case REPLICATE:
 						entity.setReplicate(row.get(i));
@@ -1000,7 +1000,7 @@ public class StudyService {
 	private ObservationUnitEntity updateEntity(ObservationUnitEntity observationUnitEntity,
 			NewObservationUnitRequest unit) {
 		if (unit.getBlockNumber() != null)
-			observationUnitEntity.setBlockNumber(NumberUtils.toInt(unit.getBlockNumber()));
+			observationUnitEntity.setBlockNumber(unit.getBlockNumber());
 		if (unit.getEntryNumber() != null)
 			observationUnitEntity.setEntryNumber(unit.getEntryNumber());
 		if (unit.getEntryType() != null)
@@ -1010,9 +1010,9 @@ public class StudyService {
 		if (unit.getObservationUnitName() != null)
 			observationUnitEntity.setObservationUnitName(unit.getObservationUnitName());
 		if (unit.getPlantNumber() != null)
-			observationUnitEntity.setPlantNumber(NumberUtils.toInt(unit.getPlantNumber()));
+			observationUnitEntity.setPlantNumber(unit.getPlantNumber());
 		if (unit.getPlotNumber() != null)
-			observationUnitEntity.setPlotNumber(NumberUtils.toInt(unit.getPlotNumber()));
+			observationUnitEntity.setPlotNumber(unit.getPlotNumber());
 		if (unit.getReplicate() != null)
 			observationUnitEntity.setReplicate(unit.getReplicate());
 		if (unit.getX() != null)

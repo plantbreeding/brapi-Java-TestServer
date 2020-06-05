@@ -21,7 +21,7 @@ public class StudyLayoutRequestLayout   {
   private String Y = null;
 
   @JsonProperty("blockNumber")
-  private Integer blockNumber = null;
+  private String blockNumber = null;
 
   /**
    * Gets or Sets entryType
@@ -203,7 +203,7 @@ public class StudyLayoutRequestLayout   {
     this.Y = Y;
   }
 
-  public StudyLayoutRequestLayout blockNumber(Integer blockNumber) {
+  public StudyLayoutRequestLayout blockNumber(String blockNumber) {
     this.blockNumber = blockNumber;
     return this;
   }
@@ -215,11 +215,11 @@ public class StudyLayoutRequestLayout   {
   @ApiModelProperty(value = "")
 
 
-  public Integer getBlockNumber() {
+  public String getBlockNumber() {
     return blockNumber;
   }
 
-  public void setBlockNumber(Integer blockNumber) {
+  public void setBlockNumber(String blockNumber) {
     this.blockNumber = blockNumber;
   }
 

@@ -12,7 +12,6 @@ import org.brapi.test.BrAPITestServer.model.entity.OntologyEntity;
 import org.brapi.test.BrAPITestServer.model.entity.OntologyInterface;
 import org.brapi.test.BrAPITestServer.model.entity.OntologyReferenceEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ScaleEntity;
-import org.brapi.test.BrAPITestServer.model.entity.ScaleValidValueCategoryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.TraitAbbreviationEntity;
 import org.brapi.test.BrAPITestServer.model.entity.TraitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.TraitSynonymEntity;
@@ -34,7 +33,6 @@ import io.swagger.model.NewTraitRequest;
 import io.swagger.model.Ontology;
 import io.swagger.model.OntologyReference;
 import io.swagger.model.OntologyReferenceDocumentationLinks;
-import io.swagger.model.OntologyReferenceDocumentationLinks.TypeEnum;
 import io.swagger.model.Scale;
 import io.swagger.model.Trait;
 import io.swagger.model.TraitDataType;
@@ -115,8 +113,7 @@ public class OntologyService {
 		validValues.setMax(entity.getValidValueMax());
 		validValues.setMin(entity.getValidValueMin());
 		if (entity.getValidValueCategories() != null)
-			validValues.setCategories(
-					entity.getValidValueCategories().stream().map(e -> e.getCategory()).collect(Collectors.toList()));
+			validValues.setCategories(entity.getValidValueCategories());
 		scale.setValidValues(validValues);
 		return scale;
 	}
@@ -298,12 +295,7 @@ public class OntologyService {
 			if (scale.getValidValues().getMin() != null)
 				entity.setValidValueMin(scale.getValidValues().getMin());
 			if (scale.getValidValues().getCategories() != null)
-				entity.setValidValueCategories(scale.getValidValues().getCategories().stream().map((categoryString) -> {
-					ScaleValidValueCategoryEntity e = new ScaleValidValueCategoryEntity();
-					e.setCategory(categoryString);
-					e.setScale(entity);
-					return e;
-				}).collect(Collectors.toList()));
+				entity.setValidValueCategories(scale.getValidValues().getCategories());
 		}
 
 		if (scale.getOntologyReference() != null)

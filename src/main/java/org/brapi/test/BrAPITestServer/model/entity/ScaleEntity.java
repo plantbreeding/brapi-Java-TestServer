@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
@@ -27,8 +28,8 @@ public class ScaleEntity extends BaseEntity implements OntologyInterface{
 	private Integer validValueMin;
 	@Column
 	private Integer validValueMax;
-	@OneToMany(mappedBy="scale", cascade = CascadeType.ALL)
-	private List<ScaleValidValueCategoryEntity> validValueCategories;
+	@ElementCollection
+	private List<String> validValueCategories;
 	
 	@OneToMany(mappedBy="scale", cascade = CascadeType.DETACH)
 	private List<VariableBaseEntity> variables;
@@ -51,10 +52,10 @@ public class ScaleEntity extends BaseEntity implements OntologyInterface{
 	public void setValidValueMax(Integer validValueMax) {
 		this.validValueMax = validValueMax;
 	}
-	public List<ScaleValidValueCategoryEntity> getValidValueCategories() {
+	public List<String> getValidValueCategories() {
 		return validValueCategories;
 	}
-	public void setValidValueCategories(List<ScaleValidValueCategoryEntity> validValueCategories) {
+	public void setValidValueCategories(List<String> validValueCategories) {
 		this.validValueCategories = validValueCategories;
 	}
 	public OntologyEntity getOntology() {

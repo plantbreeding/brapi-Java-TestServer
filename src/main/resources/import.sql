@@ -38,11 +38,11 @@ INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_min, v
 INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_min, valid_value_max, ontology_id)	VALUES ('s2', 'Numerical', 3, 'Kilogram', 'xref', '0', '99999', 'MO_123');
 INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_min, valid_value_max, ontology_id)	VALUES ('s3', 'Nominal', 0, 'Color', 'xref', '0', '0', 'MO_123');
 INSERT INTO scale (id, data_type, decimal_places, name, xref, valid_value_min, valid_value_max, ontology_id)	VALUES ('s4', 'Numerical', 0, 'Percentage', 'xref', '0', '100', 'MO_123');
-insert into scale_valid_value_category(id, scale_id, category) values ('color1', 's3', 'dark red');
-insert into scale_valid_value_category(id, scale_id, category) values ('color2', 's3', 'red');
-insert into scale_valid_value_category(id, scale_id, category) values ('color3', 's3', 'dark blue');
-insert into scale_valid_value_category(id, scale_id, category) values ('color4', 's3', 'blue');
-insert into scale_valid_value_category(id, scale_id, category) values ('color5', 's3', 'black');
+insert into scale_entity_valid_value_categories(scale_entity_id, valid_value_categories) values ('s3', 'dark red');
+insert into scale_entity_valid_value_categories(scale_entity_id, valid_value_categories) values ('s3', 'red');
+insert into scale_entity_valid_value_categories(scale_entity_id, valid_value_categories) values ('s3', 'dark blue');
+insert into scale_entity_valid_value_categories(scale_entity_id, valid_value_categories) values ('s3', 'blue');
+insert into scale_entity_valid_value_categories(scale_entity_id, valid_value_categories) values ('s3', 'black');
 
 INSERT INTO method(id, description, formula, method_class, name, reference, ontology_id)	VALUES ('m1', 'Standard rolled measuring tape', 'a^2 + b^2 = c^2', 'Numeric', 'Tape Measure', 'google.com', 'MO_123');
 INSERT INTO method(id, description, formula, method_class, name, reference, ontology_id)	VALUES ('m2', 'Dried sample on electric scale', 'NA', 'Numeric', 'Dry Electric Scale', 'google.com', 'MO_123');
