@@ -109,7 +109,7 @@ public class ObservationUnitService {
 		return findObservationUnits(request, metadata);
 	}
 
-	public ObservationUnitTable findObservationUnitsTable(String accept, String observationUnitDbId,
+	public ObservationUnitTable findObservationUnitsTable(String observationUnitDbId,
 			String germplasmDbId, String observationVariableDbId, String studyDbId, String locationDbId,
 			String trialDbId, String programDbId, String seasonDbId, String observationLevel) {
 		List<ObservationUnit> observationUnits = findObservationUnits(null, germplasmDbId, studyDbId, locationDbId,

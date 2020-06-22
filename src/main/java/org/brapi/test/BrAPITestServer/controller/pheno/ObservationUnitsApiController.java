@@ -125,7 +125,7 @@ public class ObservationUnitsApiController extends BrAPIController
 		return responseOK(new ObservationUnitListResponse(), new ObservationUnitListResponseResult(), data);
 	}
 
-	public ResponseEntity<ObservationUnitTableResponse> observationunitsTableGet(
+	public ResponseEntity observationunitsTableGet(
 			@RequestHeader(value = "Accept", required = false) String accept,
 			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
@@ -140,11 +140,23 @@ public class ObservationUnitsApiController extends BrAPIController
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
-		validateAcceptHeader(request);
-		ObservationUnitTable data = observationUnitService.findObservationUnitsTable(accept, observationUnitDbId,
+		String sep = "";
+		if("text/csv".equals(accept)) {
+			sep = ",";
+		}else if("text/tsv".equals(accept)) {
+			sep = "\t";
+		}else {
+			validateAcceptHeader(request);
+		}
+		ObservationUnitTable data = observationUnitService.findObservationUnitsTable(observationUnitDbId,
 				germplasmDbId, observationVariableDbId, studyDbId, locationDbId, trialDbId, programDbId, seasonDbId,
 				observationLevel);
-		return responseOK(new ObservationUnitTableResponse(), data);
+		if(sep.isEmpty()) {
+			return responseOK(new ObservationUnitTableResponse(), data);
+		}else {
+			String textTable = observationUnitService.getObservationUnitTableText(data, sep);
+			return new ResponseEntity<String>(textTable, HttpStatus.OK);
+		}
 	}
 
 	public ResponseEntity<ObservationUnitListResponse> searchObservationunitsPost(

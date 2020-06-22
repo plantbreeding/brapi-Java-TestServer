@@ -10,6 +10,8 @@ import io.swagger.model.pheno.ObservationSearchRequest;
 import io.swagger.model.pheno.ObservationSingleResponse;
 import io.swagger.model.pheno.ObservationTable;
 import io.swagger.model.pheno.ObservationTableResponse;
+import io.swagger.model.pheno.ObservationUnitTableResponse;
+
 import java.time.OffsetDateTime;
 
 import io.swagger.api.pheno.ObservationsApi;
@@ -120,7 +122,7 @@ public class ObservationsApiController extends BrAPIController implements Observ
 		return responseOK(new ObservationListResponse(), new ObservationListResponseResult(), data);
 	}
 
-	public ResponseEntity<ObservationTableResponse> observationsTableGet(
+	public ResponseEntity observationsTableGet(
 			@RequestHeader(value = "Accept", required = false) String accept,
 			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
@@ -137,11 +139,23 @@ public class ObservationsApiController extends BrAPIController implements Observ
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
-		validateAcceptHeader(request);
-		ObservationTable data = observationService.findObservationsTable(accept, observationUnitDbId, germplasmDbId,
+		String sep = "";
+		if("text/csv".equals(accept)) {
+			sep = ",";
+		}else if("text/tsv".equals(accept)) {
+			sep = "\t";
+		}else {
+			validateAcceptHeader(request);
+		}
+		ObservationTable data = observationService.findObservationsTable(observationUnitDbId, germplasmDbId,
 				observationVariableDbId, studyDbId, locationDbId, trialDbId, programDbId, seasonDbId,
 				observationTimeStampRangeStart, observationTimeStampRangeEnd);
-		return responseOK(new ObservationTableResponse(), data);
+		if(sep.isEmpty()) {
+			return responseOK(new ObservationTableResponse(), data);
+		}else {
+			String textTable = observationService.getObservationTableText(data, sep);
+			return new ResponseEntity<String>(textTable, HttpStatus.OK);
+		}
 	}
 
 	public ResponseEntity<ObservationListResponse> searchObservationsPost(

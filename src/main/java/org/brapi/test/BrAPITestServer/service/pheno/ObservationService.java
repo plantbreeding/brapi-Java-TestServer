@@ -103,7 +103,7 @@ public class ObservationService {
 		return findObservations(request, metadata);
 	}
 
-	public ObservationTable findObservationsTable(String accept, String observationUnitDbId, String germplasmDbId,
+	public ObservationTable findObservationsTable(String observationUnitDbId, String germplasmDbId,
 			String observationVariableDbId, String studyDbId, String locationDbId, String trialDbId, String programDbId,
 			String seasonDbId, OffsetDateTime observationTimeStampRangeStart,
 			OffsetDateTime observationTimeStampRangeEnd) {
