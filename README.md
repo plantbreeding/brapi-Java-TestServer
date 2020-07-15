@@ -1,9 +1,12 @@
 # BrAPI Java Spring-Boot Test Server
 
 ## Server Usage
-This server implements all BrAPI calls. It is backed by a custom database with dummy data. The base URL is [test-server.brapi.org/brapi/v1/](https://test-server.brapi.org/brapi/v1/).
+This server implements all BrAPI calls. It is backed by a custom database with dummy data.
 
-Use [/calls](https://test-server.brapi.org/brapi/v1/call) to check the available calls.
+* BrAPI V1 Base URL (v1.0, v1.1, v1.2, v1.3): [test-server.brapi.org/brapi/v1/](https://test-server.brapi.org/brapi/v1/)
+* BrAPI V2 Base URL (v2.0): [test-server.brapi.org/brapi/v2/](https://test-server.brapi.org/brapi/v2/)
+
+Use [/calls](https://test-server.brapi.org/brapi/v1/call) (V1) or [/serverinfo](https://test-server.brapi.org/brapi/v2/serverinfo) (V2) to check the available endpoints.
 
 ## Run
 
@@ -20,7 +23,7 @@ Use [/calls](https://test-server.brapi.org/brapi/v1/call) to check the available
 
 ### Docker
 * Setup an empty database server (Postgres is recommended). The tables and data will be added on server startup.
-* Download [application.properties](https://github.com/plantbreeding/brapi-Java-TestServer/blob/master/src/main/resources/application.properties.template)
+* Download [application.properties](/src/main/resources/application.properties.template)
 * Edit `application.properties`
   * Change `port` and `context-path` as needed
   * Change the `datasource` parameters to match your empty database server
@@ -31,10 +34,8 @@ Use [/calls](https://test-server.brapi.org/brapi/v1/call) to check the available
 
 ## DataBase
 
-The database is created automatically at run time thanks to Java Spring Data and Hibernate. 
-
-A dummy data set is loaded from `src/main/resources/import.sql`.
+The database is created automatically at run time thanks to Java Spring Data and Hibernate. All dummy data is loaded from the SQL files in the `src/main/resources/sql` directory. Additional SQL files may be added, but they must be explicitly listed in the `application.properties` file to be loaded automatically.
 
 Below is a UML diagram of the whole database schema:
 
-![dbSchema](./brapi_data_model.png)
+![dbSchema](/brapi_test_server_data_model_v2.0.svg)
