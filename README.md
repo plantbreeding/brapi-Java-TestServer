@@ -16,21 +16,21 @@ Use [/calls](https://test-server.brapi.org/brapi/v1/call) (V1) or [/serverinfo](
 * Setup an empty database server (Postgres is recommended). The tables and data will be added on server startup.
 * Copy `/src/main/resources/application.properties.template` to `/src/main/resources/properties/application.properties`
 * Edit `application.properties`
-  * Change `port` and `context-path` as needed
-  * Change the `datasource` parameters to match your empty database server
-  * If you did not use a Postgres database, change the `driver-class-name` to match the database type you have setup
+  * Change `server.port` and `server.servlet.context-path` as needed
+  * Change the `spring.datasource.` parameters to match your empty database server
+  * If you did not use a Postgres database, change the `spring.datasource.driver-class` to match the database type you have setup (this may require additional dependancies in the POM)
 * Run `org.brapi.test.BrAPITestServer.BrapiTestServer.java`
 
 ### Docker
 * Setup an empty database server (Postgres is recommended). The tables and data will be added on server startup.
-* Download [application.properties](/src/main/resources/application.properties.template)
+* Download [application.properties.template](/src/main/resources/application.properties.template) and rename the file `application.properties`
+* Save this file on the docker host as `/<Local_Path_To_Properties>/application.properties`
 * Edit `application.properties`
-  * Change `port` and `context-path` as needed
-  * Change the `datasource` parameters to match your empty database server
-  * If you did not use a Postgres database, change the `driver-class-name` to match the database type you have setup
-* Save `/Local_Path_To_Properties/application.properties` 
-* Docker Pull `docker pull brapicoordinatorselby/brapi-java-server`
-* Docker Run `docker run -v /Local_Path_To_Properties/:/home/brapi/properties -d brapicoordinatorselby/brapi-java-server`
+  * Change `server.port` and `server.servlet.context-path` as needed (port 8080 is exposed in the dockerfile by default)
+  * Change the `spring.datasource.` parameters to match your empty database server
+  * If you did not use a Postgres database, change the `spring.datasource.driver-class` to match the database type you have setup (this may require additional dependancies in the POM, and a fresh build of the docker image)
+* Docker Pull `docker pull brapicoordinatorselby/brapi-java-server:v2`
+* Docker Run `docker run -v /<Local_Path_To_Properties>/:/home/brapi/properties -d brapicoordinatorselby/brapi-java-server:v2`
 
 ## DataBase
 
