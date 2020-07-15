@@ -1,9 +1,9 @@
 server.port = 8080
 server.servlet.context-path=/brapi/v2
 
-#spring.datasource.url=jdbc:postgresql://EXAMPLE:5432/EXAMPLE
-#spring.datasource.username=EXAMPLE
-#spring.datasource.password=EXAMPLE
+spring.datasource.url=jdbc:postgresql://EXAMPLE:5432/EXAMPLE
+spring.datasource.username=EXAMPLE
+spring.datasource.password=EXAMPLE
 
 spring.datasource.driver-class-name=org.postgresql.Driver
 
