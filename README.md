@@ -38,4 +38,4 @@ The database is created automatically at run time thanks to Java Spring Data and
 
 Below is a UML diagram of the whole database schema:
 
-![dbSchema](/brapi_test_server_data_model_v2.0.svg)
+![dbSchema](https://raw.githubusercontent.com/plantbreeding/brapi-Java-TestServer/brapi-server-v2/brapi_test_server_data_model_v2.0.svg)
