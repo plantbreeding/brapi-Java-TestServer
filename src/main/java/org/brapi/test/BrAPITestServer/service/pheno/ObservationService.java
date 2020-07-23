@@ -1,6 +1,5 @@
 package org.brapi.test.BrAPITestServer.service.pheno;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,9 +58,9 @@ public class ObservationService {
 	public List<Observation> findObservations(String observationDbId, String observationUnitDbId, String germplasmDbId,
 			String observationVariableDbId, String studyDbId, String locationDbId, String trialDbId, String programDbId,
 			String seasonDbId, String observationUnitLevelName, String observationUnitLevelOrder,
-			String observationUnitLevelCode, OffsetDateTime observationTimeStampRangeStart,
-			OffsetDateTime observationTimeStampRangeEnd, String externalReferenceID, String externalReferenceSource,
-			Metadata metadata) {
+			String observationUnitLevelCode, String observationTimeStampRangeStart,
+			String observationTimeStampRangeEnd, String externalReferenceID, String externalReferenceSource,
+			Metadata metadata) throws BrAPIServerException {
 		ObservationSearchRequest request = new ObservationSearchRequest();
 		if (germplasmDbId != null)
 			request.addGermplasmDbIdsItem(germplasmDbId);
@@ -92,9 +91,9 @@ public class ObservationService {
 			request.addObservationLevelsItem(level);
 		}
 		if (observationTimeStampRangeStart != null)
-			request.setObservationTimeStampRangeStart(observationTimeStampRangeStart);
+			request.setObservationTimeStampRangeStart(DateUtility.toOffsetDateTime(observationTimeStampRangeStart));
 		if (observationTimeStampRangeEnd != null)
-			request.setObservationTimeStampRangeEnd(observationTimeStampRangeEnd);
+			request.setObservationTimeStampRangeEnd(DateUtility.toOffsetDateTime(observationTimeStampRangeEnd));
 		if (externalReferenceID != null)
 			request.addExternalReferenceIDsItem(externalReferenceID);
 		if (externalReferenceSource != null)
@@ -105,8 +104,8 @@ public class ObservationService {
 
 	public ObservationTable findObservationsTable(String observationUnitDbId, String germplasmDbId,
 			String observationVariableDbId, String studyDbId, String locationDbId, String trialDbId, String programDbId,
-			String seasonDbId, OffsetDateTime observationTimeStampRangeStart,
-			OffsetDateTime observationTimeStampRangeEnd) {
+			String seasonDbId, String observationTimeStampRangeStart,
+			String observationTimeStampRangeEnd) throws BrAPIServerException {
 		List<Observation> observations = findObservations(null, observationUnitDbId, germplasmDbId,
 				observationVariableDbId, studyDbId, locationDbId, trialDbId, programDbId, seasonDbId, null, null, null,
 				observationTimeStampRangeStart, observationTimeStampRangeEnd, null, null, null);

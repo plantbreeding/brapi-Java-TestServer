@@ -99,7 +99,7 @@ public class TrialService {
 		}
 
 		searchQuery = searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
-				.appendList(request.getCommonCropNames(), "program.crop.id")
+				.appendList(request.getCommonCropNames(), "program.crop.cropName")
 				.appendList(request.getContactDbIds(), "*contact.id")
 				.appendList(request.getLocationDbIds(), "*study.location.id")
 				.appendList(request.getLocationNames(), "*study.location.locationName")

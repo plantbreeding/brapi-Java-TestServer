@@ -34,11 +34,19 @@ public class GenomeMapService {
 
 	public List<GenomeMap> findMaps(String commonCropName, String mapPUI, String scientificName, String type,
 			String programDbId, String trialDbId, String studyDbId, Metadata metadata) {
-		SearchQueryBuilder<GenomeMapEntity> searchQuery = new SearchQueryBuilder<GenomeMapEntity>(GenomeMapEntity.class)
-				.appendSingle(commonCropName, "crop.name").appendSingle(mapPUI, "crop.name")
-				.appendSingle(scientificName, "crop.name").appendSingle(type, "crop.name")
-				.appendSingle(programDbId, "crop.name").appendSingle(trialDbId, "crop.name")
-				.appendSingle(studyDbId, "crop.name");
+		SearchQueryBuilder<GenomeMapEntity> searchQuery = new SearchQueryBuilder<GenomeMapEntity>(GenomeMapEntity.class);
+
+		if (programDbId != null || trialDbId != null || studyDbId != null) {
+			searchQuery = searchQuery.join("studies", "study");
+		}
+		
+		searchQuery.appendSingle(commonCropName, "crop.cropName")
+				.appendSingle(mapPUI, "mapPUI")
+				.appendSingle(scientificName, "scientificName")
+				.appendSingle(type, "type")
+				.appendSingle(programDbId, "*study.trial.program.id")
+				.appendSingle(trialDbId, "*study.trial.id")
+				.appendSingle(studyDbId, "*study.id");
 
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		Page<GenomeMapEntity> page = genomeMapRepository.findAllBySearch(searchQuery, pageReq);

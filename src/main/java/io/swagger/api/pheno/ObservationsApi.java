@@ -12,7 +12,6 @@ import io.swagger.model.pheno.ObservationNewRequest;
 import io.swagger.model.pheno.ObservationSearchRequest;
 import io.swagger.model.pheno.ObservationSingleResponse;
 import io.swagger.model.pheno.ObservationTableResponse;
-import java.time.OffsetDateTime;
 
 import io.swagger.annotations.*;
 
@@ -53,8 +52,8 @@ public interface ObservationsApi {
 			@ApiParam(value = "The Observation Unit Level. Returns only the observation unit of the specified Level. References ObservationUnit->observationUnitPosition->observationLevel->levelName") @Valid @RequestParam(value = "observationUnitLevelName", required = false) String observationUnitLevelName,
 			@ApiParam(value = "The Observation Unit Level Order Number. Returns only the observation unit of the specified Level. References ObservationUnit->observationUnitPosition->observationLevel->levelOrder") @Valid @RequestParam(value = "observationUnitLevelOrder", required = false) String observationUnitLevelOrder,
 			@ApiParam(value = "The Observation Unit Level Code. This parameter should be used together with `observationUnitLevelName` or `observationUnitLevelOrder`. References ObservationUnit->observationUnitPosition->observationLevel->levelCode") @Valid @RequestParam(value = "observationUnitLevelCode", required = false) String observationUnitLevelCode,
-			@ApiParam(value = "Timestamp range start") @Valid @RequestParam(value = "observationTimeStampRangeStart", required = false) OffsetDateTime observationTimeStampRangeStart,
-			@ApiParam(value = "Timestamp range end") @Valid @RequestParam(value = "observationTimeStampRangeEnd", required = false) OffsetDateTime observationTimeStampRangeEnd,
+			@ApiParam(value = "Timestamp range start") @Valid @RequestParam(value = "observationTimeStampRangeStart", required = false) String observationTimeStampRangeStart,
+			@ApiParam(value = "Timestamp range end") @Valid @RequestParam(value = "observationTimeStampRangeEnd", required = false) String observationTimeStampRangeEnd,
 			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
@@ -139,8 +138,8 @@ public interface ObservationsApi {
 			@ApiParam(value = "The year or Phenotyping campaign of a multi-annual study (trees, grape, ...)") @Valid @RequestParam(value = "seasonDbId", required = false) String seasonDbId,
 			@ApiParam(value = "The type of the observationUnit. Returns only the observation unit of the specified type; the parent levels ID can be accessed through observationUnitStructure.") @Valid @RequestParam(value = "observationLevel", required = false) String observationLevel,
 			@ApiParam(value = "Permanent unique identifier which references the search results") @Valid @RequestParam(value = "searchResultsDbId", required = false) String searchResultsDbId,
-			@ApiParam(value = "Timestamp range start") @Valid @RequestParam(value = "observationTimeStampRangeStart", required = false) OffsetDateTime observationTimeStampRangeStart,
-			@ApiParam(value = "Timestamp range end") @Valid @RequestParam(value = "observationTimeStampRangeEnd", required = false) OffsetDateTime observationTimeStampRangeEnd,
+			@ApiParam(value = "Timestamp range start") @Valid @RequestParam(value = "observationTimeStampRangeStart", required = false) String observationTimeStampRangeStart,
+			@ApiParam(value = "Timestamp range end") @Valid @RequestParam(value = "observationTimeStampRangeEnd", required = false) String observationTimeStampRangeEnd,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
 

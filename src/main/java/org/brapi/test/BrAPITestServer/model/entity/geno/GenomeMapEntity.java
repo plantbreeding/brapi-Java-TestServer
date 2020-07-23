@@ -5,12 +5,15 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
 
 @Entity
 @Table(name="genome_map")
@@ -31,6 +34,9 @@ public class GenomeMapEntity extends BrAPIPrimaryEntity{
 	private Date publishedDate;
 	@Column
 	private String scientificName;
+	@ManyToMany
+	@JoinTable
+	private List<StudyEntity> studies;
 	@Column
 	private String type;
 	@Column

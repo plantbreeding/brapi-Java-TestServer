@@ -10,10 +10,6 @@ import io.swagger.model.pheno.ObservationSearchRequest;
 import io.swagger.model.pheno.ObservationSingleResponse;
 import io.swagger.model.pheno.ObservationTable;
 import io.swagger.model.pheno.ObservationTableResponse;
-import io.swagger.model.pheno.ObservationUnitTableResponse;
-
-import java.time.OffsetDateTime;
-
 import io.swagger.api.pheno.ObservationsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -63,8 +59,8 @@ public class ObservationsApiController extends BrAPIController implements Observ
 			@Valid @RequestParam(value = "observationUnitLevelName", required = false) String observationUnitLevelName,
 			@Valid @RequestParam(value = "observationUnitLevelOrder", required = false) String observationUnitLevelOrder,
 			@Valid @RequestParam(value = "observationUnitLevelCode", required = false) String observationUnitLevelCode,
-			@Valid @RequestParam(value = "observationTimeStampRangeStart", required = false) OffsetDateTime observationTimeStampRangeStart,
-			@Valid @RequestParam(value = "observationTimeStampRangeEnd", required = false) OffsetDateTime observationTimeStampRangeEnd,
+			@Valid @RequestParam(value = "observationTimeStampRangeStart", required = false) String observationTimeStampRangeStart,
+			@Valid @RequestParam(value = "observationTimeStampRangeEnd", required = false) String observationTimeStampRangeEnd,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
@@ -134,8 +130,8 @@ public class ObservationsApiController extends BrAPIController implements Observ
 			@Valid @RequestParam(value = "seasonDbId", required = false) String seasonDbId,
 			@Valid @RequestParam(value = "observationLevel", required = false) String observationLevel,
 			@Valid @RequestParam(value = "searchResultsDbId", required = false) String searchResultsDbId,
-			@Valid @RequestParam(value = "observationTimeStampRangeStart", required = false) OffsetDateTime observationTimeStampRangeStart,
-			@Valid @RequestParam(value = "observationTimeStampRangeEnd", required = false) OffsetDateTime observationTimeStampRangeEnd,
+			@Valid @RequestParam(value = "observationTimeStampRangeStart", required = false) String observationTimeStampRangeStart,
+			@Valid @RequestParam(value = "observationTimeStampRangeEnd", required = false) String observationTimeStampRangeEnd,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());

@@ -128,7 +128,7 @@ public class StudyService {
 		}
 
 		searchQuery = searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
-				.appendList(request.getCommonCropNames(), "trial.program.crop.id")
+				.appendList(request.getCommonCropNames(), "trial.program.crop.cropName")
 				.appendList(request.getGermplasmDbIds(), "*obsunit.germplasm.id")
 				.appendList(request.getGermplasmNames(), "*obsunit.germplasm.germplasmName")
 				.appendList(request.getLocationDbIds(), "location.id")
