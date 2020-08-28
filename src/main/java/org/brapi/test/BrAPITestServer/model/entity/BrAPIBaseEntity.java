@@ -5,8 +5,14 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.type.TextType;
 
 @MappedSuperclass
+@TypeDef(
+	defaultForType = String.class,
+	typeClass = TextType.class
+)
 public class BrAPIBaseEntity {
 
 	@Id
