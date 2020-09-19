@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -42,6 +43,8 @@ public class ReferenceSetsApiController extends BrAPIController implements Refer
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ReferenceSetsListResponse> referenceSetsGet(
 			@Valid @RequestParam(value = "referenceSetDbId", required = false) String referenceSetDbId,
 			@Valid @RequestParam(value = "accession", required = false) String accession,
@@ -60,6 +63,8 @@ public class ReferenceSetsApiController extends BrAPIController implements Refer
 		return responseOK(new ReferenceSetsListResponse(), new ReferenceSetsListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ReferenceSetsSingleResponse> referenceSetsReferenceSetDbIdGet(
 			@PathVariable("referenceSetDbId") String referenceSetDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -71,6 +76,8 @@ public class ReferenceSetsApiController extends BrAPIController implements Refer
 		return responseOK(new ReferenceSetsSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ReferenceSetsListResponse> searchReferenceSetsPost(
 			@Valid @RequestBody ReferenceSetsSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -83,6 +90,8 @@ public class ReferenceSetsApiController extends BrAPIController implements Refer
 		return responseOK(new ReferenceSetsListResponse(), new ReferenceSetsListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ReferenceSetsListResponse> searchReferenceSetsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,

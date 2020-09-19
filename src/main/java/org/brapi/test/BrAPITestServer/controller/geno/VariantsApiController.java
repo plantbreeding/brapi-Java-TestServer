@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -49,6 +50,8 @@ public class VariantsApiController extends BrAPIController implements VariantsAp
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<VariantsListResponse> variantsGet(
 			@Valid @RequestParam(value = "variantDbId", required = false) String variantDbId,
 			@Valid @RequestParam(value = "variantSetDbId", required = false) String variantSetDbId,
@@ -64,6 +67,8 @@ public class VariantsApiController extends BrAPIController implements VariantsAp
 		return responseOK(new VariantsListResponse(), new VariantsListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<CallsListResponse> variantsVariantDbIdCallsGet(
 			@PathVariable("variantDbId") String variantDbId,
 			@Valid @RequestParam(value = "expandHomozygotes", required = false) Boolean expandHomozygotes,
@@ -83,6 +88,8 @@ public class VariantsApiController extends BrAPIController implements VariantsAp
 		return responseOK(new CallsListResponse(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<VariantSingleResponse> variantsVariantDbIdGet(@PathVariable("variantDbId") String variantDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -93,6 +100,8 @@ public class VariantsApiController extends BrAPIController implements VariantsAp
 		return responseOK(new VariantSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<VariantsListResponse> searchVariantsPost(@Valid @RequestBody VariantsSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -104,6 +113,8 @@ public class VariantsApiController extends BrAPIController implements VariantsAp
 		return responseOK(new VariantsListResponse(), new VariantsListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<VariantsListResponse> searchVariantsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "pageToken", required = false) String pageToken,

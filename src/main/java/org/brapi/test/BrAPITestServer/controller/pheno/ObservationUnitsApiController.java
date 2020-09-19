@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -51,6 +52,8 @@ public class ObservationUnitsApiController extends BrAPIController
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ObservationUnitListResponse> observationunitsGet(
 			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
@@ -80,6 +83,8 @@ public class ObservationUnitsApiController extends BrAPIController
 		return responseOK(new ObservationUnitListResponse(), new ObservationUnitListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ObservationUnitSingleResponse> observationunitsObservationUnitDbIdGet(
 			@PathVariable("observationUnitDbId") String observationUnitDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -91,6 +96,8 @@ public class ObservationUnitsApiController extends BrAPIController
 		return responseOK(new ObservationUnitSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ObservationUnitSingleResponse> observationunitsObservationUnitDbIdPut(
 			@PathVariable("observationUnitDbId") String observationUnitDbId,
 			@Valid @RequestBody ObservationUnitNewRequest body,
@@ -103,6 +110,8 @@ public class ObservationUnitsApiController extends BrAPIController
 		return responseOK(new ObservationUnitSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ObservationUnitListResponse> observationunitsPost(
 			@Valid @RequestBody List<ObservationUnitNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -114,6 +123,8 @@ public class ObservationUnitsApiController extends BrAPIController
 		return responseOK(new ObservationUnitListResponse(), new ObservationUnitListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ObservationUnitListResponse> observationunitsPut(
 			@Valid @RequestBody Map<String, ObservationUnitNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -125,6 +136,8 @@ public class ObservationUnitsApiController extends BrAPIController
 		return responseOK(new ObservationUnitListResponse(), new ObservationUnitListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity observationunitsTableGet(
 			@RequestHeader(value = "Accept", required = false) String accept,
 			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
@@ -159,6 +172,8 @@ public class ObservationUnitsApiController extends BrAPIController
 		}
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ObservationUnitListResponse> searchObservationunitsPost(
 			@Valid @RequestBody ObservationUnitSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -171,6 +186,8 @@ public class ObservationUnitsApiController extends BrAPIController
 		return responseOK(new ObservationUnitListResponse(), new ObservationUnitListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ObservationUnitListResponse> searchObservationunitsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
@@ -183,6 +200,8 @@ public class ObservationUnitsApiController extends BrAPIController
 		return new ResponseEntity<ObservationUnitListResponse>(HttpStatus.NOT_IMPLEMENTED);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ObservationLevelListResponse> observationlevelsGet(
 			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
 			@Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,

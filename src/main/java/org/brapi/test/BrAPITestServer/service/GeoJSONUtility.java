@@ -21,7 +21,7 @@ public class GeoJSONUtility {
 		if (geojson.getGeometry() instanceof PointGeometry) {
 			entity.setType(POINT);
 			Position point = ((PointGeometry) geojson.getGeometry()).getCoordinates();
-			CoordinateEntity pointEntity = convertToEntiy(point);
+			CoordinateEntity pointEntity = convertToEntiy(entity, point);
 			entity.addCoordinate(pointEntity);
 		} else if (geojson.getGeometry() instanceof PolygonGeometry) {
 			entity.setType(POLYGON);
@@ -30,7 +30,7 @@ public class GeoJSONUtility {
 			if (polygon.size() == 1) {
 				LinearRing ring = polygon.get(0);
 				for (Position point : ring) {
-					CoordinateEntity pointEntity = convertToEntiy(point);
+					CoordinateEntity pointEntity = convertToEntiy(entity, point);
 					entity.addCoordinate(pointEntity);
 				}
 			}
@@ -38,13 +38,14 @@ public class GeoJSONUtility {
 		return entity;
 	}
 
-	private  static CoordinateEntity convertToEntiy(Position pointArray) {
+	private  static CoordinateEntity convertToEntiy(GeoJSONEntity entity, Position pointArray) {
 		CoordinateEntity pointEntity = new CoordinateEntity();
 		pointEntity.setLatitude(pointArray.get(0));
 		pointEntity.setLongitude(pointArray.get(1));
 		if (pointArray.size() >= 3) {
 			pointEntity.setAltitude(pointArray.get(2));
 		}
+		pointEntity.setGeoJSON(entity);
 
 		return pointEntity;
 	}

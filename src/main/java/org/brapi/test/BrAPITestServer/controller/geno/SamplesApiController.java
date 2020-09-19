@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -42,6 +43,8 @@ public class SamplesApiController extends BrAPIController implements SamplesApi 
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<SampleListResponse> samplesGet(
 			@Valid @RequestParam(value = "sampleDbId", required = false) String sampleDbId,
 			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
@@ -62,6 +65,8 @@ public class SamplesApiController extends BrAPIController implements SamplesApi 
 		return responseOK(new SampleListResponse(), new SampleListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<SampleListResponse> samplesPost(@Valid @RequestBody List<SampleNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
@@ -71,6 +76,8 @@ public class SamplesApiController extends BrAPIController implements SamplesApi 
 		return responseOK(new SampleListResponse(), new SampleListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<SampleSingleResponse> samplesSampleDbIdGet(@PathVariable("sampleDbId") String sampleDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
@@ -80,6 +87,8 @@ public class SamplesApiController extends BrAPIController implements SamplesApi 
 		return responseOK(new SampleSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<SampleSingleResponse> samplesSampleDbIdPut(@PathVariable("sampleDbId") String sampleDbId,
 			@Valid @RequestBody SampleNewRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
@@ -90,6 +99,8 @@ public class SamplesApiController extends BrAPIController implements SamplesApi 
 		return responseOK(new SampleSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<SampleListResponse> searchSamplesPost(@Valid @RequestBody SampleSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
@@ -100,6 +111,8 @@ public class SamplesApiController extends BrAPIController implements SamplesApi 
 		return responseOK(new SampleListResponse(), new SampleListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<SampleListResponse> searchSamplesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,

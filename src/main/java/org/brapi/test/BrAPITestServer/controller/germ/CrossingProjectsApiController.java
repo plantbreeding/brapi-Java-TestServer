@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -39,6 +40,8 @@ public class CrossingProjectsApiController extends BrAPIController implements Cr
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<CrossingProjectsListResponse> crossingprojectsGet(
 			@Valid @RequestParam(value = "crossingProjectDbId", required = false) String crossingProjectDbId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
@@ -54,6 +57,8 @@ public class CrossingProjectsApiController extends BrAPIController implements Cr
 		return responseOK(new CrossingProjectsListResponse(), new CrossingProjectsListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<CrossingProjectsListResponse> crossingprojectsPost(
 			@Valid @RequestBody List<CrossingProjectNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
@@ -64,6 +69,8 @@ public class CrossingProjectsApiController extends BrAPIController implements Cr
 		return responseOK(new CrossingProjectsListResponse(), new CrossingProjectsListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<CrossingProjectsSingleResponse> crossingprojectsCrossingProjectDbIdGet(
 			@PathVariable("crossingProjectDbId") String crossingProjectDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
@@ -74,6 +81,8 @@ public class CrossingProjectsApiController extends BrAPIController implements Cr
 		return responseOK(new CrossingProjectsSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<CrossingProjectsSingleResponse> crossingprojectsCrossingProjectDbIdPut(
 			@PathVariable("crossingProjectDbId") String crossingProjectDbId,
 			@Valid @RequestBody CrossingProjectNewRequest body,

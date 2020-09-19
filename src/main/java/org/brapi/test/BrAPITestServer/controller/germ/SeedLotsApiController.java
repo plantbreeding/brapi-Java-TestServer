@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -44,6 +45,8 @@ public class SeedLotsApiController extends BrAPIController implements SeedLotsAp
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<SeedLotListResponse> seedlotsGet(
 			@Valid @RequestParam(value = "seedLotDbId", required = false) String seedLotDbId,
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
@@ -62,6 +65,8 @@ public class SeedLotsApiController extends BrAPIController implements SeedLotsAp
 		return responseOK(new SeedLotListResponse(), new SeedLotListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<SeedLotListResponse> seedlotsPost(@Valid @RequestBody List<SeedLotNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -72,6 +77,8 @@ public class SeedLotsApiController extends BrAPIController implements SeedLotsAp
 		return responseOK(new SeedLotListResponse(), new SeedLotListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<SeedLotSingleResponse> seedlotsSeedLotDbIdGet(@PathVariable("seedLotDbId") String seedLotDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -82,6 +89,8 @@ public class SeedLotsApiController extends BrAPIController implements SeedLotsAp
 		return responseOK(new SeedLotSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<SeedLotSingleResponse> seedlotsSeedLotDbIdPut(@PathVariable("seedLotDbId") String seedLotDbId,
 			@Valid @RequestBody SeedLotNewRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
@@ -92,6 +101,8 @@ public class SeedLotsApiController extends BrAPIController implements SeedLotsAp
 		return responseOK(new SeedLotSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<SeedLotTransactionListResponse> seedlotsSeedLotDbIdTransactionsGet(
 			@PathVariable("seedLotDbId") String seedLotDbId,
 			@Valid @RequestParam(value = "transactionDbId", required = false) String transactionDbId,
@@ -110,6 +121,8 @@ public class SeedLotsApiController extends BrAPIController implements SeedLotsAp
 				metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<SeedLotTransactionListResponse> seedlotsTransactionsGet(
 			@Valid @RequestParam(value = "transactionDbId", required = false) String transactionDbId,
 			@Valid @RequestParam(value = "seedLotDbId", required = false) String seedLotDbId,
@@ -129,6 +142,8 @@ public class SeedLotsApiController extends BrAPIController implements SeedLotsAp
 				metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<SeedLotTransactionListResponse> seedlotsTransactionsPost(@Valid @RequestBody List<SeedLotNewTransactionRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 

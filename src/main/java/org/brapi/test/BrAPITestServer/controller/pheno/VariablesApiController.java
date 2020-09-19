@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -42,6 +43,8 @@ public class VariablesApiController extends BrAPIController implements Variables
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ObservationVariableListResponse> variablesGet(
 			@Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
 			@Valid @RequestParam(value = "traitClass", required = false) String traitClass,
@@ -61,6 +64,8 @@ public class VariablesApiController extends BrAPIController implements Variables
 				metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ObservationVariableSingleResponse> variablesObservationVariableDbIdGet(
 			@PathVariable("observationVariableDbId") String observationVariableDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -72,6 +77,8 @@ public class VariablesApiController extends BrAPIController implements Variables
 		return responseOK(new ObservationVariableSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ObservationVariableSingleResponse> variablesObservationVariableDbIdPut(
 			@Valid @RequestBody ObservationVariableNewRequest body,
 			@PathVariable("observationVariableDbId") String observationVariableDbId,
@@ -84,6 +91,8 @@ public class VariablesApiController extends BrAPIController implements Variables
 		return responseOK(new ObservationVariableSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ObservationVariableListResponse> variablesPost(
 			@Valid @RequestBody List<ObservationVariableNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -95,6 +104,8 @@ public class VariablesApiController extends BrAPIController implements Variables
 		return responseOK(new ObservationVariableListResponse(), new ObservationVariableListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ObservationVariableListResponse> searchVariablesPost(
 			@Valid @RequestBody ObservationVariableSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -108,6 +119,8 @@ public class VariablesApiController extends BrAPIController implements Variables
 				metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ObservationVariableListResponse> searchVariablesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,

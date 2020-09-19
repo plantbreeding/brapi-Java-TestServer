@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,6 +39,8 @@ public class CrossesApiController extends BrAPIController implements CrossesApi 
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<CrossesListResponse> crossesGet(
 			@Valid @RequestParam(value = "crossDbId", required = false) String crossDbId,
 			@Valid @RequestParam(value = "crossingProjectDbId", required = false) String crossingProjectDbId,
@@ -54,6 +57,8 @@ public class CrossesApiController extends BrAPIController implements CrossesApi 
 		return responseOK(new CrossesListResponse(), new CrossesListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<CrossesListResponse> crossesPost(
 			@Valid @RequestBody List<CrossNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
@@ -64,6 +69,8 @@ public class CrossesApiController extends BrAPIController implements CrossesApi 
 		return responseOK(new CrossesListResponse(), new CrossesListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<CrossesListResponse> crossesPut(
 			@Valid @RequestBody Map<String, CrossNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {

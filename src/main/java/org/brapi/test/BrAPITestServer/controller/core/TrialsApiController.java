@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -40,6 +41,8 @@ public class TrialsApiController extends BrAPIController implements TrialsApi {
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<TrialListResponse> trialsGet(
 			@Valid @RequestParam(value = "active", required = false) Boolean active,
 			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
@@ -70,6 +73,8 @@ public class TrialsApiController extends BrAPIController implements TrialsApi {
 		return responseOK(new TrialListResponse(), new TrialListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<TrialListResponse> trialsPost(@Valid @RequestBody List<TrialNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -80,6 +85,8 @@ public class TrialsApiController extends BrAPIController implements TrialsApi {
 		return responseOK(new TrialListResponse(), new TrialListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<TrialSingleResponse> trialsTrialDbIdGet(@PathVariable("trialDbId") String trialDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -90,6 +97,8 @@ public class TrialsApiController extends BrAPIController implements TrialsApi {
 		return responseOK(new TrialSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<TrialSingleResponse> trialsTrialDbIdPut(@PathVariable("trialDbId") String trialDbId,
 			@Valid @RequestBody TrialNewRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -101,6 +110,8 @@ public class TrialsApiController extends BrAPIController implements TrialsApi {
 		return responseOK(new TrialSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<TrialListResponse> searchTrialsPost(@Valid @RequestBody TrialSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -112,6 +123,8 @@ public class TrialsApiController extends BrAPIController implements TrialsApi {
 		return responseOK(new TrialListResponse(), new TrialListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<TrialListResponse> searchTrialsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -39,6 +40,8 @@ public class CallsApiController extends BrAPIController implements CallsApi {
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<CallsListResponse> callsGet(
 			@Valid @RequestParam(value = "callSetDbId", required = false) String callSetDbId,
 			@Valid @RequestParam(value = "variantDbId", required = false) String variantDbId,
@@ -60,6 +63,8 @@ public class CallsApiController extends BrAPIController implements CallsApi {
 		return responseOK(new CallsListResponse(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<CallsListResponse> searchCallsPost(@Valid @RequestBody CallsSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
@@ -70,6 +75,8 @@ public class CallsApiController extends BrAPIController implements CallsApi {
 		return responseOK(new CallsListResponse(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<CallsListResponse> searchCallsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "pageToken", required = false) String pageToken,

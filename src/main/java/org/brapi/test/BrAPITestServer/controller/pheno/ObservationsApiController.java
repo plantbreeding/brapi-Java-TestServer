@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -46,6 +47,8 @@ public class ObservationsApiController extends BrAPIController implements Observ
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ObservationListResponse> observationsGet(
 			@Valid @RequestParam(value = "observationDbId", required = false) String observationDbId,
 			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
@@ -78,6 +81,8 @@ public class ObservationsApiController extends BrAPIController implements Observ
 		return responseOK(new ObservationListResponse(), new ObservationListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ObservationSingleResponse> observationsObservationDbIdGet(
 			@PathVariable("observationDbId") String observationDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
@@ -88,6 +93,8 @@ public class ObservationsApiController extends BrAPIController implements Observ
 		return responseOK(new ObservationSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ObservationSingleResponse> observationsObservationDbIdPut(
 			@PathVariable("observationDbId") String observationDbId, @Valid @RequestBody ObservationNewRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
@@ -98,6 +105,8 @@ public class ObservationsApiController extends BrAPIController implements Observ
 		return responseOK(new ObservationSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ObservationListResponse> observationsPost(
 			@Valid @RequestBody List<ObservationNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
@@ -108,6 +117,8 @@ public class ObservationsApiController extends BrAPIController implements Observ
 		return responseOK(new ObservationListResponse(), new ObservationListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ObservationListResponse> observationsPut(
 			@Valid @RequestBody Map<String, ObservationNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
@@ -118,6 +129,8 @@ public class ObservationsApiController extends BrAPIController implements Observ
 		return responseOK(new ObservationListResponse(), new ObservationListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity observationsTableGet(
 			@RequestHeader(value = "Accept", required = false) String accept,
 			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
@@ -154,6 +167,8 @@ public class ObservationsApiController extends BrAPIController implements Observ
 		}
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ObservationListResponse> searchObservationsPost(
 			@Valid @RequestBody ObservationSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
@@ -165,6 +180,8 @@ public class ObservationsApiController extends BrAPIController implements Observ
 		return responseOK(new ObservationListResponse(), new ObservationListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ObservationListResponse> searchObservationsSearchResultsDbIdGet(
 			@RequestHeader(value = "Accept", required = true) WSMIMEDataTypes accept,
 			@PathVariable("searchResultsDbId") String searchResultsDbId,

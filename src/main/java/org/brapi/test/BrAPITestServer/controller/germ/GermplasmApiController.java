@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -48,6 +49,8 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmSingleResponse> germplasmGermplasmDbIdGet(
 			@PathVariable("germplasmDbId") String germplasmDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -59,6 +62,8 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 		return responseOK(new GermplasmSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmMCPDResponse> germplasmGermplasmDbIdMcpdGet(
 			@PathVariable("germplasmDbId") String germplasmDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -70,6 +75,8 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 		return responseOK(new GermplasmMCPDResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmPedigreeResponse> germplasmGermplasmDbIdPedigreeGet(
 			@PathVariable("germplasmDbId") String germplasmDbId,
 			@Valid @RequestParam(value = "notation", required = false) String notation,
@@ -83,6 +90,8 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 		return responseOK(new GermplasmPedigreeResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmProgenyResponse> germplasmGermplasmDbIdProgenyGet(
 			@PathVariable("germplasmDbId") String germplasmDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -94,6 +103,8 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 		return responseOK(new GermplasmProgenyResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmSingleResponse> germplasmGermplasmDbIdPut(
 			@PathVariable("germplasmDbId") String germplasmDbId, @Valid @RequestBody GermplasmNewRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -105,6 +116,8 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 		return responseOK(new GermplasmSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmListResponse> germplasmGet(
 			@Valid @RequestParam(value = "germplasmPUI", required = false) String germplasmPUI,
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
@@ -134,6 +147,8 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 		return responseOK(new GermplasmListResponse(), new GermplasmListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmListResponse> germplasmPost(@Valid @RequestBody List<GermplasmNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -144,6 +159,8 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 		return responseOK(new GermplasmListResponse(), new GermplasmListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmListResponse> searchGermplasmPost(@Valid @RequestBody GermplasmSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -155,6 +172,8 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 		return responseOK(new GermplasmListResponse(), new GermplasmListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmListResponse> searchGermplasmSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,

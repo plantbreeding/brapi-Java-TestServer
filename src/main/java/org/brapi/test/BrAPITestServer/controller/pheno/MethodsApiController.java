@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -40,6 +41,8 @@ public class MethodsApiController extends BrAPIController implements MethodsApi 
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<MethodListResponse> methodsGet(
 			@Valid @RequestParam(value = "methodDbId", required = false) String methodDbId,
 			@Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
@@ -56,6 +59,8 @@ public class MethodsApiController extends BrAPIController implements MethodsApi 
 		return responseOK(new MethodListResponse(), new MethodListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<MethodSingleResponse> methodsMethodDbIdGet(@PathVariable("methodDbId") String methodDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
@@ -65,6 +70,8 @@ public class MethodsApiController extends BrAPIController implements MethodsApi 
 		return responseOK(new MethodSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<MethodSingleResponse> methodsMethodDbIdPut(@PathVariable("methodDbId") String methodDbId,
 			@Valid @RequestBody MethodBaseClass body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
@@ -75,6 +82,8 @@ public class MethodsApiController extends BrAPIController implements MethodsApi 
 		return responseOK(new MethodSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<MethodListResponse> methodsPost(@Valid @RequestBody List<MethodBaseClass> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {

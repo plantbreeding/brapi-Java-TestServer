@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -43,6 +44,8 @@ public class AttributesApiController extends BrAPIController implements Attribut
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmAttributeCategoryListResponse> attributesCategoriesGet(
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -58,6 +61,8 @@ public class AttributesApiController extends BrAPIController implements Attribut
 				new GermplasmAttributeCategoryListResponseResult(), crops, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmAttributeListResponse> attributesGet(
 			@Valid @RequestParam(value = "attributeCategory", required = false) String attributeCategory,
 			@Valid @RequestParam(value = "attributeDbId", required = false) String attributeDbId,
@@ -79,6 +84,8 @@ public class AttributesApiController extends BrAPIController implements Attribut
 				metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmAttributeListResponse> attributesPost(
 			@Valid @RequestBody List<GermplasmAttributeNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -90,6 +97,8 @@ public class AttributesApiController extends BrAPIController implements Attribut
 		return responseOK(new GermplasmAttributeListResponse(), new GermplasmAttributeListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmAttributeSingleResponse> attributesAttributeDbIdGet(
 			@PathVariable("attributeDbId") String attributeDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -101,6 +110,8 @@ public class AttributesApiController extends BrAPIController implements Attribut
 		return responseOK(new GermplasmAttributeSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmAttributeSingleResponse> attributesAttributeDbIdPut(
 			@PathVariable("attributeDbId") String attributeDbId, @Valid @RequestBody GermplasmAttributeNewRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -112,6 +123,8 @@ public class AttributesApiController extends BrAPIController implements Attribut
 		return responseOK(new GermplasmAttributeSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmAttributeListResponse> searchAttributesPost(
 			@Valid @RequestBody GermplasmAttributeSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -125,6 +138,8 @@ public class AttributesApiController extends BrAPIController implements Attribut
 				metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmAttributeListResponse> searchAttributesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,

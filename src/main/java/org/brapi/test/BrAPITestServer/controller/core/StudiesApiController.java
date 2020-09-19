@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -44,6 +45,8 @@ public class StudiesApiController extends BrAPIController implements StudiesApi,
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<StudyListResponse> studiesGet(
 			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
 			@Valid @RequestParam(value = "studyType", required = false) String studyType,
@@ -76,6 +79,8 @@ public class StudiesApiController extends BrAPIController implements StudiesApi,
 		return responseOK(new StudyListResponse(), new StudyListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<StudyListResponse> studiesPost(@Valid @RequestBody List<StudyNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -86,6 +91,8 @@ public class StudiesApiController extends BrAPIController implements StudiesApi,
 		return responseOK(new StudyListResponse(), new StudyListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<StudySingleResponse> studiesStudyDbIdGet(@PathVariable("studyDbId") String studyDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -96,6 +103,8 @@ public class StudiesApiController extends BrAPIController implements StudiesApi,
 		return responseOK(new StudySingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<StudySingleResponse> studiesStudyDbIdPut(@PathVariable("studyDbId") String studyDbId,
 			@Valid @RequestBody StudyNewRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -107,6 +116,8 @@ public class StudiesApiController extends BrAPIController implements StudiesApi,
 		return responseOK(new StudySingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<StudyListResponse> searchStudiesPost(@Valid @RequestBody StudySearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -118,6 +129,8 @@ public class StudiesApiController extends BrAPIController implements StudiesApi,
 		return responseOK(new StudyListResponse(), new StudyListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<StudyListResponse> searchStudiesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
@@ -130,6 +143,8 @@ public class StudiesApiController extends BrAPIController implements StudiesApi,
 		return new ResponseEntity<StudyListResponse>(HttpStatus.NOT_IMPLEMENTED);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<StudyTypesResponse> studytypesGet(
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,

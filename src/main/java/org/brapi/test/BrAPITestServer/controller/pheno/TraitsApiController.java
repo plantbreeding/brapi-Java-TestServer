@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -40,6 +41,8 @@ public class TraitsApiController extends BrAPIController implements TraitsApi {
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<TraitListResponse> traitsGet(
 			@Valid @RequestParam(value = "traitDbId", required = false) String traitDbId,
 			@Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
@@ -58,6 +61,8 @@ public class TraitsApiController extends BrAPIController implements TraitsApi {
 		return responseOK(new TraitListResponse(), new TraitListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<TraitListResponse> traitsPost(@Valid @RequestBody List<TraitBaseClass> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -68,6 +73,8 @@ public class TraitsApiController extends BrAPIController implements TraitsApi {
 		return responseOK(new TraitListResponse(), new TraitListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<TraitSingleResponse> traitsTraitDbIdGet(@PathVariable("traitDbId") String traitDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -78,6 +85,8 @@ public class TraitsApiController extends BrAPIController implements TraitsApi {
 		return responseOK(new TraitSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<TraitSingleResponse> traitsTraitDbIdPut(@PathVariable("traitDbId") String traitDbId,
 			@Valid @RequestBody TraitBaseClass body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)

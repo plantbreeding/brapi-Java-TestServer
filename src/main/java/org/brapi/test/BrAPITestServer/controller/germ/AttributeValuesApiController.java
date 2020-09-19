@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -42,6 +43,8 @@ public class AttributeValuesApiController extends BrAPIController implements Att
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmAttributeValueListResponse> attributevaluesGet(
 			@Valid @RequestParam(value = "attributeValueDbId", required = false) String attributeValueDbId,
 			@Valid @RequestParam(value = "attributeDbId", required = false) String attributeDbId,
@@ -62,6 +65,8 @@ public class AttributeValuesApiController extends BrAPIController implements Att
 				metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmAttributeValueListResponse> attributevaluesPost(
 			@Valid @RequestBody List<GermplasmAttributeValueNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
@@ -72,6 +77,8 @@ public class AttributeValuesApiController extends BrAPIController implements Att
 		return responseOK(new GermplasmAttributeValueListResponse(), new GermplasmAttributeValueListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmAttributeValueSingleResponse> attributevaluesAttributeValueDbIdGet(
 			@PathVariable("attributeValueDbId") String attributeValueDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
@@ -82,6 +89,8 @@ public class AttributeValuesApiController extends BrAPIController implements Att
 		return responseOK(new GermplasmAttributeValueSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmAttributeValueSingleResponse> attributevaluesAttributeValueDbIdPut(
 			@PathVariable("attributeValueDbId") String attributeValueDbId,
 			@Valid @RequestBody GermplasmAttributeValueNewRequest body,
@@ -93,6 +102,8 @@ public class AttributeValuesApiController extends BrAPIController implements Att
 		return responseOK(new GermplasmAttributeValueSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmAttributeValueListResponse> searchAttributevaluesPost(
 			@Valid @RequestBody GermplasmAttributeValueSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
@@ -105,6 +116,8 @@ public class AttributeValuesApiController extends BrAPIController implements Att
 				metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmAttributeValueListResponse> searchAttributevaluesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,

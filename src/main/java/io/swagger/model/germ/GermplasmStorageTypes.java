@@ -1,27 +1,24 @@
 package io.swagger.model.germ;
 
-import org.springframework.validation.annotation.Validated;
+import org.brapi.test.BrAPITestServer.serializer.CustomGermplasmStorageTypesDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-/**
- * GermplasmNewRequestStorageTypes
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:33:36.513Z[GMT]")
+@JsonDeserialize(using = CustomGermplasmStorageTypesDeserializer.class)
 public class GermplasmStorageTypes {
-	private GermplasmStorageTypesEnum value;
+	private GermplasmStorageTypesEnum code;
 	private String description;
 
-	public GermplasmStorageTypes(GermplasmStorageTypesEnum value) {
-		this.value = value;
-		this.description = value.getDescription();
+	public GermplasmStorageTypes(GermplasmStorageTypesEnum code) {
+		this.code = code;
+		this.description = code.getDescription();
 	}
 
-	public GermplasmStorageTypesEnum getValue() {
-		return value;
+	public GermplasmStorageTypesEnum getCode() {
+		return code;
 	}
 
-	public void setValue(GermplasmStorageTypesEnum value) {
-		this.value = value;
+	public void setCode(GermplasmStorageTypesEnum code) {
+		this.code = code;
 	}
 
 	public void setDescription(String description) {

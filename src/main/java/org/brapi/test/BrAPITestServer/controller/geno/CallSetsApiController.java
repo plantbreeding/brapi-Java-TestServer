@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -47,6 +48,8 @@ public class CallSetsApiController extends BrAPIController implements CallSetsAp
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<CallsListResponse> callsetsCallSetDbIdCallsGet(
 			@PathVariable("callSetDbId") String callSetDbId,
 			@Valid @RequestParam(value = "expandHomozygotes", required = false) Boolean expandHomozygotes,
@@ -66,6 +69,8 @@ public class CallSetsApiController extends BrAPIController implements CallSetsAp
 		return responseOK(new CallsListResponse(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<CallSetResponse> callsetsCallSetDbIdGet(@PathVariable("callSetDbId") String callSetDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -76,6 +81,8 @@ public class CallSetsApiController extends BrAPIController implements CallSetsAp
 		return responseOK(new CallSetResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<CallSetsListResponse> callsetsGet(
 			@Valid @RequestParam(value = "callSetDbId", required = false) String callSetDbId,
 			@Valid @RequestParam(value = "callSetName", required = false) String callSetName,
@@ -94,6 +101,8 @@ public class CallSetsApiController extends BrAPIController implements CallSetsAp
 		return responseOK(new CallSetsListResponse(), new CallSetsListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<CallSetsListResponse> searchCallsetsPost(@Valid @RequestBody CallSetsSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
@@ -104,6 +113,8 @@ public class CallSetsApiController extends BrAPIController implements CallSetsAp
 		return responseOK(new CallSetsListResponse(), new CallSetsListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<CallSetsListResponse> searchCallsetsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,

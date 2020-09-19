@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.Valid;
@@ -32,6 +33,8 @@ public class ServerInfoApiController extends BrAPIController implements ServerIn
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ServerInfoResponse> serverinfoGet(
 			@Valid @RequestParam(value = "dataType", required = false) WSMIMEDataTypes dataType,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {

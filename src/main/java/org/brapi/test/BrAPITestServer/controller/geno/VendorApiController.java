@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -56,6 +57,8 @@ public class VendorApiController extends BrAPIController implements VendorApi {
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<VendorOrderListResponse> vendorOrdersGet(
 			@Valid @RequestParam(value = "orderId", required = false) String orderId,
 			@Valid @RequestParam(value = "submissionId", required = false) String submissionId,
@@ -71,6 +74,8 @@ public class VendorApiController extends BrAPIController implements VendorApi {
 		return responseOK(new VendorOrderListResponse(), new VendorOrderListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<VendorPlateListResponse> vendorOrdersOrderIdPlatesGet(@PathVariable("orderId") String orderId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -84,6 +89,8 @@ public class VendorApiController extends BrAPIController implements VendorApi {
 		return responseOK(new VendorPlateListResponse(), new VendorPlateListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<VendorResultFileListResponse> vendorOrdersOrderIdResultsGet(
 			@PathVariable("orderId") String orderId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
@@ -98,6 +105,8 @@ public class VendorApiController extends BrAPIController implements VendorApi {
 		return responseOK(new VendorResultFileListResponse(), new VendorResultFileListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<VendorOrderStatusResponse> vendorOrdersOrderIdStatusGet(
 			@PathVariable("orderId") String orderId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -109,6 +118,8 @@ public class VendorApiController extends BrAPIController implements VendorApi {
 		return responseOK(new VendorOrderStatusResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<VendorOrderSubmissionSingleResponse> vendorOrdersPost(
 			@Valid @RequestBody VendorOrderSubmissionRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -120,6 +131,8 @@ public class VendorApiController extends BrAPIController implements VendorApi {
 		return responseOK(new VendorOrderSubmissionSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<VendorPlateSubmissionIdSingleResponse> vendorPlatesPost(
 			@Valid @RequestBody VendorPlateSubmissionRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -131,6 +144,8 @@ public class VendorApiController extends BrAPIController implements VendorApi {
 		return responseOK(new VendorPlateSubmissionIdSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<VendorPlateSubmissionSingleResponse> vendorPlatesSubmissionIdGet(
 			@PathVariable("submissionId") String submissionId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -142,6 +157,8 @@ public class VendorApiController extends BrAPIController implements VendorApi {
 		return responseOK(new VendorPlateSubmissionSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<VendorSpecificationSingleResponse> vendorSpecificationsGet(
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {

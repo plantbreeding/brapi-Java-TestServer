@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.Valid;
@@ -37,6 +38,8 @@ public class EventsApiController extends BrAPIController implements EventsApi {
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<EventsResponse> eventsGet(
 			@Valid @RequestParam(value = "eventDbId", required = false) String eventDbId,
 			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,

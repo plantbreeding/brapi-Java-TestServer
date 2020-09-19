@@ -3,6 +3,7 @@ package org.brapi.test.BrAPITestServer.model.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -13,7 +14,7 @@ import javax.persistence.Table;
 public class GeoJSONEntity extends BrAPIBaseEntity{	
 	@Column
 	private String type;
-	@OneToMany(mappedBy="geoJSON")
+	@OneToMany(mappedBy="geoJSON", cascade = CascadeType.ALL)
 	private List<CoordinateEntity> coordinates;
 	
 	public String getType() {

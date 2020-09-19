@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -44,6 +45,8 @@ public class ReferencesApiController extends BrAPIController implements Referenc
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ReferencesListResponse> referencesGet(
 			@Valid @RequestParam(value = "referenceDbId", required = false) String referenceDbId,
 			@Valid @RequestParam(value = "referenceSetDbId", required = false) String referenceSetDbId,
@@ -65,6 +68,8 @@ public class ReferencesApiController extends BrAPIController implements Referenc
 		return responseOK(new ReferencesListResponse(), new ReferencesListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ReferenceBasesResponse> referencesReferenceDbIdBasesGet(
 			@PathVariable("referenceDbId") String referenceDbId,
 			@Valid @RequestParam(value = "start", required = false) Integer start,
@@ -79,6 +84,8 @@ public class ReferencesApiController extends BrAPIController implements Referenc
 		return responseOK(new ReferenceBasesResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ReferenceSingleResponse> referencesReferenceDbIdGet(
 			@PathVariable("referenceDbId") String referenceDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -90,6 +97,8 @@ public class ReferencesApiController extends BrAPIController implements Referenc
 		return responseOK(new ReferenceSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ReferencesListResponse> searchReferencesPost(@Valid @RequestBody ReferencesSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -101,6 +110,8 @@ public class ReferencesApiController extends BrAPIController implements Referenc
 		return responseOK(new ReferencesListResponse(), new ReferencesListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ReferencesListResponse> searchReferencesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,

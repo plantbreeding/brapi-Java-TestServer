@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -40,6 +41,8 @@ public class MarkerPositionsApiController extends BrAPIController implements Mar
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<MarkerPositionsListResponse> markerpositionsGet(
 			@Valid @RequestParam(value = "mapDbId", required = false) String mapDbId,
 			@Valid @RequestParam(value = "linkageGroupName", required = false) String linkageGroupName,
@@ -58,6 +61,8 @@ public class MarkerPositionsApiController extends BrAPIController implements Mar
 		return responseOK(new MarkerPositionsListResponse(), new MarkerPositionsListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<MarkerPositionsListResponse> searchMarkerpositionsPost(
 			@Valid @RequestBody MarkerPositionSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
@@ -69,6 +74,8 @@ public class MarkerPositionsApiController extends BrAPIController implements Mar
 		return responseOK(new MarkerPositionsListResponse(), new MarkerPositionsListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<MarkerPositionsListResponse> searchMarkerpositionsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,

@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,6 +38,8 @@ public class BreedingMethodsApiController extends BrAPIController implements Bre
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<BreedingMethodListResponse> breedingmethodsGet(
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -50,6 +53,8 @@ public class BreedingMethodsApiController extends BrAPIController implements Bre
 				metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<BreedingMethodSingleResponse> breedingmethodsBreedingMethodDbIdGet(
 			@PathVariable("breedingMethodDbId") String breedingMethodDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {

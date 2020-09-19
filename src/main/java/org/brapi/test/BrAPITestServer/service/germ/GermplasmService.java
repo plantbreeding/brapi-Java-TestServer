@@ -21,6 +21,7 @@ import org.brapi.test.BrAPITestServer.model.entity.germ.GermplasmOriginEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.GermplasmSynonymEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.PedigreeEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.TaxonEntity;
+import org.brapi.test.BrAPITestServer.repository.germ.GermplasmDonorRepository;
 import org.brapi.test.BrAPITestServer.repository.germ.GermplasmRepository;
 import org.brapi.test.BrAPITestServer.repository.germ.PedigreeRepository;
 import org.brapi.test.BrAPITestServer.service.DateUtility;
@@ -65,14 +66,17 @@ public class GermplasmService {
 
 	private final GermplasmRepository germplasmRepository;
 	private final PedigreeRepository pedigreeRepository;
+	private final GermplasmDonorRepository donorRepository;
 	private final BreedingMethodService breedingMethodService;
 	private final CropService cropService;
 
 	@Autowired
-	public GermplasmService(GermplasmRepository germplasmRepository, PedigreeRepository pedigreeRepository,
+	public GermplasmService(GermplasmRepository germplasmRepository, PedigreeRepository pedigreeRepository, GermplasmDonorRepository donorRepository,
 			BreedingMethodService breedingMethodService, CropService cropService) {
 		this.germplasmRepository = germplasmRepository;
 		this.pedigreeRepository = pedigreeRepository;
+		this.donorRepository = donorRepository;
+		
 		this.breedingMethodService = breedingMethodService;
 		this.cropService = cropService;
 	}
@@ -325,7 +329,10 @@ public class GermplasmService {
 			entity.setSpeciesAuthority(request.getSpeciesAuthority());
 		if (request.getStorageTypes() != null)
 			entity.setTypeOfGermplasmStorageCode(
-					request.getStorageTypes().stream().map(st -> st.getValue()).collect(Collectors.toList()));
+					request.getStorageTypes().stream()
+					.filter(st -> st != null)
+					.map(st -> st.getCode())
+					.collect(Collectors.toList()));
 		if (request.getSubtaxa() != null)
 			entity.setSubtaxa(request.getSubtaxa());
 		if (request.getSubtaxaAuthority() != null)
@@ -431,7 +438,7 @@ public class GermplasmService {
 	private void updateDonorEntities(List<GermplasmNewRequestDonors> donors, GermplasmEntity entity) {
 		if (entity.getDonors() != null) {
 			for (DonorEntity oldEntity : entity.getDonors()) {
-				oldEntity.setGermplasm(null);
+				donorRepository.delete(oldEntity);
 			}
 		}
 		entity.setDonors(new ArrayList<>());

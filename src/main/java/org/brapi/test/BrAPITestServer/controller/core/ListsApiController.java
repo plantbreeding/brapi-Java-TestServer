@@ -16,9 +16,11 @@ import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.core.ListService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -38,12 +40,14 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 	private final HttpServletRequest request;
 	private final ListService listService;
 
-	@org.springframework.beans.factory.annotation.Autowired
+	@Autowired
 	public ListsApiController(ListService listService, HttpServletRequest request) {
 		this.listService = listService;
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ListsListResponse> listsGet(
 			@Valid @RequestParam(value = "listType", required = false) ListTypes listType,
 			@Valid @RequestParam(value = "listName", required = false) String listName,
@@ -63,6 +67,8 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 		return responseOK(new ListsListResponse(), new ListsListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ListsSingleResponse> listsListDbIdGet(
 			@PathVariable("listDbId") String listDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -74,6 +80,8 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 		return responseOK(new ListsSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ListResponse> listsListDbIdItemsPost(
 			@PathVariable("listDbId") String listDbId,
 			@Valid @RequestBody ArrayList<String> body,
@@ -85,6 +93,8 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 		return responseOK(new ListResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ListsSingleResponse> listsListDbIdPut(
 			@PathVariable("listDbId") String listDbId,
 			@Valid @RequestBody ListNewRequest body,
@@ -96,6 +106,8 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 		return responseOK(new ListsSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ListsListResponse> listsPost(@Valid @RequestBody List<ListNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
@@ -105,6 +117,8 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 		return responseOK(new ListsListResponse(), new ListsListResponseResult(), data);
 	}
 	
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ListsListResponse> searchListsPost(
 			@Valid @RequestBody ListSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
@@ -116,6 +130,8 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 		return responseOK(new ListsListResponse(), new ListsListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ListsListResponse> searchListsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,

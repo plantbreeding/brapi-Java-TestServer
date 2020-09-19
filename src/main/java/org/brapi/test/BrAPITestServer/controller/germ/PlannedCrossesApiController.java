@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,6 +39,8 @@ public class PlannedCrossesApiController extends BrAPIController implements Plan
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<PlannedCrossesListResponse> plannedcrossesGet(
 			@Valid @RequestParam(value = "plannedCrossDbId", required = false) String plannedCrossDbId,
 			@Valid @RequestParam(value = "crossingProjectDbId", required = false) String crossingProjectDbId,
@@ -56,6 +59,8 @@ public class PlannedCrossesApiController extends BrAPIController implements Plan
 		return responseOK(new PlannedCrossesListResponse(), new PlannedCrossesListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<PlannedCrossesListResponse> plannedcrossesPost(
 			@Valid @RequestBody List<PlannedCrossNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -67,6 +72,8 @@ public class PlannedCrossesApiController extends BrAPIController implements Plan
 		return responseOK(new PlannedCrossesListResponse(), new PlannedCrossesListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<PlannedCrossesListResponse> plannedcrossesPut(
 			@Valid @RequestBody Map<String, PlannedCrossNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)

@@ -51,19 +51,19 @@ public class GermplasmEntity extends BrAPIPrimaryEntity {
 	private String defaultDisplayName;
 	@Column
 	private String documentationURL;
-	@OneToMany(mappedBy = "germplasm")
+	@OneToMany(mappedBy = "germplasm", cascade = CascadeType.ALL)
 	private List<DonorEntity> donors;
 	@Column
 	private String genus;
 	@Column
 	private String germplasmName;
-	@OneToMany(mappedBy = "germplasm")
+	@OneToMany(mappedBy = "germplasm", cascade = CascadeType.ALL)
 	private List<GermplasmOriginEntity> germplasmOrigin;
 	@Column
 	private String germplasmPreprocessing;
 	@Column
 	private String germplasmPUI;
-	@OneToMany(mappedBy = "germplasm")
+	@OneToMany(mappedBy = "germplasm", cascade = CascadeType.ALL)
 	private List<GermplasmInstituteEntity> institutes;
 	@Column
 	private MlsStatusEnum mlsStatus;
@@ -84,9 +84,9 @@ public class GermplasmEntity extends BrAPIPrimaryEntity {
 	private String subtaxa;
 	@Column
 	private String subtaxaAuthority;
-	@OneToMany(mappedBy = "germplasm")
+	@OneToMany(mappedBy = "germplasm", cascade = CascadeType.ALL)
 	private List<GermplasmSynonymEntity> synonyms;
-	@OneToMany(mappedBy = "germplasm")
+	@OneToMany(mappedBy = "germplasm", cascade = CascadeType.ALL)
 	private List<TaxonEntity> taxonIds;
 	@ElementCollection
 	private List<GermplasmStorageTypesEnum> typeOfGermplasmStorageCode;

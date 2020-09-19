@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -40,6 +41,8 @@ public class LocationsApiController extends BrAPIController implements Locations
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<LocationListResponse> locationsGet(
 			@Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
 			@Valid @RequestParam(value = "locationType", required = false) String locationType,
@@ -56,6 +59,8 @@ public class LocationsApiController extends BrAPIController implements Locations
 		return responseOK(new LocationListResponse(), new LocationListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<LocationSingleResponse> locationsLocationDbIdGet(
 			@PathVariable("locationDbId") String locationDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
@@ -66,6 +71,8 @@ public class LocationsApiController extends BrAPIController implements Locations
 		return responseOK(new LocationSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<LocationSingleResponse> locationsLocationDbIdPut(
 			@PathVariable("locationDbId") String locationDbId,
 			@Valid @RequestBody LocationNewRequest body,
@@ -77,6 +84,8 @@ public class LocationsApiController extends BrAPIController implements Locations
 		return responseOK(new LocationSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<LocationListResponse> locationsPost(@Valid @RequestBody List<LocationNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
@@ -86,6 +95,8 @@ public class LocationsApiController extends BrAPIController implements Locations
 		return responseOK(new LocationListResponse(), new LocationListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<LocationListResponse> searchLocationsPost(@Valid @RequestBody LocationSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
@@ -96,6 +107,8 @@ public class LocationsApiController extends BrAPIController implements Locations
 		return responseOK(new LocationListResponse(), new LocationListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<LocationListResponse> searchLocationsSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,

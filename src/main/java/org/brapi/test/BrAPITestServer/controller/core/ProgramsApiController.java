@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -41,6 +42,8 @@ public class ProgramsApiController extends BrAPIController implements ProgramsAp
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ProgramListResponse> programsGet(
 			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
 			@Valid @RequestParam(value = "programName", required = false) String programName,
@@ -61,6 +64,8 @@ public class ProgramsApiController extends BrAPIController implements ProgramsAp
 		return responseOK(new ProgramListResponse(), new ProgramListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ProgramListResponse> programsPost(@Valid @RequestBody List<ProgramNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -71,6 +76,8 @@ public class ProgramsApiController extends BrAPIController implements ProgramsAp
 		return responseOK(new ProgramListResponse(), new ProgramListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ProgramSingleResponse> programsProgramDbIdGet(
 			@ApiParam(value = "Filter by the common crop name. Exact match.", required = true) @PathVariable("programDbId") String programDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -82,6 +89,8 @@ public class ProgramsApiController extends BrAPIController implements ProgramsAp
 		return responseOK(new ProgramSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ProgramSingleResponse> programsProgramDbIdPut(
 			@ApiParam(value = "Filter by the common crop name. Exact match.", required = true) @PathVariable("programDbId") String programDbId,
 			@Valid @RequestBody ProgramNewRequest body,
@@ -94,6 +103,8 @@ public class ProgramsApiController extends BrAPIController implements ProgramsAp
 		return responseOK(new ProgramSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ProgramListResponse> searchProgramsPost(@Valid @RequestBody ProgramSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -105,6 +116,8 @@ public class ProgramsApiController extends BrAPIController implements ProgramsAp
 		return responseOK(new ProgramListResponse(), new ProgramListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ProgramListResponse> searchProgramsSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,

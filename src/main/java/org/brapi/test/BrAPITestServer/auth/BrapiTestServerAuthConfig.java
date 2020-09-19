@@ -14,7 +14,7 @@ public class BrapiTestServerAuthConfig extends WebSecurityConfigurerAdapter{
 	
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable().authorizeRequests()
+        http.csrf().disable().authorizeRequests()
                 .anyRequest()
                 .permitAll().and() //TODO secure this
                 //.authenticated().and()

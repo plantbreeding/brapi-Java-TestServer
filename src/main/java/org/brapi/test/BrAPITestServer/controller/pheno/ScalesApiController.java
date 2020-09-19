@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -40,6 +41,8 @@ public class ScalesApiController extends BrAPIController implements ScalesApi {
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ScaleListResponse> scalesGet(
 			@Valid @RequestParam(value = "scaleDbId", required = false) String scaleDbId,
 			@Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
@@ -56,6 +59,8 @@ public class ScalesApiController extends BrAPIController implements ScalesApi {
 		return responseOK(new ScaleListResponse(), new ScaleListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ScaleListResponse> scalesPost(@Valid @RequestBody List<ScaleBaseClass> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
@@ -65,6 +70,8 @@ public class ScalesApiController extends BrAPIController implements ScalesApi {
 		return responseOK(new ScaleListResponse(), new ScaleListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ScaleSingleResponse> scalesScaleDbIdGet(@PathVariable("scaleDbId") String scaleDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
@@ -74,6 +81,8 @@ public class ScalesApiController extends BrAPIController implements ScalesApi {
 		return responseOK(new ScaleSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ScaleSingleResponse> scalesScaleDbIdPut(@PathVariable("scaleDbId") String scaleDbId,
 			@Valid @RequestBody ScaleBaseClass body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {

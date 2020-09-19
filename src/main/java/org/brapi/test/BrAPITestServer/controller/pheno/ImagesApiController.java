@@ -46,6 +46,8 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ImageListResponse> imagesGet(
 			@Valid @RequestParam(value = "imageDbId", required = false) String imageDbId,
 			@Valid @RequestParam(value = "imageName", required = false) String imageName,
@@ -67,6 +69,8 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 		return responseOK(new ImageListResponse(), new ImageListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ImageSingleResponse> imagesImageDbIdGet(@PathVariable("imageDbId") String imageDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -91,6 +95,8 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 		return new ResponseEntity<byte[]>(data, headers, HttpStatus.OK);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ImageSingleResponse> imagesImageDbIdImageContentPut(
 			@PathVariable("imageDbId") String imageDbId, @Valid @RequestBody byte[] body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -102,6 +108,8 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 		return responseOK(new ImageSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ImageSingleResponse> imagesImageDbIdPut(@PathVariable("imageDbId") String imageDbId,
 			@Valid @RequestBody ImageNewRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -113,6 +121,8 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 		return responseOK(new ImageSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ImageListResponse> imagesPost(@Valid @RequestBody List<ImageNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -123,6 +133,8 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 		return responseOK(new ImageListResponse(), new ImageListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ImageListResponse> searchImagesPost(@Valid @RequestBody ImageSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -134,6 +146,8 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 		return responseOK(new ImageListResponse(), new ImageListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<ImageListResponse> searchImagesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,

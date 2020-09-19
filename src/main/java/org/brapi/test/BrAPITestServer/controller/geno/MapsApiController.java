@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,6 +43,8 @@ public class MapsApiController extends BrAPIController implements MapsApi {
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GenomeMapListResponse> mapsGet(
 			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
 			@Valid @RequestParam(value = "mapPUI", required = false) String mapPUI,
@@ -62,6 +65,8 @@ public class MapsApiController extends BrAPIController implements MapsApi {
 		return responseOK(new GenomeMapListResponse(), new GenomeMapListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GenomeMapSingleResponse> mapsMapDbIdGet(
 			@PathVariable("mapDbId") String mapDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
@@ -72,6 +77,8 @@ public class MapsApiController extends BrAPIController implements MapsApi {
 		return responseOK(new GenomeMapSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<LinkageGroupListResponse> mapsMapDbIdLinkagegroupsGet(
 			@PathVariable("mapDbId") String mapDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,

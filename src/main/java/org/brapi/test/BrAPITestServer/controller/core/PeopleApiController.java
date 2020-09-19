@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -40,6 +41,8 @@ public class PeopleApiController extends BrAPIController implements PeopleApi {
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<PersonListResponse> peopleGet(
 			@Valid @RequestParam(value = "firstName", required = false) String firstName,
 			@Valid @RequestParam(value = "lastName", required = false) String lastName,
@@ -58,6 +61,8 @@ public class PeopleApiController extends BrAPIController implements PeopleApi {
 		return responseOK(new PersonListResponse(), new PersonListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<PersonSingleResponse> peoplePersonDbIdGet(
 			@PathVariable("personDbId") String personDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
@@ -68,6 +73,8 @@ public class PeopleApiController extends BrAPIController implements PeopleApi {
 		return responseOK(new PersonSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<PersonSingleResponse> peoplePersonDbIdPut(
 			@PathVariable("personDbId") String personDbId,
 			@Valid @RequestBody PersonNewRequest body,
@@ -79,6 +86,8 @@ public class PeopleApiController extends BrAPIController implements PeopleApi {
 		return responseOK(new PersonSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<PersonListResponse> peoplePost(@Valid @RequestBody List<PersonNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
@@ -88,6 +97,8 @@ public class PeopleApiController extends BrAPIController implements PeopleApi {
 		return responseOK(new PersonListResponse(), new PersonListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<PersonListResponse> searchPeoplePost(@Valid @RequestBody PersonSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
@@ -98,6 +109,8 @@ public class PeopleApiController extends BrAPIController implements PeopleApi {
 		return responseOK(new PersonListResponse(), new PersonListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<PersonListResponse> searchPeopleSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,

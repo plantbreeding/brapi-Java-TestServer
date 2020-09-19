@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -36,6 +37,8 @@ public class SeasonsApiController extends BrAPIController implements SeasonsApi 
 		this.request = request;
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<SeasonListResponse> seasonsGet(
 			@Valid @RequestParam(value = "seasonDbId", required = false) String seasonDbId,
 			@Valid @RequestParam(value = "season", required = false) String season,
@@ -51,6 +54,8 @@ public class SeasonsApiController extends BrAPIController implements SeasonsApi 
 		return responseOK(new SeasonListResponse(), new SeasonListResponseResult(), data, metadata);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<SeasonListResponse> seasonsPost(@Valid @RequestBody List<Season> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
@@ -60,6 +65,8 @@ public class SeasonsApiController extends BrAPIController implements SeasonsApi 
 		return responseOK(new SeasonListResponse(), new SeasonListResponseResult(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<SeasonSingleResponse> seasonsSeasonDbIdGet(
 			@PathVariable("seasonDbId") String seasonDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
@@ -70,6 +77,8 @@ public class SeasonsApiController extends BrAPIController implements SeasonsApi 
 		return responseOK(new SeasonSingleResponse(), data);
 	}
 
+	@CrossOrigin
+	@Override
 	public ResponseEntity<SeasonSingleResponse> seasonsSeasonDbIdPut(
 			@PathVariable("seasonDbId") String seasonDbId,
 			@Valid @RequestBody Season body,
