@@ -11,7 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import io.swagger.model.GeoJSONGeometry;
 import io.swagger.model.germ.GermplasmStorageTypes;
 
@@ -19,9 +20,9 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
 @Configuration
-@EnableJpaRepositories(basePackages="org.brapi.test.BrAPITestServer.repository", repositoryBaseClass=BrAPIRepositoryImpl.class)
+@EnableJpaRepositories(basePackages = "org.brapi.test.BrAPITestServer.repository", repositoryBaseClass = BrAPIRepositoryImpl.class)
 @PropertySource(value = "classpath:properties/application.properties")
-public class BrapiTestServerConfig{
+public class BrapiTestServerConfig {
 	@Bean
 	@ConditionalOnMissingBean(CustomSerializationModule.class)
 	CustomSerializationModule serializationModule() {
@@ -30,9 +31,21 @@ public class BrapiTestServerConfig{
 		module.addSerializer(LocalDate.class, new CustomDateSerializer());
 		module.addDeserializer(GeoJSONGeometry.class, new CustomGeoJSONDeserializer());
 		module.addDeserializer(GermplasmStorageTypes.class, new CustomGermplasmStorageTypesDeserializer());
-//		module.addSerializer(ObservationUnitPosition.class, new CustomObservationUnitPositionSerializer());
-//		module.addSerializer(ObservationUnit.class, new CustomObservationUnitSerializer());
+		// module.addSerializer(ObservationUnitPosition.class, new
+		// CustomObservationUnitPositionSerializer());
+		// module.addSerializer(ObservationUnit.class, new
+		// CustomObservationUnitSerializer());
 		return module;
 	}
-	
+
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**");
+			}
+		};
+	}
+
 }
