@@ -99,7 +99,7 @@ public class PhenotypeService {
 		List<NewObservationDbIdsObservations> newObservations = new ArrayList<>();
 		for (PhenotypesRequestData observationUnit : request.getData()) {
 			Optional<ObservationUnitEntity> unitEntityOption = observationUnitRepository
-					.findById(observationUnit.getObservatioUnitDbId());
+					.findById(observationUnit.getObservationUnitDbId());
 			if (unitEntityOption.isPresent()) {
 				ObservationUnitEntity unitEntity = unitEntityOption.get();
 				for (PhenotypesRequestObservation observation : observationUnit.getObservations()) {

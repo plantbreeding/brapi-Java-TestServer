@@ -18,8 +18,8 @@ import javax.validation.Valid;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2018-12-05T14:32:54.779-05:00[America/New_York]")
 
 public class PhenotypesRequestData   {
-  @JsonProperty("observatioUnitDbId")
-  private String observatioUnitDbId = null;
+  @JsonProperty("observationUnitDbId")
+  private String observationUnitDbId = null;
 
   @JsonProperty("observations")
   @Valid
@@ -29,7 +29,7 @@ public class PhenotypesRequestData   {
   private String studyDbId = null;
 
   public PhenotypesRequestData observatioUnitDbId(String observatioUnitDbId) {
-    this.observatioUnitDbId = observatioUnitDbId;
+    this.observationUnitDbId = observatioUnitDbId;
     return this;
   }
 
@@ -40,12 +40,12 @@ public class PhenotypesRequestData   {
   @ApiModelProperty(value = "")
 
 
-  public String getObservatioUnitDbId() {
-    return observatioUnitDbId;
+  public String getObservationUnitDbId() {
+    return observationUnitDbId;
   }
 
-  public void setObservatioUnitDbId(String observatioUnitDbId) {
-    this.observatioUnitDbId = observatioUnitDbId;
+  public void setObservationUnitDbId(String observatioUnitDbId) {
+    this.observationUnitDbId = observatioUnitDbId;
   }
 
   public PhenotypesRequestData observations(List<PhenotypesRequestObservation> observations) {
@@ -107,14 +107,14 @@ public class PhenotypesRequestData   {
       return false;
     }
     PhenotypesRequestData phenotypesRequestData = (PhenotypesRequestData) o;
-    return Objects.equals(this.observatioUnitDbId, phenotypesRequestData.observatioUnitDbId) &&
+    return Objects.equals(this.observationUnitDbId, phenotypesRequestData.observationUnitDbId) &&
         Objects.equals(this.observations, phenotypesRequestData.observations) &&
         Objects.equals(this.studyDbId, phenotypesRequestData.studyDbId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(observatioUnitDbId, observations, studyDbId);
+    return Objects.hash(observationUnitDbId, observations, studyDbId);
   }
 
   @Override
@@ -122,7 +122,7 @@ public class PhenotypesRequestData   {
     StringBuilder sb = new StringBuilder();
     sb.append("class PhenotypesRequestData {\n");
     
-    sb.append("    observatioUnitDbId: ").append(toIndentedString(observatioUnitDbId)).append("\n");
+    sb.append("    observatioUnitDbId: ").append(toIndentedString(observationUnitDbId)).append("\n");
     sb.append("    observations: ").append(toIndentedString(observations)).append("\n");
     sb.append("    studyDbId: ").append(toIndentedString(studyDbId)).append("\n");
     sb.append("}");

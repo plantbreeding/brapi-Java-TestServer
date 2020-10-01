@@ -1044,8 +1044,10 @@ public class StudyService {
 			observationUnitEntity.setReplicate(unit.getReplicate());
 		if (unit.getX() != null)
 			observationUnitEntity.setX(unit.getX());
-		if (unit.getY() != null)
-			observationUnitEntity.setY(unit.getY());
+		if (unit.getPositionCoordinateX() != null)
+			observationUnitEntity.setX(unit.getPositionCoordinateX());
+		if (unit.getPositionCoordinateY() != null)
+			observationUnitEntity.setY(unit.getPositionCoordinateY());
 
 		if (unit.getGermplasmDbId() == null) {
 			observationUnitEntity.setGermplasm(null);
