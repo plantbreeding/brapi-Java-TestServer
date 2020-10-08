@@ -26,8 +26,8 @@ Use [/calls](https://test-server.brapi.org/brapi/v1/call) to check the available
   * Change the `datasource` parameters to match your empty database server
   * If you did not use a Postgres database, change the `driver-class-name` to match the database type you have setup
 * Save `/Local_Path_To_Properties/application.properties` 
-* Docker Pull `docker pull brapicoordinatorselby/brapi-java-server`
-* Docker Run `docker run -v /Local_Path_To_Properties/:/home/brapi/properties -d brapicoordinatorselby/brapi-java-server`
+* Docker Pull `docker pull brapicoordinatorselby/brapi-java-server:v1`
+* Docker Run `docker run -v /Local_Path_To_Properties/:/home/brapi/properties -d brapicoordinatorselby/brapi-java-server:v1`
 
 ## DataBase
 
