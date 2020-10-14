@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.model.entity.core;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -17,7 +18,7 @@ public class LocationEntity extends BrAPIPrimaryEntity{
 	private String coordinateDescription;
 	@Column
 	private String coordinateUncertainty;
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private GeoJSONEntity coordinates;
 	@Column
 	private String countryCode;

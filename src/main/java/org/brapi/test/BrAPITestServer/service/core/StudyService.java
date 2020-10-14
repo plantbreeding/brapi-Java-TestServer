@@ -63,6 +63,7 @@ public class StudyService {
 		this.locationService = locationService;
 		this.contactService = contactService;
 		this.seasonService = seasonService;
+		this.trialService = trialService;
 	}
 
 	public List<Study> findStudies(@Valid String commonCropName, @Valid String studyType, @Valid String programDbId,
@@ -363,7 +364,7 @@ public class StudyService {
 		ObservationLevelEntity entity = null;
 		if (level != null) {
 			entity = new ObservationLevelEntity();
-			entity.setLevelName(level.getLevelName().name());
+			entity.setLevelName(level.getLevelName().toString());
 			entity.setLevelOrder(level.getLevelOrder());
 		}
 		return entity;
@@ -449,14 +450,14 @@ public class StudyService {
 		DataLinkEntity entity = null;
 		if (link != null) {
 			entity = new DataLinkEntity();
-			entity.setDataFormat(entity.getDataFormat());
-			entity.setDescription(entity.getDescription());
-			entity.setFileFormat(entity.getFileFormat());
-			entity.setName(entity.getName());
-			entity.setProvenance(entity.getProvenance());
-			entity.setScientificType(entity.getScientificType());
-			entity.setUrl(entity.getUrl());
-			entity.setVersion(entity.getVersion());
+			entity.setDataFormat(link.getDataFormat());
+			entity.setDescription(link.getDescription());
+			entity.setFileFormat(link.getFileFormat());
+			entity.setName(link.getName());
+			entity.setProvenance(link.getProvenance());
+			entity.setScientificType(link.getScientificType());
+			entity.setUrl(link.getUrl());
+			entity.setVersion(link.getVersion());
 		}
 		return entity;
 	}

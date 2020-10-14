@@ -48,7 +48,7 @@ public class ImageEntity extends BrAPIPrimaryEntity {
 	private String copyright;
 	@Column
 	private Date timeStamp;
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private GeoJSONEntity coordinates;
 
 	public List<String> getDescriptiveOntologyTerms() {

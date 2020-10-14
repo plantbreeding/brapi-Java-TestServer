@@ -2,6 +2,7 @@ package org.brapi.test.BrAPITestServer.model.entity.pheno;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -19,7 +20,7 @@ import io.swagger.model.pheno.PositionCoordinateTypeEnum;
 public class ObservationUnitPositionEntity extends BrAPIBaseEntity {
 	@Column
 	private EntryTypeEnum entryType;
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private GeoJSONEntity geoCoordinates;
 	@Column
 	private String levelCode;
