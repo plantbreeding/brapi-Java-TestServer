@@ -55,8 +55,10 @@ public class LocationService {
 				.appendList(request.getCountryCodes(), "countrycode")
 				.appendList(request.getCountryNames(), "countryname")
 				.appendList(request.getInstituteAddresses(), "instituteaddress")
-				.appendList(request.getInstituteNames(), "institutename").appendList(request.getLocationDbIds(), "id")
-				.appendList(request.getLocationNames(), "locationName").appendList(request.getLocationTypes(), "type")
+				.appendList(request.getInstituteNames(), "institutename")
+				.appendList(request.getLocationDbIds(), "id")
+				.appendList(request.getLocationNames(), "locationName")
+				.appendList(request.getLocationTypes(), "locationType")
 				.appendNumberRange(request.getAltitudeMin(), request.getAltitudeMax(), "altitude")
 				.appendGeoJSONArea(request.getCoordinates());
 
