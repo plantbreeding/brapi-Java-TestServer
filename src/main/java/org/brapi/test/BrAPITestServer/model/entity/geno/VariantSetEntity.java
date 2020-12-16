@@ -2,8 +2,10 @@ package org.brapi.test.BrAPITestServer.model.entity.geno;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -19,8 +21,7 @@ public class VariantSetEntity extends BrAPIPrimaryEntity {
 	private List<VariantSetAnalysisEntity> analysis;
 	@OneToMany(mappedBy = "variantSet")
 	private List<VariantSetAvailableFormatEntity> availableFormats;
-	@ManyToMany
-	@JoinTable
+	@ManyToMany(mappedBy = "variantSets")
 	private List<CallSetEntity> callSets;
 	@ManyToOne
 	private ReferenceSetEntity referenceSet;

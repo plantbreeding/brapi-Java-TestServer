@@ -1,37 +1,41 @@
-INSERT INTO variantset (id) VALUES('variantset0');
+INSERT INTO variantset (id, variant_set_name, reference_set_id, study_id) VALUES('variantset1', 'Dummy VariantSet 1', 'reference_set1', 'study1');
 
-INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset00', 'P1', '2019-11-22', '2019-11-23', 'sample1');
-INSERT INTO callset_variant_sets (call_set_entity_id, variant_sets_id) VALUES('callset00', 'variantset0');
-INSERT INTO variant (id, variant_name, variant_set_id) VALUES('variant00', 'M1', 'variantset0');
-INSERT INTO allele_call(id, genotype, genotype_likelihood, phase_set, variant_id, call_set_id) VALUES('allele_0000', 'A'  , 1, 'phase_set00', 'variant00','callset00');
+INSERT INTO variantset_analysis (id, analysis_name, created, description, "type", updated, variant_set_id) VALUES('variantset_analysis1', 'Standard QC', '2019-11-23', 'This is a formal description of a QC methodology. Blah blah blah ...', 'QC', '2019-11-23', 'variantset1');
+INSERT INTO variant_set_analysis_entity_software (variant_set_analysis_entity_id, software) VALUES('variantset_analysis1', 'https://github.com/fake-genotyping/QC');
+INSERT INTO variantset_format (id, data_format, file_format, fileurl, variant_set_id) VALUES('variantset_format1', 4, 0, 'https://test-server.brapi.org/brapi/v2/variantsets/variantset1/calls', 'variantset1');
+INSERT INTO variantset_format (id, data_format, file_format, fileurl, variant_set_id) VALUES('variantset_format2', 3, 2, 'https://test-server.brapi.org/brapi/v2/docs/sample_variantset_tsv.txt', 'variantset1');
+INSERT INTO variantset_format (id, data_format, file_format, fileurl, variant_set_id) VALUES('variantset_format3', 1, 2, 'https://test-server.brapi.org/brapi/v2/docs/sample_variantset_vcf.vcf', 'variantset1');
 
-INSERT INTO variantset (id) VALUES('variantset1');
+INSERT INTO additional_info(id, key, value) VALUES ('variantset_ai_1', 'dummyData', 'True');
+INSERT INTO variantset_additional_info(variant_set_entity_id, additional_info_id) VALUES ('variantset1', 'variantset_ai_1');
+INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('variantset_er_1', 'https://brapi.org/specification', 'BrAPI Doc');
+INSERT INTO variantset_external_references(variant_set_entity_id, external_references_id) VALUES ('variantset1', 'variantset_er_1');
 
-INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset01', 'P2', '2019-11-22', '2019-11-23', 'sample1');
-INSERT INTO callset_variant_sets (call_set_entity_id, variant_sets_id) VALUES('callset01', 'variantset1');
-INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset02', 'F1-1', '2019-11-22', '2019-11-23', 'sample1');
-INSERT INTO callset_variant_sets (call_set_entity_id, variant_sets_id) VALUES('callset02', 'variantset1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset01', 'P2', '2019-11-22', '2019-11-23', 'sample3');
+INSERT INTO callset_variant_sets (call_sets_id, variant_sets_id) VALUES('callset01', 'variantset1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset02', 'F1-1', '2019-11-22', '2019-11-23', 'sample2');
+INSERT INTO callset_variant_sets (call_sets_id, variant_sets_id) VALUES('callset02', 'variantset1');
 INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset03', 'F1-2', '2019-11-22', '2019-11-23', 'sample1');
-INSERT INTO callset_variant_sets (call_set_entity_id, variant_sets_id) VALUES('callset03', 'variantset1');
-INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset04', 'F1-3', '2019-11-22', '2019-11-23', 'sample1');
-INSERT INTO callset_variant_sets (call_set_entity_id, variant_sets_id) VALUES('callset04', 'variantset1');
-INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset05', 'F1-4', '2019-11-22', '2019-11-23', 'sample1');
-INSERT INTO callset_variant_sets (call_set_entity_id, variant_sets_id) VALUES('callset05', 'variantset1');
+INSERT INTO callset_variant_sets (call_sets_id, variant_sets_id) VALUES('callset03', 'variantset1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset04', 'F1-3', '2019-11-22', '2019-11-23', 'sample3');
+INSERT INTO callset_variant_sets (call_sets_id, variant_sets_id) VALUES('callset04', 'variantset1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset05', 'F1-4', '2019-11-22', '2019-11-23', 'sample2');
+INSERT INTO callset_variant_sets (call_sets_id, variant_sets_id) VALUES('callset05', 'variantset1');
 INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset06', 'F1-5', '2019-11-22', '2019-11-23', 'sample1');
-INSERT INTO callset_variant_sets (call_set_entity_id, variant_sets_id) VALUES('callset06', 'variantset1');
-INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset07', 'F1-6', '2019-11-22', '2019-11-23', 'sample1');
-INSERT INTO callset_variant_sets (call_set_entity_id, variant_sets_id) VALUES('callset07', 'variantset1');
-INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset08', 'F1-7', '2019-11-22', '2019-11-23', 'sample1');
-INSERT INTO callset_variant_sets (call_set_entity_id, variant_sets_id) VALUES('callset08', 'variantset1');
+INSERT INTO callset_variant_sets (call_sets_id, variant_sets_id) VALUES('callset06', 'variantset1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset07', 'F1-6', '2019-11-22', '2019-11-23', 'sample3');
+INSERT INTO callset_variant_sets (call_sets_id, variant_sets_id) VALUES('callset07', 'variantset1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset08', 'F1-7', '2019-11-22', '2019-11-23', 'sample2');
+INSERT INTO callset_variant_sets (call_sets_id, variant_sets_id) VALUES('callset08', 'variantset1');
 INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset09', 'F1-8', '2019-11-22', '2019-11-23', 'sample1');
-INSERT INTO callset_variant_sets (call_set_entity_id, variant_sets_id) VALUES('callset09', 'variantset1');
-INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset10', 'F1-9', '2019-11-22', '2019-11-23', 'sample1');
-INSERT INTO callset_variant_sets (call_set_entity_id, variant_sets_id) VALUES('callset10', 'variantset1');
-INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset11', 'F1-10', '2019-11-22', '2019-11-23', 'sample1');
-INSERT INTO callset_variant_sets (call_set_entity_id, variant_sets_id) VALUES('callset11', 'variantset1');
+INSERT INTO callset_variant_sets (call_sets_id, variant_sets_id) VALUES('callset09', 'variantset1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset10', 'F1-9', '2019-11-22', '2019-11-23', 'sample3');
+INSERT INTO callset_variant_sets (call_sets_id, variant_sets_id) VALUES('callset10', 'variantset1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset11', 'F1-10', '2019-11-22', '2019-11-23', 'sample2');
+INSERT INTO callset_variant_sets (call_sets_id, variant_sets_id) VALUES('callset11', 'variantset1');
 INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset12', 'F1-11', '2019-11-22', '2019-11-23', 'sample1');
-INSERT INTO callset_variant_sets (call_set_entity_id, variant_sets_id) VALUES('callset12', 'variantset1');
-INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset13', 'F1-12', '2019-11-22', '2019-11-23', 'sample1');
+INSERT INTO callset_variant_sets (call_sets_id, variant_sets_id) VALUES('callset12', 'variantset1');
+INSERT INTO callset (id, call_set_name, created, updated, sample_id) VALUES('callset13', 'F1-12', '2019-11-22', '2019-11-23', 'sample3');
 
 INSERT INTO variant (id, variant_name, variant_set_id) VALUES('variant01', 'M1', 'variantset1');
 INSERT INTO variant (id, variant_name, variant_set_id) VALUES('variant02', 'M2', 'variantset1');
@@ -53,6 +57,7 @@ INSERT INTO variant (id, variant_name, variant_set_id) VALUES('variant17', 'M17'
 INSERT INTO variant (id, variant_name, variant_set_id) VALUES('variant18', 'M18', 'variantset1');
 INSERT INTO variant (id, variant_name, variant_set_id) VALUES('variant19', 'M19', 'variantset1');
 INSERT INTO variant (id, variant_name, variant_set_id) VALUES('variant20', 'M20', 'variantset1');
+
 
 INSERT INTO allele_call(id, genotype, genotype_likelihood, phase_set, variant_id, call_set_id) VALUES('allele_0101', 'C'  , 1, 'phase_set01', 'variant01','callset01');
 INSERT INTO allele_call(id, genotype, genotype_likelihood, phase_set, variant_id, call_set_id) VALUES('allele_0102', 'C'  , 1, 'phase_set02', 'variant02','callset01');
@@ -326,5 +331,3 @@ INSERT INTO allele_call(id, genotype, genotype_likelihood, phase_set, variant_id
 INSERT INTO allele_call(id, genotype, genotype_likelihood, phase_set, variant_id, call_set_id) VALUES('allele_1318', 'G'  , 1, 'phase_set18', 'variant18','callset13');
 INSERT INTO allele_call(id, genotype, genotype_likelihood, phase_set, variant_id, call_set_id) VALUES('allele_1319', 'T/A', 1, 'phase_set19', 'variant19','callset13');
 INSERT INTO allele_call(id, genotype, genotype_likelihood, phase_set, variant_id, call_set_id) VALUES('allele_1320', 'T'  , 1, 'phase_set20', 'variant20','callset13');
-
-
