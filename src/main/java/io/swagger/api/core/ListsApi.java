@@ -40,7 +40,7 @@ public interface ListsApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/lists", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ListsListResponse> listsGet(
-			@ApiParam(value = "The type of objects contained by this generic list") @Valid @RequestParam(value = "listType", required = false) ListTypes listType,
+			@ApiParam(value = "The type of objects contained by this generic list") @Valid @RequestParam(value = "listType", required = false) String listType,
 			@ApiParam(value = "The human readable name of this generic list") @Valid @RequestParam(value = "listName", required = false) String listName,
 			@ApiParam(value = "The unique ID of this generic list") @Valid @RequestParam(value = "listDbId", required = false) String listDbId,
 			@ApiParam(value = "The source tag of this generic list") @Valid @RequestParam(value = "listSource", required = false) String listSource,

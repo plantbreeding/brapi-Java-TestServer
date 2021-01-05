@@ -49,7 +49,7 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ListsListResponse> listsGet(
-			@Valid @RequestParam(value = "listType", required = false) ListTypes listType,
+			@Valid @RequestParam(value = "listType", required = false) String listType,
 			@Valid @RequestParam(value = "listName", required = false) String listName,
 			@Valid @RequestParam(value = "listDbId", required = false) String listDbId,
 			@Valid @RequestParam(value = "listSource", required = false) String listSource,
@@ -63,7 +63,7 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<ListSummary> data = listService.findLists(listType, listName, listDbId, listSource, externalReferenceID, externalReferenceSource, metadata);
+		List<ListSummary> data = listService.findLists(ListTypes.fromValue(listType), listName, listDbId, listSource, externalReferenceID, externalReferenceSource, metadata);
 		return responseOK(new ListsListResponse(), new ListsListResponseResult(), data, metadata);
 	}
 
