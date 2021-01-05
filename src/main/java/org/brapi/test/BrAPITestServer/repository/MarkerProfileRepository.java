@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 public interface MarkerProfileRepository extends PagingAndSortingRepository<MarkerProfileEntity, String> {
 	public List<MarkerProfileEntity> findByGermplasmDbId(String germplasmDbId);
 
-	@Query("select mp from MarkerProfileEntity mp join mp.studies study"
+	@Query("select mp from MarkerProfileEntity mp left join mp.studies study"
 			+ " where (:germplasmDbId is null OR mp.germplasmDbId = :germplasmDbId)"
 			+ " AND (:studyDbId is null OR study.id = :studyDbId)"
 			+ " AND (:sampleDbId is null OR mp.sampleDbId = :sampleDbId)"

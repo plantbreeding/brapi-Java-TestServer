@@ -44,9 +44,9 @@ public class StudyRepositoryImpl implements StudyRepositoryCustom {
 
 	private String buildQueryString(StudySearchRequest request, Map<String, Object> params) {
 		String queryStr = "select distinct s from StudyEntity s "
-				+ "JOIN s.seasons season "
-				+ "JOIN s.observationUnits ou "
-				+ "JOIN ou.observations observation where 1=1 " ;
+				+ "LEFT JOIN s.seasons season "
+				+ "LEFT JOIN s.observationUnits ou "
+				+ "LEFT JOIN ou.observations observation where 1=1 " ;
 
 		if (request.getCommonCropNames() != null && !request.getCommonCropNames().isEmpty()) {
 			queryStr += "AND s.trial.program.crop.cropName IN :commonCropNames ";

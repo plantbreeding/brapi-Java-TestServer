@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface TrialRepository extends PagingAndSortingRepository<TrialEntity, String> {
 
-	@Query("select t from TrialEntity t join t.studies s "
+	@Query("select t from TrialEntity t left join t.studies s "
 			+ "where ('' = :programDbId OR t.program.id = :programDbId) "
 			+ "AND ('' = :commonCropName OR t.program.crop.cropName = :commonCropName) "
 			+ "AND ('' = :locationDbId OR :locationDbId IN s.location.id) "

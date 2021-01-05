@@ -41,7 +41,7 @@ public class ObservationUnitRepositoryImpl implements ObservationUnitRepositoryC
 	}
 
 	private String buildQueryString(PhenotypesSearchRequest request, Map<String, Object> params) {
-		String queryStr = "select distinct o from ObservationUnitEntity o join o.observations observation  where 1 = 1 ";
+		String queryStr = "select distinct o from ObservationUnitEntity o left join o.observations observation  where 1 = 1 ";
 
 		if (request.getGermplasmDbIds() != null && !request.getGermplasmDbIds().isEmpty()) {
 			queryStr += "AND o.germplasm.id in :germplasmDbIds ";
