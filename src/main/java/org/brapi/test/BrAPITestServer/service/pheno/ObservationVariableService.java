@@ -69,14 +69,17 @@ public class ObservationVariableService {
 	
 	public List<ObservationVariable> findObservationVariables(ObservationVariableSearchRequest request,	Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
-		SearchQueryBuilder<ObservationVariableEntity> searchQuery = new SearchQueryBuilder<ObservationVariableEntity>(ObservationVariableEntity.class)
-				.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
+		SearchQueryBuilder<ObservationVariableEntity> searchQuery = new SearchQueryBuilder<ObservationVariableEntity>(ObservationVariableEntity.class);
+		if (request.getStudyDbId() != null) {
+			searchQuery = searchQuery.join("observations", "observation")
+					.appendList(request.getStudyDbId(), "*observation.observationUnit.study.id");
+		}
+		searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
 				.appendList(request.getMethodDbIds(), "method.id")
 				.appendList(request.getObservationVariableDbIds(), "id")
 				.appendList(request.getObservationVariableNames(), "name")
 				.appendList(request.getOntologyDbIds(), "ontology.id")
-				.appendList(request.getScaleDbIds(), "scale.id")
-				.appendList(request.getStudyDbId(), "study.id")
+				.appendList(request.getScaleDbIds(), "scale.id")				
 				.appendList(request.getTraitClasses(), "trait.traitClass")
 				.appendList(request.getTraitDbIds(), "trait.id")
 				.appendEnumList(request.getDataTypes(), "scale.dataType");

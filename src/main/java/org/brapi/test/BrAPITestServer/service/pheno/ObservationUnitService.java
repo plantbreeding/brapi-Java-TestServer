@@ -142,11 +142,11 @@ public class ObservationUnitService {
 		if (request.getObservationLevels() != null) {
 			searchQuery = searchQuery
 					.appendEnumList(request.getObservationLevels().stream().filter(r -> r.getLevelName() != null)
-							.map(r -> r.getLevelName()).collect(Collectors.toList()), "position.level.name")
+							.map(r -> r.getLevelName()).collect(Collectors.toList()), "position.levelName")
 					.appendList(request.getObservationLevels().stream().filter(r -> r.getLevelCode() != null)
-							.map(r -> r.getLevelCode()).collect(Collectors.toList()), "position.level.code")
+							.map(r -> r.getLevelCode()).collect(Collectors.toList()), "position.levelCode")
 					.appendIntList(request.getObservationLevels().stream().filter(r -> r.getLevelOrder() != null)
-							.map(r -> r.getLevelOrder()).collect(Collectors.toList()), "position.level.order");
+							.map(r -> r.getLevelOrder()).collect(Collectors.toList()), "position.levelOrder");
 		}
 		if (request.getObservationLevelRelationships() != null) {
 			searchQuery = searchQuery.join("position.levelRelationships", "levelRelationship")
