@@ -2,39 +2,57 @@ package org.brapi.test.BrAPITestServer.auth;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.StringReader;
+import java.net.URL;
 import java.security.GeneralSecurityException;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.EncodedKeySpec;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.RSAPublicKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.ParseException;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.auth.openidconnect.IdToken.Payload;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.http.apache.ApacheHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.JWTVerifier;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.api.client.util.PemReader;
 
 public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
-	private static final JsonFactory jacksonFactory = new JacksonFactory();
-
 	private static final List<String> USER_IDS = Arrays.asList("dummy", "dummyAdmin", "113212610256718182401");
 	private static final List<String> ADMIN_IDS = Arrays.asList("dummyAdmin", "113212610256718182401");
+	private static final String OIDC_DISCOVERY_URL = "https://auth.brapi.org/auth/realms/brapi/.well-known/openid-configuration";
 
 	public BrapiTestServerJWTAuthFilter(AuthenticationManager authManager) {
 		super(authManager);
@@ -58,7 +76,7 @@ public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
 						null, authorities);
 
 				SecurityContextHolder.getContext().setAuthentication(authentication);
-			}else {
+			} else {
 				throw new GeneralSecurityException("Auth Error");
 			}
 		} catch (GeneralSecurityException e) {
@@ -72,7 +90,7 @@ public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
 			throws FileNotFoundException, IOException, GeneralSecurityException {
 		String userId = checkDummyAuthentication(req);
 		if (userId == null) {
-			userId = checkGoogleAuthentication(req);
+			userId = validateOAuthToken(req);
 		}
 		return userId;
 	}
@@ -92,28 +110,18 @@ public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
 		return auth;
 	}
 
-	private String checkGoogleAuthentication(HttpServletRequest request) {
+	private String validateOAuthToken(HttpServletRequest request) {
 		try {
 			String token = request.getHeader("Authorization");
 			if (token != null) {
-				HttpTransport transport = new ApacheHttpTransport();
-				GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory)
-						.setAudience(Collections.singletonList(
-								"408930718026-1m4t6slfmp8c0vu0a4s0sp4ujvv3vqfa.apps.googleusercontent.com"))
-						// Or, if multiple clients access the backend:
-						// .setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
-						.build();
-
-				GoogleIdToken idToken = verifier.verify(token.replace("Bearer ", ""));
-				if (idToken != null) {
-					Payload payload = idToken.getPayload();
-
-					// Print user identifier
-					String userId = payload.getSubject();
-					System.out.println("User ID: " + userId);
-					return userId;
-				}
-				return null;
+				RSAPublicKey pubKey = getPublicKey(OIDC_DISCOVERY_URL);
+								
+				Algorithm algorithm = Algorithm.RSA256(pubKey, null);
+				JWTVerifier verifier = JWT.require(algorithm)
+						.withIssuer("auth0")
+						.build(); 
+				DecodedJWT jwt = verifier.verify(token);
+				return "";
 			}
 			return null;
 		} catch (Exception e) {
@@ -132,5 +140,31 @@ public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
 			return null;
 		}
 		return null;
+	}
+
+	private RSAPublicKey getPublicKey(String discoveryURL) {
+		RSAPublicKey pubKey = null;
+		try {
+			JsonNode discovery = (new ObjectMapper()).readTree(new URL(discoveryURL));
+			String jwksURL = discovery.findValue("jwks_uri").asText();
+			JsonNode jwks = (new ObjectMapper()).readTree(new URL(jwksURL));
+			String keyVal = jwks.findValue("keys").get(0).findValue("x5c").get(0).asText();
+			keyVal = "-----BEGIN CERTIFICATE-----\n" + keyVal + "\n-----END CERTIFICATE-----";
+			
+            KeyFactory kf = KeyFactory.getInstance("RSA");
+            EncodedKeySpec keySpec = new X509EncodedKeySpec(keyVal.getBytes());
+            pubKey = (RSAPublicKey) kf.generatePublic(keySpec);
+			
+			return pubKey;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return pubKey;
+		} catch (InvalidKeySpecException e) {
+			e.printStackTrace();
+			return pubKey;
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			return pubKey;
+		}
 	}
 }

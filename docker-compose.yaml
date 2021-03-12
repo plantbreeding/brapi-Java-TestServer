@@ -20,6 +20,8 @@ services:
     restart: unless-stopped
     depends_on: 
       - postgres
+    volumes:
+      - /home/jenkins/brapi.org/brapi-test-server/keycloak/standalone.xml:/opt/jboss/keycloak/standalone/configuration/standalone.xml
     environment:
       - KEYCLOAK_USER
       - KEYCLOAK_PASSWORD
@@ -28,6 +30,7 @@ services:
       - DB_DATABASE
       - DB_USER
       - DB_PASSWORD
+      - PROXY_ADDRESS_FORWARDING=true
   postgres:
     image: postgres
     restart: unless-stopped

@@ -208,9 +208,9 @@ public class CrossService {
 		if (cross.getExternalReferences() != null)
 			entity.setExternalReferences(entity.getExternalReferences());
 		if (cross.getParent1() != null)
-			entity.addParentItem(convertToEntity(cross.getParent1()));
+			entity.addParentItem(convertToEntity(cross.getParent1(), entity));
 		if (cross.getParent2() != null)
-			entity.addParentItem(convertToEntity(cross.getParent2()));
+			entity.addParentItem(convertToEntity(cross.getParent2(), entity));
 		if (cross.getPollinationTimeStamp() != null)
 			entity.setPollinationTimeStamp(DateUtility.toDate(cross.getPollinationTimeStamp()));
 		entity.setPlanned(false);
@@ -232,9 +232,9 @@ public class CrossService {
 		if (cross.getExternalReferences() != null)
 			entity.setExternalReferences(entity.getExternalReferences());
 		if (cross.getParent1() != null)
-			entity.addParentItem(convertToEntity(cross.getParent1()));
+			entity.addParentItem(convertToEntity(cross.getParent1(), entity));
 		if (cross.getParent2() != null)
-			entity.addParentItem(convertToEntity(cross.getParent2()));
+			entity.addParentItem(convertToEntity(cross.getParent2(), entity));
 		entity.setPlanned(true);
 	}
 
@@ -280,7 +280,7 @@ public class CrossService {
 		return parent;
 	}
 
-	private CrossParentEntity convertToEntity(@Valid CrossParent parent) throws BrAPIServerException {
+	private CrossParentEntity convertToEntity(@Valid CrossParent parent, CrossEntity cross) throws BrAPIServerException {
 		CrossParentEntity entity = new CrossParentEntity();
 		if (parent.getGermplasmDbId() != null) {
 			GermplasmEntity germ = germplasmService.getGermplasmEntity(parent.getGermplasmDbId());
@@ -294,6 +294,7 @@ public class CrossService {
 		if (parent.getParentType() != null) {
 			entity.setParentType(parent.getParentType());
 		}
+		entity.setCross(cross);
 		return entity;
 	}
 }
