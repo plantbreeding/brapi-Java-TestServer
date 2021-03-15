@@ -75,16 +75,20 @@ public class ProgramService {
 	}
 
 	public Program getProgram(String programDbId) throws BrAPIServerException {
-		return convertFromEntity(getProgramEntity(programDbId));
+		return convertFromEntity(getProgramEntity(programDbId, HttpStatus.NOT_FOUND));
 	}
 
 	public ProgramEntity getProgramEntity(String programDbId) throws BrAPIServerException {
+		return getProgramEntity(programDbId, HttpStatus.BAD_REQUEST);
+	}
+
+	public ProgramEntity getProgramEntity(String programDbId, HttpStatus errorStatus) throws BrAPIServerException {
 		ProgramEntity program = null;
 		Optional<ProgramEntity> entityOpt = programRepository.findById(programDbId);
 		if (entityOpt.isPresent()) {
 			program = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + programDbId);
+			throw new BrAPIServerException(errorStatus, "programDbId not found: " + programDbId);
 		}
 		return program;
 	}
@@ -98,7 +102,7 @@ public class ProgramService {
 
 			savedEntity = programRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + programDbId);
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "programDbId not found: " + programDbId);
 		}
 
 		return convertFromEntity(savedEntity);

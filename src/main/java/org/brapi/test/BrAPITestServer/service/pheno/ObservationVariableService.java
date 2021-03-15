@@ -113,23 +113,27 @@ public class ObservationVariableService {
 
 			savedEntity = observationVariableRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + observationVariableDbId);
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "observationVariableDbId not found: " + observationVariableDbId);
 		}
 
 		return convertFromEntity(savedEntity);
 	}
 
 	public ObservationVariable getObservationVariable(String observationVariableDbId) throws BrAPIServerException {
-		return convertFromEntity(getObservationVariableEntity(observationVariableDbId));
+		return convertFromEntity(getObservationVariableEntity(observationVariableDbId, HttpStatus.NOT_FOUND));
 	}
 
 	public ObservationVariableEntity getObservationVariableEntity(String observationVariableDbId) throws BrAPIServerException {
+		return getObservationVariableEntity(observationVariableDbId, HttpStatus.NOT_FOUND);
+	}
+
+	public ObservationVariableEntity getObservationVariableEntity(String observationVariableDbId, HttpStatus errorStatus) throws BrAPIServerException {
 		ObservationVariableEntity observationVariable = null;
 		Optional<ObservationVariableEntity> entityOpt = observationVariableRepository.findById(observationVariableDbId);
 		if (entityOpt.isPresent()) {
 			observationVariable = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + observationVariableDbId);
+			throw new BrAPIServerException(errorStatus, "observationVariableDbId not found: " + observationVariableDbId);
 		}
 		return observationVariable;
 	}

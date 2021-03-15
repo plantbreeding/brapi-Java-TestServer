@@ -68,7 +68,7 @@ public class VariantService {
 		if (entityOpt.isPresent()) {
 			variant = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + variantDbId);
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "variantDbId not found: " + variantDbId);
 		}
 		return variant;
 	}

@@ -82,17 +82,22 @@ public class GermplasmAttributeValueService {
 	}
 	
 	public GermplasmAttributeValue getGermplasmAttributeValue(String attributeValueDbId) throws BrAPIServerException {
-		return convertFromEntity(getGermplasmAttributeValueEntity(attributeValueDbId));
+		return convertFromEntity(getGermplasmAttributeValueEntity(attributeValueDbId, HttpStatus.NOT_FOUND));
 	}
 
 	public GermplasmAttributeValueEntity getGermplasmAttributeValueEntity(String attributeValueDbId)
 			throws BrAPIServerException {
+		return getGermplasmAttributeValueEntity(attributeValueDbId, HttpStatus.BAD_REQUEST);
+	}
+
+	public GermplasmAttributeValueEntity getGermplasmAttributeValueEntity(String attributeValueDbId, HttpStatus errorStatus)
+				throws BrAPIServerException {
 		GermplasmAttributeValueEntity attributeValue = null;
 		Optional<GermplasmAttributeValueEntity> entityOpt = attributeValueRepository.findById(attributeValueDbId);
 		if (entityOpt.isPresent()) {
 			attributeValue = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + attributeValueDbId);
+			throw new BrAPIServerException(errorStatus, "attributeValueDbId not found: " + attributeValueDbId);
 		}
 		return attributeValue;
 	}
@@ -126,7 +131,7 @@ public class GermplasmAttributeValueService {
 
 			savedEntity = attributeValueRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + attributeValueDbId);
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "attributeValueDbId not found: " + attributeValueDbId);
 		}
 
 		return convertFromEntity(savedEntity);

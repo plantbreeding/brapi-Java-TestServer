@@ -80,7 +80,7 @@ public class LocationService {
 		if (entityOpt.isPresent()) {
 			location = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + locationDbId);
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "locationDbId not found: " + locationDbId);
 		}
 		return location;
 	}
@@ -94,7 +94,7 @@ public class LocationService {
 
 			savedEntity = locationRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + locationDbId);
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "locationDbId not found: " + locationDbId);
 		}
 
 		return convertFromEntity(savedEntity);

@@ -33,16 +33,20 @@ public class BreedingMethodService {
 	}
 
 	public BreedingMethod getBreedingMethod(String breedingMethodDbId) throws BrAPIServerException {
-		return convertFromEntity(getBreedingMethodEntity(breedingMethodDbId));
+		return convertFromEntity(getBreedingMethodEntity(breedingMethodDbId, HttpStatus.NOT_FOUND));
 	}
 
 	public BreedingMethodEntity getBreedingMethodEntity(String breedingMethodDbId) throws BrAPIServerException {
+		return getBreedingMethodEntity(breedingMethodDbId, HttpStatus.BAD_REQUEST);
+	}
+
+	public BreedingMethodEntity getBreedingMethodEntity(String breedingMethodDbId, HttpStatus errorStatus) throws BrAPIServerException {
 		BreedingMethodEntity breedingMethodEntity = null;
 		Optional<BreedingMethodEntity> entityOpt = breedingMethodRepository.findById(breedingMethodDbId);
 		if (entityOpt.isPresent()) {
 			breedingMethodEntity = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + breedingMethodDbId);
+			throw new BrAPIServerException(errorStatus, "breedingMethodDbId not found: " + breedingMethodDbId);
 		}
 		return breedingMethodEntity;
 	}

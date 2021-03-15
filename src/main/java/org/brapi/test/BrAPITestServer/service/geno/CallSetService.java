@@ -70,16 +70,20 @@ public class CallSetService {
 	}
 
 	public CallSet getCallSet(String callSetDbId) throws BrAPIServerException {
-		return convertFromEntity(getCallSetEntity(callSetDbId));
+		return convertFromEntity(getCallSetEntity(callSetDbId, HttpStatus.NOT_FOUND));
 	}
 
 	public CallSetEntity getCallSetEntity(String callSetDbId) throws BrAPIServerException {
+		return getCallSetEntity(callSetDbId, HttpStatus.BAD_REQUEST);
+	}
+
+	public CallSetEntity getCallSetEntity(String callSetDbId, HttpStatus errorStatus) throws BrAPIServerException {
 		CallSetEntity callSet = null;
 		Optional<CallSetEntity> entityOpt = callSetRepository.findById(callSetDbId);
 		if (entityOpt.isPresent()) {
 			callSet = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + callSetDbId);
+			throw new BrAPIServerException(errorStatus, "callSetDbId not found: " + callSetDbId);
 		}
 		return callSet;
 	}

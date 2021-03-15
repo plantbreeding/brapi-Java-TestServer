@@ -37,7 +37,7 @@ public class ContactService {
 		if (entityOpt.isPresent()) {
 			entity = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + contactDbId);
+			throw new BrAPIServerException(HttpStatus.BAD_REQUEST, "contactDbId not found: " + contactDbId);
 		}
 
 		return entity;

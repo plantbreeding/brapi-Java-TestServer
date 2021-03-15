@@ -56,7 +56,7 @@ public class TraitService {
 
 			savedEntity = saveTraitEntity(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + traitDbId);
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "traitDbId not found: " + traitDbId);
 		}
 
 		return convertFromEntity(savedEntity);
@@ -78,21 +78,25 @@ public class TraitService {
 		return traitRepository.save(traitEntity);
 	}
 
+	public Trait getTrait(String traitDbId) throws BrAPIServerException {
+		return convertFromEntity(getTraitEntity(traitDbId, HttpStatus.NOT_FOUND));
+	}
+
 	public TraitEntity getTraitEntity(String traitDbId) throws BrAPIServerException {
+		return getTraitEntity(traitDbId, HttpStatus.BAD_REQUEST);
+	}
+
+	public TraitEntity getTraitEntity(String traitDbId, HttpStatus errorStatus) throws BrAPIServerException {
 		TraitEntity trait = null;
 		if (traitDbId != null) {
 			Optional<TraitEntity> entityOpt = traitRepository.findById(traitDbId);
 			if (entityOpt.isPresent()) {
 				trait = entityOpt.get();
 			} else {
-				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found " + traitDbId);
+				throw new BrAPIServerException(errorStatus, "traitDbId not found " + traitDbId);
 			}
 		}
 		return trait;
-	}
-
-	public Trait getTrait(String traitDbId) throws BrAPIServerException {
-		return convertFromEntity(getTraitEntity(traitDbId));
 	}
 
 	public TraitEntity updateEntity(TraitEntity entity, @Valid TraitBaseClass trait) throws BrAPIServerException {

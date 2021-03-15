@@ -98,7 +98,7 @@ public class ImageService {
 			if (imageOption.isPresent()) {
 				image = convertFromEntity(imageOption.get());
 			} else {
-				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + imageDbId);
+				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "imageDbId not found: " + imageDbId);
 			}
 		}
 
@@ -118,7 +118,7 @@ public class ImageService {
 
 				result = convertFromEntity(saved);
 			} else {
-				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "ImageDbId not found");
+				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "imageDbId not found: " + imageDbId);
 			}
 
 		}
@@ -134,7 +134,7 @@ public class ImageService {
 
 			savedEntity = imageRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + imageDbId);
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "imageDbId not found: " + imageDbId);
 		}
 
 		return convertFromEntity(savedEntity);

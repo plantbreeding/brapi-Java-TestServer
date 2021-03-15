@@ -139,25 +139,29 @@ public class GermplasmService {
 		return germplasms;
 	}
 
+	public Germplasm getGermplasm(String germplasmDbId) throws BrAPIServerException {
+		return convertFromEntity(getGermplasmEntity(germplasmDbId, HttpStatus.NOT_FOUND));
+	}
+
+	public GermplasmMCPD getGermplasmMCPD(String germplasmDbId) throws BrAPIServerException {
+		return convertFromEntityToMCPD(getGermplasmEntity(germplasmDbId, HttpStatus.NOT_FOUND));
+	}
+
+
 	public GermplasmEntity getGermplasmEntity(String germplasmDbId) throws BrAPIServerException {
+		return getGermplasmEntity(germplasmDbId, HttpStatus.BAD_REQUEST);
+	}
+
+	public GermplasmEntity getGermplasmEntity(String germplasmDbId, HttpStatus errorStatus) throws BrAPIServerException {
 		GermplasmEntity germplasm = null;
 		Optional<GermplasmEntity> entityOpt = germplasmRepository.findById(germplasmDbId);
 		if (entityOpt.isPresent()) {
 			germplasm = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + germplasmDbId);
+			throw new BrAPIServerException(errorStatus, "germplasmDbId not found: " + germplasmDbId);
 		}
 		return germplasm;
 	}
-
-	public Germplasm getGermplasm(String germplasmDbId) throws BrAPIServerException {
-		return convertFromEntity(getGermplasmEntity(germplasmDbId));
-	}
-
-	public GermplasmMCPD getGermplasmMCPD(String germplasmDbId) throws BrAPIServerException {
-		return convertFromEntityToMCPD(getGermplasmEntity(germplasmDbId));
-	}
-
 	public PedigreeNode getGermplasmPedigree(String germplasmDbId, String notation, Boolean includeSiblings)
 			throws BrAPIServerException {
 		return convertFromEntityToPedigree(getGermplasmEntity(germplasmDbId), notation, includeSiblings);
@@ -198,7 +202,7 @@ public class GermplasmService {
 
 			savedEntity = germplasmRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + germplasmDbId);
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "germplasmDbId not found: " + germplasmDbId);
 		}
 
 		return convertFromEntity(savedEntity);

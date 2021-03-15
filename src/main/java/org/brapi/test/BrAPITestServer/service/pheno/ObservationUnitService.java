@@ -109,9 +109,9 @@ public class ObservationUnitService {
 		return findObservationUnits(request, metadata);
 	}
 
-	public ObservationUnitTable findObservationUnitsTable(String observationUnitDbId,
-			String germplasmDbId, String observationVariableDbId, String studyDbId, String locationDbId,
-			String trialDbId, String programDbId, String seasonDbId, String observationLevel) {
+	public ObservationUnitTable findObservationUnitsTable(String observationUnitDbId, String germplasmDbId,
+			String observationVariableDbId, String studyDbId, String locationDbId, String trialDbId, String programDbId,
+			String seasonDbId, String observationLevel) {
 		List<ObservationUnit> observationUnits = findObservationUnits(null, germplasmDbId, studyDbId, locationDbId,
 				trialDbId, programDbId, seasonDbId, null, null, null, true, null, null, null);
 		ObservationVariableSearchRequest request = new ObservationVariableSearchRequest();
@@ -182,16 +182,20 @@ public class ObservationUnitService {
 	}
 
 	public ObservationUnit getObservationUnit(String observationUnitDbId) throws BrAPIServerException {
-		return convertFromEntity(getObservationUnitEntity(observationUnitDbId));
+		return convertFromEntity(getObservationUnitEntity(observationUnitDbId, HttpStatus.NOT_FOUND));
 	}
 
 	public ObservationUnitEntity getObservationUnitEntity(String observationUnitDbId) throws BrAPIServerException {
+		return getObservationUnitEntity(observationUnitDbId, HttpStatus.BAD_REQUEST);
+	}
+
+	public ObservationUnitEntity getObservationUnitEntity(String observationUnitDbId, HttpStatus errorStatus) throws BrAPIServerException {
 		ObservationUnitEntity observationUnit = null;
 		Optional<ObservationUnitEntity> entityOpt = observationUnitRepository.findById(observationUnitDbId);
 		if (entityOpt.isPresent()) {
 			observationUnit = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + observationUnitDbId);
+			throw new BrAPIServerException(errorStatus, "observationUnitDbId not found: " + observationUnitDbId);
 		}
 		return observationUnit;
 	}
@@ -232,7 +236,7 @@ public class ObservationUnitService {
 
 			savedEntity = observationUnitRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + observationUnitDbId);
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "observationUnitDbId not found: " + observationUnitDbId);
 		}
 
 		return convertFromEntity(savedEntity);

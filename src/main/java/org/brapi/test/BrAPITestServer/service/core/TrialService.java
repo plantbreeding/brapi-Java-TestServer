@@ -119,19 +119,23 @@ public class TrialService {
 		return trials;
 	}
 
+	public Trial getTrial(String trialDbId) throws BrAPIServerException {
+		return convertFromEntity(getTrialEntity(trialDbId, HttpStatus.NOT_FOUND));
+	}
+
 	public TrialEntity getTrialEntity(String trialDbId) throws BrAPIServerException {
+		return getTrialEntity(trialDbId, HttpStatus.BAD_REQUEST);
+	}
+	
+	public TrialEntity getTrialEntity(String trialDbId, HttpStatus errorStatus) throws BrAPIServerException {
 		Optional<TrialEntity> entityOption = trialRepository.findById(trialDbId);
 		TrialEntity entity = null;
 		if (entityOption.isPresent()) {
 			entity = entityOption.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + trialDbId);
+			throw new BrAPIServerException(errorStatus, "trialDbId not found: " + trialDbId);
 		}
 		return entity;
-	}
-
-	public Trial getTrial(String trialDbId) throws BrAPIServerException {
-		return convertFromEntity(getTrialEntity(trialDbId));
 	}
 
 	public List<Trial> saveTrials(@Valid List<TrialNewRequest> body) throws BrAPIServerException {
@@ -159,7 +163,7 @@ public class TrialService {
 
 			savedEntity = trialRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + trialDbId);
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "trialDbId not found: " + trialDbId);
 		}
 
 		return convertFromEntity(savedEntity);

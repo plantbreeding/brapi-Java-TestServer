@@ -89,7 +89,7 @@ public class SampleService {
 		if (entityOpt.isPresent()) {
 			sample = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + sampleDbId);
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "sampleDbId not found: " + sampleDbId);
 		}
 		return sample;
 	}
@@ -116,7 +116,7 @@ public class SampleService {
 
 			savedEntity = sampleRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + sampleDbId);
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "sampleDbId not found: " + sampleDbId);
 		}
 
 		return convertFromEntity(savedEntity);

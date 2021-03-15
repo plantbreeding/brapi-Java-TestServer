@@ -125,7 +125,7 @@ public class CrossService {
 				updateEntity(entity, crossEntry.getValue());
 				savedValues.add(convertToCross(crossRepository.save(entity)));
 			} else {
-				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + crossEntry.getKey());
+				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "crossDbId not found: " + crossEntry.getKey());
 			}
 		}
 
@@ -142,7 +142,7 @@ public class CrossService {
 				updateEntity(entity, crossEntry.getValue());
 				savedValues.add(convertToPlanned(crossRepository.save(entity)));
 			} else {
-				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + crossEntry.getKey());
+				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "plannedCrossDbId not found: " + crossEntry.getKey());
 			}
 		}
 

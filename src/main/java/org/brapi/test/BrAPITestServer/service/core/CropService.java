@@ -40,7 +40,7 @@ public class CropService {
 		if (cropsPage.size() == 1) {
 			entity = cropsPage.get(0);
 		}else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "crop name not found!");
+			throw new BrAPIServerException(HttpStatus.BAD_REQUEST, "crop name not found!");
 		}
 		return entity;
 	}

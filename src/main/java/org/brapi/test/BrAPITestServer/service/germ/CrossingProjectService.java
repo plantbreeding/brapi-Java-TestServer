@@ -53,16 +53,20 @@ public class CrossingProjectService {
 	}
 
 	public CrossingProject getCrossingProject(String crossingProjectDbId) throws BrAPIServerException {
-		return convertFromEntity(getCrossingProjectEntity(crossingProjectDbId));
+		return convertFromEntity(getCrossingProjectEntity(crossingProjectDbId, HttpStatus.NOT_FOUND));
 	}
 
 	public CrossingProjectEntity getCrossingProjectEntity(String crossingProjectDbId) throws BrAPIServerException {
+		return getCrossingProjectEntity(crossingProjectDbId, HttpStatus.BAD_REQUEST);
+	}
+
+	public CrossingProjectEntity getCrossingProjectEntity(String crossingProjectDbId, HttpStatus errorStatus) throws BrAPIServerException {
 		CrossingProjectEntity crossingProject = null;
 		Optional<CrossingProjectEntity> entityOpt = crossingProjectRepository.findById(crossingProjectDbId);
 		if (entityOpt.isPresent()) {
 			crossingProject = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + crossingProjectDbId);
+			throw new BrAPIServerException(errorStatus, "crossingProjectDbId not found: " + crossingProjectDbId);
 		}
 		return crossingProject;
 	}
@@ -94,7 +98,7 @@ public class CrossingProjectService {
 
 			savedEntity = crossingProjectRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + crossingProjectDbId);
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "crossingProjectDbId not found: " + crossingProjectDbId);
 		}
 
 		return convertFromEntity(savedEntity);

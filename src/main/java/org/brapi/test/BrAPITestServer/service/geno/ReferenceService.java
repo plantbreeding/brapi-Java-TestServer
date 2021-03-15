@@ -83,7 +83,7 @@ public class ReferenceService {
 		if (entityOpt.isPresent()) {
 			reference = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + referenceDbId);
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "referenceDbId not found: " + referenceDbId);
 		}
 		return reference;
 	}

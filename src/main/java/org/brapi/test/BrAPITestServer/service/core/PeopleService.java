@@ -68,32 +68,37 @@ public class PeopleService {
 	}
 
 	public Person getPerson(String personDbId) throws BrAPIServerException {
-		return convertFromEntity(getPersonEntity(personDbId));
+		return convertFromEntity(getPersonEntity(personDbId, HttpStatus.NOT_FOUND));
 	}
 
 	public PersonEntity getPersonEntity(String personDbId) throws BrAPIServerException {
+		return getPersonEntity(personDbId, HttpStatus.BAD_REQUEST);
+	}
+
+		public PersonEntity getPersonEntity(String personDbId, HttpStatus errorStatus) throws BrAPIServerException {
 		PersonEntity entity = null;
 
 		Optional<PersonEntity> entityOpt = peopleRepository.findById(personDbId);
 		if (entityOpt.isPresent()) {
 			entity = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + personDbId);
+			throw new BrAPIServerException(errorStatus, "personDbId not found: " + personDbId);
+			
 		}
 
 		return entity;
 	}
 
-	public Person updatePerson(String PeopleDbId, @Valid PersonNewRequest person) throws BrAPIServerException {
+	public Person updatePerson(String personDbId, @Valid PersonNewRequest person) throws BrAPIServerException {
 		PersonEntity savedEntity;
-		Optional<PersonEntity> entityOpt = peopleRepository.findById(PeopleDbId);
+		Optional<PersonEntity> entityOpt = peopleRepository.findById(personDbId);
 		if (entityOpt.isPresent()) {
 			PersonEntity entity = entityOpt.get();
 			updateEntity(entity, person);
 
 			savedEntity = peopleRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "PersonDbId not found!");
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "personDbId not found: " + personDbId);
 		}
 
 		return convertFromEntity(savedEntity);

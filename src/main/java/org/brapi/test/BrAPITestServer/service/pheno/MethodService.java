@@ -55,7 +55,7 @@ public class MethodService {
 			updateEntity(entity, body);
 			savedEntity = saveMethodEntity(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + methodDbId);
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "methodDbId not found: " + methodDbId);
 		}
 
 		return convertFromEntity(savedEntity);
@@ -77,21 +77,26 @@ public class MethodService {
 		return methodRepository.save(entity);
 	}
 
+
+	public Method getMethod(String methodDbId) throws BrAPIServerException {
+		return convertFromEntity(getMethodEntity(methodDbId, HttpStatus.NOT_FOUND));
+	}
+
 	public MethodEntity getMethodEntity(String methodDbId) throws BrAPIServerException {
+		return getMethodEntity(methodDbId, HttpStatus.BAD_REQUEST);
+	}
+	
+	public MethodEntity getMethodEntity(String methodDbId, HttpStatus errorStatus) throws BrAPIServerException {
 		MethodEntity method = null;
 		if (methodDbId != null) {
 			Optional<MethodEntity> entityOpt = methodRepository.findById(methodDbId);
 			if (entityOpt.isPresent()) {
 				method = entityOpt.get();
 			} else {
-				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found " + methodDbId);
+				throw new BrAPIServerException(errorStatus, "methodDbId not found " + methodDbId);
 			}
 		}
 		return method;
-	}
-
-	public Method getMethod(String methodDbId) throws BrAPIServerException {
-		return convertFromEntity(getMethodEntity(methodDbId));
 	}
 
 	public MethodEntity updateEntity(MethodEntity entity, @Valid MethodBaseClass method) throws BrAPIServerException {

@@ -98,7 +98,7 @@ public class ListService {
 		if (entityOpt.isPresent()) {
 			entity = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "ListDbId not found!");
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "ListDbId not found: " + listDbId);
 		}
 
 		return convertToDetails(entity);
@@ -122,7 +122,7 @@ public class ListService {
 
 			savedEntity = listRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "ListDbId not found!");
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "ListDbId not found: " + listDbId);
 		}
 
 		return convertToDetails(savedEntity);
@@ -138,7 +138,7 @@ public class ListService {
 
 			savedEntity = listRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "ListDbId not found!");
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "ListDbId not found: " + listDbId);
 		}
 
 		return convertToDetails(savedEntity);

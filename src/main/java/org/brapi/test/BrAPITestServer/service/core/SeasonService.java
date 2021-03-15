@@ -49,16 +49,20 @@ public class SeasonService {
 	}
 
 	public Season getSeason(String seasonDbId) throws BrAPIServerException {
-		return convertFromEntity(getSeasonEntity(seasonDbId));
+		return convertFromEntity(getSeasonEntity(seasonDbId, HttpStatus.NOT_FOUND));
 	}
 
 	public SeasonEntity getSeasonEntity(String seasonDbId) throws BrAPIServerException {
+		return getSeasonEntity(seasonDbId, HttpStatus.BAD_REQUEST);
+	}
+
+	public SeasonEntity getSeasonEntity(String seasonDbId, HttpStatus errorStatus) throws BrAPIServerException {
 		SeasonEntity season = null;
 		Optional<SeasonEntity> entityOpt = seasonRepository.findById(seasonDbId);
 		if (entityOpt.isPresent()) {
 			season = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + seasonDbId);
+			throw new BrAPIServerException(errorStatus, "seasonDbId not found: " + seasonDbId);
 		}
 		return season;
 	}
@@ -72,7 +76,7 @@ public class SeasonService {
 
 			savedEntity = seasonRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + seasonDbId);
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "seasonDbId not found: " + seasonDbId);
 		}
 
 		return convertFromEntity(savedEntity);

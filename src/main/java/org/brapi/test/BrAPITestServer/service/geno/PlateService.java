@@ -23,7 +23,7 @@ public class PlateService {
 		if (entityOpt.isPresent()) {
 			plate = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + plateDbId);
+			throw new BrAPIServerException(HttpStatus.BAD_REQUEST, "plateDbId not found: " + plateDbId);
 		}
 		return plate;
 	}

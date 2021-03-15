@@ -70,7 +70,7 @@ public class OntologyService {
 			if (entityOpt.isPresent()) {
 				method = entityOpt.get();
 			} else {
-				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found " + ontologyDbId);
+				throw new BrAPIServerException(HttpStatus.BAD_REQUEST, "ontologyDbId not found " + ontologyDbId);
 			}
 		}
 		return method;

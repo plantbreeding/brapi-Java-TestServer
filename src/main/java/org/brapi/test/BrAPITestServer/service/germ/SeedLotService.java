@@ -70,16 +70,20 @@ public class SeedLotService {
 	}
 
 	public SeedLot getSeedLot(String seedLotDbId) throws BrAPIServerException {
-		return convertFromEntity(getSeedLotEntity(seedLotDbId));
+		return convertFromEntity(getSeedLotEntity(seedLotDbId, HttpStatus.NOT_FOUND));
 	}
 
 	public SeedLotEntity getSeedLotEntity(String seedLotDbId) throws BrAPIServerException {
+		return getSeedLotEntity(seedLotDbId, HttpStatus.BAD_REQUEST);
+	}
+
+	public SeedLotEntity getSeedLotEntity(String seedLotDbId, HttpStatus errorStatus) throws BrAPIServerException {
 		SeedLotEntity seedLot = null;
 		Optional<SeedLotEntity> entityOpt = seedLotRepository.findById(seedLotDbId);
 		if (entityOpt.isPresent()) {
 			seedLot = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + seedLotDbId);
+			throw new BrAPIServerException(errorStatus, "seedLotDbId not found: " + seedLotDbId);
 		}
 		return seedLot;
 	}
@@ -106,7 +110,7 @@ public class SeedLotService {
 
 			savedEntity = seedLotRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + seedLotDbId);
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "seedLotDbId not found: " + seedLotDbId);
 		}
 
 		return convertFromEntity(savedEntity);

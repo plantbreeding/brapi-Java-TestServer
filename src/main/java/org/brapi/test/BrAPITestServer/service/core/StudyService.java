@@ -150,18 +150,22 @@ public class StudyService {
 		List<Study> studies = studiesPage.map(this::convertFromEntity).getContent();
 		return studies;
 	}
-	
+
 	public Study getStudy(String studyDbId) throws BrAPIServerException {
-		return convertFromEntity(getStudyEntity(studyDbId));
+		return convertFromEntity(getStudyEntity(studyDbId, HttpStatus.NOT_FOUND));
 	}
 
 	public StudyEntity getStudyEntity(String studyDbId) throws BrAPIServerException {
+		return getStudyEntity(studyDbId, HttpStatus.BAD_REQUEST);
+	}
+
+	public StudyEntity getStudyEntity(String studyDbId, HttpStatus errorStatus) throws BrAPIServerException {
 		Optional<StudyEntity> entityOption = studyRepository.findById(studyDbId);
 		StudyEntity study = null;
 		if (entityOption.isPresent()) {
 			study = entityOption.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + studyDbId);
+			throw new BrAPIServerException(errorStatus, "studyDbId not found: " + studyDbId);
 		}
 		return study;
 	}
@@ -191,7 +195,7 @@ public class StudyService {
 
 			savedEntity = studyRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "DbId not found: " + studyDbId);
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "studyDbId not found: " + studyDbId);
 		}
 
 		return convertFromEntity(savedEntity);
