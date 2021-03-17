@@ -200,11 +200,11 @@ public class ObservationVariableService {
 			MethodEntity methodEntity;
 			if(request.getMethod().getMethodDbId() == null) {
 				methodEntity = new MethodEntity();
-				methodService.updateEntity(methodEntity, request.getMethod());
-				methodEntity = methodService.saveMethodEntity(methodEntity);
 			}else {
 				methodEntity = methodService.getMethodEntity(request.getMethod().getMethodDbId());
 			}
+			methodService.updateEntity(methodEntity, request.getMethod());
+			methodEntity = methodService.saveMethodEntity(methodEntity);
 			entity.setMethod(methodEntity);
 		}
 		if (request.getOntologyReference() != null)
@@ -213,11 +213,11 @@ public class ObservationVariableService {
 			ScaleEntity scaleEntity;
 			if(request.getScale().getScaleDbId() == null) {
 				scaleEntity = new ScaleEntity();
-				scaleService.updateEntity(scaleEntity, request.getScale());
-				scaleEntity = scaleService.saveScaleEntity(scaleEntity);
 			}else {
 				scaleEntity = scaleService.getScaleEntity(request.getScale().getScaleDbId());
 			}
+			scaleService.updateEntity(scaleEntity, request.getScale());
+			scaleEntity = scaleService.saveScaleEntity(scaleEntity);
 			entity.setScale(scaleEntity);
 		}
 		if (request.getScientist() != null)
@@ -232,11 +232,11 @@ public class ObservationVariableService {
 			TraitEntity traitEntity;
 			if(request.getTrait().getTraitDbId() == null) {
 				traitEntity = new TraitEntity();
-				traitService.updateEntity(traitEntity, request.getTrait());
-				traitEntity = traitService.saveTraitEntity(traitEntity);
 			}else {
 				traitEntity = traitService.getTraitEntity(request.getTrait().getTraitDbId());
 			}
+			traitService.updateEntity(traitEntity, request.getTrait());
+			traitEntity = traitService.saveTraitEntity(traitEntity);
 			entity.setTrait(traitEntity);
 		}
 	}
