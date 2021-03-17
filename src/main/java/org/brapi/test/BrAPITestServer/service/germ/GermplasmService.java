@@ -121,17 +121,29 @@ public class GermplasmService {
 
 	public List<Germplasm> findGermplasm(@Valid GermplasmSearchRequest request, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
-		SearchQueryBuilder<GermplasmEntity> searchQuery = new SearchQueryBuilder<GermplasmEntity>(GermplasmEntity.class)
-				.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
+		SearchQueryBuilder<GermplasmEntity> searchQuery = new SearchQueryBuilder<GermplasmEntity>(GermplasmEntity.class);
+
+		if (request.getStudyDbIds() != null || request.getStudyNames() != null) {
+			searchQuery = searchQuery.join("observationUnits", "obsunit")
+					.appendList(request.getStudyDbIds(), "*obsunit.study.id")
+					.appendList(request.getStudyNames(), "*obsunit.study.name");
+		}
+		if (request.getSynonyms() != null) {
+			searchQuery = searchQuery.join("synonyms", "synonym")
+					.appendList(request.getSynonyms(), "*synonym.synonym");
+		}
+		
+		searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
 				.appendList(request.getAccessionNumbers(), "accessionNumber")
 				.appendList(request.getCollections(), "collection")
-				.appendList(request.getCommonCropNames(), "crop.cropName").appendList(request.getGenus(), "genus")
-				.appendList(request.getGermplasmDbIds(), "id").appendList(request.getGermplasmNames(), "name")
+				.appendList(request.getCommonCropNames(), "crop.cropName")
+				.appendList(request.getGenus(), "genus")
+				.appendList(request.getGermplasmDbIds(), "id")
+				.appendList(request.getGermplasmNames(), "name")
 				.appendList(request.getGermplasmPUIs(), "pui")
-				.appendList(request.getParentDbIds(), "*parent.germplasmDbId")
-				.appendList(request.getProgenyDbIds(), "*progeny.germplasmDbId")
-				.appendList(request.getSpecies(), "species").appendList(request.getStudyDbIds(), "*study.id")
-				.appendList(request.getStudyNames(), "*study.name").appendList(request.getSynonyms(), "*synonym.name");
+				.appendList(request.getParentDbIds(), "pedigree.parent1.germplasm.id")
+				//.appendList(request.getProgenyDbIds(), "*progeny.germplasmDbId")
+				.appendList(request.getSpecies(), "species");
 
 		Page<GermplasmEntity> page = germplasmRepository.findAllBySearch(searchQuery, pageReq);
 		List<Germplasm> germplasms = page.map(this::convertFromEntity).getContent();

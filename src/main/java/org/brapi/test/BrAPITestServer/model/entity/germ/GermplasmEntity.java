@@ -19,6 +19,7 @@ import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.GermplasmInstituteEntity.InstituteTypeEnum;
+import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.TaxonEntity;
 
 import io.swagger.model.germ.BiologicalStatusOfAccessionCode;
@@ -88,6 +89,8 @@ public class GermplasmEntity extends BrAPIPrimaryEntity {
 	private List<GermplasmSynonymEntity> synonyms;
 	@OneToMany(mappedBy = "germplasm", cascade = CascadeType.ALL)
 	private List<TaxonEntity> taxonIds;
+	@OneToMany(mappedBy = "germplasm")
+	private List<ObservationUnitEntity> observationUnits;
 	@ElementCollection
 	private List<GermplasmStorageTypesEnum> typeOfGermplasmStorageCode;
 
