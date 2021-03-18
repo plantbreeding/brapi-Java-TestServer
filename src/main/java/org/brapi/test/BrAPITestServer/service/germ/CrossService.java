@@ -206,7 +206,7 @@ public class CrossService {
 		if (cross.getCrossType() != null)
 			entity.setCrossType(cross.getCrossType());
 		if (cross.getExternalReferences() != null)
-			entity.setExternalReferences(entity.getExternalReferences());
+			entity.setExternalReferences(cross.getExternalReferences());
 		if (cross.getParent1() != null)
 			entity.addParentItem(convertToEntity(cross.getParent1(), entity));
 		if (cross.getParent2() != null)
