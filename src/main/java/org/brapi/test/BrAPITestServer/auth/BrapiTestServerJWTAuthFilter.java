@@ -4,20 +4,12 @@ import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.net.URL;
 import java.security.GeneralSecurityException;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.interfaces.RSAPublicKey;
-import java.security.spec.EncodedKeySpec;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.RSAPublicKeySpec;
-import java.security.spec.X509EncodedKeySpec;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,18 +17,8 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.DatatypeConverter;
-
 import org.apache.commons.codec.binary.Base64;
-import org.apache.http.HttpEntity;
-import org.apache.http.ParseException;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -47,21 +29,20 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.api.client.util.PemReader;
 
 public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
 	private static final List<String> USER_IDS = Arrays.asList("dummy", "dummyAdmin", "113212610256718182401");
 	private static final List<String> ADMIN_IDS = Arrays.asList("dummyAdmin", "113212610256718182401");
-	private static final String OIDC_DISCOVERY_URL = "https://auth.brapi.org/auth/realms/brapi/.well-known/openid-configuration";
 
-	public BrapiTestServerJWTAuthFilter(AuthenticationManager authManager) {
+	private String oidcDiscoveryUrl;
+	
+	public BrapiTestServerJWTAuthFilter(AuthenticationManager authManager, String oidcDiscoveryUrl) {
 		super(authManager);
+		this.oidcDiscoveryUrl = oidcDiscoveryUrl;
 	}
 
 	@Override
@@ -121,7 +102,7 @@ public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
 			String token = request.getHeader("Authorization");
 			if (token != null) {
 				token = token.replaceFirst("Bearer ", "");
-				RSAPublicKey pubKey = getPublicKey(OIDC_DISCOVERY_URL);
+				RSAPublicKey pubKey = getPublicKey(oidcDiscoveryUrl);
 								
 				Algorithm algorithm = Algorithm.RSA256(pubKey, null);
 				JWTVerifier verifier = JWT.require(algorithm)
