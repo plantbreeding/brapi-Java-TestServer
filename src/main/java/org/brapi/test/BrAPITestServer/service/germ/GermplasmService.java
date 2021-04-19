@@ -139,8 +139,8 @@ public class GermplasmService {
 				.appendList(request.getCommonCropNames(), "crop.cropName")
 				.appendList(request.getGenus(), "genus")
 				.appendList(request.getGermplasmDbIds(), "id")
-				.appendList(request.getGermplasmNames(), "name")
-				.appendList(request.getGermplasmPUIs(), "pui")
+				.appendList(request.getGermplasmNames(), "germplasmName")
+				.appendList(request.getGermplasmPUIs(), "germplasmPUI")
 				.appendList(request.getParentDbIds(), "pedigree.parent1.germplasm.id")
 				//.appendList(request.getProgenyDbIds(), "*progeny.germplasmDbId")
 				.appendList(request.getSpecies(), "species");
