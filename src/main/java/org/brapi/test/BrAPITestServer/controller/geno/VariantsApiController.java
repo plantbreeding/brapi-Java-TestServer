@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller.geno;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
 import io.swagger.model.geno.Variant;
 import io.swagger.model.geno.VariantSingleResponse;
@@ -8,11 +9,17 @@ import io.swagger.model.geno.VariantsListResponseResult;
 import io.swagger.model.geno.CallsListResponse;
 import io.swagger.model.geno.CallsListResponseResult;
 import io.swagger.model.geno.VariantsSearchRequest;
-
+import io.swagger.model.germ.Germplasm;
+import io.swagger.model.germ.GermplasmListResponse;
+import io.swagger.model.germ.GermplasmListResponseResult;
+import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.api.geno.VariantsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
+import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.geno.CallService;
 import org.brapi.test.BrAPITestServer.service.geno.VariantService;
 import org.slf4j.Logger;
@@ -40,13 +47,14 @@ public class VariantsApiController extends BrAPIController implements VariantsAp
 
 	private final VariantService variantService;
 	private final CallService callService;
-
+	private final SearchService searchService;
 	private final HttpServletRequest request;
 
 	@Autowired
-	public VariantsApiController(VariantService variantService, CallService callService, HttpServletRequest request) {
+	public VariantsApiController(VariantService variantService, CallService callService, SearchService searchService, HttpServletRequest request) {
 		this.variantService = variantService;
 		this.callService = callService;
+		this.searchService = searchService;
 		this.request = request;
 	}
 
@@ -102,20 +110,26 @@ public class VariantsApiController extends BrAPIController implements VariantsAp
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<VariantsListResponse> searchVariantsPost(@Valid @RequestBody VariantsSearchRequest body,
+	public ResponseEntity<? extends BrAPIResponse> searchVariantsPost(@Valid @RequestBody VariantsSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body.getPageToken(), body.getPageSize());
-		List<Variant> data = variantService.findVariants(body, metadata);
-		return responseOK(new VariantsListResponse(), new VariantsListResponseResult(), data, metadata);
+		
+		String searchReqDbId = searchService.saveSearchRequest(body, SearchRequestTypes.VARIANTS);
+		if (searchReqDbId != null) {
+			return responseAccepted(searchReqDbId);
+		} else {
+			List<Variant> data = variantService.findVariants(body, metadata);
+			return responseOK(new VariantsListResponse(), new VariantsListResponseResult(), data, metadata);
+		}
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<VariantsListResponse> searchVariantsSearchResultsDbIdGet(
+	public ResponseEntity<? extends BrAPIResponse> searchVariantsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "pageToken", required = false) String pageToken,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -124,7 +138,15 @@ public class VariantsApiController extends BrAPIController implements VariantsAp
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		return new ResponseEntity<VariantsListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		Metadata metadata = generateMetaDataTemplate(pageToken, pageSize);
+		SearchRequestEntity request = searchService.findById(searchResultsDbId);
+		if (request != null) {
+			VariantsSearchRequest body = request.getParameters(VariantsSearchRequest.class);
+			List<Variant> data = variantService.findVariants(body, metadata);
+			return responseOK(new VariantsListResponse(), new VariantsListResponseResult(), data, metadata);
+		}else {
+			return responseAccepted(searchResultsDbId);
+		}
 	}
 
 }

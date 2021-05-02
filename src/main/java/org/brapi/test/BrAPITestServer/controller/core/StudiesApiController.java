@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller.core;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
 import io.swagger.model.core.Study;
 import io.swagger.model.core.StudyListResponse;
@@ -9,10 +10,17 @@ import io.swagger.model.core.StudySearchRequest;
 import io.swagger.model.core.StudySingleResponse;
 import io.swagger.model.core.StudyTypesResponse;
 import io.swagger.model.core.StudyTypesResponseResult;
+import io.swagger.model.germ.Germplasm;
+import io.swagger.model.germ.GermplasmListResponse;
+import io.swagger.model.germ.GermplasmListResponseResult;
+import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.api.core.StudiesApi;
 import io.swagger.api.core.StudytypesApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
+import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.core.StudyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,12 +44,13 @@ public class StudiesApiController extends BrAPIController implements StudiesApi,
 	private static final Logger log = LoggerFactory.getLogger(StudiesApiController.class);
 
 	private final StudyService studyService;
-
+	private final SearchService searchService;
 	private final HttpServletRequest request;
 
 	@org.springframework.beans.factory.annotation.Autowired
-	public StudiesApiController(StudyService studyService, HttpServletRequest request) {
+	public StudiesApiController(StudyService studyService, SearchService searchService, HttpServletRequest request) {
 		this.studyService = studyService;
+		this.searchService = searchService;
 		this.request = request;
 	}
 
@@ -118,20 +127,26 @@ public class StudiesApiController extends BrAPIController implements StudiesApi,
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<StudyListResponse> searchStudiesPost(@Valid @RequestBody StudySearchRequest body,
+	public ResponseEntity<? extends BrAPIResponse> searchStudiesPost(@Valid @RequestBody StudySearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
-		List<Study> data = studyService.findStudies(body, metadata);
-		return responseOK(new StudyListResponse(), new StudyListResponseResult(), data, metadata);
+
+		String searchReqDbId = searchService.saveSearchRequest(body, SearchRequestTypes.GERMPLASM);
+		if (searchReqDbId != null) {
+			return responseAccepted(searchReqDbId);
+		} else {
+			List<Study> data = studyService.findStudies(body, metadata);
+			return responseOK(new StudyListResponse(), new StudyListResponseResult(), data, metadata);
+		}
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<StudyListResponse> searchStudiesSearchResultsDbIdGet(
+	public ResponseEntity<? extends BrAPIResponse> searchStudiesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -140,7 +155,15 @@ public class StudiesApiController extends BrAPIController implements StudiesApi,
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		return new ResponseEntity<StudyListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		SearchRequestEntity request = searchService.findById(searchResultsDbId);
+		if (request != null) {
+			StudySearchRequest body = request.getParameters(StudySearchRequest.class);
+			List<Study> data = studyService.findStudies(body, metadata);
+			return responseOK(new StudyListResponse(), new StudyListResponseResult(), data, metadata);
+		}else {
+			return responseAccepted(searchResultsDbId);
+		}
 	}
 
 	@CrossOrigin

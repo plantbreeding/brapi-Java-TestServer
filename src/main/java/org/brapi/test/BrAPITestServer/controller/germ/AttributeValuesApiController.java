@@ -1,16 +1,24 @@
 package org.brapi.test.BrAPITestServer.controller.germ;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
+import io.swagger.model.germ.Germplasm;
 import io.swagger.model.germ.GermplasmAttributeValue;
 import io.swagger.model.germ.GermplasmAttributeValueListResponse;
 import io.swagger.model.germ.GermplasmAttributeValueListResponseResult;
 import io.swagger.model.germ.GermplasmAttributeValueSingleResponse;
+import io.swagger.model.germ.GermplasmListResponse;
+import io.swagger.model.germ.GermplasmListResponseResult;
+import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.model.germ.GermplasmAttributeValueNewRequest;
 import io.swagger.model.germ.GermplasmAttributeValueSearchRequest;
 import io.swagger.api.germ.AttributeValuesApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
+import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.germ.GermplasmAttributeValueService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,12 +42,13 @@ public class AttributeValuesApiController extends BrAPIController implements Att
 	private static final Logger log = LoggerFactory.getLogger(AttributeValuesApiController.class);
 
 	private final GermplasmAttributeValueService attributeValueService;
-
+	private final SearchService searchService;
 	private final HttpServletRequest request;
 
 	@Autowired
-	public AttributeValuesApiController(GermplasmAttributeValueService attributeValueService, HttpServletRequest request) {
+	public AttributeValuesApiController(GermplasmAttributeValueService attributeValueService, SearchService searchService, HttpServletRequest request) {
 		this.attributeValueService = attributeValueService;
+		this.searchService = searchService;
 		this.request = request;
 	}
 
@@ -104,21 +113,27 @@ public class AttributeValuesApiController extends BrAPIController implements Att
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<GermplasmAttributeValueListResponse> searchAttributevaluesPost(
+	public ResponseEntity<? extends BrAPIResponse> searchAttributevaluesPost(
 			@Valid @RequestBody GermplasmAttributeValueSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
-		List<GermplasmAttributeValue> data = attributeValueService.findGermplasmAttributeValues(body, metadata);
-		return responseOK(new GermplasmAttributeValueListResponse(), new GermplasmAttributeValueListResponseResult(), data,
-				metadata);
+
+		String searchReqDbId = searchService.saveSearchRequest(body, SearchRequestTypes.GERMPLASM_ATTRIBUTE_VALUES);
+		if (searchReqDbId != null) {
+			return responseAccepted(searchReqDbId);
+		} else {
+			List<GermplasmAttributeValue> data = attributeValueService.findGermplasmAttributeValues(body, metadata);
+			return responseOK(new GermplasmAttributeValueListResponse(), new GermplasmAttributeValueListResponseResult(), data,
+					metadata);
+		}
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<GermplasmAttributeValueListResponse> searchAttributevaluesSearchResultsDbIdGet(
+	public ResponseEntity<? extends BrAPIResponse> searchAttributevaluesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -126,6 +141,15 @@ public class AttributeValuesApiController extends BrAPIController implements Att
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		return new ResponseEntity<GermplasmAttributeValueListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		SearchRequestEntity request = searchService.findById(searchResultsDbId);
+		if (request != null) {
+			GermplasmAttributeValueSearchRequest body = request.getParameters(GermplasmAttributeValueSearchRequest.class);
+			List<GermplasmAttributeValue> data = attributeValueService.findGermplasmAttributeValues(body, metadata);
+			return responseOK(new GermplasmAttributeValueListResponse(), new GermplasmAttributeValueListResponseResult(), data,
+					metadata);
+		}else {
+			return responseAccepted(searchResultsDbId);
+		}
 	}
 }

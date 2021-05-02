@@ -1,15 +1,23 @@
 package org.brapi.test.BrAPITestServer.controller.core;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
 import io.swagger.model.core.Person;
 import io.swagger.model.core.PersonListResponse;
 import io.swagger.model.core.PersonListResponseResult;
 import io.swagger.model.core.PersonSingleResponse;
+import io.swagger.model.germ.Germplasm;
+import io.swagger.model.germ.GermplasmListResponse;
+import io.swagger.model.germ.GermplasmListResponseResult;
+import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.model.core.PersonNewRequest;
 import io.swagger.model.core.PersonSearchRequest;
 import io.swagger.api.core.PeopleApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
+import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.core.PeopleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,12 +40,13 @@ public class PeopleApiController extends BrAPIController implements PeopleApi {
 	private static final Logger log = LoggerFactory.getLogger(PeopleApiController.class);
 
 	private final PeopleService peopleService;
-
+	private final SearchService searchService;
 	private final HttpServletRequest request;
 
 	@org.springframework.beans.factory.annotation.Autowired
-	public PeopleApiController(PeopleService peopleService, HttpServletRequest request) {
+	public PeopleApiController(PeopleService peopleService, SearchService searchService, HttpServletRequest request) {
 		this.peopleService = peopleService;
+		this.searchService = searchService;
 		this.request = request;
 	}
 
@@ -99,19 +108,25 @@ public class PeopleApiController extends BrAPIController implements PeopleApi {
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<PersonListResponse> searchPeoplePost(@Valid @RequestBody PersonSearchRequest body,
+	public ResponseEntity<? extends BrAPIResponse> searchPeoplePost(@Valid @RequestBody PersonSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
-
+		
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
-		List<Person> data = peopleService.findPeople(body, metadata);
-		return responseOK(new PersonListResponse(), new PersonListResponseResult(), data, metadata);
+
+		String searchReqDbId = searchService.saveSearchRequest(body, SearchRequestTypes.PEOPLE);
+		if (searchReqDbId != null) {
+			return responseAccepted(searchReqDbId);
+		} else {
+			List<Person> data = peopleService.findPeople(body, metadata);
+			return responseOK(new PersonListResponse(), new PersonListResponseResult(), data, metadata);
+		}
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<PersonListResponse> searchPeopleSearchResultsDbIdGet(
+	public ResponseEntity<? extends BrAPIResponse> searchPeopleSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -119,6 +134,14 @@ public class PeopleApiController extends BrAPIController implements PeopleApi {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		return new ResponseEntity<PersonListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		SearchRequestEntity request = searchService.findById(searchResultsDbId);
+		if (request != null) {
+			PersonSearchRequest body = request.getParameters(PersonSearchRequest.class);
+			List<Person> data = peopleService.findPeople(body, metadata);
+			return responseOK(new PersonListResponse(), new PersonListResponseResult(), data, metadata);
+		}else {
+			return responseAccepted(searchResultsDbId);
+		}
 	}
 }

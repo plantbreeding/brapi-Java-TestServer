@@ -5,6 +5,7 @@
  */
 package io.swagger.api.pheno;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Model202AcceptedSearchResponse;
 import io.swagger.model.WSMIMEDataTypes;
 import io.swagger.model.pheno.ObservationListResponse;
@@ -152,7 +153,7 @@ public interface ObservationsApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/search/observations", produces = { "application/json" }, consumes = {
 			"application/json" }, method = RequestMethod.POST)
-	ResponseEntity<ObservationListResponse> searchObservationsPost(
+	ResponseEntity<? extends BrAPIResponse> searchObservationsPost(
 			@ApiParam(value = "") @Valid @RequestBody ObservationSearchRequest body,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
@@ -166,7 +167,7 @@ public interface ObservationsApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/search/observations/{searchResultsDbId}", produces = {
 			"application/json" }, method = RequestMethod.GET)
-	ResponseEntity<ObservationListResponse> searchObservationsSearchResultsDbIdGet(
+	ResponseEntity<? extends BrAPIResponse> searchObservationsSearchResultsDbIdGet(
 			@ApiParam(value = "The requested content type which should be returned by the server", required = true) @RequestHeader(value = "Accept", required = true) WSMIMEDataTypes accept,
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization,

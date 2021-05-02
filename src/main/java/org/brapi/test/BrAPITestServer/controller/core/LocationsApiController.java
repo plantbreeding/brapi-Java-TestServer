@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller.core;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
 import io.swagger.model.core.Location;
 import io.swagger.model.core.LocationListResponse;
@@ -7,10 +8,17 @@ import io.swagger.model.core.LocationListResponseResult;
 import io.swagger.model.core.LocationNewRequest;
 import io.swagger.model.core.LocationSearchRequest;
 import io.swagger.model.core.LocationSingleResponse;
+import io.swagger.model.germ.Germplasm;
+import io.swagger.model.germ.GermplasmListResponse;
+import io.swagger.model.germ.GermplasmListResponseResult;
+import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.annotations.*;
 import io.swagger.api.core.LocationsApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
+import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.core.LocationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,10 +42,12 @@ public class LocationsApiController extends BrAPIController implements Locations
 
 	private final HttpServletRequest request;
 	private final LocationService locationService;
+	private final SearchService searchService;
 
 	@org.springframework.beans.factory.annotation.Autowired
-	public LocationsApiController(LocationService locationService, HttpServletRequest request) {
+	public LocationsApiController(LocationService locationService, SearchService searchService, HttpServletRequest request) {
 		this.locationService = locationService;
+		this.searchService = searchService;
 		this.request = request;
 	}
 
@@ -97,19 +107,24 @@ public class LocationsApiController extends BrAPIController implements Locations
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<LocationListResponse> searchLocationsPost(@Valid @RequestBody LocationSearchRequest body,
+	public ResponseEntity<? extends BrAPIResponse> searchLocationsPost(@Valid @RequestBody LocationSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
-		List<Location> data = locationService.findLocations(body, metadata);
-		return responseOK(new LocationListResponse(), new LocationListResponseResult(), data, metadata);
+		String searchReqDbId = searchService.saveSearchRequest(body, SearchRequestTypes.LOCATIONS);
+		if (searchReqDbId != null) {
+			return responseAccepted(searchReqDbId);
+		} else {
+			List<Location> data = locationService.findLocations(body, metadata);
+			return responseOK(new LocationListResponse(), new LocationListResponseResult(), data, metadata);
+		}
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<LocationListResponse> searchLocationsSearchResultsDbIdGet(
+	public ResponseEntity<? extends BrAPIResponse> searchLocationsSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -117,6 +132,14 @@ public class LocationsApiController extends BrAPIController implements Locations
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		return new ResponseEntity<LocationListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		SearchRequestEntity request = searchService.findById(searchResultsDbId);
+		if (request != null) {
+			LocationSearchRequest body = request.getParameters(LocationSearchRequest.class);
+			List<Location> data = locationService.findLocations(body, metadata);
+			return responseOK(new LocationListResponse(), new LocationListResponseResult(), data, metadata);
+		}else {
+			return responseAccepted(searchResultsDbId);
+		}
 	}
 }

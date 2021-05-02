@@ -1,6 +1,11 @@
 package org.brapi.test.BrAPITestServer.controller.pheno;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
+import io.swagger.model.germ.Germplasm;
+import io.swagger.model.germ.GermplasmListResponse;
+import io.swagger.model.germ.GermplasmListResponseResult;
+import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.model.pheno.ObservationUnitListResponse;
 import io.swagger.model.pheno.ObservationUnitNewRequest;
 import io.swagger.model.pheno.ObservationUnitSearchRequest;
@@ -17,6 +22,9 @@ import io.swagger.api.pheno.ObservationUnitsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
+import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.pheno.ObservationUnitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,12 +51,13 @@ public class ObservationUnitsApiController extends BrAPIController
 	private static final Logger log = LoggerFactory.getLogger(ObservationUnitsApiController.class);
 
 	private final ObservationUnitService observationUnitService;
-
+	private final SearchService searchService;
 	private final HttpServletRequest request;
 
 	@Autowired
-	public ObservationUnitsApiController(ObservationUnitService observationUnitService, HttpServletRequest request) {
+	public ObservationUnitsApiController(ObservationUnitService observationUnitService, SearchService searchService, HttpServletRequest request) {
 		this.observationUnitService = observationUnitService;
+		this.searchService = searchService;
 		this.request = request;
 	}
 
@@ -174,34 +183,6 @@ public class ObservationUnitsApiController extends BrAPIController
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ObservationUnitListResponse> searchObservationunitsPost(
-			@Valid @RequestBody ObservationUnitSearchRequest body,
-			@RequestHeader(value = "Authorization", required = false) String authorization)
-			throws BrAPIServerException {
-
-		log.debug("Request: " + request.getRequestURI());
-		validateAcceptHeader(request);
-		Metadata metadata = generateMetaDataTemplate(body);
-		List<ObservationUnit> data = observationUnitService.findObservationUnits(body, metadata);
-		return responseOK(new ObservationUnitListResponse(), new ObservationUnitListResponseResult(), data, metadata);
-	}
-
-	@CrossOrigin
-	@Override
-	public ResponseEntity<ObservationUnitListResponse> searchObservationunitsSearchResultsDbIdGet(
-			@PathVariable("searchResultsDbId") String searchResultsDbId,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization)
-			throws BrAPIServerException {
-
-		log.debug("Request: " + request.getRequestURI());
-		validateAcceptHeader(request);
-		return new ResponseEntity<ObservationUnitListResponse>(HttpStatus.NOT_IMPLEMENTED);
-	}
-
-	@CrossOrigin
-	@Override
 	public ResponseEntity<ObservationLevelListResponse> observationlevelsGet(
 			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
 			@Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
@@ -216,6 +197,48 @@ public class ObservationUnitsApiController extends BrAPIController
 		List<ObservationUnitHierarchyLevel> data = observationUnitService.findObservationLevels(studyDbId, trialDbId,
 				programDbId, metadata);
 		return responseOK(new ObservationLevelListResponse(), new ObservationLevelListResponseResult(), data, metadata);
+	}
+
+	@CrossOrigin
+	@Override
+	public ResponseEntity<? extends BrAPIResponse> searchObservationunitsPost(
+			@Valid @RequestBody ObservationUnitSearchRequest body,
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
+
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		Metadata metadata = generateMetaDataTemplate(body);
+
+		String searchReqDbId = searchService.saveSearchRequest(body, SearchRequestTypes.OBSERVATION_UNITS);
+		if (searchReqDbId != null) {
+			return responseAccepted(searchReqDbId);
+		} else {
+			List<ObservationUnit> data = observationUnitService.findObservationUnits(body, metadata);
+			return responseOK(new ObservationUnitListResponse(), new ObservationUnitListResponseResult(), data, metadata);
+		}
+	}
+
+	@CrossOrigin
+	@Override
+	public ResponseEntity<? extends BrAPIResponse> searchObservationunitsSearchResultsDbIdGet(
+			@PathVariable("searchResultsDbId") String searchResultsDbId,
+			@Valid @RequestParam(value = "page", required = false) Integer page,
+			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
+
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		SearchRequestEntity request = searchService.findById(searchResultsDbId);
+		if (request != null) {
+			ObservationUnitSearchRequest body = request.getParameters(ObservationUnitSearchRequest.class);
+			List<ObservationUnit> data = observationUnitService.findObservationUnits(body, metadata);
+			return responseOK(new ObservationUnitListResponse(), new ObservationUnitListResponseResult(), data, metadata);
+		}else {
+			return responseAccepted(searchResultsDbId);
+		}
 	}
 
 }

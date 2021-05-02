@@ -14,6 +14,8 @@ import io.swagger.model.BrAPIResponse;
 import io.swagger.model.BrAPIResponseResult;
 import io.swagger.model.IndexPagination;
 import io.swagger.model.Metadata;
+import io.swagger.model.Model202AcceptedSearchResponse;
+import io.swagger.model.Model202AcceptedSearchResponseResult;
 import io.swagger.model.SearchRequestParametersPaging;
 import io.swagger.model.TokenPagination;
 
@@ -136,6 +138,15 @@ public class BrAPIController {
 		response.setMetadata(metadata);
 		response.setResult(result);
 		return new ResponseEntity<T>(response, HttpStatus.OK);
+	}
+	
+	public ResponseEntity<Model202AcceptedSearchResponse> responseAccepted(String searchReqDbId){
+		Model202AcceptedSearchResponseResult result = new Model202AcceptedSearchResponseResult();
+		result.setSearchResultsDbId(searchReqDbId);
+		Model202AcceptedSearchResponse response = new Model202AcceptedSearchResponse();
+		response.setMetadata(generateEmptyMetadata());
+		response.setResult(result);
+		return new ResponseEntity<Model202AcceptedSearchResponse>(response, HttpStatus.ACCEPTED);
 	}
 
 }

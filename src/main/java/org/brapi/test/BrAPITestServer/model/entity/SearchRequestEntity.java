@@ -18,15 +18,31 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class SearchRequestEntity extends BrAPIBaseEntity {
 	@Column
 	private SearchRequestTypes requestType;
+	@Column
+	private Integer responseCountdown;
 	@Lob
 	private String parameters;
 	
 	public SearchRequestTypes getRequestType() {
 		return requestType;
 	}
+	
 	public void setRequestType(SearchRequestTypes requestType) {
 		this.requestType = requestType;
 	}
+
+	public Integer getResponseCountdown() {
+		return responseCountdown;
+	}
+
+	public void setResponseCountdown(Integer responseCountdown) {
+		this.responseCountdown = responseCountdown;
+	}
+
+	public String getParametersStr() {
+		return parameters;
+	}
+	
 	public <T> T getParameters(Class<T> clazz) throws BrAPIServerException {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -35,6 +51,7 @@ public class SearchRequestEntity extends BrAPIBaseEntity {
 			throw new BrAPIServerException(HttpStatus.BAD_REQUEST, "Could not de-serialize search request. Please POST request again.");
 		}
 	}
+	
 	public void setParameters(Object parameters) throws BrAPIServerException {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -44,6 +61,6 @@ public class SearchRequestEntity extends BrAPIBaseEntity {
 		}
 	}
 	
-	public enum SearchRequestTypes {GERMPLASM, IMAGES, MARKERS, OBSERVATION_TABLES, OBSERVATION_UNITS, PROGRAMS, SAMPLES, STUDIES, VARIABLES};
+	public enum SearchRequestTypes {CALLS, CALLSETS, MARKER_POSITIONS, REFERENCES, REFERENCESETS, VARIANTS, VARIANTSETS, GERMPLASM, GERMPLASM_ATTRIBUTES, GERMPLASM_ATTRIBUTE_VALUES, IMAGES, LISTS, LOCATIONS, MARKERS, OBSERVATIONS, OBSERVATION_TABLES, OBSERVATION_UNITS, PEOPLE, PROGRAMS, SAMPLES, STUDIES, TRIALS, VARIABLES};
 	
 }

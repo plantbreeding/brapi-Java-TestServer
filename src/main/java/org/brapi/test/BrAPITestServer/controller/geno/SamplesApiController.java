@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller.geno;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
 import io.swagger.model.geno.Sample;
 import io.swagger.model.geno.SampleListResponse;
@@ -7,10 +8,17 @@ import io.swagger.model.geno.SampleListResponseResult;
 import io.swagger.model.geno.SampleNewRequest;
 import io.swagger.model.geno.SampleSearchRequest;
 import io.swagger.model.geno.SampleSingleResponse;
+import io.swagger.model.germ.Germplasm;
+import io.swagger.model.germ.GermplasmListResponse;
+import io.swagger.model.germ.GermplasmListResponseResult;
+import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.api.geno.SamplesApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
+import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.geno.SampleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,12 +42,13 @@ public class SamplesApiController extends BrAPIController implements SamplesApi 
 	private static final Logger log = LoggerFactory.getLogger(SamplesApiController.class);
 
 	private final SampleService sampleService;
-
+	private final SearchService searchService;
 	private final HttpServletRequest request;
 
 	@Autowired
-	public SamplesApiController(SampleService sampleService, HttpServletRequest request) {
+	public SamplesApiController(SampleService sampleService, SearchService searchService, HttpServletRequest request) {
 		this.sampleService = sampleService;
+		this.searchService = searchService;
 		this.request = request;
 	}
 
@@ -101,19 +110,25 @@ public class SamplesApiController extends BrAPIController implements SamplesApi 
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<SampleListResponse> searchSamplesPost(@Valid @RequestBody SampleSearchRequest body,
+	public ResponseEntity<? extends BrAPIResponse> searchSamplesPost(@Valid @RequestBody SampleSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
-		List<Sample> data = sampleService.findSamples(body, metadata);
-		return responseOK(new SampleListResponse(), new SampleListResponseResult(), data, metadata);
+
+		String searchReqDbId = searchService.saveSearchRequest(body, SearchRequestTypes.GERMPLASM);
+		if (searchReqDbId != null) {
+			return responseAccepted(searchReqDbId);
+		} else {
+			List<Sample> data = sampleService.findSamples(body, metadata);
+			return responseOK(new SampleListResponse(), new SampleListResponseResult(), data, metadata);
+		}
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<SampleListResponse> searchSamplesSearchResultsDbIdGet(
+	public ResponseEntity<? extends BrAPIResponse> searchSamplesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -121,7 +136,15 @@ public class SamplesApiController extends BrAPIController implements SamplesApi 
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		return new ResponseEntity<SampleListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		SearchRequestEntity request = searchService.findById(searchResultsDbId);
+		if (request != null) {
+			SampleSearchRequest body = request.getParameters(SampleSearchRequest.class);
+			List<Sample> data = sampleService.findSamples(body, metadata);
+			return responseOK(new SampleListResponse(), new SampleListResponseResult(), data, metadata);
+		}else {
+			return responseAccepted(searchResultsDbId);
+		}
 	}
 
 }

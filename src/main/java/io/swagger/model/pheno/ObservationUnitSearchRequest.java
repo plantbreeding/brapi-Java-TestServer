@@ -4,6 +4,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.SearchRequest;
 import io.swagger.model.SearchRequestParametersPaging;
 import io.swagger.model.pheno.ObservationUnitLevelRelationship;
 
@@ -17,7 +18,7 @@ import javax.validation.Valid;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:22.556Z[GMT]")
-public class ObservationUnitSearchRequest extends SearchRequestParametersPaging {
+public class ObservationUnitSearchRequest extends SearchRequestParametersPaging implements SearchRequest {
 	@JsonProperty("programDbIds")
 	@Valid
 	private List<String> programDbIds = null;
@@ -694,5 +695,47 @@ public class ObservationUnitSearchRequest extends SearchRequestParametersPaging 
 			return "null";
 		}
 		return o.toString().replace("\n", "\n    ");
+	}
+
+	@Override
+	public Integer getTotalParameterCount() {
+		Integer count = 0;
+		if (this.programDbIds != null)
+			count += this.programDbIds.size();
+		if (this.programNames != null)
+			count += this.programNames.size();
+		if (this.trialDbIds != null)
+			count += this.trialDbIds.size();
+		if (this.trialNames != null)
+			count += this.trialNames.size();
+		if (this.studyDbIds != null)
+			count += this.studyDbIds.size();
+		if (this.studyNames != null)
+			count += this.studyNames.size();
+		if (this.locationDbIds != null)
+			count += this.locationDbIds.size();
+		if (this.locationNames != null)
+			count += this.locationNames.size();
+		if (this.germplasmDbIds != null)
+			count += this.germplasmDbIds.size();
+		if (this.germplasmNames != null)
+			count += this.germplasmNames.size();
+		if (this.observationVariableDbIds != null)
+			count += this.observationVariableDbIds.size();
+		if (this.observationVariableNames != null)
+			count += this.observationVariableNames.size();
+		if (this.externalReferenceIDs != null)
+			count += this.externalReferenceIDs.size();
+		if (this.externalReferenceSources != null)
+			count += this.externalReferenceSources.size();
+		if (this.includeObservations != null)
+			count += 1;
+		if (this.observationLevelRelationships != null)
+			count += this.observationLevelRelationships.size();
+		if (this.observationLevels != null)
+			count += this.observationLevels.size();
+		if (this.observationUnitDbIds != null)
+			count += this.observationUnitDbIds.size();
+		return count;
 	}
 }

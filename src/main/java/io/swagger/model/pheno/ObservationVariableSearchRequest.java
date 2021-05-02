@@ -4,6 +4,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.SearchRequest;
 import io.swagger.model.SearchRequestParametersPaging;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import javax.validation.Valid;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:22.556Z[GMT]")
-public class ObservationVariableSearchRequest extends SearchRequestParametersPaging {
+public class ObservationVariableSearchRequest extends SearchRequestParametersPaging implements SearchRequest {
 	@JsonProperty("externalReferenceIDs")
 	@Valid
 	private List<String> externalReferenceIDs = null;
@@ -440,5 +441,34 @@ public class ObservationVariableSearchRequest extends SearchRequestParametersPag
 			return "null";
 		}
 		return o.toString().replace("\n", "\n    ");
+	}
+
+	@Override
+	public Integer getTotalParameterCount() {
+		Integer count = 0;
+		if (this.externalReferenceIDs != null)
+			count += this.externalReferenceIDs.size();
+		if (this.externalReferenceSources != null)
+			count += this.externalReferenceSources.size();
+		if (this.dataTypes != null)
+			count += this.dataTypes.size();
+		if (this.methodDbIds != null)
+			count += this.methodDbIds.size();
+		if (this.observationVariableDbIds != null)
+			count += this.observationVariableDbIds.size();
+		if (this.observationVariableNames != null)
+			count += this.observationVariableNames.size();
+		if (this.ontologyDbIds != null)
+			count += this.ontologyDbIds.size();
+		if (this.scaleDbIds != null)
+			count += this.scaleDbIds.size();
+		if (this.studyDbId != null)
+			count += this.studyDbId.size();
+		if (this.traitClasses != null)
+			count += this.traitClasses.size();
+		if (this.traitDbIds != null)
+			count += this.traitDbIds.size();
+		;
+		return count;
 	}
 }

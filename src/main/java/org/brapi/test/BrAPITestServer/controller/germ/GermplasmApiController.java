@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller.germ;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
 import io.swagger.model.germ.Germplasm;
 import io.swagger.model.germ.GermplasmListResponse;
@@ -17,11 +18,13 @@ import io.swagger.api.germ.GermplasmApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
+import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.germ.GermplasmService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -40,12 +43,14 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 	private static final Logger log = LoggerFactory.getLogger(GermplasmApiController.class);
 
 	private final GermplasmService germplasmService;
-
+	private final SearchService searchService;
 	private final HttpServletRequest request;
 
 	@Autowired
-	public GermplasmApiController(GermplasmService germplasmService, HttpServletRequest request) {
+	public GermplasmApiController(GermplasmService germplasmService, SearchService searchService,
+			HttpServletRequest request) {
 		this.germplasmService = germplasmService;
+		this.searchService = searchService;
 		this.request = request;
 	}
 
@@ -161,20 +166,26 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<GermplasmListResponse> searchGermplasmPost(@Valid @RequestBody GermplasmSearchRequest body,
+	public ResponseEntity<? extends BrAPIResponse> searchGermplasmPost(@Valid @RequestBody GermplasmSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
-		List<Germplasm> data = germplasmService.findGermplasm(body, metadata);
-		return responseOK(new GermplasmListResponse(), new GermplasmListResponseResult(), data, metadata);
+
+		String searchReqDbId = searchService.saveSearchRequest(body, SearchRequestTypes.GERMPLASM);
+		if (searchReqDbId != null) {
+			return responseAccepted(searchReqDbId);
+		} else {
+			List<Germplasm> data = germplasmService.findGermplasm(body, metadata);
+			return responseOK(new GermplasmListResponse(), new GermplasmListResponseResult(), data, metadata);
+		}
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<GermplasmListResponse> searchGermplasmSearchResultsDbIdGet(
+	public ResponseEntity<? extends BrAPIResponse> searchGermplasmSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -183,6 +194,14 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		return new ResponseEntity<GermplasmListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		SearchRequestEntity request = searchService.findById(searchResultsDbId);
+		if (request != null) {
+			GermplasmSearchRequest body = request.getParameters(GermplasmSearchRequest.class);
+			List<Germplasm> data = germplasmService.findGermplasm(body, metadata);
+			return responseOK(new GermplasmListResponse(), new GermplasmListResponseResult(), data, metadata);
+		}else {
+			return responseAccepted(searchResultsDbId);
+		}
 	}
 }

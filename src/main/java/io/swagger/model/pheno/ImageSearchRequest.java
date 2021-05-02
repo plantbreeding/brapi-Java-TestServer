@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.GeoJSONSearchArea;
+import io.swagger.model.SearchRequest;
 import io.swagger.model.SearchRequestParametersPaging;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import javax.validation.Valid;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:22.556Z[GMT]")
-public class ImageSearchRequest extends SearchRequestParametersPaging {
+public class ImageSearchRequest extends SearchRequestParametersPaging implements SearchRequest {
 	@JsonProperty("externalReferenceIDs")
 	@Valid
 	private List<String> externalReferenceIDs = null;
@@ -82,7 +83,6 @@ public class ImageSearchRequest extends SearchRequestParametersPaging {
 	@Valid
 	private List<String> observationUnitDbIds = null;
 
-
 	public ImageSearchRequest addImageDbIdsItem(String imageDbIdsItem) {
 		if (this.imageDbIds == null) {
 			this.imageDbIds = new ArrayList<String>();
@@ -90,7 +90,7 @@ public class ImageSearchRequest extends SearchRequestParametersPaging {
 		this.imageDbIds.add(imageDbIdsItem);
 		return this;
 	}
-	
+
 	public List<String> getImageDbIds() {
 		return imageDbIds;
 	}
@@ -579,5 +579,45 @@ public class ImageSearchRequest extends SearchRequestParametersPaging {
 			return "null";
 		}
 		return o.toString().replace("\n", "\n    ");
+	}
+
+	@Override
+	public Integer getTotalParameterCount() {
+		Integer count = 0;
+		if (this.externalReferenceIDs != null)
+			count += this.externalReferenceIDs.size();
+		if (this.externalReferenceSources != null)
+			count += this.externalReferenceSources.size();
+		if (this.descriptiveOntologyTerms != null)
+			count += this.descriptiveOntologyTerms.size();
+		if (this.imageFileNames != null)
+			count += this.imageFileNames.size();
+		if (this.imageFileSizeMax != null)
+			count += 1;
+		if (this.imageFileSizeMin != null)
+			count += 1;
+		if (this.imageHeightMax != null)
+			count += 1;
+		if (this.imageHeightMin != null)
+			count += 1;
+		if (this.imageLocation != null)
+			count += 1;
+		if (this.imageNames != null)
+			count += this.imageNames.size();
+		if (this.imageTimeStampRangeEnd != null)
+			count += 1;
+		if (this.imageTimeStampRangeStart != null)
+			count += 1;
+		if (this.imageWidthMax != null)
+			count += 1;
+		if (this.imageWidthMin != null)
+			count += 1;
+		if (this.mimeTypes != null)
+			count += this.mimeTypes.size();
+		if (this.observationDbIds != null)
+			count += this.observationDbIds.size();
+		if (this.observationUnitDbIds != null)
+			count += this.observationUnitDbIds.size();
+		return count;
 	}
 }
