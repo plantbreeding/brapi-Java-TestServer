@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Context;
 import io.swagger.model.Metadata;
 import io.swagger.model.Model202AcceptedSearchResponseResult;
+import io.swagger.model.germ.GermplasmListResponseResult;
 
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
@@ -17,7 +18,7 @@ import javax.validation.Valid;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
-public class Model202AcceptedSearchResponse   {
+public class Model202AcceptedSearchResponse implements BrAPIResponse<Model202AcceptedSearchResponseResult>  {
   @JsonProperty("@context")
   private Context _atContext = null;
 

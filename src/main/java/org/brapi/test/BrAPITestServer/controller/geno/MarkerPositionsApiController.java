@@ -1,15 +1,23 @@
 package org.brapi.test.BrAPITestServer.controller.geno;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
 import io.swagger.model.geno.MarkerPosition;
 import io.swagger.model.geno.MarkerPositionsListResponse;
 import io.swagger.model.geno.MarkerPositionsListResponseResult;
+import io.swagger.model.germ.Germplasm;
+import io.swagger.model.germ.GermplasmListResponse;
+import io.swagger.model.germ.GermplasmListResponseResult;
+import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.model.geno.MarkerPositionSearchRequest;
 
 import io.swagger.api.geno.MarkerPositionsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
+import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.geno.MarkerPositionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,12 +40,13 @@ public class MarkerPositionsApiController extends BrAPIController implements Mar
 	private static final Logger log = LoggerFactory.getLogger(MarkerPositionsApiController.class);
 
 	private final MarkerPositionService markerPositionService;
-
+	private final SearchService searchService;
 	private final HttpServletRequest request;
 
 	@org.springframework.beans.factory.annotation.Autowired
-	public MarkerPositionsApiController(MarkerPositionService markerPositionService, HttpServletRequest request) {
+	public MarkerPositionsApiController(MarkerPositionService markerPositionService, SearchService searchService, HttpServletRequest request) {
 		this.markerPositionService = markerPositionService;
+		this.searchService = searchService;
 		this.request = request;
 	}
 
@@ -63,20 +72,26 @@ public class MarkerPositionsApiController extends BrAPIController implements Mar
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<MarkerPositionsListResponse> searchMarkerpositionsPost(
+	public ResponseEntity<? extends BrAPIResponse> searchMarkerpositionsPost(
 			@Valid @RequestBody MarkerPositionSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
-		List<MarkerPosition> data = markerPositionService.findMarkerPositions(body, metadata);
-		return responseOK(new MarkerPositionsListResponse(), new MarkerPositionsListResponseResult(), data, metadata);
+
+		String searchReqDbId = searchService.saveSearchRequest(body, SearchRequestTypes.MARKER_POSITIONS);
+		if (searchReqDbId != null) {
+			return responseAccepted(searchReqDbId);
+		} else {
+			List<MarkerPosition> data = markerPositionService.findMarkerPositions(body, metadata);
+			return responseOK(new MarkerPositionsListResponse(), new MarkerPositionsListResponseResult(), data, metadata);
+		}
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<MarkerPositionsListResponse> searchMarkerpositionsSearchResultsDbIdGet(
+	public ResponseEntity<? extends BrAPIResponse> searchMarkerpositionsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -84,7 +99,15 @@ public class MarkerPositionsApiController extends BrAPIController implements Mar
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		return new ResponseEntity<MarkerPositionsListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		SearchRequestEntity request = searchService.findById(searchResultsDbId);
+		if (request != null) {
+			MarkerPositionSearchRequest body = request.getParameters(MarkerPositionSearchRequest.class);
+			List<MarkerPosition> data = markerPositionService.findMarkerPositions(body, metadata);
+			return responseOK(new MarkerPositionsListResponse(), new MarkerPositionsListResponseResult(), data, metadata);
+		}else {
+			return responseAccepted(searchResultsDbId);
+		}
 	}
 
 }

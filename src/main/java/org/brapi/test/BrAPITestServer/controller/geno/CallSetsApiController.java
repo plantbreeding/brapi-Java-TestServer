@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller.geno;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
 import io.swagger.model.geno.CallSet;
 import io.swagger.model.geno.CallSetResponse;
@@ -8,11 +9,17 @@ import io.swagger.model.geno.CallSetsListResponseResult;
 import io.swagger.model.geno.CallSetsSearchRequest;
 import io.swagger.model.geno.CallsListResponse;
 import io.swagger.model.geno.CallsListResponseResult;
-
+import io.swagger.model.germ.Germplasm;
+import io.swagger.model.germ.GermplasmListResponse;
+import io.swagger.model.germ.GermplasmListResponseResult;
+import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.api.geno.CallSetsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
+import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.geno.CallService;
 import org.brapi.test.BrAPITestServer.service.geno.CallSetService;
 import org.slf4j.Logger;
@@ -38,13 +45,14 @@ public class CallSetsApiController extends BrAPIController implements CallSetsAp
 
 	private final CallSetService callSetService;
 	private final CallService callService;
-
+	private final SearchService searchService;
 	private final HttpServletRequest request;
 
 	@Autowired
-	public CallSetsApiController(CallSetService callSetService, CallService callService, HttpServletRequest request) {
+	public CallSetsApiController(CallSetService callSetService, CallService callService, SearchService searchService, HttpServletRequest request) {
 		this.callSetService = callSetService;
 		this.callService = callService;
+		this.searchService = searchService;
 		this.request = request;
 	}
 
@@ -103,19 +111,25 @@ public class CallSetsApiController extends BrAPIController implements CallSetsAp
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<CallSetsListResponse> searchCallsetsPost(@Valid @RequestBody CallSetsSearchRequest body,
+	public ResponseEntity<? extends BrAPIResponse> searchCallsetsPost(@Valid @RequestBody CallSetsSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
-		List<CallSet> data = callSetService.findCallSets(body, metadata);
-		return responseOK(new CallSetsListResponse(), new CallSetsListResponseResult(), data, metadata);
+
+		String searchReqDbId = searchService.saveSearchRequest(body, SearchRequestTypes.CALLSETS);
+		if (searchReqDbId != null) {
+			return responseAccepted(searchReqDbId);
+		} else {
+			List<CallSet> data = callSetService.findCallSets(body, metadata);
+			return responseOK(new CallSetsListResponse(), new CallSetsListResponseResult(), data, metadata);
+		}
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<CallSetsListResponse> searchCallsetsSearchResultsDbIdGet(
+	public ResponseEntity<? extends BrAPIResponse> searchCallsetsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -124,7 +138,15 @@ public class CallSetsApiController extends BrAPIController implements CallSetsAp
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		return new ResponseEntity<CallSetsListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		SearchRequestEntity request = searchService.findById(searchResultsDbId);
+		if (request != null) {
+			CallSetsSearchRequest body = request.getParameters(CallSetsSearchRequest.class);
+			List<CallSet> data = callSetService.findCallSets(body, metadata);
+			return responseOK(new CallSetsListResponse(), new CallSetsListResponseResult(), data, metadata);
+		}else {
+			return responseAccepted(searchResultsDbId);
+		}
 	}
 
 }

@@ -1,6 +1,8 @@
 package org.brapi.test.BrAPITestServer.controller.germ;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
+import io.swagger.model.germ.Germplasm;
 import io.swagger.model.germ.GermplasmAttribute;
 import io.swagger.model.germ.GermplasmAttributeCategoryListResponse;
 import io.swagger.model.germ.GermplasmAttributeCategoryListResponseResult;
@@ -9,10 +11,16 @@ import io.swagger.model.germ.GermplasmAttributeListResponseResult;
 import io.swagger.model.germ.GermplasmAttributeNewRequest;
 import io.swagger.model.germ.GermplasmAttributeSearchRequest;
 import io.swagger.model.germ.GermplasmAttributeSingleResponse;
+import io.swagger.model.germ.GermplasmListResponse;
+import io.swagger.model.germ.GermplasmListResponseResult;
+import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.api.germ.AttributesApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
+import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.germ.GermplasmAttributeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,12 +43,13 @@ public class AttributesApiController extends BrAPIController implements Attribut
 	private static final Logger log = LoggerFactory.getLogger(AttributesApiController.class);
 
 	private final GermplasmAttributeService attributeService;
-
+	private final SearchService searchService;
 	private final HttpServletRequest request;
 
 	@org.springframework.beans.factory.annotation.Autowired
-	public AttributesApiController(GermplasmAttributeService attributeService, HttpServletRequest request) {
+	public AttributesApiController(GermplasmAttributeService attributeService, SearchService searchService, HttpServletRequest request) {
 		this.attributeService = attributeService;
+		this.searchService = searchService;
 		this.request = request;
 	}
 
@@ -125,7 +134,7 @@ public class AttributesApiController extends BrAPIController implements Attribut
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<GermplasmAttributeListResponse> searchAttributesPost(
+	public ResponseEntity<? extends BrAPIResponse> searchAttributesPost(
 			@Valid @RequestBody GermplasmAttributeSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -133,14 +142,20 @@ public class AttributesApiController extends BrAPIController implements Attribut
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
-		List<GermplasmAttribute> data = attributeService.findGermplasmAttributes(body, metadata);
-		return responseOK(new GermplasmAttributeListResponse(), new GermplasmAttributeListResponseResult(), data,
-				metadata);
+
+		String searchReqDbId = searchService.saveSearchRequest(body, SearchRequestTypes.GERMPLASM_ATTRIBUTES);
+		if (searchReqDbId != null) {
+			return responseAccepted(searchReqDbId);
+		} else {
+			List<GermplasmAttribute> data = attributeService.findGermplasmAttributes(body, metadata);
+			return responseOK(new GermplasmAttributeListResponse(), new GermplasmAttributeListResponseResult(), data,
+					metadata);
+		}
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<GermplasmAttributeListResponse> searchAttributesSearchResultsDbIdGet(
+	public ResponseEntity<? extends BrAPIResponse> searchAttributesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -149,6 +164,15 @@ public class AttributesApiController extends BrAPIController implements Attribut
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		return new ResponseEntity<GermplasmAttributeListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		SearchRequestEntity request = searchService.findById(searchResultsDbId);
+		if (request != null) {
+			GermplasmAttributeSearchRequest body = request.getParameters(GermplasmAttributeSearchRequest.class);
+			List<GermplasmAttribute> data = attributeService.findGermplasmAttributes(body, metadata);
+			return responseOK(new GermplasmAttributeListResponse(), new GermplasmAttributeListResponseResult(), data,
+					metadata);
+		}else {
+			return responseAccepted(searchResultsDbId);
+		}
 	}
 }

@@ -24,7 +24,7 @@ public class SearchQueryBuilder<T> {
 	private Class<T> clazz;
 
 	public SearchQueryBuilder(Class<T> clazz) {
-		this.query = "SELECT entity FROM " + clazz.getSimpleName() + " entity where 1=1 ";
+		this.query = "SELECT distinct entity FROM " + clazz.getSimpleName() + " entity where 1=1 ";
 		this.params = new HashMap<>();
 		this.clazz = clazz;
 	}

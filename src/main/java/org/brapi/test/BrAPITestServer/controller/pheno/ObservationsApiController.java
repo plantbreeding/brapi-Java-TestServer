@@ -1,7 +1,12 @@
 package org.brapi.test.BrAPITestServer.controller.pheno;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
 import io.swagger.model.WSMIMEDataTypes;
+import io.swagger.model.germ.Germplasm;
+import io.swagger.model.germ.GermplasmListResponse;
+import io.swagger.model.germ.GermplasmListResponseResult;
+import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.model.pheno.Observation;
 import io.swagger.model.pheno.ObservationListResponse;
 import io.swagger.model.pheno.ObservationListResponseResult;
@@ -14,6 +19,9 @@ import io.swagger.api.pheno.ObservationsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
+import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.pheno.ObservationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,12 +46,13 @@ public class ObservationsApiController extends BrAPIController implements Observ
 	private static final Logger log = LoggerFactory.getLogger(ObservationsApiController.class);
 
 	private final ObservationService observationService;
-
+	private final SearchService searchService;
 	private final HttpServletRequest request;
 
 	@Autowired
-	public ObservationsApiController(ObservationService observationService, HttpServletRequest request) {
+	public ObservationsApiController(ObservationService observationService, SearchService searchService, HttpServletRequest request) {
 		this.observationService = observationService;
+		this.searchService = searchService;
 		this.request = request;
 	}
 
@@ -169,20 +178,26 @@ public class ObservationsApiController extends BrAPIController implements Observ
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ObservationListResponse> searchObservationsPost(
+	public ResponseEntity<? extends BrAPIResponse> searchObservationsPost(
 			@Valid @RequestBody ObservationSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
-		List<Observation> data = observationService.findObservations(body, metadata);
-		return responseOK(new ObservationListResponse(), new ObservationListResponseResult(), data, metadata);
+
+		String searchReqDbId = searchService.saveSearchRequest(body, SearchRequestTypes.OBSERVATIONS);
+		if (searchReqDbId != null) {
+			return responseAccepted(searchReqDbId);
+		} else {
+			List<Observation> data = observationService.findObservations(body, metadata);
+			return responseOK(new ObservationListResponse(), new ObservationListResponseResult(), data, metadata);
+		}
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ObservationListResponse> searchObservationsSearchResultsDbIdGet(
+	public ResponseEntity<? extends BrAPIResponse> searchObservationsSearchResultsDbIdGet(
 			@RequestHeader(value = "Accept", required = true) WSMIMEDataTypes accept,
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
@@ -191,7 +206,15 @@ public class ObservationsApiController extends BrAPIController implements Observ
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		return new ResponseEntity<ObservationListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		SearchRequestEntity request = searchService.findById(searchResultsDbId);
+		if (request != null) {
+			ObservationSearchRequest body = request.getParameters(ObservationSearchRequest.class);
+			List<Observation> data = observationService.findObservations(body, metadata);
+			return responseOK(new ObservationListResponse(), new ObservationListResponseResult(), data, metadata);
+		}else {
+			return responseAccepted(searchResultsDbId);
+		}
 	}
 
 }

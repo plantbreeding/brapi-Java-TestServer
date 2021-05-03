@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller.core;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
 import io.swagger.model.core.Trial;
 import io.swagger.model.core.TrialListResponse;
@@ -7,10 +8,17 @@ import io.swagger.model.core.TrialListResponseResult;
 import io.swagger.model.core.TrialNewRequest;
 import io.swagger.model.core.TrialSearchRequest;
 import io.swagger.model.core.TrialSingleResponse;
+import io.swagger.model.germ.Germplasm;
+import io.swagger.model.germ.GermplasmListResponse;
+import io.swagger.model.germ.GermplasmListResponseResult;
+import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.api.core.TrialsApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
 import org.brapi.test.BrAPITestServer.service.DateUtility;
+import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.core.TrialService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,10 +42,12 @@ public class TrialsApiController extends BrAPIController implements TrialsApi {
 
 	private final HttpServletRequest request;
 	private final TrialService trialService;
+	private final SearchService searchService;
 
 	@org.springframework.beans.factory.annotation.Autowired
-	public TrialsApiController(TrialService trialService, HttpServletRequest request) {
+	public TrialsApiController(TrialService trialService, SearchService searchService, HttpServletRequest request) {
 		this.trialService = trialService;
+		this.searchService = searchService;
 		this.request = request;
 	}
 
@@ -112,20 +122,26 @@ public class TrialsApiController extends BrAPIController implements TrialsApi {
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<TrialListResponse> searchTrialsPost(@Valid @RequestBody TrialSearchRequest body,
+	public ResponseEntity<? extends BrAPIResponse> searchTrialsPost(@Valid @RequestBody TrialSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
-		List<Trial> data = trialService.findTrials(body, metadata);
-		return responseOK(new TrialListResponse(), new TrialListResponseResult(), data, metadata);
+
+		String searchReqDbId = searchService.saveSearchRequest(body, SearchRequestTypes.TRIALS);
+		if (searchReqDbId != null) {
+			return responseAccepted(searchReqDbId);
+		} else {
+			List<Trial> data = trialService.findTrials(body, metadata);
+			return responseOK(new TrialListResponse(), new TrialListResponseResult(), data, metadata);
+		}
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<TrialListResponse> searchTrialsSearchResultsDbIdGet(
+	public ResponseEntity<? extends BrAPIResponse> searchTrialsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -134,6 +150,14 @@ public class TrialsApiController extends BrAPIController implements TrialsApi {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		return new ResponseEntity<TrialListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		SearchRequestEntity request = searchService.findById(searchResultsDbId);
+		if (request != null) {
+			TrialSearchRequest body = request.getParameters(TrialSearchRequest.class);
+			List<Trial> data = trialService.findTrials(body, metadata);
+			return responseOK(new TrialListResponse(), new TrialListResponseResult(), data, metadata);
+		}else {
+			return responseAccepted(searchResultsDbId);
+		}
 	}
 }

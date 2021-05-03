@@ -5,6 +5,7 @@
  */
 package io.swagger.api.pheno;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Model202AcceptedSearchResponse;
 import io.swagger.model.pheno.ObservationVariableListResponse;
 import io.swagger.model.pheno.ObservationVariableNewRequest;
@@ -95,7 +96,7 @@ public interface VariablesApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/search/variables", produces = { "application/json" }, consumes = {
 			"application/json" }, method = RequestMethod.POST)
-	ResponseEntity<ObservationVariableListResponse> searchVariablesPost(
+	ResponseEntity<? extends BrAPIResponse> searchVariablesPost(
 			@ApiParam(value = "") @Valid @RequestBody ObservationVariableSearchRequest body,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
@@ -109,7 +110,7 @@ public interface VariablesApi {
 			@ApiResponse(code = 404, message = "Not Found", response = String.class) })
 	@RequestMapping(value = "/search/variables/{searchResultsDbId}", produces = {
 			"application/json" }, method = RequestMethod.GET)
-	ResponseEntity<ObservationVariableListResponse> searchVariablesSearchResultsDbIdGet(
+	ResponseEntity<? extends BrAPIResponse> searchVariablesSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,

@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller.core;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
 import io.swagger.model.core.Program;
 import io.swagger.model.core.ProgramListResponse;
@@ -7,10 +8,17 @@ import io.swagger.model.core.ProgramListResponseResult;
 import io.swagger.model.core.ProgramNewRequest;
 import io.swagger.model.core.ProgramSearchRequest;
 import io.swagger.model.core.ProgramSingleResponse;
+import io.swagger.model.germ.Germplasm;
+import io.swagger.model.germ.GermplasmListResponse;
+import io.swagger.model.germ.GermplasmListResponseResult;
+import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.annotations.*;
 import io.swagger.api.core.ProgramsApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
+import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.core.ProgramService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,12 +41,13 @@ public class ProgramsApiController extends BrAPIController implements ProgramsAp
 	private static final Logger log = LoggerFactory.getLogger(ProgramsApiController.class);
 
 	private final ProgramService programService;
-
+	private final SearchService searchService;
 	private final HttpServletRequest request;
 
 	@org.springframework.beans.factory.annotation.Autowired
-	public ProgramsApiController(ProgramService programService, HttpServletRequest request) {
+	public ProgramsApiController(ProgramService programService, SearchService searchService, HttpServletRequest request) {
 		this.programService = programService;
+		this.searchService = searchService;
 		this.request = request;
 	}
 
@@ -105,20 +114,26 @@ public class ProgramsApiController extends BrAPIController implements ProgramsAp
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ProgramListResponse> searchProgramsPost(@Valid @RequestBody ProgramSearchRequest body,
+	public ResponseEntity<? extends BrAPIResponse> searchProgramsPost(@Valid @RequestBody ProgramSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
-		List<Program> data = programService.findPrograms(body, metadata);
-		return responseOK(new ProgramListResponse(), new ProgramListResponseResult(), data, metadata);
+
+		String searchReqDbId = searchService.saveSearchRequest(body, SearchRequestTypes.PROGRAMS);
+		if (searchReqDbId != null) {
+			return responseAccepted(searchReqDbId);
+		} else {
+			List<Program> data = programService.findPrograms(body, metadata);
+			return responseOK(new ProgramListResponse(), new ProgramListResponseResult(), data, metadata);
+		}
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ProgramListResponse> searchProgramsSearchResultsDbIdGet(
+	public ResponseEntity<? extends BrAPIResponse> searchProgramsSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -127,6 +142,14 @@ public class ProgramsApiController extends BrAPIController implements ProgramsAp
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		return new ResponseEntity<ProgramListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		SearchRequestEntity request = searchService.findById(searchResultsDbId);
+		if (request != null) {
+			ProgramSearchRequest body = request.getParameters(ProgramSearchRequest.class);
+			List<Program> data = programService.findPrograms(body, metadata);
+			return responseOK(new ProgramListResponse(), new ProgramListResponseResult(), data, metadata);
+		}else {
+			return responseAccepted(searchResultsDbId);
+		}
 	}
 }

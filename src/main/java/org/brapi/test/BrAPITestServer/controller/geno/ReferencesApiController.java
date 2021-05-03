@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller.geno;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
 import io.swagger.model.geno.Reference;
 import io.swagger.model.geno.ReferenceBases;
@@ -8,11 +9,17 @@ import io.swagger.model.geno.ReferencesListResponseResult;
 import io.swagger.model.geno.ReferenceBasesResponse;
 import io.swagger.model.geno.ReferenceSingleResponse;
 import io.swagger.model.geno.ReferencesSearchRequest;
-
+import io.swagger.model.germ.Germplasm;
+import io.swagger.model.germ.GermplasmListResponse;
+import io.swagger.model.germ.GermplasmListResponseResult;
+import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.api.geno.ReferencesApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
+import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.geno.ReferenceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,12 +43,13 @@ public class ReferencesApiController extends BrAPIController implements Referenc
 	private static final Logger log = LoggerFactory.getLogger(ReferencesApiController.class);
 
 	private final ReferenceService referenceService;
-
+	private final SearchService searchService;
 	private final HttpServletRequest request;
 
 	@Autowired
-	public ReferencesApiController(ReferenceService referenceService, HttpServletRequest request) {
+	public ReferencesApiController(ReferenceService referenceService, SearchService searchService, HttpServletRequest request) {
 		this.referenceService = referenceService;
+		this.searchService = searchService;
 		this.request = request;
 	}
 
@@ -99,20 +107,26 @@ public class ReferencesApiController extends BrAPIController implements Referenc
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ReferencesListResponse> searchReferencesPost(@Valid @RequestBody ReferencesSearchRequest body,
+	public ResponseEntity<? extends BrAPIResponse> searchReferencesPost(@Valid @RequestBody ReferencesSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
-		List<Reference> data = referenceService.findReferences(body, metadata);
-		return responseOK(new ReferencesListResponse(), new ReferencesListResponseResult(), data, metadata);
+
+		String searchReqDbId = searchService.saveSearchRequest(body, SearchRequestTypes.GERMPLASM);
+		if (searchReqDbId != null) {
+			return responseAccepted(searchReqDbId);
+		} else {
+			List<Reference> data = referenceService.findReferences(body, metadata);
+			return responseOK(new ReferencesListResponse(), new ReferencesListResponseResult(), data, metadata);
+		}
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ReferencesListResponse> searchReferencesSearchResultsDbIdGet(
+	public ResponseEntity<? extends BrAPIResponse> searchReferencesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -121,7 +135,15 @@ public class ReferencesApiController extends BrAPIController implements Referenc
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		return new ResponseEntity<ReferencesListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		SearchRequestEntity request = searchService.findById(searchResultsDbId);
+		if (request != null) {
+			ReferencesSearchRequest body = request.getParameters(ReferencesSearchRequest.class);
+			List<Reference> data = referenceService.findReferences(body, metadata);
+			return responseOK(new ReferencesListResponse(), new ReferencesListResponseResult(), data, metadata);
+		}else {
+			return responseAccepted(searchResultsDbId);
+		}
 	}
 
 }

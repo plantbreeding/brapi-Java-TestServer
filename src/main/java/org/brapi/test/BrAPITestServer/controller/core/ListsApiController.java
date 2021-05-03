@@ -1,5 +1,6 @@
 package org.brapi.test.BrAPITestServer.controller.core;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
 import io.swagger.model.core.ListDetails;
 import io.swagger.model.core.ListNewRequest;
@@ -10,9 +11,16 @@ import io.swagger.model.core.ListTypes;
 import io.swagger.model.core.ListsListResponse;
 import io.swagger.model.core.ListsListResponseResult;
 import io.swagger.model.core.ListsSingleResponse;
+import io.swagger.model.germ.Germplasm;
+import io.swagger.model.germ.GermplasmListResponse;
+import io.swagger.model.germ.GermplasmListResponseResult;
+import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.api.core.ListsApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
+import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.core.ListService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,10 +47,12 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 
 	private final HttpServletRequest request;
 	private final ListService listService;
+	private final SearchService searchService;
 
 	@Autowired
-	public ListsApiController(ListService listService, HttpServletRequest request) {
+	public ListsApiController(ListService listService, SearchService searchService, HttpServletRequest request) {
 		this.listService = listService;
+		this.searchService = searchService;
 		this.request = request;
 	}
 
@@ -119,28 +129,42 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 	
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ListsListResponse> searchListsPost(
+	public ResponseEntity<? extends BrAPIResponse> searchListsPost(
 			@Valid @RequestBody ListSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
-		List<ListSummary> data = listService.findLists(body, metadata);
-		return responseOK(new ListsListResponse(), new ListsListResponseResult(), data, metadata);
+
+		String searchReqDbId = searchService.saveSearchRequest(body, SearchRequestTypes.LISTS);
+		if (searchReqDbId != null) {
+			return responseAccepted(searchReqDbId);
+		} else {
+			List<ListSummary> data = listService.findLists(body, metadata);
+			return responseOK(new ListsListResponse(), new ListsListResponseResult(), data, metadata);
+		}
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ListsListResponse> searchListsSearchResultsDbIdGet(
+	public ResponseEntity<? extends BrAPIResponse> searchListsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
-
+		
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		return new ResponseEntity<ListsListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		SearchRequestEntity request = searchService.findById(searchResultsDbId);
+		if (request != null) {
+			ListSearchRequest body = request.getParameters(ListSearchRequest.class);
+			List<ListSummary> data = listService.findLists(body, metadata);
+			return responseOK(new ListsListResponse(), new ListsListResponseResult(), data, metadata);
+		}else {
+			return responseAccepted(searchResultsDbId);
+		}
 	}
 
 }

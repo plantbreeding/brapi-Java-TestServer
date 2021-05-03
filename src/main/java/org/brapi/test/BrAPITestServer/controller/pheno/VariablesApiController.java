@@ -1,6 +1,11 @@
 package org.brapi.test.BrAPITestServer.controller.pheno;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
+import io.swagger.model.germ.Germplasm;
+import io.swagger.model.germ.GermplasmListResponse;
+import io.swagger.model.germ.GermplasmListResponseResult;
+import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.model.pheno.ObservationVariable;
 import io.swagger.model.pheno.ObservationVariableListResponse;
 import io.swagger.model.pheno.ObservationVariableListResponseResult;
@@ -11,6 +16,9 @@ import io.swagger.api.pheno.VariablesApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
+import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.pheno.ObservationVariableService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,12 +42,13 @@ public class VariablesApiController extends BrAPIController implements Variables
 	private static final Logger log = LoggerFactory.getLogger(VariablesApiController.class);
 
 	private final ObservationVariableService observationVariableService;
-
+	private final SearchService searchService;
 	private final HttpServletRequest request;
 
 	@Autowired
-	public VariablesApiController(ObservationVariableService observationVariableService, HttpServletRequest request) {
+	public VariablesApiController(ObservationVariableService observationVariableService, SearchService searchService, HttpServletRequest request) {
 		this.observationVariableService = observationVariableService;
+		this.searchService = searchService;
 		this.request = request;
 	}
 
@@ -106,7 +115,7 @@ public class VariablesApiController extends BrAPIController implements Variables
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ObservationVariableListResponse> searchVariablesPost(
+	public ResponseEntity<? extends BrAPIResponse> searchVariablesPost(
 			@Valid @RequestBody ObservationVariableSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -114,14 +123,20 @@ public class VariablesApiController extends BrAPIController implements Variables
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
-		List<ObservationVariable> data = observationVariableService.findObservationVariables(body, metadata);
-		return responseOK(new ObservationVariableListResponse(), new ObservationVariableListResponseResult(), data,
-				metadata);
+
+		String searchReqDbId = searchService.saveSearchRequest(body, SearchRequestTypes.VARIABLES);
+		if (searchReqDbId != null) {
+			return responseAccepted(searchReqDbId);
+		} else {
+			List<ObservationVariable> data = observationVariableService.findObservationVariables(body, metadata);
+			return responseOK(new ObservationVariableListResponse(), new ObservationVariableListResponseResult(), data,
+					metadata);
+		}
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ObservationVariableListResponse> searchVariablesSearchResultsDbIdGet(
+	public ResponseEntity<? extends BrAPIResponse> searchVariablesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -130,7 +145,16 @@ public class VariablesApiController extends BrAPIController implements Variables
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		return new ResponseEntity<ObservationVariableListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		SearchRequestEntity request = searchService.findById(searchResultsDbId);
+		if (request != null) {
+			ObservationVariableSearchRequest body = request.getParameters(ObservationVariableSearchRequest.class);
+			List<ObservationVariable> data = observationVariableService.findObservationVariables(body, metadata);
+			return responseOK(new ObservationVariableListResponse(), new ObservationVariableListResponseResult(), data,
+					metadata);
+		}else {
+			return responseAccepted(searchResultsDbId);
+		}
 	}
 
 }

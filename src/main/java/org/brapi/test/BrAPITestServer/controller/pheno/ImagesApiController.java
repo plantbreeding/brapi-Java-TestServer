@@ -1,6 +1,11 @@
 package org.brapi.test.BrAPITestServer.controller.pheno;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
+import io.swagger.model.germ.Germplasm;
+import io.swagger.model.germ.GermplasmListResponse;
+import io.swagger.model.germ.GermplasmListResponseResult;
+import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.model.pheno.Image;
 import io.swagger.model.pheno.ImageListResponse;
 import io.swagger.model.pheno.ImageListResponseResult;
@@ -11,6 +16,9 @@ import io.swagger.api.pheno.ImagesApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
+import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.pheno.ImageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,12 +45,13 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 	private static final Logger log = LoggerFactory.getLogger(ImagesApiController.class);
 
 	private final ImageService imageService;
-
+	private final SearchService searchService;
 	private final HttpServletRequest request;
 
 	@Autowired
-	public ImagesApiController(ImageService imageService, HttpServletRequest request) {
+	public ImagesApiController(ImageService imageService, SearchService searchService, HttpServletRequest request) {
 		this.imageService = imageService;
+		this.searchService = searchService;
 		this.request = request;
 	}
 
@@ -135,20 +144,26 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ImageListResponse> searchImagesPost(@Valid @RequestBody ImageSearchRequest body,
+	public ResponseEntity<? extends BrAPIResponse> searchImagesPost(@Valid @RequestBody ImageSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
-		List<Image> data = imageService.findImages(body, metadata);
-		return responseOK(new ImageListResponse(), new ImageListResponseResult(), data, metadata);
+
+		String searchReqDbId = searchService.saveSearchRequest(body, SearchRequestTypes.IMAGES);
+		if (searchReqDbId != null) {
+			return responseAccepted(searchReqDbId);
+		} else {
+			List<Image> data = imageService.findImages(body, metadata);
+			return responseOK(new ImageListResponse(), new ImageListResponseResult(), data, metadata);
+		}
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ImageListResponse> searchImagesSearchResultsDbIdGet(
+	public ResponseEntity<? extends BrAPIResponse> searchImagesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -157,7 +172,15 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		return new ResponseEntity<ImageListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		SearchRequestEntity request = searchService.findById(searchResultsDbId);
+		if (request != null) {
+			ImageSearchRequest body = request.getParameters(ImageSearchRequest.class);
+			List<Image> data = imageService.findImages(body, metadata);
+			return responseOK(new ImageListResponse(), new ImageListResponseResult(), data, metadata);
+		}else {
+			return responseAccepted(searchResultsDbId);
+		}
 	}
 
 }

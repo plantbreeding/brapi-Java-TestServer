@@ -5,6 +5,7 @@
  */
 package io.swagger.api.geno;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Model202AcceptedSearchResponse;
 import io.swagger.model.geno.MarkerPositionsListResponse;
 import io.swagger.model.geno.MarkerPositionSearchRequest;
@@ -52,7 +53,7 @@ public interface MarkerPositionsApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/search/markerpositions", produces = { "application/json" }, consumes = {
 			"application/json" }, method = RequestMethod.POST)
-	ResponseEntity<MarkerPositionsListResponse> searchMarkerpositionsPost(
+	ResponseEntity<? extends BrAPIResponse> searchMarkerpositionsPost(
 			@ApiParam(value = "") @Valid @RequestBody MarkerPositionSearchRequest body,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
@@ -66,7 +67,7 @@ public interface MarkerPositionsApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/search/markerpositions/{searchResultsDbId}", produces = {
 			"application/json" }, method = RequestMethod.GET)
-	ResponseEntity<MarkerPositionsListResponse> searchMarkerpositionsSearchResultsDbIdGet(
+	ResponseEntity<? extends BrAPIResponse> searchMarkerpositionsSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,

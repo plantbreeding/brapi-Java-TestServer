@@ -5,6 +5,7 @@
  */
 package io.swagger.api.geno;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Model202AcceptedSearchResponse;
 import io.swagger.model.geno.VariantSingleResponse;
 import io.swagger.model.geno.CallsListResponse;
@@ -83,7 +84,7 @@ public interface VariantsApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/search/variants", produces = { "application/json" }, consumes = {
 			"application/json" }, method = RequestMethod.POST)
-	ResponseEntity<VariantsListResponse> searchVariantsPost(
+	ResponseEntity<? extends BrAPIResponse> searchVariantsPost(
 			@ApiParam(value = "Study Search request") @Valid @RequestBody VariantsSearchRequest body,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 					throws BrAPIServerException;
@@ -97,7 +98,7 @@ public interface VariantsApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/search/variants/{searchResultsDbId}", produces = {
 			"application/json" }, method = RequestMethod.GET)
-	ResponseEntity<VariantsListResponse> searchVariantsSearchResultsDbIdGet(
+	ResponseEntity<? extends BrAPIResponse> searchVariantsSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
 			@ApiParam(value = "Used to request a specific page of data to be returned.  Tokenized pages are for large data sets which can not be efficiently broken into indexed pages. Use the nextPageToken and prevPageToken from a prior response to construct a query and move to the next or previous page respectively. ") @Valid @RequestParam(value = "pageToken", required = false) String pageToken,
 			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,

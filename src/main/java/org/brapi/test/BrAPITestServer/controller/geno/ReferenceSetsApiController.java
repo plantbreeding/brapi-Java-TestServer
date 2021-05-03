@@ -1,16 +1,23 @@
 package org.brapi.test.BrAPITestServer.controller.geno;
 
+import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
 import io.swagger.model.geno.ReferenceSet;
 import io.swagger.model.geno.ReferenceSetsListResponse;
 import io.swagger.model.geno.ReferenceSetsListResponseResult;
 import io.swagger.model.geno.ReferenceSetsSearchRequest;
 import io.swagger.model.geno.ReferenceSetsSingleResponse;
-
+import io.swagger.model.germ.Germplasm;
+import io.swagger.model.germ.GermplasmListResponse;
+import io.swagger.model.germ.GermplasmListResponseResult;
+import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.api.geno.ReferenceSetsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
+import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
+import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.geno.ReferenceSetService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,12 +41,13 @@ public class ReferenceSetsApiController extends BrAPIController implements Refer
 	private static final Logger log = LoggerFactory.getLogger(ReferenceSetsApiController.class);
 
 	private final ReferenceSetService referenceSetService;
-
+	private final SearchService searchService;
 	private final HttpServletRequest request;
 
 	@Autowired
-	public ReferenceSetsApiController(ReferenceSetService referenceSetService, HttpServletRequest request) {
+	public ReferenceSetsApiController(ReferenceSetService referenceSetService, SearchService searchService, HttpServletRequest request) {
 		this.referenceSetService = referenceSetService;
+		this.searchService = searchService;
 		this.request = request;
 	}
 
@@ -78,7 +86,7 @@ public class ReferenceSetsApiController extends BrAPIController implements Refer
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ReferenceSetsListResponse> searchReferenceSetsPost(
+	public ResponseEntity<? extends BrAPIResponse> searchReferenceSetsPost(
 			@Valid @RequestBody ReferenceSetsSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -86,13 +94,19 @@ public class ReferenceSetsApiController extends BrAPIController implements Refer
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
-		List<ReferenceSet> data = referenceSetService.findReferenceSets(body, metadata);
-		return responseOK(new ReferenceSetsListResponse(), new ReferenceSetsListResponseResult(), data, metadata);
+
+		String searchReqDbId = searchService.saveSearchRequest(body, SearchRequestTypes.GERMPLASM);
+		if (searchReqDbId != null) {
+			return responseAccepted(searchReqDbId);
+		} else {
+			List<ReferenceSet> data = referenceSetService.findReferenceSets(body, metadata);
+			return responseOK(new ReferenceSetsListResponse(), new ReferenceSetsListResponseResult(), data, metadata);
+		}
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ReferenceSetsListResponse> searchReferenceSetsSearchResultsDbIdGet(
+	public ResponseEntity<? extends BrAPIResponse> searchReferenceSetsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -101,7 +115,15 @@ public class ReferenceSetsApiController extends BrAPIController implements Refer
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		return new ResponseEntity<ReferenceSetsListResponse>(HttpStatus.NOT_IMPLEMENTED);
+		Metadata metadata = generateMetaDataTemplate(page, pageSize);
+		SearchRequestEntity request = searchService.findById(searchResultsDbId);
+		if (request != null) {
+			ReferenceSetsSearchRequest body = request.getParameters(ReferenceSetsSearchRequest.class);
+			List<ReferenceSet> data = referenceSetService.findReferenceSets(body, metadata);
+			return responseOK(new ReferenceSetsListResponse(), new ReferenceSetsListResponseResult(), data, metadata);
+		}else {
+			return responseAccepted(searchResultsDbId);
+		}
 	}
 
 }

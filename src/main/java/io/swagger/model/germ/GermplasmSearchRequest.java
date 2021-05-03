@@ -1,15 +1,19 @@
 package io.swagger.model.germ;
 
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.SearchRequest;
 import io.swagger.model.SearchRequestParametersPaging;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
+
 import javax.validation.Valid;
 
 /**
@@ -17,7 +21,7 @@ import javax.validation.Valid;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:33:36.513Z[GMT]")
-public class GermplasmSearchRequest extends SearchRequestParametersPaging  {
+public class GermplasmSearchRequest extends SearchRequestParametersPaging implements SearchRequest {
   @JsonProperty("commonCropNames")
   @Valid
   private List<String> commonCropNames = null;
@@ -550,4 +554,27 @@ public class GermplasmSearchRequest extends SearchRequestParametersPaging  {
     }
     return o.toString().replace("\n", "\n    ");
   }
+
+@Override
+@JsonIgnore
+public Integer getTotalParameterCount() {
+	Integer count = 0;
+    if (this.commonCropNames != null) {count += this.commonCropNames.size();}
+    if (this.germplasmDbIds != null) {count += this.germplasmDbIds.size();}
+    if (this.germplasmNames != null) {count += this.germplasmNames.size();}
+    if (this.studyDbIds != null) {count += this.studyDbIds.size();}
+    if (this.studyNames != null) {count += this.studyNames.size();}
+    if (this.externalReferenceIDs != null) {count += this.externalReferenceIDs.size();}
+    if (this.externalReferenceSources != null) {count += this.externalReferenceSources.size();}
+    if (this.accessionNumbers != null) {count += this.accessionNumbers.size();}
+    if (this.collections != null) {count += this.collections.size();}
+    if (this.genus != null) {count += this.genus.size();}
+    if (this.germplasmPUIs != null) {count += this.germplasmPUIs.size();}
+    if (this.parentDbIds != null) {count += this.parentDbIds.size();}
+    if (this.progenyDbIds != null) {count += this.progenyDbIds.size();}
+    if (this.species != null) {count += this.species.size();}
+    if (this.synonyms != null) {count += this.synonyms.size();}
+	
+	return count;
+}
 }
