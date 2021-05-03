@@ -23,7 +23,8 @@ public class SearchService {
 
 	public String saveSearchRequest(SearchRequest body, SearchRequestTypes type) throws BrAPIServerException {
 
-		Integer paramCount = body.getTotalParameterCount();
+		Integer paramCount = body.getTotalParameterCount() < 14? body.getTotalParameterCount() : 14;
+		
 
 		if (paramCount < 5) {
 			return null;
