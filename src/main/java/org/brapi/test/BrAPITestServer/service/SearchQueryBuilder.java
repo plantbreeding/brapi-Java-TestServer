@@ -40,7 +40,7 @@ public class SearchQueryBuilder<T> {
 	public Class<T> getClazz() {
 		return clazz;
 	}
-
+	
 	public SearchQueryBuilder<T> appendList(List<String> list, String columnName) {
 		String paramName = paramFilter(columnName);
 		if (list != null && !list.isEmpty()) {
@@ -152,6 +152,21 @@ public class SearchQueryBuilder<T> {
 		} else if (max != null) {
 			query += "AND " + entityPrefix(columnName) + " <= :" + paramNameMax + " ";
 			params.put(paramNameMax, max);
+		}
+		return this;
+	}
+
+	public SearchQueryBuilder<T> appendPersonNamesList(List<String> list, String columnFirst, String columnMiddle, String columnLast) {
+		if (list != null && !list.isEmpty()) {
+			this.params.put("namesList", list);
+			this.query += "AND (" + entityPrefix(columnFirst) + " in :namesList ";
+			this.query += "OR " + entityPrefix(columnMiddle) + " in :namesList ";
+			this.query += "OR " + entityPrefix(columnLast) + " in :namesList ";
+			this.query += "OR concat(" + entityPrefix(columnFirst) + ", ' ', " + entityPrefix(columnMiddle) + ") in :namesList ";
+			this.query += "OR concat(" + entityPrefix(columnFirst) + ", ' ', " + entityPrefix(columnLast) + ") in :namesList ";
+			this.query += "OR concat(" + entityPrefix(columnMiddle) + ", ' ', " + entityPrefix(columnLast) + ") in :namesList ";
+			this.query += "OR concat(" + entityPrefix(columnFirst) + ", ' ', " + entityPrefix(columnMiddle) + ", ' ', " + entityPrefix(columnLast) + ") in :namesList ";
+			this.query += ") ";
 		}
 		return this;
 	}
