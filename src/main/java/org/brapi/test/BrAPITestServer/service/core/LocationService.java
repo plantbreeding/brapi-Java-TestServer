@@ -51,7 +51,7 @@ public class LocationService {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<LocationEntity> searchQuery = new SearchQueryBuilder<LocationEntity>(LocationEntity.class)
 				.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
-				.appendList(request.getAbbreviations(), "abbreviaion")
+				.appendList(request.getAbbreviations(), "abbreviation")
 				.appendList(request.getCountryCodes(), "countrycode")
 				.appendList(request.getCountryNames(), "countryname")
 				.appendList(request.getInstituteAddresses(), "instituteaddress")
