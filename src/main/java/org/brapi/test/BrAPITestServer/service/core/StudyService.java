@@ -125,7 +125,7 @@ public class StudyService {
 			searchQuery = searchQuery.join("observationUnits", "obsunit");
 		}
 		if (request.getObservationVariableDbIds() != null || request.getObservationVariableNames() != null) {
-			searchQuery = searchQuery.join("*ou.observations", "observation");
+			searchQuery = searchQuery.join("*obsunit.observations", "observation");
 		}
 
 		searchQuery = searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
