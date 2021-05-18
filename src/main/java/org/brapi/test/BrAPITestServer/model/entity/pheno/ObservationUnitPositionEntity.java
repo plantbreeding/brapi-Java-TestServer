@@ -28,7 +28,7 @@ public class ObservationUnitPositionEntity extends BrAPIBaseEntity {
 	private ObservationUnitHierarchyLevelEnum levelName;
 	@Column
 	private Integer levelOrder;
-	@OneToMany(mappedBy = "position")
+	@OneToMany(mappedBy = "position", cascade = CascadeType.ALL)
 	private List<ObservationUnitLevelRelationshipEntity> observationLevelRelationships;
 	@Column
 	private String positionCoordinateX;

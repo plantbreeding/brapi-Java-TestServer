@@ -27,12 +27,10 @@ public class GeoJSONUtility {
 			entity.setType(POLYGON);
 			// Only handles single polygons, most plots are rectangles
 			Polygon polygon = ((PolygonGeometry) geojson.getGeometry()).getCoordinates();
-			if (polygon.size() == 1) {
-				LinearRing ring = polygon.get(0);
-				for (Position point : ring) {
-					CoordinateEntity pointEntity = convertToEntiy(entity, point);
-					entity.addCoordinate(pointEntity);
-				}
+			LinearRing ring = polygon.get(0);
+			for (Position point : ring) {
+				CoordinateEntity pointEntity = convertToEntiy(entity, point);
+				entity.addCoordinate(pointEntity);
 			}
 		}
 		return entity;
