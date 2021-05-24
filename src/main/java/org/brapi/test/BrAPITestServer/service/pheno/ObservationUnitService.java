@@ -180,8 +180,8 @@ public class ObservationUnitService {
 		Page<ObservationUnitEntity> page = observationUnitRepository.findAllBySearch(searchQuery, pageReq);
 		List<ObservationUnit> observationUnits = page.map(this::convertFromEntity).getContent();
 		PagingUtility.calculateMetaData(metadata, page);
-
-		if (!request.isIncludeObservations()) {
+		
+		if (request.isIncludeObservations() == null || !request.isIncludeObservations()) {
 			for (ObservationUnit ou : observationUnits) {
 				ou.setObservations(null);
 			}
