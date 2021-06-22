@@ -155,27 +155,28 @@ public class ObservationUnitService {
 					.appendEnumList(
 							request.getObservationLevelRelationships().stream().filter(r -> r.getLevelName() != null)
 									.map(r -> r.getLevelName()).collect(Collectors.toList()),
-							"*levelRelationship.name")
+							"*levelRelationship.levelName")
 					.appendList(
 							request.getObservationLevelRelationships().stream().filter(r -> r.getLevelCode() != null)
 									.map(r -> r.getLevelCode()).collect(Collectors.toList()),
-							"*levelRelationship.code")
+							"*levelRelationship.levelCode")
 					.appendIntList(
 							request.getObservationLevelRelationships().stream().filter(r -> r.getLevelOrder() != null)
 									.map(r -> r.getLevelOrder()).collect(Collectors.toList()),
-							"*levelRelationship.order");
+							"*levelRelationship.levelOrder");
 		}
 		searchQuery = searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
 				.appendList(request.getGermplasmDbIds(), "germplasm.id")
-				.appendList(request.getGermplasmNames(), "germplasm.name")
+				.appendList(request.getGermplasmNames(), "germplasm.germplasmName")
 				.appendList(request.getLocationDbIds(), "study.location.id")
-				.appendList(request.getLocationNames(), "study.location.name")
+				.appendList(request.getLocationNames(), "study.location.locationName")
 				.appendList(request.getObservationUnitDbIds(), "id")
 				.appendList(request.getProgramDbIds(), "study.trial.program.id")
 				.appendList(request.getProgramNames(), "study.trial.program.name")
-				.appendList(request.getStudyDbIds(), "study.id").appendList(request.getStudyNames(), "study.name")
+				.appendList(request.getStudyDbIds(), "study.id")
+				.appendList(request.getStudyNames(), "study.studyName")
 				.appendList(request.getTrialDbIds(), "study.trial.id")
-				.appendList(request.getTrialNames(), "study.trial.name");
+				.appendList(request.getTrialNames(), "study.trial.trailName");
 
 		Page<ObservationUnitEntity> page = observationUnitRepository.findAllBySearch(searchQuery, pageReq);
 		List<ObservationUnit> observationUnits = page.map(this::convertFromEntity).getContent();

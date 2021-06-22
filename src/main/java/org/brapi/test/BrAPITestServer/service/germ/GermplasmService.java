@@ -129,7 +129,7 @@ public class GermplasmService {
 		if (request.getStudyDbIds() != null || request.getStudyNames() != null) {
 			searchQuery = searchQuery.join("observationUnits", "obsunit")
 					.appendList(request.getStudyDbIds(), "*obsunit.study.id")
-					.appendList(request.getStudyNames(), "*obsunit.study.name");
+					.appendList(request.getStudyNames(), "*obsunit.study.studyName");
 		}
 		if (request.getSynonyms() != null) {
 			searchQuery = searchQuery.join("synonyms", "synonym")

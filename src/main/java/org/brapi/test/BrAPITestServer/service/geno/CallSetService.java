@@ -62,7 +62,7 @@ public class CallSetService {
 				.appendList(request.getGermplasmDbIds(), "sample.germplasm.id")
 				.appendList(request.getGermplasmNames(), "sample.germplasm.germplasmName")
 				.appendList(request.getSampleDbIds(), "sample.id")
-				.appendList(request.getSampleNames(), "sample.name");
+				.appendList(request.getSampleNames(), "sample.sampleName");
 
 		Page<CallSetEntity> page = callSetRepository.findAllBySearch(searchQuery, pageReq);
 		PagingUtility.calculateMetaData(metadata, page);

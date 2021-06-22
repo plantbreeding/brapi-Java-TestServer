@@ -73,7 +73,7 @@ public class GermplasmAttributeValueService {
 						.appendList(request.getTraitClasses(), "attribute.trait.traitClass")
 						.appendList(request.getTraitDbIds(), "attribute.trait.id")
 						.appendList(request.getGermplasmDbIds(), "germplasm.id")
-						.appendList(request.getGermplasmNames(), "germplasm.name");
+						.appendList(request.getGermplasmNames(), "germplasm.germplasmName");
 
 		Page<GermplasmAttributeValueEntity> page = attributeValueRepository.findAllBySearch(searchQuery, pageReq);
 		List<GermplasmAttributeValue> attributeValues = page.map(this::convertFromEntity).getContent();
