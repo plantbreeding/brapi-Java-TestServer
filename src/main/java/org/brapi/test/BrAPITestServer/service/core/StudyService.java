@@ -125,7 +125,7 @@ public class StudyService {
 			searchQuery = searchQuery.join("observationUnits", "obsunit");
 		}
 		if (request.getObservationVariableDbIds() != null || request.getObservationVariableNames() != null) {
-			searchQuery = searchQuery.join("*ou.observations", "observation");
+			searchQuery = searchQuery.join("*obsunit.observations", "observation");
 		}
 
 		searchQuery = searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
@@ -141,7 +141,7 @@ public class StudyService {
 				.appendList(request.getSeasonDbIds(), "*season.id").appendList(request.getStudyCodes(), "studyCode")
 				.appendList(request.getStudyDbIds(), "id").appendList(request.getStudyNames(), "studyName")
 				.appendList(request.getStudyPUIs(), "studyPUI").appendList(request.getStudyTypes(), "studyType")
-				.appendList(request.getTrialDbIds(), "trial.id").appendList(request.getTrialNames(), "trial.name")
+				.appendList(request.getTrialDbIds(), "trial.id").appendList(request.getTrialNames(), "trial.trialName")
 				.withSort(getSortByField(request.getSortBy()), request.getSortOrder());
 
 		Page<StudyEntity> studiesPage = studyRepository.findAllBySearch(searchQuery, pageReq);

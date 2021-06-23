@@ -129,36 +129,36 @@ public class ObservationService {
 					.appendEnumList(
 							request.getObservationLevels().stream().filter(r -> r.getLevelName() != null)
 									.map(r -> r.getLevelName()).collect(Collectors.toList()),
-							"observationUnit.position.level.name")
+							"observationUnit.position.level.levelName")
 					.appendList(
 							request.getObservationLevels().stream().filter(r -> r.getLevelCode() != null)
 									.map(r -> r.getLevelCode()).collect(Collectors.toList()),
-							"observationUnit.position.level.code")
+							"observationUnit.position.level.levelCode")
 					.appendIntList(
 							request.getObservationLevels().stream().filter(r -> r.getLevelOrder() != null)
 									.map(r -> r.getLevelOrder()).collect(Collectors.toList()),
-							"observationUnit.position.level.order");
+							"observationUnit.position.level.levelOrder");
 		}
 		if (request.getObservationLevelRelationships() != null) {
 			searchQuery = searchQuery.join("observationUnit.position.levelRelationships", "levelRelationship")
 					.appendEnumList(
 							request.getObservationLevelRelationships().stream().filter(r -> r.getLevelName() != null)
 									.map(r -> r.getLevelName()).collect(Collectors.toList()),
-							"levelRelationship.name")
+							"levelRelationship.levelName")
 					.appendList(
 							request.getObservationLevelRelationships().stream().filter(r -> r.getLevelCode() != null)
 									.map(r -> r.getLevelCode()).collect(Collectors.toList()),
-							"levelRelationship.code")
+							"levelRelationship.levelCode")
 					.appendIntList(
 							request.getObservationLevelRelationships().stream().filter(r -> r.getLevelOrder() != null)
 									.map(r -> r.getLevelOrder()).collect(Collectors.toList()),
-							"levelRelationship.order");
+							"levelRelationship.levelOrder");
 		}
 		searchQuery = searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
 				.appendList(request.getGermplasmDbIds(), "observationUnit.germplasm.id")
-				.appendList(request.getGermplasmNames(), "observationUnit.germplasm.name")
+				.appendList(request.getGermplasmNames(), "observationUnit.germplasm.germplasmName")
 				.appendList(request.getLocationDbIds(), "observationUnit.study.location.id")
-				.appendList(request.getLocationNames(), "observationUnit.study.location.name")
+				.appendList(request.getLocationNames(), "observationUnit.study.location.locationName")
 				.appendList(request.getObservationDbIds(), "id")
 				.appendList(request.getObservationUnitDbIds(), "observationUnit.id")
 				.appendDateRange(request.getObservationTimeStampRangeStart(), request.getObservationTimeStampRangeEnd(),
@@ -166,12 +166,12 @@ public class ObservationService {
 				.appendList(request.getObservationVariableDbIds(), "observationVariable.id")
 				.appendList(request.getObservationVariableNames(), "observationVariable.name")
 				.appendList(request.getProgramDbIds(), "observationUnit.study.trial.program.id")
-				.appendList(request.getProgramNames(), "observationUnit.study.trial.program.name")
+				.appendList(request.getProgramNames(), "observationUnit.study.trial.program.programName")
 				.appendList(request.getSeasonDbIds(), "season.id")
 				.appendList(request.getStudyDbIds(), "observationUnit.study.id")
-				.appendList(request.getStudyNames(), "observationUnit.study.name")
+				.appendList(request.getStudyNames(), "observationUnit.study.studyName")
 				.appendList(request.getTrialDbIds(), "observationUnit.study.trial.id")
-				.appendList(request.getTrialNames(), "observationUnit.study.trial.name");
+				.appendList(request.getTrialNames(), "observationUnit.study.trial.trialName");
 
 		Page<ObservationEntity> page = observationRepository.findAllBySearch(searchQuery, pageReq);
 		List<Observation> observations = page.map(this::convertFromEntity).getContent();

@@ -49,19 +49,23 @@ public class LocationService {
 
 	public List<Location> findLocations(LocationSearchRequest request, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
-		SearchQueryBuilder<LocationEntity> searchQuery = new SearchQueryBuilder<LocationEntity>(LocationEntity.class)
-				.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
-				.appendList(request.getAbbreviations(), "abbreviaion")
-				.appendList(request.getCountryCodes(), "countrycode")
-				.appendList(request.getCountryNames(), "countryname")
-				.appendList(request.getInstituteAddresses(), "instituteaddress")
-				.appendList(request.getInstituteNames(), "institutename")
+		SearchQueryBuilder<LocationEntity> searchQuery = new SearchQueryBuilder<LocationEntity>(LocationEntity.class);
+
+		if (request.getAltitudeMin() != null || request.getAltitudeMax() != null || request.getCoordinates() != null) {
+			searchQuery = searchQuery.join("coordinates.coordinates", "coordinates");
+			searchQuery = searchQuery.appendNumberRange(request.getAltitudeMin(), request.getAltitudeMax(), "*coordinates.altitude")
+			.appendGeoJSONArea(request.getCoordinates());
+		}
+		searchQuery = searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
+				.appendList(request.getAbbreviations(), "abbreviation")
+				.appendList(request.getCountryCodes(), "countryCode")
+				.appendList(request.getCountryNames(), "countryName")
+				.appendList(request.getInstituteAddresses(), "instituteAddress")
+				.appendList(request.getInstituteNames(), "instituteName")
 				.appendList(request.getLocationDbIds(), "id")
 				.appendList(request.getLocationNames(), "locationName")
-				.appendList(request.getLocationTypes(), "locationType")
-				.appendNumberRange(request.getAltitudeMin(), request.getAltitudeMax(), "altitude")
-				.appendGeoJSONArea(request.getCoordinates());
-
+				.appendList(request.getLocationTypes(), "locationType");
+				
 		Page<LocationEntity> entityPage = locationRepository.findAllBySearch(searchQuery, pageReq);
 
 		List<Location> data = entityPage.map(this::convertFromEntity).getContent();

@@ -67,11 +67,11 @@ public class SampleService {
 		SearchQueryBuilder<SampleEntity> searchQuery = new SearchQueryBuilder<SampleEntity>(SampleEntity.class)
 				.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
 				.appendList(request.getGermplasmDbIds(), "germplasm.id")
-				.appendList(request.getGermplasmNames(), "germplasm.name")
+				.appendList(request.getGermplasmNames(), "germplasm.germplasmName")
 				.appendList(request.getObservationUnitDbIds(), "observationUnit.id")
 				.appendList(request.getPlateDbIds(), "plate.id").appendList(request.getSampleDbIds(), "id")
 				.appendList(request.getStudyDbIds(), "observationUnit.study.id")
-				.appendList(request.getStudyNames(), "observationUnit.study.name");
+				.appendList(request.getStudyNames(), "observationUnit.study.studyName");
 
 		Page<SampleEntity> page = sampleRepository.findAllBySearch(searchQuery, pageReq);
 		List<Sample> samples = page.map(this::convertFromEntity).getContent();

@@ -64,7 +64,7 @@ public class ProgramService {
 				.appendList(request.getAbbreviations(), "abbreviation")
 				.appendList(request.getCommonCropNames(), "crop.cropName")
 				.appendList(request.getLeadPersonDbIds(), "leadPerson.id")
-				.appendList(request.getLeadPersonNames(), "leadPerson.lastName")
+				.appendPersonNamesList(request.getLeadPersonNames(), "leadPerson.firstName", "leadPerson.middleName", "leadPerson.lastName")
 				.appendList(request.getObjectives(), "objective").appendList(request.getProgramDbIds(), "id")
 				.appendList(request.getProgramNames(), "name");
 

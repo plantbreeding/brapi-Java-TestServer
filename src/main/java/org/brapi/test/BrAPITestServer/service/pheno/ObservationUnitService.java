@@ -51,6 +51,7 @@ import io.swagger.model.pheno.ObservationVariableSearchRequest;
 @Service
 public class ObservationUnitService {
 	private final ObservationUnitRepository observationUnitRepository;
+	
 	private final GermplasmService germplasmService;
 	private final ObservationService observationService;
 	private final StudyService studyService;
@@ -62,6 +63,7 @@ public class ObservationUnitService {
 			ObservationService observationService, GermplasmService germplasmService, SeedLotService seedLotService,
 			ObservationVariableService observationVariableService) {
 		this.observationUnitRepository = observationUnitRepository;
+		
 		this.studyService = studyService;
 		this.germplasmService = germplasmService;
 		this.observationService = observationService;
@@ -153,31 +155,39 @@ public class ObservationUnitService {
 					.appendEnumList(
 							request.getObservationLevelRelationships().stream().filter(r -> r.getLevelName() != null)
 									.map(r -> r.getLevelName()).collect(Collectors.toList()),
-							"*levelRelationship.name")
+							"*levelRelationship.levelName")
 					.appendList(
 							request.getObservationLevelRelationships().stream().filter(r -> r.getLevelCode() != null)
 									.map(r -> r.getLevelCode()).collect(Collectors.toList()),
-							"*levelRelationship.code")
+							"*levelRelationship.levelCode")
 					.appendIntList(
 							request.getObservationLevelRelationships().stream().filter(r -> r.getLevelOrder() != null)
 									.map(r -> r.getLevelOrder()).collect(Collectors.toList()),
-							"*levelRelationship.order");
+							"*levelRelationship.levelOrder");
 		}
 		searchQuery = searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
 				.appendList(request.getGermplasmDbIds(), "germplasm.id")
-				.appendList(request.getGermplasmNames(), "germplasm.name")
+				.appendList(request.getGermplasmNames(), "germplasm.germplasmName")
 				.appendList(request.getLocationDbIds(), "study.location.id")
-				.appendList(request.getLocationNames(), "study.location.name")
+				.appendList(request.getLocationNames(), "study.location.locationName")
 				.appendList(request.getObservationUnitDbIds(), "id")
 				.appendList(request.getProgramDbIds(), "study.trial.program.id")
 				.appendList(request.getProgramNames(), "study.trial.program.name")
-				.appendList(request.getStudyDbIds(), "study.id").appendList(request.getStudyNames(), "study.name")
+				.appendList(request.getStudyDbIds(), "study.id")
+				.appendList(request.getStudyNames(), "study.studyName")
 				.appendList(request.getTrialDbIds(), "study.trial.id")
-				.appendList(request.getTrialNames(), "study.trial.name");
+				.appendList(request.getTrialNames(), "study.trial.trailName");
 
 		Page<ObservationUnitEntity> page = observationUnitRepository.findAllBySearch(searchQuery, pageReq);
 		List<ObservationUnit> observationUnits = page.map(this::convertFromEntity).getContent();
 		PagingUtility.calculateMetaData(metadata, page);
+		
+		if (request.isIncludeObservations() == null || !request.isIncludeObservations()) {
+			for (ObservationUnit ou : observationUnits) {
+				ou.setObservations(null);
+			}
+		}
+
 		return observationUnits;
 	}
 
@@ -189,7 +199,8 @@ public class ObservationUnitService {
 		return getObservationUnitEntity(observationUnitDbId, HttpStatus.BAD_REQUEST);
 	}
 
-	public ObservationUnitEntity getObservationUnitEntity(String observationUnitDbId, HttpStatus errorStatus) throws BrAPIServerException {
+	public ObservationUnitEntity getObservationUnitEntity(String observationUnitDbId, HttpStatus errorStatus)
+			throws BrAPIServerException {
 		ObservationUnitEntity observationUnit = null;
 		Optional<ObservationUnitEntity> entityOpt = observationUnitRepository.findById(observationUnitDbId);
 		if (entityOpt.isPresent()) {
@@ -236,7 +247,8 @@ public class ObservationUnitService {
 
 			savedEntity = observationUnitRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "observationUnitDbId not found: " + observationUnitDbId);
+			throw new BrAPIServerException(HttpStatus.NOT_FOUND,
+					"observationUnitDbId not found: " + observationUnitDbId);
 		}
 
 		return convertFromEntity(savedEntity);
@@ -362,7 +374,10 @@ public class ObservationUnitService {
 		if (unit.getObservationUnitPosition() != null) {
 			if (entity.getPosition() == null)
 				entity.setPosition(new ObservationUnitPositionEntity());
-			updateEntity(entity.getPosition(), unit.getObservationUnitPosition());
+			ObservationUnitPositionEntity position = entity.getPosition();
+			updateEntity(position, unit.getObservationUnitPosition());
+			position.setObservationUnit(entity);
+			entity.setPosition(position);
 		}
 		if (unit.getSeedLotDbId() != null) {
 			SeedLotEntity seedLot = seedLotService.getSeedLotEntity(unit.getSeedLotDbId());
@@ -376,7 +391,8 @@ public class ObservationUnitService {
 			entity.setTreatments(unit.getTreatments().stream().map(t -> {
 				TreatmentEntity e = new TreatmentEntity();
 				e.setFactor(t.getFactor());
-				e.setModality(t.getFactor());
+				e.setModality(t.getModality());
+				e.setObservationUnit(entity);
 				return e;
 			}).collect(Collectors.toList()));
 
@@ -398,7 +414,14 @@ public class ObservationUnitService {
 		}
 		if (position.getObservationLevelRelationships() != null)
 			entity.setObservationLevelRelationships(position.getObservationLevelRelationships().stream()
-					.map(this::convertToEntity).collect(Collectors.toList()));
+					.map(level -> {
+						ObservationUnitLevelRelationshipEntity relationshipEntity = new ObservationUnitLevelRelationshipEntity();
+						relationshipEntity.setLevelCode(level.getLevelCode());
+						relationshipEntity.setLevelName(level.getLevelName());
+						relationshipEntity.setLevelOrder(level.getLevelOrder());
+						relationshipEntity.setPosition(entity);
+						return relationshipEntity;
+					}).collect(Collectors.toList()));
 		if (position.getPositionCoordinateX() != null)
 			entity.setPositionCoordinateX(position.getPositionCoordinateX());
 		if (position.getPositionCoordinateXType() != null)
@@ -407,14 +430,6 @@ public class ObservationUnitService {
 			entity.setPositionCoordinateY(position.getPositionCoordinateY());
 		if (position.getPositionCoordinateYType() != null)
 			entity.setPositionCoordinateYType(position.getPositionCoordinateYType());
-	}
-
-	private ObservationUnitLevelRelationshipEntity convertToEntity(ObservationUnitLevelRelationship level) {
-		ObservationUnitLevelRelationshipEntity entity = new ObservationUnitLevelRelationshipEntity();
-		entity.setLevelCode(level.getLevelCode());
-		entity.setLevelName(level.getLevelName());
-		entity.setLevelOrder(level.getLevelOrder());
-		return entity;
 	}
 
 	private List<List<String>> buildDataMatrix(List<ObservationUnit> observationUnits,
