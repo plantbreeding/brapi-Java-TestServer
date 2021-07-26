@@ -23,7 +23,7 @@ import javax.validation.Valid;
 public class TraitBaseClass {
 	@JsonProperty("additionalInfo")
 	@Valid
-	private Map<String, String> additionalInfo = null;
+	private Map<String, Object> additionalInfo = null;
 	@JsonProperty("alternativeAbbreviations")
 	@Valid
 	private List<String> alternativeAbbreviations = null;
@@ -59,14 +59,14 @@ public class TraitBaseClass {
 	@JsonProperty("traitName")
 	private String traitName = null;
 
-	public TraitBaseClass additionalInfo(Map<String, String> additionalInfo) {
+	public TraitBaseClass additionalInfo(Map<String, Object> additionalInfo) {
 		this.additionalInfo = additionalInfo;
 		return this;
 	}
 
 	public TraitBaseClass putAdditionalInfoItem(String key, String additionalInfoItem) {
 		if (this.additionalInfo == null) {
-			this.additionalInfo = new HashMap<String, String>();
+			this.additionalInfo = new HashMap<String, Object>();
 		}
 		this.additionalInfo.put(key, additionalInfoItem);
 		return this;
@@ -79,11 +79,11 @@ public class TraitBaseClass {
 	 **/
 	@ApiModelProperty(value = "Additional arbitrary info")
 
-	public Map<String, String> getAdditionalInfo() {
+	public Map<String, Object> getAdditionalInfo() {
 		return additionalInfo;
 	}
 
-	public void setAdditionalInfo(Map<String, String> additionalInfo) {
+	public void setAdditionalInfo(Map<String, Object> additionalInfo) {
 		this.additionalInfo = additionalInfo;
 	}
 	public TraitBaseClass alternativeAbbreviations(List<String> alternativeAbbreviations) {

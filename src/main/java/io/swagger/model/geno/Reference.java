@@ -24,7 +24,7 @@ import javax.validation.Valid;
 public class Reference {
 	@JsonProperty("additionalInfo")
 	@Valid
-	private Map<String, String> additionalInfo = null;
+	private Map<String, Object> additionalInfo = null;
 
 	@JsonProperty("isDerived")
 	private Boolean isDerived = null;
@@ -65,14 +65,14 @@ public class Reference {
 		this.referenceSetDbId = referenceSetDbId;
 	}
 
-	public Reference additionalInfo(Map<String, String> additionalInfo) {
+	public Reference additionalInfo(Map<String, Object> additionalInfo) {
 		this.additionalInfo = additionalInfo;
 		return this;
 	}
 
 	public Reference putAdditionalInfoItem(String key, String additionalInfoItem) {
 		if (this.additionalInfo == null) {
-			this.additionalInfo = new HashMap<String, String>();
+			this.additionalInfo = new HashMap<String, Object>();
 		}
 		this.additionalInfo.put(key, additionalInfoItem);
 		return this;
@@ -85,11 +85,11 @@ public class Reference {
 	 **/
 	@ApiModelProperty(value = "Additional arbitrary info")
 
-	public Map<String, String> getAdditionalInfo() {
+	public Map<String, Object> getAdditionalInfo() {
 		return additionalInfo;
 	}
 
-	public void setAdditionalInfo(Map<String, String> additionalInfo) {
+	public void setAdditionalInfo(Map<String, Object> additionalInfo) {
 		this.additionalInfo = additionalInfo;
 	}
 

@@ -22,7 +22,7 @@ import javax.validation.Valid;
 public class SeedLotNewRequest   {
   @JsonProperty("additionalInfo")
   @Valid
-  private Map<String, String> additionalInfo = null;
+  private Map<String, Object> additionalInfo = null;
 
   @JsonProperty("amount")
   private BigDecimal amount = null;
@@ -60,14 +60,14 @@ public class SeedLotNewRequest   {
   @JsonProperty("units")
   private String units = null;
 
-  public SeedLotNewRequest additionalInfo(Map<String, String> additionalInfo) {
+  public SeedLotNewRequest additionalInfo(Map<String, Object> additionalInfo) {
     this.additionalInfo = additionalInfo;
     return this;
   }
 
   public SeedLotNewRequest putAdditionalInfoItem(String key, String additionalInfoItem) {
     if (this.additionalInfo == null) {
-      this.additionalInfo = new HashMap<String, String>();
+      this.additionalInfo = new HashMap<String, Object>();
     }
     this.additionalInfo.put(key, additionalInfoItem);
     return this;
@@ -79,11 +79,11 @@ public class SeedLotNewRequest   {
   **/
   @ApiModelProperty(value = "Additional arbitrary info")
   
-    public Map<String, String> getAdditionalInfo() {
+    public Map<String, Object> getAdditionalInfo() {
     return additionalInfo;
   }
 
-  public void setAdditionalInfo(Map<String, String> additionalInfo) {
+  public void setAdditionalInfo(Map<String, Object> additionalInfo) {
     this.additionalInfo = additionalInfo;
   }
 

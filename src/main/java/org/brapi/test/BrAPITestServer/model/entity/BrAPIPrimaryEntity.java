@@ -36,8 +36,8 @@ public class BrAPIPrimaryEntity extends BrAPIBaseEntity {
 		this.additionalInfo = additionalInfo;
 	}
 
-	public Map<String, String> getAdditionalInfoMap() {
-		Map<String, String> info = new HashMap<>();
+	public Map<String, Object> getAdditionalInfoMap() {
+		Map<String, Object> info = new HashMap<>();
 		if (getAdditionalInfo() != null) {
 			for (AdditionalInfoEntity entity : getAdditionalInfo()) {
 				info.put(entity.getKey(), entity.getValue());
@@ -46,10 +46,10 @@ public class BrAPIPrimaryEntity extends BrAPIBaseEntity {
 		return info;
 	}
 
-	public void setAdditionalInfo(Map<String, String> map) {
+	public void setAdditionalInfo(Map<String, Object> map) {
 		if (map != null) {
 			setAdditionalInfo(new ArrayList<>());
-			for (Entry<String, String> entry : map.entrySet()) {
+			for (Entry<String, Object> entry : map.entrySet()) {
 				AdditionalInfoEntity entity = new AdditionalInfoEntity();
 				entity.setKey(entry.getKey());
 				entity.setValue(entry.getValue());
