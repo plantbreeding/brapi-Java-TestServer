@@ -9,6 +9,7 @@ import javax.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.ContactEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.DatasetAuthorshipEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.ProgramEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.PublicationEntity;
@@ -35,14 +36,16 @@ import io.swagger.model.core.TrialSearchRequest;
 
 @Service
 public class TrialService {
-	private TrialRepository trialRepository;
-	private ContactService contactService;
-	private ProgramService programService;
+	private final TrialRepository trialRepository;
+	private final ContactService contactService;
+	private final ProgramService programService;
+	private final CropService cropService;
 
-	public TrialService(TrialRepository trialRepository, ContactService contactService, ProgramService programService) {
+	public TrialService(TrialRepository trialRepository, ContactService contactService, ProgramService programService, CropService cropService) {
 		this.trialRepository = trialRepository;
 		this.contactService = contactService;
 		this.programService = programService;
+		this.cropService = cropService;
 	}
 
 	public List<Trial> findTrials(@Valid String commonCropName, @Valid String contactDbId, @Valid String programDbId,
@@ -99,7 +102,7 @@ public class TrialService {
 		}
 
 		searchQuery = searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
-				.appendList(request.getCommonCropNames(), "program.crop.cropName")
+				.appendList(request.getCommonCropNames(), "crop.cropName")
 				.appendList(request.getContactDbIds(), "*contact.id")
 				.appendList(request.getLocationDbIds(), "*study.location.id")
 				.appendList(request.getLocationNames(), "*study.location.locationName")
@@ -182,14 +185,6 @@ public class TrialService {
 		trial.setTrialName(entity.getTrialName());
 		trial.setTrialPUI(entity.getTrialPUI());
 
-		if (entity.getProgram() != null) {
-			trial.setProgramDbId(entity.getProgram().getId());
-			trial.setProgramName(entity.getProgram().getName());
-			if (entity.getProgram().getCrop() != null) {
-				trial.setCommonCropName(entity.getProgram().getCrop().getCropName());
-			}
-		}
-
 		if (entity.getContacts() != null) {
 			trial.setContacts(entity.getContacts().stream().map(this.contactService::convertFromEntity)
 					.collect(Collectors.toList()));
@@ -204,6 +199,17 @@ public class TrialService {
 					entity.getPublications().stream().map(this::convertFromEntity).collect(Collectors.toList()));
 		}
 
+
+		if (entity.getProgram() != null) {
+			trial.setProgramDbId(entity.getProgram().getId());
+			trial.setProgramName(entity.getProgram().getName());
+			if (entity.getProgram().getCrop() != null) {
+				trial.setCommonCropName(entity.getProgram().getCrop().getCropName());
+			}
+		}else if(entity.getCrop() != null) {
+			trial.setCommonCropName(entity.getCrop().getCropName());
+		}
+		
 		return trial;
 	}
 
@@ -234,10 +240,6 @@ public class TrialService {
 			entity.setEndDate(DateUtility.toDate(body.getEndDate()));
 		if (body.getExternalReferences() != null)
 			entity.setExternalReferences(body.getExternalReferences());
-		if (body.getProgramDbId() != null) {
-			ProgramEntity program = programService.getProgramEntity(body.getProgramDbId());
-			entity.setProgram(program);
-		}
 		if (body.getPublications() != null) {
 			if (entity.getPublications() != null) {
 				for (PublicationEntity pub : entity.getPublications()) {
@@ -255,6 +257,15 @@ public class TrialService {
 			entity.setTrialName(body.getTrialName());
 		if (body.getTrialPUI() != null)
 			entity.setTrialPUI(body.getTrialPUI());
+		
+		if (body.getProgramDbId() != null) {
+			ProgramEntity program = programService.getProgramEntity(body.getProgramDbId());
+			entity.setProgram(program);
+		}else if(body.getCommonCropName() != null) {
+			CropEntity crop = cropService.getCropEntity(body.getCommonCropName());
+			entity.setCrop(crop);
+		}
+		
 	}
 
 	private TrialNewRequestDatasetAuthorships convertFromEntity(DatasetAuthorshipEntity entity) {

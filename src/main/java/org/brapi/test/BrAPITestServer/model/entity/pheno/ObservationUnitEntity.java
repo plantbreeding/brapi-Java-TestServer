@@ -11,15 +11,16 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.ProgramEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.TrialEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.GermplasmEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.SeedLotEntity;
 
 @Entity
 @Table(name = "observation_unit")
 public class ObservationUnitEntity extends BrAPIPrimaryEntity {
-	@ManyToOne
-	private StudyEntity study;
 	@ManyToOne
 	private GermplasmEntity germplasm;
 	@Column
@@ -32,14 +33,45 @@ public class ObservationUnitEntity extends BrAPIPrimaryEntity {
 	private List<TreatmentEntity> treatments;
 	@OneToOne(mappedBy="observationUnit", cascade=CascadeType.ALL)
 	private ObservationUnitPositionEntity position;
+	
+	@ManyToOne
+	private CropEntity crop;
+	@ManyToOne
+	private ProgramEntity program;
+	@ManyToOne
+	private TrialEntity trial;
+	@ManyToOne
+	private StudyEntity study;
+	
 	@OneToMany(mappedBy="observationUnit", cascade=CascadeType.ALL)
 	private List<ObservationEntity> observations;
 	
+	public CropEntity getCrop() {
+		return crop;
+	}
+	public void setCrop(CropEntity crop) {
+		this.crop = crop;
+	}
+	public ProgramEntity getProgram() {
+		return program;
+	}
+	public void setProgram(ProgramEntity program) {
+		this.program = program;
+		setCrop(program.getCrop());
+	}
+	public TrialEntity getTrial() {
+		return trial;
+	}
+	public void setTrial(TrialEntity trial) {
+		this.trial = trial;
+		setProgram(trial.getProgram());
+	}
 	public StudyEntity getStudy() {
 		return study;
 	}
 	public void setStudy(StudyEntity study) {
 		this.study = study;
+		setTrial(study.getTrial());
 	}
 	public GermplasmEntity getGermplasm() {
 		return germplasm;

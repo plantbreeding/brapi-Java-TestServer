@@ -12,6 +12,7 @@ import javax.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.SeasonEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationVariableEntity;
@@ -20,6 +21,7 @@ import org.brapi.test.BrAPITestServer.service.DateUtility;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
 import org.brapi.test.BrAPITestServer.service.core.SeasonService;
+import org.brapi.test.BrAPITestServer.service.core.StudyService;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,14 +46,16 @@ public class ObservationService {
 	private final ObservationRepository observationRepository;
 	private final SeasonService seasonService;
 	private final ObservationUnitService observationUnitService;
+	private final StudyService studyService;
 	private final ObservationVariableService observationVariableService;
 
 	public ObservationService(ObservationRepository observationRepository, SeasonService seasonService,
-			@Lazy ObservationUnitService observationUnitService,
+			@Lazy ObservationUnitService observationUnitService, StudyService studyService,
 			ObservationVariableService observationVariableService) {
 		this.observationRepository = observationRepository;
 		this.seasonService = seasonService;
 		this.observationUnitService = observationUnitService;
+		this.studyService = studyService;
 		this.observationVariableService = observationVariableService;
 	}
 
@@ -157,21 +161,21 @@ public class ObservationService {
 		searchQuery = searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
 				.appendList(request.getGermplasmDbIds(), "observationUnit.germplasm.id")
 				.appendList(request.getGermplasmNames(), "observationUnit.germplasm.germplasmName")
-				.appendList(request.getLocationDbIds(), "observationUnit.study.location.id")
-				.appendList(request.getLocationNames(), "observationUnit.study.location.locationName")
+				.appendList(request.getLocationDbIds(), "study.location.id")
+				.appendList(request.getLocationNames(), "study.location.locationName")
 				.appendList(request.getObservationDbIds(), "id")
 				.appendList(request.getObservationUnitDbIds(), "observationUnit.id")
 				.appendDateRange(request.getObservationTimeStampRangeStart(), request.getObservationTimeStampRangeEnd(),
 						"observationTimeStamp")
 				.appendList(request.getObservationVariableDbIds(), "observationVariable.id")
 				.appendList(request.getObservationVariableNames(), "observationVariable.name")
-				.appendList(request.getProgramDbIds(), "observationUnit.study.trial.program.id")
-				.appendList(request.getProgramNames(), "observationUnit.study.trial.program.programName")
+				.appendList(request.getProgramDbIds(), "program.id")
+				.appendList(request.getProgramNames(), "programName")
 				.appendList(request.getSeasonDbIds(), "season.id")
-				.appendList(request.getStudyDbIds(), "observationUnit.study.id")
-				.appendList(request.getStudyNames(), "observationUnit.study.studyName")
-				.appendList(request.getTrialDbIds(), "observationUnit.study.trial.id")
-				.appendList(request.getTrialNames(), "observationUnit.study.trial.trialName");
+				.appendList(request.getStudyDbIds(), "study.id")
+				.appendList(request.getStudyNames(), "study.studyName")
+				.appendList(request.getTrialDbIds(), "trial.id")
+				.appendList(request.getTrialNames(), "trial.trialName");
 
 		Page<ObservationEntity> page = observationRepository.findAllBySearch(searchQuery, pageReq);
 		List<Observation> observations = page.map(this::convertFromEntity).getContent();
@@ -248,6 +252,17 @@ public class ObservationService {
 			unit.setExternalReferences(entity.getExternalReferencesMap());
 			unit.setObservationDbId(entity.getId());
 			unit.setObservationTimeStamp(DateUtility.toOffsetDateTime(entity.getObservationTimeStamp()));
+
+			if (entity.getObservationVariable() != null) {
+				unit.setObservationVariableDbId(entity.getObservationVariable().getId());
+				unit.setObservationVariableName(entity.getObservationVariable().getName());
+			}
+			if (entity.getSeason() != null) {
+				unit.setSeason(seasonService.convertFromEntity(entity.getSeason()));
+			}
+			unit.setUploadedBy(entity.getUploadedBy());
+			unit.setValue(entity.getValue());
+			
 			if (entity.getObservationUnit() != null) {
 				unit.setObservationUnitDbId(entity.getObservationUnit().getId());
 				unit.setObservationUnitName(entity.getObservationUnit().getObservationUnitName());
@@ -258,48 +273,46 @@ public class ObservationService {
 				if (entity.getObservationUnit().getStudy() != null) {
 					unit.setStudyDbId(entity.getObservationUnit().getStudy().getId());
 				}
+			} else if (entity.getStudy() != null) {
+				unit.setStudyDbId(entity.getStudy().getId());
 			}
-			if (entity.getObservationVariable() != null) {
-				unit.setObservationVariableDbId(entity.getObservationVariable().getId());
-				unit.setObservationVariableName(entity.getObservationVariable().getName());
-			}
-			if (entity.getSeason() != null) {
-				unit.setSeason(seasonService.convertFromEntity(entity.getSeason()));
-			}
-			unit.setUploadedBy(entity.getUploadedBy());
-			unit.setValue(entity.getValue());
+			
 		}
 
 		return unit;
 	}
 
-	private void updateEntity(ObservationEntity entity, ObservationNewRequest observation) throws BrAPIServerException {
-		if (observation.getAdditionalInfo() != null)
-			entity.setAdditionalInfo(observation.getAdditionalInfo());
-		if (observation.getCollector() != null)
-			entity.setCollector(observation.getCollector());
-		if (observation.getExternalReferences() != null)
-			entity.setExternalReferences(observation.getExternalReferences());
-		if (observation.getObservationTimeStamp() != null)
-			entity.setObservationTimeStamp(DateUtility.toDate(observation.getObservationTimeStamp()));
-		if (observation.getObservationUnitDbId() != null) {
-			ObservationUnitEntity observationUnit = observationUnitService
-					.getObservationUnitEntity(observation.getObservationUnitDbId());
-			entity.setObservationUnit(observationUnit);
-		}
-		if (observation.getObservationVariableDbId() != null) {
+	private void updateEntity(ObservationEntity entity, ObservationNewRequest body) throws BrAPIServerException {
+		if (body.getAdditionalInfo() != null)
+			entity.setAdditionalInfo(body.getAdditionalInfo());
+		if (body.getCollector() != null)
+			entity.setCollector(body.getCollector());
+		if (body.getExternalReferences() != null)
+			entity.setExternalReferences(body.getExternalReferences());
+		if (body.getObservationTimeStamp() != null)
+			entity.setObservationTimeStamp(DateUtility.toDate(body.getObservationTimeStamp()));
+		if (body.getObservationVariableDbId() != null) {
 			ObservationVariableEntity observationVariable = observationVariableService
-					.getObservationVariableEntity(observation.getObservationVariableDbId());
+					.getObservationVariableEntity(body.getObservationVariableDbId());
 			entity.setObservationVariable(observationVariable);
 		}
-		if (observation.getSeason() != null && observation.getSeason().getSeasonDbId() != null) {
-			SeasonEntity season = seasonService.getSeasonEntity(observation.getSeason().getSeasonDbId());
+		if (body.getSeason() != null && body.getSeason().getSeasonDbId() != null) {
+			SeasonEntity season = seasonService.getSeasonEntity(body.getSeason().getSeasonDbId());
 			entity.setSeason(season);
 		}
-		if (observation.getUploadedBy() != null)
-			entity.setUploadedBy(observation.getUploadedBy());
-		if (observation.getValue() != null)
-			entity.setValue(observation.getValue());
+		if (body.getUploadedBy() != null)
+			entity.setUploadedBy(body.getUploadedBy());
+		if (body.getValue() != null)
+			entity.setValue(body.getValue());
+		
+		if (body.getObservationUnitDbId() != null) {
+			ObservationUnitEntity observationUnit = observationUnitService
+					.getObservationUnitEntity(body.getObservationUnitDbId());
+			entity.setObservationUnit(observationUnit);
+		} else if (body.getStudyDbId() != null) {
+			StudyEntity study = studyService.getStudyEntity(body.getStudyDbId());
+			entity.setStudy(study);
+		}
 	}
 
 	private List<List<String>> buildDataMatrix(List<Observation> observations, List<ObservationVariable> variables) {
