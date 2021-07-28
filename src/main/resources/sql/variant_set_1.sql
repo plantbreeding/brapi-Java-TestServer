@@ -6,7 +6,7 @@ INSERT INTO variantset_format (id, data_format, file_format, fileurl, variant_se
 INSERT INTO variantset_format (id, data_format, file_format, fileurl, variant_set_id) VALUES('variantset_format2', 3, 2, 'https://test-server.brapi.org/brapi/v2/docs/sample_variantset_tsv.txt', 'variantset1');
 INSERT INTO variantset_format (id, data_format, file_format, fileurl, variant_set_id) VALUES('variantset_format3', 1, 2, 'https://test-server.brapi.org/brapi/v2/docs/sample_variantset_vcf.vcf', 'variantset1');
 
-INSERT INTO additional_info(id, key, value) VALUES ('variantset_ai_1', 'dummyData', 'True');
+INSERT INTO additional_info(id, key, value) VALUES ('variantset_ai_1', 'dummyData', decode('ACED000574000454727565','hex'));
 INSERT INTO variantset_additional_info(variant_set_entity_id, additional_info_id) VALUES ('variantset1', 'variantset_ai_1');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('variantset_er_1', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO variantset_external_references(variant_set_entity_id, external_references_id) VALUES ('variantset1', 'variantset_er_1');

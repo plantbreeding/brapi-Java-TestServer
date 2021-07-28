@@ -9,7 +9,7 @@ INSERT INTO list_item(id, item, list_id) VALUES ('item04', 'germ1', 'list2');
 INSERT INTO list_item(id, item, list_id) VALUES ('item05', 'germ2', 'list2');
 INSERT INTO list_item(id, item, list_id) VALUES ('item06', 'germ3', 'list2');
 
-INSERT INTO additional_info(id, key, value) VALUES ('list_ai_1', 'dummyData', 'True');
+INSERT INTO additional_info(id, key, value) VALUES ('list_ai_1', 'dummyData', decode('ACED000574000454727565','hex'));
 INSERT INTO list_additional_info(list_entity_id, additional_info_id) VALUES ('list1', 'list_ai_1');
 INSERT INTO list_additional_info(list_entity_id, additional_info_id) VALUES ('list2', 'list_ai_1');
 

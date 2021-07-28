@@ -6,7 +6,7 @@ INSERT INTO image (id, copyright, description, image_file_name, image_file_size,
 INSERT INTO image_entity_descriptive_ontology_terms (image_entity_id, descriptive_ontology_terms) VALUES('image1', 'Fruit');
 INSERT INTO image_entity_descriptive_ontology_terms (image_entity_id, descriptive_ontology_terms) VALUES('image1', 'TO:123456');
 
-INSERT INTO additional_info(id, key, value) VALUES ('image_ai_1', 'dummyData', 'True');
+INSERT INTO additional_info(id, key, value) VALUES ('image_ai_1', 'dummyData', decode('ACED000574000454727565','hex'));
 INSERT INTO image_additional_info(image_entity_id, additional_info_id) VALUES ('image1', 'image_ai_1');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('image_er_1', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO image_external_references(image_entity_id, external_references_id) VALUES ('image1', 'image_er_1');
@@ -18,7 +18,7 @@ INSERT INTO image (id, copyright, description, image_file_name, image_file_size,
 INSERT INTO image_entity_descriptive_ontology_terms (image_entity_id, descriptive_ontology_terms) VALUES('image2', 'Fruit');
 INSERT INTO image_entity_descriptive_ontology_terms (image_entity_id, descriptive_ontology_terms) VALUES('image2', 'TO:223456');
 
-INSERT INTO additional_info(id, key, value) VALUES ('image_ai_2', 'dummyData', 'True');
+INSERT INTO additional_info(id, key, value) VALUES ('image_ai_2', 'dummyData', decode('ACED000574000454727565','hex'));
 INSERT INTO image_additional_info(image_entity_id, additional_info_id) VALUES ('image2', 'image_ai_2');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('image_er_2', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO image_external_references(image_entity_id, external_references_id) VALUES ('image2', 'image_er_2');

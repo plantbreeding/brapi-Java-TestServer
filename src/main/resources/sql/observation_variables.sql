@@ -11,7 +11,7 @@ INSERT INTO variable_base_entity_context_of_use (variable_base_entity_id, contex
 INSERT INTO variable_base_entity_synonyms (variable_base_entity_id, synonyms) VALUES('variable1', 'Maize Height');
 INSERT INTO variable_base_entity_synonyms (variable_base_entity_id, synonyms) VALUES('variable1', 'Stalk Height');
 INSERT INTO variable_base_entity_synonyms (variable_base_entity_id, synonyms) VALUES('variable1', 'Corn Height');
-INSERT INTO additional_info(id, key, value) VALUES ('variable_ai_1', 'dummyData', 'True');
+INSERT INTO additional_info(id, key, value) VALUES ('variable_ai_1', 'dummyData', decode('ACED000574000454727565','hex'));
 INSERT INTO variable_base_entity_additional_info(variable_base_entity_id, additional_info_id) VALUES ('variable1', 'variable_ai_1');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('variable_er_1', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO variable_base_entity_external_references(variable_base_entity_id, external_references_id) VALUES ('variable1', 'variable_er_1');
@@ -27,7 +27,7 @@ INSERT INTO variable_base_entity_context_of_use (variable_base_entity_id, contex
 INSERT INTO variable_base_entity_synonyms (variable_base_entity_id, synonyms) VALUES('variable2', 'Maize Height');
 INSERT INTO variable_base_entity_synonyms (variable_base_entity_id, synonyms) VALUES('variable2', 'Stalk Height');
 INSERT INTO variable_base_entity_synonyms (variable_base_entity_id, synonyms) VALUES('variable2', 'Corn Height');
-INSERT INTO additional_info(id, key, value) VALUES ('variable_ai_2', 'dummyData', 'True');
+INSERT INTO additional_info(id, key, value) VALUES ('variable_ai_2', 'dummyData', decode('ACED000574000454727565','hex'));
 INSERT INTO variable_base_entity_additional_info(variable_base_entity_id, additional_info_id) VALUES ('variable2', 'variable_ai_2');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('variable_er_2', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO variable_base_entity_external_references(variable_base_entity_id, external_references_id) VALUES ('variable2', 'variable_er_2');

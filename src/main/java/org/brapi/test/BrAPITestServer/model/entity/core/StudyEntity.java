@@ -15,6 +15,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
+import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationEntity;
+import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
 
 @Entity
 @Table(name = "study")
@@ -68,8 +70,51 @@ public class StudyEntity extends BrAPIPrimaryEntity {
 	private String studyPUI;
 	@Column
 	private String studyType;
+	
+	@ManyToOne
+	private CropEntity crop;
+	@ManyToOne
+	private ProgramEntity program;
 	@ManyToOne
 	private TrialEntity trial;
+
+	@OneToMany(mappedBy="study")
+	private List<ObservationUnitEntity> observationUnits;
+	@OneToMany(mappedBy="study")
+	private List<ObservationEntity> observations;
+
+	public CropEntity getCrop() {
+		return crop;
+	}
+
+	public void setCrop(CropEntity crop) {
+		this.crop = crop;
+	}
+
+	public ProgramEntity getProgram() {
+		return program;
+	}
+
+	public void setProgram(ProgramEntity program) {
+		this.program = program;
+		setCrop(program.getCrop());
+	}
+
+	public List<ObservationUnitEntity> getObservationUnits() {
+		return observationUnits;
+	}
+
+	public void setObservationUnits(List<ObservationUnitEntity> observationUnits) {
+		this.observationUnits = observationUnits;
+	}
+
+	public List<ObservationEntity> getObservations() {
+		return observations;
+	}
+
+	public void setObservations(List<ObservationEntity> observations) {
+		this.observations = observations;
+	}
 
 	public boolean isActive() {
 		return active;
@@ -245,5 +290,6 @@ public class StudyEntity extends BrAPIPrimaryEntity {
 
 	public void setTrial(TrialEntity trial) {
 		this.trial = trial;
+		setProgram(trial.getProgram());
 	}
 }

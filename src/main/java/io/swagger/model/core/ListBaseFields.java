@@ -19,7 +19,7 @@ import javax.validation.Valid;
 public class ListBaseFields implements ListBaseFieldsInterface  {
   @JsonProperty("additionalInfo")
   @Valid
-  private Map<String, String> additionalInfo = null;
+  private Map<String, Object> additionalInfo = null;
 
   @JsonProperty("dateCreated")
   private OffsetDateTime dateCreated = null;
@@ -51,14 +51,14 @@ public class ListBaseFields implements ListBaseFieldsInterface  {
   @JsonProperty("listType")
   private ListTypes listType = null;
 
-  public ListBaseFields additionalInfo(Map<String, String> additionalInfo) {
+  public ListBaseFields additionalInfo(Map<String, Object> additionalInfo) {
     this.additionalInfo = additionalInfo;
     return this;
   }
 
   public ListBaseFields putAdditionalInfoItem(String key, String additionalInfoItem) {
     if (this.additionalInfo == null) {
-      this.additionalInfo = new HashMap<String, String>();
+      this.additionalInfo = new HashMap<String, Object>();
     }
     this.additionalInfo.put(key, additionalInfoItem);
     return this;
@@ -70,11 +70,11 @@ public class ListBaseFields implements ListBaseFieldsInterface  {
   **/
   @ApiModelProperty(example = "{}", value = "Additional arbitrary info")
   
-    public Map<String, String> getAdditionalInfo() {
+    public Map<String, Object> getAdditionalInfo() {
     return additionalInfo;
   }
 
-  public void setAdditionalInfo(Map<String, String> additionalInfo) {
+  public void setAdditionalInfo(Map<String, Object> additionalInfo) {
     this.additionalInfo = additionalInfo;
   }
 

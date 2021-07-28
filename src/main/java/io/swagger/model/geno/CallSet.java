@@ -22,7 +22,7 @@ import javax.validation.Valid;
 public class CallSet   {
   @JsonProperty("additionalInfo")
   @Valid
-  private Map<String, String> additionalInfo = null;
+  private Map<String, Object> additionalInfo = null;
 
   @JsonProperty("callSetDbId")
   private String callSetDbId = null;
@@ -46,14 +46,14 @@ public class CallSet   {
   @Valid
   private List<String> variantSetIds = null;
 
-  public CallSet additionalInfo(Map<String, String> additionalInfo) {
+  public CallSet additionalInfo(Map<String, Object> additionalInfo) {
     this.additionalInfo = additionalInfo;
     return this;
   }
 
   public CallSet putAdditionalInfoItem(String key, String additionalInfoItem) {
     if (this.additionalInfo == null) {
-      this.additionalInfo = new HashMap<String, String>();
+      this.additionalInfo = new HashMap<String, Object>();
     }
     this.additionalInfo.put(key, additionalInfoItem);
     return this;
@@ -65,11 +65,11 @@ public class CallSet   {
   **/
   @ApiModelProperty(value = "Additional arbitrary info")
   
-    public Map<String, String> getAdditionalInfo() {
+    public Map<String, Object> getAdditionalInfo() {
     return additionalInfo;
   }
 
-  public void setAdditionalInfo(Map<String, String> additionalInfo) {
+  public void setAdditionalInfo(Map<String, Object> additionalInfo) {
     this.additionalInfo = additionalInfo;
   }
 

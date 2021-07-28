@@ -10,6 +10,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
+import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationEntity;
+import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
 
 @Entity
 @Table(name="program")
@@ -24,11 +26,37 @@ public class ProgramEntity extends BrAPIPrimaryEntity{
 	private String documentationURL;
 	@OneToOne
 	private PersonEntity leadPerson;
+	
 	@ManyToOne
 	private CropEntity crop;
+	
 	@OneToMany(mappedBy="program")
 	private List<TrialEntity> trials;
+	@OneToMany(mappedBy="program")
+	private List<StudyEntity> studies;
+	@OneToMany(mappedBy="program")
+	private List<ObservationUnitEntity> observationUnits;
+	@OneToMany(mappedBy="program")
+	private List<ObservationEntity> observations;
 
+	public List<StudyEntity> getStudies() {
+		return studies;
+	}
+	public void setStudies(List<StudyEntity> studies) {
+		this.studies = studies;
+	}
+	public List<ObservationUnitEntity> getObservationUnits() {
+		return observationUnits;
+	}
+	public void setObservationUnits(List<ObservationUnitEntity> observationUnits) {
+		this.observationUnits = observationUnits;
+	}
+	public List<ObservationEntity> getObservations() {
+		return observations;
+	}
+	public void setObservations(List<ObservationEntity> observations) {
+		this.observations = observations;
+	}
 	public String getDocumentationURL() {
 		return documentationURL;
 	}

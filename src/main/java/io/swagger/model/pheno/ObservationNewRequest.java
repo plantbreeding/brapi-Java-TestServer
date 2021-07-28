@@ -22,7 +22,7 @@ import javax.validation.Valid;
 public class ObservationNewRequest   {
   @JsonProperty("additionalInfo")
   @Valid
-  private Map<String, String> additionalInfo = null;
+  private Map<String, Object> additionalInfo = null;
 
   @JsonProperty("collector")
   private String collector = null;
@@ -63,14 +63,14 @@ public class ObservationNewRequest   {
   @JsonProperty("value")
   private String value = null;
 
-  public ObservationNewRequest additionalInfo(Map<String, String> additionalInfo) {
+  public ObservationNewRequest additionalInfo(Map<String, Object> additionalInfo) {
     this.additionalInfo = additionalInfo;
     return this;
   }
 
   public ObservationNewRequest putAdditionalInfoItem(String key, String additionalInfoItem) {
     if (this.additionalInfo == null) {
-      this.additionalInfo = new HashMap<String, String>();
+      this.additionalInfo = new HashMap<String, Object>();
     }
     this.additionalInfo.put(key, additionalInfoItem);
     return this;
@@ -82,11 +82,11 @@ public class ObservationNewRequest   {
   **/
   @ApiModelProperty(value = "Additional arbitrary info")
   
-    public Map<String, String> getAdditionalInfo() {
+    public Map<String, Object> getAdditionalInfo() {
     return additionalInfo;
   }
 
-  public void setAdditionalInfo(Map<String, String> additionalInfo) {
+  public void setAdditionalInfo(Map<String, Object> additionalInfo) {
     this.additionalInfo = additionalInfo;
   }
 

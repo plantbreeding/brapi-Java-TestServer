@@ -11,6 +11,7 @@ import javax.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.ContactEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.DataLinkEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.EnvironmentParametersEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.ExperimentalDesignEntity;
@@ -48,15 +49,16 @@ import io.swagger.model.pheno.ObservationUnitHierarchyLevelEnum;
 
 @Service
 public class StudyService {
-	private StudyRepository studyRepository;
+	private final StudyRepository studyRepository;
 
-	private TrialService trialService;
-	private LocationService locationService;
-	private ContactService contactService;
-	private SeasonService seasonService;
+	private final TrialService trialService;
+	private final CropService cropService;
+	private final LocationService locationService;
+	private final ContactService contactService;
+	private final SeasonService seasonService;
 
 	@Autowired
-	public StudyService(StudyRepository studyRepository, TrialService trialService, LocationService locationService,
+	public StudyService(StudyRepository studyRepository, TrialService trialService, CropService cropService, LocationService locationService,
 			ContactService contactService, SeasonService seasonService) {
 		this.studyRepository = studyRepository;
 
@@ -64,6 +66,7 @@ public class StudyService {
 		this.contactService = contactService;
 		this.seasonService = seasonService;
 		this.trialService = trialService;
+		this.cropService = cropService;
 	}
 
 	public List<Study> findStudies(@Valid String commonCropName, @Valid String studyType, @Valid String programDbId,
@@ -129,15 +132,15 @@ public class StudyService {
 		}
 
 		searchQuery = searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
-				.appendList(request.getCommonCropNames(), "trial.program.crop.cropName")
+				.appendList(request.getCommonCropNames(), "crop.cropName")
 				.appendList(request.getGermplasmDbIds(), "*obsunit.germplasm.id")
 				.appendList(request.getGermplasmNames(), "*obsunit.germplasm.germplasmName")
 				.appendList(request.getLocationDbIds(), "location.id")
 				.appendList(request.getLocationNames(), "location.locationName")
 				.appendList(request.getObservationVariableDbIds(), "*observation.observationVariable.id")
 				.appendList(request.getObservationVariableNames(), "*observation.observationVariable.name")
-				.appendList(request.getProgramDbIds(), "trial.program.id")
-				.appendList(request.getProgramNames(), "trial.program.name")
+				.appendList(request.getProgramDbIds(), "program.id")
+				.appendList(request.getProgramNames(), "program.name")
 				.appendList(request.getSeasonDbIds(), "*season.id").appendList(request.getStudyCodes(), "studyCode")
 				.appendList(request.getStudyDbIds(), "id").appendList(request.getStudyNames(), "studyName")
 				.appendList(request.getStudyPUIs(), "studyPUI").appendList(request.getStudyTypes(), "studyType")
@@ -279,9 +282,13 @@ public class StudyService {
 			entity.setStudyPUI(body.getStudyPUI());
 		if (body.getStudyType() != null)
 			entity.setStudyType(body.getStudyType());
+		
 		if (body.getTrialDbId() != null) {
 			TrialEntity trial = trialService.getTrialEntity(body.getTrialDbId());
 			entity.setTrial(trial);
+		}else if(body.getCommonCropName() != null) {
+			CropEntity crop = cropService.getCropEntity(body.getCommonCropName());
+			entity.setCrop(crop);
 		}
 	}
 
@@ -345,10 +352,17 @@ public class StudyService {
 		if (entity.getTrial() != null) {
 			study.setTrialDbId(entity.getTrial().getId());
 			study.setTrialName(entity.getTrial().getTrialName());
-
-			if (entity.getTrial().getProgram() != null && entity.getTrial().getProgram().getCrop() != null) {
-				study.setCommonCropName(entity.getTrial().getProgram().getCrop().getCropName());
+			if (entity.getTrial().getProgram() != null) {
+				if (entity.getTrial().getProgram().getCrop() != null) {
+					study.setCommonCropName(entity.getTrial().getProgram().getCrop().getCropName());
+				}
 			}
+		} else if (entity.getProgram() != null) {
+			if (entity.getProgram().getCrop() != null) {
+				study.setCommonCropName(entity.getProgram().getCrop().getCropName());
+			}
+		} else if(entity.getCrop() != null) {
+			study.setCommonCropName(entity.getCrop().getCropName());
 		}
 
 		return study;

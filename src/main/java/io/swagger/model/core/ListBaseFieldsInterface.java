@@ -7,13 +7,13 @@ import io.swagger.model.ExternalReferences;
 
 public interface ListBaseFieldsInterface {
 
-	public ListBaseFieldsInterface additionalInfo(Map<String, String> additionalInfo);
+	public ListBaseFieldsInterface additionalInfo(Map<String, Object> additionalInfo);
 
 	public ListBaseFieldsInterface putAdditionalInfoItem(String key, String additionalInfoItem);
 
-	public Map<String, String> getAdditionalInfo();
+	public Map<String, Object> getAdditionalInfo();
 
-	public void setAdditionalInfo(Map<String, String> additionalInfo);
+	public void setAdditionalInfo(Map<String, Object> additionalInfo);
 
 	public ListBaseFieldsInterface dateCreated(OffsetDateTime dateCreated);
 

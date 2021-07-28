@@ -21,7 +21,7 @@ import javax.validation.Valid;
 public class Call   {
   @JsonProperty("additionalInfo")
   @Valid
-  private Map<String, String> additionalInfo = null;
+  private Map<String, Object> additionalInfo = null;
 
   @JsonProperty("callSetDbId")
   private String callSetDbId = null;
@@ -45,14 +45,14 @@ public class Call   {
   @JsonProperty("variantName")
   private String variantName = null;
 
-  public Call additionalInfo(Map<String, String> additionalInfo) {
+  public Call additionalInfo(Map<String, Object> additionalInfo) {
     this.additionalInfo = additionalInfo;
     return this;
   }
 
   public Call putAdditionalInfoItem(String key, String additionalInfoItem) {
     if (this.additionalInfo == null) {
-      this.additionalInfo = new HashMap<String, String>();
+      this.additionalInfo = new HashMap<String, Object>();
     }
     this.additionalInfo.put(key, additionalInfoItem);
     return this;
@@ -64,11 +64,11 @@ public class Call   {
   **/
   @ApiModelProperty(value = "Additional arbitrary info")
   
-    public Map<String, String> getAdditionalInfo() {
+    public Map<String, Object> getAdditionalInfo() {
     return additionalInfo;
   }
 
-  public void setAdditionalInfo(Map<String, String> additionalInfo) {
+  public void setAdditionalInfo(Map<String, Object> additionalInfo) {
     this.additionalInfo = additionalInfo;
   }
 

@@ -11,7 +11,9 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.core.ProgramEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.TrialEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.GermplasmEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.SeedLotEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
@@ -22,7 +24,9 @@ import org.brapi.test.BrAPITestServer.repository.pheno.ObservationUnitRepository
 import org.brapi.test.BrAPITestServer.service.GeoJSONUtility;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
+import org.brapi.test.BrAPITestServer.service.core.ProgramService;
 import org.brapi.test.BrAPITestServer.service.core.StudyService;
+import org.brapi.test.BrAPITestServer.service.core.TrialService;
 import org.brapi.test.BrAPITestServer.service.germ.GermplasmService;
 import org.brapi.test.BrAPITestServer.service.germ.SeedLotService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,16 +59,20 @@ public class ObservationUnitService {
 	private final GermplasmService germplasmService;
 	private final ObservationService observationService;
 	private final StudyService studyService;
+	private final TrialService trialService;
+	private final ProgramService programService;
 	private final SeedLotService seedLotService;
 	private final ObservationVariableService observationVariableService;
 
 	@Autowired
-	public ObservationUnitService(ObservationUnitRepository observationUnitRepository, StudyService studyService,
+	public ObservationUnitService(ObservationUnitRepository observationUnitRepository, StudyService studyService, TrialService trialService, ProgramService programService,
 			ObservationService observationService, GermplasmService germplasmService, SeedLotService seedLotService,
 			ObservationVariableService observationVariableService) {
 		this.observationUnitRepository = observationUnitRepository;
 		
 		this.studyService = studyService;
+		this.trialService = trialService;
+		this.programService = programService;
 		this.germplasmService = germplasmService;
 		this.observationService = observationService;
 		this.seedLotService = seedLotService;
@@ -171,12 +179,12 @@ public class ObservationUnitService {
 				.appendList(request.getLocationDbIds(), "study.location.id")
 				.appendList(request.getLocationNames(), "study.location.locationName")
 				.appendList(request.getObservationUnitDbIds(), "id")
-				.appendList(request.getProgramDbIds(), "study.trial.program.id")
-				.appendList(request.getProgramNames(), "study.trial.program.name")
+				.appendList(request.getProgramDbIds(), "program.id")
+				.appendList(request.getProgramNames(), "program.name")
 				.appendList(request.getStudyDbIds(), "study.id")
 				.appendList(request.getStudyNames(), "study.studyName")
-				.appendList(request.getTrialDbIds(), "study.trial.id")
-				.appendList(request.getTrialNames(), "study.trial.trailName");
+				.appendList(request.getTrialDbIds(), "trial.id")
+				.appendList(request.getTrialNames(), "trial.trailName");
 
 		Page<ObservationUnitEntity> page = observationUnitRepository.findAllBySearch(searchQuery, pageReq);
 		List<ObservationUnit> observationUnits = page.map(this::convertFromEntity).getContent();
@@ -285,6 +293,21 @@ public class ObservationUnitService {
 			unit.setGermplasmDbId(entity.getGermplasm().getId());
 			unit.setGermplasmName(entity.getGermplasm().getGermplasmName());
 		}
+		if (entity.getObservations() != null) {
+			unit.setObservations(entity.getObservations().stream().map(this.observationService::convertFromEntity)
+					.collect(Collectors.toList()));
+		}
+		unit.setObservationUnitDbId(entity.getId());
+		unit.setObservationUnitName(entity.getObservationUnitName());
+		unit.setObservationUnitPosition(convertFromEntity(entity.getPosition()));
+		unit.setObservationUnitPUI(entity.getObservationUnitPUI());
+		if (entity.getSeedLot() != null)
+			unit.setSeedLotDbId(entity.getSeedLot().getId());
+		if (entity.getTreatments() != null)
+			unit.setTreatments(
+					entity.getTreatments().stream().map(this::convertFromEntity).collect(Collectors.toList()));
+
+
 		if (entity.getStudy() != null) {
 			unit.setStudyDbId(entity.getStudy().getId());
 			unit.setStudyName(entity.getStudy().getStudyName());
@@ -300,21 +323,18 @@ public class ObservationUnitService {
 					unit.setProgramName(entity.getStudy().getTrial().getProgram().getName());
 				}
 			}
+		} else if (entity.getTrial() != null) {
+			unit.setTrialDbId(entity.getTrial().getId());
+			unit.setTrialName(entity.getTrial().getTrialName());
+			if (entity.getTrial().getProgram() != null) {
+				unit.setProgramDbId(entity.getTrial().getProgram().getId());
+				unit.setProgramName(entity.getTrial().getProgram().getName());
+			}
+		} else if (entity.getProgram() != null) {
+			unit.setProgramDbId(entity.getProgram().getId());
+			unit.setProgramName(entity.getProgram().getName());
 		}
-		if (entity.getObservations() != null) {
-			unit.setObservations(entity.getObservations().stream().map(this.observationService::convertFromEntity)
-					.collect(Collectors.toList()));
-		}
-		unit.setObservationUnitDbId(entity.getId());
-		unit.setObservationUnitName(entity.getObservationUnitName());
-		unit.setObservationUnitPosition(convertFromEntity(entity.getPosition()));
-		unit.setObservationUnitPUI(entity.getObservationUnitPUI());
-		if (entity.getSeedLot() != null)
-			unit.setSeedLotDbId(entity.getSeedLot().getId());
-		if (entity.getTreatments() != null)
-			unit.setTreatments(
-					entity.getTreatments().stream().map(this::convertFromEntity).collect(Collectors.toList()));
-
+		
 		return unit;
 
 	}
@@ -357,38 +377,34 @@ public class ObservationUnitService {
 		return level;
 	}
 
-	private ObservationUnitEntity updateEntity(ObservationUnitEntity entity, ObservationUnitNewRequest unit)
+	private ObservationUnitEntity updateEntity(ObservationUnitEntity entity, ObservationUnitNewRequest body)
 			throws BrAPIServerException {
-		if (unit.getAdditionalInfo() != null)
-			entity.setAdditionalInfo(unit.getAdditionalInfo());
-		if (unit.getExternalReferences() != null)
-			entity.setExternalReferences(unit.getExternalReferences());
-		if (unit.getGermplasmDbId() != null) {
-			GermplasmEntity germplasm = germplasmService.getGermplasmEntity(unit.getGermplasmDbId());
+		if (body.getAdditionalInfo() != null)
+			entity.setAdditionalInfo(body.getAdditionalInfo());
+		if (body.getExternalReferences() != null)
+			entity.setExternalReferences(body.getExternalReferences());
+		if (body.getGermplasmDbId() != null) {
+			GermplasmEntity germplasm = germplasmService.getGermplasmEntity(body.getGermplasmDbId());
 			entity.setGermplasm(germplasm);
 		}
-		if (unit.getObservationUnitName() != null)
-			entity.setObservationUnitName(unit.getObservationUnitName());
-		if (unit.getObservationUnitPUI() != null)
-			entity.setObservationUnitPUI(unit.getObservationUnitPUI());
-		if (unit.getObservationUnitPosition() != null) {
+		if (body.getObservationUnitName() != null)
+			entity.setObservationUnitName(body.getObservationUnitName());
+		if (body.getObservationUnitPUI() != null)
+			entity.setObservationUnitPUI(body.getObservationUnitPUI());
+		if (body.getObservationUnitPosition() != null) {
 			if (entity.getPosition() == null)
 				entity.setPosition(new ObservationUnitPositionEntity());
 			ObservationUnitPositionEntity position = entity.getPosition();
-			updateEntity(position, unit.getObservationUnitPosition());
+			updateEntity(position, body.getObservationUnitPosition());
 			position.setObservationUnit(entity);
 			entity.setPosition(position);
 		}
-		if (unit.getSeedLotDbId() != null) {
-			SeedLotEntity seedLot = seedLotService.getSeedLotEntity(unit.getSeedLotDbId());
+		if (body.getSeedLotDbId() != null) {
+			SeedLotEntity seedLot = seedLotService.getSeedLotEntity(body.getSeedLotDbId());
 			entity.setSeedLot(seedLot);
 		}
-		if (unit.getStudyDbId() != null) {
-			StudyEntity study = studyService.getStudyEntity(unit.getStudyDbId());
-			entity.setStudy(study);
-		}
-		if (unit.getTreatments() != null)
-			entity.setTreatments(unit.getTreatments().stream().map(t -> {
+		if (body.getTreatments() != null)
+			entity.setTreatments(body.getTreatments().stream().map(t -> {
 				TreatmentEntity e = new TreatmentEntity();
 				e.setFactor(t.getFactor());
 				e.setModality(t.getModality());
@@ -396,6 +412,18 @@ public class ObservationUnitService {
 				return e;
 			}).collect(Collectors.toList()));
 
+
+		if (body.getStudyDbId() != null) {
+			StudyEntity study = studyService.getStudyEntity(body.getStudyDbId());
+			entity.setStudy(study);
+		} else if (body.getTrialDbId() != null) {
+			TrialEntity trial = trialService.getTrialEntity(body.getTrialDbId());
+			entity.setTrial(trial);
+		} else if (body.getProgramDbId() != null) {
+			ProgramEntity program = programService.getProgramEntity(body.getProgramDbId());
+			entity.setProgram(program);
+		}
+		
 		return entity;
 	}
 
