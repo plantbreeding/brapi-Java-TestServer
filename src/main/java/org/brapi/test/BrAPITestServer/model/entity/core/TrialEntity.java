@@ -109,7 +109,8 @@ public class TrialEntity extends BrAPIPrimaryEntity {
 	}
 	public void setProgram(ProgramEntity program) {
 		this.program = program;
-		setCrop(program.getCrop());
+		if (program.getCrop() != null)
+			setCrop(program.getCrop());
 	}
 	public List<PublicationEntity> getPublications() {
 		return publications;

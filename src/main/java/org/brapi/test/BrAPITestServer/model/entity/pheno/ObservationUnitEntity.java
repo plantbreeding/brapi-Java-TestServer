@@ -57,21 +57,24 @@ public class ObservationUnitEntity extends BrAPIPrimaryEntity {
 	}
 	public void setProgram(ProgramEntity program) {
 		this.program = program;
-		setCrop(program.getCrop());
+		if (program.getCrop() != null)
+			setCrop(program.getCrop());
 	}
 	public TrialEntity getTrial() {
 		return trial;
 	}
 	public void setTrial(TrialEntity trial) {
 		this.trial = trial;
-		setProgram(trial.getProgram());
+		if (trial.getProgram() != null)
+			setProgram(trial.getProgram());
 	}
 	public StudyEntity getStudy() {
 		return study;
 	}
 	public void setStudy(StudyEntity study) {
 		this.study = study;
-		setTrial(study.getTrial());
+		if (study.getTrial() != null)
+			setTrial(study.getTrial());
 	}
 	public GermplasmEntity getGermplasm() {
 		return germplasm;
