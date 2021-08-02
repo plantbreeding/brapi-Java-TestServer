@@ -269,12 +269,15 @@ public class ObservationUnitService {
 		List<ObservationUnitHierarchyLevel> levels = units.stream()
 				.filter(unit -> unit.getObservationUnitPosition() != null)
 				.filter(unit -> unit.getObservationUnitPosition().getObservationLevelRelationships() != null)
-				.filter(unit -> unit.getObservationUnitPosition().getObservationLevel() != null).map(unit -> {
+				.filter(unit -> unit.getObservationUnitPosition().getObservationLevel() != null)
+				.filter(unit -> unit.getObservationUnitPosition().getObservationLevel().getLevelName() != null)
+				.map(unit -> {
 					List<ObservationUnitLevelRelationship> list = unit.getObservationUnitPosition()
 							.getObservationLevelRelationships();
 					list.add(unit.getObservationUnitPosition().getObservationLevel());
 					return list;
-				}).flatMap(list -> list.stream()).map(level -> level.getLevelName()).distinct().sorted()
+				})
+				.flatMap(list -> list.stream()).map(level -> level.getLevelName()).distinct().sorted()
 				.map(levelName -> {
 					ObservationUnitHierarchyLevel level = new ObservationUnitHierarchyLevel();
 					level.setLevelName(levelName);
