@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.OntologyEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.OntologyReferenceEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.OntologyReferenceHolder;
 import org.brapi.test.BrAPITestServer.repository.pheno.OntologyRepository;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
+import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -76,19 +78,28 @@ public class OntologyService {
 		return method;
 	}
 
-	public void updateOntologyReference(OntologyReferenceHolder entity, @Valid OntologyReference ontologyReference)
+	public void updateOntologyReference(OntologyReferenceHolder entity, @Valid Optional<OntologyReference> ontologyRef)
 			throws BrAPIServerException {
-		if (ontologyReference.getOntologyDbId() != null) {
-			OntologyEntity ontology = getOntologyEntity(ontologyReference.getOntologyDbId());
-			entity.setOntology(ontology);
-		}
-		if (ontologyReference.getDocumentationLinks() != null) {
-			entity.setOntologyReference(new ArrayList<>());
-			for (OntologyReferenceDocumentationLinks docLink : ontologyReference.getDocumentationLinks()) {
-				OntologyReferenceEntity ref = new OntologyReferenceEntity();
-				ref.setType(docLink.getType());
-				ref.setURL(docLink.getURL());
-				entity.getOntologyReference().add(ref);
+
+		if (ontologyRef != null) {
+			if (ontologyRef.isPresent()) {
+				OntologyReference ontologyReference = ontologyRef.get();
+				if (ontologyReference.getOntologyDbId() != null) {
+					OntologyEntity ontology = getOntologyEntity(ontologyReference.getOntologyDbId());
+					entity.setOntology(ontology);
+				}
+				if (ontologyReference.getDocumentationLinks() != null) {
+					entity.setOntologyReference(new ArrayList<>());
+					for (OntologyReferenceDocumentationLinks docLink : ontologyReference.getDocumentationLinks()) {
+						OntologyReferenceEntity ref = new OntologyReferenceEntity();
+						ref.setType(docLink.getType());
+						ref.setURL(docLink.getURL());
+						entity.getOntologyReference().add(ref);
+					}
+				}
+			} else {
+				entity.setOntology(null);
+				entity.setOntologyReference(null);
 			}
 		}
 	}

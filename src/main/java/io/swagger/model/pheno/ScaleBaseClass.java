@@ -3,15 +3,15 @@ package io.swagger.model.pheno;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.ExternalReferences;
 import io.swagger.model.OntologyReference;
-import io.swagger.model.pheno.ScaleBaseClassValidValues;
-import io.swagger.model.pheno.TraitDataType;
-
+import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 
@@ -24,35 +24,35 @@ import javax.validation.Valid;
 public class ScaleBaseClass {
 	@JsonProperty("additionalInfo")
 	@Valid
-	private Map<String, Object> additionalInfo = null;
+	private Optional<Map<String, Object>> additionalInfo = null;
 	@JsonProperty("dataType")
-	private TraitDataType dataType = null;
+	private Optional<TraitDataType> dataType = null;
 
 	@JsonProperty("decimalPlaces")
-	private Integer decimalPlaces = null;
+	private Optional<Integer> decimalPlaces = null;
 
 	@JsonProperty("externalReferences")
-	private ExternalReferences externalReferences = null;
+	private Optional<ExternalReferences> externalReferences = null;
 
 	@JsonProperty("ontologyReference")
-	private OntologyReference ontologyReference = null;
+	private Optional<OntologyReference> ontologyReference = null;
 
 	@JsonProperty("scaleName")
-	private String scaleName = null;
+	private Optional<String> scaleName = null;
 
 	@JsonProperty("validValues")
-	private ScaleBaseClassValidValues validValues = null;
+	private Optional<ScaleBaseClassValidValues> validValues = null;
 
 	public ScaleBaseClass additionalInfo(Map<String, Object> additionalInfo) {
-		this.additionalInfo = additionalInfo;
+		this.additionalInfo = UpdateUtility.setField(additionalInfo);
 		return this;
 	}
 
 	public ScaleBaseClass putAdditionalInfoItem(String key, String additionalInfoItem) {
 		if (this.additionalInfo == null) {
-			this.additionalInfo = new HashMap<String, Object>();
+			this.additionalInfo = UpdateUtility.setField(new HashMap<String, Object>());
 		}
-		this.additionalInfo.put(key, additionalInfoItem);
+		this.additionalInfo.get().put(key, additionalInfoItem);
 		return this;
 	}
 
@@ -63,16 +63,16 @@ public class ScaleBaseClass {
 	 **/
 	@ApiModelProperty(value = "Additional arbitrary info")
 
-	public Map<String, Object> getAdditionalInfo() {
+	public Optional<Map<String, Object>> getAdditionalInfo() {
 		return additionalInfo;
 	}
 
 	public void setAdditionalInfo(Map<String, Object> additionalInfo) {
-		this.additionalInfo = additionalInfo;
+		this.additionalInfo = UpdateUtility.setField(additionalInfo);
 	}
 
 	public ScaleBaseClass dataType(TraitDataType dataType) {
-		this.dataType = dataType;
+		this.dataType = UpdateUtility.setField(dataType);
 		return this;
 	}
 
@@ -84,16 +84,16 @@ public class ScaleBaseClass {
 	@ApiModelProperty(value = "")
 
 	@Valid
-	public TraitDataType getDataType() {
+	public Optional<TraitDataType> getDataType() {
 		return dataType;
 	}
 
 	public void setDataType(TraitDataType dataType) {
-		this.dataType = dataType;
+		this.dataType = UpdateUtility.setField(dataType);
 	}
 
 	public ScaleBaseClass decimalPlaces(Integer decimalPlaces) {
-		this.decimalPlaces = decimalPlaces;
+		this.decimalPlaces = UpdateUtility.setField(decimalPlaces);
 		return this;
 	}
 
@@ -104,16 +104,16 @@ public class ScaleBaseClass {
 	 **/
 	@ApiModelProperty(example = "2", value = "For numerical, number of decimal places to be reported")
 
-	public Integer getDecimalPlaces() {
+	public Optional<Integer> getDecimalPlaces() {
 		return decimalPlaces;
 	}
 
 	public void setDecimalPlaces(Integer decimalPlaces) {
-		this.decimalPlaces = decimalPlaces;
+		this.decimalPlaces = UpdateUtility.setField(decimalPlaces);
 	}
 
 	public ScaleBaseClass externalReferences(ExternalReferences externalReferences) {
-		this.externalReferences = externalReferences;
+		this.externalReferences = UpdateUtility.setField(externalReferences);
 		return this;
 	}
 
@@ -125,16 +125,16 @@ public class ScaleBaseClass {
 	@ApiModelProperty(value = "")
 
 	@Valid
-	public ExternalReferences getExternalReferences() {
+	public Optional<ExternalReferences> getExternalReferences() {
 		return externalReferences;
 	}
 
 	public void setExternalReferences(ExternalReferences externalReferences) {
-		this.externalReferences = externalReferences;
+		this.externalReferences = UpdateUtility.setField(externalReferences);
 	}
 
 	public ScaleBaseClass ontologyReference(OntologyReference ontologyReference) {
-		this.ontologyReference = ontologyReference;
+		this.ontologyReference = UpdateUtility.setField(ontologyReference);
 		return this;
 	}
 
@@ -146,29 +146,29 @@ public class ScaleBaseClass {
 	@ApiModelProperty(value = "")
 
 	@Valid
-	public OntologyReference getOntologyReference() {
+	public Optional<OntologyReference> getOntologyReference() {
 		return ontologyReference;
 	}
 
 	public void setOntologyReference(OntologyReference ontologyReference) {
-		this.ontologyReference = ontologyReference;
+		this.ontologyReference = UpdateUtility.setField(ontologyReference);
 	}
 
 	public ScaleBaseClass scaleName(String scaleName) {
-		this.scaleName = scaleName;
+		this.scaleName = UpdateUtility.setField(scaleName);
 		return this;
 	}
 
-	public String getScaleName() {
+	public Optional<String> getScaleName() {
 		return scaleName;
 	}
 
 	public void setScaleName(String scaleName) {
-		this.scaleName = scaleName;
+		this.scaleName = UpdateUtility.setField(scaleName);
 	}
 
 	public ScaleBaseClass validValues(ScaleBaseClassValidValues validValues) {
-		this.validValues = validValues;
+		this.validValues = UpdateUtility.setField(validValues);
 		return this;
 	}
 
@@ -180,12 +180,12 @@ public class ScaleBaseClass {
 	@ApiModelProperty(value = "")
 
 	@Valid
-	public ScaleBaseClassValidValues getValidValues() {
+	public Optional<ScaleBaseClassValidValues> getValidValues() {
 		return validValues;
 	}
 
 	public void setValidValues(ScaleBaseClassValidValues validValues) {
-		this.validValues = validValues;
+		this.validValues = UpdateUtility.setField(validValues);
 	}
 
 	@Override

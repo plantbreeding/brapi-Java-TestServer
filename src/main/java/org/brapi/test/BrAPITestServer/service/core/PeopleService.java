@@ -75,15 +75,16 @@ public class PeopleService {
 		return getPersonEntity(personDbId, HttpStatus.BAD_REQUEST);
 	}
 
-		public PersonEntity getPersonEntity(String personDbId, HttpStatus errorStatus) throws BrAPIServerException {
+	public PersonEntity getPersonEntity(String personDbId, HttpStatus errorStatus) throws BrAPIServerException {
 		PersonEntity entity = null;
 
-		Optional<PersonEntity> entityOpt = peopleRepository.findById(personDbId);
-		if (entityOpt.isPresent()) {
-			entity = entityOpt.get();
-		} else {
-			throw new BrAPIServerException(errorStatus, "personDbId not found: " + personDbId);
-			
+		if (personDbId != null) {
+			Optional<PersonEntity> entityOpt = peopleRepository.findById(personDbId);
+			if (entityOpt.isPresent()) {
+				entity = entityOpt.get();
+			} else {
+				throw new BrAPIServerException(errorStatus, "personDbId not found: " + personDbId);
+			}
 		}
 
 		return entity;

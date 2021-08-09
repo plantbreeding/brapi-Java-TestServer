@@ -1,6 +1,8 @@
 package io.swagger.model.pheno;
 
 import java.util.Objects;
+import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModelProperty;
@@ -12,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 
@@ -23,52 +26,52 @@ import javax.validation.Valid;
 public class TraitBaseClass {
 	@JsonProperty("additionalInfo")
 	@Valid
-	private Map<String, Object> additionalInfo = null;
+	private Optional<Map<String, Object>> additionalInfo = null;
 	@JsonProperty("alternativeAbbreviations")
 	@Valid
-	private List<String> alternativeAbbreviations = null;
+	private Optional<List<String>> alternativeAbbreviations = null;
 
 	@JsonProperty("attribute")
-	private String attribute = null;
+	private Optional<String> attribute = null;
 
 	@JsonProperty("entity")
-	private String entity = null;
+	private Optional<String> entity = null;
 
 	@JsonProperty("externalReferences")
-	private ExternalReferences externalReferences = null;
+	private Optional<ExternalReferences> externalReferences = null;
 
 	@JsonProperty("mainAbbreviation")
-	private String mainAbbreviation = null;
+	private Optional<String> mainAbbreviation = null;
 
 	@JsonProperty("ontologyReference")
-	private OntologyReference ontologyReference = null;
+	private Optional<OntologyReference> ontologyReference = null;
 
 	@JsonProperty("status")
-	private String status = null;
+	private Optional<String> status = null;
 
 	@JsonProperty("synonyms")
 	@Valid
-	private List<String> synonyms = null;
+	private Optional<List<String>> synonyms = null;
 
 	@JsonProperty("traitClass")
-	private String traitClass = null;
+	private Optional<String> traitClass = null;
 
 	@JsonProperty("traitDescription")
-	private String traitDescription = null;
+	private Optional<String> traitDescription = null;
 
 	@JsonProperty("traitName")
-	private String traitName = null;
+	private Optional<String> traitName = null;
 
 	public TraitBaseClass additionalInfo(Map<String, Object> additionalInfo) {
-		this.additionalInfo = additionalInfo;
+		this.additionalInfo = UpdateUtility.setField(additionalInfo);
 		return this;
 	}
 
 	public TraitBaseClass putAdditionalInfoItem(String key, String additionalInfoItem) {
 		if (this.additionalInfo == null) {
-			this.additionalInfo = new HashMap<String, Object>();
+			this.additionalInfo = UpdateUtility.setField(new HashMap<String, Object>());
 		}
-		this.additionalInfo.put(key, additionalInfoItem);
+		this.additionalInfo.get().put(key, additionalInfoItem);
 		return this;
 	}
 
@@ -79,23 +82,23 @@ public class TraitBaseClass {
 	 **/
 	@ApiModelProperty(value = "Additional arbitrary info")
 
-	public Map<String, Object> getAdditionalInfo() {
+	public Optional<Map<String, Object>> getAdditionalInfo() {
 		return additionalInfo;
 	}
 
 	public void setAdditionalInfo(Map<String, Object> additionalInfo) {
-		this.additionalInfo = additionalInfo;
+		this.additionalInfo = UpdateUtility.setField(additionalInfo);
 	}
 	public TraitBaseClass alternativeAbbreviations(List<String> alternativeAbbreviations) {
-		this.alternativeAbbreviations = alternativeAbbreviations;
+		this.alternativeAbbreviations = UpdateUtility.setField(alternativeAbbreviations);
 		return this;
 	}
 
 	public TraitBaseClass addAlternativeAbbreviationsItem(String alternativeAbbreviationsItem) {
 		if (this.alternativeAbbreviations == null) {
-			this.alternativeAbbreviations = new ArrayList<String>();
+			this.alternativeAbbreviations = UpdateUtility.setField(new ArrayList<String>());
 		}
-		this.alternativeAbbreviations.add(alternativeAbbreviationsItem);
+		this.alternativeAbbreviations.get().add(alternativeAbbreviationsItem);
 		return this;
 	}
 
@@ -107,16 +110,16 @@ public class TraitBaseClass {
 	 **/
 	@ApiModelProperty(example = "[\"H\",\"PH\",\"H1\"]", value = "Other frequent abbreviations of the trait, if any. These abbreviations do not have to follow a convention")
 
-	public List<String> getAlternativeAbbreviations() {
+	public Optional<List<String>> getAlternativeAbbreviations() {
 		return alternativeAbbreviations;
 	}
 
 	public void setAlternativeAbbreviations(List<String> alternativeAbbreviations) {
-		this.alternativeAbbreviations = alternativeAbbreviations;
+		this.alternativeAbbreviations = UpdateUtility.setField(alternativeAbbreviations);
 	}
 
 	public TraitBaseClass attribute(String attribute) {
-		this.attribute = attribute;
+		this.attribute = UpdateUtility.setField(attribute);
 		return this;
 	}
 
@@ -129,16 +132,16 @@ public class TraitBaseClass {
 	 **/
 	@ApiModelProperty(example = "height", value = "A trait can be decomposed as \"Trait\" = \"Entity\" + \"Attribute\", the attribute is the observed feature (or characteristic) of the entity e.g., for \"grain colour\", attribute = \"colour\"")
 
-	public String getAttribute() {
+	public Optional<String> getAttribute() {
 		return attribute;
 	}
 
 	public void setAttribute(String attribute) {
-		this.attribute = attribute;
+		this.attribute = UpdateUtility.setField(attribute);
 	}
 
 	public TraitBaseClass entity(String entity) {
-		this.entity = entity;
+		this.entity = UpdateUtility.setField(entity);
 		return this;
 	}
 
@@ -151,16 +154,16 @@ public class TraitBaseClass {
 	 **/
 	@ApiModelProperty(example = "Stalk", value = "A trait can be decomposed as \"Trait\" = \"Entity\" + \"Attribute\", the entity is the part of the plant that the trait refers to e.g., for \"grain colour\", entity = \"grain\"")
 
-	public String getEntity() {
+	public Optional<String> getEntity() {
 		return entity;
 	}
 
 	public void setEntity(String entity) {
-		this.entity = entity;
+		this.entity = UpdateUtility.setField(entity);
 	}
 
 	public TraitBaseClass externalReferences(ExternalReferences externalReferences) {
-		this.externalReferences = externalReferences;
+		this.externalReferences = UpdateUtility.setField(externalReferences);
 		return this;
 	}
 
@@ -172,16 +175,16 @@ public class TraitBaseClass {
 	@ApiModelProperty(value = "")
 
 	@Valid
-	public ExternalReferences getExternalReferences() {
+	public Optional<ExternalReferences> getExternalReferences() {
 		return externalReferences;
 	}
 
 	public void setExternalReferences(ExternalReferences externalReferences) {
-		this.externalReferences = externalReferences;
+		this.externalReferences = UpdateUtility.setField(externalReferences);
 	}
 
 	public TraitBaseClass mainAbbreviation(String mainAbbreviation) {
-		this.mainAbbreviation = mainAbbreviation;
+		this.mainAbbreviation = UpdateUtility.setField(mainAbbreviation);
 		return this;
 	}
 
@@ -193,16 +196,16 @@ public class TraitBaseClass {
 	 **/
 	@ApiModelProperty(example = "PH", value = "Main abbreviation for trait name. (examples: \"Carotenoid content\" => \"CC\")")
 
-	public String getMainAbbreviation() {
+	public Optional<String> getMainAbbreviation() {
 		return mainAbbreviation;
 	}
 
 	public void setMainAbbreviation(String mainAbbreviation) {
-		this.mainAbbreviation = mainAbbreviation;
+		this.mainAbbreviation = UpdateUtility.setField(mainAbbreviation);
 	}
 
 	public TraitBaseClass ontologyReference(OntologyReference ontologyReference) {
-		this.ontologyReference = ontologyReference;
+		this.ontologyReference = UpdateUtility.setField(ontologyReference);
 		return this;
 	}
 
@@ -214,16 +217,16 @@ public class TraitBaseClass {
 	@ApiModelProperty(value = "")
 
 	@Valid
-	public OntologyReference getOntologyReference() {
+	public Optional<OntologyReference> getOntologyReference() {
 		return ontologyReference;
 	}
 
 	public void setOntologyReference(OntologyReference ontologyReference) {
-		this.ontologyReference = ontologyReference;
+		this.ontologyReference = UpdateUtility.setField(ontologyReference);
 	}
 
 	public TraitBaseClass status(String status) {
-		this.status = status;
+		this.status = UpdateUtility.setField(status);
 		return this;
 	}
 
@@ -234,24 +237,24 @@ public class TraitBaseClass {
 	 **/
 	@ApiModelProperty(example = "recommended", value = "Trait status (examples: \"recommended\", \"obsolete\", \"legacy\", etc.)")
 
-	public String getStatus() {
+	public Optional<String> getStatus() {
 		return status;
 	}
 
 	public void setStatus(String status) {
-		this.status = status;
+		this.status = UpdateUtility.setField(status);
 	}
 
 	public TraitBaseClass synonyms(List<String> synonyms) {
-		this.synonyms = synonyms;
+		this.synonyms = UpdateUtility.setField(synonyms);
 		return this;
 	}
 
 	public TraitBaseClass addSynonymsItem(String synonymsItem) {
 		if (this.synonyms == null) {
-			this.synonyms = new ArrayList<String>();
+			this.synonyms = UpdateUtility.setField(new ArrayList<String>());
 		}
-		this.synonyms.add(synonymsItem);
+		this.synonyms.get().add(synonymsItem);
 		return this;
 	}
 
@@ -262,16 +265,16 @@ public class TraitBaseClass {
 	 **/
 	@ApiModelProperty(example = "[\"Height\",\"Plant Height\",\"Stalk Height\",\"Canopy Height\"]", value = "Other trait names")
 
-	public List<String> getSynonyms() {
+	public Optional<List<String>> getSynonyms() {
 		return synonyms;
 	}
 
 	public void setSynonyms(List<String> synonyms) {
-		this.synonyms = synonyms;
+		this.synonyms = UpdateUtility.setField(synonyms);
 	}
 
 	public TraitBaseClass traitClass(String traitClass) {
-		this.traitClass = traitClass;
+		this.traitClass = UpdateUtility.setField(traitClass);
 		return this;
 	}
 
@@ -284,16 +287,16 @@ public class TraitBaseClass {
 	 **/
 	@ApiModelProperty(example = "phenological", value = "Trait class. (examples: \"morphological\", \"phenological\", \"agronomical\", \"physiological\", \"abiotic stress\", \"biotic stress\", \"biochemical\", \"quality traits\", \"fertility\", etc.)")
 
-	public String getTraitClass() {
+	public Optional<String> getTraitClass() {
 		return traitClass;
 	}
 
 	public void setTraitClass(String traitClass) {
-		this.traitClass = traitClass;
+		this.traitClass = UpdateUtility.setField(traitClass);
 	}
 
 	public TraitBaseClass traitDescription(String traitDescription) {
-		this.traitDescription = traitDescription;
+		this.traitDescription = UpdateUtility.setField(traitDescription);
 		return this;
 	}
 
@@ -304,16 +307,16 @@ public class TraitBaseClass {
 	 **/
 	@ApiModelProperty(example = "The height of the plant", value = "The description of a trait")
 
-	public String getTraitDescription() {
+	public Optional<String> getTraitDescription() {
 		return traitDescription;
 	}
 
 	public void setTraitDescription(String traitDescription) {
-		this.traitDescription = traitDescription;
+		this.traitDescription = UpdateUtility.setField(traitDescription);
 	}
 
 	public TraitBaseClass traitName(String traitName) {
-		this.traitName = traitName;
+		this.traitName = UpdateUtility.setField(traitName);
 		return this;
 	}
 
@@ -325,12 +328,12 @@ public class TraitBaseClass {
 	 **/
 	@ApiModelProperty(example = "Height", value = "The human readable name of a trait  MIAPPE V1.1 (DM-86) Trait - Name of the (plant or environmental) trait under observation")
 
-	public String getTraitName() {
+	public Optional<String> getTraitName() {
 		return traitName;
 	}
 
 	public void setTraitName(String traitName) {
-		this.traitName = traitName;
+		this.traitName = UpdateUtility.setField(traitName);
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import org.brapi.test.BrAPITestServer.model.entity.pheno.ScaleValidValueCategory
 import org.brapi.test.BrAPITestServer.repository.pheno.ScaleRepository;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
+import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -105,37 +106,47 @@ public class ScaleService {
 	}
 
 	public ScaleEntity updateEntity(ScaleEntity entity, @Valid ScaleBaseClass scale) throws BrAPIServerException {
-		if (scale.getAdditionalInfo() != null)
-			entity.setAdditionalInfo(scale.getAdditionalInfo());
-		if (scale.getDataType() != null)
-			entity.setDataType(scale.getDataType());
-		if (scale.getDecimalPlaces() != null)
-			entity.setDecimalPlaces(scale.getDecimalPlaces());
-		if (scale.getExternalReferences() != null)
-			entity.setExternalReferences(scale.getExternalReferences());
-		if (scale.getScaleName() != null)
-			entity.setScaleName(scale.getScaleName());
-		if (scale.getOntologyReference() != null)
-			ontologyService.updateOntologyReference(entity, scale.getOntologyReference());
+
+		entity.setAdditionalInfo(UpdateUtility.replaceField(scale.getAdditionalInfo(), entity.getAdditionalInfoMap()));
+		entity.setDataType(UpdateUtility.replaceField(scale.getDataType(), entity.getDataType()));
+		entity.setDecimalPlaces(UpdateUtility.replaceField(scale.getDecimalPlaces(), entity.getDecimalPlaces()));
+		entity.setExternalReferences(
+				UpdateUtility.replaceField(scale.getExternalReferences(), entity.getExternalReferencesMap()));
+		entity.setScaleName(UpdateUtility.replaceField(scale.getScaleName(), entity.getScaleName()));
+
+		ontologyService.updateOntologyReference(entity, scale.getOntologyReference());
+
 		if (scale.getValidValues() != null) {
-			if (scale.getValidValues().getMin() != null)
-				entity.setValidValueMin(scale.getValidValues().getMin());
-			if (scale.getValidValues().getMax() != null)
-				entity.setValidValueMax(scale.getValidValues().getMax());
-			if (scale.getValidValues().getCategories() != null) {
-				if (entity.getValidValueCategories() != null) {
-					for (ScaleValidValueCategoryEntity catEntity : entity.getValidValueCategories()) {
-						catEntity.setScale(null);
+			if (scale.getValidValues().isPresent()) {
+				ScaleBaseClassValidValues validValues = scale.getValidValues().get();
+				entity.setValidValueMin(UpdateUtility.replaceField(validValues.getMin(), entity.getValidValueMin()));
+				entity.setValidValueMax(UpdateUtility.replaceField(validValues.getMax(), entity.getValidValueMax()));
+
+				if (validValues.getCategories() != null) {
+					if (validValues.getCategories().isPresent()) {
+						List<ScaleBaseClassValidValuesCategories> categories = validValues.getCategories().get();
+
+						if (entity.getValidValueCategories() != null) {
+							for (ScaleValidValueCategoryEntity catEntity : entity.getValidValueCategories()) {
+								catEntity.setScale(null);
+							}
+						}
+						entity.setValidValueCategories(new ArrayList<>());
+						entity.setValidValueCategories(categories.stream().map(cat -> {
+							ScaleValidValueCategoryEntity catEntity = new ScaleValidValueCategoryEntity();
+							catEntity.setLabel(cat.getLabel());
+							catEntity.setValue(cat.getValue());
+							catEntity.setScale(entity);
+							return catEntity;
+						}).collect(Collectors.toList()));
+					} else {
+						entity.setValidValueCategories(null);
 					}
 				}
-				entity.setValidValueCategories(new ArrayList<>());
-				entity.setValidValueCategories(scale.getValidValues().getCategories().stream().map(cat -> {
-					ScaleValidValueCategoryEntity catEntity = new ScaleValidValueCategoryEntity();
-					catEntity.setLabel(cat.getLabel());
-					catEntity.setValue(cat.getValue());
-					catEntity.setScale(entity);
-					return catEntity;
-				}).collect(Collectors.toList()));
+			} else {
+				entity.setValidValueCategories(null);
+				entity.setValidValueMax(null);
+				entity.setValidValueMin(null);
 			}
 		}
 
@@ -153,17 +164,19 @@ public class ScaleService {
 			scale.setScaleDbId(entity.getId());
 			scale.setScaleName(entity.getScaleName());
 			scale.setOntologyReference(ontologyService.convertFromEntity(entity));
-			scale.setValidValues(new ScaleBaseClassValidValues());
-			scale.getValidValues().setMin(entity.getValidValueMin());
-			scale.getValidValues().setMax(entity.getValidValueMax());
-			if(entity.getValidValueCategories() != null) {
-				scale.getValidValues().setCategories(entity.getValidValueCategories().stream().map(e -> {
+
+			ScaleBaseClassValidValues validValues = new ScaleBaseClassValidValues();
+			validValues.setMin(entity.getValidValueMin());
+			validValues.setMax(entity.getValidValueMax());
+			if (entity.getValidValueCategories() != null) {
+				validValues.setCategories(entity.getValidValueCategories().stream().map(e -> {
 					ScaleBaseClassValidValuesCategories cat = new ScaleBaseClassValidValuesCategories();
 					cat.setLabel(e.getLabel());
 					cat.setValue(e.getValue());
 					return cat;
 				}).collect(Collectors.toList()));
 			}
+			scale.setValidValues(validValues);
 		}
 		return scale;
 	}

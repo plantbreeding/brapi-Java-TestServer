@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.MethodEntity;
 import org.brapi.test.BrAPITestServer.repository.pheno.MethodRepository;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
+import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -100,22 +102,16 @@ public class MethodService {
 	}
 
 	public MethodEntity updateEntity(MethodEntity entity, @Valid MethodBaseClass method) throws BrAPIServerException {
-		if (method.getAdditionalInfo() != null)
-			entity.setAdditionalInfo(method.getAdditionalInfo());
-		if (method.getDescription() != null)
-			entity.setDescription(method.getDescription());
-		if (method.getExternalReferences() != null)
-			entity.setExternalReferences(method.getExternalReferences());
-		if (method.getFormula() != null)
-			entity.setFormula(method.getFormula());
-		if (method.getMethodClass() != null)
-			entity.setMethodClass(method.getMethodClass());
-		if (method.getMethodName() != null)
-			entity.setName(method.getMethodName());
-		if (method.getBibliographicalReference() != null)
-			entity.setReference(method.getBibliographicalReference());
-		if (method.getOntologyReference() != null)
-			ontologyService.updateOntologyReference(entity, method.getOntologyReference());
+
+		entity.setAdditionalInfo(UpdateUtility.replaceField(method.getAdditionalInfo(), entity.getAdditionalInfoMap()));
+		entity.setDescription(UpdateUtility.replaceField(method.getDescription(), entity.getDescription()));
+		entity.setExternalReferences(UpdateUtility.replaceField(method.getExternalReferences(), entity.getExternalReferencesMap()));
+		entity.setFormula(UpdateUtility.replaceField(method.getFormula(), entity.getFormula()));
+		entity.setMethodClass(UpdateUtility.replaceField(method.getMethodClass(), entity.getMethodClass()));
+		entity.setName(UpdateUtility.replaceField(method.getMethodName(), entity.getName()));
+		entity.setReference(UpdateUtility.replaceField(method.getBibliographicalReference(), entity.getReference()));
+		
+		ontologyService.updateOntologyReference(entity, method.getOntologyReference());
 
 		return entity;
 	}

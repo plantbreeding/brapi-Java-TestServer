@@ -1,8 +1,11 @@
 package io.swagger.model.pheno;
 
 import java.util.Objects;
+import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.validation.annotation.Validated;
 
 /**
@@ -12,19 +15,19 @@ import org.springframework.validation.annotation.Validated;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:22.556Z[GMT]")
 public class ObservationVariableNewRequest extends VariableBaseClass {
 	@JsonProperty("observationVariableName")
-	private String observationVariableName = null;
+	private Optional<String> observationVariableName = null;
 
 	public ObservationVariableNewRequest observationVariableName(String observationVariableName) {
-		this.observationVariableName = observationVariableName;
+		this.observationVariableName = UpdateUtility.setField(observationVariableName);
 		return this;
 	}
 
-	public String getObservationVariableName() {
+	public Optional<String> getObservationVariableName() {
 		return observationVariableName;
 	}
 
 	public void setObservationVariableName(String observationVariableName) {
-		this.observationVariableName = observationVariableName;
+		this.observationVariableName = UpdateUtility.setField(observationVariableName);
 	}
 
 	@Override
