@@ -2,7 +2,6 @@ package org.brapi.test.BrAPITestServer;
 
 import java.util.ArrayList;
 
-import org.brapi.test.BrAPITestServer.controller.core.ProgramsApiController;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -20,9 +19,9 @@ import io.swagger.model.Status;
 import io.swagger.model.Status.MessageTypeEnum;
 
 @ControllerAdvice
-public class ExceptionHandler extends ResponseEntityExceptionHandler{
+public class BrapiExceptionHandler extends ResponseEntityExceptionHandler{
 	
-	private static final Logger log = LoggerFactory.getLogger(ProgramsApiController.class);
+	private static final Logger log = LoggerFactory.getLogger(BrapiExceptionHandler.class);
 	
 	@Override
 	protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -31,10 +30,22 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler{
 	    return buildErrorResponse(HttpStatus.BAD_REQUEST, error);
 	}
 	
-	@org.springframework.web.bind.annotation.ExceptionHandler(value = {BrAPIServerException.class})
-	protected ResponseEntity<Object> handleBrAPIException(BrAPIServerException ex, WebRequest request){
-		String message = ex.getResponseMessage().replaceAll("\"", "\'");
-	    return new ResponseEntity<Object>("\"" + message + "\"", ex.getResponseStatus());		
+	@ExceptionHandler(value = {BrAPIServerException.class})
+	protected ResponseEntity<Object> handleBrAPIException(BrAPIServerException e, WebRequest request){
+		String message = e.getResponseMessage().replaceAll("\"", "\'");
+	    log.error(message, e);
+	    return new ResponseEntity<Object>("\"" + message + "\"", e.getResponseStatus());		
+	}
+	
+	@ExceptionHandler
+	public ResponseEntity<Object> handle(Exception e) {
+		String message = "Server Error: \n" 
+				+ e.getStackTrace()[0].toString() + "\n"
+				+ e.getStackTrace()[1].toString() + "\n"
+				+ e.getStackTrace()[2].toString() + "\n"
+				+ "...";
+	    log.error(message, e);
+	    return new ResponseEntity<Object>("\"" + message + "\"", HttpStatus.INTERNAL_SERVER_ERROR);	
 	}
 	
 	private ResponseEntity<Object> buildErrorResponse(HttpStatus code, String message){
@@ -47,11 +58,5 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler{
 	    apiError.getStatus().add(statusRes);
 	    
 	    return new ResponseEntity<Object>(apiError, code);
-	}
-	
-	@org.springframework.web.bind.annotation.ExceptionHandler
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public void handle(Exception e) {
-	    log.debug("Returning HTTP 400 Bad Request", e);
 	}
 }

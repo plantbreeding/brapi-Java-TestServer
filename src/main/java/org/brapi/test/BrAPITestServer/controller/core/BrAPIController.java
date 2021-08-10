@@ -26,12 +26,6 @@ import io.swagger.model.TokenPagination;
 public class BrAPIController {
 	private static final Logger log = LoggerFactory.getLogger(ServerInfoApiController.class);
 	
-	@ExceptionHandler
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public void handle(Exception e) {
-	    log.warn("Returning HTTP 400 Bad Request", e);
-	}
-	
 	protected Metadata generateMetaDataTemplateForSearch(Integer originalRequestedPage, Integer newRequestedPage,
 			Integer originalRequestedPageSize, Integer newRequestedPageSize) throws BrAPIServerException {
 		Integer page = newRequestedPage;
