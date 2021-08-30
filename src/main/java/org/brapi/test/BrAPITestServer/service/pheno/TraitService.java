@@ -9,6 +9,7 @@ import org.brapi.test.BrAPITestServer.model.entity.pheno.TraitEntity;
 import org.brapi.test.BrAPITestServer.repository.core.TraitRepository;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
+import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -100,30 +101,19 @@ public class TraitService {
 	}
 
 	public TraitEntity updateEntity(TraitEntity entity, @Valid TraitBaseClass trait) throws BrAPIServerException {
-		if (trait.getAdditionalInfo() != null)
-			entity.setAdditionalInfo(trait.getAdditionalInfo());
-		if (trait.getAlternativeAbbreviations() != null)
-			entity.setAlternativeAbbreviations(trait.getAlternativeAbbreviations());
-		if (trait.getAttribute() != null)
-			entity.setAttribute(trait.getAttribute());
-		if (trait.getEntity() != null)
-			entity.setEntity(trait.getEntity());
-		if (trait.getExternalReferences() != null)
-			entity.setExternalReferences(trait.getExternalReferences());
-		if (trait.getMainAbbreviation() != null)
-			entity.setMainAbbreviation(trait.getMainAbbreviation());
-		if (trait.getOntologyReference() != null)
-			ontologyService.updateOntologyReference(entity, trait.getOntologyReference());
-		if (trait.getStatus() != null)
-			entity.setStatus(trait.getStatus());
-		if (trait.getSynonyms() != null)
-			entity.setSynonyms(trait.getSynonyms());
-		if (trait.getTraitClass() != null)
-			entity.setTraitClass(trait.getTraitClass());		
-		if (trait.getTraitDescription() != null)
-			entity.setTraitDescription(trait.getTraitDescription());
-		if (trait.getTraitName() != null)
-			entity.setTraitName(trait.getTraitName());
+
+		entity.setAdditionalInfo(UpdateUtility.replaceField(trait.getAdditionalInfo(), entity.getAdditionalInfoMap()));
+		entity.setAlternativeAbbreviations(UpdateUtility.replaceField(trait.getAlternativeAbbreviations(), entity.getAlternativeAbbreviations()));
+		entity.setAttribute(UpdateUtility.replaceField(trait.getAttribute(), entity.getAttribute()));
+		entity.setEntity(UpdateUtility.replaceField(trait.getEntity(), entity.getEntity()));
+		entity.setExternalReferences(UpdateUtility.replaceField(trait.getExternalReferences(), entity.getExternalReferencesMap()));
+		entity.setMainAbbreviation(UpdateUtility.replaceField(trait.getMainAbbreviation(), entity.getMainAbbreviation()));
+		ontologyService.updateOntologyReference(entity, trait.getOntologyReference());
+		entity.setStatus(UpdateUtility.replaceField(trait.getStatus(), entity.getStatus()));
+		entity.setSynonyms(UpdateUtility.replaceField(trait.getSynonyms(), entity.getSynonyms()));
+		entity.setTraitClass(UpdateUtility.replaceField(trait.getTraitClass(), entity.getTraitClass()));
+		entity.setTraitDescription(UpdateUtility.replaceField(trait.getTraitDescription(), entity.getTraitDescription()));
+		entity.setTraitName(UpdateUtility.replaceField(trait.getTraitName(), entity.getTraitName()));
 		
 		return entity;
 	}

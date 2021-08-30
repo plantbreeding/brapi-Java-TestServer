@@ -1,11 +1,13 @@
 package org.brapi.test.BrAPITestServer.service.pheno;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.MethodEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationVariableEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ScaleEntity;
@@ -15,6 +17,7 @@ import org.brapi.test.BrAPITestServer.repository.pheno.ObservationVariableReposi
 import org.brapi.test.BrAPITestServer.service.DateUtility;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
+import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.brapi.test.BrAPITestServer.service.core.CropService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,9 +26,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Metadata;
+import io.swagger.model.pheno.Method;
 import io.swagger.model.pheno.ObservationVariable;
 import io.swagger.model.pheno.ObservationVariableNewRequest;
 import io.swagger.model.pheno.ObservationVariableSearchRequest;
+import io.swagger.model.pheno.Scale;
+import io.swagger.model.pheno.Trait;
 import io.swagger.model.pheno.VariableBaseClass;
 
 @Service
@@ -171,73 +177,91 @@ public class ObservationVariableService {
 
 	private void updateEntity(ObservationVariableEntity entity, ObservationVariableNewRequest request) throws BrAPIServerException {
 		updateBaseEntity(entity, request);
-		if(request.getObservationVariableName() != null)
-			entity.setName(request.getObservationVariableName());
+		entity.setName(UpdateUtility.replaceField(request.getObservationVariableName(), entity.getName()));
 	}
 	
 	public void updateBaseEntity(VariableBaseEntity entity, @Valid VariableBaseClass request)
 			throws BrAPIServerException {
 
-		if (request.getAdditionalInfo() != null)
-			entity.setAdditionalInfo(request.getAdditionalInfo());
-		if (request.getCommonCropName() != null)
-			entity.setCrop(cropService.getCropEntity(request.getCommonCropName()));
-		if (request.getContextOfUse() != null)
-			entity.setContextOfUse(request.getContextOfUse());
-		if (request.getDefaultValue() != null)
-			entity.setDefaultValue(request.getDefaultValue());
-		if (request.getDocumentationURL() != null)
-			entity.setDocumentationURL(request.getDocumentationURL());
-		if (request.getExternalReferences() != null)
-			entity.setExternalReferences(request.getExternalReferences());
-		if (request.getGrowthStage() != null)
-			entity.setGrowthStage(request.getGrowthStage());
-		if (request.getInstitution() != null)
-			entity.setInstitution(request.getInstitution());
-		if (request.getLanguage() != null)
-			entity.setLanguage(request.getLanguage());
+		entity.setAdditionalInfo(UpdateUtility.replaceField(request.getAdditionalInfo(), entity.getAdditionalInfoMap()));
+		entity.setContextOfUse(UpdateUtility.replaceField(request.getContextOfUse(), entity.getContextOfUse()));
+		entity.setDefaultValue(UpdateUtility.replaceField(request.getDefaultValue(), entity.getDefaultValue()));
+		entity.setDocumentationURL(UpdateUtility.replaceField(request.getDocumentationURL(), entity.getDocumentationURL()));
+		entity.setExternalReferences(UpdateUtility.replaceField(request.getExternalReferences(), entity.getExternalReferencesMap()));
+		entity.setGrowthStage(UpdateUtility.replaceField(request.getGrowthStage(), entity.getGrowthStage()));
+		entity.setInstitution(UpdateUtility.replaceField(request.getInstitution(), entity.getInstitution()));
+		entity.setLanguage(UpdateUtility.replaceField(request.getLanguage(), entity.getLanguage()));
+		entity.setScientist(UpdateUtility.replaceField(request.getScientist(), entity.getScientist()));
+		entity.setStatus(UpdateUtility.replaceField(request.getStatus(), entity.getStatus()));
+		entity.setSynonyms(UpdateUtility.replaceField(request.getSynonyms(), entity.getSynonyms()));
+		
+		Date submissionTimeStamp = entity.getSubmissionTimestamp();
+		if(request.getSubmissionTimestamp() != null) {
+			if(request.getSubmissionTimestamp().isPresent()) {
+				submissionTimeStamp = DateUtility.toDate(request.getSubmissionTimestamp().get());
+			}else {
+				submissionTimeStamp = null;
+			}
+		}
+		entity.setSubmissionTimestamp(submissionTimeStamp);
+
+		ontologyService.updateOntologyReference(entity, request.getOntologyReference());
+		
+		String commonCropName = entity.getCrop() == null 
+				? UpdateUtility.replaceField(request.getCommonCropName(), null)
+				: UpdateUtility.replaceField(request.getCommonCropName(), entity.getCrop().getCropName());
+		CropEntity crop = cropService.getCropEntity(commonCropName);
+		entity.setCrop(crop);
+			
 		if (request.getMethod() != null) {
-			MethodEntity methodEntity;
-			if(request.getMethod().getMethodDbId() == null) {
-				methodEntity = new MethodEntity();
-			}else {
-				methodEntity = methodService.getMethodEntity(request.getMethod().getMethodDbId());
+			if (request.getMethod().isPresent()) {
+				Method requestMethod = request.getMethod().get();
+				MethodEntity methodEntity;
+				if(requestMethod.getMethodDbId() == null) {
+					methodEntity = new MethodEntity();
+				}else {
+					methodEntity = methodService.getMethodEntity(requestMethod.getMethodDbId());
+				}
+				methodService.updateEntity(methodEntity, requestMethod);
+				methodEntity = methodService.saveMethodEntity(methodEntity);
+				entity.setMethod(methodEntity);
+			} else {
+				entity.setMethod(null);
 			}
-			methodService.updateEntity(methodEntity, request.getMethod());
-			methodEntity = methodService.saveMethodEntity(methodEntity);
-			entity.setMethod(methodEntity);
 		}
-		if (request.getOntologyReference() != null)
-			ontologyService.updateOntologyReference(entity, request.getOntologyReference());
+		
 		if (request.getScale() != null) {
-			ScaleEntity scaleEntity;
-			if(request.getScale().getScaleDbId() == null) {
-				scaleEntity = new ScaleEntity();
-			}else {
-				scaleEntity = scaleService.getScaleEntity(request.getScale().getScaleDbId());
+			if (request.getScale().isPresent()) {
+				Scale requestScale = request.getScale().get();
+				ScaleEntity scaleEntity;
+				if(requestScale.getScaleDbId() == null) {
+					scaleEntity = new ScaleEntity();
+				}else {
+					scaleEntity = scaleService.getScaleEntity(requestScale.getScaleDbId());
+				}
+				scaleService.updateEntity(scaleEntity, requestScale);
+				scaleEntity = scaleService.saveScaleEntity(scaleEntity);
+				entity.setScale(scaleEntity);
+			} else {
+				entity.setScale(null);
 			}
-			scaleService.updateEntity(scaleEntity, request.getScale());
-			scaleEntity = scaleService.saveScaleEntity(scaleEntity);
-			entity.setScale(scaleEntity);
 		}
-		if (request.getScientist() != null)
-			entity.setScientist(request.getScientist());
-		if (request.getStatus() != null)
-			entity.setStatus(request.getStatus());
-		if (request.getSubmissionTimestamp() != null)
-			entity.setSubmissionTimestamp(DateUtility.toDate(request.getSubmissionTimestamp()));
-		if (request.getSynonyms() != null)
-			entity.setSynonyms(request.getSynonyms());
+		
 		if (request.getTrait() != null){
-			TraitEntity traitEntity;
-			if(request.getTrait().getTraitDbId() == null) {
-				traitEntity = new TraitEntity();
-			}else {
-				traitEntity = traitService.getTraitEntity(request.getTrait().getTraitDbId());
+			if (request.getTrait().isPresent()) {
+				Trait requestTrait = request.getTrait().get();
+				TraitEntity traitEntity;
+				if(requestTrait.getTraitDbId() == null) {
+					traitEntity = new TraitEntity();
+				}else {
+					traitEntity = traitService.getTraitEntity(requestTrait.getTraitDbId());
+				}
+				traitService.updateEntity(traitEntity, requestTrait);
+				traitEntity = traitService.saveTraitEntity(traitEntity);
+				entity.setTrait(traitEntity);
+			} else {
+				entity.setTrait(null);
 			}
-			traitService.updateEntity(traitEntity, request.getTrait());
-			traitEntity = traitService.saveTraitEntity(traitEntity);
-			entity.setTrait(traitEntity);
 		}
 	}
 }

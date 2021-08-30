@@ -5,12 +5,14 @@ import org.brapi.test.BrAPITestServer.serializer.CustomDateSerializer;
 import org.brapi.test.BrAPITestServer.serializer.CustomGeoJSONDeserializer;
 import org.brapi.test.BrAPITestServer.serializer.CustomGermplasmStorageTypesDeserializer;
 import org.brapi.test.BrAPITestServer.serializer.CustomSerializationModule;
+import org.brapi.test.BrAPITestServer.serializer.CustomStringToEnumConverter;
 import org.brapi.test.BrAPITestServer.serializer.CustomTimeStampSerializer;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import io.swagger.model.GeoJSONGeometry;
@@ -39,12 +41,16 @@ public class BrapiTestServerConfig {
 	}
 
 	@Bean
-	public WebMvcConfigurer corsConfigurer() {
+	public WebMvcConfigurer loadWebConfig() {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**");
 			}
+		    @Override
+		    public void addFormatters(FormatterRegistry registry) {
+		        registry.addConverter(new CustomStringToEnumConverter());
+		    }
 		};
 	}
 

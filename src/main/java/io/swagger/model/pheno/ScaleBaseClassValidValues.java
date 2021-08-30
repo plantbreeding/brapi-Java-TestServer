@@ -1,6 +1,8 @@
 package io.swagger.model.pheno;
 
 import java.util.Objects;
+import java.util.Optional;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
@@ -9,6 +11,8 @@ import io.swagger.model.pheno.ScaleBaseClassValidValuesCategories;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 
@@ -20,24 +24,24 @@ import javax.validation.Valid;
 public class ScaleBaseClassValidValues   {
   @JsonProperty("categories")
   @Valid
-  private List<ScaleBaseClassValidValuesCategories> categories = null;
+  private Optional<List<ScaleBaseClassValidValuesCategories>> categories = null;
 
   @JsonProperty("max")
-  private Integer max = null;
+  private Optional<Integer> max = null;
 
   @JsonProperty("min")
-  private Integer min = null;
+  private Optional<Integer> min = null;
 
   public ScaleBaseClassValidValues categories(List<ScaleBaseClassValidValuesCategories> categories) {
-    this.categories = categories;
+    this.categories = UpdateUtility.setField(categories);
     return this;
   }
 
   public ScaleBaseClassValidValues addCategoriesItem(ScaleBaseClassValidValuesCategories categoriesItem) {
     if (this.categories == null) {
-      this.categories = new ArrayList<ScaleBaseClassValidValuesCategories>();
+      this.categories = UpdateUtility.setField(new ArrayList<ScaleBaseClassValidValuesCategories>());
     }
-    this.categories.add(categoriesItem);
+    this.categories.get().add(categoriesItem);
     return this;
   }
 
@@ -47,16 +51,16 @@ public class ScaleBaseClassValidValues   {
   **/
   @ApiModelProperty(example = "[{\"label\":\"low\",\"value\":\"0\"},{\"label\":\"medium\",\"value\":\"5\"},{\"label\":\"high\",\"value\":\"10\"}]", value = "List of possible values with optional labels")
       @Valid
-    public List<ScaleBaseClassValidValuesCategories> getCategories() {
+    public Optional<List<ScaleBaseClassValidValuesCategories>> getCategories() {
     return categories;
   }
 
   public void setCategories(List<ScaleBaseClassValidValuesCategories> categories) {
-    this.categories = categories;
+    this.categories = UpdateUtility.setField(categories);
   }
 
   public ScaleBaseClassValidValues max(Integer max) {
-    this.max = max;
+    this.max = UpdateUtility.setField(max);
     return this;
   }
 
@@ -66,16 +70,16 @@ public class ScaleBaseClassValidValues   {
   **/
   @ApiModelProperty(example = "9999", value = "Maximum value (used for field data capture control).")
   
-    public Integer getMax() {
+    public Optional<Integer> getMax() {
     return max;
   }
 
   public void setMax(Integer max) {
-    this.max = max;
+    this.max = UpdateUtility.setField(max);
   }
 
   public ScaleBaseClassValidValues min(Integer min) {
-    this.min = min;
+    this.min = UpdateUtility.setField(min);
     return this;
   }
 
@@ -85,12 +89,12 @@ public class ScaleBaseClassValidValues   {
   **/
   @ApiModelProperty(example = "2", value = "Minimum value (used for data capture control) for numerical and date scales")
   
-    public Integer getMin() {
+    public Optional<Integer> getMin() {
     return min;
   }
 
   public void setMin(Integer min) {
-    this.min = min;
+    this.min = UpdateUtility.setField(min);
   }
 
 

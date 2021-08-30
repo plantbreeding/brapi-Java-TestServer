@@ -13,6 +13,7 @@ import org.brapi.test.BrAPITestServer.model.entity.core.ProgramEntity;
 import org.brapi.test.BrAPITestServer.repository.core.ProgramRepository;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
+import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -64,7 +65,8 @@ public class ProgramService {
 				.appendList(request.getAbbreviations(), "abbreviation")
 				.appendList(request.getCommonCropNames(), "crop.cropName")
 				.appendList(request.getLeadPersonDbIds(), "leadPerson.id")
-				.appendPersonNamesList(request.getLeadPersonNames(), "leadPerson.firstName", "leadPerson.middleName", "leadPerson.lastName")
+				.appendPersonNamesList(request.getLeadPersonNames(), "leadPerson.firstName", "leadPerson.middleName",
+						"leadPerson.lastName")
 				.appendList(request.getObjectives(), "objective").appendList(request.getProgramDbIds(), "id")
 				.appendList(request.getProgramNames(), "name");
 
@@ -143,28 +145,28 @@ public class ProgramService {
 	}
 
 	private void updateEntity(ProgramEntity entity, @Valid ProgramNewRequest request) throws BrAPIServerException {
-		if (request.getAdditionalInfo() != null)
-			entity.setAdditionalInfo(request.getAdditionalInfo());
-		if (request.getAbbreviation() != null)
-			entity.setAbbreviation(request.getAbbreviation());
-		if (request.getDocumentationURL() != null)
-			entity.setDocumentationURL(request.getDocumentationURL());
-		if (request.getExternalReferences() != null)
-			entity.setExternalReferences(request.getExternalReferences());
-		if (request.getObjective() != null)
-			entity.setObjective(request.getObjective());
-		if (request.getProgramName() != null)
-			entity.setName(request.getProgramName());
+		entity.setAdditionalInfo(
+				UpdateUtility.replaceField(request.getAdditionalInfo(), entity.getAdditionalInfoMap()));
+		entity.setAbbreviation(UpdateUtility.replaceField(request.getAbbreviation(), entity.getAbbreviation()));
+		entity.setDocumentationURL(
+				UpdateUtility.replaceField(request.getDocumentationURL(), entity.getDocumentationURL()));
+		entity.setExternalReferences(
+				UpdateUtility.replaceField(request.getExternalReferences(), entity.getExternalReferencesMap()));
+		entity.setObjective(UpdateUtility.replaceField(request.getObjective(), entity.getObjective()));
+		entity.setName(UpdateUtility.replaceField(request.getProgramName(), entity.getName()));
 
-		if (request.getCommonCropName() != null) {
-			CropEntity crop = cropService.getCropEntity(request.getCommonCropName());
-			entity.setCrop(crop);
-		}
+		String commonCropName = entity.getCrop() == null 
+				? UpdateUtility.replaceField(request.getCommonCropName(), null)
+				: UpdateUtility.replaceField(request.getCommonCropName(), entity.getCrop().getCropName());
+		CropEntity crop = cropService.getCropEntity(commonCropName);
+		entity.setCrop(crop);
 
-		if (request.getLeadPersonDbId() != null) {
-			PersonEntity person = peopleService.getPersonEntity(request.getLeadPersonDbId());
-			entity.setLeadPerson(person);
-		}
+		String leadPersonDbId = entity.getLeadPerson() == null
+				? UpdateUtility.replaceField(request.getLeadPersonDbId(), null)
+				: UpdateUtility.replaceField(request.getLeadPersonDbId(), entity.getLeadPerson().getId());
+		PersonEntity person = peopleService.getPersonEntity(leadPersonDbId);
+		entity.setLeadPerson(person);
 
 	}
+
 }

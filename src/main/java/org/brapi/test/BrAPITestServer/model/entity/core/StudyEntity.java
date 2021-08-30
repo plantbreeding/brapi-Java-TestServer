@@ -97,7 +97,8 @@ public class StudyEntity extends BrAPIPrimaryEntity {
 
 	public void setProgram(ProgramEntity program) {
 		this.program = program;
-		setCrop(program.getCrop());
+		if (program.getCrop() != null)
+			setCrop(program.getCrop());
 	}
 
 	public List<ObservationUnitEntity> getObservationUnits() {
@@ -290,6 +291,7 @@ public class StudyEntity extends BrAPIPrimaryEntity {
 
 	public void setTrial(TrialEntity trial) {
 		this.trial = trial;
-		setProgram(trial.getProgram());
+		if (trial.getProgram() != null)
+			setProgram(trial.getProgram());
 	}
 }

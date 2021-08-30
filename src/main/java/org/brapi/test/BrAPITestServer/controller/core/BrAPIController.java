@@ -7,8 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.exceptions.InvalidPagingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import io.swagger.model.BrAPIResponse;
 import io.swagger.model.BrAPIResponseResult;
@@ -20,6 +24,8 @@ import io.swagger.model.SearchRequestParametersPaging;
 import io.swagger.model.TokenPagination;
 
 public class BrAPIController {
+	private static final Logger log = LoggerFactory.getLogger(ServerInfoApiController.class);
+	
 	protected Metadata generateMetaDataTemplateForSearch(Integer originalRequestedPage, Integer newRequestedPage,
 			Integer originalRequestedPageSize, Integer newRequestedPageSize) throws BrAPIServerException {
 		Integer page = newRequestedPage;
