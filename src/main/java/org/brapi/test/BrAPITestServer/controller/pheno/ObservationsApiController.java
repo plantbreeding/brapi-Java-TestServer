@@ -198,7 +198,6 @@ public class ObservationsApiController extends BrAPIController implements Observ
 	@CrossOrigin
 	@Override
 	public ResponseEntity<? extends BrAPIResponse> searchObservationsSearchResultsDbIdGet(
-			@RequestHeader(value = "Accept", required = true) WSMIMEDataTypes accept,
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
