@@ -19,6 +19,14 @@ public class StudyLastUpdateEntity extends BrAPIBaseEntity {
 	@OneToOne
 	private StudyEntity study;
 
+	public StudyEntity getStudy() {
+		return study;
+	}
+
+	public void setStudy(StudyEntity study) {
+		this.study = study;
+	}
+
 	public Date getTimestamp() {
 		return timestamp;
 	}

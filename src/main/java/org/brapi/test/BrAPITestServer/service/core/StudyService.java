@@ -176,10 +176,10 @@ public class StudyService {
 	public List<Study> saveStudies(@Valid List<StudyNewRequest> body) throws BrAPIServerException {
 		List<Study> savedStudies = new ArrayList<>();
 
-		for (StudyNewRequest list : body) {
+		for (StudyNewRequest study : body) {
 
 			StudyEntity entity = new StudyEntity();
-			updateEntity(entity, list);
+			updateEntity(entity, study);
 
 			StudyEntity savedEntity = studyRepository.save(entity);
 
@@ -244,13 +244,13 @@ public class StudyService {
 					body.getEnvironmentParameters().stream().map(this::convertToEntity).collect(Collectors.toList()));
 		}
 		if (body.getExperimentalDesign() != null)
-			entity.setExperimentalDesign(convertToEntity(body.getExperimentalDesign()));
+			entity.setExperimentalDesign(convertToEntity(body.getExperimentalDesign(), entity));
 		if (body.getExternalReferences() != null)
 			entity.setExternalReferences(body.getExternalReferences());
 		if (body.getGrowthFacility() != null)
-			entity.setGrowthFacility(convertToEntity(body.getGrowthFacility()));
+			entity.setGrowthFacility(convertToEntity(body.getGrowthFacility(), entity));
 		if (body.getLastUpdate() != null)
-			entity.setLastUpdate(convertToEntity(body.getLastUpdate()));
+			entity.setLastUpdate(convertToEntity(body.getLastUpdate(), entity));
 		if (body.getLicense() != null)
 			entity.setLicense(body.getLicense());
 		if (body.getLocationDbId() != null) {
@@ -398,12 +398,13 @@ public class StudyService {
 		return update;
 	}
 
-	private StudyLastUpdateEntity convertToEntity(StudyLastUpdate update) {
+	private StudyLastUpdateEntity convertToEntity(StudyLastUpdate update, StudyEntity study) {
 		StudyLastUpdateEntity entity = null;
 		if (update != null) {
 			entity = new StudyLastUpdateEntity();
 			entity.setTimestamp(DateUtility.toDate(update.getTimestamp()));
 			entity.setVersion(update.getVersion());
+			entity.setStudy(study);
 		}
 		return entity;
 	}
@@ -418,12 +419,13 @@ public class StudyService {
 		return gf;
 	}
 
-	private GrowthFacilityEntity convertToEntity(StudyGrowthFacility facility) {
+	private GrowthFacilityEntity convertToEntity(StudyGrowthFacility facility, StudyEntity study) {
 		GrowthFacilityEntity entity = null;
 		if (facility != null) {
 			entity = new GrowthFacilityEntity();
 			entity.setDescription(facility.getDescription());
 			entity.setPUI(facility.getPUI());
+			entity.setStudy(study);
 		}
 		return entity;
 	}
@@ -438,12 +440,13 @@ public class StudyService {
 		return ed;
 	}
 
-	private ExperimentalDesignEntity convertToEntity(StudyExperimentalDesign design) {
+	private ExperimentalDesignEntity convertToEntity(StudyExperimentalDesign design, StudyEntity study) {
 		ExperimentalDesignEntity entity = null;
 		if (design != null) {
 			entity = new ExperimentalDesignEntity();
 			entity.setDescription(design.getDescription());
 			entity.setPUI(design.getPUI());
+			entity.setStudy(study);
 		}
 		return entity;
 	}

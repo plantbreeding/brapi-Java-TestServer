@@ -130,13 +130,20 @@ public class SearchQueryBuilder<T> {
 	}
 
 	public SearchQueryBuilder<T> appendNumberRange(Integer min, Integer max, String columnName) {
-		BigDecimal minBD = null;
-		BigDecimal maxBD = null;
-		if (min != null)
-			minBD = new BigDecimal(min);
-		if (max != null)
-			maxBD = new BigDecimal(max);
-		return appendNumberRange(minBD, maxBD, columnName);
+		String paramNameMin = paramFilter(columnName) + "Min";
+		String paramNameMax = paramFilter(columnName) + "Max";
+		if (min != null && max != null) {
+			query += "AND " + entityPrefix(columnName) + " BETWEEN :" + paramNameMin + " AND :" + paramNameMax + " ";
+			params.put(paramNameMin, min);
+			params.put(paramNameMax, max);
+		} else if (min != null) {
+			query += "AND " + entityPrefix(columnName) + " >= :" + paramNameMin + " ";
+			params.put(paramNameMin, min);
+		} else if (max != null) {
+			query += "AND " + entityPrefix(columnName) + " <= :" + paramNameMax + " ";
+			params.put(paramNameMax, max);
+		}
+		return this;
 	}
 
 	public SearchQueryBuilder<T> appendNumberRange(BigDecimal min, BigDecimal max, String columnName) {
