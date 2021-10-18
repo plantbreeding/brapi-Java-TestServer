@@ -38,6 +38,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.swagger.model.IndexPagination;
 import io.swagger.model.Metadata;
 import io.swagger.model.germ.Germplasm;
 import io.swagger.model.germ.GermplasmMCPD;
@@ -123,6 +124,13 @@ public class GermplasmService {
 	}
 
 	public List<Germplasm> findGermplasm(@Valid GermplasmSearchRequest request, Metadata metadata) {
+		Page<GermplasmEntity> page = findGermplasmEntities(request, metadata);
+		List<Germplasm> germplasms = page.map(this::convertFromEntity).getContent();
+		PagingUtility.calculateMetaData(metadata, page);
+		return germplasms;
+	}
+
+	public Page<GermplasmEntity> findGermplasmEntities(@Valid GermplasmSearchRequest request, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<GermplasmEntity> searchQuery = new SearchQueryBuilder<GermplasmEntity>(GermplasmEntity.class);
 
@@ -149,9 +157,7 @@ public class GermplasmService {
 				.appendList(request.getSpecies(), "species");
 
 		Page<GermplasmEntity> page = germplasmRepository.findAllBySearch(searchQuery, pageReq);
-		List<Germplasm> germplasms = page.map(this::convertFromEntity).getContent();
-		PagingUtility.calculateMetaData(metadata, page);
-		return germplasms;
+		return page;
 	}
 
 	public Germplasm getGermplasm(String germplasmDbId) throws BrAPIServerException {
@@ -226,9 +232,9 @@ public class GermplasmService {
 	public List<Germplasm> saveGermplasm(@Valid List<GermplasmNewRequest> body) throws BrAPIServerException {
 		List<Germplasm> savedGermplasm = new ArrayList<>();
 
-		for (GermplasmNewRequest list : body) {
+		for (GermplasmNewRequest germplasm : body) {
 			GermplasmEntity entity = new GermplasmEntity();
-			updateEntity(entity, list);
+			updateEntity(entity, germplasm);
 			GermplasmEntity savedEntity = germplasmRepository.save(entity);
 			savedGermplasm.add(convertFromEntity(savedEntity));
 		}
@@ -403,9 +409,9 @@ public class GermplasmService {
 		Optional<GermplasmEntity> fatherOpt = Optional.empty();
 		Optional<GermplasmEntity> motherOpt = Optional.empty();
 		if (pedigreeList.size() > 0) {
-			fatherOpt = germplasmRepository.findById(pedigreeList.get(0));
+			fatherOpt = Optional.ofNullable(findByUnknownIdentity(pedigreeList.get(0)));
 			if (pedigreeList.size() > 1) {
-				motherOpt = germplasmRepository.findById(pedigreeList.get(1));
+				motherOpt = Optional.ofNullable(findByUnknownIdentity(pedigreeList.get(1)));
 			}
 		}
 		if (fatherOpt.isPresent() && motherOpt.isPresent()) {
@@ -429,6 +435,44 @@ public class GermplasmService {
 			pedEntity.setParent2Type(null);
 			pedEntity.setParent2(null);
 		}
+	}
+	
+	private GermplasmEntity findByUnknownIdentity(String germplasmStr){
+		List<String> germplasmList = Arrays.asList(germplasmStr);
+		Metadata metadata = new Metadata().pagination(new IndexPagination());
+		
+		//germplasmDbId
+		GermplasmSearchRequest request = new GermplasmSearchRequest().germplasmDbIds(germplasmList);
+		Page<GermplasmEntity> page = findGermplasmEntities(request, metadata);
+		if(page.hasContent()) {
+			return page.getContent().get(0);
+		}
+		//germplasmNames
+		request = new GermplasmSearchRequest().germplasmNames(germplasmList);
+		page = findGermplasmEntities(request, metadata);
+		if(page.hasContent()) {
+			return page.getContent().get(0);
+		}
+		//synonyms
+		request = new GermplasmSearchRequest().synonyms(germplasmList);
+		page = findGermplasmEntities(request, metadata);
+		if(page.hasContent()) {
+			return page.getContent().get(0);
+		}
+		//accessionNumbers
+		request = new GermplasmSearchRequest().accessionNumbers(germplasmList);
+		page = findGermplasmEntities(request, metadata);
+		if(page.hasContent()) {
+			return page.getContent().get(0);
+		}
+		//germplasmPUIs
+		request = new GermplasmSearchRequest().germplasmPUIs(germplasmList);
+		page = findGermplasmEntities(request, metadata);
+		if(page.hasContent()) {
+			return page.getContent().get(0);
+		}
+		
+		return null;
 	}
 
 	private void pedigreeEntityNullCheck(GermplasmEntity entity) {
