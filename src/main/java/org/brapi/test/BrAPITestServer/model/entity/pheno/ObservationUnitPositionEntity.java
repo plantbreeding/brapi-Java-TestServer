@@ -129,4 +129,41 @@ public class ObservationUnitPositionEntity extends BrAPIBaseEntity {
 	public void setPositionCoordinateYType(PositionCoordinateTypeEnum positionCoordinateYType) {
 		this.positionCoordinateYType = positionCoordinateYType;
 	}
+
+	public String getFieldCode() {
+		return getRelationshipCode(ObservationUnitHierarchyLevelEnum.FIELD);
+	}
+
+	public String getBlockCode() {
+		return getRelationshipCode(ObservationUnitHierarchyLevelEnum.BLOCK);
+	}
+
+	public String getEntryCode() {
+		return getRelationshipCode(ObservationUnitHierarchyLevelEnum.ENTRY);
+	}
+
+	public String getRepCode() {
+		return getRelationshipCode(ObservationUnitHierarchyLevelEnum.REP);
+	}
+
+	public String getPlotCode() {
+		return getRelationshipCode(ObservationUnitHierarchyLevelEnum.PLOT);
+	}
+
+	public String getPlantCode() {
+		return getRelationshipCode(ObservationUnitHierarchyLevelEnum.PLANT);
+	}
+	
+	private String getRelationshipCode(ObservationUnitHierarchyLevelEnum level) {
+		if(getLevelName() == level) {
+			return getLevelCode();
+		}else {
+			for(ObservationUnitLevelRelationshipEntity rel : getObservationLevelRelationships()) {
+				if(rel.getLevelName() == level) {
+					return rel.getLevelCode();
+				}
+			}
+		}
+		return null;
+	}
 }
