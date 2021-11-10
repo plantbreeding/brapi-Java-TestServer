@@ -18,6 +18,7 @@ import org.brapi.test.BrAPITestServer.model.entity.core.ExperimentalDesignEntity
 import org.brapi.test.BrAPITestServer.model.entity.core.GrowthFacilityEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.LocationEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.ObservationLevelEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.PersonEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.SeasonEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.StudyLastUpdateEntity;
@@ -54,16 +55,16 @@ public class StudyService {
 	private final TrialService trialService;
 	private final CropService cropService;
 	private final LocationService locationService;
-	private final ContactService contactService;
+	private final PeopleService peopleService;
 	private final SeasonService seasonService;
 
 	@Autowired
 	public StudyService(StudyRepository studyRepository, TrialService trialService, CropService cropService, LocationService locationService,
-			ContactService contactService, SeasonService seasonService) {
+			PeopleService peopleService, SeasonService seasonService) {
 		this.studyRepository = studyRepository;
 
 		this.locationService = locationService;
-		this.contactService = contactService;
+		this.peopleService = peopleService;
 		this.seasonService = seasonService;
 		this.trialService = trialService;
 		this.cropService = cropService;
@@ -222,7 +223,16 @@ public class StudyService {
 		if (body.getContacts() != null) {
 			entity.setContacts(new ArrayList<>());
 			for (Contact contact : body.getContacts()) {
-				ContactEntity contactEntity = contactService.getContactEntity(contact.getContactDbId());
+				PersonEntity contactEntity;
+				if(contact.getContactDbId() == null) {
+					contactEntity = peopleService.saveContact(contact);
+				}else {
+					try {
+						contactEntity = peopleService.getPersonEntity(contact.getContactDbId());
+					} catch (BrAPIServerException e) {
+						contactEntity = peopleService.saveContact(contact);
+					}
+				}
 				entity.getContacts().add(contactEntity);
 			}
 		}
@@ -299,7 +309,7 @@ public class StudyService {
 		study.setAdditionalInfo(entity.getAdditionalInfoMap());
 
 		if (entity.getContacts() != null) {
-			study.setContacts(entity.getContacts().stream().map(this.contactService::convertFromEntity)
+			study.setContacts(entity.getContacts().stream().map(this.peopleService::convertToContact)
 					.collect(Collectors.toList()));
 		}
 		study.setCulturalPractices(entity.getCulturalPractices());

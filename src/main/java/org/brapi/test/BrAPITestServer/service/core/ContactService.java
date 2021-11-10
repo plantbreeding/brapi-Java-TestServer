@@ -14,32 +14,34 @@ import io.swagger.model.core.Contact;
 public class ContactService {
 	
 	private final ContactRepository contactRepository;
+	private final PeopleService peopleService;
 	
-	public ContactService(ContactRepository contactRepository) {
+	public ContactService(ContactRepository contactRepository, PeopleService peopleService) {
 		this.contactRepository = contactRepository;
+		this.peopleService = peopleService;
 	}
 
-	public Contact convertFromEntity(ContactEntity e) {
-		Contact contact = new Contact();
-		contact.setContactDbId(e.getId());
-		contact.setEmail(e.getEmail());
-		contact.setInstituteName(e.getInstituteName());
-		contact.setName(e.getName());
-		contact.setOrcid(e.getOrcid());
-		contact.setType(e.getType());
-		return contact;
-	}
-
-	public ContactEntity getContactEntity(String contactDbId) throws BrAPIServerException {
-		ContactEntity entity = null;
-
-		Optional<ContactEntity> entityOpt = contactRepository.findById(contactDbId);
-		if (entityOpt.isPresent()) {
-			entity = entityOpt.get();
-		} else {
-			throw new BrAPIServerException(HttpStatus.BAD_REQUEST, "contactDbId not found: " + contactDbId);
-		}
-
-		return entity;
-	}
+//	public Contact convertFromEntity(ContactEntity e) {
+//		Contact contact = new Contact();
+//		contact.setContactDbId(e.getId());
+//		contact.setEmail(e.getEmail());
+//		contact.setInstituteName(e.getInstituteName());
+//		contact.setName(e.getName());
+//		contact.setOrcid(e.getOrcid());
+//		contact.setType(e.getType());
+//		return contact;
+//	}
+//
+//	public ContactEntity getContactEntity(String contactDbId) throws BrAPIServerException {
+//		ContactEntity entity = null;
+//
+//		Optional<ContactEntity> entityOpt = contactRepository.findById(contactDbId);
+//		if (entityOpt.isPresent()) {
+//			entity = entityOpt.get();
+//		} else {
+//			throw new BrAPIServerException(HttpStatus.BAD_REQUEST, "contactDbId not found: " + contactDbId);
+//		}
+//
+//		return entity;
+//	}
 }

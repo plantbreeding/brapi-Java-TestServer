@@ -25,12 +25,24 @@ public class PersonEntity extends BrAPIPrimaryEntity {
 	private String phoneNumber;
 	@Column
 	private String userID;
+	@Column
+	private String instituteName;
 
 	public String getName() {
-		return firstName + " " + lastName;
+		String name = getFirstName();
+		if(!getLastName().isEmpty()) 
+			name = (name + " " + getLastName()).trim();
+		
+		return name;
 	}
 	public String getFullName() {
-		return firstName + " " + middleName + " " + lastName;
+		String name = getFirstName();
+		if(!getMiddleName().isEmpty()) 
+			name = (name + " " + getMiddleName()).trim();
+		if(!getLastName().isEmpty()) 
+			name = (name + " " + getLastName()).trim();
+		
+		return name;
 	}
 	public String getDescription() {
 		return description;
@@ -94,6 +106,12 @@ public class PersonEntity extends BrAPIPrimaryEntity {
 
 	public void setUserID(String userID) {
 		this.userID = userID;
+	}
+	public String getInstituteName() {
+		return instituteName;
+	}
+	public void setInstituteName(String instituteName) {
+		this.instituteName = instituteName;
 	}
 
 }

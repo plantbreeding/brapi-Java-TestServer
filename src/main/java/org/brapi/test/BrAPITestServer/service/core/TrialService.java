@@ -11,6 +11,7 @@ import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.ContactEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.DatasetAuthorshipEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.PersonEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.ProgramEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.PublicationEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.TrialEntity;
@@ -37,13 +38,13 @@ import io.swagger.model.core.TrialSearchRequest;
 @Service
 public class TrialService {
 	private final TrialRepository trialRepository;
-	private final ContactService contactService;
+	private final PeopleService peopleService;
 	private final ProgramService programService;
 	private final CropService cropService;
 
-	public TrialService(TrialRepository trialRepository, ContactService contactService, ProgramService programService, CropService cropService) {
+	public TrialService(TrialRepository trialRepository, PeopleService peopleService, ProgramService programService, CropService cropService) {
 		this.trialRepository = trialRepository;
-		this.contactService = contactService;
+		this.peopleService = peopleService;
 		this.programService = programService;
 		this.cropService = cropService;
 	}
@@ -186,7 +187,7 @@ public class TrialService {
 		trial.setTrialPUI(entity.getTrialPUI());
 
 		if (entity.getContacts() != null) {
-			trial.setContacts(entity.getContacts().stream().map(this.contactService::convertFromEntity)
+			trial.setContacts(entity.getContacts().stream().map(this.peopleService::convertToContact)
 					.collect(Collectors.toList()));
 		}
 		if (entity.getDatasetAuthorships() != null) {
@@ -221,7 +222,16 @@ public class TrialService {
 		if (body.getContacts() != null) {
 			entity.setContacts(new ArrayList<>());
 			for (Contact contact : body.getContacts()) {
-				ContactEntity contactEntity = contactService.getContactEntity(contact.getContactDbId());
+				PersonEntity contactEntity;
+				if(contact.getContactDbId() == null) {
+					contactEntity = peopleService.saveContact(contact);
+				}else {
+					try {
+						contactEntity = peopleService.getPersonEntity(contact.getContactDbId());
+					} catch (BrAPIServerException e) {
+						contactEntity = peopleService.saveContact(contact);
+					}
+				}
 				entity.getContacts().add(contactEntity);
 			}
 		}

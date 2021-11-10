@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Metadata;
+import io.swagger.model.core.Contact;
 import io.swagger.model.core.Person;
 import io.swagger.model.core.PersonNewRequest;
 import io.swagger.model.core.PersonSearchRequest;
@@ -61,14 +62,14 @@ public class PeopleService {
 
 		Page<PersonEntity> entityPage = peopleRepository.findAllBySearch(searchQuery, pageReq);
 
-		List<Person> data = entityPage.map(this::convertFromEntity).getContent();
+		List<Person> data = entityPage.map(this::convertToPerson).getContent();
 		PagingUtility.calculateMetaData(metadata, entityPage);
 
 		return data;
 	}
 
 	public Person getPerson(String personDbId) throws BrAPIServerException {
-		return convertFromEntity(getPersonEntity(personDbId, HttpStatus.NOT_FOUND));
+		return convertToPerson(getPersonEntity(personDbId, HttpStatus.NOT_FOUND));
 	}
 
 	public PersonEntity getPersonEntity(String personDbId) throws BrAPIServerException {
@@ -102,7 +103,7 @@ public class PeopleService {
 			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "personDbId not found: " + personDbId);
 		}
 
-		return convertFromEntity(savedEntity);
+		return convertToPerson(savedEntity);
 	}
 
 	public List<Person> savePeople(@Valid List<PersonNewRequest> body) {
@@ -114,13 +115,49 @@ public class PeopleService {
 
 			PersonEntity savedEntity = peopleRepository.save(entity);
 
-			savedPeople.add(convertFromEntity(savedEntity));
+			savedPeople.add(convertToPerson(savedEntity));
 		}
 
 		return savedPeople;
 	}
 
-	private Person convertFromEntity(PersonEntity entity) {
+	public PersonEntity saveContact(Contact contact) {
+		PersonEntity entity = new PersonEntity();
+
+		entity.setEmailAddress(contact.getEmail());
+		entity.setInstituteName(contact.getInstituteName());
+		parseName(contact.getName(), entity);
+		entity.setUserID(contact.getOrcid());
+		entity.setDescription(contact.getType());
+		
+		PersonEntity savedEntity = peopleRepository.save(entity);
+		return savedEntity;
+	}
+	
+	private void parseName(String name, PersonEntity entity) {
+		if(name != null && !name.isEmpty()) {
+			entity.setFirstName("");
+			entity.setMiddleName("");
+			entity.setLastName("");
+			
+			String[] splitName = name.split(" ");
+
+			if (splitName.length >= 1) {
+				entity.setFirstName(splitName[0]);
+
+				if (splitName.length >= 2) {
+					entity.setLastName(splitName[splitName.length - 1]);
+
+					if (splitName.length >= 3) {
+						String middle = name.substring(name.indexOf(" ") + 1, name.lastIndexOf(" "));
+						entity.setMiddleName(middle);
+					}
+				}
+			}
+		}
+	}
+
+	private Person convertToPerson(PersonEntity entity) {
 		Person person = new Person();
 
 		person.setAdditionalInfo(entity.getAdditionalInfoMap());
@@ -136,6 +173,19 @@ public class PeopleService {
 		person.setUserID(entity.getUserID());
 
 		return person;
+	}
+
+	public Contact convertToContact(PersonEntity entity) {
+		Contact contact = new Contact();
+		
+		contact.setContactDbId(entity.getId());
+		contact.setEmail(entity.getEmailAddress());
+		contact.setInstituteName(entity.getInstituteName());
+		contact.setName(entity.getFullName());
+		contact.setOrcid(entity.getUserID());
+		contact.setType(entity.getDescription());
+
+		return contact;
 	}
 
 	private void updateEntity(PersonEntity entity, PersonNewRequest request) {

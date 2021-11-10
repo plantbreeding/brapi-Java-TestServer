@@ -27,8 +27,8 @@ public class StudyEntity extends BrAPIPrimaryEntity {
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "study_contact", joinColumns = {
 			@JoinColumn(name = "study_db_id", referencedColumnName = "id") }, inverseJoinColumns = {
-					@JoinColumn(name = "contact_db_id", referencedColumnName = "id") })
-	private List<ContactEntity> contacts;
+					@JoinColumn(name = "person_db_id", referencedColumnName = "id") })
+	private List<PersonEntity> contacts;
 	@Column
 	private String culturalPractices;
 	@OneToMany(mappedBy = "study")
@@ -125,11 +125,11 @@ public class StudyEntity extends BrAPIPrimaryEntity {
 		this.active = active;
 	}
 
-	public List<ContactEntity> getContacts() {
+	public List<PersonEntity> getContacts() {
 		return contacts;
 	}
 
-	public void setContacts(List<ContactEntity> contacts) {
+	public void setContacts(List<PersonEntity> contacts) {
 		this.contacts = contacts;
 	}
 
