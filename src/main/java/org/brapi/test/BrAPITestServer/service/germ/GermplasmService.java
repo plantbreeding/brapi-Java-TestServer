@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.BreedingMethodEntity;
@@ -179,7 +180,7 @@ public class GermplasmService {
 		if (entityOpt.isPresent()) {
 			germplasm = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(errorStatus, "germplasmDbId not found: " + germplasmDbId);
+			throw new BrAPIServerDbIdNotFoundException("germplasm", germplasmDbId);
 		}
 		return germplasm;
 	}
@@ -223,7 +224,7 @@ public class GermplasmService {
 
 			savedEntity = germplasmRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "germplasmDbId not found: " + germplasmDbId);
+			throw new BrAPIServerDbIdNotFoundException("germplasm", germplasmDbId);
 		}
 
 		return convertFromEntity(savedEntity);

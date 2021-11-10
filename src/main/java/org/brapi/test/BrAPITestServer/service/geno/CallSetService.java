@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.geno.CallSetEntity;
 import org.brapi.test.BrAPITestServer.repository.geno.CallSetRepository;
@@ -83,7 +84,7 @@ public class CallSetService {
 		if (entityOpt.isPresent()) {
 			callSet = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(errorStatus, "callSetDbId not found: " + callSetDbId);
+			throw new BrAPIServerDbIdNotFoundException("callSet", callSetDbId);
 		}
 		return callSet;
 	}

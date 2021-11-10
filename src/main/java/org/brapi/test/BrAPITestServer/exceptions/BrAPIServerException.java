@@ -14,6 +14,14 @@ public class BrAPIServerException extends Exception {
 		this.responseStatus = responseStatus;
 	}
 	
+	protected void setResponseMessage(String responseMessage) {
+		this.responseMessage = responseMessage;
+	}
+
+	protected void setResponseStatus(HttpStatus responseStatus) {
+		this.responseStatus = responseStatus;
+	}
+
 	public String getResponseMessage() {
 		return responseMessage;
 	}

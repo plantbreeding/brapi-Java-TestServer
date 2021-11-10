@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.geno.ReferenceSetEntity;
 import org.brapi.test.BrAPITestServer.repository.geno.ReferenceSetRepository;
@@ -67,7 +68,7 @@ public class ReferenceSetService {
 		if (entityOpt.isPresent()) {
 			referenceSet = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "referenceSetDbId not found: " + referenceSetDbId);
+			throw new BrAPIServerDbIdNotFoundException("referenceSet", referenceSetDbId);
 		}
 		return referenceSet;
 	}

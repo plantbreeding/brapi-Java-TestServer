@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.TraitEntity;
 import org.brapi.test.BrAPITestServer.repository.core.TraitRepository;
@@ -57,7 +59,7 @@ public class TraitService {
 
 			savedEntity = saveTraitEntity(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "traitDbId not found: " + traitDbId);
+			throw new BrAPIServerDbIdNotFoundException("trait", traitDbId);
 		}
 
 		return convertFromEntity(savedEntity);
@@ -94,7 +96,7 @@ public class TraitService {
 			if (entityOpt.isPresent()) {
 				trait = entityOpt.get();
 			} else {
-				throw new BrAPIServerException(errorStatus, "traitDbId not found " + traitDbId);
+				throw new BrAPIServerDbIdNotFoundException("trait", traitDbId);
 			}
 		}
 		return trait;

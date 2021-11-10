@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.LocationEntity;
 import org.brapi.test.BrAPITestServer.repository.core.LocationRepository;
@@ -84,7 +85,7 @@ public class LocationService {
 		if (entityOpt.isPresent()) {
 			location = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "locationDbId not found: " + locationDbId);
+			throw new BrAPIServerDbIdNotFoundException("location", locationDbId);
 		}
 		return location;
 	}
@@ -98,7 +99,7 @@ public class LocationService {
 
 			savedEntity = locationRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "locationDbId not found: " + locationDbId);
+			throw new BrAPIServerDbIdNotFoundException("location", locationDbId);
 		}
 
 		return convertFromEntity(savedEntity);

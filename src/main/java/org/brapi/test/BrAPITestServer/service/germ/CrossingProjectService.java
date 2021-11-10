@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.ProgramEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.CrossingProjectEntity;
@@ -66,7 +67,7 @@ public class CrossingProjectService {
 		if (entityOpt.isPresent()) {
 			crossingProject = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(errorStatus, "crossingProjectDbId not found: " + crossingProjectDbId);
+			throw new BrAPIServerDbIdNotFoundException("crossing project", crossingProjectDbId);
 		}
 		return crossingProject;
 	}
@@ -98,7 +99,7 @@ public class CrossingProjectService {
 
 			savedEntity = crossingProjectRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "crossingProjectDbId not found: " + crossingProjectDbId);
+			throw new BrAPIServerDbIdNotFoundException("crossing project", crossingProjectDbId);
 		}
 
 		return convertFromEntity(savedEntity);

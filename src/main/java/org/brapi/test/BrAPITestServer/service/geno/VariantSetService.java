@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.geno.CallEntity;
 import org.brapi.test.BrAPITestServer.model.entity.geno.CallSetEntity;
@@ -102,7 +103,7 @@ public class VariantSetService {
 		if (entityOpt.isPresent()) {
 			variantSet = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "variantSetDbId not found: " + variantSetDbId);
+			throw new BrAPIServerDbIdNotFoundException("variantSet", variantSetDbId);
 		}
 		return variantSet;
 	}

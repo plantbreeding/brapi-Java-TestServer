@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.geno.PlateEntity;
 import org.brapi.test.BrAPITestServer.model.entity.geno.SampleEntity;
@@ -89,7 +90,7 @@ public class SampleService {
 		if (entityOpt.isPresent()) {
 			sample = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "sampleDbId not found: " + sampleDbId);
+			throw new BrAPIServerDbIdNotFoundException("sample", sampleDbId);
 		}
 		return sample;
 	}
@@ -116,7 +117,7 @@ public class SampleService {
 
 			savedEntity = sampleRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "sampleDbId not found: " + sampleDbId);
+			throw new BrAPIServerDbIdNotFoundException("sample", sampleDbId);
 		}
 
 		return convertFromEntity(savedEntity);

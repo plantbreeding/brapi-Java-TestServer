@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.OntologyEntity;
@@ -72,7 +74,7 @@ public class OntologyService {
 			if (entityOpt.isPresent()) {
 				method = entityOpt.get();
 			} else {
-				throw new BrAPIServerException(HttpStatus.BAD_REQUEST, "ontologyDbId not found " + ontologyDbId);
+				throw new BrAPIServerDbIdNotFoundException("ontology", ontologyDbId);
 			}
 		}
 		return method;

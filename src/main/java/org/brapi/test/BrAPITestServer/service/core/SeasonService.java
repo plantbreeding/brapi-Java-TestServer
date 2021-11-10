@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.SeasonEntity;
 import org.brapi.test.BrAPITestServer.repository.core.SeasonRepository;
@@ -62,7 +63,7 @@ public class SeasonService {
 		if (entityOpt.isPresent()) {
 			season = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(errorStatus, "seasonDbId not found: " + seasonDbId);
+			throw new BrAPIServerDbIdNotFoundException("season", seasonDbId);
 		}
 		return season;
 	}
@@ -76,7 +77,7 @@ public class SeasonService {
 
 			savedEntity = seasonRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "seasonDbId not found: " + seasonDbId);
+			throw new BrAPIServerDbIdNotFoundException("season", seasonDbId);
 		}
 
 		return convertFromEntity(savedEntity);

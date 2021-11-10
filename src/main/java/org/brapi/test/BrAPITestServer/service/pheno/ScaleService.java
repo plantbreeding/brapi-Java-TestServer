@@ -6,6 +6,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ScaleEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ScaleValidValueCategoryEntity;
@@ -62,7 +64,7 @@ public class ScaleService {
 
 			savedEntity = saveScaleEntity(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "scaleDbId not found: " + scaleDbId);
+			throw new BrAPIServerDbIdNotFoundException("scale", scaleDbId);
 		}
 
 		return convertFromEntity(savedEntity);
@@ -99,7 +101,7 @@ public class ScaleService {
 			if (entityOpt.isPresent()) {
 				scale = entityOpt.get();
 			} else {
-				throw new BrAPIServerException(errorStatus, "scaleDbId not found " + scaleDbId);
+				throw new BrAPIServerDbIdNotFoundException("scale", scaleDbId);
 			}
 		}
 		return scale;

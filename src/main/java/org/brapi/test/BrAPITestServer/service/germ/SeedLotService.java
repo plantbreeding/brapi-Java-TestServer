@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.LocationEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.ProgramEntity;
@@ -83,7 +84,7 @@ public class SeedLotService {
 		if (entityOpt.isPresent()) {
 			seedLot = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(errorStatus, "seedLotDbId not found: " + seedLotDbId);
+			throw new BrAPIServerDbIdNotFoundException("seed lot", seedLotDbId);
 		}
 		return seedLot;
 	}
@@ -110,7 +111,7 @@ public class SeedLotService {
 
 			savedEntity = seedLotRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "seedLotDbId not found: " + seedLotDbId);
+			throw new BrAPIServerDbIdNotFoundException("seed lot", seedLotDbId);
 		}
 
 		return convertFromEntity(savedEntity);

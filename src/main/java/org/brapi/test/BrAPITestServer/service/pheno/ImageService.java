@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ImageEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationEntity;
@@ -98,7 +99,7 @@ public class ImageService {
 			if (imageOption.isPresent()) {
 				image = convertFromEntity(imageOption.get());
 			} else {
-				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "imageDbId not found: " + imageDbId);
+				throw new BrAPIServerDbIdNotFoundException("image", imageDbId);
 			}
 		}
 
@@ -118,7 +119,7 @@ public class ImageService {
 
 				result = convertFromEntity(saved);
 			} else {
-				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "imageDbId not found: " + imageDbId);
+				throw new BrAPIServerDbIdNotFoundException("image", imageDbId);
 			}
 
 		}
@@ -134,7 +135,7 @@ public class ImageService {
 
 			savedEntity = imageRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "imageDbId not found: " + imageDbId);
+			throw new BrAPIServerDbIdNotFoundException("image", imageDbId);
 		}
 
 		return convertFromEntity(savedEntity);

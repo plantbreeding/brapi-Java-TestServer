@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.PersonEntity;
 import org.brapi.test.BrAPITestServer.repository.core.PeopleRepository;
@@ -84,7 +85,7 @@ public class PeopleService {
 			if (entityOpt.isPresent()) {
 				entity = entityOpt.get();
 			} else {
-				throw new BrAPIServerException(errorStatus, "personDbId not found: " + personDbId);
+				throw new BrAPIServerDbIdNotFoundException("person", personDbId);
 			}
 		}
 
@@ -100,7 +101,7 @@ public class PeopleService {
 
 			savedEntity = peopleRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "personDbId not found: " + personDbId);
+			throw new BrAPIServerDbIdNotFoundException("person", personDbId);
 		}
 
 		return convertToPerson(savedEntity);

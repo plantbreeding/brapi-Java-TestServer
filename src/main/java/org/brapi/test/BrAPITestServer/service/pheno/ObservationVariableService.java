@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.MethodEntity;
@@ -119,7 +120,7 @@ public class ObservationVariableService {
 
 			savedEntity = observationVariableRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "observationVariableDbId not found: " + observationVariableDbId);
+			throw new BrAPIServerDbIdNotFoundException("observationVariable", observationVariableDbId);
 		}
 
 		return convertFromEntity(savedEntity);
@@ -139,7 +140,7 @@ public class ObservationVariableService {
 		if (entityOpt.isPresent()) {
 			observationVariable = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(errorStatus, "observationVariableDbId not found: " + observationVariableDbId);
+			throw new BrAPIServerDbIdNotFoundException("observationVariable", observationVariableDbId);
 		}
 		return observationVariable;
 	}

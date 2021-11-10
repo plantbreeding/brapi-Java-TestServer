@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.MethodEntity;
@@ -57,7 +59,7 @@ public class MethodService {
 			updateEntity(entity, body);
 			savedEntity = saveMethodEntity(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "methodDbId not found: " + methodDbId);
+			throw new BrAPIServerDbIdNotFoundException("method", methodDbId, "methodDbId");
 		}
 
 		return convertFromEntity(savedEntity);
@@ -95,7 +97,7 @@ public class MethodService {
 			if (entityOpt.isPresent()) {
 				method = entityOpt.get();
 			} else {
-				throw new BrAPIServerException(errorStatus, "methodDbId not found " + methodDbId);
+				throw new BrAPIServerDbIdNotFoundException("method", methodDbId, "methodDbId");
 			}
 		}
 		return method;

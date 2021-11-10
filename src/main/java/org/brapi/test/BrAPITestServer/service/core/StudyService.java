@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.ContactEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
@@ -169,7 +170,7 @@ public class StudyService {
 		if (entityOption.isPresent()) {
 			study = entityOption.get();
 		} else {
-			throw new BrAPIServerException(errorStatus, "studyDbId not found: " + studyDbId);
+			throw new BrAPIServerDbIdNotFoundException("study", studyDbId);
 		}
 		return study;
 	}
@@ -199,7 +200,7 @@ public class StudyService {
 
 			savedEntity = studyRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "studyDbId not found: " + studyDbId);
+			throw new BrAPIServerDbIdNotFoundException("study", studyDbId);
 		}
 
 		return convertFromEntity(savedEntity);

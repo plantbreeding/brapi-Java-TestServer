@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.germ.GermplasmAttributeDefinitionEntity;
 import org.brapi.test.BrAPITestServer.repository.germ.GermplasmAttributeDefinitionRepository;
@@ -88,7 +89,7 @@ public class GermplasmAttributeService {
 		if (entityOpt.isPresent()) {
 			attribute = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(errorStatus, "attributeDbId not found: " + attributeDbId);
+			throw new BrAPIServerDbIdNotFoundException("germplasm attribute", attributeDbId);
 		}
 		return attribute;
 	}
@@ -119,7 +120,7 @@ public class GermplasmAttributeService {
 
 			savedEntity = attributeRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "attributeDbId not found: " + attributeDbId);
+			throw new BrAPIServerDbIdNotFoundException("germplasm attribute", attributeDbId);
 		}
 
 		return convertFromEntity(savedEntity);

@@ -125,7 +125,7 @@ public class CrossService {
 				updateEntity(entity, crossEntry.getValue());
 				savedValues.add(convertToCross(crossRepository.save(entity)));
 			} else {
-				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "crossDbId not found: " + crossEntry.getKey());
+				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "The cross \"" + crossEntry.getKey() + "\" is not available in this database. \nPlease choose a different crossDbId or contact the server administrator to resolve this issue.");
 			}
 		}
 
@@ -142,7 +142,7 @@ public class CrossService {
 				updateEntity(entity, crossEntry.getValue());
 				savedValues.add(convertToPlanned(crossRepository.save(entity)));
 			} else {
-				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "plannedCrossDbId not found: " + crossEntry.getKey());
+				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "The planned cross \"" + crossEntry.getKey() + "\" is not available in this database. \nPlease choose a different plannedCrossDbId or contact the server administrator to resolve this issue.");
 			}
 		}
 

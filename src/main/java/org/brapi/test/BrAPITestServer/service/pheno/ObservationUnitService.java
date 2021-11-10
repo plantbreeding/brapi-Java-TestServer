@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.ProgramEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
@@ -236,7 +237,7 @@ public class ObservationUnitService {
 		if (entityOpt.isPresent()) {
 			observationUnit = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(errorStatus, "observationUnitDbId not found: " + observationUnitDbId);
+			throw new BrAPIServerDbIdNotFoundException("observationUnit", observationUnitDbId);
 		}
 		return observationUnit;
 	}
@@ -277,8 +278,7 @@ public class ObservationUnitService {
 
 			savedEntity = observationUnitRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND,
-					"observationUnitDbId not found: " + observationUnitDbId);
+			throw new BrAPIServerDbIdNotFoundException("observationUnit", observationUnitDbId);
 		}
 
 		return convertFromEntity(savedEntity);

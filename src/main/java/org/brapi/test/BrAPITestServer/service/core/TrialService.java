@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.ContactEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
@@ -137,7 +138,7 @@ public class TrialService {
 		if (entityOption.isPresent()) {
 			entity = entityOption.get();
 		} else {
-			throw new BrAPIServerException(errorStatus, "trialDbId not found: " + trialDbId);
+			throw new BrAPIServerDbIdNotFoundException("trial", trialDbId);
 		}
 		return entity;
 	}
@@ -167,7 +168,7 @@ public class TrialService {
 
 			savedEntity = trialRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "trialDbId not found: " + trialDbId);
+			throw new BrAPIServerDbIdNotFoundException("trial", trialDbId);
 		}
 
 		return convertFromEntity(savedEntity);

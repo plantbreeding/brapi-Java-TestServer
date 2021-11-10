@@ -2,6 +2,7 @@ package org.brapi.test.BrAPITestServer.service;
 
 import java.util.Optional;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
 import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
@@ -50,8 +51,7 @@ public class SearchService {
 				return null;
 			}
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND,
-					"Search Request not found. Check Db Id or POST new request.");
+			throw new BrAPIServerDbIdNotFoundException("The search request \"" + searchResultsDbId + "\" is not available in this database. Please choose a different DbId or POST new search request.");
 		}
 	}
 }

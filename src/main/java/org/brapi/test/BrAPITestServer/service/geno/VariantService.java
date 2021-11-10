@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.geno.VariantEntity;
 import org.brapi.test.BrAPITestServer.repository.geno.VariantRepository;
@@ -68,7 +69,7 @@ public class VariantService {
 		if (entityOpt.isPresent()) {
 			variant = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "variantDbId not found: " + variantDbId);
+			throw new BrAPIServerDbIdNotFoundException("variant", variantDbId);
 		}
 		return variant;
 	}

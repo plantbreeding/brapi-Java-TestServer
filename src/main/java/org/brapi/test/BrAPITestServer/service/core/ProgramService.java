@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.PersonEntity;
@@ -90,7 +91,7 @@ public class ProgramService {
 		if (entityOpt.isPresent()) {
 			program = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(errorStatus, "programDbId not found: " + programDbId);
+			throw new BrAPIServerDbIdNotFoundException("program", programDbId);
 		}
 		return program;
 	}
@@ -104,7 +105,7 @@ public class ProgramService {
 
 			savedEntity = programRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "programDbId not found: " + programDbId);
+			throw new BrAPIServerDbIdNotFoundException("program", programDbId);
 		}
 
 		return convertFromEntity(savedEntity);
