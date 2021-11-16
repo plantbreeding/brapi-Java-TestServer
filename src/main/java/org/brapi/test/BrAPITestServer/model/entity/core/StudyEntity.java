@@ -39,11 +39,11 @@ public class StudyEntity extends BrAPIPrimaryEntity {
 	private Date endDate;
 	@OneToMany(mappedBy = "study")
 	private List<EnvironmentParametersEntity> environmentParameters;
-	@OneToOne(mappedBy = "study", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
 	private ExperimentalDesignEntity experimentalDesign;
-	@OneToOne(mappedBy = "study", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
 	private GrowthFacilityEntity growthFacility;
-	@OneToOne(mappedBy = "study", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
 	private StudyLastUpdateEntity lastUpdate;
 	@Column
 	private String license;

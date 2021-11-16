@@ -2,6 +2,7 @@ package org.brapi.test.BrAPITestServer.model.entity.core;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -24,7 +25,7 @@ public class ProgramEntity extends BrAPIPrimaryEntity{
 	private String objective;
 	@Column
 	private String documentationURL;
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private PersonEntity leadPerson;
 	
 	@ManyToOne

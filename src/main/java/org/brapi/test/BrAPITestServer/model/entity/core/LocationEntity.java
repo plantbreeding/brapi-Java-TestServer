@@ -18,7 +18,7 @@ public class LocationEntity extends BrAPIPrimaryEntity{
 	private String coordinateDescription;
 	@Column
 	private String coordinateUncertainty;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private GeoJSONEntity coordinates;
 	@Column
 	private String countryCode;
