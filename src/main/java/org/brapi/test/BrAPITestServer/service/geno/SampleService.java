@@ -67,10 +67,11 @@ public class SampleService {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<SampleEntity> searchQuery = new SearchQueryBuilder<SampleEntity>(SampleEntity.class)
 				.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
-				.appendList(request.getGermplasmDbIds(), "germplasm.id")
-				.appendList(request.getGermplasmNames(), "germplasm.germplasmName")
+				.appendList(request.getGermplasmDbIds(), "observationUnit.germplasm.id")
+				.appendList(request.getGermplasmNames(), "observationUnit.germplasm.germplasmName")
 				.appendList(request.getObservationUnitDbIds(), "observationUnit.id")
-				.appendList(request.getPlateDbIds(), "plate.id").appendList(request.getSampleDbIds(), "id")
+				.appendList(request.getPlateDbIds(), "plate.id")
+				.appendList(request.getSampleDbIds(), "id")
 				.appendList(request.getStudyDbIds(), "observationUnit.study.id")
 				.appendList(request.getStudyNames(), "observationUnit.study.studyName");
 
