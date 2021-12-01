@@ -12,7 +12,6 @@ import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Metadata;
@@ -35,11 +34,11 @@ public class ReferenceSetService {
 		if (referenceSetDbId != null)
 			request.addReferenceSetDbIdsItem(referenceSetDbId);
 		if (accession != null)
-			request.addAccessionItem(accession);
+			request.addAccessionsItem(accession);
 		if (assemblyPUI != null)
-			request.addAssemblyPUIItem(assemblyPUI);
+			request.addAssemblyPUIsItem(assemblyPUI);
 		if (md5checksum != null)
-			request.addMd5checksumItem(md5checksum);
+			request.addMd5checksumsItem(md5checksum);
 
 		return findReferenceSets(request, metadata);
 	}
@@ -47,9 +46,9 @@ public class ReferenceSetService {
 	public List<ReferenceSet> findReferenceSets(ReferenceSetsSearchRequest request, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<ReferenceSetEntity> searchQuery = new SearchQueryBuilder<ReferenceSetEntity>(ReferenceSetEntity.class)
-				.appendList(request.getAccession(), "germplasm.germplasmName")
-				.appendList(request.getAssemblyPUI(), "assemblyPUI")
-				.appendList(request.getMd5checksum(), "md5checksum")
+				.appendList(request.getAccessions(), "sourceGermplasm.germplasmName")
+				.appendList(request.getAssemblyPUIs(), "assemblyPUI")
+				.appendList(request.getMd5checksums(), "md5checksum")
 				.appendList(request.getReferenceSetDbIds(), "id");
 
 		Page<ReferenceSetEntity> page = referenceSetRepository.findAllBySearch(searchQuery, pageReq);

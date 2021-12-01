@@ -16,32 +16,32 @@ import javax.validation.Valid;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-24T19:42:22.574Z[GMT]")
 public class ReferenceSetsSearchRequest extends SearchRequestParametersPaging implements SearchRequest {
-	@JsonProperty("accession")
+	@JsonProperty("accessions")
 	@Valid
-	private List<String> accession = null;
+	private List<String> accessions = null;
 
-	@JsonProperty("assemblyPUI")
+	@JsonProperty("assemblyPUIs")
 	@Valid
-	private List<String> assemblyPUI = null;
+	private List<String> assemblyPUIs = null;
 
 	@JsonProperty("md5checksum")
 	@Valid
-	private List<String> md5checksum = null;
+	private List<String> md5checksums = null;
 
 	@JsonProperty("referenceSetDbIds")
 	@Valid
 	private List<String> referenceSetDbIds = null;
 
-	public ReferenceSetsSearchRequest accession(List<String> accession) {
-		this.accession = accession;
+	public ReferenceSetsSearchRequest accessions(List<String> accessions) {
+		this.accessions = accessions;
 		return this;
 	}
 
-	public ReferenceSetsSearchRequest addAccessionItem(String accessionItem) {
-		if (this.accession == null) {
-			this.accession = new ArrayList<String>();
+	public ReferenceSetsSearchRequest addAccessionsItem(String accessionsItem) {
+		if (this.accessions == null) {
+			this.accessions = new ArrayList<String>();
 		}
-		this.accession.add(accessionItem);
+		this.accessions.add(accessionsItem);
 		return this;
 	}
 
@@ -53,24 +53,24 @@ public class ReferenceSetsSearchRequest extends SearchRequestParametersPaging im
 	 **/
 	@ApiModelProperty(example = "[\"A0009283\",\"A0006657\"]", value = "If set, return the reference sets for which the `accession` matches this string (case-sensitive, exact match).")
 
-	public List<String> getAccession() {
-		return accession;
+	public List<String> getAccessions() {
+		return accessions;
 	}
 
-	public void setAccession(List<String> accession) {
-		this.accession = accession;
+	public void setAccessions(List<String> accessions) {
+		this.accessions = accessions;
 	}
 
-	public ReferenceSetsSearchRequest assemblyPUI(List<String> assemblyPUI) {
-		this.assemblyPUI = assemblyPUI;
+	public ReferenceSetsSearchRequest assemblyPUIs(List<String> assemblyPUIs) {
+		this.assemblyPUIs = assemblyPUIs;
 		return this;
 	}
 
-	public ReferenceSetsSearchRequest addAssemblyPUIItem(String assemblyPUIItem) {
-		if (this.assemblyPUI == null) {
-			this.assemblyPUI = new ArrayList<String>();
+	public ReferenceSetsSearchRequest addAssemblyPUIsItem(String assemblyPUIsItem) {
+		if (this.assemblyPUIs == null) {
+			this.assemblyPUIs = new ArrayList<String>();
 		}
-		this.assemblyPUI.add(assemblyPUIItem);
+		this.assemblyPUIs.add(assemblyPUIsItem);
 		return this;
 	}
 
@@ -82,24 +82,24 @@ public class ReferenceSetsSearchRequest extends SearchRequestParametersPaging im
 	 **/
 	@ApiModelProperty(example = "[\"doi:10.15454/312953986E3\",\"doi:10.15454/312953986E3\"]", value = "If set, return the reference sets for which the `assemblyId` matches this string (case-sensitive, exact match).")
 
-	public List<String> getAssemblyPUI() {
-		return assemblyPUI;
+	public List<String> getAssemblyPUIs() {
+		return assemblyPUIs;
 	}
 
-	public void setAssemblyPUI(List<String> assemblyPUI) {
-		this.assemblyPUI = assemblyPUI;
+	public void setAssemblyPUIs(List<String> assemblyPUIs) {
+		this.assemblyPUIs = assemblyPUIs;
 	}
 
-	public ReferenceSetsSearchRequest md5checksum(List<String> md5checksum) {
-		this.md5checksum = md5checksum;
+	public ReferenceSetsSearchRequest md5checksums(List<String> md5checksums) {
+		this.md5checksums = md5checksums;
 		return this;
 	}
 
-	public ReferenceSetsSearchRequest addMd5checksumItem(String md5checksumItem) {
-		if (this.md5checksum == null) {
-			this.md5checksum = new ArrayList<String>();
+	public ReferenceSetsSearchRequest addMd5checksumsItem(String md5checksumsItem) {
+		if (this.md5checksums == null) {
+			this.md5checksums = new ArrayList<String>();
 		}
-		this.md5checksum.add(md5checksumItem);
+		this.md5checksums.add(md5checksumsItem);
 		return this;
 	}
 
@@ -111,12 +111,12 @@ public class ReferenceSetsSearchRequest extends SearchRequestParametersPaging im
 	 **/
 	@ApiModelProperty(example = "[\"c2365e900c81a89cf74d83dab60df146\"]", value = "If set, return the reference sets for which the `md5checksum` matches this string (case-sensitive, exact match).")
 
-	public List<String> getMd5checksum() {
-		return md5checksum;
+	public List<String> getMd5checksums() {
+		return md5checksums;
 	}
 
-	public void setMd5checksum(List<String> md5checksum) {
-		this.md5checksum = md5checksum;
+	public void setMd5checksums(List<String> md5checksums) {
+		this.md5checksums = md5checksums;
 	}
 
 	public ReferenceSetsSearchRequest referenceSetDbIds(List<String> referenceSetDbIds) {
@@ -156,16 +156,16 @@ public class ReferenceSetsSearchRequest extends SearchRequestParametersPaging im
 			return false;
 		}
 		ReferenceSetsSearchRequest referenceSetsSearchRequest = (ReferenceSetsSearchRequest) o;
-		return Objects.equals(this.accession, referenceSetsSearchRequest.accession)
-				&& Objects.equals(this.assemblyPUI, referenceSetsSearchRequest.assemblyPUI)
-				&& Objects.equals(this.md5checksum, referenceSetsSearchRequest.md5checksum)
+		return Objects.equals(this.accessions, referenceSetsSearchRequest.accessions)
+				&& Objects.equals(this.assemblyPUIs, referenceSetsSearchRequest.assemblyPUIs)
+				&& Objects.equals(this.md5checksums, referenceSetsSearchRequest.md5checksums)
 				&& Objects.equals(this.referenceSetDbIds, referenceSetsSearchRequest.referenceSetDbIds)
 				&& super.equals(o);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(accession, assemblyPUI, md5checksum, referenceSetDbIds, super.hashCode());
+		return Objects.hash(accessions, assemblyPUIs, md5checksums, referenceSetDbIds, super.hashCode());
 	}
 
 	@Override
@@ -173,9 +173,9 @@ public class ReferenceSetsSearchRequest extends SearchRequestParametersPaging im
 		StringBuilder sb = new StringBuilder();
 		sb.append("class ReferenceSetsSearchRequest {\n");
 		sb.append("    ").append(toIndentedString(super.toString())).append("\n");
-		sb.append("    accession: ").append(toIndentedString(accession)).append("\n");
-		sb.append("    assemblyPUI: ").append(toIndentedString(assemblyPUI)).append("\n");
-		sb.append("    md5checksum: ").append(toIndentedString(md5checksum)).append("\n");
+		sb.append("    accession: ").append(toIndentedString(accessions)).append("\n");
+		sb.append("    assemblyPUI: ").append(toIndentedString(assemblyPUIs)).append("\n");
+		sb.append("    md5checksum: ").append(toIndentedString(md5checksums)).append("\n");
 		sb.append("    referenceSetDbIds: ").append(toIndentedString(referenceSetDbIds)).append("\n");
 		sb.append("}");
 		return sb.toString();
@@ -195,12 +195,12 @@ public class ReferenceSetsSearchRequest extends SearchRequestParametersPaging im
 	@Override
 	public Integer getTotalParameterCount() {
 		Integer count = 0;
-		if (this.accession != null)
-			count += this.accession.size();
-		if (this.assemblyPUI != null)
-			count += this.assemblyPUI.size();
-		if (this.md5checksum != null)
-			count += this.md5checksum.size();
+		if (this.accessions != null)
+			count += this.accessions.size();
+		if (this.assemblyPUIs != null)
+			count += this.assemblyPUIs.size();
+		if (this.md5checksums != null)
+			count += this.md5checksums.size();
 		if (this.referenceSetDbIds != null)
 			count += this.referenceSetDbIds.size();
 		return count;
