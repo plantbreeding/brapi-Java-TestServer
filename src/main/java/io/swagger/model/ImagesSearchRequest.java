@@ -7,6 +7,8 @@ import io.swagger.model.GeoJSON;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
+
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 
@@ -45,10 +47,10 @@ public class ImagesSearchRequest   {
   private List<String> imageNames = null;
 
   @JsonProperty("imageTimeStampRangeEnd")
-  private LocalDate imageTimeStampRangeEnd = null;
+  private OffsetDateTime imageTimeStampRangeEnd = null;
 
   @JsonProperty("imageTimeStampRangeStart")
-  private LocalDate imageTimeStampRangeStart = null;
+  private OffsetDateTime imageTimeStampRangeStart = null;
 
   @JsonProperty("imageWidthMax")
   private Integer imageWidthMax = null;
@@ -253,7 +255,7 @@ public class ImagesSearchRequest   {
     this.imageNames = imageNames;
   }
 
-  public ImagesSearchRequest imageTimeStampRangeEnd(LocalDate imageTimeStampRangeEnd) {
+  public ImagesSearchRequest imageTimeStampRangeEnd(OffsetDateTime imageTimeStampRangeEnd) {
     this.imageTimeStampRangeEnd = imageTimeStampRangeEnd;
     return this;
   }
@@ -266,15 +268,15 @@ public class ImagesSearchRequest   {
 
   @Valid
 
-  public LocalDate getImageTimeStampRangeEnd() {
+  public OffsetDateTime getImageTimeStampRangeEnd() {
     return imageTimeStampRangeEnd;
   }
 
-  public void setImageTimeStampRangeEnd(LocalDate imageTimeStampRangeEnd) {
+  public void setImageTimeStampRangeEnd(OffsetDateTime imageTimeStampRangeEnd) {
     this.imageTimeStampRangeEnd = imageTimeStampRangeEnd;
   }
 
-  public ImagesSearchRequest imageTimeStampRangeStart(LocalDate imageTimeStampRangeStart) {
+  public ImagesSearchRequest imageTimeStampRangeStart(OffsetDateTime imageTimeStampRangeStart) {
     this.imageTimeStampRangeStart = imageTimeStampRangeStart;
     return this;
   }
@@ -287,11 +289,11 @@ public class ImagesSearchRequest   {
 
   @Valid
 
-  public LocalDate getImageTimeStampRangeStart() {
+  public OffsetDateTime getImageTimeStampRangeStart() {
     return imageTimeStampRangeStart;
   }
 
-  public void setImageTimeStampRangeStart(LocalDate imageTimeStampRangeStart) {
+  public void setImageTimeStampRangeStart(OffsetDateTime imageTimeStampRangeStart) {
     this.imageTimeStampRangeStart = imageTimeStampRangeStart;
   }
 

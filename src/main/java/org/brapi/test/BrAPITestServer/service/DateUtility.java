@@ -31,7 +31,8 @@ public class DateUtility {
 	public static Date toDate(OffsetDateTime offsetDateTime) {
 		if(offsetDateTime == null)
 			return null;
-		return new Date(offsetDateTime.toEpochSecond() * 1000);
+		return Date.from(offsetDateTime.toInstant());
+//		return new Date(offsetDateTime.toEpochSecond() * 1000);
 	}
 	
 	public static String toDateString(Date date) {

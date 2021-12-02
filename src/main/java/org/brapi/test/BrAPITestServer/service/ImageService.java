@@ -197,7 +197,7 @@ public class ImageService {
 		img.setMimeType(entity.getImageType());
 		img.setImageURL(entity.getImageURL());
 		img.setImageWidth(entity.getImageWidth());
-		img.setImageTimeStamp(DateUtility.toLocalDate(entity.getTimeStamp()));
+		img.setImageTimeStamp(DateUtility.toOffsetDateTime(entity.getTimeStamp()));
 
 		if (entity.getLatitude() != null && entity.getLongitude() != null) {
 			img.setImageLocation(new GeoJSON().type(TypeEnum.FEATURE)

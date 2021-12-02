@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
+
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -52,7 +54,7 @@ public class Image   {
   private String imageName = null;
 
   @JsonProperty("imageTimeStamp")
-  private LocalDate imageTimeStamp = null;
+  private OffsetDateTime imageTimeStamp = null;
 
   @JsonProperty("imageURL")
   private String imageURL = null;
@@ -287,7 +289,7 @@ public class Image   {
     this.imageName = imageName;
   }
 
-  public Image imageTimeStamp(LocalDate imageTimeStamp) {
+  public Image imageTimeStamp(OffsetDateTime imageTimeStamp) {
     this.imageTimeStamp = imageTimeStamp;
     return this;
   }
@@ -300,11 +302,11 @@ public class Image   {
 
   @Valid
 
-  public LocalDate getImageTimeStamp() {
+  public OffsetDateTime getImageTimeStamp() {
     return imageTimeStamp;
   }
 
-  public void setImageTimeStamp(LocalDate imageTimeStamp) {
+  public void setImageTimeStamp(OffsetDateTime imageTimeStamp) {
     this.imageTimeStamp = imageTimeStamp;
   }
 
