@@ -302,8 +302,7 @@ public class GermplasmService {
 			entity.setAccessionNumber(request.getAccessionNumber());
 		if (request.getAcquisitionDate() != null) {
 			entity.setAcquisitionDate(DateUtility.toDate(request.getAcquisitionDate()));
-			int r = (new Random()).nextInt(AcquisitionSourceCodeEnum.values().length);
-			entity.setAcquisitionSourceCode(AcquisitionSourceCodeEnum.values()[r]);
+			entity.setAcquisitionSourceCode(AcquisitionSourceCodeEnum._99);
 		}
 		if (request.getAdditionalInfo() != null)
 			entity.setAdditionalInfo(request.getAdditionalInfo());
@@ -317,7 +316,10 @@ public class GermplasmService {
 		if (request.getCollection() != null)
 			entity.setCollection(request.getCollection());
 		if (request.getCommonCropName() != null) {
-			CropEntity crop = cropService.getCropEntity(request.getCommonCropName());
+			CropEntity crop = cropService.findCropEntity(request.getCommonCropName());
+			if (crop == null) {
+				crop = cropService.saveCropEntity(request.getCommonCropName());
+			}
 			entity.setCrop(crop);
 		}
 		if (request.getCountryOfOriginCode() != null)

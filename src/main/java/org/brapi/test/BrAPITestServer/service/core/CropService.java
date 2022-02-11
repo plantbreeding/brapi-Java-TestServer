@@ -34,6 +34,19 @@ public class CropService {
 		return crops;
 	}
 
+	public CropEntity findCropEntity(String commonCropName) throws BrAPIServerException {
+		CropEntity entity = null;
+		if (commonCropName != null) {
+			List<CropEntity> cropsPage = cropRepository.findByCropName(commonCropName, PageRequest.of(0, 1))
+					.getContent();
+
+			if (cropsPage.size() >= 1) {
+				entity = cropsPage.get(0);
+			}
+		}
+		return entity;
+	}
+
 	public CropEntity getCropEntity(String commonCropName) throws BrAPIServerException {
 		CropEntity entity = null;
 		if (commonCropName != null) {
@@ -45,6 +58,16 @@ public class CropService {
 			} else {
 				throw new BrAPIServerDbIdNotFoundException("crop name", commonCropName, "crop name");
 			}
+		}
+		return entity;
+	}
+
+	public CropEntity saveCropEntity(String commonCropName)  throws BrAPIServerException {
+		CropEntity entity = null;
+		if (commonCropName != null) {
+			entity = new CropEntity();
+			entity.setCropName(commonCropName);
+			entity = cropRepository.saveAndFlush(entity);
 		}
 		return entity;
 	}
