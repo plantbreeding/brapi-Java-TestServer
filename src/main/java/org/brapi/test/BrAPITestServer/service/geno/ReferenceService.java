@@ -62,7 +62,7 @@ public class ReferenceService {
 	public List<Reference> findReferences(@Valid ReferencesSearchRequest request, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<ReferenceEntity> searchQuery = new SearchQueryBuilder<ReferenceEntity>(ReferenceEntity.class)
-				.appendList(request.getAccessions(), "referenceSet.sourceGermplasm.germplasmName")
+				.appendList(request.getAccessions(), "referenceSet.sourceGermplasm.accessionNumber")
 				.appendList(request.getMd5checksums(), "md5checksum")
 				.appendList(request.getReferenceDbIds(), "id")
 				.appendList(request.getReferenceSetDbIds(), "referenceSet.id")
