@@ -193,7 +193,7 @@ public class ObservationUnitService {
 							.map(r -> r.getLevelOrder()).collect(Collectors.toList()), "position.levelOrder");
 		}
 		if (request.getObservationLevelRelationships() != null) {
-			searchQuery = searchQuery.join("position.levelRelationships", "levelRelationship")
+			searchQuery = searchQuery.join("position.observationLevelRelationships", "levelRelationship")
 					.appendEnumList(
 							request.getObservationLevelRelationships().stream().filter(r -> r.getLevelName() != null)
 									.map(r -> r.getLevelName()).collect(Collectors.toList()),
@@ -286,8 +286,25 @@ public class ObservationUnitService {
 
 	public List<ObservationUnitHierarchyLevel> findObservationLevels(String studyDbId, String trialDbId,
 			String programDbId, Metadata metadata) {
-		List<ObservationUnit> units = findObservationUnits(null, null, studyDbId, null, trialDbId, programDbId, null,
-				null, null, null, false, null, null, new Metadata().pagination(new IndexPagination()));
+		
+		List<ObservationUnitLevelRelationship> allLevels = Arrays.asList(ObservationUnitHierarchyLevelEnum.values()).stream().map(levelEnum -> {
+			ObservationUnitLevelRelationship rel = new ObservationUnitLevelRelationship();
+			rel.setLevelName(levelEnum);
+			return rel;
+		}).collect(Collectors.toList());
+		
+		ObservationUnitSearchRequest levelsSearch = buildObservationUnitsSearchRequest(null, null, studyDbId, null, trialDbId, programDbId, null, null, null, null, false, null, null);
+		levelsSearch.setObservationLevelRelationships(allLevels);
+		
+		List<ObservationUnit> units = new ArrayList<>();
+		List<ObservationUnit> someunits = findObservationUnits(levelsSearch, new Metadata().pagination(new IndexPagination()));	
+		units.addAll(someunits);
+		
+		levelsSearch.setObservationLevelRelationships(null);
+		levelsSearch.setObservationLevels(allLevels);
+		List<ObservationUnit> moreUnits = findObservationUnits(levelsSearch, new Metadata().pagination(new IndexPagination()));
+		units.addAll(moreUnits);
+				
 		List<ObservationUnitHierarchyLevel> levels = units.stream()
 				.filter(unit -> unit.getObservationUnitPosition() != null)
 				.filter(unit -> unit.getObservationUnitPosition().getObservationLevelRelationships() != null)
