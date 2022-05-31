@@ -297,6 +297,8 @@ public class StudyService {
 		if (body.getTrialDbId() != null) {
 			TrialEntity trial = trialService.getTrialEntity(body.getTrialDbId());
 			entity.setTrial(trial);
+			entity.setProgram(trial.getProgram());
+			entity.setCrop(trial.getCrop());
 		}else if(body.getCommonCropName() != null) {
 			CropEntity crop = cropService.getCropEntity(body.getCommonCropName());
 			entity.setCrop(crop);
