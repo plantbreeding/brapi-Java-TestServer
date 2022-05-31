@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * Information about the collection of this germplasm

@@ -11,7 +11,7 @@ import io.swagger.model.germ.CrossParent;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * PlannedCrossNewRequest

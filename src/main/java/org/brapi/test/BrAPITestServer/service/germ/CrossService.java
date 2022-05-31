@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Map.Entry;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.germ.CrossEntity;

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.time.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * A &#x60;Variant&#x60; represents a change in DNA sequence relative to some

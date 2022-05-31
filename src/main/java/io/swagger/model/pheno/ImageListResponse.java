@@ -12,7 +12,7 @@ import io.swagger.model.Metadata;
 import io.swagger.model.pheno.ImageListResponseResult;
 
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 
 /**

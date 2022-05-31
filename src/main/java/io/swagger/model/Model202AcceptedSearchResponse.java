@@ -11,7 +11,7 @@ import io.swagger.model.Model202AcceptedSearchResponseResult;
 import io.swagger.model.germ.GermplasmListResponseResult;
 
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * Model202AcceptedSearchResponse

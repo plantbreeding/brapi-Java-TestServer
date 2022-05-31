@@ -13,7 +13,7 @@ import io.swagger.model.ExternalReferences;
 import io.swagger.model.OntologyReference;
 import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * Scale metadata

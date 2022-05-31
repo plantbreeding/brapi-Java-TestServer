@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * A &#x60;ReferenceSet&#x60; is a set of &#x60;Reference&#x60; s which typically comprise a reference assembly, such as &#x60;GRCH_38&#x60;. A &#x60;ReferenceSet&#x60; defines a common coordinate space for comparing reference-aligned experimental data.

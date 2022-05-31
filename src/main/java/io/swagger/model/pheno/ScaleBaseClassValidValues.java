@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * ScaleBaseClassValidValues

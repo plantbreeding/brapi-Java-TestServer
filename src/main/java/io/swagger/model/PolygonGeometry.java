@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Polygon;
 
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * An array of Linear Rings. Each Linear Ring is an array of Points. A Point is

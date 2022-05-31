@@ -16,7 +16,7 @@ import java.util.Map;
 
 import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * TraitBaseClass

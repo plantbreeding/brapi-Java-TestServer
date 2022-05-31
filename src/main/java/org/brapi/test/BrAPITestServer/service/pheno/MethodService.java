@@ -3,7 +3,7 @@ package org.brapi.test.BrAPITestServer.service.pheno;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;

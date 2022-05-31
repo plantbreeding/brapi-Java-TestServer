@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Position;
 
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * Copied from RFC 7946 Section 3.1.1 A position is an array of numbers. There

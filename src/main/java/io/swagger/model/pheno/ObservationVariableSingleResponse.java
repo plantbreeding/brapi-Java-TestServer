@@ -11,7 +11,7 @@ import io.swagger.model.Metadata;
 
 import io.swagger.model.pheno.ObservationVariable;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 
 /**
