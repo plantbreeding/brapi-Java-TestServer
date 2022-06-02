@@ -42,7 +42,9 @@ public class ReferenceService {
 	}
 
 	public List<Reference> findReferences(String referenceDbId, String referenceSetDbId, String accession,
-			String md5checksum, Boolean isDerived, Integer minLength, Integer maxLength, Metadata metadata) {
+			String md5checksum, Boolean isDerived, Integer minLength, Integer maxLength, String trialDbId,
+			String studyDbId, String commonCropName, String programDbId, String externalReferenceId,
+			String externalReferenceSource, Metadata metadata) {
 		ReferencesSearchRequest request = new ReferencesSearchRequest();
 		if (referenceDbId != null)
 			request.addReferenceDbIdsItem(referenceDbId);
@@ -52,9 +54,19 @@ public class ReferenceService {
 			request.addAccessionsItem(accession);
 		if (md5checksum != null)
 			request.addMd5checksumsItem(md5checksum);
+		if (commonCropName != null)
+			request.addCommonCropNamesItem(commonCropName);
+		if (programDbId != null)
+			request.addProgramDbIdsItem(programDbId);
+		if (trialDbId != null)
+			request.addTrialDbIdsItem(trialDbId);
+		if (studyDbId != null)
+			request.addStudyDbIdsItem(studyDbId);
 		request.setIsDerived(isDerived);
 		request.setMinLength(minLength);
 		request.setMaxLength(maxLength);
+		
+		request.addExternalReferenceItem(externalReferenceId, null, externalReferenceSource);
 
 		return findReferences(request, metadata);
 	}
@@ -63,8 +75,7 @@ public class ReferenceService {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<ReferenceEntity> searchQuery = new SearchQueryBuilder<ReferenceEntity>(ReferenceEntity.class)
 				.appendList(request.getAccessions(), "referenceSet.sourceGermplasm.accessionNumber")
-				.appendList(request.getMd5checksums(), "md5checksum")
-				.appendList(request.getReferenceDbIds(), "id")
+				.appendList(request.getMd5checksums(), "md5checksum").appendList(request.getReferenceDbIds(), "id")
 				.appendList(request.getReferenceSetDbIds(), "referenceSet.id")
 				.appendNumberRange(request.getMinLength(), request.getMaxLength(), "length")
 				.appendSingle(request.isIsDerived(), "referenceSet.isDerived");

@@ -3,44 +3,30 @@ package io.swagger.model.core;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.BrAPIDataModel;
 import io.swagger.model.DataLink;
 import io.swagger.model.ExternalReferences;
 import io.swagger.model.pheno.ObservationUnitHierarchyLevel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.time.OffsetDateTime;
-import org.springframework.validation.annotation.Validated;
-import jakarta.validation.Valid;
 
-/**
- * StudyNewRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
-public class StudyNewRequest {
+public class StudyNewRequest extends BrAPIDataModel{
 	@JsonProperty("active")
 	private Boolean active = null;
-
-	@JsonProperty("additionalInfo")
-	@Valid
-	private Map<String, Object> additionalInfo = null;
 
 	@JsonProperty("commonCropName")
 	private String commonCropName = null;
 
 	@JsonProperty("contacts")
-	@Valid
 	private List<Contact> contacts = null;
 
 	@JsonProperty("culturalPractices")
 	private String culturalPractices = null;
 
 	@JsonProperty("dataLinks")
-	@Valid
 	private List<DataLink> dataLinks = null;
 
 	@JsonProperty("documentationURL")
@@ -50,14 +36,10 @@ public class StudyNewRequest {
 	private OffsetDateTime endDate = null;
 
 	@JsonProperty("environmentParameters")
-	@Valid
 	private List<EnvironmentParameter> environmentParameters = null;
 
 	@JsonProperty("experimentalDesign")
 	private StudyExperimentalDesign experimentalDesign = null;
-
-	@JsonProperty("externalReferences")
-	private ExternalReferences externalReferences = null;
 
 	@JsonProperty("growthFacility")
 	private StudyGrowthFacility growthFacility = null;
@@ -75,14 +57,12 @@ public class StudyNewRequest {
 	private String locationName = null;
 
 	@JsonProperty("observationLevels")
-	@Valid
 	private List<ObservationUnitHierarchyLevel> observationLevels = null;
 
 	@JsonProperty("observationUnitsDescription")
 	private String observationUnitsDescription = null;
 
 	@JsonProperty("seasons")
-	@Valid
 	private List<String> seasons = null;
 
 	@JsonProperty("startDate")
@@ -117,13 +97,6 @@ public class StudyNewRequest {
 		return this;
 	}
 
-	/**
-	 * Is this study currently active
-	 * 
-	 * @return active
-	 **/
-	@ApiModelProperty(example = "true", value = "Is this study currently active")
-
 	public Boolean isActive() {
 		return active;
 	}
@@ -132,45 +105,10 @@ public class StudyNewRequest {
 		this.active = active;
 	}
 
-	public StudyNewRequest additionalInfo(Map<String, Object> additionalInfo) {
-		this.additionalInfo = additionalInfo;
-		return this;
-	}
-
-	public StudyNewRequest putAdditionalInfoItem(String key, String additionalInfoItem) {
-		if (this.additionalInfo == null) {
-			this.additionalInfo = new HashMap<String, Object>();
-		}
-		this.additionalInfo.put(key, additionalInfoItem);
-		return this;
-	}
-
-	/**
-	 * Additional arbitrary info
-	 * 
-	 * @return additionalInfo
-	 **/
-	@ApiModelProperty(value = "Additional arbitrary info")
-
-	public Map<String, Object> getAdditionalInfo() {
-		return additionalInfo;
-	}
-
-	public void setAdditionalInfo(Map<String, Object> additionalInfo) {
-		this.additionalInfo = additionalInfo;
-	}
-
 	public StudyNewRequest commonCropName(String commonCropName) {
 		this.commonCropName = commonCropName;
 		return this;
 	}
-
-	/**
-	 * Common name for the crop associated with this study
-	 * 
-	 * @return commonCropName
-	 **/
-	@ApiModelProperty(example = "Grape", value = "Common name for the crop associated with this study")
 
 	public String getCommonCropName() {
 		return commonCropName;
@@ -193,13 +131,6 @@ public class StudyNewRequest {
 		return this;
 	}
 
-	/**
-	 * List of contact entities associated with this study
-	 * 
-	 * @return contacts
-	 **/
-	@ApiModelProperty(value = "List of contact entities associated with this study")
-	@Valid
 	public List<Contact> getContacts() {
 		return contacts;
 	}
@@ -212,14 +143,6 @@ public class StudyNewRequest {
 		this.culturalPractices = culturalPractices;
 		return this;
 	}
-
-	/**
-	 * MIAPPE V1.1 (DM-28) Cultural practices - General description of the cultural
-	 * practices of the study.
-	 * 
-	 * @return culturalPractices
-	 **/
-	@ApiModelProperty(example = "Irrigation was applied according needs during summer to prevent water stress.", value = "MIAPPE V1.1 (DM-28) Cultural practices - General description of the cultural practices of the study.")
 
 	public String getCulturalPractices() {
 		return culturalPractices;
@@ -242,14 +165,6 @@ public class StudyNewRequest {
 		return this;
 	}
 
-	/**
-	 * List of links to extra data files associated with this study. Extra data
-	 * could include notes, images, and reference data.
-	 * 
-	 * @return dataLinks
-	 **/
-	@ApiModelProperty(value = "List of links to extra data files associated with this study. Extra data could include notes, images, and reference data.")
-	@Valid
 	public List<DataLink> getDataLinks() {
 		return dataLinks;
 	}
@@ -262,13 +177,6 @@ public class StudyNewRequest {
 		this.documentationURL = documentationURL;
 		return this;
 	}
-
-	/**
-	 * A URL to the human readable documentation of this object
-	 * 
-	 * @return documentationURL
-	 **/
-	@ApiModelProperty(example = "https://wiki.brapi.org", value = "A URL to the human readable documentation of this object")
 
 	public String getDocumentationURL() {
 		return documentationURL;
@@ -283,15 +191,6 @@ public class StudyNewRequest {
 		return this;
 	}
 
-	/**
-	 * The date the study ends MIAPPE V1.1 (DM-15) End date of study - Date and, if
-	 * relevant, time when the experiment ended
-	 * 
-	 * @return endDate
-	 **/
-	@ApiModelProperty(value = "The date the study ends  MIAPPE V1.1 (DM-15) End date of study - Date and, if relevant, time when the experiment ended")
-
-	@Valid
 	public OffsetDateTime getEndDate() {
 		return endDate;
 	}
@@ -313,14 +212,6 @@ public class StudyNewRequest {
 		return this;
 	}
 
-	/**
-	 * Environmental parameters that were kept constant throughout the study and did
-	 * not change between observation units.
-	 * 
-	 * @return environmentParameters
-	 **/
-	@ApiModelProperty(value = "Environmental parameters that were kept constant throughout the study and did not change between observation units.")
-	@Valid
 	public List<EnvironmentParameter> getEnvironmentParameters() {
 		return environmentParameters;
 	}
@@ -334,14 +225,6 @@ public class StudyNewRequest {
 		return this;
 	}
 
-	/**
-	 * Get experimentalDesign
-	 * 
-	 * @return experimentalDesign
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
 	public StudyExperimentalDesign getExperimentalDesign() {
 		return experimentalDesign;
 	}
@@ -350,40 +233,11 @@ public class StudyNewRequest {
 		this.experimentalDesign = experimentalDesign;
 	}
 
-	public StudyNewRequest externalReferences(ExternalReferences externalReferences) {
-		this.externalReferences = externalReferences;
-		return this;
-	}
-
-	/**
-	 * Get externalReferences
-	 * 
-	 * @return externalReferences
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
-	public ExternalReferences getExternalReferences() {
-		return externalReferences;
-	}
-
-	public void setExternalReferences(ExternalReferences externalReferences) {
-		this.externalReferences = externalReferences;
-	}
-
 	public StudyNewRequest growthFacility(StudyGrowthFacility growthFacility) {
 		this.growthFacility = growthFacility;
 		return this;
 	}
 
-	/**
-	 * Get growthFacility
-	 * 
-	 * @return growthFacility
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
 	public StudyGrowthFacility getGrowthFacility() {
 		return growthFacility;
 	}
@@ -397,14 +251,6 @@ public class StudyNewRequest {
 		return this;
 	}
 
-	/**
-	 * Get lastUpdate
-	 * 
-	 * @return lastUpdate
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
 	public StudyLastUpdate getLastUpdate() {
 		return lastUpdate;
 	}
@@ -417,13 +263,6 @@ public class StudyNewRequest {
 		this.license = license;
 		return this;
 	}
-
-	/**
-	 * The usage license associated with the study data
-	 * 
-	 * @return license
-	 **/
-	@ApiModelProperty(example = "MIT License", value = "The usage license associated with the study data")
 
 	public String getLicense() {
 		return license;
@@ -438,13 +277,6 @@ public class StudyNewRequest {
 		return this;
 	}
 
-	/**
-	 * The unique identifier for a Location
-	 * 
-	 * @return locationDbId
-	 **/
-	@ApiModelProperty(example = "3cfdd67d", value = "The unique identifier for a Location")
-
 	public String getLocationDbId() {
 		return locationDbId;
 	}
@@ -457,15 +289,6 @@ public class StudyNewRequest {
 		this.locationName = locationName;
 		return this;
 	}
-
-	/**
-	 * A human readable name for this location MIAPPE V1.1 (DM-18) Experimental site
-	 * name - The name of the natural site, experimental field, greenhouse,
-	 * phenotyping facility, etc. where the experiment took place.
-	 * 
-	 * @return locationName
-	 **/
-	@ApiModelProperty(example = "Location 1", value = "A human readable name for this location  MIAPPE V1.1 (DM-18) Experimental site name - The name of the natural site, experimental field, greenhouse, phenotyping facility, etc. where the experiment took place.")
 
 	public String getLocationName() {
 		return locationName;
@@ -488,17 +311,6 @@ public class StudyNewRequest {
 		return this;
 	}
 
-	/**
-	 * Observation levels indicate the granularity level at which the measurements
-	 * are taken. `levelName` defines the level, `levelOrder` defines where that
-	 * level exists in the hierarchy of levels. `levelOrder`s lower numbers are at
-	 * the top of the hierarchy (ie field > 0) and higher numbers are at the bottom
-	 * of the hierarchy (ie plant > 6).
-	 * 
-	 * @return observationLevels
-	 **/
-	@ApiModelProperty(example = "[{\"levelName\":\"field\",\"levelOrder\":0},{\"levelName\":\"block\",\"levelOrder\":1},{\"levelName\":\"plot\",\"levelOrder\":2}]", value = "Observation levels indicate the granularity level at which the measurements are taken. `levelName` defines the level, `levelOrder` defines where that level exists in the hierarchy of levels. `levelOrder`s lower numbers are at the top of the hierarchy (ie field > 0) and higher numbers are at the bottom of the hierarchy (ie plant > 6). ")
-	@Valid
 	public List<ObservationUnitHierarchyLevel> getObservationLevels() {
 		return observationLevels;
 	}
@@ -511,14 +323,6 @@ public class StudyNewRequest {
 		this.observationUnitsDescription = observationUnitsDescription;
 		return this;
 	}
-
-	/**
-	 * MIAPPE V1.1 (DM-25) Observation unit description - General description of the
-	 * observation units in the study.
-	 * 
-	 * @return observationUnitsDescription
-	 **/
-	@ApiModelProperty(example = "Observation units consisted in individual plots themselves consisting of a row of 15 plants at a density of approximately six plants per square meter.", value = "MIAPPE V1.1 (DM-25) Observation unit description - General description of the observation units in the study.")
 
 	public String getObservationUnitsDescription() {
 		return observationUnitsDescription;
@@ -540,13 +344,6 @@ public class StudyNewRequest {
 		this.seasons.add(seasonsItem);
 		return this;
 	}
-
-	/**
-	 * List of seasons over which this study was performed.
-	 * 
-	 * @return seasons
-	 **/
-	@ApiModelProperty(example = "[\"Spring_2018\"]", value = "List of seasons over which this study was performed.")
 
 	public List<String> getSeasons() {
 		return seasons;
@@ -582,15 +379,6 @@ public class StudyNewRequest {
 		return this;
 	}
 
-	/**
-	 * The date this study started MIAPPE V1.1 (DM-14) Start date of study - Date
-	 * and, if relevant, time when the experiment started
-	 * 
-	 * @return startDate
-	 **/
-	@ApiModelProperty(value = "The date this study started  MIAPPE V1.1 (DM-14) Start date of study - Date and, if relevant, time when the experiment started")
-
-	@Valid
 	public OffsetDateTime getStartDate() {
 		return startDate;
 	}
@@ -603,13 +391,6 @@ public class StudyNewRequest {
 		this.studyCode = studyCode;
 		return this;
 	}
-
-	/**
-	 * A short human readable code for a study
-	 * 
-	 * @return studyCode
-	 **/
-	@ApiModelProperty(example = "Grape_Yield_Spring_2018", value = "A short human readable code for a study")
 
 	public String getStudyCode() {
 		return studyCode;
@@ -624,14 +405,6 @@ public class StudyNewRequest {
 		return this;
 	}
 
-	/**
-	 * The description of this study MIAPPE V1.1 (DM-13) Study description -
-	 * Human-readable text describing the study
-	 * 
-	 * @return studyDescription
-	 **/
-	@ApiModelProperty(example = "This is a yield study for Spring 2018", value = "The description of this study  MIAPPE V1.1 (DM-13) Study description - Human-readable text describing the study")
-
 	public String getStudyDescription() {
 		return studyDescription;
 	}
@@ -644,14 +417,6 @@ public class StudyNewRequest {
 		this.studyName = studyName;
 		return this;
 	}
-
-	/**
-	 * The human readable name for a study MIAPPE V1.1 (DM-12) Study title -
-	 * Human-readable text summarising the study
-	 * 
-	 * @return studyName
-	 **/
-	@ApiModelProperty(example = "INRA's Walnut Genetic Resources Observation at Kenya", value = "The human readable name for a study  MIAPPE V1.1 (DM-12) Study title - Human-readable text summarising the study")
 
 	public String getStudyName() {
 		return studyName;
@@ -666,14 +431,6 @@ public class StudyNewRequest {
 		return this;
 	}
 
-	/**
-	 * A permanent unique identifier associated with this study data. For example, a
-	 * URI or DOI
-	 * 
-	 * @return studyPUI
-	 **/
-	@ApiModelProperty(example = "doi:10.155454/12349537312", value = "A permanent unique identifier associated with this study data. For example, a URI or DOI")
-
 	public String getStudyPUI() {
 		return studyPUI;
 	}
@@ -686,13 +443,6 @@ public class StudyNewRequest {
 		this.studyType = studyType;
 		return this;
 	}
-
-	/**
-	 * The type of study being performed. ex. \"Yield Trial\", etc
-	 * 
-	 * @return studyType
-	 **/
-	@ApiModelProperty(example = "Phenotyping", value = "The type of study being performed. ex. \"Yield Trial\", etc")
 
 	public String getStudyType() {
 		return studyType;
@@ -707,13 +457,6 @@ public class StudyNewRequest {
 		return this;
 	}
 
-	/**
-	 * The ID which uniquely identifies a trial
-	 * 
-	 * @return trialDbId
-	 **/
-	@ApiModelProperty(example = "48b327ea", value = "The ID which uniquely identifies a trial")
-
 	public String getTrialDbId() {
 		return trialDbId;
 	}
@@ -726,13 +469,6 @@ public class StudyNewRequest {
 		this.trialName = trialName;
 		return this;
 	}
-
-	/**
-	 * The human readable name of a trial
-	 * 
-	 * @return trialName
-	 **/
-	@ApiModelProperty(example = "Grape_Yield_Trial", value = "The human readable name of a trial")
 
 	public String getTrialName() {
 		return trialName;
@@ -826,10 +562,6 @@ public class StudyNewRequest {
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";

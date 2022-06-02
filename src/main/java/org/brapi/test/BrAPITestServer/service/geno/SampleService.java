@@ -55,35 +55,47 @@ public class SampleService {
 		this.programService = programService;
 	}
 
-	public List<Sample> findSamples(String sampleDbId, String observationUnitDbId, String plateDbId,
-			String germplasmDbId, String studyDbId, String externalReferenceId, String externalReferenceID, String externalReferenceSource,
-			Metadata metadata) {
+	public List<Sample> findSamples(String sampleDbId, String sampleName, String sampleGroupDbId,
+			String observationUnitDbId, String plateDbId, String plateName, String germplasmDbId, String studyDbId,
+			String trialDbId, String commonCropName, String programDbId, String externalReferenceId,
+			String externalReferenceID, String externalReferenceSource, Metadata metadata) {
 		SampleSearchRequest request = new SampleSearchRequest();
 		if (sampleDbId != null)
 			request.addSampleDbIdsItem(sampleDbId);
+		if (sampleName != null)
+			request.addSampleNamesItem(sampleName);
+		if (sampleGroupDbId != null)
+			request.addSampleGroupDbIdsItem(sampleGroupDbId);
 		if (observationUnitDbId != null)
 			request.addObservationUnitDbIdsItem(observationUnitDbId);
 		if (plateDbId != null)
 			request.addPlateDbIdsItem(plateDbId);
+		if (plateName != null)
+			request.addPlateNamesItem(plateName);
 		if (germplasmDbId != null)
 			request.addGermplasmDbIdsItem(germplasmDbId);
+		if (commonCropName != null)
+			request.addCommonCropNamesItem(commonCropName);
+		if (programDbId != null)
+			request.addProgramDbIdsItem(programDbId);
+		if (trialDbId != null)
+			request.addTrialDbIdsItem(trialDbId);
 		if (studyDbId != null)
 			request.addStudyDbIdsItem(studyDbId);
-		
+
 		request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
 
 		return findSamples(request, metadata);
 	}
 
-	public List<Sample> findSamples(@Valid SampleSearchRequest request, Metadata metadata) {
+	public List<Sample> findSamples(SampleSearchRequest request, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<SampleEntity> searchQuery = new SearchQueryBuilder<SampleEntity>(SampleEntity.class)
 				.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
 				.appendList(request.getGermplasmDbIds(), "observationUnit.germplasm.id")
 				.appendList(request.getGermplasmNames(), "observationUnit.germplasm.germplasmName")
 				.appendList(request.getObservationUnitDbIds(), "observationUnit.id")
-				.appendList(request.getPlateDbIds(), "plate.id")
-				.appendList(request.getSampleDbIds(), "id")
+				.appendList(request.getPlateDbIds(), "plate.id").appendList(request.getSampleDbIds(), "id")
 				.appendList(request.getStudyDbIds(), "observationUnit.study.id")
 				.appendList(request.getStudyNames(), "observationUnit.study.studyName");
 
@@ -108,7 +120,7 @@ public class SampleService {
 		return sample;
 	}
 
-	public List<Sample> saveSamples(@Valid List<SampleNewRequest> body) throws BrAPIServerException {
+	public List<Sample> saveSamples(List<SampleNewRequest> body) throws BrAPIServerException {
 		List<Sample> savedSamples = new ArrayList<>();
 
 		for (SampleNewRequest list : body) {
@@ -121,7 +133,7 @@ public class SampleService {
 		return savedSamples;
 	}
 
-	public Sample updateSample(String sampleDbId, @Valid SampleNewRequest body) throws BrAPIServerException {
+	public Sample updateSample(String sampleDbId, SampleNewRequest body) throws BrAPIServerException {
 		SampleEntity savedEntity;
 		Optional<SampleEntity> entityOpt = sampleRepository.findById(sampleDbId);
 		if (entityOpt.isPresent()) {
@@ -156,7 +168,7 @@ public class SampleService {
 					}
 				}
 			}
-		}else if (entity.getStudy() != null) {
+		} else if (entity.getStudy() != null) {
 			sample.setStudyDbId(entity.getStudy().getId());
 			if (entity.getStudy().getTrial() != null) {
 				sample.setTrialDbId(entity.getStudy().getTrial().getId());
@@ -172,7 +184,7 @@ public class SampleService {
 		} else if (entity.getProgram() != null) {
 			sample.setProgramDbId(entity.getProgram().getId());
 		}
-		
+
 		if (entity.getPlate() != null) {
 			sample.setPlateDbId(entity.getPlate().getId());
 			sample.setPlateName(entity.getPlate().getPlateName());
@@ -200,7 +212,7 @@ public class SampleService {
 			entity.setPlateColumn(sample.getColumn());
 		if (sample.getExternalReferences() != null)
 			entity.setExternalReferences(sample.getExternalReferences());
-		
+
 		if (sample.getObservationUnitDbId() != null) {
 			ObservationUnitEntity observationUnit = observationUnitservice
 					.getObservationUnitEntity(sample.getObservationUnitDbId());
@@ -208,7 +220,7 @@ public class SampleService {
 			entity.setStudy(observationUnit.getStudy());
 			entity.setTrial(observationUnit.getTrial());
 			entity.setProgram(observationUnit.getProgram());
-		}else if (sample.getStudyDbId() != null) {
+		} else if (sample.getStudyDbId() != null) {
 			StudyEntity study = studyService.getStudyEntity(sample.getStudyDbId());
 			entity.setStudy(study);
 			entity.setTrial(study.getTrial());
@@ -221,19 +233,19 @@ public class SampleService {
 			ProgramEntity program = programService.getProgramEntity(sample.getProgramDbId());
 			entity.setProgram(program);
 		}
-		
+
 		if (sample.getPlateDbId() != null) {
 			PlateEntity plate = plateService.getPlateEntity(sample.getPlateDbId());
 			entity.setPlate(plate);
-		}else if(sample.getPlateName() != null) {
+		} else if (sample.getPlateName() != null) {
 			Plate newPlate = new Plate().plateName(sample.getPlateName());
 			List<Plate> savedPlate = plateService.savePlates(Arrays.asList(newPlate));
-			if(!savedPlate.isEmpty()) {
+			if (!savedPlate.isEmpty()) {
 				PlateEntity newPlateEntity = plateService.getPlateEntity(savedPlate.get(0).getPlateDbId());
 				entity.setPlate(newPlateEntity);
 			}
 		}
-		
+
 		if (sample.getRow() != null)
 			entity.setPlateRow(sample.getRow());
 		if (sample.getSampleBarcode() != null)
@@ -257,4 +269,5 @@ public class SampleService {
 		if (sample.getWell() != null)
 			entity.setWell(sample.getWell());
 	}
+
 }

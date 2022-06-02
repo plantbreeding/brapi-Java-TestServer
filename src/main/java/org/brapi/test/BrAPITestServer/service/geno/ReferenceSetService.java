@@ -21,15 +21,16 @@ import io.swagger.model.geno.ReferenceSetsSearchRequest;
 
 @Service
 public class ReferenceSetService {
-	
+
 	private final ReferenceSetRepository referenceSetRepository;
 
 	public ReferenceSetService(ReferenceSetRepository referenceSetRepository) {
 		this.referenceSetRepository = referenceSetRepository;
 	}
 
-	public List<ReferenceSet> findReferenceSets(String referenceSetDbId, String accession,
-			String assemblyPUI, String md5checksum, Metadata metadata) {
+	public List<ReferenceSet> findReferenceSets(String referenceSetDbId, String accession, String assemblyPUI,
+			String md5checksum, String trialDbId, String studyDbId, String commonCropName, String programDbId,
+			String externalReferenceId, String externalReferenceSource, Metadata metadata) {
 		ReferenceSetsSearchRequest request = new ReferenceSetsSearchRequest();
 		if (referenceSetDbId != null)
 			request.addReferenceSetDbIdsItem(referenceSetDbId);
@@ -39,17 +40,27 @@ public class ReferenceSetService {
 			request.addAssemblyPUIsItem(assemblyPUI);
 		if (md5checksum != null)
 			request.addMd5checksumsItem(md5checksum);
+		if (commonCropName != null)
+			request.addCommonCropNamesItem(commonCropName);
+		if (programDbId != null)
+			request.addProgramDbIdsItem(programDbId);
+		if (trialDbId != null)
+			request.addTrialDbIdsItem(trialDbId);
+		if (studyDbId != null)
+			request.addStudyDbIdsItem(studyDbId);
+		
+		request.addExternalReferenceItem(externalReferenceId, null, externalReferenceSource);
 
 		return findReferenceSets(request, metadata);
 	}
 
 	public List<ReferenceSet> findReferenceSets(ReferenceSetsSearchRequest request, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
-		SearchQueryBuilder<ReferenceSetEntity> searchQuery = new SearchQueryBuilder<ReferenceSetEntity>(ReferenceSetEntity.class)
-				.appendList(request.getAccessions(), "sourceGermplasm.accessionNumber")
-				.appendList(request.getAssemblyPUIs(), "assemblyPUI")
-				.appendList(request.getMd5checksums(), "md5checksum")
-				.appendList(request.getReferenceSetDbIds(), "id");
+		SearchQueryBuilder<ReferenceSetEntity> searchQuery = new SearchQueryBuilder<ReferenceSetEntity>(
+				ReferenceSetEntity.class).appendList(request.getAccessions(), "sourceGermplasm.accessionNumber")
+						.appendList(request.getAssemblyPUIs(), "assemblyPUI")
+						.appendList(request.getMd5checksums(), "md5checksum")
+						.appendList(request.getReferenceSetDbIds(), "id");
 
 		Page<ReferenceSetEntity> page = referenceSetRepository.findAllBySearch(searchQuery, pageReq);
 		List<ReferenceSet> referenceSets = page.map(this::convertFromEntity).getContent();

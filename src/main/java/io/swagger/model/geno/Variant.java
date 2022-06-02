@@ -3,40 +3,20 @@ package io.swagger.model.geno;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.BrAPIDataModel;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.time.OffsetDateTime;
-import org.springframework.validation.annotation.Validated;
-import jakarta.validation.Valid;
 
-/**
- * A &#x60;Variant&#x60; represents a change in DNA sequence relative to some
- * reference. For example, a variant could represent a SNP or an insertion.
- * Variants belong to a &#x60;VariantSet&#x60;. This is equivalent to a row in
- * VCF.
- */
-@ApiModel(description = "A `Variant` represents a change in DNA sequence relative to some reference. For example, a variant could represent a SNP or an insertion. Variants belong to a `VariantSet`. This is equivalent to a row in VCF.")
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
-public class Variant {
-	@JsonProperty("additionalInfo")
-	@Valid
-	private Map<String, Object> additionalInfo = null;
-
+public class Variant extends BrAPIDataModel {
 	@JsonProperty("alternate_bases")
-	@Valid
 	private List<String> alternateBases = null;
 
 	@JsonProperty("ciend")
-	@Valid
 	private List<Integer> ciend = null;
 
 	@JsonProperty("cipos")
-	@Valid
 	private List<Integer> cipos = null;
 
 	@JsonProperty("created")
@@ -49,7 +29,6 @@ public class Variant {
 	private Boolean filtersApplied = null;
 
 	@JsonProperty("filtersFailed")
-	@Valid
 	private List<String> filtersFailed = null;
 
 	@JsonProperty("filtersPassed")
@@ -60,6 +39,15 @@ public class Variant {
 
 	@JsonProperty("referenceName")
 	private String referenceName = null;
+
+	@JsonProperty("referenceDbId")
+	private String referenceDbId = null;
+
+	@JsonProperty("referenceSetName")
+	private String referenceSetName = null;
+
+	@JsonProperty("referenceSetDbId")
+	private String referenceSetDbId = null;
 
 	@JsonProperty("start")
 	private Integer start = null;
@@ -74,42 +62,44 @@ public class Variant {
 	private String variantDbId = null;
 
 	@JsonProperty("variantNames")
-	@Valid
 	private List<String> variantNames = null;
 
 	@JsonProperty("variantSetDbId")
-	@Valid
 	private List<String> variantSetDbId = null;
 
 	@JsonProperty("variantType")
 	private String variantType = null;
 
-	public Variant additionalInfo(Map<String, Object> additionalInfo) {
-		this.additionalInfo = additionalInfo;
-		return this;
+	public String getReferenceDbId() {
+		return referenceDbId;
 	}
 
-	public Variant putAdditionalInfoItem(String key, String additionalInfoItem) {
-		if (this.additionalInfo == null) {
-			this.additionalInfo = new HashMap<String, Object>();
-		}
-		this.additionalInfo.put(key, additionalInfoItem);
-		return this;
+	public void setReferenceDbId(String referenceDbId) {
+		this.referenceDbId = referenceDbId;
 	}
 
-	/**
-	 * Additional arbitrary info
-	 * 
-	 * @return additionalInfo
-	 **/
-	@ApiModelProperty(value = "Additional arbitrary info")
-
-	public Map<String, Object> getAdditionalInfo() {
-		return additionalInfo;
+	public String getReferenceSetName() {
+		return referenceSetName;
 	}
 
-	public void setAdditionalInfo(Map<String, Object> additionalInfo) {
-		this.additionalInfo = additionalInfo;
+	public void setReferenceSetName(String referenceSetName) {
+		this.referenceSetName = referenceSetName;
+	}
+
+	public String getReferenceSetDbId() {
+		return referenceSetDbId;
+	}
+
+	public void setReferenceSetDbId(String referenceSetDbId) {
+		this.referenceSetDbId = referenceSetDbId;
+	}
+
+	public Boolean getFiltersApplied() {
+		return filtersApplied;
+	}
+
+	public Boolean getFiltersPassed() {
+		return filtersPassed;
 	}
 
 	public Variant alternateBases(List<String> alternateBases) {
@@ -124,14 +114,6 @@ public class Variant {
 		this.alternateBases.add(alternateBasesItem);
 		return this;
 	}
-
-	/**
-	 * The bases that appear instead of the reference bases. Multiple alternate
-	 * alleles are possible.
-	 * 
-	 * @return alternateBases
-	 **/
-	@ApiModelProperty(example = "[\"TAGGATTGAGCTCTATAT\"]", value = "The bases that appear instead of the reference bases. Multiple alternate alleles are possible.")
 
 	public List<String> getAlternateBases() {
 		return alternateBases;
@@ -154,14 +136,6 @@ public class Variant {
 		return this;
 	}
 
-	/**
-	 * Similar to \"cipos\", but for the variant's end position (which is derived
-	 * from start + svlen).
-	 * 
-	 * @return ciend
-	 **/
-	@ApiModelProperty(example = "[-1000,0]", value = "Similar to \"cipos\", but for the variant's end position (which is derived from start + svlen).")
-
 	public List<Integer> getCiend() {
 		return ciend;
 	}
@@ -183,16 +157,6 @@ public class Variant {
 		return this;
 	}
 
-	/**
-	 * In the case of structural variants, start and end of the variant may not be
-	 * known with an exact base position. \"cipos\" provides an interval with high
-	 * confidence for the start position. The interval is provided by 0 or 2 signed
-	 * integers which are added to the start position. Based on the use in VCF v4.2
-	 * 
-	 * @return cipos
-	 **/
-	@ApiModelProperty(example = "[-12000,1000]", value = "In the case of structural variants, start and end of the variant may not be known with an exact base position. \"cipos\" provides an interval with high confidence for the start position. The interval is provided by 0 or 2 signed integers which are added to the start position. Based on the use in VCF v4.2")
-
 	public List<Integer> getCipos() {
 		return cipos;
 	}
@@ -206,14 +170,6 @@ public class Variant {
 		return this;
 	}
 
-	/**
-	 * The timestamp when this variant was created.
-	 * 
-	 * @return created
-	 **/
-	@ApiModelProperty(value = "The timestamp when this variant was created.")
-
-	@Valid
 	public OffsetDateTime getCreated() {
 		return created;
 	}
@@ -227,16 +183,6 @@ public class Variant {
 		return this;
 	}
 
-	/**
-	 * This field is optional and may be ignored if there is no relevant map or
-	 * reference to be associated with. The end position (exclusive), resulting in
-	 * [start, end) closed-open interval. This is typically calculated by `start +
-	 * referenceBases.length`.
-	 * 
-	 * @return end
-	 **/
-	@ApiModelProperty(example = "518", value = "This field is optional and may be ignored if there is no relevant map or reference to be associated with.  The end position (exclusive), resulting in [start, end) closed-open interval. This is typically calculated  by `start + referenceBases.length`.")
-
 	public Integer getEnd() {
 		return end;
 	}
@@ -249,14 +195,6 @@ public class Variant {
 		this.filtersApplied = filtersApplied;
 		return this;
 	}
-
-	/**
-	 * True if filters were applied for this variant. VCF column 7 \"FILTER\" any
-	 * value other than the missing value.
-	 * 
-	 * @return filtersApplied
-	 **/
-	@ApiModelProperty(example = "true", value = "True if filters were applied for this variant. VCF column 7 \"FILTER\" any value other than the missing value.")
 
 	public Boolean isFiltersApplied() {
 		return filtersApplied;
@@ -279,14 +217,6 @@ public class Variant {
 		return this;
 	}
 
-	/**
-	 * Zero or more filters that failed for this variant. VCF column 7 \"FILTER\"
-	 * shared across all alleles in the same VCF record.
-	 * 
-	 * @return filtersFailed
-	 **/
-	@ApiModelProperty(example = "[\"d629a669\",\"3f14f578\"]", value = "Zero or more filters that failed for this variant. VCF column 7 \"FILTER\" shared across all alleles in the same VCF record.")
-
 	public List<String> getFiltersFailed() {
 		return filtersFailed;
 	}
@@ -299,14 +229,6 @@ public class Variant {
 		this.filtersPassed = filtersPassed;
 		return this;
 	}
-
-	/**
-	 * True if all filters for this variant passed. VCF column 7 \"FILTER\" value
-	 * PASS.
-	 * 
-	 * @return filtersPassed
-	 **/
-	@ApiModelProperty(example = "true", value = "True if all filters for this variant passed. VCF column 7 \"FILTER\" value PASS.")
 
 	public Boolean isFiltersPassed() {
 		return filtersPassed;
@@ -321,13 +243,6 @@ public class Variant {
 		return this;
 	}
 
-	/**
-	 * The reference bases for this variant. They start at the given start position.
-	 * 
-	 * @return referenceBases
-	 **/
-	@ApiModelProperty(example = "TAGGATTGAGCTCTATAT", value = "The reference bases for this variant. They start at the given start position.")
-
 	public String getReferenceBases() {
 		return referenceBases;
 	}
@@ -340,13 +255,6 @@ public class Variant {
 		this.referenceName = referenceName;
 		return this;
 	}
-
-	/**
-	 * The reference on which this variant occurs. (e.g. `chr_20` or `X`)
-	 * 
-	 * @return referenceName
-	 **/
-	@ApiModelProperty(example = "chr_20", value = "The reference on which this variant occurs. (e.g. `chr_20` or `X`)")
 
 	public String getReferenceName() {
 		return referenceName;
@@ -361,18 +269,6 @@ public class Variant {
 		return this;
 	}
 
-	/**
-	 * This field is optional and may be ignored if there is no relevant map or
-	 * reference to be associated with. The start position at which this variant
-	 * occurs (0-based). This corresponds to the first base of the string of
-	 * reference bases. Genomic positions are non-negative integers less than
-	 * reference length. Variants spanning the join of circular genomes are
-	 * represented as two variants one on each side of the join (position 0).
-	 * 
-	 * @return start
-	 **/
-	@ApiModelProperty(example = "500", value = "This field is optional and may be ignored if there is no relevant map or reference to be associated with.  The start position at which this variant occurs (0-based). This corresponds to the first base of the string  of reference bases. Genomic positions are non-negative integers less than reference length. Variants spanning  the join of circular genomes are represented as two variants one on each side of the join (position 0).")
-
 	public Integer getStart() {
 		return start;
 	}
@@ -385,14 +281,6 @@ public class Variant {
 		this.svlen = svlen;
 		return this;
 	}
-
-	/**
-	 * Length of the - if labeled as such in variant_type - structural variation.
-	 * Based on the use in VCF v4.2
-	 * 
-	 * @return svlen
-	 **/
-	@ApiModelProperty(example = "1500", value = "Length of the - if labeled as such in variant_type - structural variation. Based on the use in VCF v4.2")
 
 	public Integer getSvlen() {
 		return svlen;
@@ -407,14 +295,6 @@ public class Variant {
 		return this;
 	}
 
-	/**
-	 * The time at which this variant was last updated.
-	 * 
-	 * @return updated
-	 **/
-	@ApiModelProperty(value = "The time at which this variant was last updated.")
-
-	@Valid
 	public OffsetDateTime getUpdated() {
 		return updated;
 	}
@@ -427,13 +307,6 @@ public class Variant {
 		this.variantDbId = variantDbId;
 		return this;
 	}
-
-	/**
-	 * The variant ID.
-	 * 
-	 * @return variantDbId
-	 **/
-	@ApiModelProperty(example = "628e89c5", value = "The variant ID.")
 
 	public String getVariantDbId() {
 		return variantDbId;
@@ -456,13 +329,6 @@ public class Variant {
 		return this;
 	}
 
-	/**
-	 * Names for the variant, for example a RefSNP ID.
-	 * 
-	 * @return variantNames
-	 **/
-	@ApiModelProperty(example = "[\"RefSNP_ID_1\",\"06ea312e\"]", value = "Names for the variant, for example a RefSNP ID.")
-
 	public List<String> getVariantNames() {
 		return variantNames;
 	}
@@ -484,14 +350,6 @@ public class Variant {
 		return this;
 	}
 
-	/**
-	 * An array of `VariantSet` IDs this variant belongs to. This also defines the
-	 * `ReferenceSet` against which the `Variant` is to be interpreted.
-	 * 
-	 * @return variantSetDbId
-	 **/
-	@ApiModelProperty(example = "[\"c8ae400b\",\"ef2c204b\"]", value = "An array of `VariantSet` IDs this variant belongs to. This also defines the `ReferenceSet` against which the `Variant` is to be interpreted.")
-
 	public List<String> getVariantSetDbId() {
 		return variantSetDbId;
 	}
@@ -504,15 +362,6 @@ public class Variant {
 		this.variantType = variantType;
 		return this;
 	}
-
-	/**
-	 * The \"variant_type\" is used to denote e.g. structural variants. Examples:
-	 * DUP : duplication of sequence following \"start\" DEL : deletion of sequence
-	 * following \"start\"
-	 * 
-	 * @return variantType
-	 **/
-	@ApiModelProperty(example = "DUP", value = "The \"variant_type\" is used to denote e.g. structural variants. Examples:   DUP  : duplication of sequence following \"start\"   DEL  : deletion of sequence following \"start\"")
 
 	public String getVariantType() {
 		return variantType;
@@ -582,10 +431,6 @@ public class Variant {
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";

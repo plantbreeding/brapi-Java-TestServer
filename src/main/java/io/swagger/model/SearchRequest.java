@@ -17,7 +17,7 @@ public abstract class SearchRequest {
 	protected Integer pageSize = null;
 
 	@JsonProperty("pageToken")
-	private String pageToken = null;
+	protected String pageToken = null;
 
 	@JsonProperty("externalReferenceIds")
 	protected List<String> externalReferenceIds = null;

@@ -36,15 +36,21 @@ public interface ReferencesApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/references", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ReferencesListResponse> referencesGet(
-			@ApiParam(value = "The ID of the `Reference` to be retrieved.") @Valid @RequestParam(value = "referenceDbId", required = false) String referenceDbId,
-			@ApiParam(value = "The ID of the `ReferenceSet` to be retrieved.") @Valid @RequestParam(value = "referenceSetDbId", required = false) String referenceSetDbId,
-			@ApiParam(value = "If set, return the reference sets for which the `accession` matches this string (case-sensitive, exact match).") @Valid @RequestParam(value = "accession", required = false) String accession,
-			@ApiParam(value = "If specified, return the references for which the `md5checksum` matches this string (case-sensitive, exact match).") @Valid @RequestParam(value = "md5checksum", required = false) String md5checksum,
-			@ApiParam(value = "If the reference is derived from a source sequence") @Valid @RequestParam(value = "isDerived", required = false) Boolean isDerived,
-			@ApiParam(value = "The minimum length of the reference sequences to be retrieved.") @Valid @RequestParam(value = "minLength", required = false) Integer minLength,
-			@ApiParam(value = "The maximum length of the reference sequences to be retrieved.") @Valid @RequestParam(value = "maxLength", required = false) Integer maxLength,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "referenceDbId") @Valid @RequestParam(value = "referenceDbId", required = false) String referenceDbId,
+			@ApiParam(value = "referenceSetDbId") @Valid @RequestParam(value = "referenceSetDbId", required = false) String referenceSetDbId,
+			@ApiParam(value = "accession") @Valid @RequestParam(value = "accession", required = false) String accession,
+			@ApiParam(value = "md5checksum") @Valid @RequestParam(value = "md5checksum", required = false) String md5checksum,
+			@ApiParam(value = "isDerived") @Valid @RequestParam(value = "isDerived", required = false) Boolean isDerived,
+			@ApiParam(value = "minLength") @Valid @RequestParam(value = "minLength", required = false) Integer minLength,
+			@ApiParam(value = "maxLength") @Valid @RequestParam(value = "maxLength", required = false) Integer maxLength,
+			@ApiParam(value = "trialDbId") @Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
+			@ApiParam(value = "studyDbId") @Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@ApiParam(value = "commonCropName") @Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@ApiParam(value = "programDbId") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@ApiParam(value = "externalReferenceId") @Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@ApiParam(value = "externalReferenceSource") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
 
@@ -60,9 +66,9 @@ public interface ReferencesApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ReferenceBasesResponse> referencesReferenceDbIdBasesGet(
 			@ApiParam(value = "The ID of the `Reference` to be retrieved.", required = true) @PathVariable("referenceDbId") String referenceDbId,
-			@ApiParam(value = "The start position (0-based) of this query. Defaults to 0. Genomic positions are non-negative integers less than reference length. Requests spanning the join of circular genomes are represented as two requests one on each side of the join (position 0).") @Valid @RequestParam(value = "start", required = false) Integer start,
-			@ApiParam(value = "The end position (0-based, exclusive) of this query. Defaults to the length of this `Reference`.") @Valid @RequestParam(value = "end", required = false) Integer end,
-			@ApiParam(value = "The continuation token, which is used to page through large result sets. To get the next page of results, set this parameter to the value of `next_page_token` from the previous response.") @Valid @RequestParam(value = "pageToken", required = false) String pageToken,
+			@ApiParam(value = "start") @Valid @RequestParam(value = "start", required = false) Integer start,
+			@ApiParam(value = "end") @Valid @RequestParam(value = "end", required = false) Integer end,
+			@ApiParam(value = "pageToken") @Valid @RequestParam(value = "pageToken", required = false) String pageToken,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 					throws BrAPIServerException;
 
@@ -106,8 +112,8 @@ public interface ReferencesApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<? extends BrAPIResponse> searchReferencesSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 					throws BrAPIServerException;;
 

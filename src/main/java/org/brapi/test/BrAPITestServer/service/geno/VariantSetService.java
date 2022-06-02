@@ -51,7 +51,8 @@ public class VariantSetService {
 	}
 
 	public List<VariantSet> findVariantSets(String variantSetDbId, String variantDbId, String callSetDbId,
-			String studyDbId, String studyName, Metadata metadata) {
+			String studyDbId, String studyName, String referenceSetDbId, String commonCropName, String programDbId,
+			String externalReferenceId, String externalReferenceSource, Metadata metadata) {
 		VariantSetsSearchRequest request = new VariantSetsSearchRequest();
 		if (variantSetDbId != null)
 			request.addVariantSetDbIdsItem(variantSetDbId);
@@ -63,7 +64,14 @@ public class VariantSetService {
 			request.addStudyDbIdsItem(studyDbId);
 		if (studyName != null)
 			request.addStudyNamesItem(studyName);
+		if (referenceSetDbId != null)
+			request.addReferenceSetDbIdsItem(referenceSetDbId);
+		if (commonCropName != null)
+			request.addCommonCropNamesItem(commonCropName);
+		if (programDbId != null)
+			request.addProgramDbIdsItem(programDbId);
 
+		request.addExternalReferenceItem(externalReferenceId, null, externalReferenceSource);
 		return findVariantSets(request, metadata);
 	}
 
@@ -75,18 +83,16 @@ public class VariantSetService {
 
 	private List<VariantSetEntity> findVariantSetEntities(VariantSetsSearchRequest request, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
-		SearchQueryBuilder<VariantSetEntity> searchQuery = new SearchQueryBuilder<VariantSetEntity>(VariantSetEntity.class);
-		if(request.getCallSetDbIds() != null) {
-			searchQuery.join("callSets", "callSet")
-			.appendList(request.getCallSetDbIds(), "*callSet.id");
+		SearchQueryBuilder<VariantSetEntity> searchQuery = new SearchQueryBuilder<VariantSetEntity>(
+				VariantSetEntity.class);
+		if (request.getCallSetDbIds() != null) {
+			searchQuery.join("callSets", "callSet").appendList(request.getCallSetDbIds(), "*callSet.id");
 		}
-		if(request.getVariantDbIds() != null) {
-			searchQuery.join("variants", "variant")
-			.appendList(request.getVariantDbIds(), "*variant.id");
+		if (request.getVariantDbIds() != null) {
+			searchQuery.join("variants", "variant").appendList(request.getVariantDbIds(), "*variant.id");
 		}
 		searchQuery.appendList(request.getStudyDbIds(), "study.id")
-				.appendList(request.getStudyNames(), "study.studyName")
-				.appendList(request.getVariantSetDbIds(), "id");
+				.appendList(request.getStudyNames(), "study.studyName").appendList(request.getVariantSetDbIds(), "id");
 
 		Page<VariantSetEntity> page = variantSetRepository.findAllBySearch(searchQuery, pageReq);
 		PagingUtility.calculateMetaData(metadata, page);
@@ -190,13 +196,15 @@ public class VariantSetService {
 	}
 
 	private VariantSetEntity copyVariantSet(List<VariantSetEntity> variantSets) throws BrAPIServerException {
-		VariantSetEntity entity= new VariantSetEntity();;
+		VariantSetEntity entity = new VariantSetEntity();
+		;
 		if (variantSets.size() == 1) {
 			entity.setVariantSetName(variantSets.get(0).getVariantSetName() + "-Copy");
 		} else if (variantSets.size() > 1) {
 			entity.setVariantSetName(variantSets.get(0).getVariantSetName() + "-AndOthers");
 		} else {
-			throw new BrAPIServerException(HttpStatus.BAD_REQUEST, "No data matches the search parameters, new VariantSet not created");
+			throw new BrAPIServerException(HttpStatus.BAD_REQUEST,
+					"No data matches the search parameters, new VariantSet not created");
 		}
 		entity.setId(null);
 		entity.setCallSets(new ArrayList<>());
@@ -208,7 +216,7 @@ public class VariantSetService {
 
 	private Map<String, VariantEntity> copyVariants(VariantSetEntity variantSetEntity, List<VariantEntity> variants) {
 		Map<String, VariantEntity> newVariantMap = new HashMap<>();
-		for(VariantEntity variant: variants) {
+		for (VariantEntity variant : variants) {
 			VariantEntity entity = new VariantEntity(variant);
 			String oldId = entity.getId();
 			entity.setId(null);
@@ -222,7 +230,7 @@ public class VariantSetService {
 
 	private Map<String, CallSetEntity> copyCallSets(VariantSetEntity variantSetEntity, List<CallSetEntity> callSets) {
 		Map<String, CallSetEntity> newCallSetMap = new HashMap<>();
-		for(CallSetEntity callSet: callSets) {
+		for (CallSetEntity callSet : callSets) {
 			CallSetEntity entity = new CallSetEntity(callSet);
 			String oldId = entity.getId();
 			entity.setId(null);
@@ -238,7 +246,7 @@ public class VariantSetService {
 	private void copyCalls(Map<String, VariantEntity> newVariantMap, Map<String, CallSetEntity> newCallSetMap,
 			List<CallEntity> calls) {
 		List<CallEntity> newCalls = new ArrayList<>();
-		for(CallEntity call: calls) {
+		for (CallEntity call : calls) {
 			CallEntity entity = new CallEntity(call);
 			entity.setId(null);
 			entity.setCallSet(newCallSetMap.get(entity.getCallSet().getId()));
