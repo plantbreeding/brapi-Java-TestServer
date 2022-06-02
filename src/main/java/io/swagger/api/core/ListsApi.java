@@ -10,7 +10,6 @@ import io.swagger.model.Model202AcceptedSearchResponse;
 import io.swagger.model.core.ListNewRequest;
 import io.swagger.model.core.ListResponse;
 import io.swagger.model.core.ListSearchRequest;
-import io.swagger.model.core.ListTypes;
 import io.swagger.model.core.ListsListResponse;
 import io.swagger.model.core.ListsSingleResponse;
 import io.swagger.annotations.*;
@@ -41,14 +40,17 @@ public interface ListsApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/lists", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ListsListResponse> listsGet(
-			@ApiParam(value = "The type of objects contained by this generic list") @Valid @RequestParam(value = "listType", required = false) String listType,
-			@ApiParam(value = "The human readable name of this generic list") @Valid @RequestParam(value = "listName", required = false) String listName,
-			@ApiParam(value = "The unique ID of this generic list") @Valid @RequestParam(value = "listDbId", required = false) String listDbId,
-			@ApiParam(value = "The source tag of this generic list") @Valid @RequestParam(value = "listSource", required = false) String listSource,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "listType") @Valid @RequestParam(value = "listType", required = false) String listType,
+			@ApiParam(value = "listName") @Valid @RequestParam(value = "listName", required = false) String listName,
+			@ApiParam(value = "listDbId") @Valid @RequestParam(value = "listDbId", required = false) String listDbId,
+			@ApiParam(value = "listSource") @Valid @RequestParam(value = "listSource", required = false) String listSource,
+			@ApiParam(value = "programDbId") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@ApiParam(value = "commonCropName") @Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@ApiParam(value = "externalReferenceId") @Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@ApiParam(value = "externalReferenceID") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@ApiParam(value = "externalReferenceSource") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
 
@@ -130,8 +132,8 @@ public interface ListsApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<? extends BrAPIResponse> searchListsSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 }

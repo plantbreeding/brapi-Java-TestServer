@@ -57,7 +57,7 @@ public class ObservationVariableService {
 	}
 
 	public List<ObservationVariable> findObservationVariables(@Valid String observationVariableDbId,
-			@Valid String traitClass, @Valid String studyDbId, @Valid String externalReferenceID,
+			@Valid String traitClass, @Valid String studyDbId, @Valid String externalReferenceId, String externalReferenceID,
 			@Valid String externalReferenceSource, Metadata metadata) {
 		ObservationVariableSearchRequest request = new ObservationVariableSearchRequest();
 		if (traitClass != null)
@@ -66,10 +66,8 @@ public class ObservationVariableService {
 			request.addStudyDbIdItem(studyDbId);
 		if (observationVariableDbId != null)
 			request.addObservationVariableDbIdsItem(observationVariableDbId);
-		if (externalReferenceID != null)
-			request.addExternalReferenceIDsItem(externalReferenceID);
-		if (externalReferenceSource != null)
-			request.addExternalReferenceSourcesItem(externalReferenceSource);
+
+		request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
 
 		return findObservationVariables(request, metadata);
 	}

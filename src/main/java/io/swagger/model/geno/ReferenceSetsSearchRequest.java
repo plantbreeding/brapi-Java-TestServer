@@ -2,34 +2,21 @@ package io.swagger.model.geno;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.SearchRequest;
-import io.swagger.model.SearchRequestParametersPaging;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.validation.annotation.Validated;
-import jakarta.validation.Valid;
 
-/**
- * ReferenceSetsSearchRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-24T19:42:22.574Z[GMT]")
-public class ReferenceSetsSearchRequest extends SearchRequestParametersPaging implements SearchRequest {
+public class ReferenceSetsSearchRequest extends SearchRequest {
 	@JsonProperty("accessions")
-	@Valid
 	private List<String> accessions = null;
 
 	@JsonProperty("assemblyPUIs")
-	@Valid
 	private List<String> assemblyPUIs = null;
 
 	@JsonProperty("md5checksum")
-	@Valid
 	private List<String> md5checksums = null;
 
 	@JsonProperty("referenceSetDbIds")
-	@Valid
 	private List<String> referenceSetDbIds = null;
 
 	public ReferenceSetsSearchRequest accessions(List<String> accessions) {
@@ -44,14 +31,6 @@ public class ReferenceSetsSearchRequest extends SearchRequestParametersPaging im
 		this.accessions.add(accessionsItem);
 		return this;
 	}
-
-	/**
-	 * If set, return the reference sets for which the `accession` matches this
-	 * string (case-sensitive, exact match).
-	 * 
-	 * @return accession
-	 **/
-	@ApiModelProperty(example = "[\"A0009283\",\"A0006657\"]", value = "If set, return the reference sets for which the `accession` matches this string (case-sensitive, exact match).")
 
 	public List<String> getAccessions() {
 		return accessions;
@@ -74,14 +53,6 @@ public class ReferenceSetsSearchRequest extends SearchRequestParametersPaging im
 		return this;
 	}
 
-	/**
-	 * If set, return the reference sets for which the `assemblyId` matches this
-	 * string (case-sensitive, exact match).
-	 * 
-	 * @return assemblyPUI
-	 **/
-	@ApiModelProperty(example = "[\"doi:10.15454/312953986E3\",\"doi:10.15454/312953986E3\"]", value = "If set, return the reference sets for which the `assemblyId` matches this string (case-sensitive, exact match).")
-
 	public List<String> getAssemblyPUIs() {
 		return assemblyPUIs;
 	}
@@ -103,14 +74,6 @@ public class ReferenceSetsSearchRequest extends SearchRequestParametersPaging im
 		return this;
 	}
 
-	/**
-	 * If set, return the reference sets for which the `md5checksum` matches this
-	 * string (case-sensitive, exact match).
-	 * 
-	 * @return md5checksum
-	 **/
-	@ApiModelProperty(example = "[\"c2365e900c81a89cf74d83dab60df146\"]", value = "If set, return the reference sets for which the `md5checksum` matches this string (case-sensitive, exact match).")
-
 	public List<String> getMd5checksums() {
 		return md5checksums;
 	}
@@ -131,13 +94,6 @@ public class ReferenceSetsSearchRequest extends SearchRequestParametersPaging im
 		this.referenceSetDbIds.add(referenceSetDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * The `ReferenceSets` to search.
-	 * 
-	 * @return referenceSetDbIds
-	 **/
-	@ApiModelProperty(example = "[\"32a19dd7\",\"2c182c18\"]", value = "The `ReferenceSets` to search.")
 
 	public List<String> getReferenceSetDbIds() {
 		return referenceSetDbIds;
@@ -181,10 +137,6 @@ public class ReferenceSetsSearchRequest extends SearchRequestParametersPaging im
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";

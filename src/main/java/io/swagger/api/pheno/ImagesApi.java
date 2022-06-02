@@ -37,15 +37,16 @@ public interface ImagesApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/images", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ImageListResponse> imagesGet(
-			@ApiParam(value = "The unique identifier for a image") @Valid @RequestParam(value = "imageDbId", required = false) String imageDbId,
-			@ApiParam(value = "The human readable name of an image") @Valid @RequestParam(value = "imageName", required = false) String imageName,
-			@ApiParam(value = "The unique identifier of the observation unit an image is portraying") @Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
-			@ApiParam(value = "The unique identifier of the observation an image is associated with") @Valid @RequestParam(value = "observationDbId", required = false) String observationDbId,
-			@ApiParam(value = "A descriptive term associated with an image") @Valid @RequestParam(value = "descriptiveOntologyTerm", required = false) String descriptiveOntologyTerm,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "imageDbId") @Valid @RequestParam(value = "imageDbId", required = false) String imageDbId,
+			@ApiParam(value = "imageName") @Valid @RequestParam(value = "imageName", required = false) String imageName,
+			@ApiParam(value = "observationUnitDbId") @Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
+			@ApiParam(value = "observationDbId") @Valid @RequestParam(value = "observationDbId", required = false) String observationDbId,
+			@ApiParam(value = "descriptiveOntologyTerm") @Valid @RequestParam(value = "descriptiveOntologyTerm", required = false) String descriptiveOntologyTerm,
+			@ApiParam(value = "externalReferenceId") @Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@ApiParam(value = "externalReferenceID") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@ApiParam(value = "externalReferenceSource") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
 
@@ -137,8 +138,8 @@ public interface ImagesApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<? extends BrAPIResponse> searchImagesSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
 

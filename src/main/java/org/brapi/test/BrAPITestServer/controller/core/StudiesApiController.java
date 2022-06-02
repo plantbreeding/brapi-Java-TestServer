@@ -14,6 +14,7 @@ import io.swagger.model.germ.Germplasm;
 import io.swagger.model.germ.GermplasmListResponse;
 import io.swagger.model.germ.GermplasmListResponseResult;
 import io.swagger.model.germ.GermplasmSearchRequest;
+import io.swagger.annotations.ApiParam;
 import io.swagger.api.core.StudiesApi;
 import io.swagger.api.core.StudytypesApi;
 
@@ -72,6 +73,7 @@ public class StudiesApiController extends BrAPIController implements StudiesApi,
 			@Valid @RequestParam(value = "active", required = false) Boolean active,
 			@Valid @RequestParam(value = "sortBy", required = false) String sortBy,
 			@Valid @RequestParam(value = "sortOrder", required = false) String sortOrder,
+			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
@@ -84,7 +86,7 @@ public class StudiesApiController extends BrAPIController implements StudiesApi,
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<Study> data = studyService.findStudies(commonCropName, studyType, programDbId, locationDbId, seasonDbId,
 				trialDbId, studyDbId, studyName, studyCode, studyPUI, germplasmDbId, observationVariableDbId,
-				externalReferenceID, externalReferenceSource, active, sortBy, sortOrder, metadata);
+				externalReferenceId, externalReferenceID, externalReferenceSource, active, sortBy, sortOrder, metadata);
 		return responseOK(new StudyListResponse(), new StudyListResponseResult(), data, metadata);
 	}
 

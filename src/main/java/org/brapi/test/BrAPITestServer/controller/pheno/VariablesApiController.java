@@ -58,6 +58,7 @@ public class VariablesApiController extends BrAPIController implements Variables
 			@Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
 			@Valid @RequestParam(value = "traitClass", required = false) String traitClass,
 			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
@@ -68,7 +69,7 @@ public class VariablesApiController extends BrAPIController implements Variables
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<ObservationVariable> data = observationVariableService.findObservationVariables(observationVariableDbId,
-				traitClass, studyDbId, externalReferenceID, externalReferenceSource, metadata);
+				traitClass, studyDbId, externalReferenceId, externalReferenceID, externalReferenceSource, metadata);
 		return responseOK(new ObservationVariableListResponse(), new ObservationVariableListResponseResult(), data,
 				metadata);
 	}

@@ -7,11 +7,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import jakarta.validation.Valid;
-
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
-import org.brapi.test.BrAPITestServer.model.entity.core.ContactEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.DataLinkEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.EnvironmentParametersEntity;
@@ -71,11 +68,11 @@ public class StudyService {
 		this.cropService = cropService;
 	}
 
-	public List<Study> findStudies(@Valid String commonCropName, @Valid String studyType, @Valid String programDbId,
-			@Valid String locationDbId, @Valid String seasonDbId, @Valid String trialDbId, @Valid String studyDbId,
-			@Valid String studyName, @Valid String studyCode, @Valid String studyPUI, @Valid String germplasmDbId,
-			@Valid String observationVariableDbId, @Valid String externalReferenceID,
-			@Valid String externalReferenceSource, @Valid Boolean active, @Valid String sortBy, @Valid String sortOrder,
+	public List<Study> findStudies( String commonCropName,  String studyType,  String programDbId,
+			 String locationDbId,  String seasonDbId,  String trialDbId,  String studyDbId,
+			 String studyName,  String studyCode,  String studyPUI,  String germplasmDbId,
+			 String observationVariableDbId,  String externalReferenceId, String externalReferenceID,
+			 String externalReferenceSource,  Boolean active,  String sortBy,  String sortOrder,
 			Metadata metadata) {
 
 		StudySearchRequest request = new StudySearchRequest();
@@ -103,16 +100,14 @@ public class StudyService {
 			request.addGermplasmDbIdsItem(germplasmDbId);
 		if (observationVariableDbId != null)
 			request.addObservationVariableDbIdsItem(observationVariableDbId);
-		if (externalReferenceID != null)
-			request.addExternalReferenceIDsItem(externalReferenceID);
-		if (externalReferenceSource != null)
-			request.addExternalReferenceSourcesItem(externalReferenceSource);
 		if (active != null)
 			request.setActive(active);
 		if (sortBy != null && SortBy.fromValue(sortBy) != null)
 			request.setSortBy(SortBy.fromValue(sortBy));
 		if (sortOrder != null && SortOrder.fromValue(sortOrder) != null)
 			request.setSortOrder(SortOrder.fromValue(sortOrder));
+		
+		request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
 
 		return findStudies(request, metadata);
 	}
@@ -175,7 +170,7 @@ public class StudyService {
 		return study;
 	}
 
-	public List<Study> saveStudies(@Valid List<StudyNewRequest> body) throws BrAPIServerException {
+	public List<Study> saveStudies( List<StudyNewRequest> body) throws BrAPIServerException {
 		List<Study> savedStudies = new ArrayList<>();
 
 		for (StudyNewRequest study : body) {
@@ -191,7 +186,7 @@ public class StudyService {
 		return savedStudies;
 	}
 
-	public Study updateStudy(String studyDbId, @Valid StudyNewRequest body) throws BrAPIServerException {
+	public Study updateStudy(String studyDbId,  StudyNewRequest body) throws BrAPIServerException {
 		StudyEntity savedEntity;
 		Optional<StudyEntity> entityOpt = studyRepository.findById(studyDbId);
 		if (entityOpt.isPresent()) {
@@ -216,7 +211,7 @@ public class StudyService {
 		return PagingUtility.paginateSimpleList(new ArrayList<>(types), metadata);
 	}
 
-	private void updateEntity(StudyEntity entity, @Valid StudyNewRequest body) throws BrAPIServerException {
+	private void updateEntity(StudyEntity entity,  StudyNewRequest body) throws BrAPIServerException {
 		if (body.isActive() != null)
 			entity.setActive(body.isActive());
 		if (body.getAdditionalInfo() != null)

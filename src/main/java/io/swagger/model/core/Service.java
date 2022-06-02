@@ -93,6 +93,10 @@ public class Service {
 	@Valid
 	private List<WSMIMEDataTypes> dataTypes = null;
 
+	@JsonProperty("contentTypes")
+	@Valid
+	private List<WSMIMEDataTypes> contentTypes = null;
+
 	@JsonProperty("methods")
 	@Valid
 	private List<MethodsEnum> methods = new ArrayList<MethodsEnum>();
@@ -107,7 +111,23 @@ public class Service {
 		if (this.dataTypes == null) {
 			this.dataTypes = new ArrayList<WSMIMEDataTypes>();
 		}
+		if (this.contentTypes == null) {
+			this.contentTypes = new ArrayList<WSMIMEDataTypes>();
+		}
 		this.dataTypes.add(dataTypesItem);
+		this.contentTypes.add(dataTypesItem);
+		return this;
+	}
+
+	public Service addContentTypesItem(WSMIMEDataTypes contentTypesItem) {
+		if (this.dataTypes == null) {
+			this.dataTypes = new ArrayList<WSMIMEDataTypes>();
+		}
+		if (this.contentTypes == null) {
+			this.contentTypes = new ArrayList<WSMIMEDataTypes>();
+		}
+		this.dataTypes.add(contentTypesItem);
+		this.contentTypes.add(contentTypesItem);
 		return this;
 	}
 
@@ -123,6 +143,13 @@ public class Service {
 
 	public Service dataTypes(List<WSMIMEDataTypes> dataTypes) {
 		this.dataTypes = dataTypes;
+		this.contentTypes = dataTypes;
+		return this;
+	}
+
+	public Service contentTypes(List<WSMIMEDataTypes> contentTypes) {
+		this.dataTypes = contentTypes;
+		this.contentTypes = contentTypes;
 		return this;
 	}
 
@@ -135,8 +162,10 @@ public class Service {
 			return false;
 		}
 		Service service = (Service) o;
-		return Objects.equals(this.dataTypes, service.dataTypes) && Objects.equals(this.methods, service.methods)
-				&& Objects.equals(this.service, service.service) && Objects.equals(this.versions, service.versions);
+		return Objects.equals(this.dataTypes, service.dataTypes)
+				&& Objects.equals(this.contentTypes, service.contentTypes)
+				&& Objects.equals(this.methods, service.methods) && Objects.equals(this.service, service.service)
+				&& Objects.equals(this.versions, service.versions);
 	}
 
 	/**
@@ -151,12 +180,22 @@ public class Service {
 	}
 
 	/**
+	 * The possible data formats returned by the available call
+	 * 
+	 * @return dataTypes
+	 **/
+	@ApiModelProperty(example = "[\"application/json\"]", value = "The possible data formats returned by the available call")
+	@Valid
+	public List<WSMIMEDataTypes> getContentTypes() {
+		return contentTypes;
+	}
+
+	/**
 	 * The possible HTTP Methods to be used with the available call
 	 * 
 	 * @return methods
 	 **/
 	@ApiModelProperty(example = "[\"GET\",\"POST\"]", required = true, value = "The possible HTTP Methods to be used with the available call")
-	
 
 	public List<MethodsEnum> getMethods() {
 		return methods;
@@ -168,7 +207,6 @@ public class Service {
 	 * @return service
 	 **/
 	@ApiModelProperty(example = "germplasm/{germplasmDbId}/pedigree", required = true, value = "The name of the available call as recorded in the documentation")
-	
 
 	public String getService() {
 		return service;
@@ -180,7 +218,6 @@ public class Service {
 	 * @return versions
 	 **/
 	@ApiModelProperty(example = "[\"2.0\",\"2.1\"]", required = true, value = "The supported versions of a particular call")
-	
 
 	public List<VersionsEnum> getVersions() {
 		return versions;
@@ -188,7 +225,7 @@ public class Service {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(dataTypes, methods, service, versions);
+		return Objects.hash(dataTypes, contentTypes, methods, service, versions);
 	}
 
 	public Service methods(List<MethodsEnum> methods) {
@@ -203,6 +240,12 @@ public class Service {
 
 	public void setDataTypes(List<WSMIMEDataTypes> dataTypes) {
 		this.dataTypes = dataTypes;
+		this.contentTypes = dataTypes;
+	}
+
+	public void setContentTypes(List<WSMIMEDataTypes> contentTypes) {
+		this.dataTypes = contentTypes;
+		this.contentTypes = contentTypes;
 	}
 
 	public void setMethods(List<MethodsEnum> methods) {
@@ -234,6 +277,7 @@ public class Service {
 		sb.append("class Service {\n");
 
 		sb.append("    dataTypes: ").append(toIndentedString(dataTypes)).append("\n");
+		sb.append("    contentTypes: ").append(toIndentedString(contentTypes)).append("\n");
 		sb.append("    methods: ").append(toIndentedString(methods)).append("\n");
 		sb.append("    service: ").append(toIndentedString(service)).append("\n");
 		sb.append("    versions: ").append(toIndentedString(versions)).append("\n");

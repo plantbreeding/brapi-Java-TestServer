@@ -3,72 +3,44 @@ package io.swagger.model.germ;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.SearchRequest;
-import io.swagger.model.SearchRequestParametersPaging;
 import io.swagger.model.pheno.TraitDataType;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.validation.annotation.Validated;
-import jakarta.validation.Valid;
 
-/**
- * GermplasmAttributeValueSearchRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:33:36.513Z[GMT]")
-public class GermplasmAttributeValueSearchRequest extends SearchRequestParametersPaging implements SearchRequest {
+public class GermplasmAttributeValueSearchRequest extends SearchRequest {
 	@JsonProperty("germplasmDbIds")
-	@Valid
 	private List<String> germplasmDbIds = null;
 
 	@JsonProperty("germplasmNames")
-	@Valid
 	private List<String> germplasmNames = null;
 
-	@JsonProperty("externalReferenceIDs")
-	@Valid
-	private List<String> externalReferenceIDs = null;
-
-	@JsonProperty("externalReferenceSources")
-	@Valid
-	private List<String> externalReferenceSources = null;
-
 	@JsonProperty("attributeDbIds")
-	@Valid
 	private List<String> attributeDbIds = null;
 
 	@JsonProperty("attributeNames")
-	@Valid
 	private List<String> attributeNames = null;
 
 	@JsonProperty("attributeValueDbIds")
-	@Valid
 	private List<String> attributeValueDbIds = null;
 
 	@JsonProperty("dataTypes")
-	@Valid
 	private List<TraitDataType> dataTypes = null;
 
 	@JsonProperty("methodDbIds")
-	@Valid
 	private List<String> methodDbIds = null;
 
 	@JsonProperty("ontologyDbIds")
-	@Valid
 	private List<String> ontologyDbIds = null;
 
 	@JsonProperty("scaleDbIds")
-	@Valid
 	private List<String> scaleDbIds = null;
 
 	@JsonProperty("traitClasses")
-	@Valid
 	private List<String> traitClasses = null;
 
 	@JsonProperty("traitDbIds")
-	@Valid
 	private List<String> traitDbIds = null;
 
 	public GermplasmAttributeValueSearchRequest germplasmDbIds(List<String> germplasmDbIds) {
@@ -83,13 +55,6 @@ public class GermplasmAttributeValueSearchRequest extends SearchRequestParameter
 		this.germplasmDbIds.add(germplasmDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * List of IDs which uniquely identify germplasm to search for
-	 * 
-	 * @return germplasmDbIds
-	 **/
-	@ApiModelProperty(example = "[\"e9c6edd7\",\"1b1df4a6\"]", value = "List of IDs which uniquely identify germplasm to search for")
 
 	public List<String> getGermplasmDbIds() {
 		return germplasmDbIds;
@@ -112,75 +77,12 @@ public class GermplasmAttributeValueSearchRequest extends SearchRequestParameter
 		return this;
 	}
 
-	/**
-	 * List of human readable names to identify germplasm to search for
-	 * 
-	 * @return germplasmNames
-	 **/
-	@ApiModelProperty(example = "[\"A0000003\",\"A0000477\"]", value = "List of human readable names to identify germplasm to search for")
-
 	public List<String> getGermplasmNames() {
 		return germplasmNames;
 	}
 
 	public void setGermplasmNames(List<String> germplasmNames) {
 		this.germplasmNames = germplasmNames;
-	}
-
-	public GermplasmAttributeValueSearchRequest externalReferenceIDs(List<String> externalReferenceIDs) {
-		this.externalReferenceIDs = externalReferenceIDs;
-		return this;
-	}
-
-	public GermplasmAttributeValueSearchRequest addExternalReferenceIDsItem(String externalReferenceIDsItem) {
-		if (this.externalReferenceIDs == null) {
-			this.externalReferenceIDs = new ArrayList<String>();
-		}
-		this.externalReferenceIDs.add(externalReferenceIDsItem);
-		return this;
-	}
-
-	/**
-	 * List of external references for the trait to search for
-	 * 
-	 * @return externalReferenceIDs
-	 **/
-	@ApiModelProperty(example = "[\"http://purl.obolibrary.org/obo/ro.owl\",\"14a19841\"]", value = "List of external references for the trait to search for")
-
-	public List<String> getExternalReferenceIDs() {
-		return externalReferenceIDs;
-	}
-
-	public void setExternalReferenceIDs(List<String> externalReferenceIDs) {
-		this.externalReferenceIDs = externalReferenceIDs;
-	}
-
-	public GermplasmAttributeValueSearchRequest externalReferenceSources(List<String> externalReferenceSources) {
-		this.externalReferenceSources = externalReferenceSources;
-		return this;
-	}
-
-	public GermplasmAttributeValueSearchRequest addExternalReferenceSourcesItem(String externalReferenceSourcesItem) {
-		if (this.externalReferenceSources == null) {
-			this.externalReferenceSources = new ArrayList<String>();
-		}
-		this.externalReferenceSources.add(externalReferenceSourcesItem);
-		return this;
-	}
-
-	/**
-	 * List of external references sources for the trait to search for
-	 * 
-	 * @return externalReferenceSources
-	 **/
-	@ApiModelProperty(example = "[\"OBO Library\",\"Field App Name\"]", value = "List of external references sources for the trait to search for")
-
-	public List<String> getExternalReferenceSources() {
-		return externalReferenceSources;
-	}
-
-	public void setExternalReferenceSources(List<String> externalReferenceSources) {
-		this.externalReferenceSources = externalReferenceSources;
 	}
 
 	public GermplasmAttributeValueSearchRequest attributeDbIds(List<String> attributeDbIds) {
@@ -195,13 +97,6 @@ public class GermplasmAttributeValueSearchRequest extends SearchRequestParameter
 		this.attributeDbIds.add(attributeDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * List of Germplasm Attribute IDs to search for
-	 * 
-	 * @return attributeDbIds
-	 **/
-	@ApiModelProperty(example = "[\"2ef15c9f\",\"318e7f7d\"]", value = "List of Germplasm Attribute IDs to search for")
 
 	public List<String> getAttributeDbIds() {
 		return attributeDbIds;
@@ -224,13 +119,6 @@ public class GermplasmAttributeValueSearchRequest extends SearchRequestParameter
 		return this;
 	}
 
-	/**
-	 * List of human readable Germplasm Attribute names to search for
-	 * 
-	 * @return attributeNames
-	 **/
-	@ApiModelProperty(example = "[\"Plant Height 1\",\"Root Color\"]", value = "List of human readable Germplasm Attribute names to search for")
-
 	public List<String> getAttributeNames() {
 		return attributeNames;
 	}
@@ -251,13 +139,6 @@ public class GermplasmAttributeValueSearchRequest extends SearchRequestParameter
 		this.attributeValueDbIds.add(attributeValueDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * List of Germplasm Attribute Value IDs to search for
-	 * 
-	 * @return attributeValueDbIds
-	 **/
-	@ApiModelProperty(example = "[\"ca4636d0\",\"c8a92409\"]", value = "List of Germplasm Attribute Value IDs to search for")
 
 	public List<String> getAttributeValueDbIds() {
 		return attributeValueDbIds;
@@ -280,13 +161,6 @@ public class GermplasmAttributeValueSearchRequest extends SearchRequestParameter
 		return this;
 	}
 
-	/**
-	 * List of scale data types to filter search results
-	 * 
-	 * @return dataTypes
-	 **/
-	@ApiModelProperty(example = "[\"Numerical\",\"Ordinal\",\"Text\"]", value = "List of scale data types to filter search results")
-	@Valid
 	public List<TraitDataType> getDataTypes() {
 		return dataTypes;
 	}
@@ -307,13 +181,6 @@ public class GermplasmAttributeValueSearchRequest extends SearchRequestParameter
 		this.methodDbIds.add(methodDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * List of methods to filter search results
-	 * 
-	 * @return methodDbIds
-	 **/
-	@ApiModelProperty(example = "[\"07e34f83\",\"d3d5517a\"]", value = "List of methods to filter search results")
 
 	public List<String> getMethodDbIds() {
 		return methodDbIds;
@@ -336,13 +203,6 @@ public class GermplasmAttributeValueSearchRequest extends SearchRequestParameter
 		return this;
 	}
 
-	/**
-	 * List of ontology IDs to search for
-	 * 
-	 * @return ontologyDbIds
-	 **/
-	@ApiModelProperty(example = "[\"f44f7b23\",\"a26b576e\"]", value = "List of ontology IDs to search for")
-
 	public List<String> getOntologyDbIds() {
 		return ontologyDbIds;
 	}
@@ -363,13 +223,6 @@ public class GermplasmAttributeValueSearchRequest extends SearchRequestParameter
 		this.scaleDbIds.add(scaleDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * List of scales to filter search results
-	 * 
-	 * @return scaleDbIds
-	 **/
-	@ApiModelProperty(example = "[\"a13ecffa\",\"7e1afe4f\"]", value = "List of scales to filter search results")
 
 	public List<String> getScaleDbIds() {
 		return scaleDbIds;
@@ -392,13 +245,6 @@ public class GermplasmAttributeValueSearchRequest extends SearchRequestParameter
 		return this;
 	}
 
-	/**
-	 * List of trait classes to filter search results
-	 * 
-	 * @return traitClasses
-	 **/
-	@ApiModelProperty(example = "[\"morphological\",\"phenological\",\"agronomical\"]", value = "List of trait classes to filter search results")
-
 	public List<String> getTraitClasses() {
 		return traitClasses;
 	}
@@ -420,13 +266,6 @@ public class GermplasmAttributeValueSearchRequest extends SearchRequestParameter
 		return this;
 	}
 
-	/**
-	 * List of trait unique ID to filter search results
-	 * 
-	 * @return traitDbIds
-	 **/
-	@ApiModelProperty(example = "[\"ef81147b\",\"78d82fad\"]", value = "List of trait unique ID to filter search results")
-
 	public List<String> getTraitDbIds() {
 		return traitDbIds;
 	}
@@ -446,7 +285,7 @@ public class GermplasmAttributeValueSearchRequest extends SearchRequestParameter
 		GermplasmAttributeValueSearchRequest germplasmAttributeValueSearchRequest = (GermplasmAttributeValueSearchRequest) o;
 		return Objects.equals(this.germplasmDbIds, germplasmAttributeValueSearchRequest.germplasmDbIds)
 				&& Objects.equals(this.germplasmNames, germplasmAttributeValueSearchRequest.germplasmNames)
-				&& Objects.equals(this.externalReferenceIDs, germplasmAttributeValueSearchRequest.externalReferenceIDs)
+				&& Objects.equals(this.externalReferenceIds, germplasmAttributeValueSearchRequest.externalReferenceIds)
 				&& Objects.equals(this.externalReferenceSources,
 						germplasmAttributeValueSearchRequest.externalReferenceSources)
 				&& Objects.equals(this.attributeDbIds, germplasmAttributeValueSearchRequest.attributeDbIds)
@@ -462,7 +301,7 @@ public class GermplasmAttributeValueSearchRequest extends SearchRequestParameter
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(germplasmDbIds, germplasmNames, externalReferenceIDs, externalReferenceSources,
+		return Objects.hash(germplasmDbIds, germplasmNames, externalReferenceIds, externalReferenceSources,
 				attributeDbIds, attributeNames, attributeValueDbIds, dataTypes, methodDbIds, ontologyDbIds, scaleDbIds,
 				traitClasses, traitDbIds, super.hashCode());
 	}
@@ -474,7 +313,7 @@ public class GermplasmAttributeValueSearchRequest extends SearchRequestParameter
 		sb.append("    ").append(toIndentedString(super.toString())).append("\n");
 		sb.append("    germplasmDbIds: ").append(toIndentedString(germplasmDbIds)).append("\n");
 		sb.append("    germplasmNames: ").append(toIndentedString(germplasmNames)).append("\n");
-		sb.append("    externalReferenceIDs: ").append(toIndentedString(externalReferenceIDs)).append("\n");
+		sb.append("    externalReferenceIds: ").append(toIndentedString(externalReferenceIds)).append("\n");
 		sb.append("    externalReferenceSources: ").append(toIndentedString(externalReferenceSources)).append("\n");
 		sb.append("    attributeDbIds: ").append(toIndentedString(attributeDbIds)).append("\n");
 		sb.append("    attributeNames: ").append(toIndentedString(attributeNames)).append("\n");
@@ -489,10 +328,6 @@ public class GermplasmAttributeValueSearchRequest extends SearchRequestParameter
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";
@@ -507,8 +342,8 @@ public class GermplasmAttributeValueSearchRequest extends SearchRequestParameter
 			count += this.germplasmDbIds.size();
 		if (this.germplasmNames != null)
 			count += this.germplasmNames.size();
-		if (this.externalReferenceIDs != null)
-			count += this.externalReferenceIDs.size();
+		if (this.externalReferenceIds != null)
+			count += this.externalReferenceIds.size();
 		if (this.externalReferenceSources != null)
 			count += this.externalReferenceSources.size();
 		if (this.attributeDbIds != null)

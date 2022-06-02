@@ -3,23 +3,12 @@ package io.swagger.model.geno;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.SearchRequest;
-import io.swagger.model.SearchRequestParametersTokenPaging;
-
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.validation.annotation.Validated;
-import jakarta.validation.Valid;
 
-/**
- * VariantsSearchRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
-public class VariantsSearchRequest extends SearchRequestParametersTokenPaging implements SearchRequest {
+public class VariantsSearchRequest extends SearchRequest {
 	@JsonProperty("callSetDbIds")
-	@Valid
 	private List<String> callSetDbIds = null;
 
 	@JsonProperty("end")
@@ -32,11 +21,9 @@ public class VariantsSearchRequest extends SearchRequestParametersTokenPaging im
 	private Integer start = null;
 
 	@JsonProperty("variantSetDbIds")
-	@Valid
 	private List<String> variantSetDbIds = null;
 
 	@JsonProperty("variantDbIds")
-	@Valid
 	private List<String> variantDbIds = null;
 
 	public VariantsSearchRequest callSetDbIds(List<String> callSetDbIds) {
@@ -65,14 +52,6 @@ public class VariantsSearchRequest extends SearchRequestParametersTokenPaging im
 		return this;
 	}
 
-	/**
-	 * The end of the window (0-based, exclusive) for which overlapping variants
-	 * should be returned.
-	 * 
-	 * @return end
-	 **/
-	@ApiModelProperty(example = "1500", value = "The end of the window (0-based, exclusive) for which overlapping variants should be returned.")
-
 	public Integer getEnd() {
 		return end;
 	}
@@ -86,13 +65,6 @@ public class VariantsSearchRequest extends SearchRequestParametersTokenPaging im
 		return this;
 	}
 
-	/**
-	 * Only return variants on this reference.
-	 * 
-	 * @return referenceDbId
-	 **/
-	@ApiModelProperty(example = "120a2d5c", value = "Only return variants on this reference.")
-
 	public String getReferenceDbId() {
 		return referenceDbId;
 	}
@@ -105,16 +77,6 @@ public class VariantsSearchRequest extends SearchRequestParametersTokenPaging im
 		this.start = start;
 		return this;
 	}
-
-	/**
-	 * The beginning of the window (0-based, inclusive) for which overlapping
-	 * variants should be returned. Genomic positions are non-negative integers less
-	 * than reference length. Requests spanning the join of circular genomes are
-	 * represented as two requests one on each side of the join (position 0).
-	 * 
-	 * @return start
-	 **/
-	@ApiModelProperty(example = "100", value = "The beginning of the window (0-based, inclusive) for which overlapping variants should be returned. Genomic positions are non-negative integers less than reference length. Requests spanning the join of circular genomes are represented as two requests one on each side of the join (position 0).")
 
 	public Integer getStart() {
 		return start;
@@ -201,10 +163,6 @@ public class VariantsSearchRequest extends SearchRequestParametersTokenPaging im
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";

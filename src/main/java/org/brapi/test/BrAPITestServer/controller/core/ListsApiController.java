@@ -15,6 +15,7 @@ import io.swagger.model.germ.Germplasm;
 import io.swagger.model.germ.GermplasmListResponse;
 import io.swagger.model.germ.GermplasmListResponseResult;
 import io.swagger.model.germ.GermplasmSearchRequest;
+import io.swagger.annotations.ApiParam;
 import io.swagger.api.core.ListsApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
@@ -63,6 +64,9 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 			@Valid @RequestParam(value = "listName", required = false) String listName,
 			@Valid @RequestParam(value = "listDbId", required = false) String listDbId,
 			@Valid @RequestParam(value = "listSource", required = false) String listSource,
+			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
@@ -73,7 +77,7 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<ListSummary> data = listService.findLists(ListTypes.fromValue(listType), listName, listDbId, listSource, externalReferenceID, externalReferenceSource, metadata);
+		List<ListSummary> data = listService.findLists(ListTypes.fromValue(listType), listName, listDbId, listSource, programDbId, commonCropName, externalReferenceId, externalReferenceID, externalReferenceSource, metadata);
 		return responseOK(new ListsListResponse(), new ListsListResponseResult(), data, metadata);
 	}
 

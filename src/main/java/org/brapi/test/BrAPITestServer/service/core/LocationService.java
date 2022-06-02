@@ -34,17 +34,27 @@ public class LocationService {
 		this.locationRepository = locationRepository;
 	}
 
-	public List<Location> findLocations(String locationDbId, String locationType, String externalReferenceID,
-			String externalReferenceSource, Metadata metadata) {
+	public List<Location> findLocations(String locationDbId, String locationType, String locationName,
+			String parentLocationDbId, String parentLocationName, String commonCropName, String programDbId,
+			String externalReferenceId, String externalReferenceID, String externalReferenceSource, Metadata metadata) {
 		LocationSearchRequest request = new LocationSearchRequest();
-		if (locationType != null) 
-			request.addLocationTypesItem(locationType);
-		if (locationDbId != null) 
+		if (locationDbId != null)
 			request.addLocationDbIdsItem(locationDbId);
-		if (externalReferenceID != null) 
-			request.addExternalReferenceIDsItem(externalReferenceID);
-		if (externalReferenceSource != null) 
-			request.addExternalReferenceSourcesItem(externalReferenceSource);
+		if (locationType != null)
+			request.addLocationTypesItem(locationType);
+		if (locationName != null)
+			request.addLocationNamesItem(locationName);
+		if (parentLocationDbId != null)
+			request.addParentLocationDbIdsItem(parentLocationDbId);
+		if (parentLocationName != null)
+			request.addParentLocationNamesItem(parentLocationName);
+		if (commonCropName != null)
+			request.addCommonCropNamesItem(commonCropName);
+		if (programDbId != null)
+			request.addProgramDbIdsItem(programDbId);
+		
+		request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
+		
 		return findLocations(request, metadata);
 	}
 
@@ -54,19 +64,19 @@ public class LocationService {
 
 		if (request.getAltitudeMin() != null || request.getAltitudeMax() != null || request.getCoordinates() != null) {
 			searchQuery = searchQuery.join("coordinates.coordinates", "coordinates");
-			searchQuery = searchQuery.appendNumberRange(request.getAltitudeMin(), request.getAltitudeMax(), "*coordinates.altitude")
-			.appendGeoJSONArea(request.getCoordinates());
+			searchQuery = searchQuery
+					.appendNumberRange(request.getAltitudeMin(), request.getAltitudeMax(), "*coordinates.altitude")
+					.appendGeoJSONArea(request.getCoordinates());
 		}
 		searchQuery = searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
 				.appendList(request.getAbbreviations(), "abbreviation")
 				.appendList(request.getCountryCodes(), "countryCode")
 				.appendList(request.getCountryNames(), "countryName")
 				.appendList(request.getInstituteAddresses(), "instituteAddress")
-				.appendList(request.getInstituteNames(), "instituteName")
-				.appendList(request.getLocationDbIds(), "id")
+				.appendList(request.getInstituteNames(), "instituteName").appendList(request.getLocationDbIds(), "id")
 				.appendList(request.getLocationNames(), "locationName")
 				.appendList(request.getLocationTypes(), "locationType");
-				
+
 		Page<LocationEntity> entityPage = locationRepository.findAllBySearch(searchQuery, pageReq);
 
 		List<Location> data = entityPage.map(this::convertFromEntity).getContent();

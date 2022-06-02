@@ -89,7 +89,7 @@ public class GermplasmService {
 	public List<Germplasm> findGermplasm(@Valid String germplasmPUI, @Valid String germplasmDbId,
 			@Valid String germplasmName, @Valid String commonCropName, @Valid String accessionNumber,
 			@Valid String collection, @Valid String genus, @Valid String species, @Valid String studyDbId,
-			@Valid String synonym, @Valid String parentDbId, @Valid String progenyDbId,
+			@Valid String synonym, @Valid String parentDbId, @Valid String progenyDbId, String externalReferenceId,
 			@Valid String externalReferenceID, @Valid String externalReferenceSource, Metadata metadata) {
 		GermplasmSearchRequest request = new GermplasmSearchRequest();
 		if (germplasmPUI != null)
@@ -116,10 +116,8 @@ public class GermplasmService {
 			request.addParentDbIdsItem(parentDbId);
 		if (progenyDbId != null)
 			request.addProgenyDbIdsItem(progenyDbId);
-		if (externalReferenceID != null)
-			request.addExternalReferenceIDsItem(externalReferenceID);
-		if (externalReferenceSource != null)
-			request.addExternalReferenceSourcesItem(externalReferenceSource);
+
+		request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
 
 		return findGermplasm(request, metadata);
 	}

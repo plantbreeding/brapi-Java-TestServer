@@ -85,11 +85,11 @@ public class ObservationUnitService {
 	public List<ObservationUnit> findObservationUnits(String observationUnitDbId, String germplasmDbId,
 			String studyDbId, String locationDbId, String trialDbId, String programDbId, String seasonDbId,
 			String observationUnitLevelName, String observationUnitLevelOrder, String observationUnitLevelCode,
-			Boolean includeObservations, String externalReferenceID, String externalReferenceSource,
+			Boolean includeObservations, String externalReferenceId, String externalReferenceID, String externalReferenceSource,
 			Metadata metadata) {
 		ObservationUnitSearchRequest request = buildObservationUnitsSearchRequest(observationUnitDbId, germplasmDbId,
 				studyDbId, locationDbId, trialDbId, programDbId, seasonDbId, observationUnitLevelName,
-				observationUnitLevelOrder, observationUnitLevelCode, includeObservations, externalReferenceID,
+				observationUnitLevelOrder, observationUnitLevelCode, includeObservations, externalReferenceId, externalReferenceID,
 				externalReferenceSource);
 		return findObservationUnits(request, metadata);
 	}
@@ -97,7 +97,7 @@ public class ObservationUnitService {
 	private ObservationUnitSearchRequest buildObservationUnitsSearchRequest(String observationUnitDbId,
 			String germplasmDbId, String studyDbId, String locationDbId, String trialDbId, String programDbId,
 			String seasonDbId, String observationUnitLevelName, String observationUnitLevelOrder,
-			String observationUnitLevelCode, Boolean includeObservations, String externalReferenceID,
+			String observationUnitLevelCode, Boolean includeObservations, String externalReferenceId, String externalReferenceID,
 			String externalReferenceSource) {
 		ObservationUnitSearchRequest request = new ObservationUnitSearchRequest();
 		if (observationUnitDbId != null)
@@ -126,10 +126,8 @@ public class ObservationUnitService {
 		}
 		if (includeObservations != null)
 			request.setIncludeObservations(includeObservations);
-		if (externalReferenceID != null)
-			request.addExternalReferenceIDsItem(externalReferenceID);
-		if (externalReferenceSource != null)
-			request.addExternalReferenceSourcesItem(externalReferenceSource);
+
+		request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
 
 		return request;
 	}
@@ -140,7 +138,7 @@ public class ObservationUnitService {
 
 		ObservationUnitSearchRequest ouRequest = buildObservationUnitsSearchRequest(observationUnitDbId, germplasmDbId,
 				studyDbId, locationDbId, trialDbId, programDbId, seasonDbId,
-				ObservationUnitHierarchyLevelEnum.PLOT.name(), null, null, null, null, null);
+				ObservationUnitHierarchyLevelEnum.PLOT.name(), null, null, null, null, null, null);
 		Page<ObservationUnitEntity> observationUnits = findObservationUnitEntities(ouRequest, null);
 
 		ObservationVariableSearchRequest varRequest = new ObservationVariableSearchRequest();
@@ -293,7 +291,7 @@ public class ObservationUnitService {
 			return rel;
 		}).collect(Collectors.toList());
 		
-		ObservationUnitSearchRequest levelsSearch = buildObservationUnitsSearchRequest(null, null, studyDbId, null, trialDbId, programDbId, null, null, null, null, false, null, null);
+		ObservationUnitSearchRequest levelsSearch = buildObservationUnitsSearchRequest(null, null, studyDbId, null, trialDbId, programDbId, null, null, null, null, false, null, null, null);
 		levelsSearch.setObservationLevelRelationships(allLevels);
 		
 		List<ObservationUnit> units = new ArrayList<>();

@@ -73,6 +73,7 @@ public class ObservationsApiController extends BrAPIController implements Observ
 			@Valid @RequestParam(value = "observationUnitLevelCode", required = false) String observationUnitLevelCode,
 			@Valid @RequestParam(value = "observationTimeStampRangeStart", required = false) String observationTimeStampRangeStart,
 			@Valid @RequestParam(value = "observationTimeStampRangeEnd", required = false) String observationTimeStampRangeEnd,
+			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
@@ -85,7 +86,7 @@ public class ObservationsApiController extends BrAPIController implements Observ
 		List<Observation> data = observationService.findObservations(observationDbId, observationUnitDbId, germplasmDbId,
 				observationVariableDbId, studyDbId, locationDbId, trialDbId, programDbId, seasonDbId,
 				observationUnitLevelName, observationUnitLevelOrder, observationUnitLevelCode,
-				observationTimeStampRangeStart, observationTimeStampRangeEnd, externalReferenceID,
+				observationTimeStampRangeStart, observationTimeStampRangeEnd, externalReferenceId, externalReferenceID,
 				externalReferenceSource, metadata);
 		return responseOK(new ObservationListResponse(), new ObservationListResponseResult(), data, metadata);
 	}

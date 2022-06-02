@@ -41,6 +41,12 @@ public class ProgramNewRequest {
 	@JsonProperty("programName")
 	private Optional<String> programName = null;
 
+	@JsonProperty("programType")
+	private Optional<String> programType = null;
+
+	@JsonProperty("fundingInformation")
+	private Optional<String> fundingInformation = null;
+
 	public ProgramNewRequest abbreviation(String abbreviation) {
 		this.abbreviation = UpdateUtility.setField(abbreviation);
 		return this;
@@ -228,6 +234,32 @@ public class ProgramNewRequest {
 		this.programName = UpdateUtility.setField(programName);
 	}
 
+	public ProgramNewRequest programType(String programType) {
+		this.programType = UpdateUtility.setField(programType);
+		return this;
+	}
+
+	public Optional<String> getProgramType() {
+		return programType;
+	}
+
+	public void setProgramType(String programType) {
+		this.programType = UpdateUtility.setField(programType);
+	}
+
+	public ProgramNewRequest fundingInformation(String fundingInformation) {
+		this.fundingInformation = UpdateUtility.setField(fundingInformation);
+		return this;
+	}
+
+	public Optional<String> getFundingInformation() {
+		return fundingInformation;
+	}
+
+	public void setFundingInformation(String fundingInformation) {
+		this.fundingInformation = UpdateUtility.setField(fundingInformation);
+	}
+
 	@Override
 	public boolean equals(java.lang.Object o) {
 		if (this == o) {
@@ -245,13 +277,15 @@ public class ProgramNewRequest {
 				&& Objects.equals(this.leadPersonDbId, programNewRequest.leadPersonDbId)
 				&& Objects.equals(this.leadPersonName, programNewRequest.leadPersonName)
 				&& Objects.equals(this.objective, programNewRequest.objective)
-				&& Objects.equals(this.programName, programNewRequest.programName);
+				&& Objects.equals(this.programName, programNewRequest.programName)
+				&& Objects.equals(this.programType, programNewRequest.programType)
+				&& Objects.equals(this.fundingInformation, programNewRequest.fundingInformation);
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(abbreviation, additionalInfo, commonCropName, documentationURL, externalReferences,
-				leadPersonDbId, leadPersonName, objective, programName);
+				leadPersonDbId, leadPersonName, objective, programName, programType, fundingInformation);
 	}
 
 	@Override
@@ -268,6 +302,8 @@ public class ProgramNewRequest {
 		sb.append("    leadPersonName: ").append(toIndentedString(leadPersonName)).append("\n");
 		sb.append("    objective: ").append(toIndentedString(objective)).append("\n");
 		sb.append("    programName: ").append(toIndentedString(programName)).append("\n");
+		sb.append("    programType: ").append(toIndentedString(programType)).append("\n");
+		sb.append("    fundingInformation: ").append(toIndentedString(fundingInformation)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}

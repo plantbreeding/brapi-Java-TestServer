@@ -36,12 +36,14 @@ public class ServerInfoApiController extends BrAPIController implements ServerIn
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ServerInfoResponse> serverinfoGet(
-			@Valid @RequestParam(value = "dataType", required = false) WSMIMEDataTypes dataType,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestParam(value = "dataType", required = false) WSMIMEDataTypes dataType,
+			@RequestParam(value = "contentType", required = false) WSMIMEDataTypes contentType,
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		ServerInfo data = serverInfoService.getServerInfo(dataType);
+		ServerInfo data = serverInfoService.getServerInfo(dataType, contentType);
 		return responseOK(new ServerInfoResponse(), data);
 	}
 

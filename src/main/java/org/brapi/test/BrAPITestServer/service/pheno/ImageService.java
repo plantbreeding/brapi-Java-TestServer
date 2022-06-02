@@ -41,7 +41,7 @@ public class ImageService {
 	}
 
 	public List<Image> findImages(@Valid String imageDbId, @Valid String imageName, @Valid String observationUnitDbId,
-			@Valid String observationDbId, @Valid String descriptiveOntologyTerm, @Valid String externalReferenceID,
+			@Valid String observationDbId, @Valid String descriptiveOntologyTerm, String externalReferenceId, @Valid String externalReferenceID,
 			@Valid String externalReferenceSource, Metadata metadata) {
 		ImageSearchRequest request = new ImageSearchRequest();
 		if (imageDbId != null)
@@ -54,10 +54,8 @@ public class ImageService {
 			request.addObservationDbIdsItem(observationDbId);
 		if (descriptiveOntologyTerm != null)
 			request.addDescriptiveOntologyTermsItem(descriptiveOntologyTerm);
-		if (externalReferenceID != null)
-			request.addExternalReferenceIDsItem(externalReferenceID);
-		if (externalReferenceSource != null)
-			request.addExternalReferenceSourcesItem(externalReferenceSource);
+
+			request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
 
 		return findImages(request, metadata);
 	}

@@ -75,6 +75,7 @@ public class ObservationUnitsApiController extends BrAPIController
 			@Valid @RequestParam(value = "observationUnitLevelOrder", required = false) String observationUnitLevelOrder,
 			@Valid @RequestParam(value = "observationUnitLevelCode", required = false) String observationUnitLevelCode,
 			@Valid @RequestParam(value = "includeObservations", required = false) Boolean includeObservations,
+			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
@@ -87,7 +88,7 @@ public class ObservationUnitsApiController extends BrAPIController
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<ObservationUnit> data = observationUnitService.findObservationUnits(observationUnitDbId, germplasmDbId,
 				studyDbId, locationDbId, trialDbId, programDbId, seasonDbId, observationUnitLevelName,
-				observationUnitLevelOrder, observationUnitLevelCode, includeObservations, externalReferenceID,
+				observationUnitLevelOrder, observationUnitLevelCode, includeObservations, externalReferenceId, externalReferenceID,
 				externalReferenceSource, metadata);
 		return responseOK(new ObservationUnitListResponse(), new ObservationUnitListResponseResult(), data, metadata);
 	}

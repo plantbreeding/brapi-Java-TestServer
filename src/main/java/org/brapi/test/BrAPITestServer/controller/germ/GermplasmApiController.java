@@ -136,6 +136,7 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 			@Valid @RequestParam(value = "synonym", required = false) String synonym,
 			@Valid @RequestParam(value = "parentDbId", required = false) String parentDbId,
 			@Valid @RequestParam(value = "progenyDbId", required = false) String progenyDbId,
+			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
@@ -148,7 +149,7 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<Germplasm> data = germplasmService.findGermplasm(germplasmPUI, germplasmDbId, germplasmName,
 				commonCropName, accessionNumber, collection, genus, species, studyDbId, synonym, parentDbId,
-				progenyDbId, externalReferenceID, externalReferenceSource, metadata);
+				progenyDbId, externalReferenceId, externalReferenceID, externalReferenceSource, metadata);
 		return responseOK(new GermplasmListResponse(), new GermplasmListResponseResult(), data, metadata);
 	}
 

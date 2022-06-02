@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import jakarta.validation.Valid;
-
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
@@ -25,6 +23,7 @@ import io.swagger.model.Metadata;
 import io.swagger.model.core.Program;
 import io.swagger.model.core.ProgramNewRequest;
 import io.swagger.model.core.ProgramSearchRequest;
+import io.swagger.model.core.ProgramSearchRequest.ProgramTypesEnum;
 
 @Service
 public class ProgramService {
@@ -40,8 +39,8 @@ public class ProgramService {
 	}
 
 	public List<Program> findPrograms(String commonCropName, String abbreviation, String programName,
-			String programDbId, @Valid String externalReferenceID, @Valid String externalReferenceSource,
-			Metadata metadata) throws BrAPIServerException {
+			String programDbId, ProgramTypesEnum programType, String externalReferenceId, String externalReferenceID,
+			String externalReferenceSource, Metadata metadata) throws BrAPIServerException {
 		ProgramSearchRequest request = new ProgramSearchRequest();
 		if (abbreviation != null)
 			request.addAbbreviationsItem(abbreviation);
@@ -51,11 +50,10 @@ public class ProgramService {
 			request.addProgramNamesItem(programName);
 		if (programDbId != null)
 			request.addProgramDbIdsItem(programDbId);
-		if (externalReferenceID != null)
-			request.addExternalReferenceIDsItem(externalReferenceID);
-		if (externalReferenceSource != null)
-			request.addExternalReferenceSourcesItem(externalReferenceSource);
+		if (programType != null)
+			request.addProgramTypesItem(programType);
 
+		request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
 		return findPrograms(request, metadata);
 	}
 
@@ -96,7 +94,7 @@ public class ProgramService {
 		return program;
 	}
 
-	public Program updateProgram(String programDbId, @Valid ProgramNewRequest body) throws BrAPIServerException {
+	public Program updateProgram(String programDbId, ProgramNewRequest body) throws BrAPIServerException {
 		ProgramEntity savedEntity;
 		Optional<ProgramEntity> entityOpt = programRepository.findById(programDbId);
 		if (entityOpt.isPresent()) {
@@ -111,7 +109,7 @@ public class ProgramService {
 		return convertFromEntity(savedEntity);
 	}
 
-	public List<Program> savePrograms(@Valid List<ProgramNewRequest> body) throws BrAPIServerException {
+	public List<Program> savePrograms(List<ProgramNewRequest> body) throws BrAPIServerException {
 		List<Program> savedPrograms = new ArrayList<>();
 
 		for (ProgramNewRequest list : body) {
@@ -145,7 +143,7 @@ public class ProgramService {
 		return program;
 	}
 
-	private void updateEntity(ProgramEntity entity, @Valid ProgramNewRequest request) throws BrAPIServerException {
+	private void updateEntity(ProgramEntity entity, ProgramNewRequest request) throws BrAPIServerException {
 		entity.setAdditionalInfo(
 				UpdateUtility.replaceField(request.getAdditionalInfo(), entity.getAdditionalInfoMap()));
 		entity.setAbbreviation(UpdateUtility.replaceField(request.getAbbreviation(), entity.getAbbreviation()));
@@ -156,8 +154,7 @@ public class ProgramService {
 		entity.setObjective(UpdateUtility.replaceField(request.getObjective(), entity.getObjective()));
 		entity.setName(UpdateUtility.replaceField(request.getProgramName(), entity.getName()));
 
-		String commonCropName = entity.getCrop() == null 
-				? UpdateUtility.replaceField(request.getCommonCropName(), null)
+		String commonCropName = entity.getCrop() == null ? UpdateUtility.replaceField(request.getCommonCropName(), null)
 				: UpdateUtility.replaceField(request.getCommonCropName(), entity.getCrop().getCropName());
 		CropEntity crop = cropService.getCropEntity(commonCropName);
 		entity.setCrop(crop);

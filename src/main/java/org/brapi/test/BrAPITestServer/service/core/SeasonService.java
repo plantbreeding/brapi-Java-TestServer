@@ -31,13 +31,15 @@ public class SeasonService {
 		this.seasonRepository = seasonRepository;
 	}
 
-	public List<Season> findSeasons(String seasonDbId, String season, Integer year, Metadata metadata) {
+	public List<Season> findSeasons(String seasonDbId, String season, String seasonName, Integer year, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<SeasonEntity> searchQuery = new SearchQueryBuilder<SeasonEntity>(SeasonEntity.class);
 		if (seasonDbId != null)
 			searchQuery = searchQuery.appendSingle(seasonDbId, "id");
 		if (season != null)
 			searchQuery = searchQuery.appendSingle(season, "season");
+		if (seasonName != null)
+			searchQuery = searchQuery.appendSingle(seasonName, "season");
 		if (year != null)
 			searchQuery = searchQuery.appendSingle(year, "year");
 

@@ -32,7 +32,7 @@ public class TraitSingleResponse implements BrAPIResponse<Trait> {
 		return this;
 	}
 
-	public void setAtContext(Context _atContext) {
+	public void set_atContext(Context _atContext) {
 		this._atContext = _atContext;
 	}
 

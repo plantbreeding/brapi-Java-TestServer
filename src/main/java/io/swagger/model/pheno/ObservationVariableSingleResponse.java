@@ -36,7 +36,7 @@ public class ObservationVariableSingleResponse implements BrAPIResponse<Observat
 
   
 
-  public void setAtContext(Context _atContext) {
+  public void set_atContext(Context _atContext) {
     this._atContext = _atContext;
   }
 

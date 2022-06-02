@@ -3,39 +3,24 @@ package io.swagger.model.geno;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.SearchRequest;
-import io.swagger.model.SearchRequestParametersPaging;
-
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.validation.annotation.Validated;
-import jakarta.validation.Valid;
 
-/**
- * VariantSetsSearchRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
-public class VariantSetsSearchRequest extends SearchRequestParametersPaging implements SearchRequest {
+public class VariantSetsSearchRequest extends SearchRequest {
 	@JsonProperty("studyDbIds")
-	@Valid
 	private List<String> studyDbIds = null;
 
 	@JsonProperty("studyNames")
-	@Valid
 	private List<String> studyNames = null;
 
 	@JsonProperty("callSetDbIds")
-	@Valid
 	private List<String> callSetDbIds = null;
 
 	@JsonProperty("variantDbIds")
-	@Valid
 	private List<String> variantDbIds = null;
 
 	@JsonProperty("variantSetDbIds")
-	@Valid
 	private List<String> variantSetDbIds = null;
 
 	public VariantSetsSearchRequest studyDbIds(List<String> studyDbIds) {
@@ -50,13 +35,6 @@ public class VariantSetsSearchRequest extends SearchRequestParametersPaging impl
 		this.studyDbIds.add(studyDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * List of study identifiers to search for
-	 * 
-	 * @return studyDbIds
-	 **/
-	@ApiModelProperty(example = "[\"cf6c4bd4\",\"691e69d6\"]", value = "List of study identifiers to search for")
 
 	public List<String> getStudyDbIds() {
 		return studyDbIds;
@@ -79,13 +57,6 @@ public class VariantSetsSearchRequest extends SearchRequestParametersPaging impl
 		return this;
 	}
 
-	/**
-	 * List of study names to filter search results
-	 * 
-	 * @return studyNames
-	 **/
-	@ApiModelProperty(example = "[\"The First Bob Study 2017\",\"Wheat Yield Trial 246\"]", value = "List of study names to filter search results")
-
 	public List<String> getStudyNames() {
 		return studyNames;
 	}
@@ -106,13 +77,6 @@ public class VariantSetsSearchRequest extends SearchRequestParametersPaging impl
 		this.callSetDbIds.add(callSetDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * The CallSet to search.
-	 * 
-	 * @return callSetDbIds
-	 **/
-	@ApiModelProperty(example = "[\"9569cfc4\",\"da1e888c\"]", value = "The CallSet to search.")
 
 	public List<String> getCallSetDbIds() {
 		return callSetDbIds;
@@ -135,13 +99,6 @@ public class VariantSetsSearchRequest extends SearchRequestParametersPaging impl
 		return this;
 	}
 
-	/**
-	 * The Variant to search.
-	 * 
-	 * @return variantDbIds
-	 **/
-	@ApiModelProperty(example = "[\"c80f068b\",\"eb7c5f50\"]", value = "The Variant to search.")
-
 	public List<String> getVariantDbIds() {
 		return variantDbIds;
 	}
@@ -162,13 +119,6 @@ public class VariantSetsSearchRequest extends SearchRequestParametersPaging impl
 		this.variantSetDbIds.add(variantSetDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * The VariantSet to search.
-	 * 
-	 * @return variantSetDbIds
-	 **/
-	@ApiModelProperty(example = "[\"b2903842\",\"dcbb8558\"]", value = "The VariantSet to search.")
 
 	public List<String> getVariantSetDbIds() {
 		return variantSetDbIds;
@@ -213,10 +163,6 @@ public class VariantSetsSearchRequest extends SearchRequestParametersPaging impl
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";

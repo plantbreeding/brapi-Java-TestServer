@@ -56,7 +56,7 @@ public class SampleService {
 	}
 
 	public List<Sample> findSamples(String sampleDbId, String observationUnitDbId, String plateDbId,
-			String germplasmDbId, String studyDbId, String externalReferenceID, String externalReferenceSource,
+			String germplasmDbId, String studyDbId, String externalReferenceId, String externalReferenceID, String externalReferenceSource,
 			Metadata metadata) {
 		SampleSearchRequest request = new SampleSearchRequest();
 		if (sampleDbId != null)
@@ -69,10 +69,8 @@ public class SampleService {
 			request.addGermplasmDbIdsItem(germplasmDbId);
 		if (studyDbId != null)
 			request.addStudyDbIdsItem(studyDbId);
-		if (externalReferenceID != null)
-			request.addExternalReferenceIDsItem(externalReferenceID);
-		if (externalReferenceSource != null)
-			request.addExternalReferenceSourcesItem(externalReferenceSource);
+		
+		request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
 
 		return findSamples(request, metadata);
 	}

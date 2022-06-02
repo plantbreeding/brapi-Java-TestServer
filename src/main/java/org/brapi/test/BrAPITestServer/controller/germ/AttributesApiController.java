@@ -77,6 +77,7 @@ public class AttributesApiController extends BrAPIController implements Attribut
 			@Valid @RequestParam(value = "attributeDbId", required = false) String attributeDbId,
 			@Valid @RequestParam(value = "attributeName", required = false) String attributeName,
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
+			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
@@ -88,7 +89,7 @@ public class AttributesApiController extends BrAPIController implements Attribut
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<GermplasmAttribute> data = attributeService.findGermplasmAttributes(attributeCategory, attributeDbId,
-				attributeName, germplasmDbId, externalReferenceID, externalReferenceSource, metadata);
+				attributeName, germplasmDbId, externalReferenceId, externalReferenceID, externalReferenceSource, metadata);
 		return responseOK(new GermplasmAttributeListResponse(), new GermplasmAttributeListResponseResult(), data,
 				metadata);
 	}

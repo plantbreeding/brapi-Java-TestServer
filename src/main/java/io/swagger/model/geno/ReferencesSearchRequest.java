@@ -2,22 +2,12 @@ package io.swagger.model.geno;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.SearchRequest;
-import io.swagger.model.SearchRequestParametersPaging;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.validation.annotation.Validated;
-import jakarta.validation.Valid;
 
-/**
- * ReferencesSearchRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-24T19:42:22.574Z[GMT]")
-public class ReferencesSearchRequest extends SearchRequestParametersPaging implements SearchRequest {
+public class ReferencesSearchRequest extends SearchRequest {
 	@JsonProperty("accessions")
-	@Valid
 	private List<String> accessions = null;
 
 	@JsonProperty("isDerived")
@@ -27,18 +17,15 @@ public class ReferencesSearchRequest extends SearchRequestParametersPaging imple
 	private Integer maxLength = null;
 
 	@JsonProperty("md5checksums")
-	@Valid
 	private List<String> md5checksums = null;
 
 	@JsonProperty("minLength")
 	private Integer minLength = null;
 
 	@JsonProperty("referenceDbIds")
-	@Valid
 	private List<String> referenceDbIds = null;
 
 	@JsonProperty("referenceSetDbIds")
-	@Valid
 	private List<String> referenceSetDbIds = null;
 
 	public ReferencesSearchRequest accessions(List<String> accessions) {
@@ -54,14 +41,6 @@ public class ReferencesSearchRequest extends SearchRequestParametersPaging imple
 		return this;
 	}
 
-	/**
-	 * If specified, return the references for which the `accession` matches this
-	 * string (case-sensitive, exact match).
-	 * 
-	 * @return accessions
-	 **/
-	@ApiModelProperty(example = "[\"A0009283\",\"A0006657\"]", value = "If specified, return the references for which the `accession` matches this string (case-sensitive, exact match).")
-
 	public List<String> getAccessions() {
 		return accessions;
 	}
@@ -75,17 +54,6 @@ public class ReferencesSearchRequest extends SearchRequestParametersPaging imple
 		return this;
 	}
 
-	/**
-	 * A sequence X is said to be derived from source sequence Y, if X and Y are of
-	 * the same length and the per-base sequence divergence at A/C/G/T bases is
-	 * sufficiently small. Two sequences derived from the same official sequence
-	 * share the same coordinates and annotations, and can be replaced with the
-	 * official sequence for certain use cases.
-	 * 
-	 * @return isDerived
-	 **/
-	@ApiModelProperty(value = "A sequence X is said to be derived from source sequence Y, if X and Y are of the same length and the per-base sequence divergence at A/C/G/T bases is sufficiently small. Two sequences derived from the same official sequence share the same coordinates and annotations, and can be replaced with the official sequence for certain use cases.")
-
 	public Boolean isIsDerived() {
 		return isDerived;
 	}
@@ -98,13 +66,6 @@ public class ReferencesSearchRequest extends SearchRequestParametersPaging imple
 		this.maxLength = maxLength;
 		return this;
 	}
-
-	/**
-	 * The minimum length of this reference's sequence.
-	 * 
-	 * @return maxLength
-	 **/
-	@ApiModelProperty(example = "90000", value = "The minimum length of this reference's sequence.")
 
 	public Integer getMaxLength() {
 		return maxLength;
@@ -127,14 +88,6 @@ public class ReferencesSearchRequest extends SearchRequestParametersPaging imple
 		return this;
 	}
 
-	/**
-	 * If specified, return the references for which the `md5checksum` matches this
-	 * string (case-sensitive, exact match).
-	 * 
-	 * @return md5checksums
-	 **/
-	@ApiModelProperty(example = "[\"c2365e900c81a89cf74d83dab60df146\"]", value = "If specified, return the references for which the `md5checksum` matches this string (case-sensitive, exact match).")
-
 	public List<String> getMd5checksums() {
 		return md5checksums;
 	}
@@ -147,13 +100,6 @@ public class ReferencesSearchRequest extends SearchRequestParametersPaging imple
 		this.minLength = minLength;
 		return this;
 	}
-
-	/**
-	 * The minimum length of this reference's sequence.
-	 * 
-	 * @return minLength
-	 **/
-	@ApiModelProperty(example = "4000", value = "The minimum length of this reference's sequence.")
 
 	public Integer getMinLength() {
 		return minLength;
@@ -176,13 +122,6 @@ public class ReferencesSearchRequest extends SearchRequestParametersPaging imple
 		return this;
 	}
 
-	/**
-	 * The `References` to search.
-	 * 
-	 * @return referenceDbIds
-	 **/
-	@ApiModelProperty(example = "[\"04c83ea7\",\"d0998a34\"]", value = "The `References` to search.")
-
 	public List<String> getReferenceDbIds() {
 		return referenceDbIds;
 	}
@@ -203,13 +142,6 @@ public class ReferencesSearchRequest extends SearchRequestParametersPaging imple
 		this.referenceSetDbIds.add(referenceSetDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * The `ReferenceSets` to search.
-	 * 
-	 * @return referenceSetDbIds
-	 **/
-	@ApiModelProperty(example = "[\"32a19dd7\",\"2c182c18\"]", value = "The `ReferenceSets` to search.")
 
 	public List<String> getReferenceSetDbIds() {
 		return referenceSetDbIds;
@@ -259,10 +191,6 @@ public class ReferencesSearchRequest extends SearchRequestParametersPaging imple
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";

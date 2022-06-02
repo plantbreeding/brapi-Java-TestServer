@@ -78,14 +78,14 @@ public class ServerInfoService {
 		return filteredCalls;
 	}
 
-	public ServerInfo getServerInfo(WSMIMEDataTypes dataType) {
+	public ServerInfo getServerInfo(WSMIMEDataTypes dataType, WSMIMEDataTypes contentType) {
 		ServerInfo info = new ServerInfo().contactEmail("brapicoordinatorselby@gmail.com")
 				.documentationURL("https://brapi.org/specification").location("Ithaca, NY, USA")
 				.organizationName("BrAPI Community").organizationURL("https://brapi.org")
 				.serverName("BrAPI Community Test Server").serverDescription("BrAPI Community Test Server");
 
-		info.setCalls(filterCalls(ServerInfoService.services, dataType));
-//		info.setCalls(filterCalls(ServerInfoService.buildServices(), dataType));
+		WSMIMEDataTypes type = contentType == null? dataType: contentType;
+		info.setCalls(filterCalls(ServerInfoService.services, type));
 		return info;
 	}
 	

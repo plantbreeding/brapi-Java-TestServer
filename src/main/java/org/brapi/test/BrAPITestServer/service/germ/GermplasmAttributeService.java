@@ -40,18 +40,16 @@ public class GermplasmAttributeService {
 	}
 
 	public List<GermplasmAttribute> findGermplasmAttributes(@Valid String attributeCategory,
-			@Valid String attributeDbId, @Valid String attributeName, @Valid String germplasmDbId,
+			@Valid String attributeDbId, @Valid String attributeName, @Valid String germplasmDbId, String externalReferenceId,
 			@Valid String externalReferenceID, @Valid String externalReferenceSource, Metadata metadata) {
 		GermplasmAttributeSearchRequest request = new GermplasmAttributeSearchRequest();
 		if (attributeDbId != null)
 			request.addAttributeDbIdsItem(attributeDbId);
 		if (attributeName != null)
 			request.addAttributeNamesItem(attributeName);
-		if (externalReferenceID != null)
-			request.addExternalReferenceIDsItem(externalReferenceID);
-		if (externalReferenceSource != null)
-			request.addExternalReferenceSourcesItem(externalReferenceSource);
 
+		request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
+		
 		return findGermplasmAttributes(request, metadata);
 	}
 

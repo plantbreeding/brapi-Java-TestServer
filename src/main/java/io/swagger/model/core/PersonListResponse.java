@@ -34,7 +34,7 @@ public class PersonListResponse implements BrAPIResponse<PersonListResponseResul
 
   
 
-  public void setAtContext(Context _atContext) {
+  public void set_atContext(Context _atContext) {
     this._atContext = _atContext;
   }
 

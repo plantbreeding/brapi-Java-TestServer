@@ -3,55 +3,36 @@ package io.swagger.model.geno;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.SearchRequest;
-import io.swagger.model.SearchRequestParametersPaging;
-
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.validation.annotation.Validated;
-import jakarta.validation.Valid;
 
-/**
- * SampleSearchRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
-public class SampleSearchRequest extends SearchRequestParametersPaging implements SearchRequest {
+public class SampleSearchRequest extends SearchRequest {
 	@JsonProperty("germplasmDbIds")
-	@Valid
 	private List<String> germplasmDbIds = null;
 
 	@JsonProperty("germplasmNames")
-	@Valid
 	private List<String> germplasmNames = null;
 
 	@JsonProperty("studyDbIds")
-	@Valid
 	private List<String> studyDbIds = null;
 
 	@JsonProperty("studyNames")
-	@Valid
 	private List<String> studyNames = null;
 
 	@JsonProperty("externalReferenceIDs")
-	@Valid
 	private List<String> externalReferenceIDs = null;
 
 	@JsonProperty("externalReferenceSources")
-	@Valid
 	private List<String> externalReferenceSources = null;
 
 	@JsonProperty("observationUnitDbIds")
-	@Valid
 	private List<String> observationUnitDbIds = null;
 
 	@JsonProperty("plateDbIds")
-	@Valid
 	private List<String> plateDbIds = null;
 
 	@JsonProperty("sampleDbIds")
-	@Valid
 	private List<String> sampleDbIds = null;
 
 	public SampleSearchRequest germplasmDbIds(List<String> germplasmDbIds) {
@@ -66,13 +47,6 @@ public class SampleSearchRequest extends SearchRequestParametersPaging implement
 		this.germplasmDbIds.add(germplasmDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * List of IDs which uniquely identify germplasm to search for
-	 * 
-	 * @return germplasmDbIds
-	 **/
-	@ApiModelProperty(example = "[\"e9c6edd7\",\"1b1df4a6\"]", value = "List of IDs which uniquely identify germplasm to search for")
 
 	public List<String> getGermplasmDbIds() {
 		return germplasmDbIds;
@@ -95,13 +69,6 @@ public class SampleSearchRequest extends SearchRequestParametersPaging implement
 		return this;
 	}
 
-	/**
-	 * List of human readable names to identify germplasm to search for
-	 * 
-	 * @return germplasmNames
-	 **/
-	@ApiModelProperty(example = "[\"A0000003\",\"A0000477\"]", value = "List of human readable names to identify germplasm to search for")
-
 	public List<String> getGermplasmNames() {
 		return germplasmNames;
 	}
@@ -122,13 +89,6 @@ public class SampleSearchRequest extends SearchRequestParametersPaging implement
 		this.studyDbIds.add(studyDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * List of study identifiers to search for
-	 * 
-	 * @return studyDbIds
-	 **/
-	@ApiModelProperty(example = "[\"cf6c4bd4\",\"691e69d6\"]", value = "List of study identifiers to search for")
 
 	public List<String> getStudyDbIds() {
 		return studyDbIds;
@@ -151,75 +111,12 @@ public class SampleSearchRequest extends SearchRequestParametersPaging implement
 		return this;
 	}
 
-	/**
-	 * List of study names to filter search results
-	 * 
-	 * @return studyNames
-	 **/
-	@ApiModelProperty(example = "[\"The First Bob Study 2017\",\"Wheat Yield Trial 246\"]", value = "List of study names to filter search results")
-
 	public List<String> getStudyNames() {
 		return studyNames;
 	}
 
 	public void setStudyNames(List<String> studyNames) {
 		this.studyNames = studyNames;
-	}
-
-	public SampleSearchRequest externalReferenceIDs(List<String> externalReferenceIDs) {
-		this.externalReferenceIDs = externalReferenceIDs;
-		return this;
-	}
-
-	public SampleSearchRequest addExternalReferenceIDsItem(String externalReferenceIDsItem) {
-		if (this.externalReferenceIDs == null) {
-			this.externalReferenceIDs = new ArrayList<String>();
-		}
-		this.externalReferenceIDs.add(externalReferenceIDsItem);
-		return this;
-	}
-
-	/**
-	 * List of external references for the trait to search for
-	 * 
-	 * @return externalReferenceIDs
-	 **/
-	@ApiModelProperty(example = "[\"http://purl.obolibrary.org/obo/ro.owl\",\"14a19841\"]", value = "List of external references for the trait to search for")
-
-	public List<String> getExternalReferenceIDs() {
-		return externalReferenceIDs;
-	}
-
-	public void setExternalReferenceIDs(List<String> externalReferenceIDs) {
-		this.externalReferenceIDs = externalReferenceIDs;
-	}
-
-	public SampleSearchRequest externalReferenceSources(List<String> externalReferenceSources) {
-		this.externalReferenceSources = externalReferenceSources;
-		return this;
-	}
-
-	public SampleSearchRequest addExternalReferenceSourcesItem(String externalReferenceSourcesItem) {
-		if (this.externalReferenceSources == null) {
-			this.externalReferenceSources = new ArrayList<String>();
-		}
-		this.externalReferenceSources.add(externalReferenceSourcesItem);
-		return this;
-	}
-
-	/**
-	 * List of external references sources for the trait to search for
-	 * 
-	 * @return externalReferenceSources
-	 **/
-	@ApiModelProperty(example = "[\"OBO Library\",\"Field App Name\"]", value = "List of external references sources for the trait to search for")
-
-	public List<String> getExternalReferenceSources() {
-		return externalReferenceSources;
-	}
-
-	public void setExternalReferenceSources(List<String> externalReferenceSources) {
-		this.externalReferenceSources = externalReferenceSources;
 	}
 
 	public SampleSearchRequest observationUnitDbIds(List<String> observationUnitDbIds) {
@@ -234,13 +131,6 @@ public class SampleSearchRequest extends SearchRequestParametersPaging implement
 		this.observationUnitDbIds.add(observationUnitDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * The ID which uniquely identifies an observation unit
-	 * 
-	 * @return observationUnitDbIds
-	 **/
-	@ApiModelProperty(example = "[\"3cd0ca36\",\"983f3b14\"]", value = "The ID which uniquely identifies an observation unit")
 
 	public List<String> getObservationUnitDbIds() {
 		return observationUnitDbIds;
@@ -263,13 +153,6 @@ public class SampleSearchRequest extends SearchRequestParametersPaging implement
 		return this;
 	}
 
-	/**
-	 * The ID which uniquely identifies a plate of samples
-	 * 
-	 * @return plateDbIds
-	 **/
-	@ApiModelProperty(example = "[\"0cac98b8\",\"b96125fb\"]", value = "The ID which uniquely identifies a plate of samples")
-
 	public List<String> getPlateDbIds() {
 		return plateDbIds;
 	}
@@ -290,13 +173,6 @@ public class SampleSearchRequest extends SearchRequestParametersPaging implement
 		this.sampleDbIds.add(sampleDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * The ID which uniquely identifies a sample
-	 * 
-	 * @return sampleDbIds
-	 **/
-	@ApiModelProperty(example = "[\"3bece2ca\",\"dd286cc6\"]", value = "The ID which uniquely identifies a sample")
 
 	public List<String> getSampleDbIds() {
 		return sampleDbIds;
@@ -350,10 +226,6 @@ public class SampleSearchRequest extends SearchRequestParametersPaging implement
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";

@@ -66,8 +66,8 @@ public interface AttributesApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/attributes/categories", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<GermplasmAttributeCategoryListResponse> attributesCategoriesGet(
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
 
@@ -79,14 +79,15 @@ public interface AttributesApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/attributes", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<GermplasmAttributeListResponse> attributesGet(
-			@ApiParam(value = "The general category for the attribute. very similar to Trait class.") @Valid @RequestParam(value = "attributeCategory", required = false) String attributeCategory,
-			@ApiParam(value = "The unique id for an attribute") @Valid @RequestParam(value = "attributeDbId", required = false) String attributeDbId,
-			@ApiParam(value = "The human readable name for an attribute") @Valid @RequestParam(value = "attributeName", required = false) String attributeName,
-			@ApiParam(value = "Get all attributes associated with this germplasm") @Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "attributeCategory") @Valid @RequestParam(value = "attributeCategory", required = false) String attributeCategory,
+			@ApiParam(value = "attributeDbId") @Valid @RequestParam(value = "attributeDbId", required = false) String attributeDbId,
+			@ApiParam(value = "attributeName") @Valid @RequestParam(value = "attributeName", required = false) String attributeName,
+			@ApiParam(value = "germplasmDbId") @Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
+			@ApiParam(value = "externalReferenceId") @Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@ApiParam(value = "externalReferenceID") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@ApiParam(value = "externalReferenceSource") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
 
@@ -129,8 +130,8 @@ public interface AttributesApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<? extends BrAPIResponse> searchAttributesSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
 

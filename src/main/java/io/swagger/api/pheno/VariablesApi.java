@@ -37,13 +37,14 @@ public interface VariablesApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/variables", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ObservationVariableListResponse> variablesGet(
-			@ApiParam(value = "Variable's unique ID") @Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
-			@ApiParam(value = "Variable's trait class (phenological, physiological, morphological, etc.)") @Valid @RequestParam(value = "traitClass", required = false) String traitClass,
-			@ApiParam(value = "The unique ID of a studies to filter on") @Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "observationVariableDbId") @Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
+			@ApiParam(value = "traitClass") @Valid @RequestParam(value = "traitClass", required = false) String traitClass,
+			@ApiParam(value = "studyDbId") @Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@ApiParam(value = "externalReferenceId") @Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@ApiParam(value = "externalReferenceID") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@ApiParam(value = "externalReferenceSource") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the details for a specific Observation Variable", nickname = "variablesObservationVariableDbIdGet", notes = "Retrieve variable details", response = ObservationVariableSingleResponse.class, authorizations = {
@@ -112,8 +113,8 @@ public interface VariablesApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<? extends BrAPIResponse> searchVariablesSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 }

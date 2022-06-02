@@ -60,6 +60,7 @@ public class SamplesApiController extends BrAPIController implements SamplesApi 
 			@Valid @RequestParam(value = "plateDbId", required = false) String plateDbId,
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
 			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
@@ -70,7 +71,7 @@ public class SamplesApiController extends BrAPIController implements SamplesApi 
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<Sample> data = sampleService.findSamples(sampleDbId, observationUnitDbId, plateDbId, germplasmDbId,
-				studyDbId, externalReferenceID, externalReferenceSource, metadata);
+				studyDbId, externalReferenceId, externalReferenceID, externalReferenceSource, metadata);
 		return responseOK(new SampleListResponse(), new SampleListResponseResult(), data, metadata);
 	}
 

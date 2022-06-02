@@ -64,11 +64,12 @@ public class ObservationService {
 			String observationVariableDbId, String studyDbId, String locationDbId, String trialDbId, String programDbId,
 			String seasonDbId, String observationUnitLevelName, String observationUnitLevelOrder,
 			String observationUnitLevelCode, String observationTimeStampRangeStart, String observationTimeStampRangeEnd,
-			String externalReferenceID, String externalReferenceSource, Metadata metadata) throws BrAPIServerException {
+			String externalReferenceId, String externalReferenceID, String externalReferenceSource, Metadata metadata)
+			throws BrAPIServerException {
 		ObservationSearchRequest request = buildObservationsSearchRequest(observationDbId, observationUnitDbId,
 				germplasmDbId, observationVariableDbId, studyDbId, locationDbId, trialDbId, programDbId, seasonDbId,
 				observationUnitLevelName, observationUnitLevelOrder, observationUnitLevelCode,
-				observationTimeStampRangeStart, observationTimeStampRangeEnd, externalReferenceID,
+				observationTimeStampRangeStart, observationTimeStampRangeEnd, externalReferenceId, externalReferenceID,
 				externalReferenceSource);
 
 		return findObservations(request, metadata);
@@ -78,8 +79,8 @@ public class ObservationService {
 			String germplasmDbId, String observationVariableDbId, String studyDbId, String locationDbId,
 			String trialDbId, String programDbId, String seasonDbId, String observationUnitLevelName,
 			String observationUnitLevelOrder, String observationUnitLevelCode, String observationTimeStampRangeStart,
-			String observationTimeStampRangeEnd, String externalReferenceID, String externalReferenceSource)
-			throws BrAPIServerException {
+			String observationTimeStampRangeEnd, String externalReferenceId, String externalReferenceID,
+			String externalReferenceSource) throws BrAPIServerException {
 		ObservationSearchRequest request = new ObservationSearchRequest();
 		if (germplasmDbId != null)
 			request.addGermplasmDbIdsItem(germplasmDbId);
@@ -113,10 +114,8 @@ public class ObservationService {
 			request.setObservationTimeStampRangeStart(DateUtility.toOffsetDateTime(observationTimeStampRangeStart));
 		if (observationTimeStampRangeEnd != null)
 			request.setObservationTimeStampRangeEnd(DateUtility.toOffsetDateTime(observationTimeStampRangeEnd));
-		if (externalReferenceID != null)
-			request.addExternalReferenceIDsItem(externalReferenceID);
-		if (externalReferenceSource != null)
-			request.addExternalReferenceSourcesItem(externalReferenceSource);
+
+		request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
 
 		return request;
 	}
@@ -128,7 +127,7 @@ public class ObservationService {
 		ObservationSearchRequest obsRequest = buildObservationsSearchRequest(null, observationUnitDbId, germplasmDbId,
 				observationVariableDbId, studyDbId, locationDbId, trialDbId, programDbId, seasonDbId,
 				ObservationUnitHierarchyLevelEnum.PLOT.name(), null, null, observationTimeStampRangeStart,
-				observationTimeStampRangeEnd, null, null);
+				observationTimeStampRangeEnd, null, null, null);
 		Page<ObservationEntity> observations = findObservationEntities(obsRequest, null);
 
 		List<ObservationVariableEntity> variables = observations.stream().map(obs -> obs.getObservationVariable())
@@ -341,91 +340,74 @@ public class ObservationService {
 		for (ObservationEntity obs : observations) {
 			List<String> row = new ArrayList<>();
 
-			if(obs.getObservationUnit() != null) {
+			if (obs.getObservationUnit() != null) {
 				ObservationUnitEntity obsUnit = obs.getObservationUnit();
 				if (obsUnit.getStudy() != null) {
 					StudyEntity study = obsUnit.getStudy();
 					if (study.getSeasons() != null && !study.getSeasons().isEmpty()) {
-						row.add(printIfNotNull(study.getSeasons().get(0).getYear())); //YEAR
-					}else {
-						row.add(""); //YEAR
+						row.add(printIfNotNull(study.getSeasons().get(0).getYear())); // YEAR
+					} else {
+						row.add(""); // YEAR
 					}
-	
-					row.add(printIfNotNull(study.getId())); //STUDYDBID
-					row.add(printIfNotNull(study.getStudyName())); //STUDYNAME
-					
+
+					row.add(printIfNotNull(study.getId())); // STUDYDBID
+					row.add(printIfNotNull(study.getStudyName())); // STUDYNAME
+
 					if (study.getLocation() != null) {
-						row.add(printIfNotNull(study.getLocation().getId())); //LOCATIONDBID
-						row.add(printIfNotNull(study.getLocation().getLocationName())); //LOCATIONNAME
-					}else {
-						row.add(""); //LOCATIONDBID
-						row.add(""); //LOCATIONNAME
+						row.add(printIfNotNull(study.getLocation().getId())); // LOCATIONDBID
+						row.add(printIfNotNull(study.getLocation().getLocationName())); // LOCATIONNAME
+					} else {
+						row.add(""); // LOCATIONDBID
+						row.add(""); // LOCATIONNAME
 					}
-					
+
 				} else {
-					row.add(""); //YEAR
-					row.add(""); //STUDYDBID
-					row.add(""); //STUDYNAME
-					row.add(""); //LOCATIONDBID
-					row.add(""); //LOCATIONNAME
+					row.add(""); // YEAR
+					row.add(""); // STUDYDBID
+					row.add(""); // STUDYNAME
+					row.add(""); // LOCATIONDBID
+					row.add(""); // LOCATIONNAME
 				}
 
-				if(obsUnit.getGermplasm() != null) {
-					row.add(printIfNotNull(obsUnit.getGermplasm().getId())); //GERMPLASMDBID
-					row.add(printIfNotNull(obsUnit.getGermplasm().getGermplasmName())); //GERMPLASMNAME
-				}else {
-					row.add(""); //GERMPLASMDBID
-					row.add(""); //GERMPLASMNAME
+				if (obsUnit.getGermplasm() != null) {
+					row.add(printIfNotNull(obsUnit.getGermplasm().getId())); // GERMPLASMDBID
+					row.add(printIfNotNull(obsUnit.getGermplasm().getGermplasmName())); // GERMPLASMNAME
+				} else {
+					row.add(""); // GERMPLASMDBID
+					row.add(""); // GERMPLASMNAME
 				}
 
-				row.add(printIfNotNull(obsUnit.getId())); //OBSERVATIONUNITDBID
-				row.add(printIfNotNull(obsUnit.getObservationUnitName())); //OBSERVATIONUNITNAME
-				
-				if(obsUnit.getPosition() != null) {
-					row.add(printIfNotNull(obsUnit.getPosition().getPositionCoordinateX())); //POSITIONCOORDINATEX
-					row.add(printIfNotNull(obsUnit.getPosition().getPositionCoordinateY())); //POSITIONCOORDINATEY
-					row.add(printIfNotNull(obsUnit.getPosition().getFieldCode())); //FIELD
-					row.add(printIfNotNull(obsUnit.getPosition().getBlockCode())); //BLOCK
-					row.add(printIfNotNull(obsUnit.getPosition().getEntryCode())); //ENTRY
-					row.add(printIfNotNull(obsUnit.getPosition().getRepCode())); //REP
-					row.add(printIfNotNull(obsUnit.getPosition().getPlotCode())); //PLOT
-					row.add(printIfNotNull(obsUnit.getPosition().getPlantCode())); //PLANT
-				}else {
-					row.add(""); //POSITIONCOORDINATEX
-					row.add(""); //POSITIONCOORDINATEY
-					row.add(""); //FIELD
-					row.add(""); //BLOCK
-					row.add(""); //ENTRY
-					row.add(""); //REP
-					row.add(""); //PLOT
-					row.add(""); //PLANT
+				row.add(printIfNotNull(obsUnit.getId())); // OBSERVATIONUNITDBID
+				row.add(printIfNotNull(obsUnit.getObservationUnitName())); // OBSERVATIONUNITNAME
+
+				if (obsUnit.getPosition() != null) {
+					row.add(printIfNotNull(obsUnit.getPosition().getPositionCoordinateX())); // POSITIONCOORDINATEX
+					row.add(printIfNotNull(obsUnit.getPosition().getPositionCoordinateY())); // POSITIONCOORDINATEY
+					row.add(printIfNotNull(obsUnit.getPosition().getFieldCode())); // FIELD
+					row.add(printIfNotNull(obsUnit.getPosition().getBlockCode())); // BLOCK
+					row.add(printIfNotNull(obsUnit.getPosition().getEntryCode())); // ENTRY
+					row.add(printIfNotNull(obsUnit.getPosition().getRepCode())); // REP
+					row.add(printIfNotNull(obsUnit.getPosition().getPlotCode())); // PLOT
+					row.add(printIfNotNull(obsUnit.getPosition().getPlantCode())); // PLANT
+				} else {
+					row.add(""); // POSITIONCOORDINATEX
+					row.add(""); // POSITIONCOORDINATEY
+					row.add(""); // FIELD
+					row.add(""); // BLOCK
+					row.add(""); // ENTRY
+					row.add(""); // REP
+					row.add(""); // PLOT
+					row.add(""); // PLANT
 				}
-					
-			}else {
-				row.add(""); //YEAR
-				row.add(""); //STUDYDBID
-				row.add(""); //STUDYNAME
-				row.add(""); //LOCATIONDBID
-				row.add(""); //LOCATIONNAME
-				row.add(""); //GERMPLASMDBID
-				row.add(""); //GERMPLASMNAME
-				row.add(""); //OBSERVATIONUNITDBID
-				row.add(""); //OBSERVATIONUNITNAME
-				row.add(""); //POSITIONCOORDINATEX
-				row.add(""); //POSITIONCOORDINATEY
-				row.add(""); //FIELD
-				row.add(""); //BLOCK
-				row.add(""); //ENTRY
-				row.add(""); //REP
-				row.add(""); //PLOT
-				row.add(""); //PLANT
+
+			} else {
+				continue;
 			}
-			
-			
-			row.add(printIfNotNull(obs.getObservationTimeStamp())); //OBSERVATIONTIMESTAMP
+
+			row.add(printIfNotNull(obs.getObservationTimeStamp())); // OBSERVATIONTIMESTAMP
 
 			for (ObservationVariableEntity var : variables) {
-				if (obs.getObservationVariable().getId() == var.getId()) {
+				if (obs.getObservationVariable() != null && obs.getObservationVariable().getId() == var.getId()) {
 					row.add(obs.getValue());
 				} else {
 					row.add("");
