@@ -14,6 +14,7 @@ import io.swagger.model.germ.GermplasmNewRequest;
 import io.swagger.model.germ.GermplasmPedigreeResponse;
 import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.model.germ.GermplasmProgenyResponse;
+import io.swagger.annotations.ApiParam;
 import io.swagger.api.germ.GermplasmApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -127,17 +128,20 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 			@Valid @RequestParam(value = "germplasmPUI", required = false) String germplasmPUI,
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
 			@Valid @RequestParam(value = "germplasmName", required = false) String germplasmName,
-			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
 			@Valid @RequestParam(value = "accessionNumber", required = false) String accessionNumber,
 			@Valid @RequestParam(value = "collection", required = false) String collection,
+			@Valid @RequestParam(value = "binomialName", required = false) String binomialName,
 			@Valid @RequestParam(value = "genus", required = false) String genus,
 			@Valid @RequestParam(value = "species", required = false) String species,
+			@Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
 			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
 			@Valid @RequestParam(value = "synonym", required = false) String synonym,
 			@Valid @RequestParam(value = "parentDbId", required = false) String parentDbId,
 			@Valid @RequestParam(value = "progenyDbId", required = false) String progenyDbId,
-			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceId,
+			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -148,8 +152,9 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<Germplasm> data = germplasmService.findGermplasm(germplasmPUI, germplasmDbId, germplasmName,
-				commonCropName, accessionNumber, collection, genus, species, studyDbId, synonym, parentDbId,
-				progenyDbId, externalReferenceId, externalReferenceID, externalReferenceSource, metadata);
+				accessionNumber, collection, binomialName, genus, species, trialDbId, studyDbId, synonym, parentDbId,
+				progenyDbId, commonCropName, programDbId, externalReferenceId, externalReferenceID,
+				externalReferenceSource, metadata);
 		return responseOK(new GermplasmListResponse(), new GermplasmListResponseResult(), data, metadata);
 	}
 
@@ -201,7 +206,7 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 			GermplasmSearchRequest body = request.getParameters(GermplasmSearchRequest.class);
 			List<Germplasm> data = germplasmService.findGermplasm(body, metadata);
 			return responseOK(new GermplasmListResponse(), new GermplasmListResponseResult(), data, metadata);
-		}else {
+		} else {
 			return responseAccepted(searchResultsDbId);
 		}
 	}

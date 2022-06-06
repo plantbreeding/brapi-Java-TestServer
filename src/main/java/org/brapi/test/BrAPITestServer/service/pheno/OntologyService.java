@@ -24,6 +24,7 @@ import io.swagger.model.Metadata;
 import io.swagger.model.OntologyReference;
 import io.swagger.model.OntologyReferenceDocumentationLinks;
 import io.swagger.model.pheno.Ontology;
+import io.swagger.model.pheno.OntologyNewRequest;
 
 @Service
 public class OntologyService {
@@ -34,7 +35,7 @@ public class OntologyService {
 		this.ontologyRepository = ontologyRepository;
 	}
 
-	public List<Ontology> findOntologies(@Valid String ontologyDbId, Metadata metadata) {
+	public List<Ontology> findOntologies(String ontologyDbId, String ontologyName, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		List<Ontology> ontologies = new ArrayList<>();
 		if (ontologyDbId == null) {
@@ -125,5 +126,20 @@ public class OntologyService {
 		}
 
 		return ontologyReference;
+	}
+
+	public List<Ontology> saveOntologies(@Valid List<OntologyNewRequest> body) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Ontology getOntology(String ontologyDbId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Ontology updateOntologies(String ontologyDbId, @Valid OntologyNewRequest body) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

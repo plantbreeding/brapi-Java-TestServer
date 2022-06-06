@@ -3,17 +3,14 @@ package io.swagger.model.germ;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class PedigreeNodeParents {
+public class PedigreeNodeDEPSiblings {
 	@JsonProperty("germplasmDbId")
 	private String germplasmDbId = null;
 
 	@JsonProperty("germplasmName")
 	private String germplasmName = null;
 
-	@JsonProperty("parentType")
-	private ParentType parentType = null;
-
-	public PedigreeNodeParents germplasmDbId(String germplasmDbId) {
+	public PedigreeNodeDEPSiblings germplasmDbId(String germplasmDbId) {
 		this.germplasmDbId = germplasmDbId;
 		return this;
 	}
@@ -26,7 +23,7 @@ public class PedigreeNodeParents {
 		this.germplasmDbId = germplasmDbId;
 	}
 
-	public PedigreeNodeParents germplasmName(String germplasmName) {
+	public PedigreeNodeDEPSiblings germplasmName(String germplasmName) {
 		this.germplasmName = germplasmName;
 		return this;
 	}
@@ -39,19 +36,6 @@ public class PedigreeNodeParents {
 		this.germplasmName = germplasmName;
 	}
 
-	public PedigreeNodeParents parentType(ParentType parentType) {
-		this.parentType = parentType;
-		return this;
-	}
-
-	public ParentType getParentType() {
-		return parentType;
-	}
-
-	public void setParentType(ParentType parentType) {
-		this.parentType = parentType;
-	}
-
 	@Override
 	public boolean equals(java.lang.Object o) {
 		if (this == o) {
@@ -60,25 +44,23 @@ public class PedigreeNodeParents {
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		PedigreeNodeParents pedigreeNodeParents = (PedigreeNodeParents) o;
-		return Objects.equals(this.germplasmDbId, pedigreeNodeParents.germplasmDbId)
-				&& Objects.equals(this.germplasmName, pedigreeNodeParents.germplasmName)
-				&& Objects.equals(this.parentType, pedigreeNodeParents.parentType);
+		PedigreeNodeDEPSiblings pedigreeNodeDEPSiblings = (PedigreeNodeDEPSiblings) o;
+		return Objects.equals(this.germplasmDbId, pedigreeNodeDEPSiblings.germplasmDbId)
+				&& Objects.equals(this.germplasmName, pedigreeNodeDEPSiblings.germplasmName);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(germplasmDbId, germplasmName, parentType);
+		return Objects.hash(germplasmDbId, germplasmName);
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("class PedigreeNodeParents {\n");
+		sb.append("class PedigreeNodeDEPSiblings {\n");
 
 		sb.append("    germplasmDbId: ").append(toIndentedString(germplasmDbId)).append("\n");
 		sb.append("    germplasmName: ").append(toIndentedString(germplasmName)).append("\n");
-		sb.append("    parentType: ").append(toIndentedString(parentType)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}

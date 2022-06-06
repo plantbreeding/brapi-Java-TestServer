@@ -1,7 +1,6 @@
 package org.brapi.test.BrAPITestServer.service.pheno;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -38,8 +37,6 @@ import io.swagger.model.pheno.ObservationTableHeaderRowEnum;
 import io.swagger.model.pheno.ObservationTableObservationVariables;
 import io.swagger.model.pheno.ObservationUnitHierarchyLevelEnum;
 import io.swagger.model.pheno.ObservationUnitLevelRelationship;
-import io.swagger.model.pheno.ObservationVariable;
-import io.swagger.model.pheno.ObservationVariableSearchRequest;
 
 @Service
 public class ObservationService {
@@ -64,12 +61,16 @@ public class ObservationService {
 			String observationVariableDbId, String studyDbId, String locationDbId, String trialDbId, String programDbId,
 			String seasonDbId, String observationUnitLevelName, String observationUnitLevelOrder,
 			String observationUnitLevelCode, String observationTimeStampRangeStart, String observationTimeStampRangeEnd,
-			String externalReferenceId, String externalReferenceID, String externalReferenceSource, Metadata metadata)
-			throws BrAPIServerException {
+			String observationUnitLevelRelationshipName, String observationUnitLevelRelationshipOrder,
+			String observationUnitLevelRelationshipCode, String observationUnitLevelRelationshipDbId,
+			String commonCropName, String externalReferenceId, String externalReferenceID,
+			String externalReferenceSource, Metadata metadata) throws BrAPIServerException {
 		ObservationSearchRequest request = buildObservationsSearchRequest(observationDbId, observationUnitDbId,
 				germplasmDbId, observationVariableDbId, studyDbId, locationDbId, trialDbId, programDbId, seasonDbId,
 				observationUnitLevelName, observationUnitLevelOrder, observationUnitLevelCode,
-				observationTimeStampRangeStart, observationTimeStampRangeEnd, externalReferenceId, externalReferenceID,
+				observationTimeStampRangeStart, observationTimeStampRangeEnd, observationUnitLevelRelationshipName,
+				observationUnitLevelRelationshipOrder, observationUnitLevelRelationshipCode,
+				observationUnitLevelRelationshipDbId, commonCropName, externalReferenceId, externalReferenceID,
 				externalReferenceSource);
 
 		return findObservations(request, metadata);
@@ -79,8 +80,10 @@ public class ObservationService {
 			String germplasmDbId, String observationVariableDbId, String studyDbId, String locationDbId,
 			String trialDbId, String programDbId, String seasonDbId, String observationUnitLevelName,
 			String observationUnitLevelOrder, String observationUnitLevelCode, String observationTimeStampRangeStart,
-			String observationTimeStampRangeEnd, String externalReferenceId, String externalReferenceID,
-			String externalReferenceSource) throws BrAPIServerException {
+			String observationTimeStampRangeEnd, String observationUnitLevelRelationshipName,
+			String observationUnitLevelRelationshipOrder, String observationUnitLevelRelationshipCode,
+			String observationUnitLevelRelationshipDbId, String commonCropName, String externalReferenceId,
+			String externalReferenceID, String externalReferenceSource) throws BrAPIServerException {
 		ObservationSearchRequest request = new ObservationSearchRequest();
 		if (germplasmDbId != null)
 			request.addGermplasmDbIdsItem(germplasmDbId);
@@ -122,12 +125,22 @@ public class ObservationService {
 
 	public ObservationTable findObservationsTable(String observationUnitDbId, String germplasmDbId,
 			String observationVariableDbId, String studyDbId, String locationDbId, String trialDbId, String programDbId,
-			String seasonDbId, String observationTimeStampRangeStart, String observationTimeStampRangeEnd)
+			String seasonDbId, String observationLevel, String observationUnitLevelName,
+			String observationUnitLevelOrder, String observationUnitLevelCode,
+			String observationUnitLevelRelationshipName, String observationUnitLevelRelationshipOrder,
+			String observationUnitLevelRelationshipCode, String observationUnitLevelRelationshipDbId,
+			String observationTimeStampRangeStart, String observationTimeStampRangeEnd, String searchResultsDbId)
 			throws BrAPIServerException {
 		ObservationSearchRequest obsRequest = buildObservationsSearchRequest(null, observationUnitDbId, germplasmDbId,
 				observationVariableDbId, studyDbId, locationDbId, trialDbId, programDbId, seasonDbId,
-				ObservationUnitHierarchyLevelEnum.PLOT.name(), null, null, observationTimeStampRangeStart,
-				observationTimeStampRangeEnd, null, null, null);
+				observationUnitLevelName, observationUnitLevelOrder, observationUnitLevelCode,
+				observationTimeStampRangeStart, observationTimeStampRangeEnd, observationUnitLevelRelationshipName,
+				observationUnitLevelRelationshipOrder, observationUnitLevelRelationshipCode,
+				observationUnitLevelRelationshipDbId, null, null, null, null);
+		return findObservationsTable(obsRequest);
+	}
+
+	public ObservationTable findObservationsTable(ObservationSearchRequest obsRequest) {
 		Page<ObservationEntity> observations = findObservationEntities(obsRequest, null);
 
 		List<ObservationVariableEntity> variables = observations.stream().map(obs -> obs.getObservationVariable())

@@ -17,6 +17,7 @@ import io.swagger.model.pheno.ObservationLevelListResponseResult;
 import io.swagger.model.pheno.ObservationUnit;
 import io.swagger.model.pheno.ObservationUnitHierarchyLevel;
 import io.swagger.model.pheno.ObservationUnitListResponseResult;
+import io.swagger.annotations.ApiParam;
 import io.swagger.api.pheno.ObservationLevelsApi;
 import io.swagger.api.pheno.ObservationUnitsApi;
 
@@ -55,7 +56,8 @@ public class ObservationUnitsApiController extends BrAPIController
 	private final HttpServletRequest request;
 
 	@Autowired
-	public ObservationUnitsApiController(ObservationUnitService observationUnitService, SearchService searchService, HttpServletRequest request) {
+	public ObservationUnitsApiController(ObservationUnitService observationUnitService, SearchService searchService,
+			HttpServletRequest request) {
 		this.observationUnitService = observationUnitService;
 		this.searchService = searchService;
 		this.request = request;
@@ -65,18 +67,24 @@ public class ObservationUnitsApiController extends BrAPIController
 	@Override
 	public ResponseEntity<ObservationUnitListResponse> observationunitsGet(
 			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
+			@Valid @RequestParam(value = "observationUnitName", required = false) String observationUnitName,
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
 			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
 			@Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
 			@Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
-			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
 			@Valid @RequestParam(value = "seasonDbId", required = false) String seasonDbId,
+			@Valid @RequestParam(value = "includeObservations", required = false) Boolean includeObservations,
 			@Valid @RequestParam(value = "observationUnitLevelName", required = false) String observationUnitLevelName,
 			@Valid @RequestParam(value = "observationUnitLevelOrder", required = false) String observationUnitLevelOrder,
 			@Valid @RequestParam(value = "observationUnitLevelCode", required = false) String observationUnitLevelCode,
-			@Valid @RequestParam(value = "includeObservations", required = false) Boolean includeObservations,
-			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceId,
+			@Valid @RequestParam(value = "observationUnitLevelRelationshipName", required = false) String observationUnitLevelRelationshipName,
+			@Valid @RequestParam(value = "observationUnitLevelRelationshipOrder", required = false) String observationUnitLevelRelationshipOrder,
+			@Valid @RequestParam(value = "observationUnitLevelRelationshipCode", required = false) String observationUnitLevelRelationshipCode,
+			@Valid @RequestParam(value = "observationUnitLevelRelationshipDbId", required = false) String observationUnitLevelRelationshipDbId,
+			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -86,10 +94,12 @@ public class ObservationUnitsApiController extends BrAPIController
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<ObservationUnit> data = observationUnitService.findObservationUnits(observationUnitDbId, germplasmDbId,
-				studyDbId, locationDbId, trialDbId, programDbId, seasonDbId, observationUnitLevelName,
-				observationUnitLevelOrder, observationUnitLevelCode, includeObservations, externalReferenceId, externalReferenceID,
-				externalReferenceSource, metadata);
+		List<ObservationUnit> data = observationUnitService.findObservationUnits(observationUnitDbId,
+				observationUnitName, germplasmDbId, studyDbId, locationDbId, trialDbId, programDbId, seasonDbId,
+				observationUnitLevelName, observationUnitLevelOrder, observationUnitLevelCode,
+				observationUnitLevelRelationshipName, observationUnitLevelRelationshipOrder,
+				observationUnitLevelRelationshipCode, observationUnitLevelRelationshipDbId, commonCropName,
+				includeObservations, externalReferenceId, externalReferenceID, externalReferenceSource, metadata);
 		return responseOK(new ObservationUnitListResponse(), new ObservationUnitListResponseResult(), data, metadata);
 	}
 
@@ -148,8 +158,7 @@ public class ObservationUnitsApiController extends BrAPIController
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity observationunitsTableGet(
-			@RequestHeader(value = "Accept", required = false) String accept,
+	public ResponseEntity observationunitsTableGet(@RequestHeader(value = "Accept", required = false) String accept,
 			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
 			@Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
@@ -159,24 +168,33 @@ public class ObservationUnitsApiController extends BrAPIController
 			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
 			@Valid @RequestParam(value = "seasonDbId", required = false) String seasonDbId,
 			@Valid @RequestParam(value = "observationLevel", required = false) String observationLevel,
+			@Valid @RequestParam(value = "observationUnitLevelName", required = false) String observationUnitLevelName,
+			@Valid @RequestParam(value = "observationUnitLevelOrder", required = false) String observationUnitLevelOrder,
+			@Valid @RequestParam(value = "observationUnitLevelCode", required = false) String observationUnitLevelCode,
+			@Valid @RequestParam(value = "observationUnitLevelRelationshipName", required = false) String observationUnitLevelRelationshipName,
+			@Valid @RequestParam(value = "observationUnitLevelRelationshipOrder", required = false) String observationUnitLevelRelationshipOrder,
+			@Valid @RequestParam(value = "observationUnitLevelRelationshipCode", required = false) String observationUnitLevelRelationshipCode,
+			@Valid @RequestParam(value = "observationUnitLevelRelationshipDbId", required = false) String observationUnitLevelRelationshipDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		String sep = "";
-		if("text/csv".equals(accept)) {
+		if ("text/csv".equals(accept)) {
 			sep = ",";
-		}else if("text/tsv".equals(accept)) {
+		} else if ("text/tsv".equals(accept)) {
 			sep = "\t";
-		}else {
+		} else {
 			validateAcceptHeader(request);
 		}
-		ObservationUnitTable data = observationUnitService.findObservationUnitsTable(observationUnitDbId,
-				germplasmDbId, observationVariableDbId, studyDbId, locationDbId, trialDbId, programDbId, seasonDbId,
-				observationLevel);
-		if(sep.isEmpty()) {
+		ObservationUnitTable data = observationUnitService.findObservationUnitsTable(observationUnitDbId, germplasmDbId,
+				observationVariableDbId, studyDbId, locationDbId, trialDbId, programDbId, seasonDbId, observationLevel,
+				observationUnitLevelName, observationUnitLevelOrder, observationUnitLevelCode,
+				observationUnitLevelRelationshipName, observationUnitLevelRelationshipOrder,
+				observationUnitLevelRelationshipCode, observationUnitLevelRelationshipDbId);
+		if (sep.isEmpty()) {
 			return responseOK(new ObservationUnitTableResponse(), data);
-		}else {
+		} else {
 			String textTable = observationUnitService.getObservationUnitTableText(data, sep);
 			return new ResponseEntity<String>(textTable, HttpStatus.OK);
 		}
@@ -216,7 +234,8 @@ public class ObservationUnitsApiController extends BrAPIController
 			return responseAccepted(searchReqDbId);
 		} else {
 			List<ObservationUnit> data = observationUnitService.findObservationUnits(body, metadata);
-			return responseOK(new ObservationUnitListResponse(), new ObservationUnitListResponseResult(), data, metadata);
+			return responseOK(new ObservationUnitListResponse(), new ObservationUnitListResponseResult(), data,
+					metadata);
 		}
 	}
 
@@ -236,8 +255,9 @@ public class ObservationUnitsApiController extends BrAPIController
 		if (request != null) {
 			ObservationUnitSearchRequest body = request.getParameters(ObservationUnitSearchRequest.class);
 			List<ObservationUnit> data = observationUnitService.findObservationUnits(body, metadata);
-			return responseOK(new ObservationUnitListResponse(), new ObservationUnitListResponseResult(), data, metadata);
-		}else {
+			return responseOK(new ObservationUnitListResponse(), new ObservationUnitListResponseResult(), data,
+					metadata);
+		} else {
 			return responseAccepted(searchResultsDbId);
 		}
 	}

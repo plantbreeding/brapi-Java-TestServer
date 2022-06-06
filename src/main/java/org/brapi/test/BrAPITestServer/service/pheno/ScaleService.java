@@ -38,8 +38,9 @@ public class ScaleService {
 		this.ontologyService = ontologyService;
 	}
 
-	public List<Scale> findScales(@Valid String scaleDbId, @Valid String observationVariableDbId,
-			@Valid String externalReferenceID, @Valid String externalReferenceSource, Metadata metadata) {
+	public List<Scale> findScales(String scaleDbId, String observationVariableDbId, String ontologyDbId,
+			String commonCropName, String programDbId, String externalReferenceId, String externalReferenceID,
+			String externalReferenceSource, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<ScaleEntity> searchQuery = new SearchQueryBuilder<ScaleEntity>(ScaleEntity.class);
 		if (observationVariableDbId != null) {

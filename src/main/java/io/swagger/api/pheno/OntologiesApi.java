@@ -6,10 +6,17 @@
 package io.swagger.api.pheno;
 
 import io.swagger.model.pheno.OntologyListResponse;
+import io.swagger.model.pheno.OntologyNewRequest;
+import io.swagger.model.pheno.OntologySingleResponse;
 import io.swagger.annotations.*;
+
+import java.util.List;
+
+import javax.websocket.server.PathParam;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,10 +36,48 @@ public interface OntologiesApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/ontologies", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<OntologyListResponse> ontologiesGet(
-			@ApiParam(value = "") @Valid @RequestParam(value = "ontologyDbId", required = false) String ontologyDbId,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "ontologyDbId") @Valid @RequestParam(value = "ontologyDbId", required = false) String ontologyDbId,
+			@ApiParam(value = "ontologyName") @Valid @RequestParam(value = "ontologyName", required = false) String ontologyName,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
+
+	@ApiOperation(value = "Get a specific Ontology record by its ontologyDbId", notes = "Use this endpoint to retrieve a specific Ontology record by its ontologyDbId.  Each Ontology record describes the metadata of an existing ontology, it does not include all the terms that are part of that ontology.", authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Ontologies" })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = OntologySingleResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/ontologies/ontologyDbId", produces = { "application/json" }, method = RequestMethod.GET)
+	ResponseEntity<OntologySingleResponse> ontologiesOntologyDbIdGet(
+			@ApiParam(value = "The unique identifier for an ontology definition. Use this parameter to filter results based on a specific ontology   Use `GET /ontologies` to find the list of available ontologies on a server.", required = true) @PathParam("ontologyDbId") String ontologyDbId,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
+
+	@ApiOperation(value = "Update a specific Ontology record", notes = "Use this endpoint to update a specific Ontology record.  Each Ontology record describes the metadata of an existing ontology, it does not include all the terms that are part of that ontology.", authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Ontologies" })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = OntologySingleResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/ontologies/ontologyDbId", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.PUT)
+	ResponseEntity<OntologySingleResponse> ontologiesOntologyDbIdPut(
+			@ApiParam(value = "The unique identifier for an ontology definition. Use this parameter to filter results based on a specific ontology   Use `GET /ontologies` to find the list of available ontologies on a server.", required = true) @PathParam("ontologyDbId") String ontologyDbId,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization,
+			@ApiParam(value = "") @Valid @RequestBody OntologyNewRequest body) throws BrAPIServerException;
+
+	@ApiOperation(value = "Create a new Ontology record in the database", notes = "Use this endpoint to create a new Ontology record in the database Each Ontology record describes the metadata of an existing ontology, it does not include all the terms that are part of that ontology.", authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Ontologies" })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = OntologyListResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/ontologies", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.POST)
+	ResponseEntity<OntologyListResponse> ontologiesPost(
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization,
+			@ApiParam(value = "") @Valid @RequestBody List<OntologyNewRequest> body) throws BrAPIServerException;
 
 }

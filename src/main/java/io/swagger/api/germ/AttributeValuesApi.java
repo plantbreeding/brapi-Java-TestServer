@@ -40,7 +40,8 @@ public interface AttributeValuesApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<GermplasmAttributeValueSingleResponse> attributevaluesAttributeValueDbIdGet(
 			@ApiParam(value = "The unique id for an attribute value", required = true) @PathVariable("attributeValueDbId") String attributeValueDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Update an existing Germplasm Attribute Value", nickname = "attributevaluesAttributeValueDbIdPut", notes = "Update an existing Germplasm Attribute Value", response = GermplasmAttributeValueSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Germplasm Attribute Values", })
@@ -54,7 +55,8 @@ public interface AttributeValuesApi {
 	ResponseEntity<GermplasmAttributeValueSingleResponse> attributevaluesAttributeValueDbIdPut(
 			@ApiParam(value = "The unique id for an attribute value", required = true) @PathVariable("attributeValueDbId") String attributeValueDbId,
 			@ApiParam(value = "") @Valid @RequestBody GermplasmAttributeValueNewRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the Germplasm Attribute Values", nickname = "attributevaluesGet", notes = "Get the Germplasm Attribute Values", response = GermplasmAttributeValueListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Germplasm Attribute Values", })
@@ -69,12 +71,15 @@ public interface AttributeValuesApi {
 			@ApiParam(value = "attributeDbId") @Valid @RequestParam(value = "attributeDbId", required = false) String attributeDbId,
 			@ApiParam(value = "attributeName") @Valid @RequestParam(value = "attributeName", required = false) String attributeName,
 			@ApiParam(value = "germplasmDbId") @Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
+			@ApiParam(value = "commonCropName") @Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@ApiParam(value = "programDbId") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
 			@ApiParam(value = "externalReferenceId") @Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
 			@ApiParam(value = "externalReferenceID") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@ApiParam(value = "externalReferenceSource") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Create new Germplasm Attribute Values", nickname = "attributevaluesPost", notes = "Create new Germplasm Attribute Values", response = GermplasmAttributeValueListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Germplasm Attribute Values", })
@@ -87,7 +92,8 @@ public interface AttributeValuesApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<GermplasmAttributeValueListResponse> attributevaluesPost(
 			@ApiParam(value = "") @Valid @RequestBody List<GermplasmAttributeValueNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Submit a search request for Germplasm Attribute Values", nickname = "searchAttributevaluesPost", notes = "Search for a set of Germplasm Attribute Values based on some criteria          See Search Services for additional implementation details.", response = GermplasmAttributeValueListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Germplasm Attribute Values", })
@@ -101,7 +107,8 @@ public interface AttributeValuesApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<? extends BrAPIResponse> searchAttributevaluesPost(
 			@ApiParam(value = "") @Valid @RequestBody GermplasmAttributeValueSearchRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the results of a Germplasm Attribute Values search request", nickname = "searchAttributevaluesSearchResultsDbIdGet", notes = "Get the results of a Germplasm Attribute Values search request  See Search Services for additional implementation details.", response = GermplasmAttributeValueListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Germplasm Attribute Values", })
@@ -118,6 +125,7 @@ public interface AttributeValuesApi {
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
 			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 }

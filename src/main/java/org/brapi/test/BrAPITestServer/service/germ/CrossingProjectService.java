@@ -35,9 +35,11 @@ public class CrossingProjectService {
 		this.programService = programService;
 	}
 
-	public List<CrossingProject> findCrossingProjects(@Valid String crossingProjectDbId,
-			@Valid String externalReferenceID, @Valid String externalReferenceSource, Metadata metadata) {
+	public List<CrossingProject> findCrossingProjects(String crossingProjectDbId, String crossingProjectName,
+			Boolean includePotentialParents, String commonCropName, String programDbId, String externalReferenceId,
+			String externalReferenceID, String externalReferenceSource, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
+
 		SearchQueryBuilder<CrossingProjectEntity> searchQuery = new SearchQueryBuilder<CrossingProjectEntity>(
 				CrossingProjectEntity.class);
 
@@ -61,7 +63,8 @@ public class CrossingProjectService {
 		return getCrossingProjectEntity(crossingProjectDbId, HttpStatus.BAD_REQUEST);
 	}
 
-	public CrossingProjectEntity getCrossingProjectEntity(String crossingProjectDbId, HttpStatus errorStatus) throws BrAPIServerException {
+	public CrossingProjectEntity getCrossingProjectEntity(String crossingProjectDbId, HttpStatus errorStatus)
+			throws BrAPIServerException {
 		CrossingProjectEntity crossingProject = null;
 		Optional<CrossingProjectEntity> entityOpt = crossingProjectRepository.findById(crossingProjectDbId);
 		if (entityOpt.isPresent()) {

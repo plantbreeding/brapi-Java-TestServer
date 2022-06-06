@@ -33,8 +33,9 @@ public class TraitService {
 		this.ontologyService = ontologyService;
 	}
 
-	public List<Trait> findTraits(@Valid String traitDbId, @Valid String observationVariableDbId,
-			@Valid String externalReferenceID, @Valid String externalReferenceSource, Metadata metadata) {
+	public List<Trait> findTraits(String traitDbId, String observationVariableDbId, String ontologyDbId,
+			String commonCropName, String programDbId, String externalReferenceId, String externalReferenceID,
+			String externalReferenceSource, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<TraitEntity> searchQuery = new SearchQueryBuilder<TraitEntity>(TraitEntity.class);
 		if (observationVariableDbId != null) {
@@ -105,18 +106,22 @@ public class TraitService {
 	public TraitEntity updateEntity(TraitEntity entity, @Valid TraitBaseClass trait) throws BrAPIServerException {
 
 		entity.setAdditionalInfo(UpdateUtility.replaceField(trait.getAdditionalInfo(), entity.getAdditionalInfoMap()));
-		entity.setAlternativeAbbreviations(UpdateUtility.replaceField(trait.getAlternativeAbbreviations(), entity.getAlternativeAbbreviations()));
+		entity.setAlternativeAbbreviations(
+				UpdateUtility.replaceField(trait.getAlternativeAbbreviations(), entity.getAlternativeAbbreviations()));
 		entity.setAttribute(UpdateUtility.replaceField(trait.getAttribute(), entity.getAttribute()));
 		entity.setEntity(UpdateUtility.replaceField(trait.getEntity(), entity.getEntity()));
-		entity.setExternalReferences(UpdateUtility.replaceField(trait.getExternalReferences(), entity.getExternalReferencesMap()));
-		entity.setMainAbbreviation(UpdateUtility.replaceField(trait.getMainAbbreviation(), entity.getMainAbbreviation()));
+		entity.setExternalReferences(
+				UpdateUtility.replaceField(trait.getExternalReferences(), entity.getExternalReferencesMap()));
+		entity.setMainAbbreviation(
+				UpdateUtility.replaceField(trait.getMainAbbreviation(), entity.getMainAbbreviation()));
 		ontologyService.updateOntologyReference(entity, trait.getOntologyReference());
 		entity.setStatus(UpdateUtility.replaceField(trait.getStatus(), entity.getStatus()));
 		entity.setSynonyms(UpdateUtility.replaceField(trait.getSynonyms(), entity.getSynonyms()));
 		entity.setTraitClass(UpdateUtility.replaceField(trait.getTraitClass(), entity.getTraitClass()));
-		entity.setTraitDescription(UpdateUtility.replaceField(trait.getTraitDescription(), entity.getTraitDescription()));
+		entity.setTraitDescription(
+				UpdateUtility.replaceField(trait.getTraitDescription(), entity.getTraitDescription()));
 		entity.setTraitName(UpdateUtility.replaceField(trait.getTraitName(), entity.getTraitName()));
-		
+
 		return entity;
 	}
 

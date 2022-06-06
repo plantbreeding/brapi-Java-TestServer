@@ -39,7 +39,6 @@ import org.springframework.stereotype.Service;
 
 import io.swagger.model.IndexPagination;
 import io.swagger.model.Metadata;
-import io.swagger.model.pheno.Observation;
 import io.swagger.model.pheno.ObservationTableHeaderRowEnum;
 import io.swagger.model.pheno.ObservationTableObservationVariables;
 import io.swagger.model.pheno.ObservationTreatment;
@@ -82,26 +81,35 @@ public class ObservationUnitService {
 		this.observationVariableService = observationVariableService;
 	}
 
-	public List<ObservationUnit> findObservationUnits(String observationUnitDbId, String germplasmDbId,
-			String studyDbId, String locationDbId, String trialDbId, String programDbId, String seasonDbId,
-			String observationUnitLevelName, String observationUnitLevelOrder, String observationUnitLevelCode,
-			Boolean includeObservations, String externalReferenceId, String externalReferenceID, String externalReferenceSource,
-			Metadata metadata) {
-		ObservationUnitSearchRequest request = buildObservationUnitsSearchRequest(observationUnitDbId, germplasmDbId,
-				studyDbId, locationDbId, trialDbId, programDbId, seasonDbId, observationUnitLevelName,
-				observationUnitLevelOrder, observationUnitLevelCode, includeObservations, externalReferenceId, externalReferenceID,
-				externalReferenceSource);
+	public List<ObservationUnit> findObservationUnits(String observationUnitDbId, String observationUnitName,
+			String germplasmDbId, String studyDbId, String locationDbId, String trialDbId, String programDbId,
+			String seasonDbId, String observationUnitLevelName, String observationUnitLevelOrder,
+			String observationUnitLevelCode, String observationUnitLevelRelationshipName,
+			String observationUnitLevelRelationshipOrder, String observationUnitLevelRelationshipCode,
+			String observationUnitLevelRelationshipDbId, String commonCropName, Boolean includeObservations,
+			String externalReferenceId, String externalReferenceID, String externalReferenceSource, Metadata metadata) {
+		ObservationUnitSearchRequest request = buildObservationUnitsSearchRequest(observationUnitDbId,
+				observationUnitName, germplasmDbId, studyDbId, locationDbId, trialDbId, programDbId, seasonDbId,
+				observationUnitLevelName, observationUnitLevelOrder, observationUnitLevelCode,
+				observationUnitLevelRelationshipName, observationUnitLevelRelationshipOrder,
+				observationUnitLevelRelationshipCode, observationUnitLevelRelationshipDbId, commonCropName,
+				includeObservations, externalReferenceId, externalReferenceID, externalReferenceSource);
 		return findObservationUnits(request, metadata);
 	}
 
 	private ObservationUnitSearchRequest buildObservationUnitsSearchRequest(String observationUnitDbId,
-			String germplasmDbId, String studyDbId, String locationDbId, String trialDbId, String programDbId,
-			String seasonDbId, String observationUnitLevelName, String observationUnitLevelOrder,
-			String observationUnitLevelCode, Boolean includeObservations, String externalReferenceId, String externalReferenceID,
-			String externalReferenceSource) {
+			String observationUnitName, String germplasmDbId, String studyDbId, String locationDbId, String trialDbId,
+			String programDbId, String seasonDbId, String observationUnitLevelName, String observationUnitLevelOrder,
+			String observationUnitLevelCode, String observationUnitLevelRelationshipName,
+			String observationUnitLevelRelationshipOrder, String observationUnitLevelRelationshipCode,
+			String observationUnitLevelRelationshipDbId, String commonCropName, Boolean includeObservations,
+			String externalReferenceId, String externalReferenceID, String externalReferenceSource) {
+
 		ObservationUnitSearchRequest request = new ObservationUnitSearchRequest();
 		if (observationUnitDbId != null)
 			request.addObservationUnitDbIdsItem(observationUnitDbId);
+		if (observationUnitName != null)
+			request.addObservationUnitNamesItem(observationUnitName);
 		if (germplasmDbId != null)
 			request.addGermplasmDbIdsItem(germplasmDbId);
 		if (studyDbId != null)
@@ -124,6 +132,17 @@ public class ObservationUnitService {
 				level.setLevelCode(observationUnitLevelCode);
 			request.addObservationLevelsItem(level);
 		}
+		if (observationUnitLevelRelationshipName != null || observationUnitLevelRelationshipOrder != null
+				|| observationUnitLevelRelationshipCode != null) {
+			ObservationUnitLevelRelationship level = new ObservationUnitLevelRelationship();
+			if (observationUnitLevelRelationshipName != null)
+				level.setLevelName(ObservationUnitHierarchyLevelEnum.fromValue(observationUnitLevelRelationshipName));
+			if (observationUnitLevelRelationshipOrder != null)
+				level.setLevelOrder(Integer.decode(observationUnitLevelRelationshipOrder));
+			if (observationUnitLevelRelationshipCode != null)
+				level.setLevelCode(observationUnitLevelRelationshipCode);
+			request.addObservationLevelRelationshipsItem(level);
+		}
 		if (includeObservations != null)
 			request.setIncludeObservations(includeObservations);
 
@@ -134,15 +153,21 @@ public class ObservationUnitService {
 
 	public ObservationUnitTable findObservationUnitsTable(String observationUnitDbId, String germplasmDbId,
 			String observationVariableDbId, String studyDbId, String locationDbId, String trialDbId, String programDbId,
-			String seasonDbId, String observationLevel) {
+			String seasonDbId, String observationLevel, String observationUnitLevelName,
+			String observationUnitLevelOrder, String observationUnitLevelCode,
+			String observationUnitLevelRelationshipName, String observationUnitLevelRelationshipOrder,
+			String observationUnitLevelRelationshipCode, String observationUnitLevelRelationshipDbId) {
 
-		ObservationUnitSearchRequest ouRequest = buildObservationUnitsSearchRequest(observationUnitDbId, germplasmDbId,
-				studyDbId, locationDbId, trialDbId, programDbId, seasonDbId,
-				ObservationUnitHierarchyLevelEnum.PLOT.name(), null, null, null, null, null, null);
+		ObservationUnitSearchRequest ouRequest = buildObservationUnitsSearchRequest(observationUnitDbId, null,
+				germplasmDbId, studyDbId, locationDbId, trialDbId, programDbId, seasonDbId, observationUnitLevelName,
+				observationUnitLevelOrder, observationUnitLevelCode, observationUnitLevelRelationshipName,
+				observationUnitLevelRelationshipOrder, observationUnitLevelRelationshipCode,
+				observationUnitLevelRelationshipDbId, null, false, null, null, null);
 		Page<ObservationUnitEntity> observationUnits = findObservationUnitEntities(ouRequest, null);
 
 		ObservationVariableSearchRequest varRequest = new ObservationVariableSearchRequest();
-		varRequest.setObservationUnitDbIds(observationUnits.stream().map(ou -> ou.getId()).collect(Collectors.toList()));
+		varRequest
+				.setObservationUnitDbIds(observationUnits.stream().map(ou -> ou.getId()).collect(Collectors.toList()));
 		List<ObservationVariable> variables = observationVariableService.findObservationVariables(varRequest, null);
 
 		ObservationUnitTable table = new ObservationUnitTable();
@@ -284,25 +309,30 @@ public class ObservationUnitService {
 
 	public List<ObservationUnitHierarchyLevel> findObservationLevels(String studyDbId, String trialDbId,
 			String programDbId, Metadata metadata) {
-		
-		List<ObservationUnitLevelRelationship> allLevels = Arrays.asList(ObservationUnitHierarchyLevelEnum.values()).stream().map(levelEnum -> {
-			ObservationUnitLevelRelationship rel = new ObservationUnitLevelRelationship();
-			rel.setLevelName(levelEnum);
-			return rel;
-		}).collect(Collectors.toList());
-		
-		ObservationUnitSearchRequest levelsSearch = buildObservationUnitsSearchRequest(null, null, studyDbId, null, trialDbId, programDbId, null, null, null, null, false, null, null, null);
+
+		List<ObservationUnitLevelRelationship> allLevels = Arrays.asList(ObservationUnitHierarchyLevelEnum.values())
+				.stream().map(levelEnum -> {
+					ObservationUnitLevelRelationship rel = new ObservationUnitLevelRelationship();
+					rel.setLevelName(levelEnum);
+					return rel;
+				}).collect(Collectors.toList());
+
+		ObservationUnitSearchRequest levelsSearch = buildObservationUnitsSearchRequest(null, null, null, studyDbId,
+				null, trialDbId, programDbId, null, null, null, null, null, null, null, null, null, false, null, null,
+				null);
 		levelsSearch.setObservationLevelRelationships(allLevels);
-		
+
 		List<ObservationUnit> units = new ArrayList<>();
-		List<ObservationUnit> someunits = findObservationUnits(levelsSearch, new Metadata().pagination(new IndexPagination()));	
+		List<ObservationUnit> someunits = findObservationUnits(levelsSearch,
+				new Metadata().pagination(new IndexPagination()));
 		units.addAll(someunits);
-		
+
 		levelsSearch.setObservationLevelRelationships(null);
 		levelsSearch.setObservationLevels(allLevels);
-		List<ObservationUnit> moreUnits = findObservationUnits(levelsSearch, new Metadata().pagination(new IndexPagination()));
+		List<ObservationUnit> moreUnits = findObservationUnits(levelsSearch,
+				new Metadata().pagination(new IndexPagination()));
 		units.addAll(moreUnits);
-				
+
 		List<ObservationUnitHierarchyLevel> levels = units.stream()
 				.filter(unit -> unit.getObservationUnitPosition() != null)
 				.filter(unit -> unit.getObservationUnitPosition().getObservationLevelRelationships() != null)
@@ -505,59 +535,59 @@ public class ObservationUnitService {
 			if (obsUnit.getStudy() != null) {
 				StudyEntity study = obsUnit.getStudy();
 				if (study.getSeasons() != null && !study.getSeasons().isEmpty()) {
-					row.add(printIfNotNull(study.getSeasons().get(0).getYear())); //YEAR
-				}else {
-					row.add(""); //YEAR
+					row.add(printIfNotNull(study.getSeasons().get(0).getYear())); // YEAR
+				} else {
+					row.add(""); // YEAR
 				}
 
-				row.add(printIfNotNull(study.getId())); //STUDYDBID
-				row.add(printIfNotNull(study.getStudyName())); //STUDYNAME
-				
+				row.add(printIfNotNull(study.getId())); // STUDYDBID
+				row.add(printIfNotNull(study.getStudyName())); // STUDYNAME
+
 				if (study.getLocation() != null) {
-					row.add(printIfNotNull(study.getLocation().getId())); //LOCATIONDBID
-					row.add(printIfNotNull(study.getLocation().getLocationName())); //LOCATIONNAME
-				}else {
-					row.add(""); //LOCATIONDBID
-					row.add(""); //LOCATIONNAME
+					row.add(printIfNotNull(study.getLocation().getId())); // LOCATIONDBID
+					row.add(printIfNotNull(study.getLocation().getLocationName())); // LOCATIONNAME
+				} else {
+					row.add(""); // LOCATIONDBID
+					row.add(""); // LOCATIONNAME
 				}
-				
+
 			} else {
-				row.add(""); //YEAR
-				row.add(""); //STUDYDBID
-				row.add(""); //STUDYNAME
-				row.add(""); //LOCATIONDBID
-				row.add(""); //LOCATIONNAME
+				row.add(""); // YEAR
+				row.add(""); // STUDYDBID
+				row.add(""); // STUDYNAME
+				row.add(""); // LOCATIONDBID
+				row.add(""); // LOCATIONNAME
 			}
 
-			if(obsUnit.getGermplasm() != null) {
-				row.add(printIfNotNull(obsUnit.getGermplasm().getId())); //GERMPLASMDBID
-				row.add(printIfNotNull(obsUnit.getGermplasm().getGermplasmName())); //GERMPLASMNAME
-			}else {
-				row.add(""); //GERMPLASMDBID
-				row.add(""); //GERMPLASMNAME
+			if (obsUnit.getGermplasm() != null) {
+				row.add(printIfNotNull(obsUnit.getGermplasm().getId())); // GERMPLASMDBID
+				row.add(printIfNotNull(obsUnit.getGermplasm().getGermplasmName())); // GERMPLASMNAME
+			} else {
+				row.add(""); // GERMPLASMDBID
+				row.add(""); // GERMPLASMNAME
 			}
 
-			row.add(printIfNotNull(obsUnit.getId())); //OBSERVATIONUNITDBID
-			row.add(printIfNotNull(obsUnit.getObservationUnitName())); //OBSERVATIONUNITNAME
-			
-			if(obsUnit.getPosition() != null) {
-				row.add(printIfNotNull(obsUnit.getPosition().getPositionCoordinateX())); //POSITIONCOORDINATEX
-				row.add(printIfNotNull(obsUnit.getPosition().getPositionCoordinateY())); //POSITIONCOORDINATEY
-				row.add(printIfNotNull(obsUnit.getPosition().getFieldCode())); //FIELD
-				row.add(printIfNotNull(obsUnit.getPosition().getBlockCode())); //BLOCK
-				row.add(printIfNotNull(obsUnit.getPosition().getEntryCode())); //ENTRY
-				row.add(printIfNotNull(obsUnit.getPosition().getRepCode())); //REP
-				row.add(printIfNotNull(obsUnit.getPosition().getPlotCode())); //PLOT
-				row.add(printIfNotNull(obsUnit.getPosition().getPlantCode())); //PLANT
-			}else {
-				row.add(""); //POSITIONCOORDINATEX
-				row.add(""); //POSITIONCOORDINATEY
-				row.add(""); //FIELD
-				row.add(""); //BLOCK
-				row.add(""); //ENTRY
-				row.add(""); //REP
-				row.add(""); //PLOT
-				row.add(""); //PLANT
+			row.add(printIfNotNull(obsUnit.getId())); // OBSERVATIONUNITDBID
+			row.add(printIfNotNull(obsUnit.getObservationUnitName())); // OBSERVATIONUNITNAME
+
+			if (obsUnit.getPosition() != null) {
+				row.add(printIfNotNull(obsUnit.getPosition().getPositionCoordinateX())); // POSITIONCOORDINATEX
+				row.add(printIfNotNull(obsUnit.getPosition().getPositionCoordinateY())); // POSITIONCOORDINATEY
+				row.add(printIfNotNull(obsUnit.getPosition().getFieldCode())); // FIELD
+				row.add(printIfNotNull(obsUnit.getPosition().getBlockCode())); // BLOCK
+				row.add(printIfNotNull(obsUnit.getPosition().getEntryCode())); // ENTRY
+				row.add(printIfNotNull(obsUnit.getPosition().getRepCode())); // REP
+				row.add(printIfNotNull(obsUnit.getPosition().getPlotCode())); // PLOT
+				row.add(printIfNotNull(obsUnit.getPosition().getPlantCode())); // PLANT
+			} else {
+				row.add(""); // POSITIONCOORDINATEX
+				row.add(""); // POSITIONCOORDINATEY
+				row.add(""); // FIELD
+				row.add(""); // BLOCK
+				row.add(""); // ENTRY
+				row.add(""); // REP
+				row.add(""); // PLOT
+				row.add(""); // PLANT
 			}
 
 			for (ObservationVariable var : variables) {

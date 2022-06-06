@@ -7,7 +7,6 @@ package io.swagger.api.pheno;
 
 import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Model202AcceptedSearchResponse;
-import io.swagger.model.WSMIMEDataTypes;
 import io.swagger.model.pheno.ObservationListResponse;
 import io.swagger.model.pheno.ObservationNewRequest;
 import io.swagger.model.pheno.ObservationSearchRequest;
@@ -48,15 +47,20 @@ public interface ObservationsApi {
 			@ApiParam(value = "studyDbId") @Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
 			@ApiParam(value = "locationDbId") @Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
 			@ApiParam(value = "trialDbId") @Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
-			@ApiParam(value = "programDbId") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
 			@ApiParam(value = "seasonDbId") @Valid @RequestParam(value = "seasonDbId", required = false) String seasonDbId,
+			@ApiParam(value = "observationTimeStampRangeStart") @Valid @RequestParam(value = "observationTimeStampRangeStart", required = false) String observationTimeStampRangeStart,
+			@ApiParam(value = "observationTimeStampRangeEnd") @Valid @RequestParam(value = "observationTimeStampRangeEnd", required = false) String observationTimeStampRangeEnd,
 			@ApiParam(value = "observationUnitLevelName") @Valid @RequestParam(value = "observationUnitLevelName", required = false) String observationUnitLevelName,
 			@ApiParam(value = "observationUnitLevelOrder") @Valid @RequestParam(value = "observationUnitLevelOrder", required = false) String observationUnitLevelOrder,
 			@ApiParam(value = "observationUnitLevelCode") @Valid @RequestParam(value = "observationUnitLevelCode", required = false) String observationUnitLevelCode,
-			@ApiParam(value = "observationTimeStampRangeStart") @Valid @RequestParam(value = "observationTimeStampRangeStart", required = false) String observationTimeStampRangeStart,
-			@ApiParam(value = "observationTimeStampRangeEnd") @Valid @RequestParam(value = "observationTimeStampRangeEnd", required = false) String observationTimeStampRangeEnd,
-			@ApiParam(value = "externalReferenceId") @Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@ApiParam(value = "observationUnitLevelRelationshipName") @Valid @RequestParam(value = "observationUnitLevelRelationshipName", required = false) String observationUnitLevelRelationshipName,
+			@ApiParam(value = "observationUnitLevelRelationshipOrder") @Valid @RequestParam(value = "observationUnitLevelRelationshipOrder", required = false) String observationUnitLevelRelationshipOrder,
+			@ApiParam(value = "observationUnitLevelRelationshipCode") @Valid @RequestParam(value = "observationUnitLevelRelationshipCode", required = false) String observationUnitLevelRelationshipCode,
+			@ApiParam(value = "observationUnitLevelRelationshipDbId") @Valid @RequestParam(value = "observationUnitLevelRelationshipDbId", required = false) String observationUnitLevelRelationshipDbId,
+			@ApiParam(value = "commonCropName") @Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@ApiParam(value = "programDbId") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
 			@ApiParam(value = "externalReferenceID") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@ApiParam(value = "externalReferenceId") @Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
 			@ApiParam(value = "externalReferenceSource") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -142,6 +146,13 @@ public interface ObservationsApi {
 			@ApiParam(value = "searchResultsDbId") @Valid @RequestParam(value = "searchResultsDbId", required = false) String searchResultsDbId,
 			@ApiParam(value = "observationTimeStampRangeStart") @Valid @RequestParam(value = "observationTimeStampRangeStart", required = false) String observationTimeStampRangeStart,
 			@ApiParam(value = "observationTimeStampRangeEnd") @Valid @RequestParam(value = "observationTimeStampRangeEnd", required = false) String observationTimeStampRangeEnd,
+			@ApiParam(value = "observationUnitLevelName") @Valid @RequestParam(value = "observationUnitLevelName", required = false) String observationUnitLevelName,
+			@ApiParam(value = "observationUnitLevelOrder") @Valid @RequestParam(value = "observationUnitLevelOrder", required = false) String observationUnitLevelOrder,
+			@ApiParam(value = "observationUnitLevelCode") @Valid @RequestParam(value = "observationUnitLevelCode", required = false) String observationUnitLevelCode,
+			@ApiParam(value = "observationUnitLevelRelationshipName") @Valid @RequestParam(value = "observationUnitLevelRelationshipName", required = false) String observationUnitLevelRelationshipName,
+			@ApiParam(value = "observationUnitLevelRelationshipOrder") @Valid @RequestParam(value = "observationUnitLevelRelationshipOrder", required = false) String observationUnitLevelRelationshipOrder,
+			@ApiParam(value = "observationUnitLevelRelationshipCode") @Valid @RequestParam(value = "observationUnitLevelRelationshipCode", required = false) String observationUnitLevelRelationshipCode,
+			@ApiParam(value = "observationUnitLevelRelationshipDbId") @Valid @RequestParam(value = "observationUnitLevelRelationshipDbId", required = false) String observationUnitLevelRelationshipDbId,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
 

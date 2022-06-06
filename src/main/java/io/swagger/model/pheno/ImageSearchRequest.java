@@ -10,6 +10,8 @@ import java.util.List;
 import java.time.OffsetDateTime;
 
 public class ImageSearchRequest extends SearchRequest {
+	@JsonProperty("commonCropNames")
+	private List<String> commonCropNames = null;
 
 	@JsonProperty("descriptiveOntologyTerms")
 	private List<String> descriptiveOntologyTerms = null;
@@ -58,6 +60,33 @@ public class ImageSearchRequest extends SearchRequest {
 
 	@JsonProperty("observationUnitDbIds")
 	private List<String> observationUnitDbIds = null;
+
+	@JsonProperty("programDbIds")
+	private List<String> programDbIds = null;
+
+	@JsonProperty("programNames")
+	private List<String> programNames = null;
+
+	public ImageSearchRequest commonCropNames(List<String> commonCropNames) {
+		this.commonCropNames = commonCropNames;
+		return this;
+	}
+
+	public ImageSearchRequest addCommonCropNamesItem(String commonCropNamesItem) {
+		if (this.commonCropNames == null) {
+			this.commonCropNames = new ArrayList<String>();
+		}
+		this.commonCropNames.add(commonCropNamesItem);
+		return this;
+	}
+
+	public List<String> getCommonCropNames() {
+		return commonCropNames;
+	}
+
+	public void setCommonCropNames(List<String> commonCropNames) {
+		this.commonCropNames = commonCropNames;
+	}
 
 	public ImageSearchRequest addImageDbIdsItem(String imageDbIdsItem) {
 		if (this.imageDbIds == null) {
@@ -318,6 +347,48 @@ public class ImageSearchRequest extends SearchRequest {
 		this.observationUnitDbIds = observationUnitDbIds;
 	}
 
+	public ImageSearchRequest programDbIds(List<String> programDbIds) {
+		this.programDbIds = programDbIds;
+		return this;
+	}
+
+	public ImageSearchRequest addProgramDbIdsItem(String programDbIdsItem) {
+		if (this.programDbIds == null) {
+			this.programDbIds = new ArrayList<String>();
+		}
+		this.programDbIds.add(programDbIdsItem);
+		return this;
+	}
+
+	public List<String> getProgramDbIds() {
+		return programDbIds;
+	}
+
+	public void setProgramDbIds(List<String> programDbIds) {
+		this.programDbIds = programDbIds;
+	}
+
+	public ImageSearchRequest programNames(List<String> programNames) {
+		this.programNames = programNames;
+		return this;
+	}
+
+	public ImageSearchRequest addProgramNamesItem(String programNamesItem) {
+		if (this.programNames == null) {
+			this.programNames = new ArrayList<String>();
+		}
+		this.programNames.add(programNamesItem);
+		return this;
+	}
+
+	public List<String> getProgramNames() {
+		return programNames;
+	}
+
+	public void setProgramNames(List<String> programNames) {
+		this.programNames = programNames;
+	}
+
 	@Override
 	public boolean equals(java.lang.Object o) {
 		if (this == o) {
@@ -327,9 +398,11 @@ public class ImageSearchRequest extends SearchRequest {
 			return false;
 		}
 		ImageSearchRequest imageSearchRequest = (ImageSearchRequest) o;
-		return Objects.equals(this.externalReferenceIds, imageSearchRequest.externalReferenceIds)
-				&& Objects.equals(this.externalReferenceSources, imageSearchRequest.externalReferenceSources)
+		return Objects.equals(this.commonCropNames, imageSearchRequest.commonCropNames)
 				&& Objects.equals(this.descriptiveOntologyTerms, imageSearchRequest.descriptiveOntologyTerms)
+				&& Objects.equals(this.externalReferenceIds, imageSearchRequest.externalReferenceIds)
+				&& Objects.equals(this.externalReferenceSources, imageSearchRequest.externalReferenceSources)
+				&& Objects.equals(this.imageDbIds, imageSearchRequest.imageDbIds)
 				&& Objects.equals(this.imageFileNames, imageSearchRequest.imageFileNames)
 				&& Objects.equals(this.imageFileSizeMax, imageSearchRequest.imageFileSizeMax)
 				&& Objects.equals(this.imageFileSizeMin, imageSearchRequest.imageFileSizeMin)
@@ -344,15 +417,17 @@ public class ImageSearchRequest extends SearchRequest {
 				&& Objects.equals(this.mimeTypes, imageSearchRequest.mimeTypes)
 				&& Objects.equals(this.observationDbIds, imageSearchRequest.observationDbIds)
 				&& Objects.equals(this.observationUnitDbIds, imageSearchRequest.observationUnitDbIds)
-				&& super.equals(o);
+				&& Objects.equals(this.programDbIds, imageSearchRequest.programDbIds)
+				&& Objects.equals(this.programNames, imageSearchRequest.programNames) && super.equals(o);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(externalReferenceIds, externalReferenceSources, descriptiveOntologyTerms, imageFileNames,
-				imageFileSizeMax, imageFileSizeMin, imageHeightMax, imageHeightMin, imageLocation, imageNames,
-				imageTimeStampRangeEnd, imageTimeStampRangeStart, imageWidthMax, imageWidthMin, mimeTypes,
-				observationDbIds, observationUnitDbIds, super.hashCode());
+		return Objects.hash(commonCropNames, descriptiveOntologyTerms, externalReferenceIds, externalReferenceSources,
+				imageDbIds, imageFileNames, imageFileSizeMax, imageFileSizeMin, imageHeightMax, imageHeightMin,
+				imageLocation, imageNames, imageTimeStampRangeEnd, imageTimeStampRangeStart, imageWidthMax,
+				imageWidthMin, mimeTypes, observationDbIds, observationUnitDbIds, programDbIds, programNames,
+				super.hashCode());
 	}
 
 	@Override
@@ -360,9 +435,11 @@ public class ImageSearchRequest extends SearchRequest {
 		StringBuilder sb = new StringBuilder();
 		sb.append("class ImageSearchRequest {\n");
 		sb.append("    ").append(toIndentedString(super.toString())).append("\n");
+		sb.append("    commonCropNames: ").append(toIndentedString(commonCropNames)).append("\n");
+		sb.append("    descriptiveOntologyTerms: ").append(toIndentedString(descriptiveOntologyTerms)).append("\n");
 		sb.append("    externalReferenceIds: ").append(toIndentedString(externalReferenceIds)).append("\n");
 		sb.append("    externalReferenceSources: ").append(toIndentedString(externalReferenceSources)).append("\n");
-		sb.append("    descriptiveOntologyTerms: ").append(toIndentedString(descriptiveOntologyTerms)).append("\n");
+		sb.append("    imageDbIds: ").append(toIndentedString(imageDbIds)).append("\n");
 		sb.append("    imageFileNames: ").append(toIndentedString(imageFileNames)).append("\n");
 		sb.append("    imageFileSizeMax: ").append(toIndentedString(imageFileSizeMax)).append("\n");
 		sb.append("    imageFileSizeMin: ").append(toIndentedString(imageFileSizeMin)).append("\n");
@@ -377,6 +454,8 @@ public class ImageSearchRequest extends SearchRequest {
 		sb.append("    mimeTypes: ").append(toIndentedString(mimeTypes)).append("\n");
 		sb.append("    observationDbIds: ").append(toIndentedString(observationDbIds)).append("\n");
 		sb.append("    observationUnitDbIds: ").append(toIndentedString(observationUnitDbIds)).append("\n");
+		sb.append("    programDbIds: ").append(toIndentedString(programDbIds)).append("\n");
+		sb.append("    programNames: ").append(toIndentedString(programNames)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}
@@ -391,12 +470,16 @@ public class ImageSearchRequest extends SearchRequest {
 	@Override
 	public Integer getTotalParameterCount() {
 		Integer count = 0;
+		if (this.commonCropNames != null)
+			count += this.commonCropNames.size();
+		if (this.descriptiveOntologyTerms != null)
+			count += this.descriptiveOntologyTerms.size();
 		if (this.externalReferenceIds != null)
 			count += this.externalReferenceIds.size();
 		if (this.externalReferenceSources != null)
 			count += this.externalReferenceSources.size();
-		if (this.descriptiveOntologyTerms != null)
-			count += this.descriptiveOntologyTerms.size();
+		if (this.imageDbIds != null)
+			count += this.imageDbIds.size();
 		if (this.imageFileNames != null)
 			count += this.imageFileNames.size();
 		if (this.imageFileSizeMax != null)
@@ -425,6 +508,10 @@ public class ImageSearchRequest extends SearchRequest {
 			count += this.observationDbIds.size();
 		if (this.observationUnitDbIds != null)
 			count += this.observationUnitDbIds.size();
+		if (this.programDbIds != null)
+			count += this.programDbIds.size();
+		if (this.programNames != null)
+			count += this.programNames.size();
 		return count;
 	}
 }

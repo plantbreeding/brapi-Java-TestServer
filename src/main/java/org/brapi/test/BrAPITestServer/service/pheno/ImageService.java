@@ -19,7 +19,6 @@ import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import io.swagger.model.Metadata;
 import io.swagger.model.pheno.Image;
@@ -40,9 +39,9 @@ public class ImageService {
 		this.observationUnitService = observationUnitService;
 	}
 
-	public List<Image> findImages(@Valid String imageDbId, @Valid String imageName, @Valid String observationUnitDbId,
-			@Valid String observationDbId, @Valid String descriptiveOntologyTerm, String externalReferenceId, @Valid String externalReferenceID,
-			@Valid String externalReferenceSource, Metadata metadata) {
+	public List<Image> findImages(String imageDbId, String imageName, String observationUnitDbId,
+			String observationDbId, String descriptiveOntologyTerm, String commonCropName, String programDbId,
+			String externalReferenceId, String externalReferenceID, String externalReferenceSource, Metadata metadata) {
 		ImageSearchRequest request = new ImageSearchRequest();
 		if (imageDbId != null)
 			request.addImageDbIdsItem(imageDbId);
@@ -54,8 +53,12 @@ public class ImageService {
 			request.addObservationDbIdsItem(observationDbId);
 		if (descriptiveOntologyTerm != null)
 			request.addDescriptiveOntologyTermsItem(descriptiveOntologyTerm);
+		if (commonCropName != null)
+			request.addCommonCropNamesItem(commonCropName);
+		if (programDbId != null)
+			request.addProgramDbIdsItem(programDbId);
 
-			request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
+		request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
 
 		return findImages(request, metadata);
 	}

@@ -3,7 +3,7 @@ package io.swagger.model.germ;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class PedigreeNodeParents {
+public class PedigreeNodeDEPParents {
 	@JsonProperty("germplasmDbId")
 	private String germplasmDbId = null;
 
@@ -13,7 +13,7 @@ public class PedigreeNodeParents {
 	@JsonProperty("parentType")
 	private ParentType parentType = null;
 
-	public PedigreeNodeParents germplasmDbId(String germplasmDbId) {
+	public PedigreeNodeDEPParents germplasmDbId(String germplasmDbId) {
 		this.germplasmDbId = germplasmDbId;
 		return this;
 	}
@@ -26,7 +26,7 @@ public class PedigreeNodeParents {
 		this.germplasmDbId = germplasmDbId;
 	}
 
-	public PedigreeNodeParents germplasmName(String germplasmName) {
+	public PedigreeNodeDEPParents germplasmName(String germplasmName) {
 		this.germplasmName = germplasmName;
 		return this;
 	}
@@ -39,7 +39,7 @@ public class PedigreeNodeParents {
 		this.germplasmName = germplasmName;
 	}
 
-	public PedigreeNodeParents parentType(ParentType parentType) {
+	public PedigreeNodeDEPParents parentType(ParentType parentType) {
 		this.parentType = parentType;
 		return this;
 	}
@@ -60,10 +60,10 @@ public class PedigreeNodeParents {
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		PedigreeNodeParents pedigreeNodeParents = (PedigreeNodeParents) o;
-		return Objects.equals(this.germplasmDbId, pedigreeNodeParents.germplasmDbId)
-				&& Objects.equals(this.germplasmName, pedigreeNodeParents.germplasmName)
-				&& Objects.equals(this.parentType, pedigreeNodeParents.parentType);
+		PedigreeNodeDEPParents pedigreeNodeDEPParents = (PedigreeNodeDEPParents) o;
+		return Objects.equals(this.germplasmDbId, pedigreeNodeDEPParents.germplasmDbId)
+				&& Objects.equals(this.germplasmName, pedigreeNodeDEPParents.germplasmName)
+				&& Objects.equals(this.parentType, pedigreeNodeDEPParents.parentType);
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class PedigreeNodeParents {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("class PedigreeNodeParents {\n");
+		sb.append("class PedigreeNodeDEPParents {\n");
 
 		sb.append("    germplasmDbId: ").append(toIndentedString(germplasmDbId)).append("\n");
 		sb.append("    germplasmName: ").append(toIndentedString(germplasmName)).append("\n");

@@ -1,15 +1,14 @@
 package io.swagger.model.germ;
 
 import java.util.Objects;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.model.SearchRequest;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class GermplasmSearchRequest extends SearchRequest {
+public class PedigreeSearchRequest extends SearchRequest {
 	@JsonProperty("accessionNumbers")
 	private List<String> accessionNumbers = null;
 
@@ -37,14 +36,26 @@ public class GermplasmSearchRequest extends SearchRequest {
 	@JsonProperty("germplasmPUIs")
 	private List<String> germplasmPUIs = null;
 
+	@JsonProperty("includeFullTree")
+	private Boolean includeFullTree = null;
+
+	@JsonProperty("includeParents")
+	private Boolean includeParents = null;
+
+	@JsonProperty("includeProgeny")
+	private Boolean includeProgeny = null;
+
+	@JsonProperty("includeSiblings")
+	private Boolean includeSiblings = null;
+
 	@JsonProperty("instituteCodes")
 	private List<String> instituteCodes = null;
 
-	@JsonProperty("parentDbIds")
-	private List<String> parentDbIds = null;
+	@JsonProperty("pedigreeDepth")
+	private Integer pedigreeDepth = null;
 
-	@JsonProperty("progenyDbIds")
-	private List<String> progenyDbIds = null;
+	@JsonProperty("progenyDepth")
+	private Integer progenyDepth = null;
 
 	@JsonProperty("programDbIds")
 	private List<String> programDbIds = null;
@@ -70,12 +81,12 @@ public class GermplasmSearchRequest extends SearchRequest {
 	@JsonProperty("trialNames")
 	private List<String> trialNames = null;
 
-	public GermplasmSearchRequest accessionNumbers(List<String> accessionNumbers) {
+	public PedigreeSearchRequest accessionNumbers(List<String> accessionNumbers) {
 		this.accessionNumbers = accessionNumbers;
 		return this;
 	}
 
-	public GermplasmSearchRequest addAccessionNumbersItem(String accessionNumbersItem) {
+	public PedigreeSearchRequest addAccessionNumbersItem(String accessionNumbersItem) {
 		if (this.accessionNumbers == null) {
 			this.accessionNumbers = new ArrayList<String>();
 		}
@@ -91,12 +102,12 @@ public class GermplasmSearchRequest extends SearchRequest {
 		this.accessionNumbers = accessionNumbers;
 	}
 
-	public GermplasmSearchRequest binomialNames(List<String> binomialNames) {
+	public PedigreeSearchRequest binomialNames(List<String> binomialNames) {
 		this.binomialNames = binomialNames;
 		return this;
 	}
 
-	public GermplasmSearchRequest addBinomialNamesItem(String binomialNamesItem) {
+	public PedigreeSearchRequest addBinomialNamesItem(String binomialNamesItem) {
 		if (this.binomialNames == null) {
 			this.binomialNames = new ArrayList<String>();
 		}
@@ -112,12 +123,12 @@ public class GermplasmSearchRequest extends SearchRequest {
 		this.binomialNames = binomialNames;
 	}
 
-	public GermplasmSearchRequest collections(List<String> collections) {
+	public PedigreeSearchRequest collections(List<String> collections) {
 		this.collections = collections;
 		return this;
 	}
 
-	public GermplasmSearchRequest addCollectionsItem(String collectionsItem) {
+	public PedigreeSearchRequest addCollectionsItem(String collectionsItem) {
 		if (this.collections == null) {
 			this.collections = new ArrayList<String>();
 		}
@@ -133,12 +144,12 @@ public class GermplasmSearchRequest extends SearchRequest {
 		this.collections = collections;
 	}
 
-	public GermplasmSearchRequest commonCropNames(List<String> commonCropNames) {
+	public PedigreeSearchRequest commonCropNames(List<String> commonCropNames) {
 		this.commonCropNames = commonCropNames;
 		return this;
 	}
 
-	public GermplasmSearchRequest addCommonCropNamesItem(String commonCropNamesItem) {
+	public PedigreeSearchRequest addCommonCropNamesItem(String commonCropNamesItem) {
 		if (this.commonCropNames == null) {
 			this.commonCropNames = new ArrayList<String>();
 		}
@@ -154,12 +165,12 @@ public class GermplasmSearchRequest extends SearchRequest {
 		this.commonCropNames = commonCropNames;
 	}
 
-	public GermplasmSearchRequest familyCodes(List<String> familyCodes) {
+	public PedigreeSearchRequest familyCodes(List<String> familyCodes) {
 		this.familyCodes = familyCodes;
 		return this;
 	}
 
-	public GermplasmSearchRequest addFamilyCodesItem(String familyCodesItem) {
+	public PedigreeSearchRequest addFamilyCodesItem(String familyCodesItem) {
 		if (this.familyCodes == null) {
 			this.familyCodes = new ArrayList<String>();
 		}
@@ -175,12 +186,12 @@ public class GermplasmSearchRequest extends SearchRequest {
 		this.familyCodes = familyCodes;
 	}
 
-	public GermplasmSearchRequest genus(List<String> genus) {
+	public PedigreeSearchRequest genus(List<String> genus) {
 		this.genus = genus;
 		return this;
 	}
 
-	public GermplasmSearchRequest addGenusItem(String genusItem) {
+	public PedigreeSearchRequest addGenusItem(String genusItem) {
 		if (this.genus == null) {
 			this.genus = new ArrayList<String>();
 		}
@@ -196,12 +207,12 @@ public class GermplasmSearchRequest extends SearchRequest {
 		this.genus = genus;
 	}
 
-	public GermplasmSearchRequest germplasmDbIds(List<String> germplasmDbIds) {
+	public PedigreeSearchRequest germplasmDbIds(List<String> germplasmDbIds) {
 		this.germplasmDbIds = germplasmDbIds;
 		return this;
 	}
 
-	public GermplasmSearchRequest addGermplasmDbIdsItem(String germplasmDbIdsItem) {
+	public PedigreeSearchRequest addGermplasmDbIdsItem(String germplasmDbIdsItem) {
 		if (this.germplasmDbIds == null) {
 			this.germplasmDbIds = new ArrayList<String>();
 		}
@@ -217,12 +228,12 @@ public class GermplasmSearchRequest extends SearchRequest {
 		this.germplasmDbIds = germplasmDbIds;
 	}
 
-	public GermplasmSearchRequest germplasmNames(List<String> germplasmNames) {
+	public PedigreeSearchRequest germplasmNames(List<String> germplasmNames) {
 		this.germplasmNames = germplasmNames;
 		return this;
 	}
 
-	public GermplasmSearchRequest addGermplasmNamesItem(String germplasmNamesItem) {
+	public PedigreeSearchRequest addGermplasmNamesItem(String germplasmNamesItem) {
 		if (this.germplasmNames == null) {
 			this.germplasmNames = new ArrayList<String>();
 		}
@@ -238,12 +249,12 @@ public class GermplasmSearchRequest extends SearchRequest {
 		this.germplasmNames = germplasmNames;
 	}
 
-	public GermplasmSearchRequest germplasmPUIs(List<String> germplasmPUIs) {
+	public PedigreeSearchRequest germplasmPUIs(List<String> germplasmPUIs) {
 		this.germplasmPUIs = germplasmPUIs;
 		return this;
 	}
 
-	public GermplasmSearchRequest addGermplasmPUIsItem(String germplasmPUIsItem) {
+	public PedigreeSearchRequest addGermplasmPUIsItem(String germplasmPUIsItem) {
 		if (this.germplasmPUIs == null) {
 			this.germplasmPUIs = new ArrayList<String>();
 		}
@@ -259,12 +270,64 @@ public class GermplasmSearchRequest extends SearchRequest {
 		this.germplasmPUIs = germplasmPUIs;
 	}
 
-	public GermplasmSearchRequest instituteCodes(List<String> instituteCodes) {
+	public PedigreeSearchRequest includeFullTree(Boolean includeFullTree) {
+		this.includeFullTree = includeFullTree;
+		return this;
+	}
+
+	public Boolean isIncludeFullTree() {
+		return includeFullTree;
+	}
+
+	public void setIncludeFullTree(Boolean includeFullTree) {
+		this.includeFullTree = includeFullTree;
+	}
+
+	public PedigreeSearchRequest includeParents(Boolean includeParents) {
+		this.includeParents = includeParents;
+		return this;
+	}
+
+	public Boolean isIncludeParents() {
+		return includeParents;
+	}
+
+	public void setIncludeParents(Boolean includeParents) {
+		this.includeParents = includeParents;
+	}
+
+	public PedigreeSearchRequest includeProgeny(Boolean includeProgeny) {
+		this.includeProgeny = includeProgeny;
+		return this;
+	}
+
+	public Boolean isIncludeProgeny() {
+		return includeProgeny;
+	}
+
+	public void setIncludeProgeny(Boolean includeProgeny) {
+		this.includeProgeny = includeProgeny;
+	}
+
+	public PedigreeSearchRequest includeSiblings(Boolean includeSiblings) {
+		this.includeSiblings = includeSiblings;
+		return this;
+	}
+
+	public Boolean isIncludeSiblings() {
+		return includeSiblings;
+	}
+
+	public void setIncludeSiblings(Boolean includeSiblings) {
+		this.includeSiblings = includeSiblings;
+	}
+
+	public PedigreeSearchRequest instituteCodes(List<String> instituteCodes) {
 		this.instituteCodes = instituteCodes;
 		return this;
 	}
 
-	public GermplasmSearchRequest addInstituteCodesItem(String instituteCodesItem) {
+	public PedigreeSearchRequest addInstituteCodesItem(String instituteCodesItem) {
 		if (this.instituteCodes == null) {
 			this.instituteCodes = new ArrayList<String>();
 		}
@@ -280,54 +343,38 @@ public class GermplasmSearchRequest extends SearchRequest {
 		this.instituteCodes = instituteCodes;
 	}
 
-	public GermplasmSearchRequest parentDbIds(List<String> parentDbIds) {
-		this.parentDbIds = parentDbIds;
+	public PedigreeSearchRequest pedigreeDepth(Integer pedigreeDepth) {
+		this.pedigreeDepth = pedigreeDepth;
 		return this;
 	}
 
-	public GermplasmSearchRequest addParentDbIdsItem(String parentDbIdsItem) {
-		if (this.parentDbIds == null) {
-			this.parentDbIds = new ArrayList<String>();
-		}
-		this.parentDbIds.add(parentDbIdsItem);
+	public Integer getPedigreeDepth() {
+		return pedigreeDepth;
+	}
+
+	public void setPedigreeDepth(Integer pedigreeDepth) {
+		this.pedigreeDepth = pedigreeDepth;
+	}
+
+	public PedigreeSearchRequest progenyDepth(Integer progenyDepth) {
+		this.progenyDepth = progenyDepth;
 		return this;
 	}
 
-	public List<String> getParentDbIds() {
-		return parentDbIds;
+	public Integer getProgenyDepth() {
+		return progenyDepth;
 	}
 
-	public void setParentDbIds(List<String> parentDbIds) {
-		this.parentDbIds = parentDbIds;
+	public void setProgenyDepth(Integer progenyDepth) {
+		this.progenyDepth = progenyDepth;
 	}
 
-	public GermplasmSearchRequest progenyDbIds(List<String> progenyDbIds) {
-		this.progenyDbIds = progenyDbIds;
-		return this;
-	}
-
-	public GermplasmSearchRequest addProgenyDbIdsItem(String progenyDbIdsItem) {
-		if (this.progenyDbIds == null) {
-			this.progenyDbIds = new ArrayList<String>();
-		}
-		this.progenyDbIds.add(progenyDbIdsItem);
-		return this;
-	}
-
-	public List<String> getProgenyDbIds() {
-		return progenyDbIds;
-	}
-
-	public void setProgenyDbIds(List<String> progenyDbIds) {
-		this.progenyDbIds = progenyDbIds;
-	}
-
-	public GermplasmSearchRequest programDbIds(List<String> programDbIds) {
+	public PedigreeSearchRequest programDbIds(List<String> programDbIds) {
 		this.programDbIds = programDbIds;
 		return this;
 	}
 
-	public GermplasmSearchRequest addProgramDbIdsItem(String programDbIdsItem) {
+	public PedigreeSearchRequest addProgramDbIdsItem(String programDbIdsItem) {
 		if (this.programDbIds == null) {
 			this.programDbIds = new ArrayList<String>();
 		}
@@ -343,12 +390,12 @@ public class GermplasmSearchRequest extends SearchRequest {
 		this.programDbIds = programDbIds;
 	}
 
-	public GermplasmSearchRequest programNames(List<String> programNames) {
+	public PedigreeSearchRequest programNames(List<String> programNames) {
 		this.programNames = programNames;
 		return this;
 	}
 
-	public GermplasmSearchRequest addProgramNamesItem(String programNamesItem) {
+	public PedigreeSearchRequest addProgramNamesItem(String programNamesItem) {
 		if (this.programNames == null) {
 			this.programNames = new ArrayList<String>();
 		}
@@ -364,12 +411,12 @@ public class GermplasmSearchRequest extends SearchRequest {
 		this.programNames = programNames;
 	}
 
-	public GermplasmSearchRequest species(List<String> species) {
+	public PedigreeSearchRequest species(List<String> species) {
 		this.species = species;
 		return this;
 	}
 
-	public GermplasmSearchRequest addSpeciesItem(String speciesItem) {
+	public PedigreeSearchRequest addSpeciesItem(String speciesItem) {
 		if (this.species == null) {
 			this.species = new ArrayList<String>();
 		}
@@ -385,12 +432,12 @@ public class GermplasmSearchRequest extends SearchRequest {
 		this.species = species;
 	}
 
-	public GermplasmSearchRequest studyDbIds(List<String> studyDbIds) {
+	public PedigreeSearchRequest studyDbIds(List<String> studyDbIds) {
 		this.studyDbIds = studyDbIds;
 		return this;
 	}
 
-	public GermplasmSearchRequest addStudyDbIdsItem(String studyDbIdsItem) {
+	public PedigreeSearchRequest addStudyDbIdsItem(String studyDbIdsItem) {
 		if (this.studyDbIds == null) {
 			this.studyDbIds = new ArrayList<String>();
 		}
@@ -406,12 +453,12 @@ public class GermplasmSearchRequest extends SearchRequest {
 		this.studyDbIds = studyDbIds;
 	}
 
-	public GermplasmSearchRequest studyNames(List<String> studyNames) {
+	public PedigreeSearchRequest studyNames(List<String> studyNames) {
 		this.studyNames = studyNames;
 		return this;
 	}
 
-	public GermplasmSearchRequest addStudyNamesItem(String studyNamesItem) {
+	public PedigreeSearchRequest addStudyNamesItem(String studyNamesItem) {
 		if (this.studyNames == null) {
 			this.studyNames = new ArrayList<String>();
 		}
@@ -427,12 +474,12 @@ public class GermplasmSearchRequest extends SearchRequest {
 		this.studyNames = studyNames;
 	}
 
-	public GermplasmSearchRequest synonyms(List<String> synonyms) {
+	public PedigreeSearchRequest synonyms(List<String> synonyms) {
 		this.synonyms = synonyms;
 		return this;
 	}
 
-	public GermplasmSearchRequest addSynonymsItem(String synonymsItem) {
+	public PedigreeSearchRequest addSynonymsItem(String synonymsItem) {
 		if (this.synonyms == null) {
 			this.synonyms = new ArrayList<String>();
 		}
@@ -448,12 +495,12 @@ public class GermplasmSearchRequest extends SearchRequest {
 		this.synonyms = synonyms;
 	}
 
-	public GermplasmSearchRequest trialDbIds(List<String> trialDbIds) {
+	public PedigreeSearchRequest trialDbIds(List<String> trialDbIds) {
 		this.trialDbIds = trialDbIds;
 		return this;
 	}
 
-	public GermplasmSearchRequest addTrialDbIdsItem(String trialDbIdsItem) {
+	public PedigreeSearchRequest addTrialDbIdsItem(String trialDbIdsItem) {
 		if (this.trialDbIds == null) {
 			this.trialDbIds = new ArrayList<String>();
 		}
@@ -469,12 +516,12 @@ public class GermplasmSearchRequest extends SearchRequest {
 		this.trialDbIds = trialDbIds;
 	}
 
-	public GermplasmSearchRequest trialNames(List<String> trialNames) {
+	public PedigreeSearchRequest trialNames(List<String> trialNames) {
 		this.trialNames = trialNames;
 		return this;
 	}
 
-	public GermplasmSearchRequest addTrialNamesItem(String trialNamesItem) {
+	public PedigreeSearchRequest addTrialNamesItem(String trialNamesItem) {
 		if (this.trialNames == null) {
 			this.trialNames = new ArrayList<String>();
 		}
@@ -498,45 +545,50 @@ public class GermplasmSearchRequest extends SearchRequest {
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		GermplasmSearchRequest germplasmSearchRequest = (GermplasmSearchRequest) o;
-		return Objects.equals(this.accessionNumbers, germplasmSearchRequest.accessionNumbers)
-				&& Objects.equals(this.binomialNames, germplasmSearchRequest.binomialNames)
-				&& Objects.equals(this.collections, germplasmSearchRequest.collections)
-				&& Objects.equals(this.commonCropNames, germplasmSearchRequest.commonCropNames)
-				&& Objects.equals(this.externalReferenceIds, germplasmSearchRequest.externalReferenceIds)
-				&& Objects.equals(this.externalReferenceSources, germplasmSearchRequest.externalReferenceSources)
-				&& Objects.equals(this.familyCodes, germplasmSearchRequest.familyCodes)
-				&& Objects.equals(this.genus, germplasmSearchRequest.genus)
-				&& Objects.equals(this.germplasmDbIds, germplasmSearchRequest.germplasmDbIds)
-				&& Objects.equals(this.germplasmNames, germplasmSearchRequest.germplasmNames)
-				&& Objects.equals(this.germplasmPUIs, germplasmSearchRequest.germplasmPUIs)
-				&& Objects.equals(this.instituteCodes, germplasmSearchRequest.instituteCodes)
-				&& Objects.equals(this.page, germplasmSearchRequest.page)
-				&& Objects.equals(this.pageSize, germplasmSearchRequest.pageSize)
-				&& Objects.equals(this.parentDbIds, germplasmSearchRequest.parentDbIds)
-				&& Objects.equals(this.progenyDbIds, germplasmSearchRequest.progenyDbIds)
-				&& Objects.equals(this.programDbIds, germplasmSearchRequest.programDbIds)
-				&& Objects.equals(this.programNames, germplasmSearchRequest.programNames)
-				&& Objects.equals(this.species, germplasmSearchRequest.species)
-				&& Objects.equals(this.studyDbIds, germplasmSearchRequest.studyDbIds)
-				&& Objects.equals(this.studyNames, germplasmSearchRequest.studyNames)
-				&& Objects.equals(this.synonyms, germplasmSearchRequest.synonyms)
-				&& Objects.equals(this.trialDbIds, germplasmSearchRequest.trialDbIds)
-				&& Objects.equals(this.trialNames, germplasmSearchRequest.trialNames);
+		PedigreeSearchRequest pedigreeSearchRequest = (PedigreeSearchRequest) o;
+		return Objects.equals(this.accessionNumbers, pedigreeSearchRequest.accessionNumbers)
+				&& Objects.equals(this.binomialNames, pedigreeSearchRequest.binomialNames)
+				&& Objects.equals(this.collections, pedigreeSearchRequest.collections)
+				&& Objects.equals(this.commonCropNames, pedigreeSearchRequest.commonCropNames)
+				&& Objects.equals(this.externalReferenceIds, pedigreeSearchRequest.externalReferenceIds)
+				&& Objects.equals(this.externalReferenceSources, pedigreeSearchRequest.externalReferenceSources)
+				&& Objects.equals(this.familyCodes, pedigreeSearchRequest.familyCodes)
+				&& Objects.equals(this.genus, pedigreeSearchRequest.genus)
+				&& Objects.equals(this.germplasmDbIds, pedigreeSearchRequest.germplasmDbIds)
+				&& Objects.equals(this.germplasmNames, pedigreeSearchRequest.germplasmNames)
+				&& Objects.equals(this.germplasmPUIs, pedigreeSearchRequest.germplasmPUIs)
+				&& Objects.equals(this.includeFullTree, pedigreeSearchRequest.includeFullTree)
+				&& Objects.equals(this.includeParents, pedigreeSearchRequest.includeParents)
+				&& Objects.equals(this.includeProgeny, pedigreeSearchRequest.includeProgeny)
+				&& Objects.equals(this.includeSiblings, pedigreeSearchRequest.includeSiblings)
+				&& Objects.equals(this.instituteCodes, pedigreeSearchRequest.instituteCodes)
+				&& Objects.equals(this.page, pedigreeSearchRequest.page)
+				&& Objects.equals(this.pageSize, pedigreeSearchRequest.pageSize)
+				&& Objects.equals(this.pedigreeDepth, pedigreeSearchRequest.pedigreeDepth)
+				&& Objects.equals(this.progenyDepth, pedigreeSearchRequest.progenyDepth)
+				&& Objects.equals(this.programDbIds, pedigreeSearchRequest.programDbIds)
+				&& Objects.equals(this.programNames, pedigreeSearchRequest.programNames)
+				&& Objects.equals(this.species, pedigreeSearchRequest.species)
+				&& Objects.equals(this.studyDbIds, pedigreeSearchRequest.studyDbIds)
+				&& Objects.equals(this.studyNames, pedigreeSearchRequest.studyNames)
+				&& Objects.equals(this.synonyms, pedigreeSearchRequest.synonyms)
+				&& Objects.equals(this.trialDbIds, pedigreeSearchRequest.trialDbIds)
+				&& Objects.equals(this.trialNames, pedigreeSearchRequest.trialNames);
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(accessionNumbers, binomialNames, collections, commonCropNames, externalReferenceIds,
 				externalReferenceSources, familyCodes, genus, germplasmDbIds, germplasmNames, germplasmPUIs,
-				instituteCodes, page, pageSize, parentDbIds, progenyDbIds, programDbIds, programNames, species,
-				studyDbIds, studyNames, synonyms, trialDbIds, trialNames);
+				includeFullTree, includeParents, includeProgeny, includeSiblings, instituteCodes, page, pageSize,
+				pedigreeDepth, progenyDepth, programDbIds, programNames, species, studyDbIds, studyNames, synonyms,
+				trialDbIds, trialNames);
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("class GermplasmSearchRequest {\n");
+		sb.append("class PedigreeSearchRequest {\n");
 
 		sb.append("    accessionNumbers: ").append(toIndentedString(accessionNumbers)).append("\n");
 		sb.append("    binomialNames: ").append(toIndentedString(binomialNames)).append("\n");
@@ -549,11 +601,15 @@ public class GermplasmSearchRequest extends SearchRequest {
 		sb.append("    germplasmDbIds: ").append(toIndentedString(germplasmDbIds)).append("\n");
 		sb.append("    germplasmNames: ").append(toIndentedString(germplasmNames)).append("\n");
 		sb.append("    germplasmPUIs: ").append(toIndentedString(germplasmPUIs)).append("\n");
+		sb.append("    includeFullTree: ").append(toIndentedString(includeFullTree)).append("\n");
+		sb.append("    includeParents: ").append(toIndentedString(includeParents)).append("\n");
+		sb.append("    includeProgeny: ").append(toIndentedString(includeProgeny)).append("\n");
+		sb.append("    includeSiblings: ").append(toIndentedString(includeSiblings)).append("\n");
 		sb.append("    instituteCodes: ").append(toIndentedString(instituteCodes)).append("\n");
 		sb.append("    page: ").append(toIndentedString(page)).append("\n");
 		sb.append("    pageSize: ").append(toIndentedString(pageSize)).append("\n");
-		sb.append("    parentDbIds: ").append(toIndentedString(parentDbIds)).append("\n");
-		sb.append("    progenyDbIds: ").append(toIndentedString(progenyDbIds)).append("\n");
+		sb.append("    pedigreeDepth: ").append(toIndentedString(pedigreeDepth)).append("\n");
+		sb.append("    progenyDepth: ").append(toIndentedString(progenyDepth)).append("\n");
 		sb.append("    programDbIds: ").append(toIndentedString(programDbIds)).append("\n");
 		sb.append("    programNames: ").append(toIndentedString(programNames)).append("\n");
 		sb.append("    species: ").append(toIndentedString(species)).append("\n");
@@ -574,9 +630,8 @@ public class GermplasmSearchRequest extends SearchRequest {
 	}
 
 	@Override
-	@JsonIgnore
 	public Integer getTotalParameterCount() {
-		Integer count = 0;
+		int count = 0;
 		if (this.accessionNumbers != null)
 			count += this.accessionNumbers.size();
 		if (this.binomialNames != null)
@@ -599,12 +654,20 @@ public class GermplasmSearchRequest extends SearchRequest {
 			count += this.germplasmNames.size();
 		if (this.germplasmPUIs != null)
 			count += this.germplasmPUIs.size();
+		if (this.includeFullTree != null)
+			count += 1;
+		if (this.includeParents != null)
+			count += 1;
+		if (this.includeProgeny != null)
+			count += 1;
+		if (this.includeSiblings != null)
+			count += 1;
 		if (this.instituteCodes != null)
 			count += this.instituteCodes.size();
-		if (this.parentDbIds != null)
-			count += this.parentDbIds.size();
-		if (this.progenyDbIds != null)
-			count += this.progenyDbIds.size();
+		if (this.pedigreeDepth != null)
+			count += 1;
+		if (this.progenyDepth != null)
+			count += 1;
 		if (this.programDbIds != null)
 			count += this.programDbIds.size();
 		if (this.programNames != null)
@@ -621,7 +684,6 @@ public class GermplasmSearchRequest extends SearchRequest {
 			count += this.trialDbIds.size();
 		if (this.trialNames != null)
 			count += this.trialNames.size();
-
 		return count;
 	}
 }

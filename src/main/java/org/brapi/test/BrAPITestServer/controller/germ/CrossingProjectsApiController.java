@@ -6,6 +6,7 @@ import io.swagger.model.germ.CrossingProject;
 import io.swagger.model.germ.CrossingProjectNewRequest;
 import io.swagger.model.germ.CrossingProjectsListResponse;
 import io.swagger.model.germ.CrossingProjectsListResponseResult;
+import io.swagger.annotations.ApiParam;
 import io.swagger.api.germ.CrossingProjectsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -42,26 +43,35 @@ public class CrossingProjectsApiController extends BrAPIController implements Cr
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<CrossingProjectsListResponse> crossingprojectsGet(
+	public ResponseEntity<CrossingProjectsListResponse> crossingProjectsGet(
 			@Valid @RequestParam(value = "crossingProjectDbId", required = false) String crossingProjectDbId,
+			@Valid @RequestParam(value = "crossingProjectName", required = false) String crossingProjectName,
+			@Valid @RequestParam(value = "includePotentialParents", required = false) Boolean includePotentialParents,
+			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<CrossingProject> data = crossingProjectService.findCrossingProjects(crossingProjectDbId, externalReferenceID, externalReferenceSource, metadata);
+		List<CrossingProject> data = crossingProjectService.findCrossingProjects(crossingProjectDbId,
+				crossingProjectName, includePotentialParents, commonCropName, programDbId, externalReferenceId,
+				externalReferenceID, externalReferenceSource, metadata);
 		return responseOK(new CrossingProjectsListResponse(), new CrossingProjectsListResponseResult(), data, metadata);
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<CrossingProjectsListResponse> crossingprojectsPost(
+	public ResponseEntity<CrossingProjectsListResponse> crossingProjectsPost(
 			@Valid @RequestBody List<CrossingProjectNewRequest> body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -71,9 +81,10 @@ public class CrossingProjectsApiController extends BrAPIController implements Cr
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<CrossingProjectsSingleResponse> crossingprojectsCrossingProjectDbIdGet(
+	public ResponseEntity<CrossingProjectsSingleResponse> crossingProjectsCrossingProjectDbIdGet(
 			@PathVariable("crossingProjectDbId") String crossingProjectDbId,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -83,10 +94,11 @@ public class CrossingProjectsApiController extends BrAPIController implements Cr
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<CrossingProjectsSingleResponse> crossingprojectsCrossingProjectDbIdPut(
+	public ResponseEntity<CrossingProjectsSingleResponse> crossingProjectsCrossingProjectDbIdPut(
 			@PathVariable("crossingProjectDbId") String crossingProjectDbId,
 			@Valid @RequestBody CrossingProjectNewRequest body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);

@@ -49,22 +49,27 @@ public class CrossService {
 		this.observationUnitService = observationUnitService;
 	}
 
-	public List<Cross> findCrosses(String crossDbId, String crossingProjectDbId, String externalReferenceID,
-			String externalReferenceSource, Metadata metadata) {
-		List<Cross> crosses = findCrosses(crossDbId, crossingProjectDbId, externalReferenceID, externalReferenceSource, false,
+	public List<Cross> findCrosses(String crossingProjectDbId, String crossingProjectName, String crossDbId,
+			String crossName, String commonCropName, String programDbId, String externalReferenceId,
+			String externalReferenceID, String externalReferenceSource, Metadata metadata) {
+		List<Cross> crosses = findCrosses(crossingProjectDbId, crossingProjectName, crossDbId, crossName, null,
+				commonCropName, programDbId, externalReferenceId, externalReferenceID, externalReferenceSource, false,
 				metadata).map(this::convertToCross).getContent();
 		return crosses;
 	}
 
-	public List<PlannedCross> findPlannedCrosses(String crossDbId, String crossingProjectDbId, String externalReferenceID,
-			String externalReferenceSource, Metadata metadata) {
-		List<PlannedCross> crosses = findCrosses(crossDbId, crossingProjectDbId, externalReferenceID, externalReferenceSource,
-				true, metadata).map(this::convertToPlanned).getContent();
+	public List<PlannedCross> findPlannedCrosses(String crossingProjectDbId, String crossingProjectName,
+			String crossDbId, String crossName, String status, String commonCropName, String programDbId, String externalReferenceId,
+			String externalReferenceID, String externalReferenceSource, Metadata metadata) {
+		List<PlannedCross> crosses = findCrosses(crossingProjectDbId, crossingProjectName, crossDbId, crossName, status,
+				commonCropName, programDbId, externalReferenceId, externalReferenceID, externalReferenceSource, true,
+				metadata).map(this::convertToPlanned).getContent();
 		return crosses;
 	}
 
-	public Page<CrossEntity> findCrosses(String crossDbId, String crossingProjectDbId, String externalReferenceID,
-			String externalReferenceSource, Boolean plannedCross, Metadata metadata) {
+	public Page<CrossEntity> findCrosses(String crossingProjectDbId, String crossingProjectName, String crossDbId,
+			String crossName, String status, String commonCropName, String programDbId, String externalReferenceId,
+			String externalReferenceID, String externalReferenceSource, Boolean plannedCross, Metadata metadata) {
 
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<CrossEntity> searchQuery = new SearchQueryBuilder<CrossEntity>(CrossEntity.class);
@@ -125,14 +130,16 @@ public class CrossService {
 				updateEntity(entity, crossEntry.getValue());
 				savedValues.add(convertToCross(crossRepository.save(entity)));
 			} else {
-				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "The cross \"" + crossEntry.getKey() + "\" is not available in this database. \nPlease choose a different crossDbId or contact the server administrator to resolve this issue.");
+				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "The cross \"" + crossEntry.getKey()
+						+ "\" is not available in this database. \nPlease choose a different crossDbId or contact the server administrator to resolve this issue.");
 			}
 		}
 
 		return savedValues;
 	}
 
-	public List<PlannedCross> updatePlannedCrosses(@Valid Map<String, PlannedCrossNewRequest> body) throws BrAPIServerException {
+	public List<PlannedCross> updatePlannedCrosses(@Valid Map<String, PlannedCrossNewRequest> body)
+			throws BrAPIServerException {
 		List<PlannedCross> savedValues = new ArrayList<>();
 
 		for (Entry<String, PlannedCrossNewRequest> crossEntry : body.entrySet()) {
@@ -142,7 +149,8 @@ public class CrossService {
 				updateEntity(entity, crossEntry.getValue());
 				savedValues.add(convertToPlanned(crossRepository.save(entity)));
 			} else {
-				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "The planned cross \"" + crossEntry.getKey() + "\" is not available in this database. \nPlease choose a different plannedCrossDbId or contact the server administrator to resolve this issue.");
+				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "The planned cross \"" + crossEntry.getKey()
+						+ "\" is not available in this database. \nPlease choose a different plannedCrossDbId or contact the server administrator to resolve this issue.");
 			}
 		}
 
@@ -280,7 +288,8 @@ public class CrossService {
 		return parent;
 	}
 
-	private CrossParentEntity convertToEntity(@Valid CrossParent parent, CrossEntity cross) throws BrAPIServerException {
+	private CrossParentEntity convertToEntity(@Valid CrossParent parent, CrossEntity cross)
+			throws BrAPIServerException {
 		CrossParentEntity entity = new CrossParentEntity();
 		if (parent.getGermplasmDbId() != null) {
 			GermplasmEntity germ = germplasmService.getGermplasmEntity(parent.getGermplasmDbId());

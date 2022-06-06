@@ -38,9 +38,9 @@ public class GermplasmAttributeValueService {
 		this.germplasmService = germplasmService;
 	}
 
-	public List<GermplasmAttributeValue> findGermplasmAttributeValues(@Valid String attributeValueDbId,
-			@Valid String attributeDbId, @Valid String attributeName, @Valid String germplasmDbId, String externalReferenceId,
-			@Valid String externalReferenceID, @Valid String externalReferenceSource, Metadata metadata) {
+	public List<GermplasmAttributeValue> findGermplasmAttributeValues(String attributeValueDbId, String attributeDbId,
+			String attributeName, String germplasmDbId, String commonCropName, String programDbId,
+			String externalReferenceId, String externalReferenceID, String externalReferenceSource, Metadata metadata) {
 
 		GermplasmAttributeValueSearchRequest request = new GermplasmAttributeValueSearchRequest();
 		if (attributeValueDbId != null)
@@ -51,7 +51,10 @@ public class GermplasmAttributeValueService {
 			request.addAttributeNamesItem(attributeName);
 		if (germplasmDbId != null)
 			request.addGermplasmDbIdsItem(germplasmDbId);
-
+		if (commonCropName != null)
+			request.addCommonCropNamesItem(commonCropName);
+		if (programDbId != null)
+			request.addProgramDbIdsItem(programDbId);
 
 		request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
 
@@ -80,7 +83,7 @@ public class GermplasmAttributeValueService {
 		PagingUtility.calculateMetaData(metadata, page);
 		return attributeValues;
 	}
-	
+
 	public GermplasmAttributeValue getGermplasmAttributeValue(String attributeValueDbId) throws BrAPIServerException {
 		return convertFromEntity(getGermplasmAttributeValueEntity(attributeValueDbId, HttpStatus.NOT_FOUND));
 	}
@@ -90,8 +93,8 @@ public class GermplasmAttributeValueService {
 		return getGermplasmAttributeValueEntity(attributeValueDbId, HttpStatus.BAD_REQUEST);
 	}
 
-	public GermplasmAttributeValueEntity getGermplasmAttributeValueEntity(String attributeValueDbId, HttpStatus errorStatus)
-				throws BrAPIServerException {
+	public GermplasmAttributeValueEntity getGermplasmAttributeValueEntity(String attributeValueDbId,
+			HttpStatus errorStatus) throws BrAPIServerException {
 		GermplasmAttributeValueEntity attributeValue = null;
 		Optional<GermplasmAttributeValueEntity> entityOpt = attributeValueRepository.findById(attributeValueDbId);
 		if (entityOpt.isPresent()) {
@@ -101,7 +104,6 @@ public class GermplasmAttributeValueService {
 		}
 		return attributeValue;
 	}
-
 
 	public List<GermplasmAttributeValue> saveGermplasmAttributeValues(
 			@Valid List<GermplasmAttributeValueNewRequest> body) throws BrAPIServerException {
@@ -119,7 +121,6 @@ public class GermplasmAttributeValueService {
 
 		return savedValues;
 	}
-
 
 	public GermplasmAttributeValue updateGermplasmAttributeValue(String attributeValueDbId,
 			@Valid GermplasmAttributeValueNewRequest body) throws BrAPIServerException {

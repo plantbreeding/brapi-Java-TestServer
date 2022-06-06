@@ -10,7 +10,7 @@ import io.swagger.model.germ.SeedLotSingleResponse;
 import io.swagger.model.germ.SeedLotTransaction;
 import io.swagger.model.germ.SeedLotTransactionListResponse;
 import io.swagger.model.germ.SeedLotTransactionListResponseResult;
-
+import io.swagger.annotations.ApiParam;
 import io.swagger.api.germ.SeedLotsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -50,7 +50,13 @@ public class SeedLotsApiController extends BrAPIController implements SeedLotsAp
 	public ResponseEntity<SeedLotListResponse> seedlotsGet(
 			@Valid @RequestParam(value = "seedLotDbId", required = false) String seedLotDbId,
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
+			@Valid @RequestParam(value = "germplasmName", required = false) String germplasmName,
+			@Valid @RequestParam(value = "crossDbId", required = false) String crossDbId,
+			@Valid @RequestParam(value = "crossName", required = false) String crossName,
+			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -60,7 +66,8 @@ public class SeedLotsApiController extends BrAPIController implements SeedLotsAp
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<SeedLot> data = seedLotService.findSeedLots(seedLotDbId, germplasmDbId, externalReferenceID,
+		List<SeedLot> data = seedLotService.findSeedLots(seedLotDbId, germplasmDbId, germplasmName, crossDbId,
+				crossName, commonCropName, programDbId, externalReferenceId, externalReferenceID,
 				externalReferenceSource, metadata);
 		return responseOK(new SeedLotListResponse(), new SeedLotListResponseResult(), data, metadata);
 	}
@@ -93,7 +100,8 @@ public class SeedLotsApiController extends BrAPIController implements SeedLotsAp
 	@Override
 	public ResponseEntity<SeedLotSingleResponse> seedlotsSeedLotDbIdPut(@PathVariable("seedLotDbId") String seedLotDbId,
 			@Valid @RequestBody SeedLotNewRequest body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -127,25 +135,35 @@ public class SeedLotsApiController extends BrAPIController implements SeedLotsAp
 			@Valid @RequestParam(value = "transactionDbId", required = false) String transactionDbId,
 			@Valid @RequestParam(value = "seedLotDbId", required = false) String seedLotDbId,
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
+			@Valid @RequestParam(value = "germplasmName", required = false) String germplasmName,
+			@Valid @RequestParam(value = "crossDbId", required = false) String crossDbId,
+			@Valid @RequestParam(value = "crossName", required = false) String crossName,
+			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<SeedLotTransaction> data = seedLotService.findSeedLotTransactions(seedLotDbId, transactionDbId,
-				germplasmDbId, externalReferenceID, externalReferenceSource, metadata);
+		List<SeedLotTransaction> data = seedLotService.findSeedLotTransactions(transactionDbId, seedLotDbId,
+				germplasmDbId, germplasmName, crossDbId, crossName, commonCropName, programDbId, externalReferenceId,
+				externalReferenceID, externalReferenceSource, metadata);
 		return responseOK(new SeedLotTransactionListResponse(), new SeedLotTransactionListResponseResult(), data,
 				metadata);
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<SeedLotTransactionListResponse> seedlotsTransactionsPost(@Valid @RequestBody List<SeedLotNewTransactionRequest> body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+	public ResponseEntity<SeedLotTransactionListResponse> seedlotsTransactionsPost(
+			@Valid @RequestBody List<SeedLotNewTransactionRequest> body,
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);

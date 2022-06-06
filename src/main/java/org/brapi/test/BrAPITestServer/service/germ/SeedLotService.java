@@ -51,8 +51,9 @@ public class SeedLotService {
 		this.programService = programService;
 	}
 
-	public List<SeedLot> findSeedLots(@Valid String seedLotDbId, @Valid String germplasmDbId,
-			@Valid String externalReferenceID, @Valid String externalReferenceSource, Metadata metadata) {
+	public List<SeedLot> findSeedLots(String seedLotDbId, String germplasmDbId, String germplasmName, String crossDbId,
+			String crossName, String commonCropName, String programDbId, String externalReferenceId,
+			String externalReferenceID, String externalReferenceSource, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<SeedLotEntity> searchQuery = new SearchQueryBuilder<SeedLotEntity>(SeedLotEntity.class);
 
@@ -121,13 +122,15 @@ public class SeedLotService {
 			@Valid String transactionDirection, Metadata metadata) throws BrAPIServerException {
 		SeedLot seedLot = getSeedLot(seedLotDbId);
 		if (seedLot != null) {
-			return findSeedLotTransactions(seedLotDbId, transactionDbId, null, null, null, metadata);
+			return findSeedLotTransactions(transactionDbId, seedLotDbId, null, null, null, null, null, null, null, null,
+					null, metadata);
 		}
 		return null;
 	}
 
-	public List<SeedLotTransaction> findSeedLotTransactions(@Valid String seedLotDbId, @Valid String transactionDbId,
-			@Valid String germplasmDbId, @Valid String externalReferenceID, @Valid String externalReferenceSource,
+	public List<SeedLotTransaction> findSeedLotTransactions(String transactionDbId, String seedLotDbId,
+			String germplasmDbId, String germplasmName, String crossDbId, String crossName, String commonCropName,
+			String programDbId, String externalReferenceId, String externalReferenceID, String externalReferenceSource,
 			Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<SeedLotTransactionEntity> searchQuery = new SearchQueryBuilder<SeedLotTransactionEntity>(
@@ -149,7 +152,8 @@ public class SeedLotService {
 		return transactions;
 	}
 
-	public List<SeedLotTransaction> saveSeedLotTransactions(@Valid List<SeedLotNewTransactionRequest> body) throws BrAPIServerException {
+	public List<SeedLotTransaction> saveSeedLotTransactions(@Valid List<SeedLotNewTransactionRequest> body)
+			throws BrAPIServerException {
 		List<SeedLotTransaction> savedValues = new ArrayList<>();
 
 		for (SeedLotNewTransactionRequest list : body) {
@@ -236,13 +240,14 @@ public class SeedLotService {
 		return seedLot;
 	}
 
-	private void updateEntity(SeedLotTransactionEntity entity, SeedLotNewTransactionRequest seedLot) throws BrAPIServerException {
+	private void updateEntity(SeedLotTransactionEntity entity, SeedLotNewTransactionRequest seedLot)
+			throws BrAPIServerException {
 		if (seedLot.getAdditionalInfo() != null)
 			entity.setAdditionalInfo(seedLot.getAdditionalInfo());
 		if (seedLot.getAmount() != null)
 			entity.setAmount(seedLot.getAmount());
 		if (seedLot.getExternalReferences() != null)
-		entity.setExternalReferences(seedLot.getExternalReferences());
+			entity.setExternalReferences(seedLot.getExternalReferences());
 		if (seedLot.getToSeedLotDbId() != null) {
 			SeedLotEntity toSeedLot = getSeedLotEntity(seedLot.getToSeedLotDbId());
 			entity.setToSeedLot(toSeedLot);

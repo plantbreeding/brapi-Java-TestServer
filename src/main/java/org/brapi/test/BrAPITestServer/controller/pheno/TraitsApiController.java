@@ -46,7 +46,11 @@ public class TraitsApiController extends BrAPIController implements TraitsApi {
 	public ResponseEntity<TraitListResponse> traitsGet(
 			@Valid @RequestParam(value = "traitDbId", required = false) String traitDbId,
 			@Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
+			@Valid @RequestParam(value = "ontologyDbId", required = false) String ontologyDbId,
+			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -56,7 +60,8 @@ public class TraitsApiController extends BrAPIController implements TraitsApi {
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<Trait> data = traitService.findTraits(traitDbId, observationVariableDbId, externalReferenceID,
+		List<Trait> data = traitService.findTraits(traitDbId, observationVariableDbId, ontologyDbId, commonCropName,
+				programDbId, externalReferenceId, externalReferenceID,
 				externalReferenceSource, metadata);
 		return responseOK(new TraitListResponse(), new TraitListResponseResult(), data, metadata);
 	}
