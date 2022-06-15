@@ -3,7 +3,9 @@ package org.brapi.test.BrAPITestServer.service.geno;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Map.Entry;
 
 import jakarta.validation.Valid;
 
@@ -26,11 +28,11 @@ import org.brapi.test.BrAPITestServer.service.pheno.ObservationUnitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Metadata;
 import io.swagger.model.geno.Plate;
+import io.swagger.model.geno.PlateNewRequest;
 import io.swagger.model.geno.Sample;
 import io.swagger.model.geno.SampleNewRequest;
 import io.swagger.model.geno.SampleSearchRequest;
@@ -95,10 +97,19 @@ public class SampleService {
 				.appendList(request.getGermplasmDbIds(), "observationUnit.germplasm.id")
 				.appendList(request.getGermplasmNames(), "observationUnit.germplasm.germplasmName")
 				.appendList(request.getObservationUnitDbIds(), "observationUnit.id")
-				.appendList(request.getPlateDbIds(), "plate.id").appendList(request.getSampleDbIds(), "id")
-				.appendList(request.getStudyDbIds(), "observationUnit.study.id")
-				.appendList(request.getStudyNames(), "observationUnit.study.studyName");
-
+				.appendList(request.getPlateDbIds(), "plate.id")
+				.appendList(request.getPlateNames(), "plate.name")
+				.appendList(request.getSampleDbIds(), "id")
+				.appendList(request.getSampleNames(), "name")
+				.appendList(request.getSampleGroupDbIds(), "groupDbId")
+				.appendList(request.getCommonCropNames(), "plate.program.crop.crop_name")
+				.appendList(request.getProgramDbIds(), "plate.program.id")
+				.appendList(request.getProgramNames(), "plate.program.name")
+				.appendList(request.getTrialDbIds(), "plate.trial.id")
+				.appendList(request.getTrialNames(), "plate.trial.trialName")
+				.appendList(request.getStudyDbIds(), "plate.study.id")
+				.appendList(request.getStudyNames(), "plate.study.studyName");
+		
 		Page<SampleEntity> page = sampleRepository.findAllBySearch(searchQuery, pageReq);
 		List<Sample> samples = page.map(this::convertFromEntity).getContent();
 		PagingUtility.calculateMetaData(metadata, page);
@@ -146,6 +157,17 @@ public class SampleService {
 		}
 
 		return convertFromEntity(savedEntity);
+	}
+
+	public List<Sample> updateSamples(@Valid Map<String, SampleNewRequest> requests) throws BrAPIServerException {
+		List<Sample> savedSamples = new ArrayList<>();
+
+		for (Entry<String, SampleNewRequest> entry : requests.entrySet()) {
+			Sample saved = updateSample(entry.getKey(), entry.getValue());
+			savedSamples.add(saved);
+		}
+
+		return savedSamples;
 	}
 
 	private Sample convertFromEntity(SampleEntity entity) {
@@ -238,7 +260,7 @@ public class SampleService {
 			PlateEntity plate = plateService.getPlateEntity(sample.getPlateDbId());
 			entity.setPlate(plate);
 		} else if (sample.getPlateName() != null) {
-			Plate newPlate = new Plate().plateName(sample.getPlateName());
+			PlateNewRequest newPlate = new PlateNewRequest().plateName(sample.getPlateName());
 			List<Plate> savedPlate = plateService.savePlates(Arrays.asList(newPlate));
 			if (!savedPlate.isEmpty()) {
 				PlateEntity newPlateEntity = plateService.getPlateEntity(savedPlate.get(0).getPlateDbId());

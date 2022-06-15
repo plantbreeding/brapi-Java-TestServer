@@ -19,6 +19,7 @@ import org.brapi.test.BrAPITestServer.repository.geno.VariantSetRepository;
 import org.brapi.test.BrAPITestServer.service.DateUtility;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
+import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -116,7 +117,7 @@ public class VariantSetService {
 
 	private VariantSet convertFromEntity(VariantSetEntity entity) {
 		VariantSet variantSet = new VariantSet();
-		variantSet.setAdditionalInfo(entity.getAdditionalInfoMap());
+		UpdateUtility.convertFromEntity(entity, variantSet);
 		if (entity.getAnalysis() != null)
 			variantSet.setAnalysis(
 					entity.getAnalysis().stream().map(this::convertFromEntity).collect(Collectors.toList()));
@@ -155,6 +156,10 @@ public class VariantSetService {
 		format.setDataFormat(entity.getDataFormat());
 		format.setFileFormat(entity.getFileFormat());
 		format.setFileURL(entity.getFileURL());
+		format.setExpandHomozygotes(entity.getExpandHomozygotes());
+		format.setSepPhased(entity.getSepPhased());
+		format.setSepUnphased(entity.getSepUnphased());
+		format.setUnknownString(entity.getUnknownString());
 
 		return format;
 	}

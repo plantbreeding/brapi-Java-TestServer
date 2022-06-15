@@ -60,7 +60,7 @@ public class ObservationUnitSearchRequest extends SearchRequest {
 	private List<ObservationUnitLevelRelationship> observationLevelRelationships = null;
 
 	@JsonProperty("observationLevels")
-	private List<ObservationUnitLevelRelationship> observationLevels = null;
+	private List<ObservationUnitLevel> observationLevels = null;
 
 	@JsonProperty("observationUnitDbIds")
 	private List<String> observationUnitDbIds = null;
@@ -419,25 +419,25 @@ public class ObservationUnitSearchRequest extends SearchRequest {
 		this.observationLevelRelationships = observationLevelRelationships;
 	}
 
-	public ObservationUnitSearchRequest observationLevels(List<ObservationUnitLevelRelationship> observationLevels) {
+	public ObservationUnitSearchRequest observationLevels(List<ObservationUnitLevel> observationLevels) {
 		this.observationLevels = observationLevels;
 		return this;
 	}
 
 	public ObservationUnitSearchRequest addObservationLevelsItem(
-			ObservationUnitLevelRelationship observationLevelsItem) {
+			ObservationUnitLevel observationLevelsItem) {
 		if (this.observationLevels == null) {
-			this.observationLevels = new ArrayList<ObservationUnitLevelRelationship>();
+			this.observationLevels = new ArrayList<ObservationUnitLevel>();
 		}
 		this.observationLevels.add(observationLevelsItem);
 		return this;
 	}
 
-	public List<ObservationUnitLevelRelationship> getObservationLevels() {
+	public List<ObservationUnitLevel> getObservationLevels() {
 		return observationLevels;
 	}
 
-	public void setObservationLevels(List<ObservationUnitLevelRelationship> observationLevels) {
+	public void setObservationLevels(List<ObservationUnitLevel> observationLevels) {
 		this.observationLevels = observationLevels;
 	}
 

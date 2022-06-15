@@ -105,13 +105,14 @@ public class TraitService {
 
 	public TraitEntity updateEntity(TraitEntity entity, @Valid TraitBaseClass trait) throws BrAPIServerException {
 
-		entity.setAdditionalInfo(UpdateUtility.replaceField(trait.getAdditionalInfo(), entity.getAdditionalInfoMap()));
+		UpdateUtility.updateEntity(trait, entity);
+		
 		entity.setAlternativeAbbreviations(
 				UpdateUtility.replaceField(trait.getAlternativeAbbreviations(), entity.getAlternativeAbbreviations()));
 		entity.setAttribute(UpdateUtility.replaceField(trait.getAttribute(), entity.getAttribute()));
+		entity.setAttributePUI(UpdateUtility.replaceField(trait.getAttributePUI(), entity.getAttributePUI()));
 		entity.setEntity(UpdateUtility.replaceField(trait.getEntity(), entity.getEntity()));
-		entity.setExternalReferences(
-				UpdateUtility.replaceField(trait.getExternalReferences(), entity.getExternalReferencesMap()));
+		entity.setEntityPUI(UpdateUtility.replaceField(trait.getEntityPUI(), entity.getEntityPUI()));
 		entity.setMainAbbreviation(
 				UpdateUtility.replaceField(trait.getMainAbbreviation(), entity.getMainAbbreviation()));
 		ontologyService.updateOntologyReference(entity, trait.getOntologyReference());
@@ -121,6 +122,7 @@ public class TraitService {
 		entity.setTraitDescription(
 				UpdateUtility.replaceField(trait.getTraitDescription(), entity.getTraitDescription()));
 		entity.setTraitName(UpdateUtility.replaceField(trait.getTraitName(), entity.getTraitName()));
+		entity.setTraitPUI(UpdateUtility.replaceField(trait.getTraitPUI(), entity.getTraitPUI()));
 
 		return entity;
 	}
@@ -129,19 +131,22 @@ public class TraitService {
 		Trait trait = null;
 		if (entity != null) {
 			trait = new Trait();
-			trait.setAdditionalInfo(entity.getAdditionalInfoMap());
+			UpdateUtility.convertFromEntity(entity, trait);
+			
 			trait.setAlternativeAbbreviations(entity.getAlternativeAbbreviations());
 			trait.setAttribute(entity.getAttribute());
+			trait.setAttributePUI(entity.getAttributePUI());
 			trait.setEntity(entity.getEntity());
-			trait.setExternalReferences(entity.getExternalReferencesMap());
+			trait.setEntityPUI(entity.getEntityPUI());
 			trait.setMainAbbreviation(entity.getMainAbbreviation());
 			trait.setOntologyReference(ontologyService.convertFromEntity(entity));
 			trait.setStatus(entity.getStatus());
 			trait.setSynonyms(entity.getSynonyms());
 			trait.setTraitClass(entity.getTraitClass());
-			trait.setTraitDbId(entity.getId());
+			trait.setTraitDbId(entity.getId()); 
 			trait.setTraitDescription(entity.getTraitDescription());
 			trait.setTraitName(entity.getTraitName());
+			trait.setTraitPUI(entity.getTraitPUI());
 		}
 		return trait;
 	}

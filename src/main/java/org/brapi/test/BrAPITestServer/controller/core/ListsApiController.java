@@ -101,6 +101,16 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 			@Valid @RequestBody ArrayList<String> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
+		return listsListDbIdDataPost(listDbId, body, authorization);
+	}
+
+	@CrossOrigin
+	@Override
+	public ResponseEntity<ListResponse> listsListDbIdDataPost(
+			@PathVariable("listDbId") String listDbId,
+			@Valid @RequestBody ArrayList<String> body,
+			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		ListDetails data = listService.updateListItems(listDbId, body);

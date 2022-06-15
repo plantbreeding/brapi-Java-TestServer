@@ -63,7 +63,7 @@ public class ImageService {
 		return findImages(request, metadata);
 	}
 
-	public List<Image> findImages(@Valid ImageSearchRequest request, Metadata metadata) {
+	public List<ImageEntity> findImageEntities(ImageSearchRequest request, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<ImageEntity> searchQuery = new SearchQueryBuilder<ImageEntity>(ImageEntity.class);
 		if (request.getDescriptiveOntologyTerms() != null) {
@@ -87,8 +87,12 @@ public class ImageService {
 
 		Page<ImageEntity> imagePage = imageRepository.findAllBySearch(searchQuery, pageReq);
 		PagingUtility.calculateMetaData(metadata, imagePage);
+		return imagePage.getContent();
+	}
 
-		List<Image> images = imagePage.map(this::convertFromEntity).getContent();
+	public List<Image> findImages(ImageSearchRequest request, Metadata metadata) {
+		List<ImageEntity> imagePage = findImageEntities(request, metadata);
+		List<Image> images = imagePage.stream().map(this::convertFromEntity).collect(Collectors.toList());
 		return images;
 	}
 
@@ -163,6 +167,15 @@ public class ImageService {
 			}
 		}
 		return bytes;
+	}
+
+	public List<String> deleteImages(ImageSearchRequest body, Metadata metadata) {
+
+		List<ImageEntity> deletedImages = findImageEntities(body, metadata);
+
+		imageRepository.deleteAll(deletedImages);
+
+		return deletedImages.stream().map(image -> image.getId()).collect(Collectors.toList());
 	}
 
 	private String constructURL(ImageEntity newEntity, String requestURL) {

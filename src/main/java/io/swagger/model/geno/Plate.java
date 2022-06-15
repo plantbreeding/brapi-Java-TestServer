@@ -2,10 +2,9 @@ package io.swagger.model.geno;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
-import org.springframework.validation.annotation.Validated;
 
-public class Plate {
+public class Plate extends PlateNewRequest {
+
 	@JsonProperty("plateDbId")
 	private String plateDbId = null;
 
@@ -21,22 +20,6 @@ public class Plate {
 	public void setPlateDbId(String plateDbId) {
 		this.plateDbId = plateDbId;
 	}
-	
-	@JsonProperty("plateName")
-	private String plateName = null;
-
-	public Plate plateName(String plateName) {
-		this.plateName = plateName;
-		return this;
-	}
-
-	public String getPlateName() {
-		return plateName;
-	}
-
-	public void setPlateName(String plateName) {
-		this.plateName = plateName;
-	}
 
 	@Override
 	public boolean equals(java.lang.Object o) {
@@ -46,30 +29,29 @@ public class Plate {
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		Plate sample = (Plate) o;
-		return Objects.equals(this.plateDbId, sample.plateDbId) && super.equals(o);
+		Plate plate = (Plate) o;
+		return Objects.equals(this.additionalInfo, plate.additionalInfo)
+				&& Objects.equals(this.externalReferences, plate.externalReferences)
+				&& Objects.equals(this.plateDbId, plate.plateDbId);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(plateDbId, super.hashCode());
+		return Objects.hash(additionalInfo, externalReferences, plateDbId);
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("class Sample {\n");
-		sb.append("    ").append(toIndentedString(super.toString())).append("\n");
-		sb.append("    sampleDbId: ").append(toIndentedString(plateDbId)).append("\n");
-		sb.append("    plateName: ").append(toIndentedString(plateName)).append("\n");
+		sb.append("class Plate {\n");
+
+		sb.append("    additionalInfo: ").append(toIndentedString(additionalInfo)).append("\n");
+		sb.append("    externalReferences: ").append(toIndentedString(externalReferences)).append("\n");
+		sb.append("    plateDbId: ").append(toIndentedString(plateDbId)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";

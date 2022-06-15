@@ -1,8 +1,7 @@
 
 INSERT INTO vendor_order(id, client_plate_barcode, client_plate_db_id, sample_type, status, status_time_stamp)	VALUES ('vendor_order1', '123456', '123456', 0, 0, '2018-01-01 00:00:00');
 INSERT INTO plate_submission (id, client_id, number_of_samples, sample_type, order_id) VALUES('plate_submission1', '123456', 16, 0, 'vendor_order1');
-INSERT INTO plate (id, client_plate_db_id, client_plate_barcode, plate_name, sample_submission_format, status_time_stamp, submission_id) VALUES('vendor_plate1', '123456789', '123456789', 'Plate 1', 0, '2018-01-01 00:00:00', 'plate_submission1');
-INSERT INTO sample (id, concentration, plate_column, plate_row, sample_barcode, sample_description, sample_group_db_id, sample_name, samplepui, sample_timestamp, sample_type, taken_by, tissue_type, volume, well, observation_unit_id, plate_id, taxon_id_id) VALUES('vendor_sample1', '19', 2, 'A', '0123456789', 'This is a description of a fake sample. This sample is fake.', 'sample_group_02', 'Sample 1', 'doi://10.12345/fake/4423', '2018-01-01 00:00:00', 'DNA', 'Bob Robertson (Coordinate App)', 'Leaf', '340', 'A2', 'observation_unit1', 'vendor_plate1', null);
+UPDATE plate SET submission_id = 'plate_submission1' WHERE id = 'plate1';
 INSERT INTO vendor_order_entity_service_ids(vendor_order_entity_id, service_ids) VALUES ('vendor_order1', 'vendor_spec_platform1');
 
 INSERT INTO vendor_spec (id, contact_name, vendor_address, vendor_city, vendor_country, vendor_description, vendor_email, vendor_name, vendor_phone, vendorurl) VALUES('vendor_spec1', 'Bob Smith', '123 Street Ave', 'Townsville', 'USA', 'Example vendor used for testing', 'bsmith@brapi.org', 'Bobs Vendor', '+12345678910', 'https://brapi.org');

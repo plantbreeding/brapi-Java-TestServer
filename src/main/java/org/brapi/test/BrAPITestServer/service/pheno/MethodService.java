@@ -102,14 +102,14 @@ public class MethodService {
 		return method;
 	}
 
-	public MethodEntity updateEntity(MethodEntity entity, @Valid MethodBaseClass method) throws BrAPIServerException {
+	public MethodEntity updateEntity(MethodEntity entity, MethodBaseClass method) throws BrAPIServerException {
 
-		entity.setAdditionalInfo(UpdateUtility.replaceField(method.getAdditionalInfo(), entity.getAdditionalInfoMap()));
+		UpdateUtility.updateEntity(method, entity);
+
 		entity.setDescription(UpdateUtility.replaceField(method.getDescription(), entity.getDescription()));
-		entity.setExternalReferences(
-				UpdateUtility.replaceField(method.getExternalReferences(), entity.getExternalReferencesMap()));
 		entity.setFormula(UpdateUtility.replaceField(method.getFormula(), entity.getFormula()));
 		entity.setMethodClass(UpdateUtility.replaceField(method.getMethodClass(), entity.getMethodClass()));
+		entity.setMethodPUI(UpdateUtility.replaceField(method.getMethodPUI(), entity.getMethodPUI()));
 		entity.setName(UpdateUtility.replaceField(method.getMethodName(), entity.getName()));
 		entity.setReference(UpdateUtility.replaceField(method.getBibliographicalReference(), entity.getReference()));
 
@@ -122,14 +122,15 @@ public class MethodService {
 		Method method = null;
 		if (entity != null) {
 			method = new Method();
-			method.setAdditionalInfo(entity.getAdditionalInfoMap());
+			UpdateUtility.convertFromEntity(entity, method);
+
 			method.setBibliographicalReference(entity.getReference());
 			method.setDescription(entity.getDescription());
-			method.setExternalReferences(entity.getExternalReferencesMap());
 			method.setFormula(entity.getFormula());
 			method.setMethodClass(entity.getMethodClass());
 			method.setMethodDbId(entity.getId());
 			method.setMethodName(entity.getName());
+			method.setMethodPUI(entity.getMethodPUI());
 			method.setOntologyReference(ontologyService.convertFromEntity(entity));
 		}
 		return method;

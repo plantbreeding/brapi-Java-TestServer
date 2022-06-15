@@ -15,6 +15,7 @@ import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.ProgramEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.TrialEntity;
+import org.brapi.test.BrAPITestServer.model.entity.germ.CrossEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.GermplasmEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.SeedLotEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationEntity;
@@ -26,9 +27,11 @@ import org.brapi.test.BrAPITestServer.repository.pheno.ObservationUnitRepository
 import org.brapi.test.BrAPITestServer.service.GeoJSONUtility;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
+import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.brapi.test.BrAPITestServer.service.core.ProgramService;
 import org.brapi.test.BrAPITestServer.service.core.StudyService;
 import org.brapi.test.BrAPITestServer.service.core.TrialService;
+import org.brapi.test.BrAPITestServer.service.germ.CrossService;
 import org.brapi.test.BrAPITestServer.service.germ.GermplasmService;
 import org.brapi.test.BrAPITestServer.service.germ.SeedLotService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +48,7 @@ import io.swagger.model.pheno.ObservationTreatment;
 import io.swagger.model.pheno.ObservationUnit;
 import io.swagger.model.pheno.ObservationUnitHierarchyLevel;
 import io.swagger.model.pheno.ObservationUnitHierarchyLevelEnum;
+import io.swagger.model.pheno.ObservationUnitLevel;
 import io.swagger.model.pheno.ObservationUnitLevelRelationship;
 import io.swagger.model.pheno.ObservationUnitNewRequest;
 import io.swagger.model.pheno.ObservationUnitPosition;
@@ -58,6 +62,7 @@ public class ObservationUnitService {
 	private final ObservationUnitRepository observationUnitRepository;
 
 	private final GermplasmService germplasmService;
+	private final CrossService crossService;
 	private final ObservationService observationService;
 	private final StudyService studyService;
 	private final TrialService trialService;
@@ -68,13 +73,14 @@ public class ObservationUnitService {
 	@Autowired
 	public ObservationUnitService(ObservationUnitRepository observationUnitRepository, StudyService studyService,
 			TrialService trialService, ProgramService programService, ObservationService observationService,
-			GermplasmService germplasmService, SeedLotService seedLotService,
+			GermplasmService germplasmService, SeedLotService seedLotService, CrossService crossService,
 			ObservationVariableService observationVariableService) {
 		this.observationUnitRepository = observationUnitRepository;
 
 		this.studyService = studyService;
 		this.trialService = trialService;
 		this.programService = programService;
+		this.crossService = crossService;
 		this.germplasmService = germplasmService;
 		this.observationService = observationService;
 		this.seedLotService = seedLotService;
@@ -110,6 +116,8 @@ public class ObservationUnitService {
 			request.addObservationUnitDbIdsItem(observationUnitDbId);
 		if (observationUnitName != null)
 			request.addObservationUnitNamesItem(observationUnitName);
+		if (commonCropName != null)
+			request.addCommonCropNamesItem(commonCropName);
 		if (germplasmDbId != null)
 			request.addGermplasmDbIdsItem(germplasmDbId);
 		if (studyDbId != null)
@@ -123,7 +131,7 @@ public class ObservationUnitService {
 		if (seasonDbId != null)
 			request.addSeasonDbIdsItem(seasonDbId);
 		if (observationUnitLevelName != null || observationUnitLevelOrder != null || observationUnitLevelCode != null) {
-			ObservationUnitLevelRelationship level = new ObservationUnitLevelRelationship();
+			ObservationUnitLevel level = new ObservationUnitLevel();
 			if (observationUnitLevelName != null)
 				level.setLevelName(ObservationUnitHierarchyLevelEnum.fromValue(observationUnitLevelName));
 			if (observationUnitLevelOrder != null)
@@ -141,6 +149,8 @@ public class ObservationUnitService {
 				level.setLevelOrder(Integer.decode(observationUnitLevelRelationshipOrder));
 			if (observationUnitLevelRelationshipCode != null)
 				level.setLevelCode(observationUnitLevelRelationshipCode);
+			if (observationUnitLevelRelationshipDbId != null)
+				level.setObservationUnitDbId(observationUnitLevelRelationshipDbId);
 			request.addObservationLevelRelationshipsItem(level);
 		}
 		if (includeObservations != null)
@@ -310,9 +320,9 @@ public class ObservationUnitService {
 	public List<ObservationUnitHierarchyLevel> findObservationLevels(String studyDbId, String trialDbId,
 			String programDbId, Metadata metadata) {
 
-		List<ObservationUnitLevelRelationship> allLevels = Arrays.asList(ObservationUnitHierarchyLevelEnum.values())
+		List<ObservationUnitLevel> allLevels = Arrays.asList(ObservationUnitHierarchyLevelEnum.values())
 				.stream().map(levelEnum -> {
-					ObservationUnitLevelRelationship rel = new ObservationUnitLevelRelationship();
+					ObservationUnitLevel rel = new ObservationUnitLevel();
 					rel.setLevelName(levelEnum);
 					return rel;
 				}).collect(Collectors.toList());
@@ -320,15 +330,21 @@ public class ObservationUnitService {
 		ObservationUnitSearchRequest levelsSearch = buildObservationUnitsSearchRequest(null, null, null, studyDbId,
 				null, trialDbId, programDbId, null, null, null, null, null, null, null, null, null, false, null, null,
 				null);
-		levelsSearch.setObservationLevelRelationships(allLevels);
 
+		levelsSearch.setObservationLevels(allLevels);
 		List<ObservationUnit> units = new ArrayList<>();
 		List<ObservationUnit> someunits = findObservationUnits(levelsSearch,
 				new Metadata().pagination(new IndexPagination()));
 		units.addAll(someunits);
 
-		levelsSearch.setObservationLevelRelationships(null);
-		levelsSearch.setObservationLevels(allLevels);
+		levelsSearch.setObservationLevelRelationships(allLevels.stream().map(lvl -> {
+			ObservationUnitLevelRelationship rel = new ObservationUnitLevelRelationship();
+			rel.setLevelCode(lvl.getLevelCode());
+			rel.setLevelName(lvl.getLevelName());
+			rel.setLevelOrder(lvl.getLevelOrder());
+			return rel;
+			}).collect(Collectors.toList()));
+		levelsSearch.setObservationLevels(null);
 		List<ObservationUnit> moreUnits = findObservationUnits(levelsSearch,
 				new Metadata().pagination(new IndexPagination()));
 		units.addAll(moreUnits);
@@ -339,8 +355,10 @@ public class ObservationUnitService {
 				.filter(unit -> unit.getObservationUnitPosition().getObservationLevel() != null)
 				.filter(unit -> unit.getObservationUnitPosition().getObservationLevel().getLevelName() != null)
 				.map(unit -> {
-					List<ObservationUnitLevelRelationship> list = unit.getObservationUnitPosition()
-							.getObservationLevelRelationships();
+					List<ObservationUnitLevel> list = new ArrayList<>();
+					for (ObservationUnitLevel level: unit.getObservationUnitPosition().getObservationLevelRelationships()) {
+						list.add(level);
+					}
 					list.add(unit.getObservationUnitPosition().getObservationLevel());
 					return list;
 				}).flatMap(list -> list.stream()).map(level -> level.getLevelName()).distinct().sorted()
@@ -356,11 +374,15 @@ public class ObservationUnitService {
 
 	private ObservationUnit convertFromEntity(ObservationUnitEntity entity) {
 		ObservationUnit unit = new ObservationUnit();
-		unit.setAdditionalInfo(entity.getAdditionalInfoMap());
-		unit.setExternalReferences(entity.getExternalReferencesMap());
+		UpdateUtility.convertFromEntity(entity, unit);
+
 		if (entity.getGermplasm() != null) {
 			unit.setGermplasmDbId(entity.getGermplasm().getId());
 			unit.setGermplasmName(entity.getGermplasm().getGermplasmName());
+		}
+		if (entity.getCross() != null) {
+			unit.setCrossDbId(entity.getCross().getId());
+			unit.setCrossName(entity.getCross().getName());
 		}
 		if (entity.getObservations() != null) {
 			unit.setObservations(entity.getObservations().stream().map(this.observationService::convertFromEntity)
@@ -370,8 +392,10 @@ public class ObservationUnitService {
 		unit.setObservationUnitName(entity.getObservationUnitName());
 		unit.setObservationUnitPosition(convertFromEntity(entity.getPosition()));
 		unit.setObservationUnitPUI(entity.getObservationUnitPUI());
-		if (entity.getSeedLot() != null)
+		if (entity.getSeedLot() != null) {
 			unit.setSeedLotDbId(entity.getSeedLot().getId());
+			unit.setSeedLotName(entity.getSeedLot().getName());
+		}
 		if (entity.getTreatments() != null)
 			unit.setTreatments(
 					entity.getTreatments().stream().map(this::convertFromEntity).collect(Collectors.toList()));
@@ -413,7 +437,7 @@ public class ObservationUnitService {
 			position = new ObservationUnitPosition();
 			position.setEntryType(entity.getEntryType());
 			position.setGeoCoordinates(GeoJSONUtility.convertFromEntity(entity.getGeoCoordinates()));
-			ObservationUnitLevelRelationship level = new ObservationUnitLevelRelationship();
+			ObservationUnitLevel level = new ObservationUnitLevel();
 			level.setLevelCode(entity.getLevelCode());
 			level.setLevelName(entity.getLevelName());
 			level.setLevelOrder(entity.getLevelOrder());
@@ -442,37 +466,41 @@ public class ObservationUnitService {
 		level.setLevelCode(entity.getLevelCode());
 		level.setLevelName(entity.getLevelName());
 		level.setLevelOrder(entity.getLevelOrder());
+		if (entity.getObservationUnit() != null)
+			level.setObservationUnitDbId(entity.getObservationUnit().getId());
 		return level;
 	}
 
-	private ObservationUnitEntity updateEntity(ObservationUnitEntity entity, ObservationUnitNewRequest body)
+	private ObservationUnitEntity updateEntity(ObservationUnitEntity entity, ObservationUnitNewRequest unit)
 			throws BrAPIServerException {
-		if (body.getAdditionalInfo() != null)
-			entity.setAdditionalInfo(body.getAdditionalInfo());
-		if (body.getExternalReferences() != null)
-			entity.setExternalReferences(body.getExternalReferences());
-		if (body.getGermplasmDbId() != null) {
-			GermplasmEntity germplasm = germplasmService.getGermplasmEntity(body.getGermplasmDbId());
+		UpdateUtility.updateEntity(unit, entity);
+
+		if (unit.getGermplasmDbId() != null) {
+			GermplasmEntity germplasm = germplasmService.getGermplasmEntity(unit.getGermplasmDbId());
 			entity.setGermplasm(germplasm);
 		}
-		if (body.getObservationUnitName() != null)
-			entity.setObservationUnitName(body.getObservationUnitName());
-		if (body.getObservationUnitPUI() != null)
-			entity.setObservationUnitPUI(body.getObservationUnitPUI());
-		if (body.getObservationUnitPosition() != null) {
+		if (unit.getCrossDbId() != null) {
+			CrossEntity cross = crossService.getCrossEntity(unit.getCrossDbId(), false);
+			entity.setCross(cross);
+		}
+		if (unit.getObservationUnitName() != null)
+			entity.setObservationUnitName(unit.getObservationUnitName());
+		if (unit.getObservationUnitPUI() != null)
+			entity.setObservationUnitPUI(unit.getObservationUnitPUI());
+		if (unit.getObservationUnitPosition() != null) {
 			if (entity.getPosition() == null)
 				entity.setPosition(new ObservationUnitPositionEntity());
 			ObservationUnitPositionEntity position = entity.getPosition();
-			updateEntity(position, body.getObservationUnitPosition());
+			updateEntity(position, unit.getObservationUnitPosition());
 			position.setObservationUnit(entity);
 			entity.setPosition(position);
 		}
-		if (body.getSeedLotDbId() != null) {
-			SeedLotEntity seedLot = seedLotService.getSeedLotEntity(body.getSeedLotDbId());
+		if (unit.getSeedLotDbId() != null) {
+			SeedLotEntity seedLot = seedLotService.getSeedLotEntity(unit.getSeedLotDbId());
 			entity.setSeedLot(seedLot);
 		}
-		if (body.getTreatments() != null)
-			entity.setTreatments(body.getTreatments().stream().map(t -> {
+		if (unit.getTreatments() != null)
+			entity.setTreatments(unit.getTreatments().stream().map(t -> {
 				TreatmentEntity e = new TreatmentEntity();
 				e.setFactor(t.getFactor());
 				e.setModality(t.getModality());
@@ -480,14 +508,14 @@ public class ObservationUnitService {
 				return e;
 			}).collect(Collectors.toList()));
 
-		if (body.getStudyDbId() != null) {
-			StudyEntity study = studyService.getStudyEntity(body.getStudyDbId());
+		if (unit.getStudyDbId() != null) {
+			StudyEntity study = studyService.getStudyEntity(unit.getStudyDbId());
 			entity.setStudy(study);
-		} else if (body.getTrialDbId() != null) {
-			TrialEntity trial = trialService.getTrialEntity(body.getTrialDbId());
+		} else if (unit.getTrialDbId() != null) {
+			TrialEntity trial = trialService.getTrialEntity(unit.getTrialDbId());
 			entity.setTrial(trial);
-		} else if (body.getProgramDbId() != null) {
-			ProgramEntity program = programService.getProgramEntity(body.getProgramDbId());
+		} else if (unit.getProgramDbId() != null) {
+			ProgramEntity program = programService.getProgramEntity(unit.getProgramDbId());
 			entity.setProgram(program);
 		}
 
@@ -495,6 +523,7 @@ public class ObservationUnitService {
 	}
 
 	private void updateEntity(ObservationUnitPositionEntity entity, ObservationUnitPosition position) {
+
 		if (position.getEntryType() != null)
 			entity.setEntryType(position.getEntryType());
 		if (position.getGeoCoordinates() != null)
@@ -510,10 +539,16 @@ public class ObservationUnitService {
 		if (position.getObservationLevelRelationships() != null)
 			entity.setObservationLevelRelationships(position.getObservationLevelRelationships().stream().map(level -> {
 				ObservationUnitLevelRelationshipEntity relationshipEntity = new ObservationUnitLevelRelationshipEntity();
-				relationshipEntity.setLevelCode(level.getLevelCode());
-				relationshipEntity.setLevelName(level.getLevelName());
-				relationshipEntity.setLevelOrder(level.getLevelOrder());
-				relationshipEntity.setPosition(entity);
+				try {
+					relationshipEntity.setLevelCode(level.getLevelCode());
+					relationshipEntity.setLevelName(level.getLevelName());
+					relationshipEntity.setLevelOrder(level.getLevelOrder());
+					ObservationUnitEntity parentEntity = getObservationUnitEntity(level.getObservationUnitDbId());
+					relationshipEntity.setObservationUnit(parentEntity);
+					relationshipEntity.setPosition(entity);
+				} catch (BrAPIServerException e) {
+					e.printStackTrace();
+				}
 				return relationshipEntity;
 			}).collect(Collectors.toList()));
 		if (position.getPositionCoordinateX() != null)
@@ -524,6 +559,7 @@ public class ObservationUnitService {
 			entity.setPositionCoordinateY(position.getPositionCoordinateY());
 		if (position.getPositionCoordinateYType() != null)
 			entity.setPositionCoordinateYType(position.getPositionCoordinateYType());
+
 	}
 
 	private List<List<String>> buildDataMatrix(Page<ObservationUnitEntity> observationUnits,
@@ -542,14 +578,14 @@ public class ObservationUnitService {
 
 				row.add(printIfNotNull(study.getId())); // STUDYDBID
 				row.add(printIfNotNull(study.getStudyName())); // STUDYNAME
-
-				if (study.getLocation() != null) {
-					row.add(printIfNotNull(study.getLocation().getId())); // LOCATIONDBID
-					row.add(printIfNotNull(study.getLocation().getLocationName())); // LOCATIONNAME
-				} else {
-					row.add(""); // LOCATIONDBID
-					row.add(""); // LOCATIONNAME
-				}
+//
+//				if (study.getLocation() != null) {
+//					row.add(printIfNotNull(study.getLocation().getId())); // LOCATIONDBID
+//					row.add(printIfNotNull(study.getLocation().getLocationName())); // LOCATIONNAME
+//				} else {
+//					row.add(""); // LOCATIONDBID
+//					row.add(""); // LOCATIONNAME
+//				}
 
 			} else {
 				row.add(""); // YEAR
@@ -617,8 +653,8 @@ public class ObservationUnitService {
 		headers.add(ObservationTableHeaderRowEnum.YEAR);
 		headers.add(ObservationTableHeaderRowEnum.STUDYDBID);
 		headers.add(ObservationTableHeaderRowEnum.STUDYNAME);
-		headers.add(ObservationTableHeaderRowEnum.LOCATIONDBID);
-		headers.add(ObservationTableHeaderRowEnum.LOCATIONNAME);
+//		headers.add(ObservationTableHeaderRowEnum.LOCATIONDBID);
+//		headers.add(ObservationTableHeaderRowEnum.LOCATIONNAME);
 		headers.add(ObservationTableHeaderRowEnum.GERMPLASMDBID);
 		headers.add(ObservationTableHeaderRowEnum.GERMPLASMNAME);
 		headers.add(ObservationTableHeaderRowEnum.OBSERVATIONUNITDBID);

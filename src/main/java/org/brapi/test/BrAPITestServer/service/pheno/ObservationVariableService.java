@@ -190,13 +190,14 @@ public class ObservationVariableService {
 	}
 
 	public void convertFromBaseEntity(VariableBaseEntity entity, VariableBaseClass var) {
-		var.setAdditionalInfo(entity.getAdditionalInfoMap());
+		
+		UpdateUtility.convertFromEntity(entity, var);
+		
 		if (entity.getCrop() != null)
 			var.setCommonCropName(entity.getCrop().getCropName());
 		var.setContextOfUse(entity.getContextOfUse());
 		var.setDefaultValue(entity.getDefaultValue());
 		var.setDocumentationURL(entity.getDocumentationURL());
-		var.setExternalReferences(entity.getExternalReferencesMap());
 		var.setGrowthStage(entity.getGrowthStage());
 		var.setInstitution(entity.getInstitution());
 		var.setLanguage(entity.getLanguage());
@@ -216,17 +217,14 @@ public class ObservationVariableService {
 		entity.setName(UpdateUtility.replaceField(request.getObservationVariableName(), entity.getName()));
 	}
 
-	public void updateBaseEntity(VariableBaseEntity entity, @Valid VariableBaseClass request)
+	public void updateBaseEntity(VariableBaseEntity entity, VariableBaseClass request)
 			throws BrAPIServerException {
+		
+		UpdateUtility.updateEntity(request, entity);
 
-		entity.setAdditionalInfo(
-				UpdateUtility.replaceField(request.getAdditionalInfo(), entity.getAdditionalInfoMap()));
 		entity.setContextOfUse(UpdateUtility.replaceField(request.getContextOfUse(), entity.getContextOfUse()));
 		entity.setDefaultValue(UpdateUtility.replaceField(request.getDefaultValue(), entity.getDefaultValue()));
-		entity.setDocumentationURL(
-				UpdateUtility.replaceField(request.getDocumentationURL(), entity.getDocumentationURL()));
-		entity.setExternalReferences(
-				UpdateUtility.replaceField(request.getExternalReferences(), entity.getExternalReferencesMap()));
+		entity.setDocumentationURL(UpdateUtility.replaceField(request.getDocumentationURL(), entity.getDocumentationURL()));
 		entity.setGrowthStage(UpdateUtility.replaceField(request.getGrowthStage(), entity.getGrowthStage()));
 		entity.setInstitution(UpdateUtility.replaceField(request.getInstitution(), entity.getInstitution()));
 		entity.setLanguage(UpdateUtility.replaceField(request.getLanguage(), entity.getLanguage()));

@@ -8,11 +8,6 @@ import io.swagger.model.geno.SampleListResponseResult;
 import io.swagger.model.geno.SampleNewRequest;
 import io.swagger.model.geno.SampleSearchRequest;
 import io.swagger.model.geno.SampleSingleResponse;
-import io.swagger.model.germ.Germplasm;
-import io.swagger.model.germ.GermplasmListResponse;
-import io.swagger.model.germ.GermplasmListResponseResult;
-import io.swagger.model.germ.GermplasmSearchRequest;
-import io.swagger.annotations.ApiParam;
 import io.swagger.api.geno.SamplesApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -24,7 +19,6 @@ import org.brapi.test.BrAPITestServer.service.geno.SampleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
 @Controller
@@ -93,6 +88,18 @@ public class SamplesApiController extends BrAPIController implements SamplesApi 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		List<Sample> data = sampleService.saveSamples(body);
+		return responseOK(new SampleListResponse(), new SampleListResponseResult(), data);
+	}
+
+	@CrossOrigin
+	@Override
+	public ResponseEntity<SampleListResponse> samplesPut(@Valid @RequestBody Map<String, SampleNewRequest> body,
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
+
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		List<Sample> data = sampleService.updateSamples(body);
 		return responseOK(new SampleListResponse(), new SampleListResponseResult(), data);
 	}
 

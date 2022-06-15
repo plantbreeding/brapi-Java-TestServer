@@ -7,6 +7,7 @@ package io.swagger.api.pheno;
 
 import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Model202AcceptedSearchResponse;
+import io.swagger.model.pheno.ObservationDeleteResponse;
 import io.swagger.model.pheno.ObservationListResponse;
 import io.swagger.model.pheno.ObservationNewRequest;
 import io.swagger.model.pheno.ObservationSearchRequest;
@@ -185,5 +186,18 @@ public interface ObservationsApi {
 			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
 			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize)
 			throws BrAPIServerException;
+
+	@ApiOperation(value = "Submit a delete request for `Observations`", notes = "Submit a delete request for `Observations`", authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Observations", })
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "OK", response = ObservationDeleteResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/delete/observations", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.POST)
+	ResponseEntity<ObservationDeleteResponse> deleteObservationsPost(
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization,
+			@ApiParam(value = "") @Valid @RequestBody ObservationSearchRequest body) throws BrAPIServerException;
 
 }

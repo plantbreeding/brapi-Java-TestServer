@@ -92,7 +92,7 @@ public class PedigreeApiController extends BrAPIController implements PedigreeAp
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		List<PedigreeNode> data = pedigreeService.savePedigree(body);
+		List<PedigreeNode> data = pedigreeService.savePedigreeNodes(body);
 		return responseOK(new PedigreeListResponse(), new PedigreeListResponseResult(), data);
 	}
 
@@ -103,7 +103,7 @@ public class PedigreeApiController extends BrAPIController implements PedigreeAp
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
-		List<PedigreeNode> data = pedigreeService.updatePedigree(body);
+		List<PedigreeNode> data = pedigreeService.updatePedigreeNodes(body);
 		return responseOK(new PedigreeListResponse(), new PedigreeListResponseResult(), data);
 	}
 

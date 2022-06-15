@@ -19,8 +19,16 @@ public class ObservationUnitLevelRelationshipEntity extends BrAPIBaseEntity {
 	@Column
 	private Integer levelOrder;
 	@ManyToOne
+	private ObservationUnitEntity observationUnit;
+	@ManyToOne
 	private ObservationUnitPositionEntity position;
 	
+	public ObservationUnitEntity getObservationUnit() {
+		return observationUnit;
+	}
+	public void setObservationUnit(ObservationUnitEntity observationUnit) {
+		this.observationUnit = observationUnit;
+	}
 	public String getLevelCode() {
 		return levelCode;
 	}

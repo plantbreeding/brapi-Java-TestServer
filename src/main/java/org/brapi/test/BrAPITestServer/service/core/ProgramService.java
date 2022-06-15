@@ -64,10 +64,13 @@ public class ProgramService {
 				.appendList(request.getAbbreviations(), "abbreviation")
 				.appendList(request.getCommonCropNames(), "crop.cropName")
 				.appendList(request.getLeadPersonDbIds(), "leadPerson.id")
-				.appendPersonNamesList(request.getLeadPersonNames(), "leadPerson.firstName", "leadPerson.middleName",
+				.appendNamesList(request.getLeadPersonNames(), "leadPerson.firstName", "leadPerson.middleName",
 						"leadPerson.lastName")
-				.appendList(request.getObjectives(), "objective").appendList(request.getProgramDbIds(), "id")
-				.appendList(request.getProgramNames(), "name");
+				.appendList(request.getObjectives(), "objective")
+				.appendList(request.getProgramDbIds(), "id")
+				.appendList(request.getProgramNames(), "name")
+				.appendEnumList(request.getProgramTypes(), "programType");
+		
 
 		Page<ProgramEntity> page = programRepository.findAllBySearch(searchQuery, pageReq);
 		List<Program> programs = page.map(this::convertFromEntity).getContent();
@@ -124,13 +127,15 @@ public class ProgramService {
 
 	private Program convertFromEntity(ProgramEntity entity) {
 		Program program = new Program();
-		program.setAdditionalInfo(entity.getAdditionalInfoMap());
+		program = UpdateUtility.convertFromEntity(entity, program);
+
 		program.setAbbreviation(entity.getAbbreviation());
 		program.setDocumentationURL(entity.getDocumentationURL());
-		program.setExternalReferences(entity.getExternalReferencesMap());
 		program.setObjective(entity.getObjective());
 		program.setProgramDbId(entity.getId());
 		program.setProgramName(entity.getName());
+		program.setProgramType(entity.getProgramType());
+		program.setFundingInformation(entity.getFundingInformation());
 
 		if (entity.getCrop() != null) {
 			program.setCommonCropName(entity.getCrop().getCropName());
@@ -139,20 +144,19 @@ public class ProgramService {
 			program.setLeadPersonDbId(entity.getLeadPerson().getId());
 			program.setLeadPersonName(entity.getLeadPerson().getName());
 		}
-
+		
 		return program;
 	}
 
 	private void updateEntity(ProgramEntity entity, ProgramNewRequest request) throws BrAPIServerException {
-		entity.setAdditionalInfo(
-				UpdateUtility.replaceField(request.getAdditionalInfo(), entity.getAdditionalInfoMap()));
+		entity = UpdateUtility.updateEntity(request, entity);
+
 		entity.setAbbreviation(UpdateUtility.replaceField(request.getAbbreviation(), entity.getAbbreviation()));
-		entity.setDocumentationURL(
-				UpdateUtility.replaceField(request.getDocumentationURL(), entity.getDocumentationURL()));
-		entity.setExternalReferences(
-				UpdateUtility.replaceField(request.getExternalReferences(), entity.getExternalReferencesMap()));
+		entity.setDocumentationURL(UpdateUtility.replaceField(request.getDocumentationURL(), entity.getDocumentationURL()));
 		entity.setObjective(UpdateUtility.replaceField(request.getObjective(), entity.getObjective()));
 		entity.setName(UpdateUtility.replaceField(request.getProgramName(), entity.getName()));
+		entity.setProgramType(UpdateUtility.replaceField(request.getProgramType(), entity.getProgramType()));
+		entity.setFundingInformation(UpdateUtility.replaceField(request.getFundingInformation(), entity.getFundingInformation()));
 
 		String commonCropName = entity.getCrop() == null ? UpdateUtility.replaceField(request.getCommonCropName(), null)
 				: UpdateUtility.replaceField(request.getCommonCropName(), entity.getCrop().getCropName());

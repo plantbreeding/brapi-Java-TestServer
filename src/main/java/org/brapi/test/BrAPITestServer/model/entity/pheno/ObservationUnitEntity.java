@@ -15,12 +15,15 @@ import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.ProgramEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.TrialEntity;
+import org.brapi.test.BrAPITestServer.model.entity.germ.CrossEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.GermplasmEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.SeedLotEntity;
 
 @Entity
 @Table(name = "observation_unit")
 public class ObservationUnitEntity extends BrAPIPrimaryEntity {
+	@ManyToOne
+	private CrossEntity cross;
 	@ManyToOne
 	private GermplasmEntity germplasm;
 	@Column
@@ -33,7 +36,6 @@ public class ObservationUnitEntity extends BrAPIPrimaryEntity {
 	private List<TreatmentEntity> treatments;
 	@OneToOne(mappedBy="observationUnit", cascade=CascadeType.ALL)
 	private ObservationUnitPositionEntity position;
-	
 	@ManyToOne
 	private CropEntity crop;
 	@ManyToOne
@@ -42,10 +44,16 @@ public class ObservationUnitEntity extends BrAPIPrimaryEntity {
 	private TrialEntity trial;
 	@ManyToOne
 	private StudyEntity study;
-	
 	@OneToMany(mappedBy="observationUnit", cascade=CascadeType.ALL)
 	private List<ObservationEntity> observations;
 	
+	
+	public CrossEntity getCross() {
+		return cross;
+	}
+	public void setCross(CrossEntity cross) {
+		this.cross = cross;
+	}
 	public CropEntity getCrop() {
 		return crop;
 	}

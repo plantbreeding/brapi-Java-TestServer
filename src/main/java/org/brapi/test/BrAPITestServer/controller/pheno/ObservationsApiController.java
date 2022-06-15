@@ -2,7 +2,12 @@ package org.brapi.test.BrAPITestServer.controller.pheno;
 
 import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
+import io.swagger.model.pheno.ImageDeleteResponse;
+import io.swagger.model.pheno.ImageDeleteResponseResult;
+import io.swagger.model.pheno.ImageSearchRequest;
 import io.swagger.model.pheno.Observation;
+import io.swagger.model.pheno.ObservationDeleteResponse;
+import io.swagger.model.pheno.ObservationDeleteResponseResult;
 import io.swagger.model.pheno.ObservationListResponse;
 import io.swagger.model.pheno.ObservationListResponseResult;
 import io.swagger.model.pheno.ObservationNewRequest;
@@ -248,6 +253,18 @@ public class ObservationsApiController extends BrAPIController implements Observ
 		} else {
 			return responseAccepted(searchResultsDbId);
 		}
+	}
+
+	@Override
+	public ResponseEntity<ObservationDeleteResponse> deleteObservationsPost(
+			@RequestHeader(value = "Authorization", required = false) String authorization,
+			@Valid @RequestBody ObservationSearchRequest body) throws BrAPIServerException {
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		Metadata metadata = generateMetaDataTemplate(body);
+
+		List<String> data = observationService.deleteObservations(body, metadata);
+		return responseOK(new ObservationDeleteResponse(), new ObservationDeleteResponseResult(), data, metadata);
 	}
 
 }

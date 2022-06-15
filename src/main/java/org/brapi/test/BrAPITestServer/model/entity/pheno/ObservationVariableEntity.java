@@ -12,9 +12,17 @@ import javax.persistence.Table;
 public class ObservationVariableEntity extends VariableBaseEntity{
 	@Column
 	private String name;
+	@Column
+	private String pui;
 	@OneToMany(mappedBy="observationVariable")
 	private List<ObservationEntity> observations;
 	
+	public String getPui() {
+		return pui;
+	}
+	public void setPui(String pui) {
+		this.pui = pui;
+	}
 	public String getName() {
 		return name;
 	}

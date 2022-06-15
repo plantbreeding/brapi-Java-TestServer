@@ -5,12 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.model.BrAPIDataModel;
 import io.swagger.model.DataLink;
-import io.swagger.model.ExternalReferences;
 import io.swagger.model.pheno.ObservationUnitHierarchyLevel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.time.OffsetDateTime;
 
 public class StudyNewRequest extends BrAPIDataModel{

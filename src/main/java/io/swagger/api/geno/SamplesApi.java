@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
 @Api(value = "samples", description = "the samples API")
@@ -66,6 +67,19 @@ public interface SamplesApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<SampleListResponse> samplesPost(
 			@ApiParam(value = "") @Valid @RequestBody List<SampleNewRequest> body,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
+	
+	@ApiOperation(value = "Add new Samples", nickname = "samplesPost", notes = "Call to register the event of a sample being taken. Sample ID is assigned as a result of the operation and returned in response.", response = SampleListResponse.class, authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Samples", })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = SampleListResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/samples", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.PUT)
+	ResponseEntity<SampleListResponse> samplesPut(
+			@ApiParam(value = "") @Valid @RequestBody Map<String, SampleNewRequest> body,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
 

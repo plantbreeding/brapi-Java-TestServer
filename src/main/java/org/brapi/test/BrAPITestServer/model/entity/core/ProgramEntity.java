@@ -14,6 +14,8 @@ import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
 
+import io.swagger.model.core.ProgramSearchRequest.ProgramTypesEnum;
+
 @Entity
 @Table(name="program")
 public class ProgramEntity extends BrAPIPrimaryEntity{
@@ -23,6 +25,10 @@ public class ProgramEntity extends BrAPIPrimaryEntity{
 	private String abbreviation;
 	@Column
 	private String objective;
+	@Column
+	private String fundingInformation;
+	@Column
+	private ProgramTypesEnum programType;
 	@Column
 	private String documentationURL;
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
@@ -40,6 +46,20 @@ public class ProgramEntity extends BrAPIPrimaryEntity{
 	@OneToMany(mappedBy="program")
 	private List<ObservationEntity> observations;
 
+	
+	
+	public String getFundingInformation() {
+		return fundingInformation;
+	}
+	public void setFundingInformation(String fundingInformation) {
+		this.fundingInformation = fundingInformation;
+	}
+	public ProgramTypesEnum getProgramType() {
+		return programType;
+	}
+	public void setProgramType(ProgramTypesEnum programType) {
+		this.programType = programType;
+	}
 	public List<StudyEntity> getStudies() {
 		return studies;
 	}

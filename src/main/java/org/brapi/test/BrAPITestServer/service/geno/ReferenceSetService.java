@@ -10,6 +10,7 @@ import org.brapi.test.BrAPITestServer.model.entity.geno.ReferenceSetEntity;
 import org.brapi.test.BrAPITestServer.repository.geno.ReferenceSetRepository;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
+import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import io.swagger.model.Metadata;
 import io.swagger.model.geno.OntologyTerm;
 import io.swagger.model.geno.ReferenceSet;
 import io.swagger.model.geno.ReferenceSetsSearchRequest;
+import io.swagger.model.geno.ReferenceSourceGermplasm;
 
 @Service
 public class ReferenceSetService {
@@ -84,21 +86,37 @@ public class ReferenceSetService {
 	}
 
 	private ReferenceSet convertFromEntity(ReferenceSetEntity entity) {
-		ReferenceSet ref = new ReferenceSet();
-		ref.setAdditionalInfo(entity.getAdditionalInfoMap());
-		ref.setAssemblyPUI(entity.getAssemblyPUI());
-		ref.setDescription(entity.getDescription());
-		ref.setIsDerived(entity.getIsDerived());
-		ref.setMd5checksum(entity.getMd5checksum());
-		ref.setReferenceSetDbId(entity.getId());
-		ref.setReferenceSetName(entity.getReferenceSetName());
-		if (entity.getSourceGermplasm() != null && entity.getSourceGermplasm().getAccessionNumber() != null)
-			ref.setSourceAccessions(Arrays.asList(entity.getSourceGermplasm().getAccessionNumber()));
-		ref.setSourceURI(entity.getSourceURI());
+		ReferenceSet refSet = new ReferenceSet();
+		UpdateUtility.convertFromEntity(entity, refSet);
+		
+		refSet.setAssemblyPUI(entity.getAssemblyPUI());
+		refSet.setDescription(entity.getDescription());
+		refSet.setIsDerived(entity.getIsDerived());
+		refSet.setMd5checksum(entity.getMd5checksum());
+		refSet.setReferenceSetDbId(entity.getId());
+		refSet.setReferenceSetName(entity.getReferenceSetName());
+		refSet.setSourceURI(entity.getSourceURI());
+		
 		OntologyTerm term = new OntologyTerm().term(entity.getSpeciesOntologyTerm())
 				.termURI(entity.getSpeciesOntologyTermURI());
-		ref.setSpecies(term);
-		return ref;
+		refSet.setSpecies(term);
+		
+		if (entity.getSourceGermplasm() != null && entity.getSourceGermplasm().getAccessionNumber() != null)
+			refSet.setSourceAccessions(Arrays.asList(entity.getSourceGermplasm().getAccessionNumber()));
+		
+		if (entity.getSourceGermplasm() != null) {
+			if (entity.getSourceGermplasm().getAccessionNumber() != null) {
+				refSet.setSourceAccessions(
+						Arrays.asList(entity.getSourceGermplasm().getAccessionNumber()));
+			}
+			refSet.setCommonCropName(entity.getSourceGermplasm().getCrop().getCropName());
+			ReferenceSourceGermplasm sourceGerm = new ReferenceSourceGermplasm();
+			sourceGerm.setGermplasmDbId(entity.getSourceGermplasm().getId());
+			sourceGerm.setGermplasmName(entity.getSourceGermplasm().getGermplasmName());
+			refSet.setSourceGermplasm(Arrays.asList(sourceGerm));
+		}
+		
+		return refSet;
 	}
 
 }

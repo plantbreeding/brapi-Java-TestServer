@@ -3,27 +3,12 @@ package io.swagger.model.core;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.ExternalReferences;
+import io.swagger.model.BrAPIDataModel;
 import io.swagger.model.GeoJSON;
 
-import java.util.HashMap;
-import java.util.Map;
-import org.springframework.validation.annotation.Validated;
-import jakarta.validation.Valid;
-
-/**
- * LocationNewRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
-public class LocationNewRequest {
+public class LocationNewRequest extends BrAPIDataModel {
 	@JsonProperty("abbreviation")
 	private String abbreviation = null;
-
-	@JsonProperty("additionalInfo")
-	@Valid
-	private Map<String, Object> additionalInfo = null;
 
 	@JsonProperty("coordinateDescription")
 	private String coordinateDescription = null;
@@ -48,9 +33,6 @@ public class LocationNewRequest {
 
 	@JsonProperty("exposure")
 	private String exposure = null;
-
-	@JsonProperty("externalReferences")
-	private ExternalReferences externalReferences = null;
 
 	@JsonProperty("instituteAddress")
 	private String instituteAddress = null;
@@ -84,13 +66,6 @@ public class LocationNewRequest {
 		return this;
 	}
 
-	/**
-	 * An abbreviation which represents this location
-	 * 
-	 * @return abbreviation
-	 **/
-	@ApiModelProperty(example = "L1", value = "An abbreviation which represents this location")
-
 	public String getAbbreviation() {
 		return abbreviation;
 	}
@@ -99,47 +74,10 @@ public class LocationNewRequest {
 		this.abbreviation = abbreviation;
 	}
 
-	public LocationNewRequest additionalInfo(Map<String, Object> additionalInfo) {
-		this.additionalInfo = additionalInfo;
-		return this;
-	}
-
-	public LocationNewRequest putAdditionalInfoItem(String key, String additionalInfoItem) {
-		if (this.additionalInfo == null) {
-			this.additionalInfo = new HashMap<String, Object>();
-		}
-		this.additionalInfo.put(key, additionalInfoItem);
-		return this;
-	}
-
-	/**
-	 * Additional arbitrary info
-	 * 
-	 * @return additionalInfo
-	 **/
-	@ApiModelProperty(example = "{}", value = "Additional arbitrary info")
-
-	public Map<String, Object> getAdditionalInfo() {
-		return additionalInfo;
-	}
-
-	public void setAdditionalInfo(Map<String, Object> additionalInfo) {
-		this.additionalInfo = additionalInfo;
-	}
-
 	public LocationNewRequest coordinateDescription(String coordinateDescription) {
 		this.coordinateDescription = coordinateDescription;
 		return this;
 	}
-
-	/**
-	 * Describes the precision and landmarks of the coordinate values used for this
-	 * location. (ex. the site, the nearest town, a 10 kilometers radius circle, +/-
-	 * 20 meters, etc)
-	 * 
-	 * @return coordinateDescription
-	 **/
-	@ApiModelProperty(example = "North East corner of greenhouse", value = "Describes the precision and landmarks of the coordinate values used for this location. (ex. the site, the nearest town, a 10 kilometers radius circle, +/- 20 meters, etc)")
 
 	public String getCoordinateDescription() {
 		return coordinateDescription;
@@ -154,14 +92,6 @@ public class LocationNewRequest {
 		return this;
 	}
 
-	/**
-	 * Uncertainty associated with the coordinates in meters. Leave the value empty
-	 * if the uncertainty is unknown.
-	 * 
-	 * @return coordinateUncertainty
-	 **/
-	@ApiModelProperty(example = "20", value = "Uncertainty associated with the coordinates in meters. Leave the value empty if the uncertainty is unknown.")
-
 	public String getCoordinateUncertainty() {
 		return coordinateUncertainty;
 	}
@@ -175,14 +105,6 @@ public class LocationNewRequest {
 		return this;
 	}
 
-	/**
-	 * Get coordinates
-	 * 
-	 * @return coordinates
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
 	public GeoJSON getCoordinates() {
 		return coordinates;
 	}
@@ -195,16 +117,6 @@ public class LocationNewRequest {
 		this.countryCode = countryCode;
 		return this;
 	}
-
-	/**
-	 * [ISO_3166-1_alpha-3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) spec
-	 * MIAPPE V1.1 (DM-17) Geographic location (country) - The country where the
-	 * experiment took place, either as a full name or preferably as a 2-letter
-	 * code.
-	 * 
-	 * @return countryCode
-	 **/
-	@ApiModelProperty(example = "PER", value = " [ISO_3166-1_alpha-3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) spec MIAPPE V1.1 (DM-17) Geographic location (country) - The country where the experiment took place, either as a full name or preferably as a 2-letter code.")
 
 	public String getCountryCode() {
 		return countryCode;
@@ -219,15 +131,6 @@ public class LocationNewRequest {
 		return this;
 	}
 
-	/**
-	 * The full name of the country where this location is MIAPPE V1.1 (DM-17)
-	 * Geographic location (country) - The country where the experiment took place,
-	 * either as a full name or preferably as a 2-letter code.
-	 * 
-	 * @return countryName
-	 **/
-	@ApiModelProperty(example = "Peru", value = "The full name of the country where this location is  MIAPPE V1.1 (DM-17) Geographic location (country) - The country where the experiment took place, either as a full name or preferably as a 2-letter code.")
-
 	public String getCountryName() {
 		return countryName;
 	}
@@ -240,13 +143,6 @@ public class LocationNewRequest {
 		this.documentationURL = documentationURL;
 		return this;
 	}
-
-	/**
-	 * A URL to the human readable documentation of this object
-	 * 
-	 * @return documentationURL
-	 **/
-	@ApiModelProperty(example = "https://brapi.org", value = "A URL to the human readable documentation of this object")
 
 	public String getDocumentationURL() {
 		return documentationURL;
@@ -261,14 +157,6 @@ public class LocationNewRequest {
 		return this;
 	}
 
-	/**
-	 * Describes the general type of environment of the location. (ex. forest,
-	 * field, nursery, etc)
-	 * 
-	 * @return environmentType
-	 **/
-	@ApiModelProperty(example = "Nursery", value = "Describes the general type of environment of the location. (ex. forest, field, nursery, etc)")
-
 	public String getEnvironmentType() {
 		return environmentType;
 	}
@@ -282,14 +170,6 @@ public class LocationNewRequest {
 		return this;
 	}
 
-	/**
-	 * Describes the level of protection/exposure for things like sun light and
-	 * wind.
-	 * 
-	 * @return exposure
-	 **/
-	@ApiModelProperty(example = "Structure, no exposure", value = "Describes the level of protection/exposure for things like sun light and wind.")
-
 	public String getExposure() {
 		return exposure;
 	}
@@ -298,40 +178,10 @@ public class LocationNewRequest {
 		this.exposure = exposure;
 	}
 
-	public LocationNewRequest externalReferences(ExternalReferences externalReferences) {
-		this.externalReferences = externalReferences;
-		return this;
-	}
-
-	/**
-	 * Get externalReferences
-	 * 
-	 * @return externalReferences
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
-	public ExternalReferences getExternalReferences() {
-		return externalReferences;
-	}
-
-	public void setExternalReferences(ExternalReferences externalReferences) {
-		this.externalReferences = externalReferences;
-	}
-
 	public LocationNewRequest instituteAddress(String instituteAddress) {
 		this.instituteAddress = instituteAddress;
 		return this;
 	}
-
-	/**
-	 * The street address of the institute representing this location MIAPPE V1.1
-	 * (DM-16) Contact institution - Name and address of the institution responsible
-	 * for the study.
-	 * 
-	 * @return instituteAddress
-	 **/
-	@ApiModelProperty(example = "71 Pilgrim Avenue Chevy Chase MD 20815", value = "The street address of the institute representing this location  MIAPPE V1.1 (DM-16) Contact institution - Name and address of the institution responsible for the study.")
 
 	public String getInstituteAddress() {
 		return instituteAddress;
@@ -346,15 +196,6 @@ public class LocationNewRequest {
 		return this;
 	}
 
-	/**
-	 * Each institute/laboratory can have several experimental field MIAPPE V1.1
-	 * (DM-16) Contact institution - Name and address of the institution responsible
-	 * for the study.
-	 * 
-	 * @return instituteName
-	 **/
-	@ApiModelProperty(example = "Plant Science Institute", value = "Each institute/laboratory can have several experimental field  MIAPPE V1.1 (DM-16) Contact institution - Name and address of the institution responsible for the study.")
-
 	public String getInstituteName() {
 		return instituteName;
 	}
@@ -367,15 +208,6 @@ public class LocationNewRequest {
 		this.locationName = locationName;
 		return this;
 	}
-
-	/**
-	 * A human readable name for this location MIAPPE V1.1 (DM-18) Experimental site
-	 * name - The name of the natural site, experimental field, greenhouse,
-	 * phenotyping facility, etc. where the experiment took place.
-	 * 
-	 * @return locationName
-	 **/
-	@ApiModelProperty(example = "Location 1", value = "A human readable name for this location  MIAPPE V1.1 (DM-18) Experimental site name - The name of the natural site, experimental field, greenhouse, phenotyping facility, etc. where the experiment took place.")
 
 	public String getLocationName() {
 		return locationName;
@@ -390,14 +222,6 @@ public class LocationNewRequest {
 		return this;
 	}
 
-	/**
-	 * The type of location this represents (ex. Breeding Location, Storage
-	 * Location, etc)
-	 * 
-	 * @return locationType
-	 **/
-	@ApiModelProperty(example = "Storage Location", value = "The type of location this represents (ex. Breeding Location, Storage Location, etc)")
-
 	public String getLocationType() {
 		return locationType;
 	}
@@ -410,13 +234,6 @@ public class LocationNewRequest {
 		this.siteStatus = siteStatus;
 		return this;
 	}
-
-	/**
-	 * Description of the accessibility of the location (ex. Public, Private)
-	 * 
-	 * @return siteStatus
-	 **/
-	@ApiModelProperty(example = "Private", value = "Description of the accessibility of the location (ex. Public, Private)")
 
 	public String getSiteStatus() {
 		return siteStatus;
@@ -431,13 +248,6 @@ public class LocationNewRequest {
 		return this;
 	}
 
-	/**
-	 * Describes the approximate slope (height/distance) of the location.
-	 * 
-	 * @return slope
-	 **/
-	@ApiModelProperty(example = "0", value = "Describes the approximate slope (height/distance) of the location.")
-
 	public String getSlope() {
 		return slope;
 	}
@@ -451,14 +261,6 @@ public class LocationNewRequest {
 		return this;
 	}
 
-	/**
-	 * Describes the topography of the land at the location. (ex. Plateau, Cirque,
-	 * Hill, Valley, etc)
-	 * 
-	 * @return topography
-	 **/
-	@ApiModelProperty(example = "Valley", value = "Describes the topography of the land at the location. (ex. Plateau, Cirque, Hill, Valley, etc)")
-
 	public String getTopography() {
 		return topography;
 	}
@@ -466,12 +268,12 @@ public class LocationNewRequest {
 	public void setTopography(String topography) {
 		this.topography = topography;
 	}
-	
-	
+
 	public LocationNewRequest parentLocationDbId(String parentLocationDbId) {
 		this.parentLocationDbId = parentLocationDbId;
 		return this;
 	}
+
 	public String getParentLocationDbId() {
 		return parentLocationDbId;
 	}
@@ -479,12 +281,12 @@ public class LocationNewRequest {
 	public void setParentLocationDbId(String parentLocationDbId) {
 		this.parentLocationDbId = parentLocationDbId;
 	}
-	
-	
+
 	public LocationNewRequest parentLocationName(String parentLocationName) {
 		this.parentLocationName = parentLocationName;
 		return this;
 	}
+
 	public String getParentLocationName() {
 		return parentLocationName;
 	}
@@ -492,8 +294,6 @@ public class LocationNewRequest {
 	public void setParentLocationName(String parentLocationName) {
 		this.parentLocationName = parentLocationName;
 	}
-	
-	
 
 	@Override
 	public boolean equals(java.lang.Object o) {
@@ -530,7 +330,8 @@ public class LocationNewRequest {
 	public int hashCode() {
 		return Objects.hash(abbreviation, additionalInfo, coordinateDescription, coordinateUncertainty, coordinates,
 				countryCode, countryName, documentationURL, environmentType, exposure, externalReferences,
-				instituteAddress, instituteName, locationName, locationType, siteStatus, slope, topography, parentLocationDbId, parentLocationName);
+				instituteAddress, instituteName, locationName, locationType, siteStatus, slope, topography,
+				parentLocationDbId, parentLocationName);
 	}
 
 	@Override
@@ -562,10 +363,6 @@ public class LocationNewRequest {
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";

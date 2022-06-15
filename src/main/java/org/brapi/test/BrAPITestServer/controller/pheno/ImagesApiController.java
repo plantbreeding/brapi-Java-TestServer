@@ -7,6 +7,8 @@ import io.swagger.model.germ.GermplasmListResponse;
 import io.swagger.model.germ.GermplasmListResponseResult;
 import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.model.pheno.Image;
+import io.swagger.model.pheno.ImageDeleteResponse;
+import io.swagger.model.pheno.ImageDeleteResponseResult;
 import io.swagger.model.pheno.ImageListResponse;
 import io.swagger.model.pheno.ImageListResponseResult;
 import io.swagger.model.pheno.ImageNewRequest;
@@ -186,6 +188,19 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 		} else {
 			return responseAccepted(searchResultsDbId);
 		}
+	}
+
+	@Override
+	public ResponseEntity<ImageDeleteResponse> deleteImagesPost(
+			@RequestHeader(value = "Authorization", required = false) String authorization,
+			@Valid @RequestBody ImageSearchRequest body) throws BrAPIServerException {
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		Metadata metadata = generateMetaDataTemplate(body);
+
+		List<String> data = imageService.deleteImages(body, metadata);
+		return responseOK(new ImageDeleteResponse(), new ImageDeleteResponseResult(), data, metadata);
+
 	}
 
 }

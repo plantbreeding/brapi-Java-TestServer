@@ -1,25 +1,12 @@
 package io.swagger.model.germ;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.ExternalReferences;
+import io.swagger.model.BrAPIDataModel;
 
-import org.springframework.validation.annotation.Validated;
-import jakarta.validation.Valid;
-
-/**
- * CrossingProjectNewRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:33:36.513Z[GMT]")
-public class CrossingProjectNewRequest {
-	@JsonProperty("additionalInfo")
-	@Valid
-	private Map<String, Object> additionalInfo = null;
+public class CrossingProjectNewRequest extends BrAPIDataModel {
 
 	@JsonProperty("commonCropName")
 	private String commonCropName = null;
@@ -30,54 +17,27 @@ public class CrossingProjectNewRequest {
 	@JsonProperty("crossingProjectName")
 	private String crossingProjectName = null;
 
-	@JsonProperty("externalReferences")
-	private ExternalReferences externalReferences = null;
-
 	@JsonProperty("programDbId")
 	private String programDbId = null;
 
 	@JsonProperty("programName")
 	private String programName = null;
 
-	public CrossingProjectNewRequest additionalInfo(Map<String, Object> additionalInfo) {
-		this.additionalInfo = additionalInfo;
-		return this;
+	@JsonProperty("potentialParents")
+	private List<CrossParent> potentialParents = null;
+
+	public List<CrossParent> getPotentialParents() {
+		return potentialParents;
 	}
 
-	public CrossingProjectNewRequest putAdditionalInfoItem(String key, String additionalInfoItem) {
-		if (this.additionalInfo == null) {
-			this.additionalInfo = new HashMap<String, Object>();
-		}
-		this.additionalInfo.put(key, additionalInfoItem);
-		return this;
-	}
-
-	/**
-	 * Additional arbitrary info
-	 * 
-	 * @return additionalInfo
-	 **/
-	@ApiModelProperty(value = "Additional arbitrary info")
-
-	public Map<String, Object> getAdditionalInfo() {
-		return additionalInfo;
-	}
-
-	public void setAdditionalInfo(Map<String, Object> additionalInfo) {
-		this.additionalInfo = additionalInfo;
+	public void setPotentialParents(List<CrossParent> potentialParents) {
+		this.potentialParents = potentialParents;
 	}
 
 	public CrossingProjectNewRequest commonCropName(String commonCropName) {
 		this.commonCropName = commonCropName;
 		return this;
 	}
-
-	/**
-	 * the common name of a crop (for multi-crop systems)
-	 * 
-	 * @return commonCropName
-	 **/
-	@ApiModelProperty(example = "Cassava", value = "the common name of a crop (for multi-crop systems)")
 
 	public String getCommonCropName() {
 		return commonCropName;
@@ -92,13 +52,6 @@ public class CrossingProjectNewRequest {
 		return this;
 	}
 
-	/**
-	 * the description for a crossing project
-	 * 
-	 * @return crossingProjectDescription
-	 **/
-	@ApiModelProperty(example = "Crosses between germplasm X and germplasm Y in male nursery study X_2018 and female nursery study Y_2018", value = "the description for a crossing project")
-
 	public String getCrossingProjectDescription() {
 		return crossingProjectDescription;
 	}
@@ -112,13 +65,6 @@ public class CrossingProjectNewRequest {
 		return this;
 	}
 
-	/**
-	 * the human readable name for a crossing project
-	 * 
-	 * @return crossingProjectName
-	 **/
-	@ApiModelProperty(example = "Ibadan_Crosses_2018", value = "the human readable name for a crossing project")
-
 	public String getCrossingProjectName() {
 		return crossingProjectName;
 	}
@@ -127,38 +73,10 @@ public class CrossingProjectNewRequest {
 		this.crossingProjectName = crossingProjectName;
 	}
 
-	public CrossingProjectNewRequest externalReferences(ExternalReferences externalReferences) {
-		this.externalReferences = externalReferences;
-		return this;
-	}
-
-	/**
-	 * Get externalReferences
-	 * 
-	 * @return externalReferences
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
-	public ExternalReferences getExternalReferences() {
-		return externalReferences;
-	}
-
-	public void setExternalReferences(ExternalReferences externalReferences) {
-		this.externalReferences = externalReferences;
-	}
-
 	public CrossingProjectNewRequest programDbId(String programDbId) {
 		this.programDbId = programDbId;
 		return this;
 	}
-
-	/**
-	 * the unique identifier for a program
-	 * 
-	 * @return programDbId
-	 **/
-	@ApiModelProperty(example = "a088176c", value = "the unique identifier for a program")
 
 	public String getProgramDbId() {
 		return programDbId;
@@ -172,13 +90,6 @@ public class CrossingProjectNewRequest {
 		this.programName = programName;
 		return this;
 	}
-
-	/**
-	 * the human readable name for a program
-	 * 
-	 * @return programName
-	 **/
-	@ApiModelProperty(example = "IITA Cassava", value = "the human readable name for a program")
 
 	public String getProgramName() {
 		return programName;
@@ -226,10 +137,6 @@ public class CrossingProjectNewRequest {
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";

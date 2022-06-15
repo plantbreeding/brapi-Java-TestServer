@@ -21,7 +21,15 @@ public class CrossParentEntity extends BrAPIBaseEntity {
 	private ParentType parentType;
 	@ManyToOne
 	private CrossEntity cross;
+	@ManyToOne
+	private CrossingProjectEntity crossingProject;
 	
+	public CrossingProjectEntity getCrossingProject() {
+		return crossingProject;
+	}
+	public void setCrossingProject(CrossingProjectEntity crossingProject) {
+		this.crossingProject = crossingProject;
+	}
 	public CrossEntity getCross() {
 		return cross;
 	}

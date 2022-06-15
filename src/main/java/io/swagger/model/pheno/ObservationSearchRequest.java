@@ -9,65 +9,53 @@ import java.util.List;
 import java.time.OffsetDateTime;
 
 public class ObservationSearchRequest extends SearchRequest {
+	@JsonProperty("commonCropNames")
+	private List<String> commonCropNames = null;
+	
 	@JsonProperty("programDbIds")
-
 	private List<String> programDbIds = null;
 
 	@JsonProperty("programNames")
-
 	private List<String> programNames = null;
 
 	@JsonProperty("trialDbIds")
-
 	private List<String> trialDbIds = null;
 
 	@JsonProperty("trialNames")
-
 	private List<String> trialNames = null;
 
 	@JsonProperty("studyDbIds")
-
 	private List<String> studyDbIds = null;
 
 	@JsonProperty("studyNames")
-
 	private List<String> studyNames = null;
 
 	@JsonProperty("germplasmDbIds")
-
 	private List<String> germplasmDbIds = null;
 
 	@JsonProperty("germplasmNames")
-
 	private List<String> germplasmNames = null;
 
 	@JsonProperty("locationDbIds")
-
 	private List<String> locationDbIds = null;
 
 	@JsonProperty("locationNames")
-
 	private List<String> locationNames = null;
 
 	@JsonProperty("observationVariableDbIds")
-
 	private List<String> observationVariableDbIds = null;
 
 	@JsonProperty("observationVariableNames")
-
 	private List<String> observationVariableNames = null;
 
 	@JsonProperty("observationDbIds")
-
 	private List<String> observationDbIds = null;
 
 	@JsonProperty("observationLevelRelationships")
-
 	private List<ObservationUnitLevelRelationship> observationLevelRelationships = null;
 
 	@JsonProperty("observationLevels")
-
-	private List<ObservationUnitLevelRelationship> observationLevels = null;
+	private List<ObservationUnitLevel> observationLevels = null;
 
 	@JsonProperty("observationTimeStampRangeEnd")
 	private OffsetDateTime observationTimeStampRangeEnd = null;
@@ -76,12 +64,26 @@ public class ObservationSearchRequest extends SearchRequest {
 	private OffsetDateTime observationTimeStampRangeStart = null;
 
 	@JsonProperty("observationUnitDbIds")
-
 	private List<String> observationUnitDbIds = null;
 
 	@JsonProperty("seasonDbIds")
-
 	private List<String> seasonDbIds = null;
+
+	public List<String> getCommonCropNames() {
+		return commonCropNames;
+	}
+
+	public void setCommonCropNames(List<String> commonCropNames) {
+		this.commonCropNames = commonCropNames;
+	}
+
+	public ObservationSearchRequest addCommonCropNamesItem(String commonCropNamesItem) {
+		if (this.commonCropNames == null) {
+			this.commonCropNames = new ArrayList<String>();
+		}
+		this.commonCropNames.add(commonCropNamesItem);
+		return this;
+	}
 
 	public ObservationSearchRequest programDbIds(List<String> programDbIds) {
 		this.programDbIds = programDbIds;
@@ -379,24 +381,24 @@ public class ObservationSearchRequest extends SearchRequest {
 		this.observationLevelRelationships = observationLevelRelationships;
 	}
 
-	public ObservationSearchRequest observationLevels(List<ObservationUnitLevelRelationship> observationLevels) {
+	public ObservationSearchRequest observationLevels(List<ObservationUnitLevel> observationLevels) {
 		this.observationLevels = observationLevels;
 		return this;
 	}
 
-	public ObservationSearchRequest addObservationLevelsItem(ObservationUnitLevelRelationship observationLevelsItem) {
+	public ObservationSearchRequest addObservationLevelsItem(ObservationUnitLevel observationLevelsItem) {
 		if (this.observationLevels == null) {
-			this.observationLevels = new ArrayList<ObservationUnitLevelRelationship>();
+			this.observationLevels = new ArrayList<ObservationUnitLevel>();
 		}
 		this.observationLevels.add(observationLevelsItem);
 		return this;
 	}
 
-	public List<ObservationUnitLevelRelationship> getObservationLevels() {
+	public List<ObservationUnitLevel> getObservationLevels() {
 		return observationLevels;
 	}
 
-	public void setObservationLevels(List<ObservationUnitLevelRelationship> observationLevels) {
+	public void setObservationLevels(List<ObservationUnitLevel> observationLevels) {
 		this.observationLevels = observationLevels;
 	}
 

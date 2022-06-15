@@ -1,4 +1,3 @@
-
 --study 1
 INSERT INTO study(id, active, cultural_practices, documentationurl, end_date, license, observation_units_description, start_date, study_code, study_description, study_name, studypui, study_type, location_id, trial_id, program_id, crop_id) VALUES ('study1', true, 'Irrigation was applied according needs during summer to prevent water stress', 'https://brapi.org', '2014-01-01', 'https://creativecommons.org/licenses/by/4.0', 'Observation units consisted in individual plots themselves consisting of a row of 15 plants at a density of approximately six plants per square meter.', '2013-01-01', 'Yield_2013', 'This is a yield trial for 2013', 'Paw paw 2013 yield trial', 'doi:10.155454/fake/12345', 'Phenotyping','location_01', 'trial1', 'program1', '1');
 

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ScaleEntity;
@@ -108,22 +109,35 @@ public class ScaleService {
 		return scale;
 	}
 
-	public ScaleEntity updateEntity(ScaleEntity entity, @Valid ScaleBaseClass scale) throws BrAPIServerException {
+	public ScaleEntity updateEntity(ScaleEntity entity, ScaleBaseClass scale) throws BrAPIServerException {
 
-		entity.setAdditionalInfo(UpdateUtility.replaceField(scale.getAdditionalInfo(), entity.getAdditionalInfoMap()));
+		UpdateUtility.updateEntity(scale, entity);
+
 		entity.setDataType(UpdateUtility.replaceField(scale.getDataType(), entity.getDataType()));
 		entity.setDecimalPlaces(UpdateUtility.replaceField(scale.getDecimalPlaces(), entity.getDecimalPlaces()));
-		entity.setExternalReferences(
-				UpdateUtility.replaceField(scale.getExternalReferences(), entity.getExternalReferencesMap()));
+		entity.setUnits(UpdateUtility.replaceField(scale.getUnits(), entity.getUnits()));
 		entity.setScaleName(UpdateUtility.replaceField(scale.getScaleName(), entity.getScaleName()));
+		entity.setScalePUI(UpdateUtility.replaceField(scale.getScalePUI(), entity.getScalePUI()));
 
 		ontologyService.updateOntologyReference(entity, scale.getOntologyReference());
 
 		if (scale.getValidValues() != null) {
 			if (scale.getValidValues().isPresent()) {
 				ScaleBaseClassValidValues validValues = scale.getValidValues().get();
-				entity.setValidValueMin(UpdateUtility.replaceField(validValues.getMin(), entity.getValidValueMin()));
-				entity.setValidValueMax(UpdateUtility.replaceField(validValues.getMax(), entity.getValidValueMax()));
+
+				Integer maxInt = NumberUtils.isCreatable(entity.getValidValueMax())
+						? Integer.parseInt(entity.getValidValueMax())
+						: null;
+				entity.setValidValueMax(UpdateUtility.replaceField(validValues.getMax(), maxInt).toString());
+				entity.setValidValueMax(
+						UpdateUtility.replaceField(validValues.getMaximumValue(), entity.getValidValueMax()));
+
+				Integer minInt = NumberUtils.isCreatable(entity.getValidValueMin())
+						? Integer.parseInt(entity.getValidValueMin())
+						: null;
+				entity.setValidValueMin(UpdateUtility.replaceField(validValues.getMin(), minInt).toString());
+				entity.setValidValueMin(
+						UpdateUtility.replaceField(validValues.getMinimumValue(), entity.getValidValueMin()));
 
 				if (validValues.getCategories() != null) {
 					if (validValues.getCategories().isPresent()) {
@@ -160,17 +174,25 @@ public class ScaleService {
 		Scale scale = null;
 		if (entity != null) {
 			scale = new Scale();
-			scale.setAdditionalInfo(entity.getAdditionalInfoMap());
+			UpdateUtility.convertFromEntity(entity, scale);
+
 			scale.setDataType(entity.getDataType());
 			scale.setDecimalPlaces(entity.getDecimalPlaces());
-			scale.setExternalReferences(entity.getExternalReferencesMap());
+			scale.setUnits(entity.getUnits());
 			scale.setScaleDbId(entity.getId());
 			scale.setScaleName(entity.getScaleName());
+			scale.setScalePUI(entity.getScalePUI());
 			scale.setOntologyReference(ontologyService.convertFromEntity(entity));
 
 			ScaleBaseClassValidValues validValues = new ScaleBaseClassValidValues();
-			validValues.setMin(entity.getValidValueMin());
-			validValues.setMax(entity.getValidValueMax());
+			if (NumberUtils.isCreatable(entity.getValidValueMin())) {
+				validValues.setMin(Integer.parseInt(entity.getValidValueMin()));
+			}
+			if (NumberUtils.isCreatable(entity.getValidValueMax())) {
+				validValues.setMax(Integer.parseInt(entity.getValidValueMax()));
+			}
+			validValues.setMaximumValue(entity.getValidValueMax());
+			validValues.setMinimumValue(entity.getValidValueMin());
 			if (entity.getValidValueCategories() != null) {
 				validValues.setCategories(entity.getValidValueCategories().stream().map(e -> {
 					ScaleBaseClassValidValuesCategories cat = new ScaleBaseClassValidValuesCategories();

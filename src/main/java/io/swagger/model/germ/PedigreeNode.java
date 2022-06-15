@@ -37,18 +37,15 @@ public class PedigreeNode extends BrAPIDataModel {
 	private String germplasmPUI = null;
 
 	@JsonProperty("parents")
-
 	private List<PedigreeNodeParents> parents = null;
 
 	@JsonProperty("pedigreeString")
 	private String pedigreeString = null;
 
 	@JsonProperty("progeny")
-
 	private List<PedigreeNodeParents> progeny = null;
 
 	@JsonProperty("siblings")
-
 	private List<PedigreeNodeSiblings> siblings = null;
 
 	public PedigreeNode breedingMethodDbId(String breedingMethodDbId) {

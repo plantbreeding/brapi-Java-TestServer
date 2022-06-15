@@ -2,29 +2,14 @@ package io.swagger.model.geno;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.model.BrAPIDataModel;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import org.springframework.validation.annotation.Validated;
-import jakarta.validation.Valid;
 
-/**
- * A &#x60;Reference&#x60; is a canonical assembled contig, intended to act as a
- * reference coordinate space for other genomic annotations. A single
- * &#x60;Reference&#x60; might represent the human chromosome 1, for instance.
- * &#x60;References&#x60; are designed to be immutable.
- */
-@ApiModel(description = "A `Reference` is a canonical assembled contig, intended to act as a reference coordinate space for other genomic annotations. A single `Reference` might represent the human chromosome 1, for instance. `References` are designed to be immutable.")
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
-public class Reference {
-	@JsonProperty("additionalInfo")
-	@Valid
-	private Map<String, Object> additionalInfo = null;
+public class Reference extends BrAPIDataModel {
+
+	@JsonProperty("commonCropName")
+	private String commonCropName = null;
 
 	@JsonProperty("isDerived")
 	private Boolean isDerived = null;
@@ -44,12 +29,17 @@ public class Reference {
 	@JsonProperty("referenceSetDbId")
 	private String referenceSetDbId = null;
 
+	@JsonProperty("referenceSetName")
+	private String referenceSetName = null;
+
 	@JsonProperty("sourceAccessions")
-	@Valid
 	private List<String> sourceAccessions = null;
 
 	@JsonProperty("sourceDivergence")
 	private Float sourceDivergence = null;
+
+	@JsonProperty("sourceGermplasm")
+	private List<ReferenceSourceGermplasm> sourceGermplasm = null;
 
 	@JsonProperty("sourceURI")
 	private String sourceURI = null;
@@ -57,57 +47,23 @@ public class Reference {
 	@JsonProperty("species")
 	private OntologyTerm species = null;
 
-	public String getReferenceSetDbId() {
-		return referenceSetDbId;
-	}
-
-	public void setReferenceSetDbId(String referenceSetDbId) {
-		this.referenceSetDbId = referenceSetDbId;
-	}
-
-	public Reference additionalInfo(Map<String, Object> additionalInfo) {
-		this.additionalInfo = additionalInfo;
+	public Reference commonCropName(String commonCropName) {
+		this.commonCropName = commonCropName;
 		return this;
 	}
 
-	public Reference putAdditionalInfoItem(String key, String additionalInfoItem) {
-		if (this.additionalInfo == null) {
-			this.additionalInfo = new HashMap<String, Object>();
-		}
-		this.additionalInfo.put(key, additionalInfoItem);
-		return this;
+	public String getCommonCropName() {
+		return commonCropName;
 	}
 
-	/**
-	 * Additional arbitrary info
-	 * 
-	 * @return additionalInfo
-	 **/
-	@ApiModelProperty(value = "Additional arbitrary info")
-
-	public Map<String, Object> getAdditionalInfo() {
-		return additionalInfo;
-	}
-
-	public void setAdditionalInfo(Map<String, Object> additionalInfo) {
-		this.additionalInfo = additionalInfo;
+	public void setCommonCropName(String commonCropName) {
+		this.commonCropName = commonCropName;
 	}
 
 	public Reference isDerived(Boolean isDerived) {
 		this.isDerived = isDerived;
 		return this;
 	}
-
-	/**
-	 * A sequence X is said to be derived from source sequence Y, if X and Y are of
-	 * the same length and the per-base sequence divergence at A/C/G/T bases is
-	 * sufficiently small. Two sequences derived from the same official sequence
-	 * share the same coordinates and annotations, and can be replaced with the
-	 * official sequence for certain use cases.
-	 * 
-	 * @return isDerived
-	 **/
-	@ApiModelProperty(value = "A sequence X is said to be derived from source sequence Y, if X and Y are of the same length and the per-base sequence divergence at A/C/G/T bases is sufficiently small. Two sequences derived from the same official sequence share the same coordinates and annotations, and can be replaced with the official sequence for certain use cases.")
 
 	public Boolean isIsDerived() {
 		return isDerived;
@@ -122,13 +78,6 @@ public class Reference {
 		return this;
 	}
 
-	/**
-	 * The length of this reference's sequence.
-	 * 
-	 * @return length
-	 **/
-	@ApiModelProperty(value = "The length of this reference's sequence.")
-
 	public Integer getLength() {
 		return length;
 	}
@@ -141,15 +90,6 @@ public class Reference {
 		this.md5checksum = md5checksum;
 		return this;
 	}
-
-	/**
-	 * The MD5 checksum uniquely representing this `Reference` as a lower-case
-	 * hexadecimal string, calculated as the MD5 of the upper-case sequence
-	 * excluding all whitespace characters (this is equivalent to SQ:M5 in SAM).
-	 * 
-	 * @return md5checksum
-	 **/
-	@ApiModelProperty(value = "The MD5 checksum uniquely representing this `Reference` as a lower-case hexadecimal string, calculated as the MD5 of the upper-case sequence excluding all whitespace characters (this is equivalent to SQ:M5 in SAM).")
 
 	public String getMd5checksum() {
 		return md5checksum;
@@ -164,13 +104,6 @@ public class Reference {
 		return this;
 	}
 
-	/**
-	 * The reference ID. Unique within the repository.
-	 * 
-	 * @return referenceDbId
-	 **/
-	@ApiModelProperty(value = "The reference ID. Unique within the repository.")
-
 	public String getReferenceDbId() {
 		return referenceDbId;
 	}
@@ -184,19 +117,38 @@ public class Reference {
 		return this;
 	}
 
-	/**
-	 * The unique name of this reference within the Reference Set (e.g. '22').
-	 * 
-	 * @return referenceName
-	 **/
-	@ApiModelProperty(value = "The unique name of this reference within the Reference Set (e.g. '22').")
-
 	public String getReferenceName() {
 		return referenceName;
 	}
 
 	public void setReferenceName(String referenceName) {
 		this.referenceName = referenceName;
+	}
+
+	public Reference referenceSetDbId(String referenceSetDbId) {
+		this.referenceSetDbId = referenceSetDbId;
+		return this;
+	}
+
+	public String getReferenceSetDbId() {
+		return referenceSetDbId;
+	}
+
+	public void setReferenceSetDbId(String referenceSetDbId) {
+		this.referenceSetDbId = referenceSetDbId;
+	}
+
+	public Reference referenceSetName(String referenceSetName) {
+		this.referenceSetName = referenceSetName;
+		return this;
+	}
+
+	public String getReferenceSetName() {
+		return referenceSetName;
+	}
+
+	public void setReferenceSetName(String referenceSetName) {
+		this.referenceSetName = referenceSetName;
 	}
 
 	public Reference sourceAccessions(List<String> sourceAccessions) {
@@ -212,14 +164,6 @@ public class Reference {
 		return this;
 	}
 
-	/**
-	 * All known corresponding accession IDs in INSDC (GenBank/ENA/DDBJ) which must
-	 * include a version number, e.g. `GCF_000001405.26`.
-	 * 
-	 * @return sourceAccessions
-	 **/
-	@ApiModelProperty(value = "All known corresponding accession IDs in INSDC (GenBank/ENA/DDBJ) which must include a version number, e.g. `GCF_000001405.26`.")
-
 	public List<String> getSourceAccessions() {
 		return sourceAccessions;
 	}
@@ -233,14 +177,6 @@ public class Reference {
 		return this;
 	}
 
-	/**
-	 * The `sourceDivergence` is the fraction of non-indel bases that do not match
-	 * the reference this message was derived from.
-	 * 
-	 * @return sourceDivergence
-	 **/
-	@ApiModelProperty(value = "The `sourceDivergence` is the fraction of non-indel bases that do not match the reference this message was derived from.")
-
 	public Float getSourceDivergence() {
 		return sourceDivergence;
 	}
@@ -249,20 +185,31 @@ public class Reference {
 		this.sourceDivergence = sourceDivergence;
 	}
 
+	public Reference sourceGermplasm(List<ReferenceSourceGermplasm> sourceGermplasm) {
+		this.sourceGermplasm = sourceGermplasm;
+		return this;
+	}
+
+	public Reference addSourceGermplasmItem(ReferenceSourceGermplasm sourceGermplasmItem) {
+		if (this.sourceGermplasm == null) {
+			this.sourceGermplasm = new ArrayList<ReferenceSourceGermplasm>();
+		}
+		this.sourceGermplasm.add(sourceGermplasmItem);
+		return this;
+	}
+
+	public List<ReferenceSourceGermplasm> getSourceGermplasm() {
+		return sourceGermplasm;
+	}
+
+	public void setSourceGermplasm(List<ReferenceSourceGermplasm> sourceGermplasm) {
+		this.sourceGermplasm = sourceGermplasm;
+	}
+
 	public Reference sourceURI(String sourceURI) {
 		this.sourceURI = sourceURI;
 		return this;
 	}
-
-	/**
-	 * The URI from which the sequence was obtained. Specifies a FASTA format
-	 * file/string with one name, sequence pair. In most cases, clients should call
-	 * the `getReferenceBases()` method to obtain sequence bases for a `Reference`
-	 * instead of attempting to retrieve this URI.
-	 * 
-	 * @return sourceURI
-	 **/
-	@ApiModelProperty(value = "The URI from which the sequence was obtained. Specifies a FASTA format file/string with one name, sequence pair. In most cases, clients should call the `getReferenceBases()` method to obtain sequence bases for a `Reference` instead of attempting to retrieve this URI.")
 
 	public String getSourceURI() {
 		return sourceURI;
@@ -277,14 +224,6 @@ public class Reference {
 		return this;
 	}
 
-	/**
-	 * Get species
-	 * 
-	 * @return species
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
 	public OntologyTerm getSpecies() {
 		return species;
 	}
@@ -303,20 +242,26 @@ public class Reference {
 		}
 		Reference reference = (Reference) o;
 		return Objects.equals(this.additionalInfo, reference.additionalInfo)
+				&& Objects.equals(this.commonCropName, reference.commonCropName)
+				&& Objects.equals(this.externalReferences, reference.externalReferences)
 				&& Objects.equals(this.isDerived, reference.isDerived) && Objects.equals(this.length, reference.length)
 				&& Objects.equals(this.md5checksum, reference.md5checksum)
 				&& Objects.equals(this.referenceDbId, reference.referenceDbId)
 				&& Objects.equals(this.referenceName, reference.referenceName)
+				&& Objects.equals(this.referenceSetDbId, reference.referenceSetDbId)
+				&& Objects.equals(this.referenceSetName, reference.referenceSetName)
 				&& Objects.equals(this.sourceAccessions, reference.sourceAccessions)
 				&& Objects.equals(this.sourceDivergence, reference.sourceDivergence)
+				&& Objects.equals(this.sourceGermplasm, reference.sourceGermplasm)
 				&& Objects.equals(this.sourceURI, reference.sourceURI)
 				&& Objects.equals(this.species, reference.species);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(additionalInfo, isDerived, length, md5checksum, referenceDbId, referenceName,
-				sourceAccessions, sourceDivergence, sourceURI, species);
+		return Objects.hash(additionalInfo, commonCropName, externalReferences, isDerived, length, md5checksum,
+				referenceDbId, referenceName, referenceSetDbId, referenceSetName, sourceAccessions, sourceDivergence,
+				sourceGermplasm, sourceURI, species);
 	}
 
 	@Override
@@ -325,23 +270,24 @@ public class Reference {
 		sb.append("class Reference {\n");
 
 		sb.append("    additionalInfo: ").append(toIndentedString(additionalInfo)).append("\n");
+		sb.append("    commonCropName: ").append(toIndentedString(commonCropName)).append("\n");
+		sb.append("    externalReferences: ").append(toIndentedString(externalReferences)).append("\n");
 		sb.append("    isDerived: ").append(toIndentedString(isDerived)).append("\n");
 		sb.append("    length: ").append(toIndentedString(length)).append("\n");
 		sb.append("    md5checksum: ").append(toIndentedString(md5checksum)).append("\n");
 		sb.append("    referenceDbId: ").append(toIndentedString(referenceDbId)).append("\n");
 		sb.append("    referenceName: ").append(toIndentedString(referenceName)).append("\n");
+		sb.append("    referenceSetDbId: ").append(toIndentedString(referenceSetDbId)).append("\n");
+		sb.append("    referenceSetName: ").append(toIndentedString(referenceSetName)).append("\n");
 		sb.append("    sourceAccessions: ").append(toIndentedString(sourceAccessions)).append("\n");
 		sb.append("    sourceDivergence: ").append(toIndentedString(sourceDivergence)).append("\n");
+		sb.append("    sourceGermplasm: ").append(toIndentedString(sourceGermplasm)).append("\n");
 		sb.append("    sourceURI: ").append(toIndentedString(sourceURI)).append("\n");
 		sb.append("    species: ").append(toIndentedString(species)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";

@@ -7,6 +7,7 @@ package io.swagger.api.pheno;
 
 import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Model202AcceptedSearchResponse;
+import io.swagger.model.pheno.ImageDeleteResponse;
 import io.swagger.model.pheno.ImageListResponse;
 import io.swagger.model.pheno.ImageNewRequest;
 import io.swagger.model.pheno.ImageSearchRequest;
@@ -144,5 +145,17 @@ public interface ImagesApi {
 			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
+
+	@ApiOperation(value = "Submit a delete request for `Images`", notes = "Submit a delete request for `Images`", authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Images" })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = ImageDeleteResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/delete/images", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.POST)
+	ResponseEntity<ImageDeleteResponse> deleteImagesPost(
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization,
+			@ApiParam(value = "") @Valid @RequestBody ImageSearchRequest body) throws BrAPIServerException;
 
 }
