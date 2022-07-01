@@ -59,7 +59,7 @@ public class ServiceBuilder extends ArrayList<Service>{
 	}
 
 	public ServiceBuilder build() {
-		if(path != null && !path.isBlank() && methods != null && !methods.isEmpty()) {
+		if(path != null && !path.isEmpty() && methods != null && !methods.isEmpty()) {
 			this.add(buildService(path, methods));
 		}
 		return this;
