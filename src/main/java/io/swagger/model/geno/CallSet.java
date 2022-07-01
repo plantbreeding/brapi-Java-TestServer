@@ -28,9 +28,8 @@ public class CallSet extends BrAPIDataModel {
 	@JsonProperty("updated")
 	private OffsetDateTime updated = null;
 
-	@JsonProperty("variantSetIds")
-
-	private List<String> variantSetIds = null;
+	@JsonProperty("variantSetDbIds")
+	private List<String> variantSetDbIds = null;
 
 	public CallSet callSetDbId(String callSetDbId) {
 		this.callSetDbId = callSetDbId;
@@ -110,25 +109,25 @@ public class CallSet extends BrAPIDataModel {
 		this.updated = updated;
 	}
 
-	public CallSet variantSetIds(List<String> variantSetIds) {
-		this.variantSetIds = variantSetIds;
+	public CallSet variantSetDbIds(List<String> variantSetDbIds) {
+		this.variantSetDbIds = variantSetDbIds;
 		return this;
 	}
 
-	public CallSet addVariantSetIdsItem(String variantSetIdsItem) {
-		if (this.variantSetIds == null) {
-			this.variantSetIds = new ArrayList<String>();
+	public CallSet addVariantSetDbIdsItem(String variantSetDbIdsItem) {
+		if (this.variantSetDbIds == null) {
+			this.variantSetDbIds = new ArrayList<String>();
 		}
-		this.variantSetIds.add(variantSetIdsItem);
+		this.variantSetDbIds.add(variantSetDbIdsItem);
 		return this;
 	}
 
-	public List<String> getVariantSetIds() {
-		return variantSetIds;
+	public List<String> getVariantSetDbIds() {
+		return variantSetDbIds;
 	}
 
-	public void setVariantSetIds(List<String> variantSetIds) {
-		this.variantSetIds = variantSetIds;
+	public void setVariantSetDbIds(List<String> variantSetDbIds) {
+		this.variantSetDbIds = variantSetDbIds;
 	}
 
 	@Override
@@ -145,13 +144,13 @@ public class CallSet extends BrAPIDataModel {
 				&& Objects.equals(this.callSetName, callSet.callSetName)
 				&& Objects.equals(this.created, callSet.created) && Objects.equals(this.sampleDbId, callSet.sampleDbId)
 				&& Objects.equals(this.studyDbId, callSet.studyDbId) && Objects.equals(this.updated, callSet.updated)
-				&& Objects.equals(this.variantSetIds, callSet.variantSetIds);
+				&& Objects.equals(this.variantSetDbIds, callSet.variantSetDbIds);
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(additionalInfo, callSetDbId, callSetName, created, sampleDbId, studyDbId, updated,
-				variantSetIds);
+				variantSetDbIds);
 	}
 
 	@Override
@@ -166,7 +165,7 @@ public class CallSet extends BrAPIDataModel {
 		sb.append("    sampleDbId: ").append(toIndentedString(sampleDbId)).append("\n");
 		sb.append("    studyDbId: ").append(toIndentedString(studyDbId)).append("\n");
 		sb.append("    updated: ").append(toIndentedString(updated)).append("\n");
-		sb.append("    variantSetIds: ").append(toIndentedString(variantSetIds)).append("\n");
+		sb.append("    variantSetIds: ").append(toIndentedString(variantSetDbIds)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}

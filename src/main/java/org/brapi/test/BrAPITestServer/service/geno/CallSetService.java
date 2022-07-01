@@ -103,7 +103,7 @@ public class CallSetService {
 		}
 		callSet.setUpdated(DateUtility.toOffsetDateTime(entity.getUpdated()));
 		if (entity.getVariantSets() != null)
-			callSet.setVariantSetIds(entity.getVariantSets().stream().map(e -> e.getId()).collect(Collectors.toList()));
+			callSet.setVariantSetDbIds(entity.getVariantSets().stream().map(e -> e.getId()).collect(Collectors.toList()));
 
 		return callSet;
 	}

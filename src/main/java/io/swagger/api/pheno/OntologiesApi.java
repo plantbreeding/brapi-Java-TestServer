@@ -49,7 +49,7 @@ public interface OntologiesApi {
 			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
 			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
-	@RequestMapping(value = "/ontologies/ontologyDbId", produces = { "application/json" }, method = RequestMethod.GET)
+	@RequestMapping(value = "/ontologies/{ontologyDbId}", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<OntologySingleResponse> ontologiesOntologyDbIdGet(
 			@ApiParam(value = "The unique identifier for an ontology definition. Use this parameter to filter results based on a specific ontology   Use `GET /ontologies` to find the list of available ontologies on a server.", required = true) @PathParam("ontologyDbId") String ontologyDbId,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
@@ -61,7 +61,7 @@ public interface OntologiesApi {
 			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
 			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
-	@RequestMapping(value = "/ontologies/ontologyDbId", produces = { "application/json" }, consumes = {
+	@RequestMapping(value = "/ontologies/{ontologyDbId}", produces = { "application/json" }, consumes = {
 			"application/json" }, method = RequestMethod.PUT)
 	ResponseEntity<OntologySingleResponse> ontologiesOntologyDbIdPut(
 			@ApiParam(value = "The unique identifier for an ontology definition. Use this parameter to filter results based on a specific ontology   Use `GET /ontologies` to find the list of available ontologies on a server.", required = true) @PathParam("ontologyDbId") String ontologyDbId,

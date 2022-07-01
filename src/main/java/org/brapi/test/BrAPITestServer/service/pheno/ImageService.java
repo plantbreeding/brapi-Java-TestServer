@@ -170,12 +170,14 @@ public class ImageService {
 	}
 
 	public List<String> deleteImages(ImageSearchRequest body, Metadata metadata) {
+		List<String> deletedImageDbIds = new ArrayList<>();
 
-		List<ImageEntity> deletedImages = findImageEntities(body, metadata);
-
-		imageRepository.deleteAll(deletedImages);
-
-		return deletedImages.stream().map(image -> image.getId()).collect(Collectors.toList());
+		if (body.getTotalParameterCount() > 0) {
+			List<ImageEntity> deletedImages = findImageEntities(body, metadata);
+			imageRepository.deleteAll(deletedImages);
+			deletedImageDbIds = deletedImages.stream().map(image -> image.getId()).collect(Collectors.toList());
+		}
+		return deletedImageDbIds;
 	}
 
 	private String constructURL(ImageEntity newEntity, String requestURL) {

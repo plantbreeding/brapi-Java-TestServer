@@ -15,6 +15,8 @@ public class CallEntity extends BrAPIPrimaryEntity {
 	@Column
 	private String genotype;
 	@Column
+	private Integer readDepth;
+	@Column
 	private Double genotypeLikelihood;
 	@Column 
 	private String phaseSet;
@@ -27,10 +29,18 @@ public class CallEntity extends BrAPIPrimaryEntity {
 	public CallEntity(CallEntity call) {
 		this.setCallSet(call.getCallSet());
 		this.setGenotype(call.getGenotype());
+		this.setReadDepth(call.getReadDepth());
 		this.setGenotypeLikelihood(call.getGenotypeLikelihood());
 		this.setId(call.getId());
 		this.setPhaseSet(call.getPhaseSet());
 		this.setVariant(call.getVariant());
+	}
+	
+	public Integer getReadDepth() {
+		return readDepth;
+	}
+	public void setReadDepth(Integer readDepth) {
+		this.readDepth = readDepth;
 	}
 	public CallSetEntity getCallSet() {
 		return callSet;

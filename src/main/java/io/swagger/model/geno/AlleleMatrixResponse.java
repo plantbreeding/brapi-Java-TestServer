@@ -1,4 +1,4 @@
-package io.swagger.model.pheno;
+package io.swagger.model.geno;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -7,7 +7,7 @@ import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Context;
 import io.swagger.model.Metadata;
 
-public class EventsResponse implements BrAPIResponse<EventsResponseResult> {
+public class AlleleMatrixResponse implements BrAPIResponse<AlleleMatrix> {
 	@JsonProperty("@context")
 	private Context _atContext = null;
 
@@ -15,18 +15,22 @@ public class EventsResponse implements BrAPIResponse<EventsResponseResult> {
 	private Metadata metadata = null;
 
 	@JsonProperty("result")
-	private EventsResponseResult result = null;
+	private AlleleMatrix result = null;
 
-	public EventsResponse _atContext(Context _atContext) {
+	public AlleleMatrixResponse _atContext(Context _atContext) {
 		this._atContext = _atContext;
 		return this;
+	}
+
+	public Context getAtContext() {
+		return _atContext;
 	}
 
 	public void set_atContext(Context _atContext) {
 		this._atContext = _atContext;
 	}
 
-	public EventsResponse metadata(Metadata metadata) {
+	public AlleleMatrixResponse metadata(Metadata metadata) {
 		this.metadata = metadata;
 		return this;
 	}
@@ -39,16 +43,16 @@ public class EventsResponse implements BrAPIResponse<EventsResponseResult> {
 		this.metadata = metadata;
 	}
 
-	public EventsResponse result(EventsResponseResult result) {
+	public AlleleMatrixResponse result(AlleleMatrix result) {
 		this.result = result;
 		return this;
 	}
 
-	public EventsResponseResult getResult() {
+	public AlleleMatrix getResult() {
 		return result;
 	}
 
-	public void setResult(EventsResponseResult result) {
+	public void setResult(AlleleMatrix result) {
 		this.result = result;
 	}
 
@@ -60,10 +64,10 @@ public class EventsResponse implements BrAPIResponse<EventsResponseResult> {
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		EventsResponse eventsResponse = (EventsResponse) o;
-		return Objects.equals(this._atContext, eventsResponse._atContext)
-				&& Objects.equals(this.metadata, eventsResponse.metadata)
-				&& Objects.equals(this.result, eventsResponse.result);
+		AlleleMatrixResponse alleleMatrixResponse = (AlleleMatrixResponse) o;
+		return Objects.equals(this._atContext, alleleMatrixResponse._atContext)
+				&& Objects.equals(this.metadata, alleleMatrixResponse.metadata)
+				&& Objects.equals(this.result, alleleMatrixResponse.result);
 	}
 
 	@Override
@@ -74,7 +78,7 @@ public class EventsResponse implements BrAPIResponse<EventsResponseResult> {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("class EventsResponse {\n");
+		sb.append("class AlleleMatrixResponse {\n");
 
 		sb.append("    _atContext: ").append(toIndentedString(_atContext)).append("\n");
 		sb.append("    metadata: ").append(toIndentedString(metadata)).append("\n");

@@ -7,23 +7,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.WSMIMEDataTypes;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.validation.annotation.Validated;
-import jakarta.validation.Valid;
 
-/**
- * Service
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
 public class Service {
-	/**
-	 * Gets or Sets methods
-	 */
+
 	public enum MethodsEnum {
 		GET("GET"),
 
@@ -56,15 +46,12 @@ public class Service {
 		}
 	}
 
-	/**
-	 * Gets or Sets versions
-	 */
 	public enum VersionsEnum {
-		_0("2.0"),
+		V20("2.0"),
 
-		_1("2.1"),
+		V21("2.1"),
 
-		_2("2.2");
+		V22("2.2");
 
 		@JsonCreator
 		public static VersionsEnum fromValue(String text) {
@@ -90,21 +77,18 @@ public class Service {
 	}
 
 	@JsonProperty("dataTypes")
-	@Valid
 	private List<WSMIMEDataTypes> dataTypes = null;
 
 	@JsonProperty("contentTypes")
-	@Valid
 	private List<WSMIMEDataTypes> contentTypes = null;
 
 	@JsonProperty("methods")
-	@Valid
 	private List<MethodsEnum> methods = new ArrayList<MethodsEnum>();
 
 	@JsonProperty("service")
 	private String service = null;
+
 	@JsonProperty("versions")
-	@Valid
 	private List<VersionsEnum> versions = new ArrayList<VersionsEnum>();
 
 	public Service addDataTypesItem(WSMIMEDataTypes dataTypesItem) {
@@ -168,56 +152,21 @@ public class Service {
 				&& Objects.equals(this.versions, service.versions);
 	}
 
-	/**
-	 * The possible data formats returned by the available call
-	 * 
-	 * @return dataTypes
-	 **/
-	@ApiModelProperty(example = "[\"application/json\"]", value = "The possible data formats returned by the available call")
-	@Valid
 	public List<WSMIMEDataTypes> getDataTypes() {
 		return dataTypes;
 	}
 
-	/**
-	 * The possible data formats returned by the available call
-	 * 
-	 * @return dataTypes
-	 **/
-	@ApiModelProperty(example = "[\"application/json\"]", value = "The possible data formats returned by the available call")
-	@Valid
 	public List<WSMIMEDataTypes> getContentTypes() {
 		return contentTypes;
 	}
-
-	/**
-	 * The possible HTTP Methods to be used with the available call
-	 * 
-	 * @return methods
-	 **/
-	@ApiModelProperty(example = "[\"GET\",\"POST\"]", required = true, value = "The possible HTTP Methods to be used with the available call")
 
 	public List<MethodsEnum> getMethods() {
 		return methods;
 	}
 
-	/**
-	 * The name of the available call as recorded in the documentation
-	 * 
-	 * @return service
-	 **/
-	@ApiModelProperty(example = "germplasm/{germplasmDbId}/pedigree", required = true, value = "The name of the available call as recorded in the documentation")
-
 	public String getService() {
 		return service;
 	}
-
-	/**
-	 * The supported versions of a particular call
-	 * 
-	 * @return versions
-	 **/
-	@ApiModelProperty(example = "[\"2.0\",\"2.1\"]", required = true, value = "The supported versions of a particular call")
 
 	public List<VersionsEnum> getVersions() {
 		return versions;
@@ -260,10 +209,6 @@ public class Service {
 		this.versions = versions;
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";

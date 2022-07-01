@@ -1,6 +1,7 @@
 package org.brapi.test.BrAPITestServer.service.germ;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -80,6 +81,12 @@ public class PedigreeService {
 	}
 
 	public List<PedigreeNode> findPedigree(PedigreeSearchRequest request, Metadata metadata) {
+		List<PedigreeNodeEntity> page = findPedigreeEntity(request, metadata);
+		List<PedigreeNode> pedigreeNodes = page.stream().map(this::convertFromEntity).collect(Collectors.toList());
+		return pedigreeNodes;
+	}
+
+	public List<PedigreeNodeEntity> findPedigreeEntity(PedigreeSearchRequest request, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<PedigreeNodeEntity> searchQuery = new SearchQueryBuilder<PedigreeNodeEntity>(
 				PedigreeNodeEntity.class);
@@ -114,9 +121,8 @@ public class PedigreeService {
 				.appendList(request.getFamilyCodes(), "familyCode");
 
 		Page<PedigreeNodeEntity> page = pedigreeRepository.findAllBySearch(searchQuery, pageReq);
-		List<PedigreeNode> pedigreeNodes = page.map(this::convertFromEntity).getContent();
 		PagingUtility.calculateMetaData(metadata, page);
-		return pedigreeNodes;
+		return page.getContent();
 	}
 
 	public List<PedigreeNode> savePedigreeNodes(List<PedigreeNode> request) throws BrAPIServerException {
@@ -134,20 +140,27 @@ public class PedigreeService {
 
 	public List<PedigreeNode> updatePedigreeNodes(Map<String, PedigreeNode> request) throws BrAPIServerException {
 		List<PedigreeNode> updatedNodes = new ArrayList<>();
+		PedigreeSearchRequest searchReq = new PedigreeSearchRequest();
+		searchReq.setGermplasmDbIds(new ArrayList<>(request.keySet()));
+		List<PedigreeNodeEntity> nodeEntities = findPedigreeEntity(searchReq, null);
+		Map<String, PedigreeNodeEntity> nodesByGermplasm = new HashMap<>();
+
+		for (PedigreeNodeEntity nodeEntity : nodeEntities) {
+			if (nodeEntity.getGermplasm() != null && nodeEntity.getGermplasm().getId() != null) {
+				nodesByGermplasm.put(nodeEntity.getGermplasm().getId(), nodeEntity);
+			}
+		}
 
 		for (Entry<String, PedigreeNode> entry : request.entrySet()) {
-			PedigreeNodeEntity savedEntity;
-			Optional<PedigreeNodeEntity> entityOpt = pedigreeRepository.findById(entry.getKey());
-			if (entityOpt.isPresent()) {
-				PedigreeNodeEntity entity = entityOpt.get();
+			PedigreeNodeEntity entity = nodesByGermplasm.get(entry.getKey());
+			if (entity != null) {
 				updateEntity(entity, entry.getValue());
-
-				savedEntity = pedigreeRepository.save(entity);
+				PedigreeNodeEntity savedEntity = pedigreeRepository.save(entity);
+				updatedNodes.add(convertFromEntity(savedEntity));
 			} else {
-				throw new BrAPIServerDbIdNotFoundException("pedigree", entry.getKey());
+				throw new BrAPIServerDbIdNotFoundException("germplasm", entry.getKey());
 			}
 
-			updatedNodes.add(convertFromEntity(savedEntity));
 		}
 		return updatedNodes;
 	}

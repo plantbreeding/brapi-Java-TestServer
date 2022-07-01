@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -74,7 +75,7 @@ public class OntologiesApiController extends BrAPIController implements Ontologi
 	@CrossOrigin
 	@Override
 	public ResponseEntity<OntologySingleResponse> ontologiesOntologyDbIdGet(
-			@PathParam("ontologyDbId") String ontologyDbId,
+			@PathVariable("ontologyDbId") String ontologyDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 		log.debug("Request: " + request.getRequestURI());
@@ -86,7 +87,7 @@ public class OntologiesApiController extends BrAPIController implements Ontologi
 	@CrossOrigin
 	@Override
 	public ResponseEntity<OntologySingleResponse> ontologiesOntologyDbIdPut(
-			@PathParam("ontologyDbId") String ontologyDbId,
+			@PathVariable("ontologyDbId") String ontologyDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization,
 			@Valid @RequestBody OntologyNewRequest body) throws BrAPIServerException {
 		log.debug("Request: " + request.getRequestURI());

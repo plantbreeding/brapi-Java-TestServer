@@ -1,30 +1,31 @@
 package io.swagger.model.geno;
 
 import java.util.Objects;
-
-import org.brapi.test.BrAPITestServer.service.geno.CallService;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import io.swagger.model.SearchRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CallsSearchRequest extends SearchRequest {
+public class AlleleMatrix {
 	@JsonProperty("callSetDbIds")
 	private List<String> callSetDbIds = null;
 
+	@JsonProperty("dataMatrices")
+	private List<AlleleMatrixDataMatrices> dataMatrices = null;
+
 	@JsonProperty("expandHomozygotes")
-	private Boolean expandHomozygotes = CallService.EXPAND_HOMOZYFOTES_DEFAULT;
+	private Boolean expandHomozygotes = null;
+
+	@JsonProperty("pagination")
+	private List<AlleleMatrixPagination> pagination = null;
 
 	@JsonProperty("sepPhased")
-	private String sepPhased = CallService.SEP_PHASED_DEFAULT;
+	private String sepPhased = null;
 
 	@JsonProperty("sepUnphased")
-	private String sepUnphased = CallService.SEP_UNPHASED_DEFAULT;
+	private String sepUnphased = null;
 
 	@JsonProperty("unknownString")
-	private String unknownString = CallService.UNKNOWN_STRING_DEFAULT;
+	private String unknownString = null;
 
 	@JsonProperty("variantDbIds")
 	private List<String> variantDbIds = null;
@@ -32,12 +33,12 @@ public class CallsSearchRequest extends SearchRequest {
 	@JsonProperty("variantSetDbIds")
 	private List<String> variantSetDbIds = null;
 
-	public CallsSearchRequest callSetDbIds(List<String> callSetDbIds) {
+	public AlleleMatrix callSetDbIds(List<String> callSetDbIds) {
 		this.callSetDbIds = callSetDbIds;
 		return this;
 	}
 
-	public CallsSearchRequest addCallSetDbIdsItem(String callSetDbIdsItem) {
+	public AlleleMatrix addCallSetDbIdsItem(String callSetDbIdsItem) {
 		if (this.callSetDbIds == null) {
 			this.callSetDbIds = new ArrayList<String>();
 		}
@@ -53,7 +54,28 @@ public class CallsSearchRequest extends SearchRequest {
 		this.callSetDbIds = callSetDbIds;
 	}
 
-	public CallsSearchRequest expandHomozygotes(Boolean expandHomozygotes) {
+	public AlleleMatrix dataMatrices(List<AlleleMatrixDataMatrices> dataMatrices) {
+		this.dataMatrices = dataMatrices;
+		return this;
+	}
+
+	public AlleleMatrix addDataMatricesItem(AlleleMatrixDataMatrices dataMatricesItem) {
+		if (this.dataMatrices == null) {
+			this.dataMatrices = new ArrayList<AlleleMatrixDataMatrices>();
+		}
+		this.dataMatrices.add(dataMatricesItem);
+		return this;
+	}
+
+	public List<AlleleMatrixDataMatrices> getDataMatrices() {
+		return dataMatrices;
+	}
+
+	public void setDataMatrices(List<AlleleMatrixDataMatrices> dataMatrices) {
+		this.dataMatrices = dataMatrices;
+	}
+
+	public AlleleMatrix expandHomozygotes(Boolean expandHomozygotes) {
 		this.expandHomozygotes = expandHomozygotes;
 		return this;
 	}
@@ -66,7 +88,28 @@ public class CallsSearchRequest extends SearchRequest {
 		this.expandHomozygotes = expandHomozygotes;
 	}
 
-	public CallsSearchRequest sepPhased(String sepPhased) {
+	public AlleleMatrix pagination(List<AlleleMatrixPagination> pagination) {
+		this.pagination = pagination;
+		return this;
+	}
+
+	public AlleleMatrix addPaginationItem(AlleleMatrixPagination paginationItem) {
+		if (this.pagination == null) {
+			this.pagination = new ArrayList<AlleleMatrixPagination>();
+		}
+		this.pagination.add(paginationItem);
+		return this;
+	}
+
+	public List<AlleleMatrixPagination> getPagination() {
+		return pagination;
+	}
+
+	public void setPagination(List<AlleleMatrixPagination> pagination) {
+		this.pagination = pagination;
+	}
+
+	public AlleleMatrix sepPhased(String sepPhased) {
 		this.sepPhased = sepPhased;
 		return this;
 	}
@@ -79,7 +122,7 @@ public class CallsSearchRequest extends SearchRequest {
 		this.sepPhased = sepPhased;
 	}
 
-	public CallsSearchRequest sepUnphased(String sepUnphased) {
+	public AlleleMatrix sepUnphased(String sepUnphased) {
 		this.sepUnphased = sepUnphased;
 		return this;
 	}
@@ -92,7 +135,7 @@ public class CallsSearchRequest extends SearchRequest {
 		this.sepUnphased = sepUnphased;
 	}
 
-	public CallsSearchRequest unknownString(String unknownString) {
+	public AlleleMatrix unknownString(String unknownString) {
 		this.unknownString = unknownString;
 		return this;
 	}
@@ -105,12 +148,12 @@ public class CallsSearchRequest extends SearchRequest {
 		this.unknownString = unknownString;
 	}
 
-	public CallsSearchRequest variantDbIds(List<String> variantDbIds) {
+	public AlleleMatrix variantDbIds(List<String> variantDbIds) {
 		this.variantDbIds = variantDbIds;
 		return this;
 	}
 
-	public CallsSearchRequest addVariantDbIdsItem(String variantDbIdsItem) {
+	public AlleleMatrix addVariantDbIdsItem(String variantDbIdsItem) {
 		if (this.variantDbIds == null) {
 			this.variantDbIds = new ArrayList<String>();
 		}
@@ -126,12 +169,12 @@ public class CallsSearchRequest extends SearchRequest {
 		this.variantDbIds = variantDbIds;
 	}
 
-	public CallsSearchRequest variantSetDbIds(List<String> variantSetDbIds) {
+	public AlleleMatrix variantSetDbIds(List<String> variantSetDbIds) {
 		this.variantSetDbIds = variantSetDbIds;
 		return this;
 	}
 
-	public CallsSearchRequest addVariantSetDbIdsItem(String variantSetDbIdsItem) {
+	public AlleleMatrix addVariantSetDbIdsItem(String variantSetDbIdsItem) {
 		if (this.variantSetDbIds == null) {
 			this.variantSetDbIds = new ArrayList<String>();
 		}
@@ -155,29 +198,33 @@ public class CallsSearchRequest extends SearchRequest {
 		if (o == null || getClass() != o.getClass()) {
 			return false;
 		}
-		CallsSearchRequest callsSearchRequest = (CallsSearchRequest) o;
-		return Objects.equals(this.callSetDbIds, callsSearchRequest.callSetDbIds)
-				&& Objects.equals(this.expandHomozygotes, callsSearchRequest.expandHomozygotes)
-				&& Objects.equals(this.sepPhased, callsSearchRequest.sepPhased)
-				&& Objects.equals(this.sepUnphased, callsSearchRequest.sepUnphased)
-				&& Objects.equals(this.unknownString, callsSearchRequest.unknownString)
-				&& Objects.equals(this.variantDbIds, callsSearchRequest.variantDbIds)
-				&& Objects.equals(this.variantSetDbIds, callsSearchRequest.variantSetDbIds) && super.equals(o);
+		AlleleMatrix alleleMatrix = (AlleleMatrix) o;
+		return Objects.equals(this.callSetDbIds, alleleMatrix.callSetDbIds)
+				&& Objects.equals(this.dataMatrices, alleleMatrix.dataMatrices)
+				&& Objects.equals(this.expandHomozygotes, alleleMatrix.expandHomozygotes)
+				&& Objects.equals(this.pagination, alleleMatrix.pagination)
+				&& Objects.equals(this.sepPhased, alleleMatrix.sepPhased)
+				&& Objects.equals(this.sepUnphased, alleleMatrix.sepUnphased)
+				&& Objects.equals(this.unknownString, alleleMatrix.unknownString)
+				&& Objects.equals(this.variantDbIds, alleleMatrix.variantDbIds)
+				&& Objects.equals(this.variantSetDbIds, alleleMatrix.variantSetDbIds);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(callSetDbIds, expandHomozygotes, sepPhased, sepUnphased, unknownString, variantDbIds,
-				variantSetDbIds, super.hashCode());
+		return Objects.hash(callSetDbIds, dataMatrices, expandHomozygotes, pagination, sepPhased, sepUnphased,
+				unknownString, variantDbIds, variantSetDbIds);
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("class CallsSearchRequest {\n");
-		sb.append("    ").append(toIndentedString(super.toString())).append("\n");
+		sb.append("class AlleleMatrix {\n");
+
 		sb.append("    callSetDbIds: ").append(toIndentedString(callSetDbIds)).append("\n");
+		sb.append("    dataMatrices: ").append(toIndentedString(dataMatrices)).append("\n");
 		sb.append("    expandHomozygotes: ").append(toIndentedString(expandHomozygotes)).append("\n");
+		sb.append("    pagination: ").append(toIndentedString(pagination)).append("\n");
 		sb.append("    sepPhased: ").append(toIndentedString(sepPhased)).append("\n");
 		sb.append("    sepUnphased: ").append(toIndentedString(sepUnphased)).append("\n");
 		sb.append("    unknownString: ").append(toIndentedString(unknownString)).append("\n");
@@ -192,25 +239,5 @@ public class CallsSearchRequest extends SearchRequest {
 			return "null";
 		}
 		return o.toString().replace("\n", "\n    ");
-	}
-
-	@Override
-	public Integer getTotalParameterCount() {
-		Integer count = 0;
-		if (this.callSetDbIds != null)
-			count += this.callSetDbIds.size();
-		if (this.expandHomozygotes != null)
-			count += 1;
-		if (this.sepPhased != null)
-			count += 1;
-		if (this.sepUnphased != null)
-			count += 1;
-		if (this.unknownString != null)
-			count += 1;
-		if (this.variantDbIds != null)
-			count += this.variantDbIds.size();
-		if (this.variantSetDbIds != null)
-			count += this.variantSetDbIds.size();
-		return count;
 	}
 }

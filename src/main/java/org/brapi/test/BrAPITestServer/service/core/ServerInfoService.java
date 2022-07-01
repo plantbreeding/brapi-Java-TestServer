@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import io.swagger.model.WSMIMEDataTypes;
 import io.swagger.model.core.ServerInfo;
 import io.swagger.model.core.Service;
+import io.swagger.model.core.Service.VersionsEnum;
 
 @org.springframework.stereotype.Service
 public class ServerInfoService {
@@ -18,10 +19,11 @@ public class ServerInfoService {
 
 	public static List<Service> buildServices(){
 		 return new ServiceBuilder()
+				.versions(VersionsEnum.V20, VersionsEnum.V21)
 				//CORE
 				.setBase("serviceinfo").GET().build()
 				.setBase("commoncropnames").GET().build()
-				.setBase("lists").GET().POST().addPath("{listDbId}").GET().PUT().addPath("items").POST().setPath("data").POST().withSearch()
+				.setBase("lists").GET().POST().addPath("{listDbId}").GET().PUT().withSearch()
 				.setBase("locations").GET().POST().addPath("{locationDbId}").GET().PUT().withSearch()
 				.setBase("people").GET().POST().addPath("{personDbId}").GET().PUT().withSearch()
 				.setBase("programs").GET().POST().addPath("{programDbId}").GET().PUT().withSearch()
@@ -37,34 +39,47 @@ public class ServerInfoService {
 				.setBase("plannedcrosses").GET().POST().PUT().build()
 				.setBase("crossingprojects").GET().POST().addPath("{crossingProjectDbId}").GET().PUT().build()
 				.setBase("seedlots").GET().POST().addPath("transactions").GET().POST().setPath("{seedLotDbId}").GET().PUT().addPath("transactions").GET().build()
-				.setBase("germplasm").GET().POST().addPath("{germplasmDbId}").GET().PUT()
-				  .addPath("mcpd").GET().setPath("pedigree").GET().setPath("progeny").GET().withSearch()
-				.setBase("pedigree").GET().POST().PUT().withSearch()
+				.setBase("germplasm").GET().POST().addPath("{germplasmDbId}").GET().PUT().addPath("mcpd").GET().withSearch()
 				//PHENOTYPING
 				.setBase("events").GET().build()
-				.setBase("images").GET().POST().addPath("{imageDbId}").GET().PUT().addPath("imagecontent").PUT().withSearch().setBase("delete").addPath("images").POST().build()
-				.setBase("ontologies").GET().POST().addPath("{ontologyDbId}").GET().PUT().build()
+				.setBase("images").GET().POST().addPath("{imageDbId}").GET().PUT().addPath("imagecontent").PUT().withSearch()
+				.setBase("ontologies").GET().build()
 				.setBase("traits").GET().POST().addPath("{traitDbId}").GET().PUT().build()
 				.setBase("methods").GET().POST().addPath("{methodDbId}").GET().PUT().build()
 				.setBase("scales").GET().POST().addPath("{scaleDbId}").GET().PUT().build()
 				.setBase("variables").GET().POST().addPath("{observationVariableDbId}").GET().PUT().withSearch()
 				.setBase("observationunits").GET().POST().PUT().addPath("{observationUnitDbId}").GET().PUT().setPath("table").GET().withSearch()
-				.setBase("observations").GET().POST().PUT().addPath("{observationDbId}").GET().PUT().setPath("table").GET().withSearch().setBase("delete").addPath("observations").POST().build()
+				.setBase("observations").GET().POST().PUT().addPath("{observationDbId}").GET().PUT().setPath("table").GET().withSearch()
 				.setBase("observationlevels").GET().build()
 				//GENOTYPING
 				.setBase("calls").GET().withSearch()
 				.setBase("callsets").GET().addPath("{callSetDbId}").GET().addPath("calls").GET().withSearch()
 				.setBase("maps").GET().addPath("{mapDbId}").GET().addPath("linkagegroups").GET().build()
 				.setBase("markerpositions").GET().withSearch()
-				.setBase("references").GET().addPath("{referenceDbId}").GET().addPath("bases").withSearch()
+				.setBase("references").GET().addPath("{referenceDbId}").GET().addPath("bases").GET().withSearch()
 				.setBase("referencesets").GET().addPath("{referenceSetDbId}").GET().withSearch()
-				.setBase("samples").GET().POST().PUT().addPath("{sampleDbId}").GET().PUT().withSearch()
-				.setBase("plates").GET().POST().PUT().addPath("{plateDbId}").GET().withSearch()
+				.setBase("samples").GET().POST().addPath("{sampleDbId}").GET().PUT().withSearch()
 				.setBase("variants").GET().addPath("{variantDbId}").GET().addPath("calls").GET().withSearch()
 				.setBase("variantsets").GET().addPath("extract").POST().setPath("{variantSetDbId}").GET()
 				  .addPath("calls").GET().setPath("callsets").GET().setPath("variants").GET().withSearch()
 				.setBase("vendor").addPath("specifications").GET().setPath("plates").POST().addPath("{submissionId}").build()
 				.setBase("vendor/orders").GET().POST().addPath("{orderId}").addPath("plates").GET().setPath("results").GET().setPath("status").GET().build()
+				
+				//V2.0 only
+				.versions(VersionsEnum.V20)
+				.setBase("germplasm").addPath("{germplasmDbId}").addPath("pedigree").GET().setPath("progeny").GET().build()
+				.setBase("lists").addPath("{listDbId}").addPath("items").POST().build()
+				.setBase("samples").addPath("{sampleDbId}").PUT().build()
+				//V2.1 only
+				.versions(VersionsEnum.V21)
+				.setBase("allelematrix").GET().withSearch()
+				.setBase("calls").PUT().build()
+				.setBase("delete").addPath("images").POST().setPath("observations").POST().build()
+				.setBase("lists").addPath("{listDbId}").addPath("data").POST().build()
+				.setBase("ontologies").POST().addPath("{ontologyDbId}").GET().PUT().build()
+				.setBase("pedigree").GET().POST().PUT().withSearch()
+				.setBase("plates").GET().POST().PUT().addPath("{plateDbId}").GET().withSearch()
+				.setBase("samples").PUT().build()
 				;
 	}
 
@@ -88,6 +103,7 @@ public class ServerInfoService {
 
 		WSMIMEDataTypes type = contentType == null? dataType: contentType;
 		info.setCalls(filterCalls(ServerInfoService.services, type));
+//		info.setCalls(filterCalls(buildServices(), type));
 		return info;
 	}
 	

@@ -32,6 +32,9 @@ public class VariantSet extends BrAPIDataModel{
 
 	@JsonProperty("variantSetName")
 	private String variantSetName = null;
+	
+	  @JsonProperty("metadataFields")
+	  private List<VariantSetMetadataFields> metadataFields = null;
 
 	public VariantSet analysis(List<Analysis> analysis) {
 		this.analysis = analysis;

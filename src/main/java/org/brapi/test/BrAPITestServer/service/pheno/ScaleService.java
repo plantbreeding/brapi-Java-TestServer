@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import jakarta.validation.Valid;
-
 import org.apache.commons.lang3.math.NumberUtils;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
@@ -57,7 +55,7 @@ public class ScaleService {
 		return scales;
 	}
 
-	public Scale updateScale(String scaleDbId, @Valid ScaleBaseClass body) throws BrAPIServerException {
+	public Scale updateScale(String scaleDbId, ScaleBaseClass body) throws BrAPIServerException {
 		ScaleEntity savedEntity;
 		Optional<ScaleEntity> entityOpt = scaleRepository.findById(scaleDbId);
 		if (entityOpt.isPresent()) {
@@ -72,7 +70,7 @@ public class ScaleService {
 		return convertFromEntity(savedEntity);
 	}
 
-	public List<Scale> saveScales(@Valid List<ScaleBaseClass> body) throws BrAPIServerException {
+	public List<Scale> saveScales(List<ScaleBaseClass> body) throws BrAPIServerException {
 		List<Scale> savedScales = new ArrayList<>();
 		for (ScaleBaseClass request : body) {
 			ScaleEntity newEntity = new ScaleEntity();

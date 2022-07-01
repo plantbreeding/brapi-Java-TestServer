@@ -11,6 +11,9 @@ import java.time.OffsetDateTime;
 
 public class Variant extends BrAPIDataModel {
 	@JsonProperty("alternate_bases")
+	private List<String> alternate_bases = null;
+	
+	@JsonProperty("alternateBases")
 	private List<String> alternateBases = null;
 
 	@JsonProperty("ciend")
@@ -103,11 +106,17 @@ public class Variant extends BrAPIDataModel {
 	}
 
 	public Variant alternateBases(List<String> alternateBases) {
+		this.alternate_bases = alternateBases;
 		this.alternateBases = alternateBases;
 		return this;
 	}
 
 	public Variant addAlternateBasesItem(String alternateBasesItem) {
+		if (this.alternate_bases == null) {
+			this.alternate_bases = new ArrayList<String>();
+		}
+		this.alternate_bases.add(alternateBasesItem);
+		
 		if (this.alternateBases == null) {
 			this.alternateBases = new ArrayList<String>();
 		}
@@ -121,6 +130,7 @@ public class Variant extends BrAPIDataModel {
 
 	public void setAlternateBases(List<String> alternateBases) {
 		this.alternateBases = alternateBases;
+		this.alternate_bases = alternateBases;
 	}
 
 	public Variant ciend(List<Integer> ciend) {
@@ -381,7 +391,7 @@ public class Variant extends BrAPIDataModel {
 		}
 		Variant variant = (Variant) o;
 		return Objects.equals(this.additionalInfo, variant.additionalInfo)
-				&& Objects.equals(this.alternateBases, variant.alternateBases)
+				&& Objects.equals(this.alternate_bases, variant.alternate_bases)
 				&& Objects.equals(this.ciend, variant.ciend) && Objects.equals(this.cipos, variant.cipos)
 				&& Objects.equals(this.created, variant.created) && Objects.equals(this.end, variant.end)
 				&& Objects.equals(this.filtersApplied, variant.filtersApplied)
@@ -399,7 +409,7 @@ public class Variant extends BrAPIDataModel {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(additionalInfo, alternateBases, ciend, cipos, created, end, filtersApplied, filtersFailed,
+		return Objects.hash(additionalInfo, alternate_bases, ciend, cipos, created, end, filtersApplied, filtersFailed,
 				filtersPassed, referenceBases, referenceName, start, svlen, updated, variantDbId, variantNames,
 				variantSetDbId, variantType);
 	}
@@ -410,7 +420,7 @@ public class Variant extends BrAPIDataModel {
 		sb.append("class Variant {\n");
 
 		sb.append("    additionalInfo: ").append(toIndentedString(additionalInfo)).append("\n");
-		sb.append("    alternateBases: ").append(toIndentedString(alternateBases)).append("\n");
+		sb.append("    alternateBases: ").append(toIndentedString(alternate_bases)).append("\n");
 		sb.append("    ciend: ").append(toIndentedString(ciend)).append("\n");
 		sb.append("    cipos: ").append(toIndentedString(cipos)).append("\n");
 		sb.append("    created: ").append(toIndentedString(created)).append("\n");

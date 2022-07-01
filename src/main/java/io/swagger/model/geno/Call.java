@@ -21,6 +21,12 @@ public class Call {
 	@JsonProperty("genotype")
 	private ListValue genotype = null;
 
+	@JsonProperty("genotypeValue")
+	private String genotypeValue = null;
+
+	@JsonProperty("genotypeMetadata")
+	private List<CallGenotypeMetadata> genotypeMetadata = null;
+
 	@JsonProperty("genotype_likelihood")
 	private List<Double> genotypeLikelihood = null;
 
@@ -39,6 +45,40 @@ public class Call {
 	@JsonProperty("variantSetName")
 	private String variantSetName = null;
 
+	public String getGenotypeValue() {
+		return genotypeValue;
+	}
+
+	public void setGenotypeValue(String genotypeValue) {
+		this.genotypeValue = genotypeValue;
+	}
+
+	public List<CallGenotypeMetadata> getGenotypeMetadata() {
+		return genotypeMetadata;
+	}
+
+	public void setGenotypeMetadata(List<CallGenotypeMetadata> genotypeMetadata) {
+		this.genotypeMetadata = genotypeMetadata;
+	}
+
+
+	public String getGenotypeMetadataValue(String dataMatrixAbbreviation) {
+		for(CallGenotypeMetadata data: this.genotypeMetadata) {
+			if(data.getFieldAbbreviation().equalsIgnoreCase(dataMatrixAbbreviation)) {
+				return data.getFieldValue();
+			}
+		}
+		return "";
+	}
+
+	public Call addGenotypeMetadataItem(CallGenotypeMetadata genotypeMetadata) {
+		if (this.genotypeMetadata == null) {
+			this.genotypeMetadata = new ArrayList<CallGenotypeMetadata>();
+		}
+		this.genotypeMetadata.add(genotypeMetadata);
+		return this;
+	}
+	
 	public Call additionalInfo(Map<String, Object> additionalInfo) {
 		this.additionalInfo = additionalInfo;
 		return this;

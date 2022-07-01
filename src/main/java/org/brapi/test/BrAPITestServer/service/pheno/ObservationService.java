@@ -13,7 +13,6 @@ import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundExceptio
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.SeasonEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
-import org.brapi.test.BrAPITestServer.model.entity.pheno.ImageEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationVariableEntity;
@@ -279,13 +278,16 @@ public class ObservationService {
 		return savedObservations;
 	}
 
-	public List<String> deleteObservations(@Valid ObservationSearchRequest body, Metadata metadata) {
+	public List<String> deleteObservations(ObservationSearchRequest body, Metadata metadata) {
+		List<String> deletedObservationDbIds = new ArrayList<>();
+		
+		if (body.getTotalParameterCount() > 0) {
+			List<ObservationEntity> deletedObservations = findObservationEntities(body, metadata).getContent();
+			observationRepository.deleteAll(deletedObservations);
+			deletedObservationDbIds = deletedObservations.stream().map(obs -> obs.getId()).collect(Collectors.toList());
+		}
 
-		List<ObservationEntity> deletedObservations = findObservationEntities(body, metadata).getContent();
-
-		observationRepository.deleteAll(deletedObservations);
-
-		return deletedObservations.stream().map(obs -> obs.getId()).collect(Collectors.toList());
+		return deletedObservationDbIds;
 	}
 
 	public Observation updateObservation(String observationDbId, @Valid ObservationNewRequest request)
