@@ -8,7 +8,7 @@ import io.swagger.model.BrAPIDataModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VariantSet extends BrAPIDataModel{
+public class VariantSet extends BrAPIDataModel {
 	@JsonProperty("analysis")
 	private List<Analysis> analysis = null;
 
@@ -32,9 +32,25 @@ public class VariantSet extends BrAPIDataModel{
 
 	@JsonProperty("variantSetName")
 	private String variantSetName = null;
-	
-	  @JsonProperty("metadataFields")
-	  private List<VariantSetMetadataFields> metadataFields = null;
+
+	@JsonProperty("metadataFields")
+	private List<VariantSetMetadataFields> metadataFields = null;
+
+	public List<VariantSetMetadataFields> getMetadataFields() {
+		return metadataFields;
+	}
+
+	public void setMetadataFields(List<VariantSetMetadataFields> metadataFields) {
+		this.metadataFields = metadataFields;
+	}
+
+	public VariantSet addMetadataFieldsItem(VariantSetMetadataFields metadataFieldsItem) {
+		if (this.metadataFields == null) {
+			this.metadataFields = new ArrayList<VariantSetMetadataFields>();
+		}
+		this.metadataFields.add(metadataFieldsItem);
+		return this;
+	}
 
 	public VariantSet analysis(List<Analysis> analysis) {
 		this.analysis = analysis;

@@ -29,8 +29,10 @@ import io.swagger.model.Metadata;
 import io.swagger.model.geno.Analysis;
 import io.swagger.model.geno.CallSetsSearchRequest;
 import io.swagger.model.geno.CallsSearchRequest;
+import io.swagger.model.geno.DataTypePrimitives;
 import io.swagger.model.geno.VariantSet;
 import io.swagger.model.geno.VariantSetAvailableFormats;
+import io.swagger.model.geno.VariantSetMetadataFields;
 import io.swagger.model.geno.VariantSetsSearchRequest;
 import io.swagger.model.geno.VariantsSearchRequest;
 import io.swagger.model.geno.VariantSetsExtractRequest;
@@ -134,6 +136,24 @@ public class VariantSetService {
 			variantSet.setVariantCount(entity.getVariants().size());
 		variantSet.setVariantSetDbId(entity.getId());
 		variantSet.setVariantSetName(entity.getVariantSetName());
+
+		VariantSetMetadataFields metaDataFieldGT = new VariantSetMetadataFields();
+		metaDataFieldGT.setDataType(DataTypePrimitives.STRING);
+		metaDataFieldGT.setFieldAbbreviation("GT");
+		metaDataFieldGT.setFieldName("Genotype");		
+		variantSet.addMetadataFieldsItem(metaDataFieldGT);
+
+		VariantSetMetadataFields metaDataFieldRD = new VariantSetMetadataFields();
+		metaDataFieldRD.setDataType(DataTypePrimitives.INTEGER);
+		metaDataFieldRD.setFieldAbbreviation("RD");
+		metaDataFieldRD.setFieldName("Read Depth");		
+		variantSet.addMetadataFieldsItem(metaDataFieldRD);
+
+		VariantSetMetadataFields metaDataFieldGL = new VariantSetMetadataFields();
+		metaDataFieldGL.setDataType(DataTypePrimitives.FLOAT);
+		metaDataFieldGL.setFieldAbbreviation("GL");
+		metaDataFieldGL.setFieldName("Genotype Likelihood");		
+		variantSet.addMetadataFieldsItem(metaDataFieldGL);
 
 		return variantSet;
 	}
