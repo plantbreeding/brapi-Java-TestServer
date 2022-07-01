@@ -1,38 +1,24 @@
 package io.swagger.model.pheno;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.ExternalReferences;
+import io.swagger.model.BrAPIDataModel;
 import io.swagger.model.OntologyReference;
 import org.brapi.test.BrAPITestServer.service.UpdateUtility;
-import org.springframework.validation.annotation.Validated;
-import jakarta.validation.Valid;
 
-/**
- * Scale metadata
- */
-@ApiModel(description = "Scale metadata")
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
-public class ScaleBaseClass {
-	@JsonProperty("additionalInfo")
-	@Valid
-	private Optional<Map<String, Object>> additionalInfo = null;
+public class ScaleBaseClass extends BrAPIDataModel {
+
 	@JsonProperty("dataType")
 	private Optional<TraitDataType> dataType = null;
 
 	@JsonProperty("decimalPlaces")
 	private Optional<Integer> decimalPlaces = null;
 
-	@JsonProperty("externalReferences")
-	private Optional<ExternalReferences> externalReferences = null;
+	@JsonProperty("units")
+	private Optional<String> units = null;
 
 	@JsonProperty("ontologyReference")
 	private Optional<OntologyReference> ontologyReference = null;
@@ -40,50 +26,17 @@ public class ScaleBaseClass {
 	@JsonProperty("scaleName")
 	private Optional<String> scaleName = null;
 
+	@JsonProperty("scalePUI")
+	private Optional<String> scalePUI = null;
+
 	@JsonProperty("validValues")
 	private Optional<ScaleBaseClassValidValues> validValues = null;
-
-	public ScaleBaseClass additionalInfo(Map<String, Object> additionalInfo) {
-		this.additionalInfo = UpdateUtility.setField(additionalInfo);
-		return this;
-	}
-
-	public ScaleBaseClass putAdditionalInfoItem(String key, String additionalInfoItem) {
-		if (this.additionalInfo == null) {
-			this.additionalInfo = UpdateUtility.setField(new HashMap<String, Object>());
-		}
-		this.additionalInfo.get().put(key, additionalInfoItem);
-		return this;
-	}
-
-	/**
-	 * Additional arbitrary info
-	 * 
-	 * @return additionalInfo
-	 **/
-	@ApiModelProperty(value = "Additional arbitrary info")
-
-	public Optional<Map<String, Object>> getAdditionalInfo() {
-		return additionalInfo;
-	}
-
-	public void setAdditionalInfo(Map<String, Object> additionalInfo) {
-		this.additionalInfo = UpdateUtility.setField(additionalInfo);
-	}
 
 	public ScaleBaseClass dataType(TraitDataType dataType) {
 		this.dataType = UpdateUtility.setField(dataType);
 		return this;
 	}
 
-	/**
-	 * Get dataType
-	 * 
-	 * @return dataType
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
 	public Optional<TraitDataType> getDataType() {
 		return dataType;
 	}
@@ -97,13 +50,6 @@ public class ScaleBaseClass {
 		return this;
 	}
 
-	/**
-	 * For numerical, number of decimal places to be reported
-	 * 
-	 * @return decimalPlaces
-	 **/
-	@ApiModelProperty(example = "2", value = "For numerical, number of decimal places to be reported")
-
 	public Optional<Integer> getDecimalPlaces() {
 		return decimalPlaces;
 	}
@@ -112,25 +58,17 @@ public class ScaleBaseClass {
 		this.decimalPlaces = UpdateUtility.setField(decimalPlaces);
 	}
 
-	public ScaleBaseClass externalReferences(ExternalReferences externalReferences) {
-		this.externalReferences = UpdateUtility.setField(externalReferences);
+	public ScaleBaseClass units(String units) {
+		this.units = UpdateUtility.setField(units);
 		return this;
 	}
 
-	/**
-	 * Get externalReferences
-	 * 
-	 * @return externalReferences
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
-	public Optional<ExternalReferences> getExternalReferences() {
-		return externalReferences;
+	public Optional<String> getUnits() {
+		return units;
 	}
 
-	public void setExternalReferences(ExternalReferences externalReferences) {
-		this.externalReferences = UpdateUtility.setField(externalReferences);
+	public void setUnits(String units) {
+		this.units = UpdateUtility.setField(units);
 	}
 
 	public ScaleBaseClass ontologyReference(OntologyReference ontologyReference) {
@@ -138,14 +76,6 @@ public class ScaleBaseClass {
 		return this;
 	}
 
-	/**
-	 * Get ontologyReference
-	 * 
-	 * @return ontologyReference
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
 	public Optional<OntologyReference> getOntologyReference() {
 		return ontologyReference;
 	}
@@ -167,19 +97,24 @@ public class ScaleBaseClass {
 		this.scaleName = UpdateUtility.setField(scaleName);
 	}
 
+	public ScaleBaseClass scalePUI(String scalePUI) {
+		this.scalePUI = UpdateUtility.setField(scalePUI);
+		return this;
+	}
+
+	public Optional<String> getScalePUI() {
+		return scalePUI;
+	}
+
+	public void setScalePUI(String scalePUI) {
+		this.scalePUI = UpdateUtility.setField(scalePUI);
+	}
+
 	public ScaleBaseClass validValues(ScaleBaseClassValidValues validValues) {
 		this.validValues = UpdateUtility.setField(validValues);
 		return this;
 	}
 
-	/**
-	 * Get validValues
-	 * 
-	 * @return validValues
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
 	public Optional<ScaleBaseClassValidValues> getValidValues() {
 		return validValues;
 	}
@@ -225,10 +160,6 @@ public class ScaleBaseClass {
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";

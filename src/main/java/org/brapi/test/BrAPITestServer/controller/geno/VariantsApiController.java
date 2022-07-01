@@ -13,6 +13,7 @@ import io.swagger.model.germ.Germplasm;
 import io.swagger.model.germ.GermplasmListResponse;
 import io.swagger.model.germ.GermplasmListResponseResult;
 import io.swagger.model.germ.GermplasmSearchRequest;
+import io.swagger.annotations.ApiParam;
 import io.swagger.api.geno.VariantsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -51,7 +52,8 @@ public class VariantsApiController extends BrAPIController implements VariantsAp
 	private final HttpServletRequest request;
 
 	@Autowired
-	public VariantsApiController(VariantService variantService, CallService callService, SearchService searchService, HttpServletRequest request) {
+	public VariantsApiController(VariantService variantService, CallService callService, SearchService searchService,
+			HttpServletRequest request) {
 		this.variantService = variantService;
 		this.callService = callService;
 		this.searchService = searchService;
@@ -63,6 +65,10 @@ public class VariantsApiController extends BrAPIController implements VariantsAp
 	public ResponseEntity<VariantsListResponse> variantsGet(
 			@Valid @RequestParam(value = "variantDbId", required = false) String variantDbId,
 			@Valid @RequestParam(value = "variantSetDbId", required = false) String variantSetDbId,
+			@Valid @RequestParam(value = "referenceDbId", required = false) String referenceDbId,
+			@Valid @RequestParam(value = "referenceSetDbId", required = false) String referenceSetDbId,
+			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "pageToken", required = false) String pageToken,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -71,7 +77,8 @@ public class VariantsApiController extends BrAPIController implements VariantsAp
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(pageToken, pageSize);
-		List<Variant> data = variantService.findVariants(variantDbId, variantSetDbId, metadata);
+		List<Variant> data = variantService.findVariants(variantDbId, variantSetDbId, referenceDbId, referenceSetDbId,
+				externalReferenceId, externalReferenceSource, metadata);
 		return responseOK(new VariantsListResponse(), new VariantsListResponseResult(), data, metadata);
 	}
 
@@ -117,7 +124,7 @@ public class VariantsApiController extends BrAPIController implements VariantsAp
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body.getPageToken(), body.getPageSize());
-		
+
 		String searchReqDbId = searchService.saveSearchRequest(body, SearchRequestTypes.VARIANTS);
 		if (searchReqDbId != null) {
 			return responseAccepted(searchReqDbId);
@@ -144,7 +151,7 @@ public class VariantsApiController extends BrAPIController implements VariantsAp
 			VariantsSearchRequest body = request.getParameters(VariantsSearchRequest.class);
 			List<Variant> data = variantService.findVariants(body, metadata);
 			return responseOK(new VariantsListResponse(), new VariantsListResponseResult(), data, metadata);
-		}else {
+		} else {
 			return responseAccepted(searchResultsDbId);
 		}
 	}

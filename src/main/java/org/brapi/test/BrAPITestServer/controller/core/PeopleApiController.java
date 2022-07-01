@@ -6,10 +6,6 @@ import io.swagger.model.core.Person;
 import io.swagger.model.core.PersonListResponse;
 import io.swagger.model.core.PersonListResponseResult;
 import io.swagger.model.core.PersonSingleResponse;
-import io.swagger.model.germ.Germplasm;
-import io.swagger.model.germ.GermplasmListResponse;
-import io.swagger.model.germ.GermplasmListResponseResult;
-import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.model.core.PersonNewRequest;
 import io.swagger.model.core.PersonSearchRequest;
 import io.swagger.api.core.PeopleApi;
@@ -21,7 +17,6 @@ import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.core.PeopleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -57,7 +52,10 @@ public class PeopleApiController extends BrAPIController implements PeopleApi {
 			@Valid @RequestParam(value = "lastName", required = false) String lastName,
 			@Valid @RequestParam(value = "personDbId", required = false) String personDbId,
 			@Valid @RequestParam(value = "userID", required = false) String userID,
+			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -66,7 +64,7 @@ public class PeopleApiController extends BrAPIController implements PeopleApi {
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<Person> data = peopleService.findPeople(firstName, lastName, personDbId, userID, externalReferenceID, externalReferenceSource, metadata);
+		List<Person> data = peopleService.findPeople(firstName, lastName, personDbId, userID, commonCropName, programDbId, externalReferenceId, externalReferenceID, externalReferenceSource, metadata);
 		return responseOK(new PersonListResponse(), new PersonListResponseResult(), data, metadata);
 	}
 

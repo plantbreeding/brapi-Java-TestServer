@@ -3,27 +3,15 @@ package io.swagger.model.geno;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.SearchRequest;
-import io.swagger.model.SearchRequestParametersPaging;
-
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.validation.annotation.Validated;
-import jakarta.validation.Valid;
 
-/**
- * MarkerPositionSearchRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
-public class MarkerPositionSearchRequest extends SearchRequestParametersPaging implements SearchRequest {
+public class MarkerPositionSearchRequest extends SearchRequest {
 	@JsonProperty("linkageGroupNames")
-	@Valid
 	private List<String> linkageGroupNames = null;
 
 	@JsonProperty("mapDbIds")
-	@Valid
 	private List<String> mapDbIds = null;
 
 	@JsonProperty("maxPosition")
@@ -33,7 +21,6 @@ public class MarkerPositionSearchRequest extends SearchRequestParametersPaging i
 	private Integer minPosition = null;
 
 	@JsonProperty("variantDbIds")
-	@Valid
 	private List<String> variantDbIds = null;
 
 	public MarkerPositionSearchRequest linkageGroupNames(List<String> linkageGroupNames) {
@@ -48,13 +35,6 @@ public class MarkerPositionSearchRequest extends SearchRequestParametersPaging i
 		this.linkageGroupNames.add(linkageGroupNamesItem);
 		return this;
 	}
-
-	/**
-	 * The Uniquely Identifiable name of this linkage group
-	 * 
-	 * @return linkageGroupNames
-	 **/
-	@ApiModelProperty(example = "[\"Chromosome 2\",\"Chromosome 3\"]", value = "The Uniquely Identifiable name of this linkage group")
 
 	public List<String> getLinkageGroupNames() {
 		return linkageGroupNames;
@@ -77,13 +57,6 @@ public class MarkerPositionSearchRequest extends SearchRequestParametersPaging i
 		return this;
 	}
 
-	/**
-	 * The unique ID of the map
-	 * 
-	 * @return mapDbIds
-	 **/
-	@ApiModelProperty(example = "[\"7e6fa8aa\",\"bedc418c\"]", value = "The unique ID of the map")
-
 	public List<String> getMapDbIds() {
 		return mapDbIds;
 	}
@@ -97,13 +70,6 @@ public class MarkerPositionSearchRequest extends SearchRequestParametersPaging i
 		return this;
 	}
 
-	/**
-	 * The maximum position
-	 * 
-	 * @return maxPosition
-	 **/
-	@ApiModelProperty(example = "4000", value = "The maximum position")
-
 	public Integer getMaxPosition() {
 		return maxPosition;
 	}
@@ -116,13 +82,6 @@ public class MarkerPositionSearchRequest extends SearchRequestParametersPaging i
 		this.minPosition = minPosition;
 		return this;
 	}
-
-	/**
-	 * The minimum position
-	 * 
-	 * @return minPosition
-	 **/
-	@ApiModelProperty(example = "250", value = "The minimum position")
 
 	public Integer getMinPosition() {
 		return minPosition;
@@ -144,13 +103,6 @@ public class MarkerPositionSearchRequest extends SearchRequestParametersPaging i
 		this.variantDbIds.add(variantDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * Internal db identifier
-	 * 
-	 * @return variantDbIds
-	 **/
-	@ApiModelProperty(example = "[\"a0caa928\",\"f8894a26\"]", value = "Internal db identifier")
 
 	public List<String> getVariantDbIds() {
 		return variantDbIds;
@@ -195,10 +147,6 @@ public class MarkerPositionSearchRequest extends SearchRequestParametersPaging i
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";

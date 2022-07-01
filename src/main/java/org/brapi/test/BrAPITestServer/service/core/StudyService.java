@@ -7,11 +7,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import jakarta.validation.Valid;
-
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
-import org.brapi.test.BrAPITestServer.model.entity.core.ContactEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.DataLinkEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.EnvironmentParametersEntity;
@@ -24,10 +21,13 @@ import org.brapi.test.BrAPITestServer.model.entity.core.SeasonEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.StudyLastUpdateEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.TrialEntity;
+import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationVariableEntity;
 import org.brapi.test.BrAPITestServer.repository.core.StudyRepository;
 import org.brapi.test.BrAPITestServer.service.DateUtility;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
+import org.brapi.test.BrAPITestServer.service.UpdateUtility;
+import org.brapi.test.BrAPITestServer.service.pheno.ObservationVariableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -58,10 +58,11 @@ public class StudyService {
 	private final LocationService locationService;
 	private final PeopleService peopleService;
 	private final SeasonService seasonService;
+	private final ObservationVariableService variableService;
 
 	@Autowired
 	public StudyService(StudyRepository studyRepository, TrialService trialService, CropService cropService, LocationService locationService,
-			PeopleService peopleService, SeasonService seasonService) {
+			PeopleService peopleService, SeasonService seasonService, ObservationVariableService variableService) {
 		this.studyRepository = studyRepository;
 
 		this.locationService = locationService;
@@ -69,13 +70,14 @@ public class StudyService {
 		this.seasonService = seasonService;
 		this.trialService = trialService;
 		this.cropService = cropService;
+		this.variableService = variableService;
 	}
 
-	public List<Study> findStudies(@Valid String commonCropName, @Valid String studyType, @Valid String programDbId,
-			@Valid String locationDbId, @Valid String seasonDbId, @Valid String trialDbId, @Valid String studyDbId,
-			@Valid String studyName, @Valid String studyCode, @Valid String studyPUI, @Valid String germplasmDbId,
-			@Valid String observationVariableDbId, @Valid String externalReferenceID,
-			@Valid String externalReferenceSource, @Valid Boolean active, @Valid String sortBy, @Valid String sortOrder,
+	public List<Study> findStudies( String commonCropName,  String studyType,  String programDbId,
+			 String locationDbId,  String seasonDbId,  String trialDbId,  String studyDbId,
+			 String studyName,  String studyCode,  String studyPUI,  String germplasmDbId,
+			 String observationVariableDbId,  String externalReferenceId, String externalReferenceID,
+			 String externalReferenceSource,  Boolean active,  String sortBy,  String sortOrder,
 			Metadata metadata) {
 
 		StudySearchRequest request = new StudySearchRequest();
@@ -103,16 +105,14 @@ public class StudyService {
 			request.addGermplasmDbIdsItem(germplasmDbId);
 		if (observationVariableDbId != null)
 			request.addObservationVariableDbIdsItem(observationVariableDbId);
-		if (externalReferenceID != null)
-			request.addExternalReferenceIDsItem(externalReferenceID);
-		if (externalReferenceSource != null)
-			request.addExternalReferenceSourcesItem(externalReferenceSource);
 		if (active != null)
 			request.setActive(active);
 		if (sortBy != null && SortBy.fromValue(sortBy) != null)
 			request.setSortBy(SortBy.fromValue(sortBy));
 		if (sortOrder != null && SortOrder.fromValue(sortOrder) != null)
 			request.setSortOrder(SortOrder.fromValue(sortOrder));
+		
+		request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
 
 		return findStudies(request, metadata);
 	}
@@ -130,7 +130,7 @@ public class StudyService {
 			searchQuery = searchQuery.join("observationUnits", "obsunit");
 		}
 		if (request.getObservationVariableDbIds() != null || request.getObservationVariableNames() != null) {
-			searchQuery = searchQuery.join("*obsunit.observations", "observation");
+			searchQuery = searchQuery.join("observationVariables", "variable");
 		}
 
 		searchQuery = searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
@@ -139,14 +139,18 @@ public class StudyService {
 				.appendList(request.getGermplasmNames(), "*obsunit.germplasm.germplasmName")
 				.appendList(request.getLocationDbIds(), "location.id")
 				.appendList(request.getLocationNames(), "location.locationName")
-				.appendList(request.getObservationVariableDbIds(), "*observation.observationVariable.id")
-				.appendList(request.getObservationVariableNames(), "*observation.observationVariable.name")
+				.appendList(request.getObservationVariableDbIds(), "*variable.id")
+				.appendList(request.getObservationVariableNames(), "*variable.name")
 				.appendList(request.getProgramDbIds(), "program.id")
 				.appendList(request.getProgramNames(), "program.name")
-				.appendList(request.getSeasonDbIds(), "*season.id").appendList(request.getStudyCodes(), "studyCode")
-				.appendList(request.getStudyDbIds(), "id").appendList(request.getStudyNames(), "studyName")
-				.appendList(request.getStudyPUIs(), "studyPUI").appendList(request.getStudyTypes(), "studyType")
-				.appendList(request.getTrialDbIds(), "trial.id").appendList(request.getTrialNames(), "trial.trialName")
+				.appendList(request.getSeasonDbIds(), "*season.id")
+				.appendList(request.getStudyCodes(), "studyCode")
+				.appendList(request.getStudyDbIds(), "id")
+				.appendList(request.getStudyNames(), "studyName")
+				.appendList(request.getStudyPUIs(), "studyPUI")
+				.appendList(request.getStudyTypes(), "studyType")
+				.appendList(request.getTrialDbIds(), "trial.id")
+				.appendList(request.getTrialNames(), "trial.trialName")
 				.withSort(getSortByField(request.getSortBy()), request.getSortOrder());
 
 		Page<StudyEntity> studiesPage = studyRepository.findAllBySearch(searchQuery, pageReq);
@@ -175,7 +179,7 @@ public class StudyService {
 		return study;
 	}
 
-	public List<Study> saveStudies(@Valid List<StudyNewRequest> body) throws BrAPIServerException {
+	public List<Study> saveStudies( List<StudyNewRequest> body) throws BrAPIServerException {
 		List<Study> savedStudies = new ArrayList<>();
 
 		for (StudyNewRequest study : body) {
@@ -191,7 +195,7 @@ public class StudyService {
 		return savedStudies;
 	}
 
-	public Study updateStudy(String studyDbId, @Valid StudyNewRequest body) throws BrAPIServerException {
+	public Study updateStudy(String studyDbId,  StudyNewRequest body) throws BrAPIServerException {
 		StudyEntity savedEntity;
 		Optional<StudyEntity> entityOpt = studyRepository.findById(studyDbId);
 		if (entityOpt.isPresent()) {
@@ -216,11 +220,11 @@ public class StudyService {
 		return PagingUtility.paginateSimpleList(new ArrayList<>(types), metadata);
 	}
 
-	private void updateEntity(StudyEntity entity, @Valid StudyNewRequest body) throws BrAPIServerException {
+	private void updateEntity(StudyEntity entity,  StudyNewRequest body) throws BrAPIServerException {
+		entity = UpdateUtility.updateEntity(body, entity);
+		
 		if (body.isActive() != null)
 			entity.setActive(body.isActive());
-		if (body.getAdditionalInfo() != null)
-			entity.setAdditionalInfo(body.getAdditionalInfo());
 		if (body.getContacts() != null) {
 			entity.setContacts(new ArrayList<>());
 			for (Contact contact : body.getContacts()) {
@@ -256,8 +260,6 @@ public class StudyService {
 		}
 		if (body.getExperimentalDesign() != null)
 			entity.setExperimentalDesign(convertToEntity(body.getExperimentalDesign(), entity));
-		if (body.getExternalReferences() != null)
-			entity.setExternalReferences(body.getExternalReferences());
 		if (body.getGrowthFacility() != null)
 			entity.setGrowthFacility(convertToEntity(body.getGrowthFacility(), entity));
 		if (body.getLastUpdate() != null)
@@ -274,6 +276,13 @@ public class StudyService {
 		}
 		if (body.getObservationUnitsDescription() != null)
 			entity.setObservationUnitsDescription(body.getObservationUnitsDescription());
+		if (body.getObservationVariableDbIds() != null) {
+			entity.setObservationVariables(new ArrayList<>());
+			for (String variableDbId: body.getObservationVariableDbIds()) {
+				ObservationVariableEntity variableEntity = variableService.getObservationVariableEntity(variableDbId);
+				entity.getObservationVariables().add(variableEntity);
+			}
+		}
 		if (body.getSeasons() != null) {
 			entity.setSeasons(new ArrayList<>());
 			for (String season : body.getSeasons()) {
@@ -348,6 +357,12 @@ public class StudyService {
 
 		study.setObservationUnitsDescription(entity.getObservationUnitsDescription());
 
+		if (entity.getObservationVariables() != null) {
+			study.setObservationVariableDbIds(entity.getObservationVariables().stream().map(e -> {
+				return e.getId();
+			}).collect(Collectors.toList()));
+		}
+		
 		if (entity.getSeasons() != null) {
 			study.setSeasons(entity.getSeasons().stream().map(e -> {
 				return e.getId();

@@ -54,18 +54,25 @@ public class LocationsApiController extends BrAPIController implements Locations
 	@CrossOrigin
 	@Override
 	public ResponseEntity<LocationListResponse> locationsGet(
-			@Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
 			@Valid @RequestParam(value = "locationType", required = false) String locationType,
+			@Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
+			@Valid @RequestParam(value = "locationName", required = false) String locationName,
+			@Valid @RequestParam(value = "parentLocationDbId", required = false) String parentLocationDbId,
+			@Valid @RequestParam(value = "parentLocationName", required = false) String parentLocationName,
+			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<Location> data = locationService.findLocations(locationDbId, locationType, externalReferenceID, externalReferenceSource, metadata);
+		List<Location> data = locationService.findLocations(locationDbId, locationType, locationName, parentLocationDbId, parentLocationName, commonCropName, programDbId, externalReferenceId, externalReferenceID, externalReferenceSource, metadata);
 		return responseOK(new LocationListResponse(), new LocationListResponseResult(), data, metadata);
 	}
 
@@ -125,7 +132,7 @@ public class LocationsApiController extends BrAPIController implements Locations
 	@CrossOrigin
 	@Override
 	public ResponseEntity<? extends BrAPIResponse> searchLocationsSearchResultsDbIdGet(
-			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
+			String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {

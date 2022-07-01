@@ -44,7 +44,7 @@ public class Model202AcceptedSearchResponse implements BrAPIResponse<Model202Acc
     return _atContext;
   }
 
-  public void setAtContext(Context _atContext) {
+  public void set_atContext(Context _atContext) {
     this._atContext = _atContext;
   }
 

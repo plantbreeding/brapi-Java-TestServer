@@ -69,7 +69,7 @@ public class GermplasmEntity extends BrAPIPrimaryEntity {
 	@Column
 	private MlsStatusEnum mlsStatus;
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "germplasm")
-	private PedigreeEntity pedigree;
+	private PedigreeNodeEntity pedigree;
 	@ManyToMany
 	@JoinTable
 	private List<SearchRequestEntity> searchResults;
@@ -221,7 +221,7 @@ public class GermplasmEntity extends BrAPIPrimaryEntity {
 		return germplasmPUI;
 	}
 
-	public PedigreeEntity getPedigree() {
+	public PedigreeNodeEntity getPedigree() {
 		return pedigree;
 	}
 
@@ -325,7 +325,7 @@ public class GermplasmEntity extends BrAPIPrimaryEntity {
 		this.seedSourceDescription = seedSourceDescription;
 	}
 
-	public void setPedigree(PedigreeEntity pedigree) {
+	public void setPedigree(PedigreeNodeEntity pedigree) {
 		this.pedigree = pedigree;
 	}
 

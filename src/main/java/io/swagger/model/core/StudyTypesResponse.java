@@ -34,7 +34,7 @@ public class StudyTypesResponse implements BrAPIResponse<StudyTypesResponseResul
 
   
 
-  public void setAtContext(Context _atContext) {
+  public void set_atContext(Context _atContext) {
     this._atContext = _atContext;
   }
 

@@ -38,12 +38,12 @@ public interface CallSetsApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<CallsListResponse> callsetsCallSetDbIdCallsGet(
 			@ApiParam(value = "The ID of the `CallSet` to be retrieved.", required = true) @PathVariable("callSetDbId") String callSetDbId,
-			@ApiParam(value = "Should homozygotes be expanded (true) or collapsed into a single occurence (false)") @Valid @RequestParam(value = "expandHomozygotes", required = false) Boolean expandHomozygotes,
-			@ApiParam(value = "The string to use as a representation for missing data") @Valid @RequestParam(value = "unknownString", required = false) String unknownString,
-			@ApiParam(value = "The string to use as a separator for phased allele calls") @Valid @RequestParam(value = "sepPhased", required = false) String sepPhased,
-			@ApiParam(value = "The string to use as a separator for unphased allele calls") @Valid @RequestParam(value = "sepUnphased", required = false) String sepUnphased,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  Tokenized pages are for large data sets which can not be efficiently broken into indexed pages. Use the nextPageToken and prevPageToken from a prior response to construct a query and move to the next or previous page respectively. ") @Valid @RequestParam(value = "pageToken", required = false) String pageToken,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "expandHomozygotes") @Valid @RequestParam(value = "expandHomozygotes", required = false) Boolean expandHomozygotes,
+			@ApiParam(value = "unknownString") @Valid @RequestParam(value = "unknownString", required = false) String unknownString,
+			@ApiParam(value = "sepPhased") @Valid @RequestParam(value = "sepPhased", required = false) String sepPhased,
+			@ApiParam(value = "sepUnphased") @Valid @RequestParam(value = "sepUnphased", required = false) String sepUnphased,
+			@ApiParam(value = "pageToken") @Valid @RequestParam(value = "pageToken", required = false) String pageToken,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 	@ApiOperation(value = "Gets a `CallSet` by ID.", nickname = "callsetsCallSetDbIdGet", notes = "Gets a `CallSet` by ID.", response = CallSetResponse.class, authorizations = {
@@ -66,13 +66,15 @@ public interface CallSetsApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/callsets", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<CallSetsListResponse> callsetsGet(
-			@ApiParam(value = "The ID of the `CallSet` to be retrieved.") @Valid @RequestParam(value = "callSetDbId", required = false) String callSetDbId,
-			@ApiParam(value = "The human readable name of the `CallSet` to be retrieved.") @Valid @RequestParam(value = "callSetName", required = false) String callSetName,
-			@ApiParam(value = "The ID of the `VariantSet` to be retrieved.") @Valid @RequestParam(value = "variantSetDbId", required = false) String variantSetDbId,
-			@ApiParam(value = "The ID of the `VariantSet` to be retrieved.") @Valid @RequestParam(value = "sampleDbId", required = false) String sampleDbId,
-			@ApiParam(value = "Return only call sets generated from the Sample of this Germplasm") @Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "callSetDbId") @Valid @RequestParam(value = "callSetDbId", required = false) String callSetDbId,
+			@ApiParam(value = "callSetName") @Valid @RequestParam(value = "callSetName", required = false) String callSetName,
+			@ApiParam(value = "variantSetDbId") @Valid @RequestParam(value = "variantSetDbId", required = false) String variantSetDbId,
+			@ApiParam(value = "sampleDbId") @Valid @RequestParam(value = "sampleDbId", required = false) String sampleDbId,
+			@ApiParam(value = "germplasmDbId") @Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
+			@ApiParam(value = "externalReferenceId") @Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@ApiParam(value = "externalReferenceSource") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 	@ApiOperation(value = "Gets a list of call sets matching the search criteria.", nickname = "searchCallsetsPost", notes = "Gets a list of call sets matching the search criteria.", response = CallSetsListResponse.class, authorizations = {
@@ -99,8 +101,8 @@ public interface CallSetsApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<? extends BrAPIResponse> searchCallsetsSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 }

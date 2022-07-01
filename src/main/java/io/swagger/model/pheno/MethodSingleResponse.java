@@ -36,7 +36,7 @@ public class MethodSingleResponse implements BrAPIResponse<Method>  {
 
   
 
-  public void setAtContext(Context _atContext) {
+  public void set_atContext(Context _atContext) {
     this._atContext = _atContext;
   }
 

@@ -10,11 +10,13 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 
 import io.swagger.model.germ.CrossType;
+import io.swagger.model.germ.PlannedCrossNewRequest.PlannedCrossStatusEnum;
 
 @Entity
 @Table(name="cross_entity")
@@ -25,20 +27,37 @@ public class CrossEntity extends BrAPIPrimaryEntity {
     private CrossingProjectEntity crossingProject;
     @Column
     private String name;
+    @Column
+    private PlannedCrossStatusEnum status;
+    @OneToOne
+    private CrossEntity plannedCross;
     @OneToMany(mappedBy = "cross", cascade = CascadeType.ALL)
     private List<CrossParentEntity> parents;
-    @Column
-    private Date pollinationTimeStamp;
+    @OneToMany(mappedBy = "cross", cascade = CascadeType.ALL)
+    private List<CrossPollinationEventEntity> pollinationEvents;
     @ElementCollection
     private List<String> crossAttributes;
     @Column
     private Boolean planned;
+
     
-	public Date getPollinationTimeStamp() {
-		return pollinationTimeStamp;
+	public PlannedCrossStatusEnum getStatus() {
+		return status;
 	}
-	public void setPollinationTimeStamp(Date pollinationTimeStamp) {
-		this.pollinationTimeStamp = pollinationTimeStamp;
+	public void setStatus(PlannedCrossStatusEnum status) {
+		this.status = status;
+	}
+	public CrossEntity getPlannedCross() {
+		return plannedCross;
+	}
+	public void setPlannedCross(CrossEntity plannedCross) {
+		this.plannedCross = plannedCross;
+	}
+	public List<CrossPollinationEventEntity> getPollinationEvents() {
+		return pollinationEvents;
+	}
+	public void setPollinationEvents(List<CrossPollinationEventEntity> pollinationEvents) {
+		this.pollinationEvents = pollinationEvents;
 	}
 	public List<String> getCrossAttributes() {
 		return crossAttributes;

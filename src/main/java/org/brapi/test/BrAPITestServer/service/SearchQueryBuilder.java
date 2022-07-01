@@ -163,7 +163,7 @@ public class SearchQueryBuilder<T> {
 		return this;
 	}
 
-	public SearchQueryBuilder<T> appendPersonNamesList(List<String> list, String columnFirst, String columnMiddle, String columnLast) {
+	public SearchQueryBuilder<T> appendNamesList(List<String> list, String columnFirst, String columnMiddle, String columnLast) {
 		if (list != null && !list.isEmpty()) {
 			this.params.put("namesList", list);
 			this.query += "AND (" + entityPrefix(columnFirst) + " in :namesList ";

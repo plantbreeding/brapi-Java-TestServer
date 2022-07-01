@@ -2,12 +2,15 @@ package org.brapi.test.BrAPITestServer.model.entity.pheno;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
+import org.brapi.test.BrAPITestServer.model.entity.GeoJSONEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.ProgramEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.SeasonEntity;
@@ -29,7 +32,6 @@ public class ObservationEntity extends BrAPIPrimaryEntity {
 	private String uploadedBy;
 	@Column
 	private String value;
-
 	@ManyToOne
 	private CropEntity crop;
 	@ManyToOne
@@ -40,6 +42,16 @@ public class ObservationEntity extends BrAPIPrimaryEntity {
 	private StudyEntity study;
 	@ManyToOne
 	private ObservationUnitEntity observationUnit;
+	@OneToOne(cascade = CascadeType.ALL)
+	private GeoJSONEntity geoCoordinates;
+
+	public GeoJSONEntity getGeoCoordinates() {
+		return geoCoordinates;
+	}
+
+	public void setGeoCoordinates(GeoJSONEntity geoCoordinates) {
+		this.geoCoordinates = geoCoordinates;
+	}
 
 	public CropEntity getCrop() {
 		return crop;

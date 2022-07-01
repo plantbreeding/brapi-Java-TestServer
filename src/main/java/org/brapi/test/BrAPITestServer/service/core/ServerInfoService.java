@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import io.swagger.model.WSMIMEDataTypes;
 import io.swagger.model.core.ServerInfo;
 import io.swagger.model.core.Service;
+import io.swagger.model.core.Service.VersionsEnum;
 
 @org.springframework.stereotype.Service
 public class ServerInfoService {
@@ -18,10 +19,11 @@ public class ServerInfoService {
 
 	public static List<Service> buildServices(){
 		 return new ServiceBuilder()
+				.versions(VersionsEnum.V20, VersionsEnum.V21)
 				//CORE
 				.setBase("serviceinfo").GET().build()
 				.setBase("commoncropnames").GET().build()
-				.setBase("lists").GET().POST().addPath("{listDbId}").GET().PUT().addPath("items").POST().withSearch()
+				.setBase("lists").GET().POST().addPath("{listDbId}").GET().PUT().withSearch()
 				.setBase("locations").GET().POST().addPath("{locationDbId}").GET().PUT().withSearch()
 				.setBase("people").GET().POST().addPath("{personDbId}").GET().PUT().withSearch()
 				.setBase("programs").GET().POST().addPath("{programDbId}").GET().PUT().withSearch()
@@ -37,8 +39,7 @@ public class ServerInfoService {
 				.setBase("plannedcrosses").GET().POST().PUT().build()
 				.setBase("crossingprojects").GET().POST().addPath("{crossingProjectDbId}").GET().PUT().build()
 				.setBase("seedlots").GET().POST().addPath("transactions").GET().POST().setPath("{seedLotDbId}").GET().PUT().addPath("transactions").GET().build()
-				.setBase("germplasm").GET().POST().addPath("{germplasmDbId}").GET().PUT()
-				  .addPath("mcpd").GET().setPath("pedigree").GET().setPath("progeny").GET().withSearch()
+				.setBase("germplasm").GET().POST().addPath("{germplasmDbId}").GET().PUT().addPath("mcpd").GET().withSearch()
 				//PHENOTYPING
 				.setBase("events").GET().build()
 				.setBase("images").GET().POST().addPath("{imageDbId}").GET().PUT().addPath("imagecontent").PUT().withSearch()
@@ -55,7 +56,7 @@ public class ServerInfoService {
 				.setBase("callsets").GET().addPath("{callSetDbId}").GET().addPath("calls").GET().withSearch()
 				.setBase("maps").GET().addPath("{mapDbId}").GET().addPath("linkagegroups").GET().build()
 				.setBase("markerpositions").GET().withSearch()
-				.setBase("references").GET().addPath("{referenceDbId}").GET().addPath("bases").withSearch()
+				.setBase("references").GET().addPath("{referenceDbId}").GET().addPath("bases").GET().withSearch()
 				.setBase("referencesets").GET().addPath("{referenceSetDbId}").GET().withSearch()
 				.setBase("samples").GET().POST().addPath("{sampleDbId}").GET().PUT().withSearch()
 				.setBase("variants").GET().addPath("{variantDbId}").GET().addPath("calls").GET().withSearch()
@@ -63,6 +64,22 @@ public class ServerInfoService {
 				  .addPath("calls").GET().setPath("callsets").GET().setPath("variants").GET().withSearch()
 				.setBase("vendor").addPath("specifications").GET().setPath("plates").POST().addPath("{submissionId}").build()
 				.setBase("vendor/orders").GET().POST().addPath("{orderId}").addPath("plates").GET().setPath("results").GET().setPath("status").GET().build()
+				
+				//V2.0 only
+				.versions(VersionsEnum.V20)
+				.setBase("germplasm").addPath("{germplasmDbId}").addPath("pedigree").GET().setPath("progeny").GET().build()
+				.setBase("lists").addPath("{listDbId}").addPath("items").POST().build()
+				.setBase("samples").addPath("{sampleDbId}").PUT().build()
+				//V2.1 only
+				.versions(VersionsEnum.V21)
+				.setBase("allelematrix").GET().withSearch()
+				.setBase("calls").PUT().build()
+				.setBase("delete").addPath("images").POST().setPath("observations").POST().build()
+				.setBase("lists").addPath("{listDbId}").addPath("data").POST().build()
+				.setBase("ontologies").POST().addPath("{ontologyDbId}").GET().PUT().build()
+				.setBase("pedigree").GET().POST().PUT().withSearch()
+				.setBase("plates").GET().POST().PUT().addPath("{plateDbId}").GET().withSearch()
+				.setBase("samples").PUT().build()
 				;
 	}
 
@@ -78,14 +95,15 @@ public class ServerInfoService {
 		return filteredCalls;
 	}
 
-	public ServerInfo getServerInfo(WSMIMEDataTypes dataType) {
+	public ServerInfo getServerInfo(WSMIMEDataTypes dataType, WSMIMEDataTypes contentType) {
 		ServerInfo info = new ServerInfo().contactEmail("brapicoordinatorselby@gmail.com")
 				.documentationURL("https://brapi.org/specification").location("Ithaca, NY, USA")
 				.organizationName("BrAPI Community").organizationURL("https://brapi.org")
 				.serverName("BrAPI Community Test Server").serverDescription("BrAPI Community Test Server");
 
-		info.setCalls(filterCalls(ServerInfoService.services, dataType));
-//		info.setCalls(filterCalls(ServerInfoService.buildServices(), dataType));
+		WSMIMEDataTypes type = contentType == null? dataType: contentType;
+		info.setCalls(filterCalls(ServerInfoService.services, type));
+//		info.setCalls(filterCalls(buildServices(), type));
 		return info;
 	}
 	

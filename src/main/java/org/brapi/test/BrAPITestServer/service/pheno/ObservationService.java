@@ -1,7 +1,6 @@
 package org.brapi.test.BrAPITestServer.service.pheno;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -19,8 +18,10 @@ import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationVariableEntity;
 import org.brapi.test.BrAPITestServer.repository.pheno.ObservationRepository;
 import org.brapi.test.BrAPITestServer.service.DateUtility;
+import org.brapi.test.BrAPITestServer.service.GeoJSONUtility;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
+import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.brapi.test.BrAPITestServer.service.core.SeasonService;
 import org.brapi.test.BrAPITestServer.service.core.StudyService;
 import org.springframework.context.annotation.Lazy;
@@ -37,9 +38,8 @@ import io.swagger.model.pheno.ObservationTable;
 import io.swagger.model.pheno.ObservationTableHeaderRowEnum;
 import io.swagger.model.pheno.ObservationTableObservationVariables;
 import io.swagger.model.pheno.ObservationUnitHierarchyLevelEnum;
+import io.swagger.model.pheno.ObservationUnitLevel;
 import io.swagger.model.pheno.ObservationUnitLevelRelationship;
-import io.swagger.model.pheno.ObservationVariable;
-import io.swagger.model.pheno.ObservationVariableSearchRequest;
 
 @Service
 public class ObservationService {
@@ -64,11 +64,16 @@ public class ObservationService {
 			String observationVariableDbId, String studyDbId, String locationDbId, String trialDbId, String programDbId,
 			String seasonDbId, String observationUnitLevelName, String observationUnitLevelOrder,
 			String observationUnitLevelCode, String observationTimeStampRangeStart, String observationTimeStampRangeEnd,
-			String externalReferenceID, String externalReferenceSource, Metadata metadata) throws BrAPIServerException {
+			String observationUnitLevelRelationshipName, String observationUnitLevelRelationshipOrder,
+			String observationUnitLevelRelationshipCode, String observationUnitLevelRelationshipDbId,
+			String commonCropName, String externalReferenceId, String externalReferenceID,
+			String externalReferenceSource, Metadata metadata) throws BrAPIServerException {
 		ObservationSearchRequest request = buildObservationsSearchRequest(observationDbId, observationUnitDbId,
 				germplasmDbId, observationVariableDbId, studyDbId, locationDbId, trialDbId, programDbId, seasonDbId,
 				observationUnitLevelName, observationUnitLevelOrder, observationUnitLevelCode,
-				observationTimeStampRangeStart, observationTimeStampRangeEnd, externalReferenceID,
+				observationTimeStampRangeStart, observationTimeStampRangeEnd, observationUnitLevelRelationshipName,
+				observationUnitLevelRelationshipOrder, observationUnitLevelRelationshipCode,
+				observationUnitLevelRelationshipDbId, commonCropName, externalReferenceId, externalReferenceID,
 				externalReferenceSource);
 
 		return findObservations(request, metadata);
@@ -78,9 +83,13 @@ public class ObservationService {
 			String germplasmDbId, String observationVariableDbId, String studyDbId, String locationDbId,
 			String trialDbId, String programDbId, String seasonDbId, String observationUnitLevelName,
 			String observationUnitLevelOrder, String observationUnitLevelCode, String observationTimeStampRangeStart,
-			String observationTimeStampRangeEnd, String externalReferenceID, String externalReferenceSource)
-			throws BrAPIServerException {
+			String observationTimeStampRangeEnd, String observationUnitLevelRelationshipName,
+			String observationUnitLevelRelationshipOrder, String observationUnitLevelRelationshipCode,
+			String observationUnitLevelRelationshipDbId, String commonCropName, String externalReferenceId,
+			String externalReferenceID, String externalReferenceSource) throws BrAPIServerException {
 		ObservationSearchRequest request = new ObservationSearchRequest();
+		if (commonCropName != null)
+			request.addCommonCropNamesItem(commonCropName);
 		if (germplasmDbId != null)
 			request.addGermplasmDbIdsItem(germplasmDbId);
 		if (studyDbId != null)
@@ -100,7 +109,7 @@ public class ObservationService {
 		if (observationVariableDbId != null)
 			request.addObservationVariableDbIdsItem(observationVariableDbId);
 		if (observationUnitLevelName != null || observationUnitLevelOrder != null || observationUnitLevelCode != null) {
-			ObservationUnitLevelRelationship level = new ObservationUnitLevelRelationship();
+			ObservationUnitLevel level = new ObservationUnitLevel();
 			if (observationUnitLevelName != null)
 				level.setLevelName(ObservationUnitHierarchyLevelEnum.fromValue(observationUnitLevelName));
 			if (observationUnitLevelOrder != null)
@@ -109,26 +118,47 @@ public class ObservationService {
 				level.setLevelCode(observationUnitLevelCode);
 			request.addObservationLevelsItem(level);
 		}
+		if (observationUnitLevelRelationshipName != null || observationUnitLevelRelationshipOrder != null
+				|| observationUnitLevelRelationshipCode != null) {
+			ObservationUnitLevelRelationship level = new ObservationUnitLevelRelationship();
+			if (observationUnitLevelRelationshipName != null)
+				level.setLevelName(ObservationUnitHierarchyLevelEnum.fromValue(observationUnitLevelRelationshipName));
+			if (observationUnitLevelRelationshipOrder != null)
+				level.setLevelOrder(Integer.decode(observationUnitLevelRelationshipOrder));
+			if (observationUnitLevelRelationshipCode != null)
+				level.setLevelCode(observationUnitLevelRelationshipCode);
+			if (observationUnitLevelRelationshipDbId != null)
+				level.setObservationUnitDbId(observationUnitLevelRelationshipDbId);
+			request.addObservationLevelRelationshipsItem(level);
+		}
 		if (observationTimeStampRangeStart != null)
 			request.setObservationTimeStampRangeStart(DateUtility.toOffsetDateTime(observationTimeStampRangeStart));
 		if (observationTimeStampRangeEnd != null)
 			request.setObservationTimeStampRangeEnd(DateUtility.toOffsetDateTime(observationTimeStampRangeEnd));
-		if (externalReferenceID != null)
-			request.addExternalReferenceIDsItem(externalReferenceID);
-		if (externalReferenceSource != null)
-			request.addExternalReferenceSourcesItem(externalReferenceSource);
+
+		request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
 
 		return request;
 	}
 
 	public ObservationTable findObservationsTable(String observationUnitDbId, String germplasmDbId,
 			String observationVariableDbId, String studyDbId, String locationDbId, String trialDbId, String programDbId,
-			String seasonDbId, String observationTimeStampRangeStart, String observationTimeStampRangeEnd)
+			String seasonDbId, String observationLevel, String observationUnitLevelName,
+			String observationUnitLevelOrder, String observationUnitLevelCode,
+			String observationUnitLevelRelationshipName, String observationUnitLevelRelationshipOrder,
+			String observationUnitLevelRelationshipCode, String observationUnitLevelRelationshipDbId,
+			String observationTimeStampRangeStart, String observationTimeStampRangeEnd, String searchResultsDbId)
 			throws BrAPIServerException {
 		ObservationSearchRequest obsRequest = buildObservationsSearchRequest(null, observationUnitDbId, germplasmDbId,
 				observationVariableDbId, studyDbId, locationDbId, trialDbId, programDbId, seasonDbId,
-				ObservationUnitHierarchyLevelEnum.PLOT.name(), null, null, observationTimeStampRangeStart,
-				observationTimeStampRangeEnd, null, null);
+				observationUnitLevelName, observationUnitLevelOrder, observationUnitLevelCode,
+				observationTimeStampRangeStart, observationTimeStampRangeEnd, observationUnitLevelRelationshipName,
+				observationUnitLevelRelationshipOrder, observationUnitLevelRelationshipCode,
+				observationUnitLevelRelationshipDbId, null, null, null, null);
+		return findObservationsTable(obsRequest);
+	}
+
+	public ObservationTable findObservationsTable(ObservationSearchRequest obsRequest) {
 		Page<ObservationEntity> observations = findObservationEntities(obsRequest, null);
 
 		List<ObservationVariableEntity> variables = observations.stream().map(obs -> obs.getObservationVariable())
@@ -193,8 +223,9 @@ public class ObservationService {
 						"observationTimeStamp")
 				.appendList(request.getObservationVariableDbIds(), "observationVariable.id")
 				.appendList(request.getObservationVariableNames(), "observationVariable.name")
+				.appendList(request.getCommonCropNames(), "crop.crop_name")
 				.appendList(request.getProgramDbIds(), "program.id")
-				.appendList(request.getProgramNames(), "programName").appendList(request.getSeasonDbIds(), "season.id")
+				.appendList(request.getProgramNames(), "program.name").appendList(request.getSeasonDbIds(), "season.id")
 				.appendList(request.getStudyDbIds(), "study.id").appendList(request.getStudyNames(), "study.studyName")
 				.appendList(request.getTrialDbIds(), "trial.id").appendList(request.getTrialNames(), "trial.trialName");
 
@@ -247,6 +278,18 @@ public class ObservationService {
 		return savedObservations;
 	}
 
+	public List<String> deleteObservations(ObservationSearchRequest body, Metadata metadata) {
+		List<String> deletedObservationDbIds = new ArrayList<>();
+		
+		if (body.getTotalParameterCount() > 0) {
+			List<ObservationEntity> deletedObservations = findObservationEntities(body, metadata).getContent();
+			observationRepository.deleteAll(deletedObservations);
+			deletedObservationDbIds = deletedObservations.stream().map(obs -> obs.getId()).collect(Collectors.toList());
+		}
+
+		return deletedObservationDbIds;
+	}
+
 	public Observation updateObservation(String observationDbId, @Valid ObservationNewRequest request)
 			throws BrAPIServerException {
 		ObservationEntity savedEntity;
@@ -264,73 +307,73 @@ public class ObservationService {
 	}
 
 	public Observation convertFromEntity(ObservationEntity entity) {
-		Observation unit = new Observation();
+		Observation observation = new Observation();
 		if (entity != null) {
-			unit = new Observation();
-			unit.setAdditionalInfo(entity.getAdditionalInfoMap());
-			unit.setCollector(entity.getCollector());
-			unit.setExternalReferences(entity.getExternalReferencesMap());
-			unit.setObservationDbId(entity.getId());
-			unit.setObservationTimeStamp(DateUtility.toOffsetDateTime(entity.getObservationTimeStamp()));
+			UpdateUtility.convertFromEntity(entity, observation);
+
+			observation.setCollector(entity.getCollector());
+			observation.setGeoCoordinates(GeoJSONUtility.convertFromEntity(entity.getGeoCoordinates()));
+			observation.setObservationDbId(entity.getId());
+			observation.setObservationTimeStamp(DateUtility.toOffsetDateTime(entity.getObservationTimeStamp()));
 
 			if (entity.getObservationVariable() != null) {
-				unit.setObservationVariableDbId(entity.getObservationVariable().getId());
-				unit.setObservationVariableName(entity.getObservationVariable().getName());
+				observation.setObservationVariableDbId(entity.getObservationVariable().getId());
+				observation.setObservationVariableName(entity.getObservationVariable().getName());
 			}
 			if (entity.getSeason() != null) {
-				unit.setSeason(seasonService.convertFromEntity(entity.getSeason()));
+				observation.setSeason(seasonService.convertFromEntity(entity.getSeason()));
 			}
-			unit.setUploadedBy(entity.getUploadedBy());
-			unit.setValue(entity.getValue());
+			observation.setUploadedBy(entity.getUploadedBy());
+			observation.setValue(entity.getValue());
 
 			if (entity.getObservationUnit() != null) {
-				unit.setObservationUnitDbId(entity.getObservationUnit().getId());
-				unit.setObservationUnitName(entity.getObservationUnit().getObservationUnitName());
+				observation.setObservationUnitDbId(entity.getObservationUnit().getId());
+				observation.setObservationUnitName(entity.getObservationUnit().getObservationUnitName());
 				if (entity.getObservationUnit().getGermplasm() != null) {
-					unit.setGermplasmDbId(entity.getObservationUnit().getGermplasm().getId());
-					unit.setGermplasmName(entity.getObservationUnit().getGermplasm().getGermplasmName());
+					observation.setGermplasmDbId(entity.getObservationUnit().getGermplasm().getId());
+					observation.setGermplasmName(entity.getObservationUnit().getGermplasm().getGermplasmName());
 				}
 				if (entity.getObservationUnit().getStudy() != null) {
-					unit.setStudyDbId(entity.getObservationUnit().getStudy().getId());
+					observation.setStudyDbId(entity.getObservationUnit().getStudy().getId());
 				}
 			} else if (entity.getStudy() != null) {
-				unit.setStudyDbId(entity.getStudy().getId());
+				observation.setStudyDbId(entity.getStudy().getId());
 			}
 
 		}
 
-		return unit;
+		return observation;
 	}
 
-	private void updateEntity(ObservationEntity entity, ObservationNewRequest body) throws BrAPIServerException {
-		if (body.getAdditionalInfo() != null)
-			entity.setAdditionalInfo(body.getAdditionalInfo());
-		if (body.getCollector() != null)
-			entity.setCollector(body.getCollector());
-		if (body.getExternalReferences() != null)
-			entity.setExternalReferences(body.getExternalReferences());
-		if (body.getObservationTimeStamp() != null)
-			entity.setObservationTimeStamp(DateUtility.toDate(body.getObservationTimeStamp()));
-		if (body.getObservationVariableDbId() != null) {
+	private void updateEntity(ObservationEntity entity, ObservationNewRequest observation) throws BrAPIServerException {
+		UpdateUtility.updateEntity(observation, entity);
+
+		if (observation.getCollector() != null)
+			entity.setCollector(observation.getCollector());
+		if (observation.getGeoCoordinates() != null)
+			entity.setGeoCoordinates(GeoJSONUtility.convertToEntity(observation.getGeoCoordinates()));
+		if (observation.getObservationTimeStamp() != null)
+			entity.setObservationTimeStamp(DateUtility.toDate(observation.getObservationTimeStamp()));
+		if (observation.getObservationVariableDbId() != null) {
 			ObservationVariableEntity observationVariable = observationVariableService
-					.getObservationVariableEntity(body.getObservationVariableDbId());
+					.getObservationVariableEntity(observation.getObservationVariableDbId());
 			entity.setObservationVariable(observationVariable);
 		}
-		if (body.getSeason() != null && body.getSeason().getSeasonDbId() != null) {
-			SeasonEntity season = seasonService.getSeasonEntity(body.getSeason().getSeasonDbId());
+		if (observation.getSeason() != null && observation.getSeason().getSeasonDbId() != null) {
+			SeasonEntity season = seasonService.getSeasonEntity(observation.getSeason().getSeasonDbId());
 			entity.setSeason(season);
 		}
-		if (body.getUploadedBy() != null)
-			entity.setUploadedBy(body.getUploadedBy());
-		if (body.getValue() != null)
-			entity.setValue(body.getValue());
+		if (observation.getUploadedBy() != null)
+			entity.setUploadedBy(observation.getUploadedBy());
+		if (observation.getValue() != null)
+			entity.setValue(observation.getValue());
 
-		if (body.getObservationUnitDbId() != null) {
+		if (observation.getObservationUnitDbId() != null) {
 			ObservationUnitEntity observationUnit = observationUnitService
-					.getObservationUnitEntity(body.getObservationUnitDbId());
+					.getObservationUnitEntity(observation.getObservationUnitDbId());
 			entity.setObservationUnit(observationUnit);
-		} else if (body.getStudyDbId() != null) {
-			StudyEntity study = studyService.getStudyEntity(body.getStudyDbId());
+		} else if (observation.getStudyDbId() != null) {
+			StudyEntity study = studyService.getStudyEntity(observation.getStudyDbId());
 			entity.setStudy(study);
 		}
 	}
@@ -341,91 +384,74 @@ public class ObservationService {
 		for (ObservationEntity obs : observations) {
 			List<String> row = new ArrayList<>();
 
-			if(obs.getObservationUnit() != null) {
+			if (obs.getObservationUnit() != null) {
 				ObservationUnitEntity obsUnit = obs.getObservationUnit();
 				if (obsUnit.getStudy() != null) {
 					StudyEntity study = obsUnit.getStudy();
 					if (study.getSeasons() != null && !study.getSeasons().isEmpty()) {
-						row.add(printIfNotNull(study.getSeasons().get(0).getYear())); //YEAR
-					}else {
-						row.add(""); //YEAR
+						row.add(printIfNotNull(study.getSeasons().get(0).getYear())); // YEAR
+					} else {
+						row.add(""); // YEAR
 					}
-	
-					row.add(printIfNotNull(study.getId())); //STUDYDBID
-					row.add(printIfNotNull(study.getStudyName())); //STUDYNAME
-					
-					if (study.getLocation() != null) {
-						row.add(printIfNotNull(study.getLocation().getId())); //LOCATIONDBID
-						row.add(printIfNotNull(study.getLocation().getLocationName())); //LOCATIONNAME
-					}else {
-						row.add(""); //LOCATIONDBID
-						row.add(""); //LOCATIONNAME
-					}
-					
+
+					row.add(printIfNotNull(study.getId())); // STUDYDBID
+					row.add(printIfNotNull(study.getStudyName())); // STUDYNAME
+
+//					if (study.getLocation() != null) {
+//						row.add(printIfNotNull(study.getLocation().getId())); // LOCATIONDBID
+//						row.add(printIfNotNull(study.getLocation().getLocationName())); // LOCATIONNAME
+//					} else {
+//						row.add(""); // LOCATIONDBID
+//						row.add(""); // LOCATIONNAME
+//					}
+
 				} else {
-					row.add(""); //YEAR
-					row.add(""); //STUDYDBID
-					row.add(""); //STUDYNAME
-					row.add(""); //LOCATIONDBID
-					row.add(""); //LOCATIONNAME
+					row.add(""); // YEAR
+					row.add(""); // STUDYDBID
+					row.add(""); // STUDYNAME
+					row.add(""); // LOCATIONDBID
+					row.add(""); // LOCATIONNAME
 				}
 
-				if(obsUnit.getGermplasm() != null) {
-					row.add(printIfNotNull(obsUnit.getGermplasm().getId())); //GERMPLASMDBID
-					row.add(printIfNotNull(obsUnit.getGermplasm().getGermplasmName())); //GERMPLASMNAME
-				}else {
-					row.add(""); //GERMPLASMDBID
-					row.add(""); //GERMPLASMNAME
+				if (obsUnit.getGermplasm() != null) {
+					row.add(printIfNotNull(obsUnit.getGermplasm().getId())); // GERMPLASMDBID
+					row.add(printIfNotNull(obsUnit.getGermplasm().getGermplasmName())); // GERMPLASMNAME
+				} else {
+					row.add(""); // GERMPLASMDBID
+					row.add(""); // GERMPLASMNAME
 				}
 
-				row.add(printIfNotNull(obsUnit.getId())); //OBSERVATIONUNITDBID
-				row.add(printIfNotNull(obsUnit.getObservationUnitName())); //OBSERVATIONUNITNAME
-				
-				if(obsUnit.getPosition() != null) {
-					row.add(printIfNotNull(obsUnit.getPosition().getPositionCoordinateX())); //POSITIONCOORDINATEX
-					row.add(printIfNotNull(obsUnit.getPosition().getPositionCoordinateY())); //POSITIONCOORDINATEY
-					row.add(printIfNotNull(obsUnit.getPosition().getFieldCode())); //FIELD
-					row.add(printIfNotNull(obsUnit.getPosition().getBlockCode())); //BLOCK
-					row.add(printIfNotNull(obsUnit.getPosition().getEntryCode())); //ENTRY
-					row.add(printIfNotNull(obsUnit.getPosition().getRepCode())); //REP
-					row.add(printIfNotNull(obsUnit.getPosition().getPlotCode())); //PLOT
-					row.add(printIfNotNull(obsUnit.getPosition().getPlantCode())); //PLANT
-				}else {
-					row.add(""); //POSITIONCOORDINATEX
-					row.add(""); //POSITIONCOORDINATEY
-					row.add(""); //FIELD
-					row.add(""); //BLOCK
-					row.add(""); //ENTRY
-					row.add(""); //REP
-					row.add(""); //PLOT
-					row.add(""); //PLANT
+				row.add(printIfNotNull(obsUnit.getId())); // OBSERVATIONUNITDBID
+				row.add(printIfNotNull(obsUnit.getObservationUnitName())); // OBSERVATIONUNITNAME
+
+				if (obsUnit.getPosition() != null) {
+					row.add(printIfNotNull(obsUnit.getPosition().getPositionCoordinateX())); // POSITIONCOORDINATEX
+					row.add(printIfNotNull(obsUnit.getPosition().getPositionCoordinateY())); // POSITIONCOORDINATEY
+					row.add(printIfNotNull(obsUnit.getPosition().getFieldCode())); // FIELD
+					row.add(printIfNotNull(obsUnit.getPosition().getBlockCode())); // BLOCK
+					row.add(printIfNotNull(obsUnit.getPosition().getEntryCode())); // ENTRY
+					row.add(printIfNotNull(obsUnit.getPosition().getRepCode())); // REP
+					row.add(printIfNotNull(obsUnit.getPosition().getPlotCode())); // PLOT
+					row.add(printIfNotNull(obsUnit.getPosition().getPlantCode())); // PLANT
+				} else {
+					row.add(""); // POSITIONCOORDINATEX
+					row.add(""); // POSITIONCOORDINATEY
+					row.add(""); // FIELD
+					row.add(""); // BLOCK
+					row.add(""); // ENTRY
+					row.add(""); // REP
+					row.add(""); // PLOT
+					row.add(""); // PLANT
 				}
-					
-			}else {
-				row.add(""); //YEAR
-				row.add(""); //STUDYDBID
-				row.add(""); //STUDYNAME
-				row.add(""); //LOCATIONDBID
-				row.add(""); //LOCATIONNAME
-				row.add(""); //GERMPLASMDBID
-				row.add(""); //GERMPLASMNAME
-				row.add(""); //OBSERVATIONUNITDBID
-				row.add(""); //OBSERVATIONUNITNAME
-				row.add(""); //POSITIONCOORDINATEX
-				row.add(""); //POSITIONCOORDINATEY
-				row.add(""); //FIELD
-				row.add(""); //BLOCK
-				row.add(""); //ENTRY
-				row.add(""); //REP
-				row.add(""); //PLOT
-				row.add(""); //PLANT
+
+			} else {
+				continue;
 			}
-			
-			
-			row.add(printIfNotNull(obs.getObservationTimeStamp())); //OBSERVATIONTIMESTAMP
+
+			row.add(printIfNotNull(obs.getObservationTimeStamp())); // OBSERVATIONTIMESTAMP
 
 			for (ObservationVariableEntity var : variables) {
-				if (obs.getObservationVariable().getId() == var.getId()) {
+				if (obs.getObservationVariable() != null && obs.getObservationVariable().getId() == var.getId()) {
 					row.add(obs.getValue());
 				} else {
 					row.add("");
@@ -448,8 +474,8 @@ public class ObservationService {
 		headers.add(ObservationTableHeaderRowEnum.YEAR);
 		headers.add(ObservationTableHeaderRowEnum.STUDYDBID);
 		headers.add(ObservationTableHeaderRowEnum.STUDYNAME);
-		headers.add(ObservationTableHeaderRowEnum.LOCATIONDBID);
-		headers.add(ObservationTableHeaderRowEnum.LOCATIONNAME);
+//		headers.add(ObservationTableHeaderRowEnum.LOCATIONDBID);
+//		headers.add(ObservationTableHeaderRowEnum.LOCATIONNAME);
 		headers.add(ObservationTableHeaderRowEnum.GERMPLASMDBID);
 		headers.add(ObservationTableHeaderRowEnum.GERMPLASMNAME);
 		headers.add(ObservationTableHeaderRowEnum.OBSERVATIONUNITDBID);

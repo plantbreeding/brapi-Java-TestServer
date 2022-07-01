@@ -2,10 +2,6 @@ package org.brapi.test.BrAPITestServer.controller.pheno;
 
 import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
-import io.swagger.model.germ.Germplasm;
-import io.swagger.model.germ.GermplasmListResponse;
-import io.swagger.model.germ.GermplasmListResponseResult;
-import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.model.pheno.ObservationVariable;
 import io.swagger.model.pheno.ObservationVariableListResponse;
 import io.swagger.model.pheno.ObservationVariableListResponseResult;
@@ -23,7 +19,6 @@ import org.brapi.test.BrAPITestServer.service.pheno.ObservationVariableService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -46,7 +41,8 @@ public class VariablesApiController extends BrAPIController implements Variables
 	private final HttpServletRequest request;
 
 	@Autowired
-	public VariablesApiController(ObservationVariableService observationVariableService, SearchService searchService, HttpServletRequest request) {
+	public VariablesApiController(ObservationVariableService observationVariableService, SearchService searchService,
+			HttpServletRequest request) {
 		this.observationVariableService = observationVariableService;
 		this.searchService = searchService;
 		this.request = request;
@@ -56,19 +52,39 @@ public class VariablesApiController extends BrAPIController implements Variables
 	@Override
 	public ResponseEntity<ObservationVariableListResponse> variablesGet(
 			@Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
+			@Valid @RequestParam(value = "observationVariableName", required = false) String observationVariableName,
+			@Valid @RequestParam(value = "observationVariablePUI", required = false) String observationVariablePUI,
+			@Valid @RequestParam(value = "methodDbId", required = false) String methodDbId,
+			@Valid @RequestParam(value = "methodName", required = false) String methodName,
+			@Valid @RequestParam(value = "methodPUI", required = false) String methodPUI,
+			@Valid @RequestParam(value = "scaleDbId", required = false) String scaleDbId,
+			@Valid @RequestParam(value = "scaleName", required = false) String scaleName,
+			@Valid @RequestParam(value = "scalePUI", required = false) String scalePUI,
+			@Valid @RequestParam(value = "traitDbId", required = false) String traitDbId,
+			@Valid @RequestParam(value = "traitName", required = false) String traitName,
+			@Valid @RequestParam(value = "traitPUI", required = false) String traitPUI,
 			@Valid @RequestParam(value = "traitClass", required = false) String traitClass,
+			@Valid @RequestParam(value = "ontologyDbId", required = false) String ontologyDbId,
+			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
 			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<ObservationVariable> data = observationVariableService.findObservationVariables(observationVariableDbId,
-				traitClass, studyDbId, externalReferenceID, externalReferenceSource, metadata);
+				observationVariableName, observationVariablePUI, methodDbId, methodName, methodPUI, scaleDbId,
+				scaleName, scalePUI, traitDbId, traitName, traitPUI, traitClass, ontologyDbId, commonCropName,
+				programDbId, trialDbId, studyDbId, externalReferenceId, externalReferenceID, externalReferenceSource,
+				metadata);
 		return responseOK(new ObservationVariableListResponse(), new ObservationVariableListResponseResult(), data,
 				metadata);
 	}
@@ -152,7 +168,7 @@ public class VariablesApiController extends BrAPIController implements Variables
 			List<ObservationVariable> data = observationVariableService.findObservationVariables(body, metadata);
 			return responseOK(new ObservationVariableListResponse(), new ObservationVariableListResponseResult(), data,
 					metadata);
-		}else {
+		} else {
 			return responseAccepted(searchResultsDbId);
 		}
 	}

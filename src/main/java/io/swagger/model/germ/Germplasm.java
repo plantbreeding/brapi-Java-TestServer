@@ -2,16 +2,6 @@ package io.swagger.model.germ;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.germ.GermplasmNewRequest;
-import org.springframework.validation.annotation.Validated;
-
-
-/**
- * Germplasm
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:33:36.513Z[GMT]")
 public class Germplasm extends GermplasmNewRequest {
 	@JsonProperty("germplasmDbId")
 	private String germplasmDbId = null;
@@ -20,19 +10,6 @@ public class Germplasm extends GermplasmNewRequest {
 		this.germplasmDbId = germplasmDbId;
 		return this;
 	}
-
-	/**
-	 * The ID which uniquely identifies a germplasm within the given database server
-	 * MIAPPE V1.1 (DM-41) Biological material ID - Code used to identify the
-	 * biological material in the data file. Should be unique within the
-	 * Investigation. Can correspond to experimental plant ID, seed lot ID, etc.
-	 * This material identification is different from a BiosampleID which
-	 * corresponds to Observation Unit or Samples sections below.
-	 * 
-	 * @return germplasmDbId
-	 **/
-	@ApiModelProperty(example = "d4076594", required = true, value = "The ID which uniquely identifies a germplasm within the given database server  MIAPPE V1.1 (DM-41) Biological material ID - Code used to identify the biological material in the data file. Should be unique within the Investigation. Can correspond to experimental plant ID, seed lot ID, etc. This material identification is different from a BiosampleID which corresponds to Observation Unit or Samples sections below.")
-	
 
 	public String getGermplasmDbId() {
 		return germplasmDbId;
@@ -69,10 +46,6 @@ public class Germplasm extends GermplasmNewRequest {
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";

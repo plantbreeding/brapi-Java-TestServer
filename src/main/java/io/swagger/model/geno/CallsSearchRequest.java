@@ -1,45 +1,35 @@
 package io.swagger.model.geno;
 
 import java.util.Objects;
+
+import org.brapi.test.BrAPITestServer.service.geno.CallService;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.SearchRequest;
-import io.swagger.model.SearchRequestParametersTokenPaging;
-
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.validation.annotation.Validated;
-import jakarta.validation.Valid;
 
-/**
- * CallsSearchRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
-public class CallsSearchRequest extends SearchRequestParametersTokenPaging implements SearchRequest {
+public class CallsSearchRequest extends SearchRequest {
 	@JsonProperty("callSetDbIds")
-	@Valid
 	private List<String> callSetDbIds = null;
 
 	@JsonProperty("expandHomozygotes")
-	private Boolean expandHomozygotes = null;
+	private Boolean expandHomozygotes = CallService.EXPAND_HOMOZYFOTES_DEFAULT;
 
 	@JsonProperty("sepPhased")
-	private String sepPhased = null;
+	private String sepPhased = CallService.SEP_PHASED_DEFAULT;
 
 	@JsonProperty("sepUnphased")
-	private String sepUnphased = null;
+	private String sepUnphased = CallService.SEP_UNPHASED_DEFAULT;
 
 	@JsonProperty("unknownString")
-	private String unknownString = null;
+	private String unknownString = CallService.UNKNOWN_STRING_DEFAULT;
 
 	@JsonProperty("variantDbIds")
-	@Valid
 	private List<String> variantDbIds = null;
 
 	@JsonProperty("variantSetDbIds")
-	@Valid
 	private List<String> variantSetDbIds = null;
 
 	public CallsSearchRequest callSetDbIds(List<String> callSetDbIds) {
@@ -55,13 +45,6 @@ public class CallsSearchRequest extends SearchRequestParametersTokenPaging imple
 		return this;
 	}
 
-	/**
-	 * The CallSet to search.
-	 * 
-	 * @return callSetDbIds
-	 **/
-	@ApiModelProperty(example = "[\"a03202ec\",\"274e4f63\"]", value = "The CallSet to search.")
-
 	public List<String> getCallSetDbIds() {
 		return callSetDbIds;
 	}
@@ -74,14 +57,6 @@ public class CallsSearchRequest extends SearchRequestParametersTokenPaging imple
 		this.expandHomozygotes = expandHomozygotes;
 		return this;
 	}
-
-	/**
-	 * Should homozygotes be expanded (true) or collapsed into a single occurence
-	 * (false)
-	 * 
-	 * @return expandHomozygotes
-	 **/
-	@ApiModelProperty(example = "true", value = "Should homozygotes be expanded (true) or collapsed into a single occurence (false)")
 
 	public Boolean isExpandHomozygotes() {
 		return expandHomozygotes;
@@ -96,13 +71,6 @@ public class CallsSearchRequest extends SearchRequestParametersTokenPaging imple
 		return this;
 	}
 
-	/**
-	 * The string used as a separator for phased allele calls.
-	 * 
-	 * @return sepPhased
-	 **/
-	@ApiModelProperty(example = "~", value = "The string used as a separator for phased allele calls.")
-
 	public String getSepPhased() {
 		return sepPhased;
 	}
@@ -116,13 +84,6 @@ public class CallsSearchRequest extends SearchRequestParametersTokenPaging imple
 		return this;
 	}
 
-	/**
-	 * The string used as a separator for unphased allele calls.
-	 * 
-	 * @return sepUnphased
-	 **/
-	@ApiModelProperty(example = "|", value = "The string used as a separator for unphased allele calls.")
-
 	public String getSepUnphased() {
 		return sepUnphased;
 	}
@@ -135,13 +96,6 @@ public class CallsSearchRequest extends SearchRequestParametersTokenPaging imple
 		this.unknownString = unknownString;
 		return this;
 	}
-
-	/**
-	 * The string used as a representation for missing data.
-	 * 
-	 * @return unknownString
-	 **/
-	@ApiModelProperty(example = "-", value = "The string used as a representation for missing data.")
 
 	public String getUnknownString() {
 		return unknownString;
@@ -164,13 +118,6 @@ public class CallsSearchRequest extends SearchRequestParametersTokenPaging imple
 		return this;
 	}
 
-	/**
-	 * The Variant to search.
-	 * 
-	 * @return variantDbIds
-	 **/
-	@ApiModelProperty(example = "[\"bba0b258\",\"ff97d4f0\"]", value = "The Variant to search.")
-
 	public List<String> getVariantDbIds() {
 		return variantDbIds;
 	}
@@ -191,13 +138,6 @@ public class CallsSearchRequest extends SearchRequestParametersTokenPaging imple
 		this.variantSetDbIds.add(variantSetDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * The VariantSet to search.
-	 * 
-	 * @return variantSetDbIds
-	 **/
-	@ApiModelProperty(example = "[\"407c0508\",\"49e24dfc\"]", value = "The VariantSet to search.")
 
 	public List<String> getVariantSetDbIds() {
 		return variantSetDbIds;
@@ -247,10 +187,6 @@ public class CallsSearchRequest extends SearchRequestParametersTokenPaging imple
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";

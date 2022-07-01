@@ -11,19 +11,30 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.ProgramEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.TrialEntity;
 import org.brapi.test.BrAPITestServer.model.entity.geno.vendor.VendorPlateSubmissionEntity;
 
 import io.swagger.model.geno.PlateFormat;
+import io.swagger.model.geno.SampleType;
 
 @Entity
 @Table(name="plate")
-public class PlateEntity extends BrAPIBaseEntity{
+public class PlateEntity extends BrAPIPrimaryEntity{
 	@Column
     private String clientPlateDbId;
 	@Column
     private String clientPlateBarcode;
 	@Column
     private String plateName;
+	@Column
+    private String plateBarcode;
+	@Column
+    private PlateFormat plateFormat ;
+	@Column
+    private SampleType sampleType;
 	@Column
     private PlateFormat sampleSubmissionFormat;
 	@Column
@@ -32,7 +43,49 @@ public class PlateEntity extends BrAPIBaseEntity{
     private List<SampleEntity> samples;
 	@ManyToOne
 	private VendorPlateSubmissionEntity submission;	
+	@ManyToOne
+	private ProgramEntity program;		
+	@ManyToOne
+	private TrialEntity trial;		
+	@ManyToOne
+	private StudyEntity study;	
 	
+	public String getPlateBarcode() {
+		return plateBarcode;
+	}
+	public void setPlateBarcode(String plateBarcode) {
+		this.plateBarcode = plateBarcode;
+	}
+	public PlateFormat getPlateFormat() {
+		return plateFormat;
+	}
+	public void setPlateFormat(PlateFormat plateFormat) {
+		this.plateFormat = plateFormat;
+	}
+	public SampleType getSampleType() {
+		return sampleType;
+	}
+	public void setSampleType(SampleType sampleType) {
+		this.sampleType = sampleType;
+	}
+	public ProgramEntity getProgram() {
+		return program;
+	}
+	public void setProgram(ProgramEntity program) {
+		this.program = program;
+	}
+	public TrialEntity getTrial() {
+		return trial;
+	}
+	public void setTrial(TrialEntity trial) {
+		this.trial = trial;
+	}
+	public StudyEntity getStudy() {
+		return study;
+	}
+	public void setStudy(StudyEntity study) {
+		this.study = study;
+	}
 	public String getPlateName() {
 		return plateName;
 	}

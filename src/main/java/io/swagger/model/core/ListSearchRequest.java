@@ -2,30 +2,12 @@ package io.swagger.model.core;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.SearchRequest;
-import io.swagger.model.SearchRequestParametersPaging;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.time.OffsetDateTime;
-import org.springframework.validation.annotation.Validated;
-import jakarta.validation.Valid;
 
-/**
- * ListSearchRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
-public class ListSearchRequest extends SearchRequestParametersPaging implements SearchRequest {
-	@JsonProperty("externalReferenceIDs")
-	@Valid
-	private List<String> externalReferenceIDs = null;
-
-	@JsonProperty("externalReferenceSources")
-	@Valid
-	private List<String> externalReferenceSources = null;
-
+public class ListSearchRequest extends SearchRequest {
 	@JsonProperty("dateCreatedRangeEnd")
 	private OffsetDateTime dateCreatedRangeEnd = null;
 
@@ -39,97 +21,34 @@ public class ListSearchRequest extends SearchRequestParametersPaging implements 
 	private OffsetDateTime dateModifiedRangeStart = null;
 
 	@JsonProperty("listDbIds")
-	@Valid
 	private List<String> listDbIds = null;
 
 	@JsonProperty("listNames")
-	@Valid
 	private List<String> listNames = null;
 
 	@JsonProperty("listOwnerNames")
-	@Valid
 	private List<String> listOwnerNames = null;
 
 	@JsonProperty("listOwnerPersonDbIds")
-	@Valid
 	private List<String> listOwnerPersonDbIds = null;
 
 	@JsonProperty("listSources")
-	@Valid
 	private List<String> listSources = null;
+
+	@JsonProperty("programDbIds")
+	private List<String> programDbIds = null;
+
+	@JsonProperty("commonCropNames")
+	private List<String> commonCropNames = null;
 
 	@JsonProperty("listType")
 	private ListTypes listType = null;
-
-	public ListSearchRequest externalReferenceIDs(List<String> externalReferenceIDs) {
-		this.externalReferenceIDs = externalReferenceIDs;
-		return this;
-	}
-
-	public ListSearchRequest addExternalReferenceIDsItem(String externalReferenceIDsItem) {
-		if (this.externalReferenceIDs == null) {
-			this.externalReferenceIDs = new ArrayList<String>();
-		}
-		this.externalReferenceIDs.add(externalReferenceIDsItem);
-		return this;
-	}
-
-	/**
-	 * List of external references for the trait to search for
-	 * 
-	 * @return externalReferenceIDs
-	 **/
-	@ApiModelProperty(example = "[\"http://purl.obolibrary.org/obo/ro.owl\",\"14a19841\"]", value = "List of external references for the trait to search for")
-
-	public List<String> getExternalReferenceIDs() {
-		return externalReferenceIDs;
-	}
-
-	public void setExternalReferenceIDs(List<String> externalReferenceIDs) {
-		this.externalReferenceIDs = externalReferenceIDs;
-	}
-
-	public ListSearchRequest externalReferenceSources(List<String> externalReferenceSources) {
-		this.externalReferenceSources = externalReferenceSources;
-		return this;
-	}
-
-	public ListSearchRequest addExternalReferenceSourcesItem(String externalReferenceSourcesItem) {
-		if (this.externalReferenceSources == null) {
-			this.externalReferenceSources = new ArrayList<String>();
-		}
-		this.externalReferenceSources.add(externalReferenceSourcesItem);
-		return this;
-	}
-
-	/**
-	 * List of external references sources for the trait to search for
-	 * 
-	 * @return externalReferenceSources
-	 **/
-	@ApiModelProperty(example = "[\"OBO Library\",\"Field App Name\"]", value = "List of external references sources for the trait to search for")
-
-	public List<String> getExternalReferenceSources() {
-		return externalReferenceSources;
-	}
-
-	public void setExternalReferenceSources(List<String> externalReferenceSources) {
-		this.externalReferenceSources = externalReferenceSources;
-	}
 
 	public ListSearchRequest dateCreatedRangeEnd(OffsetDateTime dateCreatedRangeEnd) {
 		this.dateCreatedRangeEnd = dateCreatedRangeEnd;
 		return this;
 	}
 
-	/**
-	 * Get dateCreatedRangeEnd
-	 * 
-	 * @return dateCreatedRangeEnd
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
 	public OffsetDateTime getDateCreatedRangeEnd() {
 		return dateCreatedRangeEnd;
 	}
@@ -143,14 +62,6 @@ public class ListSearchRequest extends SearchRequestParametersPaging implements 
 		return this;
 	}
 
-	/**
-	 * Get dateCreatedRangeStart
-	 * 
-	 * @return dateCreatedRangeStart
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
 	public OffsetDateTime getDateCreatedRangeStart() {
 		return dateCreatedRangeStart;
 	}
@@ -164,14 +75,6 @@ public class ListSearchRequest extends SearchRequestParametersPaging implements 
 		return this;
 	}
 
-	/**
-	 * Get dateModifiedRangeEnd
-	 * 
-	 * @return dateModifiedRangeEnd
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
 	public OffsetDateTime getDateModifiedRangeEnd() {
 		return dateModifiedRangeEnd;
 	}
@@ -185,14 +88,6 @@ public class ListSearchRequest extends SearchRequestParametersPaging implements 
 		return this;
 	}
 
-	/**
-	 * Get dateModifiedRangeStart
-	 * 
-	 * @return dateModifiedRangeStart
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
 	public OffsetDateTime getDateModifiedRangeStart() {
 		return dateModifiedRangeStart;
 	}
@@ -213,13 +108,6 @@ public class ListSearchRequest extends SearchRequestParametersPaging implements 
 		this.listDbIds.add(listDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * Get listDbIds
-	 * 
-	 * @return listDbIds
-	 **/
-	@ApiModelProperty(example = "[\"55f20cf6\",\"3193ca3d\"]", value = "")
 
 	public List<String> getListDbIds() {
 		return listDbIds;
@@ -242,13 +130,6 @@ public class ListSearchRequest extends SearchRequestParametersPaging implements 
 		return this;
 	}
 
-	/**
-	 * Get listNames
-	 * 
-	 * @return listNames
-	 **/
-	@ApiModelProperty(example = "[\"Planing List 1\",\"Bobs List\"]", value = "")
-
 	public List<String> getListNames() {
 		return listNames;
 	}
@@ -269,13 +150,6 @@ public class ListSearchRequest extends SearchRequestParametersPaging implements 
 		this.listOwnerNames.add(listOwnerNamesItem);
 		return this;
 	}
-
-	/**
-	 * Get listOwnerNames
-	 * 
-	 * @return listOwnerNames
-	 **/
-	@ApiModelProperty(example = "[\"Bob Robertson\",\"Rob Robertson\"]", value = "")
 
 	public List<String> getListOwnerNames() {
 		return listOwnerNames;
@@ -298,13 +172,6 @@ public class ListSearchRequest extends SearchRequestParametersPaging implements 
 		return this;
 	}
 
-	/**
-	 * Get listOwnerPersonDbIds
-	 * 
-	 * @return listOwnerPersonDbIds
-	 **/
-	@ApiModelProperty(example = "[\"bob@bob.com\",\"rob@bob.com\"]", value = "")
-
 	public List<String> getListOwnerPersonDbIds() {
 		return listOwnerPersonDbIds;
 	}
@@ -326,13 +193,6 @@ public class ListSearchRequest extends SearchRequestParametersPaging implements 
 		return this;
 	}
 
-	/**
-	 * Get listSources
-	 * 
-	 * @return listSources
-	 **/
-	@ApiModelProperty(example = "[\"USER\",\"SYSTEM\",\"EXTERNAL\"]", value = "")
-
 	public List<String> getListSources() {
 		return listSources;
 	}
@@ -341,19 +201,53 @@ public class ListSearchRequest extends SearchRequestParametersPaging implements 
 		this.listSources = listSources;
 	}
 
+	public ListSearchRequest programDbIds(List<String> programDbIds) {
+		this.programDbIds = programDbIds;
+		return this;
+	}
+
+	public ListSearchRequest addprogramDbIdsItem(String programDbIdsItem) {
+		if (this.programDbIds == null) {
+			this.programDbIds = new ArrayList<String>();
+		}
+		this.programDbIds.add(programDbIdsItem);
+		return this;
+	}
+
+	public List<String> getProgramDbIds() {
+		return programDbIds;
+	}
+
+	public void setProgramDbIds(List<String> programDbIds) {
+		this.programDbIds = programDbIds;
+	}
+
+	public ListSearchRequest commonCropNames(List<String> commonCropNames) {
+		this.commonCropNames = commonCropNames;
+		return this;
+	}
+
+	public ListSearchRequest addCommonCropNamesItem(String commonCropNamesItem) {
+		if (this.commonCropNames == null) {
+			this.commonCropNames = new ArrayList<String>();
+		}
+		this.commonCropNames.add(commonCropNamesItem);
+		return this;
+	}
+
+	public List<String> getCommonCropNames() {
+		return commonCropNames;
+	}
+
+	public void setCommonCropNames(List<String> commonCropNames) {
+		this.commonCropNames = commonCropNames;
+	}
+
 	public ListSearchRequest listType(ListTypes listType) {
 		this.listType = listType;
 		return this;
 	}
 
-	/**
-	 * Get listType
-	 * 
-	 * @return listType
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
 	public ListTypes getListType() {
 		return listType;
 	}
@@ -371,7 +265,7 @@ public class ListSearchRequest extends SearchRequestParametersPaging implements 
 			return false;
 		}
 		ListSearchRequest listSearchRequest = (ListSearchRequest) o;
-		return Objects.equals(this.externalReferenceIDs, listSearchRequest.externalReferenceIDs)
+		return Objects.equals(this.externalReferenceIds, listSearchRequest.externalReferenceIds)
 				&& Objects.equals(this.externalReferenceSources, listSearchRequest.externalReferenceSources)
 				&& Objects.equals(this.dateCreatedRangeEnd, listSearchRequest.dateCreatedRangeEnd)
 				&& Objects.equals(this.dateCreatedRangeStart, listSearchRequest.dateCreatedRangeStart)
@@ -387,7 +281,7 @@ public class ListSearchRequest extends SearchRequestParametersPaging implements 
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(externalReferenceIDs, externalReferenceSources, dateCreatedRangeEnd, dateCreatedRangeStart,
+		return Objects.hash(externalReferenceIds, externalReferenceSources, dateCreatedRangeEnd, dateCreatedRangeStart,
 				dateModifiedRangeEnd, dateModifiedRangeStart, listDbIds, listNames, listOwnerNames,
 				listOwnerPersonDbIds, listSources, listType, super.hashCode());
 	}
@@ -397,7 +291,7 @@ public class ListSearchRequest extends SearchRequestParametersPaging implements 
 		StringBuilder sb = new StringBuilder();
 		sb.append("class ListSearchRequest {\n");
 		sb.append("    ").append(toIndentedString(super.toString())).append("\n");
-		sb.append("    externalReferenceIDs: ").append(toIndentedString(externalReferenceIDs)).append("\n");
+		sb.append("    externalReferenceIDs: ").append(toIndentedString(externalReferenceIds)).append("\n");
 		sb.append("    externalReferenceSources: ").append(toIndentedString(externalReferenceSources)).append("\n");
 		sb.append("    dateCreatedRangeEnd: ").append(toIndentedString(dateCreatedRangeEnd)).append("\n");
 		sb.append("    dateCreatedRangeStart: ").append(toIndentedString(dateCreatedRangeStart)).append("\n");
@@ -413,10 +307,6 @@ public class ListSearchRequest extends SearchRequestParametersPaging implements 
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";
@@ -427,8 +317,8 @@ public class ListSearchRequest extends SearchRequestParametersPaging implements 
 	@Override
 	public Integer getTotalParameterCount() {
 		Integer count = 0;
-		if (this.externalReferenceIDs != null) {
-			count += this.externalReferenceIDs.size();
+		if (this.externalReferenceIds != null) {
+			count += this.externalReferenceIds.size();
 		}
 		if (this.externalReferenceSources != null) {
 			count += this.externalReferenceSources.size();

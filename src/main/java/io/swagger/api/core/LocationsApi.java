@@ -37,13 +37,20 @@ public interface LocationsApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/locations", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<LocationListResponse> locationsGet(
-			@ApiParam(value = "Filter by location type specified.") @Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
-			@ApiParam(value = "Filter by location type specified.") @Valid @RequestParam(value = "locationType", required = false) String locationType,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "locationType") @Valid @RequestParam(value = "locationType", required = false) String locationType,
+			@ApiParam(value = "locationDbId") @Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
+			@ApiParam(value = "locationName") @Valid @RequestParam(value = "locationName", required = false) String locationName,
+			@ApiParam(value = "parentLocationDbId") @Valid @RequestParam(value = "parentLocationDbId", required = false) String parentLocationDbId,
+			@ApiParam(value = "parentLocationName") @Valid @RequestParam(value = "parentLocationName", required = false) String parentLocationName,
+			@ApiParam(value = "commonCropName") @Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@ApiParam(value = "programDbId") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@ApiParam(value = "externalReferenceID") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@ApiParam(value = "externalReferenceId") @Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@ApiParam(value = "externalReferenceSource") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the details of a specific Location", nickname = "locationsLocationDbIdGet", notes = "Get details for a location. - The `countryCode` is as per [ISO_3166-1_alpha-3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) spec. - `altitude` is in meters.'", response = LocationSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Locations", })
@@ -55,7 +62,8 @@ public interface LocationsApi {
 	@RequestMapping(value = "/locations/{locationDbId}", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<LocationSingleResponse> locationsLocationDbIdGet(
 			@ApiParam(value = "The internal DB id for a location", required = true) @PathVariable("locationDbId") String locationDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Update the details for an existing Location", nickname = "locationsLocationDbIdPut", notes = "Update the details for an existing location. - The `countryCode` is as per [ISO_3166-1_alpha-3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) spec. - `altitude` is in meters.'", response = LocationSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Locations", })
@@ -69,7 +77,8 @@ public interface LocationsApi {
 	ResponseEntity<LocationSingleResponse> locationsLocationDbIdPut(
 			@ApiParam(value = "The internal DB id for a location", required = true) @PathVariable("locationDbId") String locationDbId,
 			@ApiParam(value = "") @Valid @RequestBody LocationNewRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Create new Locations", nickname = "locationsPost", notes = "Add new locations to database * The `countryCode` is as per [ISO_3166-1_alpha-3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) spec. * `altitude` is in meters.", response = LocationListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Locations", })
@@ -81,7 +90,8 @@ public interface LocationsApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<LocationListResponse> locationsPost(
 			@ApiParam(value = "") @Valid @RequestBody List<LocationNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Submit a search request for Locations", nickname = "searchLocationsPost", notes = "Advanced searching for the locations resource. See Search Services for additional implementation details.", response = LocationListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Locations", })
@@ -94,7 +104,8 @@ public interface LocationsApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<? extends BrAPIResponse> searchLocationsPost(
 			@ApiParam(value = "") @Valid @RequestBody LocationSearchRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the results of a Locations search request", nickname = "searchLocationsSearchResultsDbIdGet", notes = "Advanced searching for the locations resource. See Search Services for additional implementation details.", response = LocationListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Locations", })
@@ -107,8 +118,9 @@ public interface LocationsApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<? extends BrAPIResponse> searchLocationsSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 }

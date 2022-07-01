@@ -2,7 +2,6 @@ package org.brapi.test.BrAPITestServer.controller.germ;
 
 import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
-import io.swagger.model.germ.Germplasm;
 import io.swagger.model.germ.GermplasmAttribute;
 import io.swagger.model.germ.GermplasmAttributeCategoryListResponse;
 import io.swagger.model.germ.GermplasmAttributeCategoryListResponseResult;
@@ -11,9 +10,6 @@ import io.swagger.model.germ.GermplasmAttributeListResponseResult;
 import io.swagger.model.germ.GermplasmAttributeNewRequest;
 import io.swagger.model.germ.GermplasmAttributeSearchRequest;
 import io.swagger.model.germ.GermplasmAttributeSingleResponse;
-import io.swagger.model.germ.GermplasmListResponse;
-import io.swagger.model.germ.GermplasmListResponseResult;
-import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.api.germ.AttributesApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -24,7 +20,6 @@ import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.germ.GermplasmAttributeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -47,7 +42,8 @@ public class AttributesApiController extends BrAPIController implements Attribut
 	private final HttpServletRequest request;
 
 	@org.springframework.beans.factory.annotation.Autowired
-	public AttributesApiController(GermplasmAttributeService attributeService, SearchService searchService, HttpServletRequest request) {
+	public AttributesApiController(GermplasmAttributeService attributeService, SearchService searchService,
+			HttpServletRequest request) {
 		this.attributeService = attributeService;
 		this.searchService = searchService;
 		this.request = request;
@@ -76,8 +72,21 @@ public class AttributesApiController extends BrAPIController implements Attribut
 			@Valid @RequestParam(value = "attributeCategory", required = false) String attributeCategory,
 			@Valid @RequestParam(value = "attributeDbId", required = false) String attributeDbId,
 			@Valid @RequestParam(value = "attributeName", required = false) String attributeName,
+			@Valid @RequestParam(value = "attributePUI", required = false) String attributePUI,
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
+			@Valid @RequestParam(value = "methodDbId", required = false) String methodDbId,
+			@Valid @RequestParam(value = "methodName", required = false) String methodName,
+			@Valid @RequestParam(value = "methodPUI", required = false) String methodPUI,
+			@Valid @RequestParam(value = "scaleDbId", required = false) String scaleDbId,
+			@Valid @RequestParam(value = "scaleName", required = false) String scaleName,
+			@Valid @RequestParam(value = "scalePUI", required = false) String scalePUI,
+			@Valid @RequestParam(value = "traitDbId", required = false) String traitDbId,
+			@Valid @RequestParam(value = "traitName", required = false) String traitName,
+			@Valid @RequestParam(value = "traitPUI", required = false) String traitPUI,
+			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -88,7 +97,9 @@ public class AttributesApiController extends BrAPIController implements Attribut
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<GermplasmAttribute> data = attributeService.findGermplasmAttributes(attributeCategory, attributeDbId,
-				attributeName, germplasmDbId, externalReferenceID, externalReferenceSource, metadata);
+				attributeName, attributePUI, germplasmDbId, methodDbId, methodName, methodPUI, scaleDbId, scaleName,
+				scalePUI, traitDbId, traitName, traitPUI, commonCropName, programDbId, externalReferenceId,
+				externalReferenceID, externalReferenceSource, metadata);
 		return responseOK(new GermplasmAttributeListResponse(), new GermplasmAttributeListResponseResult(), data,
 				metadata);
 	}
@@ -171,7 +182,7 @@ public class AttributesApiController extends BrAPIController implements Attribut
 			List<GermplasmAttribute> data = attributeService.findGermplasmAttributes(body, metadata);
 			return responseOK(new GermplasmAttributeListResponse(), new GermplasmAttributeListResponseResult(), data,
 					metadata);
-		}else {
+		} else {
 			return responseAccepted(searchResultsDbId);
 		}
 	}

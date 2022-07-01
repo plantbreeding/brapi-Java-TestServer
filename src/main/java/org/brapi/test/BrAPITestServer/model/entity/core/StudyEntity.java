@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
+import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationVariableEntity;
 
 @Entity
 @Table(name = "study")
@@ -58,6 +59,11 @@ public class StudyEntity extends BrAPIPrimaryEntity {
 			@JoinColumn(name = "study_db_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "season_db_id", referencedColumnName = "id") })
 	private List<SeasonEntity> seasons;
+	@ManyToMany
+	@JoinTable(name = "study_variable", joinColumns = {
+			@JoinColumn(name = "study_db_id", referencedColumnName = "id") }, inverseJoinColumns = {
+					@JoinColumn(name = "variable_db_id", referencedColumnName = "id") })
+	private List<ObservationVariableEntity> observationVariables;
 	@Column
 	private Date startDate;
 	@Column
@@ -82,6 +88,15 @@ public class StudyEntity extends BrAPIPrimaryEntity {
 	private List<ObservationUnitEntity> observationUnits;
 	@OneToMany(mappedBy="study")
 	private List<ObservationEntity> observations;
+
+	
+	public List<ObservationVariableEntity> getObservationVariables() {
+		return observationVariables;
+	}
+
+	public void setObservationVariables(List<ObservationVariableEntity> observationVariables) {
+		this.observationVariables = observationVariables;
+	}
 
 	public CropEntity getCrop() {
 		return crop;

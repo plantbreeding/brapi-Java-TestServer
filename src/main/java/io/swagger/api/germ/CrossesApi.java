@@ -33,13 +33,19 @@ public interface CrossesApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/crosses", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<CrossesListResponse> crossesGet(
-			@ApiParam(value = "Search for Crossing Projects with this unique id") @Valid @RequestParam(value = "crossDbId", required = false) String crossDbId,
-			@ApiParam(value = "Search for Crossing Projects with this unique id") @Valid @RequestParam(value = "crossingProjectDbId", required = false) String crossingProjectDbId,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "crossingProjectDbId") @Valid @RequestParam(value = "crossingProjectDbId", required = false) String crossingProjectDbId,
+			@ApiParam(value = "crossingProjectName") @Valid @RequestParam(value = "crossingProjectName", required = false) String crossingProjectName,
+			@ApiParam(value = "crossDbId") @Valid @RequestParam(value = "crossDbId", required = false) String crossDbId,
+			@ApiParam(value = "crossName") @Valid @RequestParam(value = "crossName", required = false) String crossName,
+			@ApiParam(value = "commonCropName") @Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@ApiParam(value = "programDbId") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@ApiParam(value = "externalReferenceID") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@ApiParam(value = "externalReferenceId") @Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@ApiParam(value = "externalReferenceSource") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Create new Cross entities on this server", nickname = "crossesPost", notes = "Create new Cross entities on this server", response = CrossesListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Crosses", })
@@ -51,7 +57,8 @@ public interface CrossesApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<CrossesListResponse> crossesPost(
 			@ApiParam(value = "") @Valid @RequestBody List<CrossNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Update existing Cross entities on this server", nickname = "crossesPut", notes = "Update existing Cross entities on this server", response = CrossesListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Crosses", })
@@ -63,6 +70,7 @@ public interface CrossesApi {
 			"application/json" }, method = RequestMethod.PUT)
 	ResponseEntity<CrossesListResponse> crossesPut(
 			@ApiParam(value = "") @Valid @RequestBody Map<String, CrossNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 }

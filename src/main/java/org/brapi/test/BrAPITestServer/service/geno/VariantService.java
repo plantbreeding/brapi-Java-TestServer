@@ -30,13 +30,21 @@ public class VariantService {
 		this.variantRepository = variantRepository;
 	}
 
-	public List<Variant> findVariants(String variantDbId, String variantSetDbId, Metadata metadata) {
+	public List<Variant> findVariants(String variantDbId, String variantSetDbId, String referenceDbId, String referenceSetDbId,
+			String externalReferenceId, String externalReferenceSource, Metadata metadata) {
+		
 		VariantsSearchRequest request = new VariantsSearchRequest();
 		if (variantSetDbId != null)
 			request.addVariantSetDbIdsItem(variantSetDbId);
 		if (variantDbId != null)
 			request.addVariantDbIdsItem(variantDbId);
+		if (referenceDbId != null)
+			request.addReferenceDbIdsItem(referenceDbId);
+		if (referenceSetDbId != null)
+			request.addReferenceSetDbIdsItem(referenceSetDbId);
 
+		request.addExternalReferenceItem(externalReferenceId, null, externalReferenceSource);
+		
 		return findVariants(request, metadata);
 	}
 

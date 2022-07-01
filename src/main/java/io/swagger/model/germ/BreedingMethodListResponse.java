@@ -37,7 +37,7 @@ public class BreedingMethodListResponse implements BrAPIResponse<BreedingMethodL
 
   
 
-  public void setAtContext(Context _atContext) {
+  public void set_atContext(Context _atContext) {
     this._atContext = _atContext;
   }
 

@@ -7,11 +7,14 @@ import io.swagger.model.germ.GermplasmListResponse;
 import io.swagger.model.germ.GermplasmListResponseResult;
 import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.model.pheno.Image;
+import io.swagger.model.pheno.ImageDeleteResponse;
+import io.swagger.model.pheno.ImageDeleteResponseResult;
 import io.swagger.model.pheno.ImageListResponse;
 import io.swagger.model.pheno.ImageListResponseResult;
 import io.swagger.model.pheno.ImageNewRequest;
 import io.swagger.model.pheno.ImageSearchRequest;
 import io.swagger.model.pheno.ImageSingleResponse;
+import io.swagger.annotations.ApiParam;
 import io.swagger.api.pheno.ImagesApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -63,6 +66,9 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
 			@Valid @RequestParam(value = "observationDbId", required = false) String observationDbId,
 			@Valid @RequestParam(value = "descriptiveOntologyTerm", required = false) String descriptiveOntologyTerm,
+			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
@@ -74,7 +80,8 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<Image> data = imageService.findImages(imageDbId, imageName, observationUnitDbId, observationDbId,
-				descriptiveOntologyTerm, externalReferenceID, externalReferenceSource, metadata);
+				descriptiveOntologyTerm, commonCropName, programDbId, externalReferenceId, externalReferenceID,
+				externalReferenceSource, metadata);
 		return responseOK(new ImageListResponse(), new ImageListResponseResult(), data, metadata);
 	}
 
@@ -92,10 +99,10 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<byte[]> imagesImageDbIdContentGet(
-			@PathVariable("imageDbId") String imageDbId,
-			@PathVariable("imageName") String imageName, 
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+	public ResponseEntity<byte[]> imagesImageDbIdContentGet(@PathVariable("imageDbId") String imageDbId,
+			@PathVariable("imageName") String imageName,
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 		byte[] data = imageService.getImageData(imageDbId);
 		Image image = imageService.getImage(imageDbId);
 		HttpHeaders headers = new HttpHeaders();
@@ -178,9 +185,22 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 			ImageSearchRequest body = request.getParameters(ImageSearchRequest.class);
 			List<Image> data = imageService.findImages(body, metadata);
 			return responseOK(new ImageListResponse(), new ImageListResponseResult(), data, metadata);
-		}else {
+		} else {
 			return responseAccepted(searchResultsDbId);
 		}
+	}
+
+	@Override
+	public ResponseEntity<ImageDeleteResponse> deleteImagesPost(
+			@RequestHeader(value = "Authorization", required = false) String authorization,
+			@Valid @RequestBody ImageSearchRequest body) throws BrAPIServerException {
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		Metadata metadata = generateMetaDataTemplate(body);
+
+		List<String> data = imageService.deleteImages(body, metadata);
+		return responseOK(new ImageDeleteResponse(), new ImageDeleteResponseResult(), data, metadata);
+
 	}
 
 }

@@ -67,6 +67,7 @@ public class TrialsApiController extends BrAPIController implements TrialsApi {
 			@Valid @RequestParam(value = "trialPUI", required = false) String trialPUI,
 			@Valid @RequestParam(value = "sortBy", required = false) String sortBy,
 			@Valid @RequestParam(value = "sortOrder", required = false) String sortOrder,
+			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
@@ -79,7 +80,7 @@ public class TrialsApiController extends BrAPIController implements TrialsApi {
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<Trial> data = trialService.findTrials(commonCropName, contactDbId, programDbId, locationDbId,
 				DateUtility.toLocalDate(searchDateRangeStart), DateUtility.toLocalDate(searchDateRangeEnd), studyDbId, trialDbId, trialName, trialPUI,
-				externalReferenceID, externalReferenceSource, active, sortBy, sortOrder, metadata);
+				externalReferenceId, externalReferenceID, externalReferenceSource, active, sortBy, sortOrder, metadata);
 		return responseOK(new TrialListResponse(), new TrialListResponseResult(), data, metadata);
 	}
 

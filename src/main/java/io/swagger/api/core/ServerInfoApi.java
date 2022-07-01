@@ -30,7 +30,8 @@ public interface ServerInfoApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/serverinfo", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ServerInfoResponse> serverinfoGet(
-			@ApiParam(value = "The data format supported by the call.") @Valid @RequestParam(value = "dataType", required = false) WSMIMEDataTypes dataType,
+			@ApiParam(value = "dataType") @Valid @RequestParam(value = "dataType", required = false) WSMIMEDataTypes dataType,
+			@ApiParam(value = "contentType") @Valid @RequestParam(value = "contentType", required = false) WSMIMEDataTypes contentType,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 }

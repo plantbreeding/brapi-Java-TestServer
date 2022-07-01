@@ -13,6 +13,7 @@ import io.swagger.model.germ.Germplasm;
 import io.swagger.model.germ.GermplasmListResponse;
 import io.swagger.model.germ.GermplasmListResponseResult;
 import io.swagger.model.germ.GermplasmSearchRequest;
+import io.swagger.annotations.ApiParam;
 import io.swagger.api.geno.CallSetsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -97,6 +98,8 @@ public class CallSetsApiController extends BrAPIController implements CallSetsAp
 			@Valid @RequestParam(value = "variantSetDbId", required = false) String variantSetDbId,
 			@Valid @RequestParam(value = "sampleDbId", required = false) String sampleDbId,
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
+			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
@@ -105,7 +108,7 @@ public class CallSetsApiController extends BrAPIController implements CallSetsAp
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<CallSet> data = callSetService.findCallSets(callSetDbId, callSetName, variantSetDbId, sampleDbId,
-				germplasmDbId, metadata);
+				germplasmDbId, externalReferenceId, externalReferenceSource, metadata);
 		return responseOK(new CallSetsListResponse(), new CallSetsListResponseResult(), data, metadata);
 	}
 

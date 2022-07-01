@@ -33,7 +33,7 @@ public class ScaleSingleResponse implements BrAPIResponse<Scale> {
 		return this;
 	}
 
-	public void setAtContext(Context _atContext) {
+	public void set_atContext(Context _atContext) {
 		this._atContext = _atContext;
 	}
 

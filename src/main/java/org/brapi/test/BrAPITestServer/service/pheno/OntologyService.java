@@ -3,11 +3,9 @@ package org.brapi.test.BrAPITestServer.service.pheno;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import jakarta.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
-import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.OntologyEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.OntologyReferenceEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.OntologyReferenceHolder;
@@ -17,13 +15,13 @@ import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Metadata;
 import io.swagger.model.OntologyReference;
 import io.swagger.model.OntologyReferenceDocumentationLinks;
 import io.swagger.model.pheno.Ontology;
+import io.swagger.model.pheno.OntologyNewRequest;
 
 @Service
 public class OntologyService {
@@ -34,7 +32,7 @@ public class OntologyService {
 		this.ontologyRepository = ontologyRepository;
 	}
 
-	public List<Ontology> findOntologies(@Valid String ontologyDbId, Metadata metadata) {
+	public List<Ontology> findOntologies(String ontologyDbId, String ontologyName, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		List<Ontology> ontologies = new ArrayList<>();
 		if (ontologyDbId == null) {
@@ -53,9 +51,48 @@ public class OntologyService {
 		return ontologies;
 	}
 
+	public Ontology getOntology(String ontologyDbId) throws BrAPIServerException {
+		OntologyEntity entity = getOntologyEntity(ontologyDbId);
+		Ontology ontology = null;
+		if (entity != null) {
+			ontology = convertFromEntity(entity);
+		} else {
+			throw new BrAPIServerDbIdNotFoundException("ontology", ontologyDbId);
+		}
+		return ontology;
+	}
+
+	public List<Ontology> saveOntologies(List<OntologyNewRequest> body) {
+		List<Ontology> savedOntologies = new ArrayList<>();
+		for (OntologyNewRequest request : body) {
+			OntologyEntity newEntity = new OntologyEntity();
+			updateEntity(newEntity, request);
+			OntologyEntity saved = ontologyRepository.save(newEntity);
+			savedOntologies.add(convertFromEntity(saved));
+		}
+
+		return savedOntologies;
+	}
+
+	public Ontology updateOntologies(String ontologyDbId, OntologyNewRequest body) throws BrAPIServerException {
+		OntologyEntity savedEntity;
+		Optional<OntologyEntity> entityOpt = ontologyRepository.findById(ontologyDbId);
+		if (entityOpt.isPresent()) {
+			OntologyEntity entity = entityOpt.get();
+			updateEntity(entity, body);
+
+			savedEntity = ontologyRepository.save(entity);
+		} else {
+			throw new BrAPIServerDbIdNotFoundException("ontology", ontologyDbId);
+		}
+
+		return convertFromEntity(savedEntity);
+	}
+
 	public Ontology convertFromEntity(OntologyEntity entity) {
 		Ontology ontology = new Ontology();
-		ontology.setAdditionalInfo(entity.getAdditionalInfoMap());
+		UpdateUtility.convertFromEntity(entity, ontology);
+
 		ontology.setAuthors(entity.getAuthors());
 		ontology.setCopyright(entity.getCopyright());
 		ontology.setDescription(entity.getDescription());
@@ -65,6 +102,26 @@ public class OntologyService {
 		ontology.setOntologyName(entity.getOntologyName());
 		ontology.setVersion(entity.getVersion());
 		return ontology;
+	}
+
+	private void updateEntity(OntologyEntity entity, OntologyNewRequest request) {
+		UpdateUtility.updateEntity(request, entity);
+
+		if (request.getAuthors() != null)
+			entity.setAuthors(request.getAuthors());
+		if (request.getCopyright() != null)
+			entity.setCopyright(request.getCopyright());
+		if (request.getDescription() != null)
+			entity.setDescription(request.getDescription());
+		if (request.getDocumentationURL() != null)
+			entity.setDocumentationURL(request.getDocumentationURL());
+		if (request.getLicence() != null)
+			entity.setLicence(request.getLicence());
+		if (request.getOntologyName() != null)
+			entity.setOntologyName(request.getOntologyName());
+		if (request.getVersion() != null)
+			entity.setVersion(request.getVersion());
+
 	}
 
 	public OntologyEntity getOntologyEntity(String ontologyDbId) throws BrAPIServerException {
@@ -80,7 +137,7 @@ public class OntologyService {
 		return method;
 	}
 
-	public void updateOntologyReference(OntologyReferenceHolder entity, @Valid Optional<OntologyReference> ontologyRef)
+	public void updateOntologyReference(OntologyReferenceHolder entity, Optional<OntologyReference> ontologyRef)
 			throws BrAPIServerException {
 
 		if (ontologyRef != null) {

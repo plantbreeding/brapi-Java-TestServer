@@ -37,24 +37,26 @@ public interface TrialsApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/trials", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<TrialListResponse> trialsGet(
-			@ApiParam(value = "Filter active status true/false.") @Valid @RequestParam(value = "active", required = false) Boolean active,
-			@ApiParam(value = "Common name for the crop associated with this trial") @Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
-			@ApiParam(value = "Contact entities associated with this trial") @Valid @RequestParam(value = "contactDbId", required = false) String contactDbId,
-			@ApiParam(value = "Program filter to only return trials associated with given program id.") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
-			@ApiParam(value = "Filter by location") @Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
-			@ApiParam(value = "The start of the overlapping search date range. `searchDateRangeStart` must be before `searchDateRangeEnd`.  Return a Trial entity if any of the following cases are true  - `searchDateRangeStart` is before `trial.endDate` AND `searchDateRangeEnd` is null   - `searchDateRangeStart` is before `trial.endDate` AND `searchDateRangeEnd` is after `trial.startDate`  - `searchDateRangeEnd` is after `trial.startDate` AND `searchDateRangeStart` is null  - `searchDateRangeEnd` is after `trial.startDate` AND `searchDateRangeStart` is before `trial.endDate`") @Valid @RequestParam(value = "searchDateRangeStart", required = false) String searchDateRangeStart,
-			@ApiParam(value = "The start of the overlapping search date range. `searchDateRangeStart` must be before `searchDateRangeEnd`.  Return a Trial entity if any of the following cases are true  - `searchDateRangeStart` is before `trial.endDate` AND `searchDateRangeEnd` is null   - `searchDateRangeStart` is before `trial.endDate` AND `searchDateRangeEnd` is after `trial.startDate`  - `searchDateRangeEnd` is after `trial.startDate` AND `searchDateRangeStart` is null  - `searchDateRangeEnd` is after `trial.startDate` AND `searchDateRangeStart` is before `trial.endDate`") @Valid @RequestParam(value = "searchDateRangeEnd", required = false) String searchDateRangeEnd,
-			@ApiParam(value = "Filter by connected studyDbId") @Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
-			@ApiParam(value = "Filter by trialDbId") @Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
-			@ApiParam(value = "Filter by trial name") @Valid @RequestParam(value = "trialName", required = false) String trialName,
-			@ApiParam(value = "Filter by trial PUI") @Valid @RequestParam(value = "trialPUI", required = false) String trialPUI,
-			@ApiParam(value = "Sort order. Name of the field to sort by.", allowableValues = "trialDbId, trialName, programDbId, programName, locationDbId, startDate, endDate") @Valid @RequestParam(value = "sortBy", required = false) String sortBy,
-			@ApiParam(value = "Sort order direction: asc/desc", allowableValues = "asc, ASC, desc, DESC") @Valid @RequestParam(value = "sortOrder", required = false) String sortOrder,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "active") @Valid @RequestParam(value = "active", required = false) Boolean active,
+			@ApiParam(value = "commonCropName") @Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@ApiParam(value = "contactDbId") @Valid @RequestParam(value = "contactDbId", required = false) String contactDbId,
+			@ApiParam(value = "programDbId") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@ApiParam(value = "locationDbId") @Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
+			@ApiParam(value = "searchDateRangeStart") @Valid @RequestParam(value = "searchDateRangeStart", required = false) String searchDateRangeStart,
+			@ApiParam(value = "searchDateRangeEnd") @Valid @RequestParam(value = "searchDateRangeEnd", required = false) String searchDateRangeEnd,
+			@ApiParam(value = "studyDbId") @Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@ApiParam(value = "trialDbId") @Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
+			@ApiParam(value = "trialName") @Valid @RequestParam(value = "trialName", required = false) String trialName,
+			@ApiParam(value = "trialPUI") @Valid @RequestParam(value = "trialPUI", required = false) String trialPUI,
+			@ApiParam(value = "sortBy") @Valid @RequestParam(value = "sortBy", required = false) String sortBy,
+			@ApiParam(value = "sortOrder") @Valid @RequestParam(value = "sortOrder", required = false) String sortOrder,
+			@ApiParam(value = "externalReferenceId") @Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@ApiParam(value = "externalReferenceID") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@ApiParam(value = "externalReferenceSource") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Create new trials", nickname = "trialsPost", notes = "Create new breeding Trials. A Trial represents a collection of related Studies. `trialDbId` is generated by the server.", response = TrialListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Trials", })
@@ -65,7 +67,8 @@ public interface TrialsApi {
 	@RequestMapping(value = "/trials", produces = { "application/json" }, consumes = {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<TrialListResponse> trialsPost(@ApiParam(value = "") @Valid @RequestBody List<TrialNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the details of a specific Trial", nickname = "trialsTrialDbIdGet", notes = "Get the details of a specific Trial", response = TrialSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Trials", })
@@ -77,7 +80,8 @@ public interface TrialsApi {
 	@RequestMapping(value = "/trials/{trialDbId}", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<TrialSingleResponse> trialsTrialDbIdGet(
 			@ApiParam(value = "The internal trialDbId", required = true) @PathVariable("trialDbId") String trialDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Update the details of an existing Trial", nickname = "trialsTrialDbIdPut", notes = "Update the details of an existing Trial", response = TrialSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Trials", })
@@ -91,7 +95,8 @@ public interface TrialsApi {
 	ResponseEntity<TrialSingleResponse> trialsTrialDbIdPut(
 			@ApiParam(value = "The internal trialDbId", required = true) @PathVariable("trialDbId") String trialDbId,
 			@ApiParam(value = "") @Valid @RequestBody TrialNewRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Submit a search request for Trials", nickname = "searchTrialsPost", notes = "Advanced searching for the programs resource. See Search Services for additional implementation details.", response = TrialListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Trials", })
@@ -104,7 +109,8 @@ public interface TrialsApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<? extends BrAPIResponse> searchTrialsPost(
 			@ApiParam(value = "") @Valid @RequestBody TrialSearchRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the results of a Trials search request", nickname = "searchTrialsSearchResultsDbIdGet", notes = "Advanced searching for the trials resource. See Search Services for additional implementation details.", response = TrialListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Trials", })
@@ -118,8 +124,9 @@ public interface TrialsApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<? extends BrAPIResponse> searchTrialsSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 }

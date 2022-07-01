@@ -9,7 +9,6 @@ import jakarta.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
-import org.brapi.test.BrAPITestServer.model.entity.core.ContactEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.DatasetAuthorshipEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.PersonEntity;
@@ -43,7 +42,8 @@ public class TrialService {
 	private final ProgramService programService;
 	private final CropService cropService;
 
-	public TrialService(TrialRepository trialRepository, PeopleService peopleService, ProgramService programService, CropService cropService) {
+	public TrialService(TrialRepository trialRepository, PeopleService peopleService, ProgramService programService,
+			CropService cropService) {
 		this.trialRepository = trialRepository;
 		this.peopleService = peopleService;
 		this.programService = programService;
@@ -53,8 +53,8 @@ public class TrialService {
 	public List<Trial> findTrials(@Valid String commonCropName, @Valid String contactDbId, @Valid String programDbId,
 			@Valid String locationDbId, @Valid LocalDate searchDateRangeStart, @Valid LocalDate searchDateRangeEnd,
 			@Valid String studyDbId, @Valid String trialDbId, @Valid String trialName, @Valid String trialPUI,
-			@Valid String externalReferenceID, @Valid String externalReferenceSource, @Valid Boolean active,
-			@Valid String sortBy, @Valid String sortOrder, Metadata metadata) {
+			@Valid String externalReferenceId, @Valid String externalReferenceID, @Valid String externalReferenceSource,
+			@Valid Boolean active, @Valid String sortBy, @Valid String sortOrder, Metadata metadata) {
 
 		TrialSearchRequest request = new TrialSearchRequest();
 		if (active != null)
@@ -79,15 +79,12 @@ public class TrialService {
 			request.setSearchDateRangeStart(searchDateRangeStart);
 		if (searchDateRangeEnd != null)
 			request.setSearchDateRangeEnd(searchDateRangeEnd);
-		if (externalReferenceID != null)
-			request.addExternalReferenceIDsItem(externalReferenceID);
-		if (externalReferenceSource != null)
-			request.addExternalReferenceSourcesItem(externalReferenceSource);
 		if (sortBy != null && SortBy.fromValue(sortBy) != null)
 			request.setSortBy(SortBy.fromValue(sortBy));
 		if (sortOrder != null && SortOrder.fromValue(sortOrder) != null)
 			request.setSortOrder(SortOrder.fromValue(sortOrder));
 
+		request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
 		return findTrials(request, metadata);
 	}
 
@@ -131,7 +128,7 @@ public class TrialService {
 	public TrialEntity getTrialEntity(String trialDbId) throws BrAPIServerException {
 		return getTrialEntity(trialDbId, HttpStatus.BAD_REQUEST);
 	}
-	
+
 	public TrialEntity getTrialEntity(String trialDbId, HttpStatus errorStatus) throws BrAPIServerException {
 		Optional<TrialEntity> entityOption = trialRepository.findById(trialDbId);
 		TrialEntity entity = null;
@@ -201,17 +198,16 @@ public class TrialService {
 					entity.getPublications().stream().map(this::convertFromEntity).collect(Collectors.toList()));
 		}
 
-
 		if (entity.getProgram() != null) {
 			trial.setProgramDbId(entity.getProgram().getId());
 			trial.setProgramName(entity.getProgram().getName());
 			if (entity.getProgram().getCrop() != null) {
 				trial.setCommonCropName(entity.getProgram().getCrop().getCropName());
 			}
-		}else if(entity.getCrop() != null) {
+		} else if (entity.getCrop() != null) {
 			trial.setCommonCropName(entity.getCrop().getCropName());
 		}
-		
+
 		return trial;
 	}
 
@@ -224,9 +220,9 @@ public class TrialService {
 			entity.setContacts(new ArrayList<>());
 			for (Contact contact : body.getContacts()) {
 				PersonEntity contactEntity;
-				if(contact.getContactDbId() == null) {
+				if (contact.getContactDbId() == null) {
 					contactEntity = peopleService.saveContact(contact);
-				}else {
+				} else {
 					try {
 						contactEntity = peopleService.getPersonEntity(contact.getContactDbId());
 					} catch (BrAPIServerException e) {
@@ -268,15 +264,15 @@ public class TrialService {
 			entity.setTrialName(body.getTrialName());
 		if (body.getTrialPUI() != null)
 			entity.setTrialPUI(body.getTrialPUI());
-		
+
 		if (body.getProgramDbId() != null) {
 			ProgramEntity program = programService.getProgramEntity(body.getProgramDbId());
 			entity.setProgram(program);
-		}else if(body.getCommonCropName() != null) {
+		} else if (body.getCommonCropName() != null) {
 			CropEntity crop = cropService.getCropEntity(body.getCommonCropName());
 			entity.setCrop(crop);
 		}
-		
+
 	}
 
 	private TrialNewRequestDatasetAuthorships convertFromEntity(DatasetAuthorshipEntity entity) {

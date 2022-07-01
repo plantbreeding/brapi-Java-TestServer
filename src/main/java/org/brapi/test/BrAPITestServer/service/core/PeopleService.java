@@ -31,8 +31,9 @@ public class PeopleService {
 		this.peopleRepository = peopleRepository;
 	}
 
-	public List<Person> findPeople(@Valid String firstName, @Valid String lastName, @Valid String personDbId,
-			@Valid String userID, String externalReferenceID, String externalReferenceSource, Metadata metadata) {
+	public List<Person> findPeople(String firstName, String lastName, String personDbId, String userID,
+			String commonCropName, String programDbId, String externalReferenceId, String externalReferenceID,
+			String externalReferenceSource, Metadata metadata) {
 
 		PersonSearchRequest request = new PersonSearchRequest();
 		if (firstName != null)
@@ -43,15 +44,16 @@ public class PeopleService {
 			request.addPersonDbIdsItem(personDbId);
 		if (userID != null)
 			request.addUserIDsItem(userID);
-		if (externalReferenceID != null)
-			request.addExternalReferenceIDsItem(externalReferenceID);
-		if (externalReferenceSource != null)
-			request.addExternalReferenceSourcesItem(externalReferenceSource);
+		if (commonCropName != null)
+			request.addCommonCropNamesItem(commonCropName);
+		if (programDbId != null)
+			request.addProgramDbIdsItem(programDbId);
 
+		request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
 		return findPeople(request, metadata);
 	}
 
-	public List<Person> findPeople(@Valid PersonSearchRequest request, Metadata metadata) {
+	public List<Person> findPeople(PersonSearchRequest request, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<PersonEntity> searchQuery = new SearchQueryBuilder<PersonEntity>(PersonEntity.class)
 				.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
@@ -92,7 +94,7 @@ public class PeopleService {
 		return entity;
 	}
 
-	public Person updatePerson(String personDbId, @Valid PersonNewRequest person) throws BrAPIServerException {
+	public Person updatePerson(String personDbId, PersonNewRequest person) throws BrAPIServerException {
 		PersonEntity savedEntity;
 		Optional<PersonEntity> entityOpt = peopleRepository.findById(personDbId);
 		if (entityOpt.isPresent()) {
@@ -107,7 +109,7 @@ public class PeopleService {
 		return convertToPerson(savedEntity);
 	}
 
-	public List<Person> savePeople(@Valid List<PersonNewRequest> body) {
+	public List<Person> savePeople(List<PersonNewRequest> body) {
 		List<Person> savedPeople = new ArrayList<>();
 
 		for (PersonNewRequest person : body) {
@@ -130,17 +132,17 @@ public class PeopleService {
 		parseName(contact.getName(), entity);
 		entity.setUserID(contact.getOrcid());
 		entity.setDescription(contact.getType());
-		
+
 		PersonEntity savedEntity = peopleRepository.save(entity);
 		return savedEntity;
 	}
-	
+
 	private void parseName(String name, PersonEntity entity) {
-		if(name != null && !name.isEmpty()) {
+		if (name != null && !name.isEmpty()) {
 			entity.setFirstName("");
 			entity.setMiddleName("");
 			entity.setLastName("");
-			
+
 			String[] splitName = name.split(" ");
 
 			if (splitName.length >= 1) {
@@ -178,7 +180,7 @@ public class PeopleService {
 
 	public Contact convertToContact(PersonEntity entity) {
 		Contact contact = new Contact();
-		
+
 		contact.setContactDbId(entity.getId());
 		contact.setEmail(entity.getEmailAddress());
 		contact.setInstituteName(entity.getInstituteName());

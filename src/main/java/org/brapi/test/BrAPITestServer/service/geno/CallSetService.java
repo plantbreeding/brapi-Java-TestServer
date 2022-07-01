@@ -30,7 +30,7 @@ public class CallSetService {
 	}
 
 	public List<CallSet> findCallSets(String callSetDbId, String callSetName, String variantSetDbId, String sampleDbId,
-			String germplasmDbId, Metadata metadata) {
+			String germplasmDbId, String externalReferenceId, String externalReferenceSource, Metadata metadata) {
 		CallSetsSearchRequest request = new CallSetsSearchRequest();
 		if (callSetDbId != null)
 			request.addCallSetDbIdsItem(callSetDbId);
@@ -43,6 +43,7 @@ public class CallSetService {
 		if (germplasmDbId != null)
 			request.addGermplasmDbIdsItem(germplasmDbId);
 
+		request.addExternalReferenceItem(externalReferenceId, null, externalReferenceSource);
 		return findCallSets(request, metadata);
 	}
 
@@ -102,7 +103,7 @@ public class CallSetService {
 		}
 		callSet.setUpdated(DateUtility.toOffsetDateTime(entity.getUpdated()));
 		if (entity.getVariantSets() != null)
-			callSet.setVariantSetIds(entity.getVariantSets().stream().map(e -> e.getId()).collect(Collectors.toList()));
+			callSet.setVariantSetDbIds(entity.getVariantSets().stream().map(e -> e.getId()).collect(Collectors.toList()));
 
 		return callSet;
 	}

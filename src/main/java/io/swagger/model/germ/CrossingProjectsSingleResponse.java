@@ -37,7 +37,7 @@ public class CrossingProjectsSingleResponse implements BrAPIResponse<CrossingPro
 
   
 
-  public void setAtContext(Context _atContext) {
+  public void set_atContext(Context _atContext) {
     this._atContext = _atContext;
   }
 

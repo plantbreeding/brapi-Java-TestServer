@@ -2,9 +2,12 @@ package org.brapi.test.BrAPITestServer.model.entity.germ;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
@@ -18,8 +21,6 @@ public class SeedLotEntity extends BrAPIPrimaryEntity {
 	private BigDecimal amount;
 	@Column
 	private Date createdDate;
-	@ManyToOne
-	private GermplasmEntity germplasm;
 	@Column
 	private Date lastUpdated;
 	@ManyToOne 
@@ -36,7 +37,15 @@ public class SeedLotEntity extends BrAPIPrimaryEntity {
 	private String storageLocation;
 	@Column
 	private String units;
+	@OneToMany(mappedBy = "seedLot")
+	private List<SeedLotContentMixtureEntity> contentMixture;
 	
+	public List<SeedLotContentMixtureEntity> getContentMixture() {
+		return contentMixture;
+	}
+	public void setContentMixture(List<SeedLotContentMixtureEntity> contentMixture) {
+		this.contentMixture = contentMixture;
+	}
 	public BigDecimal getAmount() {
 		return amount;
 	}
@@ -48,12 +57,6 @@ public class SeedLotEntity extends BrAPIPrimaryEntity {
 	}
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
-	}
-	public GermplasmEntity getGermplasm() {
-		return germplasm;
-	}
-	public void setGermplasm(GermplasmEntity germplasm) {
-		this.germplasm = germplasm;
 	}
 	public Date getLastUpdated() {
 		return lastUpdated;

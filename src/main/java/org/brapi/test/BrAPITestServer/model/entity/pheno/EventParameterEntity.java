@@ -1,6 +1,9 @@
 package org.brapi.test.BrAPITestServer.model.entity.pheno;
 
+import java.util.List;
+
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -16,8 +19,68 @@ public class EventParameterEntity extends BrAPIBaseEntity {
 	private String rdfValue;
 	@Column
 	private String value;
+	@Column
+	private String code;
+	@Column
+	private String description;
+	@Column
+	private String name;
+	@Column
+	private String units;
+	@Column
+	private String valueDescription;
+	@ElementCollection
+	private List<String> valuesByDate;
 	@ManyToOne
 	private EventEntity event;
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getUnits() {
+		return units;
+	}
+
+	public void setUnits(String units) {
+		this.units = units;
+	}
+
+	public String getValueDescription() {
+		return valueDescription;
+	}
+
+	public void setValueDescription(String valueDescription) {
+		this.valueDescription = valueDescription;
+	}
+
+	public List<String> getValuesByDate() {
+		return valuesByDate;
+	}
+
+	public void setValuesByDate(List<String> valuesByDate) {
+		this.valuesByDate = valuesByDate;
+	}
 
 	public String getKey() {
 		return key;

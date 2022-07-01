@@ -36,7 +36,7 @@ public class ObservationListResponse implements BrAPIResponse<ObservationListRes
 
   
 
-  public void setAtContext(Context _atContext) {
+  public void set_atContext(Context _atContext) {
     this._atContext = _atContext;
   }
 

@@ -35,7 +35,7 @@ public class VendorOrderListResponse implements BrAPIResponse<VendorOrderListRes
 
   
 
-  public void setAtContext(Context _atContext) {
+  public void set_atContext(Context _atContext) {
     this._atContext = _atContext;
   }
 

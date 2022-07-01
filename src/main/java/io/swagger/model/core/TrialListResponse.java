@@ -35,7 +35,7 @@ public class TrialListResponse implements BrAPIResponse<TrialListResponseResult>
 
   
 
-  public void setAtContext(Context _atContext) {
+  public void set_atContext(Context _atContext) {
     this._atContext = _atContext;
   }
 

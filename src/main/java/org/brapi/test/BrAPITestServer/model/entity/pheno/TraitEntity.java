@@ -21,7 +21,11 @@ public class TraitEntity extends BrAPIPrimaryEntity implements OntologyReference
 	@Column
 	private String attribute;
 	@Column
+	private String attributePUI;
+	@Column
 	private String entity;
+	@Column
+	private String entityPUI;
 	@Column
 	private String mainAbbreviation;
 	@OneToOne
@@ -39,9 +43,29 @@ public class TraitEntity extends BrAPIPrimaryEntity implements OntologyReference
 	private String traitDescription;
 	@Column
 	private String traitName;
+	@Column
+	private String traitPUI;
 	@OneToMany(mappedBy = "trait")
 	private List<VariableBaseEntity> variables;
 	
+	public String getAttributePUI() {
+		return attributePUI;
+	}
+	public void setAttributePUI(String attributePUI) {
+		this.attributePUI = attributePUI;
+	}
+	public String getEntityPUI() {
+		return entityPUI;
+	}
+	public void setEntityPUI(String entityPUI) {
+		this.entityPUI = entityPUI;
+	}
+	public String getTraitPUI() {
+		return traitPUI;
+	}
+	public void setTraitPUI(String traitPUI) {
+		this.traitPUI = traitPUI;
+	}
 	public List<String> getAlternativeAbbreviations() {
 		return alternativeAbbreviations;
 	}
