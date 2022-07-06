@@ -37,7 +37,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: Set tag
         id: vars
-        run: echo ::set-output name=imageName::$(echo breedinginsight/brapi-java-server:${{ github.run_number }}))
+        run: echo ::set-output name=imageName::$(echo breedinginsight/brapi-java-server:${{ github.run_number }})
       - name: Build Docker and push image
         run: |
           docker build . --file Dockerfile --tag ${{steps.vars.outputs.imageName}}
@@ -45,15 +45,15 @@ jobs:
       - name: Tag develop
         if: steps.extract_branch.outputs.branch == 'develop'
         run: |
-          docker tag ${{steps.vars.outputs.imageName}} breedinginsight/biapi:develop
-          docker push breedinginsight/biapi:develop
+          docker tag ${{steps.vars.outputs.imageName}} breedinginsight/brapi-java-server:develop
+          docker push breedinginsight/brapi-java-server:develop
       - name: Tag release candidate
         if: contains(github.ref, '/release/')
         run: |
-          docker tag ${{steps.vars.outputs.imageName}} breedinginsight/biapi:rc
-          docker push breedinginsight/biapi:rc
+          docker tag ${{steps.vars.outputs.imageName}} breedinginsight/brapi-java-server:rc
+          docker push breedinginsight/brapi-java-server:rc
       - name: Tag latest
         if: steps.extract_branch.outputs.branch == 'brapi-server-v2'
         run: |
-          docker tag ${{steps.vars.outputs.imageName}} breedinginsight/biapi:latest
-          docker push breedinginsight/biapi:latest
+          docker tag ${{steps.vars.outputs.imageName}} breedinginsight/brapi-java-server:latest
+          docker push breedinginsight/brapi-java-server:latest
