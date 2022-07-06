@@ -3,6 +3,7 @@ package org.brapi.test.BrAPITestServer.service.germ;
 import java.util.List;
 import java.util.Optional;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.germ.BreedingMethodEntity;
 import org.brapi.test.BrAPITestServer.repository.germ.BreedingMethodRepository;
@@ -46,7 +47,7 @@ public class BreedingMethodService {
 		if (entityOpt.isPresent()) {
 			breedingMethodEntity = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(errorStatus, "breedingMethodDbId not found: " + breedingMethodDbId);
+			throw new BrAPIServerDbIdNotFoundException("breedingMethod", breedingMethodDbId);
 		}
 		return breedingMethodEntity;
 	}

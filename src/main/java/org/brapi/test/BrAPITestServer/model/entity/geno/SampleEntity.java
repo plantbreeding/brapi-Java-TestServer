@@ -9,6 +9,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.ProgramEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
+import org.brapi.test.BrAPITestServer.model.entity.core.TrialEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.TaxonEntity;
 
@@ -21,6 +24,12 @@ public class SampleEntity extends BrAPIPrimaryEntity{
 	private String concentration;
 	@ManyToOne
 	private ObservationUnitEntity observationUnit;
+	@ManyToOne
+	private ProgramEntity program;
+	@ManyToOne
+	private TrialEntity trial;
+	@ManyToOne
+	private StudyEntity study;
 	@ManyToOne
 	private PlateEntity plate;
 	@Column
@@ -50,6 +59,24 @@ public class SampleEntity extends BrAPIPrimaryEntity{
 	@Column
 	private String well;
 	
+	public ProgramEntity getProgram() {
+		return program;
+	}
+	public void setProgram(ProgramEntity program) {
+		this.program = program;
+	}
+	public TrialEntity getTrial() {
+		return trial;
+	}
+	public void setTrial(TrialEntity trial) {
+		this.trial = trial;
+	}
+	public StudyEntity getStudy() {
+		return study;
+	}
+	public void setStudy(StudyEntity study) {
+		this.study = study;
+	}
 	public String getWell() {
 		return well;
 	}

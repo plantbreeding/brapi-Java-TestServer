@@ -11,7 +11,7 @@ import io.swagger.model.Metadata;
 
 import io.swagger.model.pheno.MethodListResponseResult;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 
 /**
@@ -36,7 +36,7 @@ public class MethodListResponse implements BrAPIResponse<MethodListResponseResul
 
   
 
-  public void setAtContext(Context _atContext) {
+  public void set_atContext(Context _atContext) {
     this._atContext = _atContext;
   }
 

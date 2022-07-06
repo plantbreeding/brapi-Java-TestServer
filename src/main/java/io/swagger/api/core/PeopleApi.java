@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
@@ -37,14 +37,17 @@ public interface PeopleApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/people", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<PersonListResponse> peopleGet(
-			@ApiParam(value = "A persons first name") @Valid @RequestParam(value = "firstName", required = false) String firstName,
-			@ApiParam(value = "A persons last name") @Valid @RequestParam(value = "lastName", required = false) String lastName,
-			@ApiParam(value = "The unique ID of a person") @Valid @RequestParam(value = "personDbId", required = false) String personDbId,
-			@ApiParam(value = "A systems user ID associated with this person. Different from personDbId because you could have a person who is not a user of the system.") @Valid @RequestParam(value = "userID", required = false) String userID,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "firstName") @Valid @RequestParam(value = "firstName", required = false) String firstName,
+			@ApiParam(value = "lastName") @Valid @RequestParam(value = "lastName", required = false) String lastName,
+			@ApiParam(value = "personDbId") @Valid @RequestParam(value = "personDbId", required = false) String personDbId,
+			@ApiParam(value = "userID") @Valid @RequestParam(value = "userID", required = false) String userID,
+			@ApiParam(value = "commonCropName") @Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@ApiParam(value = "programDbId") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@ApiParam(value = "externalReferenceID") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@ApiParam(value = "externalReferenceId") @Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@ApiParam(value = "externalReferenceSource") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
 
@@ -73,7 +76,8 @@ public interface PeopleApi {
 	ResponseEntity<PersonSingleResponse> peoplePersonDbIdPut(
 			@ApiParam(value = "The unique ID of a person", required = true) @PathVariable("personDbId") String personDbId,
 			@ApiParam(value = "") @Valid @RequestBody PersonNewRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Create new People", nickname = "peoplePost", notes = "Create new People entities. `personDbId` is generated and managed by the server.", response = PersonListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "People", })
@@ -84,7 +88,8 @@ public interface PeopleApi {
 	@RequestMapping(value = "/people", produces = { "application/json" }, consumes = {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<PersonListResponse> peoplePost(@ApiParam(value = "") @Valid @RequestBody List<PersonNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Submit a search request for People", nickname = "searchPeoplePost", notes = "Advanced searching for the programs resource.  See Search Services for additional implementation details.", response = PersonListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "People", })
@@ -97,7 +102,8 @@ public interface PeopleApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<? extends BrAPIResponse> searchPeoplePost(
 			@ApiParam(value = "") @Valid @RequestBody PersonSearchRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the results of a People search request", nickname = "searchPeopleSearchResultsDbIdGet", notes = "Advanced searching for the people resource.  See Search Services for additional implementation details.", response = PersonListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "People", })
@@ -110,8 +116,9 @@ public interface PeopleApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<? extends BrAPIResponse> searchPeopleSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 }

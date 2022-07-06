@@ -2,19 +2,10 @@ package io.swagger.model.core;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Context;
 import io.swagger.model.Metadata;
 
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-
-/**
- * ListsSingleResponse
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
 public class ListsSingleResponse implements BrAPIResponse<ListDetails> {
 	@JsonProperty("@context")
 	private Context _atContext = null;
@@ -35,15 +26,6 @@ public class ListsSingleResponse implements BrAPIResponse<ListDetails> {
 		return this;
 	}
 
-	/**
-	 * Get metadata
-	 * 
-	 * @return metadata
-	 **/
-	@ApiModelProperty(required = true, value = "")
-	
-
-	@Valid
 	public Metadata getMetadata() {
 		return metadata;
 	}
@@ -57,21 +39,17 @@ public class ListsSingleResponse implements BrAPIResponse<ListDetails> {
 		return this;
 	}
 
-	/**
-	 * Get result
-	 * 
-	 * @return result
-	 **/
-	@ApiModelProperty(required = true, value = "")
-	
-
-	@Valid
 	public ListDetails getResult() {
 		return result;
 	}
 
 	public void setResult(ListDetails result) {
 		this.result = result;
+	}
+
+	@Override
+	public void set_atContext(Context _atContext) {
+		this._atContext = _atContext;
 	}
 
 	@Override

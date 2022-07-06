@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:33:36.513Z[GMT]")
@@ -70,8 +70,8 @@ public interface GermplasmApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<GermplasmPedigreeResponse> germplasmGermplasmDbIdPedigreeGet(
 			@ApiParam(value = "the internal id of the germplasm", required = true) @PathVariable("germplasmDbId") String germplasmDbId,
-			@ApiParam(value = "text representation of the pedigree") @Valid @RequestParam(value = "notation", required = false) String notation,
-			@ApiParam(value = "include array of siblings in response") @Valid @RequestParam(value = "includeSiblings", required = false) Boolean includeSiblings,
+			@ApiParam(value = "notation") @Valid @RequestParam(value = "notation", required = false) String notation,
+			@ApiParam(value = "includeSiblings") @Valid @RequestParam(value = "includeSiblings", required = false) Boolean includeSiblings,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
 
@@ -112,22 +112,26 @@ public interface GermplasmApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/germplasm", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<GermplasmListResponse> germplasmGet(
-			@ApiParam(value = "Permanent unique identifier (DOI, URI, etc.)") @Valid @RequestParam(value = "germplasmPUI", required = false) String germplasmPUI,
-			@ApiParam(value = "Internal database identifier") @Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
-			@ApiParam(value = "Name of the germplasm") @Valid @RequestParam(value = "germplasmName", required = false) String germplasmName,
-			@ApiParam(value = "The common crop name related to this germplasm") @Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
-			@ApiParam(value = "Unique identifiers for accessions within a genebank") @Valid @RequestParam(value = "accessionNumber", required = false) String accessionNumber,
-			@ApiParam(value = "A specific panel/collection/population name this germplasm belongs to.") @Valid @RequestParam(value = "collection", required = false) String collection,
-			@ApiParam(value = "Genus name to identify germplasm") @Valid @RequestParam(value = "genus", required = false) String genus,
-			@ApiParam(value = "Species name to identify germplasm") @Valid @RequestParam(value = "species", required = false) String species,
-			@ApiParam(value = "Search for Germplasm that are associated with a particular Study") @Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
-			@ApiParam(value = "Alternative name or ID used to reference this germplasm") @Valid @RequestParam(value = "synonym", required = false) String synonym,
-			@ApiParam(value = "Search for Germplasm with this parent") @Valid @RequestParam(value = "parentDbId", required = false) String parentDbId,
-			@ApiParam(value = "Search for Germplasm with this child") @Valid @RequestParam(value = "progenyDbId", required = false) String progenyDbId,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "germplasmPUI") @Valid @RequestParam(value = "germplasmPUI", required = false) String germplasmPUI,
+			@ApiParam(value = "germplasmDbId") @Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
+			@ApiParam(value = "germplasmName") @Valid @RequestParam(value = "germplasmName", required = false) String germplasmName,
+			@ApiParam(value = "accessionNumber") @Valid @RequestParam(value = "accessionNumber", required = false) String accessionNumber,
+			@ApiParam(value = "collection") @Valid @RequestParam(value = "collection", required = false) String collection,
+			@ApiParam(value = "binomialName") @Valid @RequestParam(value = "binomialName", required = false) String binomialName,
+			@ApiParam(value = "genus") @Valid @RequestParam(value = "genus", required = false) String genus,
+			@ApiParam(value = "species") @Valid @RequestParam(value = "species", required = false) String species,
+			@ApiParam(value = "trialDbId") @Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
+			@ApiParam(value = "studyDbId") @Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@ApiParam(value = "synonym") @Valid @RequestParam(value = "synonym", required = false) String synonym,
+			@ApiParam(value = "parentDbId") @Valid @RequestParam(value = "parentDbId", required = false) String parentDbId,
+			@ApiParam(value = "progenyDbId") @Valid @RequestParam(value = "progenyDbId", required = false) String progenyDbId,
+			@ApiParam(value = "commonCropName") @Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@ApiParam(value = "programDbId") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@ApiParam(value = "externalReferenceID") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@ApiParam(value = "externalReferenceId") @Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@ApiParam(value = "externalReferenceSource") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
 
@@ -170,8 +174,8 @@ public interface GermplasmApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<? extends BrAPIResponse> searchGermplasmSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
 

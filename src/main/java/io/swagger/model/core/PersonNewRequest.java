@@ -10,7 +10,7 @@ import io.swagger.model.ExternalReferences;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * PersonNewRequest

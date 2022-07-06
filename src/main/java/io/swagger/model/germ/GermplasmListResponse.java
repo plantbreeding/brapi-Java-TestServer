@@ -12,7 +12,7 @@ import io.swagger.model.Model202AcceptedSearchResponse;
 import io.swagger.model.germ.GermplasmListResponseResult;
 
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 
 /**
@@ -37,7 +37,7 @@ public class GermplasmListResponse implements BrAPIResponse<GermplasmListRespons
 
   
 
-  public void setAtContext(Context _atContext) {
+  public void set_atContext(Context _atContext) {
     this._atContext = _atContext;
   }
 

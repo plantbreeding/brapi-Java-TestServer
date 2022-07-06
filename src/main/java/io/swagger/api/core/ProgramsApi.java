@@ -10,6 +10,7 @@ import io.swagger.model.Model202AcceptedSearchResponse;
 import io.swagger.model.core.ProgramListResponse;
 import io.swagger.model.core.ProgramNewRequest;
 import io.swagger.model.core.ProgramSearchRequest;
+import io.swagger.model.core.ProgramSearchRequest.ProgramTypesEnum;
 import io.swagger.model.core.ProgramSingleResponse;
 import io.swagger.annotations.*;
 
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
@@ -37,15 +38,18 @@ public interface ProgramsApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/programs", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ProgramListResponse> programsGet(
-			@ApiParam(value = "Filter by the common crop name. Exact match.") @Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
-			@ApiParam(value = "Filter by program name. Exact match.") @Valid @RequestParam(value = "programName", required = false) String programName,
-			@ApiParam(value = "Filter by programDbId. Exact match.") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
-			@ApiParam(value = "Filter by program abbreviation. Exact match.") @Valid @RequestParam(value = "abbreviation", required = false) String abbreviation,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "commonCropName") @Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@ApiParam(value = "programName") @Valid @RequestParam(value = "programName", required = false) String programName,
+			@ApiParam(value = "programDbId") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@ApiParam(value = "abbreviation") @Valid @RequestParam(value = "abbreviation", required = false) String abbreviation,
+			@ApiParam(value = "programType") @Valid @RequestParam(value = "programType", required = false) ProgramTypesEnum programType,
+			@ApiParam(value = "externalReferenceID") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@ApiParam(value = "externalReferenceId") @Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@ApiParam(value = "externalReferenceSource") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Add new breeding Programs to the database", nickname = "programsPost", notes = "Add new breeding Programs to the database. The `programDbId` is set by the server, all other fields are take from the request body, or a default value is used.", response = ProgramListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Programs", })
@@ -57,7 +61,8 @@ public interface ProgramsApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<ProgramListResponse> programsPost(
 			@ApiParam(value = "") @Valid @RequestBody List<ProgramNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get a breeding Program by Id", nickname = "programsProgramDbIdGet", notes = "Get a single breeding Program by Id. This can be used to quickly get the details of a Program when you have the Id from another entity.", response = ProgramSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Programs", })
@@ -68,7 +73,8 @@ public interface ProgramsApi {
 	@RequestMapping(value = "/programs/{programDbId}", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ProgramSingleResponse> programsProgramDbIdGet(
 			@ApiParam(value = "Filter by the common crop name. Exact match.", required = true) @PathVariable("programDbId") String programDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Update an existing Program", nickname = "programsProgramDbIdPut", notes = "Update the details of an existing breeding Program.", response = ProgramSingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Programs", })
@@ -81,7 +87,8 @@ public interface ProgramsApi {
 	ResponseEntity<ProgramSingleResponse> programsProgramDbIdPut(
 			@ApiParam(value = "Filter by the common crop name. Exact match.", required = true) @PathVariable("programDbId") String programDbId,
 			@ApiParam(value = "") @Valid @RequestBody ProgramNewRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Submit a search request for Programs", nickname = "searchProgramsPost", notes = "Advanced searching for the programs resource. See Search Services for additional implementation details.", response = ProgramListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Programs", })
@@ -94,7 +101,8 @@ public interface ProgramsApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<? extends BrAPIResponse> searchProgramsPost(
 			@ApiParam(value = "") @Valid @RequestBody ProgramSearchRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the results of a Programs search request", nickname = "searchProgramsSearchResultsDbIdGet", notes = "Advanced searching for the programs resource. See Search Services for additional implementation details.", response = ProgramListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Programs", })
@@ -108,8 +116,9 @@ public interface ProgramsApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<? extends BrAPIResponse> searchProgramsSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 }

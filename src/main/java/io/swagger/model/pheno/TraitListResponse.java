@@ -9,7 +9,7 @@ import io.swagger.model.Context;
 import io.swagger.model.Metadata;
 import io.swagger.model.pheno.TraitListResponseResult;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 
 /**
@@ -32,7 +32,7 @@ public class TraitListResponse implements BrAPIResponse<TraitListResponseResult>
 		return this;
 	}
 
-	public void setAtContext(Context _atContext) {
+	public void set_atContext(Context _atContext) {
 		this._atContext = _atContext;
 	}
 

@@ -13,6 +13,7 @@ import io.swagger.model.germ.Germplasm;
 import io.swagger.model.germ.GermplasmListResponse;
 import io.swagger.model.germ.GermplasmListResponseResult;
 import io.swagger.model.germ.GermplasmSearchRequest;
+import io.swagger.annotations.ApiParam;
 import io.swagger.api.geno.ReferencesApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -32,7 +33,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -47,7 +48,8 @@ public class ReferencesApiController extends BrAPIController implements Referenc
 	private final HttpServletRequest request;
 
 	@Autowired
-	public ReferencesApiController(ReferenceService referenceService, SearchService searchService, HttpServletRequest request) {
+	public ReferencesApiController(ReferenceService referenceService, SearchService searchService,
+			HttpServletRequest request) {
 		this.referenceService = referenceService;
 		this.searchService = searchService;
 		this.request = request;
@@ -63,6 +65,12 @@ public class ReferencesApiController extends BrAPIController implements Referenc
 			@Valid @RequestParam(value = "isDerived", required = false) Boolean isDerived,
 			@Valid @RequestParam(value = "minLength", required = false) Integer minLength,
 			@Valid @RequestParam(value = "maxLength", required = false) Integer maxLength,
+			@Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
+			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -72,7 +80,8 @@ public class ReferencesApiController extends BrAPIController implements Referenc
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<Reference> data = referenceService.findReferences(referenceDbId, referenceSetDbId, accession, md5checksum,
-				isDerived, minLength, maxLength, metadata);
+				isDerived, minLength, maxLength, trialDbId, studyDbId, commonCropName, programDbId, externalReferenceId,
+				externalReferenceSource, metadata);
 		return responseOK(new ReferencesListResponse(), new ReferencesListResponseResult(), data, metadata);
 	}
 
@@ -107,7 +116,8 @@ public class ReferencesApiController extends BrAPIController implements Referenc
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<? extends BrAPIResponse> searchReferencesPost(@Valid @RequestBody ReferencesSearchRequest body,
+	public ResponseEntity<? extends BrAPIResponse> searchReferencesPost(
+			@Valid @RequestBody ReferencesSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
@@ -141,7 +151,7 @@ public class ReferencesApiController extends BrAPIController implements Referenc
 			ReferencesSearchRequest body = request.getParameters(ReferencesSearchRequest.class);
 			List<Reference> data = referenceService.findReferences(body, metadata);
 			return responseOK(new ReferencesListResponse(), new ReferencesListResponseResult(), data, metadata);
-		}else {
+		} else {
 			return responseAccepted(searchResultsDbId);
 		}
 	}

@@ -8,7 +8,7 @@ import io.swagger.model.Context;
 import io.swagger.model.Metadata;
 
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * ListResponse
@@ -35,15 +35,6 @@ public class ListResponse implements BrAPIResponse<ListDetails> {
 		return this;
 	}
 
-	/**
-	 * Get metadata
-	 * 
-	 * @return metadata
-	 **/
-	@ApiModelProperty(required = true, value = "")
-	
-
-	@Valid
 	public Metadata getMetadata() {
 		return metadata;
 	}
@@ -57,21 +48,17 @@ public class ListResponse implements BrAPIResponse<ListDetails> {
 		return this;
 	}
 
-	/**
-	 * Get result
-	 * 
-	 * @return result
-	 **/
-	@ApiModelProperty(required = true, value = "")
-	
-
-	@Valid
 	public ListDetails getResult() {
 		return result;
 	}
 
 	public void setResult(ListDetails result) {
 		this.result = result;
+	}
+
+	@Override
+	public void set_atContext(Context _atContext) {
+		this._atContext = _atContext;
 	}
 
 	@Override
@@ -115,4 +102,5 @@ public class ListResponse implements BrAPIResponse<ListDetails> {
 		}
 		return o.toString().replace("\n", "\n    ");
 	}
+
 }

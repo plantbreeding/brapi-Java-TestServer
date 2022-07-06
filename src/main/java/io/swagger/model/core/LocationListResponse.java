@@ -8,7 +8,7 @@ import io.swagger.model.Context;
 import io.swagger.model.Metadata;
 
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * LocationListResponse
@@ -32,7 +32,7 @@ public class LocationListResponse implements BrAPIResponse<LocationListResponseR
 
   
 
-  public void setAtContext(Context _atContext) {
+  public void set_atContext(Context _atContext) {
     this._atContext = _atContext;
   }
 

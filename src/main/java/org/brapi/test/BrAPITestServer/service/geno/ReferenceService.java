@@ -4,16 +4,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.apache.commons.lang3.math.NumberUtils;
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.geno.ReferenceBasesPageEntity;
 import org.brapi.test.BrAPITestServer.model.entity.geno.ReferenceEntity;
+import org.brapi.test.BrAPITestServer.model.entity.geno.ReferenceSetEntity;
 import org.brapi.test.BrAPITestServer.repository.geno.ReferenceBaseRepository;
 import org.brapi.test.BrAPITestServer.repository.geno.ReferenceRepository;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
+import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +30,7 @@ import io.swagger.model.geno.OntologyTerm;
 import io.swagger.model.geno.Reference;
 import io.swagger.model.geno.ReferencesSearchRequest;
 import io.swagger.model.geno.ReferenceBases;
+import io.swagger.model.geno.ReferenceSourceGermplasm;
 
 @Service
 public class ReferenceService {
@@ -41,7 +45,9 @@ public class ReferenceService {
 	}
 
 	public List<Reference> findReferences(String referenceDbId, String referenceSetDbId, String accession,
-			String md5checksum, Boolean isDerived, Integer minLength, Integer maxLength, Metadata metadata) {
+			String md5checksum, Boolean isDerived, Integer minLength, Integer maxLength, String trialDbId,
+			String studyDbId, String commonCropName, String programDbId, String externalReferenceId,
+			String externalReferenceSource, Metadata metadata) {
 		ReferencesSearchRequest request = new ReferencesSearchRequest();
 		if (referenceDbId != null)
 			request.addReferenceDbIdsItem(referenceDbId);
@@ -51,9 +57,19 @@ public class ReferenceService {
 			request.addAccessionsItem(accession);
 		if (md5checksum != null)
 			request.addMd5checksumsItem(md5checksum);
+		if (commonCropName != null)
+			request.addCommonCropNamesItem(commonCropName);
+		if (programDbId != null)
+			request.addProgramDbIdsItem(programDbId);
+		if (trialDbId != null)
+			request.addTrialDbIdsItem(trialDbId);
+		if (studyDbId != null)
+			request.addStudyDbIdsItem(studyDbId);
 		request.setIsDerived(isDerived);
 		request.setMinLength(minLength);
 		request.setMaxLength(maxLength);
+
+		request.addExternalReferenceItem(externalReferenceId, null, externalReferenceSource);
 
 		return findReferences(request, metadata);
 	}
@@ -61,7 +77,7 @@ public class ReferenceService {
 	public List<Reference> findReferences(@Valid ReferencesSearchRequest request, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<ReferenceEntity> searchQuery = new SearchQueryBuilder<ReferenceEntity>(ReferenceEntity.class)
-				.appendList(request.getAccessions(), "referenceSet.germplasm.id")
+				.appendList(request.getAccessions(), "referenceSet.sourceGermplasm.accessionNumber")
 				.appendList(request.getMd5checksums(), "md5checksum").appendList(request.getReferenceDbIds(), "id")
 				.appendList(request.getReferenceSetDbIds(), "referenceSet.id")
 				.appendNumberRange(request.getMinLength(), request.getMaxLength(), "length")
@@ -83,32 +99,46 @@ public class ReferenceService {
 		if (entityOpt.isPresent()) {
 			reference = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "referenceDbId not found: " + referenceDbId);
+			throw new BrAPIServerDbIdNotFoundException("reference", referenceDbId);
 		}
 		return reference;
 	}
 
 	private Reference convertFromEntity(ReferenceEntity entity) {
 		Reference ref = new Reference();
-		ref.setAdditionalInfo(entity.getAdditionalInfoMap());
+		UpdateUtility.convertFromEntity(entity, ref);
+
 		ref.setLength(entity.getLength());
 		ref.setMd5checksum(entity.getMd5checksum());
 		ref.setReferenceDbId(entity.getId());
 		ref.setReferenceName(entity.getReferenceName());
+
 		if (entity.getReferenceSet() != null) {
-			ref.setReferenceSetDbId(entity.getReferenceSet().getId());
-			ref.setIsDerived(entity.getReferenceSet().getIsDerived());
-			if (entity.getReferenceSet().getSourceGermplasm() != null
-					&& entity.getReferenceSet().getSourceGermplasm().getAccessionNumber() != null)
-				ref.setSourceAccessions(
-						Arrays.asList(entity.getReferenceSet().getSourceGermplasm().getAccessionNumber()));
+			ReferenceSetEntity refSetEntity = entity.getReferenceSet();
+			ref.setReferenceSetDbId(refSetEntity.getId());
+			ref.setReferenceName(refSetEntity.getReferenceSetName());
+			ref.setIsDerived(refSetEntity.getIsDerived());
 			ref.setSourceURI(entity.getReferenceSet().getSourceURI());
 			OntologyTerm term = new OntologyTerm().term(entity.getReferenceSet().getSpeciesOntologyTerm())
 					.termURI(entity.getReferenceSet().getSpeciesOntologyTermURI());
 			ref.setSpecies(term);
+
+			if (refSetEntity.getSourceGermplasm() != null) {
+				ref.setCommonCropName(refSetEntity.getSourceGermplasm().getCrop().getCropName());
+				ReferenceSourceGermplasm sourceGerm = new ReferenceSourceGermplasm();
+				sourceGerm.setGermplasmDbId(refSetEntity.getSourceGermplasm().getId());
+				sourceGerm.setGermplasmName(refSetEntity.getSourceGermplasm().getGermplasmName());
+				ref.setSourceGermplasm(Arrays.asList(sourceGerm));
+
+				if (refSetEntity.getSourceGermplasm().getAccessionNumber() != null) {
+					ref.setSourceAccessions(Arrays.asList(refSetEntity.getSourceGermplasm().getAccessionNumber()));
+				}
+			}
 		}
-		if (entity.getSourceDivergence() != null)
+
+		if (entity.getSourceDivergence() != null) {
 			ref.setSourceDivergence(entity.getSourceDivergence().floatValue());
+		}
 
 		return ref;
 	}

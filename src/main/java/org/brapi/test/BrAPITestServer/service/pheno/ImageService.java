@@ -5,8 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ImageEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationEntity;
@@ -18,7 +19,6 @@ import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import io.swagger.model.Metadata;
 import io.swagger.model.pheno.Image;
@@ -39,9 +39,9 @@ public class ImageService {
 		this.observationUnitService = observationUnitService;
 	}
 
-	public List<Image> findImages(@Valid String imageDbId, @Valid String imageName, @Valid String observationUnitDbId,
-			@Valid String observationDbId, @Valid String descriptiveOntologyTerm, @Valid String externalReferenceID,
-			@Valid String externalReferenceSource, Metadata metadata) {
+	public List<Image> findImages(String imageDbId, String imageName, String observationUnitDbId,
+			String observationDbId, String descriptiveOntologyTerm, String commonCropName, String programDbId,
+			String externalReferenceId, String externalReferenceID, String externalReferenceSource, Metadata metadata) {
 		ImageSearchRequest request = new ImageSearchRequest();
 		if (imageDbId != null)
 			request.addImageDbIdsItem(imageDbId);
@@ -53,15 +53,17 @@ public class ImageService {
 			request.addObservationDbIdsItem(observationDbId);
 		if (descriptiveOntologyTerm != null)
 			request.addDescriptiveOntologyTermsItem(descriptiveOntologyTerm);
-		if (externalReferenceID != null)
-			request.addExternalReferenceIDsItem(externalReferenceID);
-		if (externalReferenceSource != null)
-			request.addExternalReferenceSourcesItem(externalReferenceSource);
+		if (commonCropName != null)
+			request.addCommonCropNamesItem(commonCropName);
+		if (programDbId != null)
+			request.addProgramDbIdsItem(programDbId);
+
+		request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
 
 		return findImages(request, metadata);
 	}
 
-	public List<Image> findImages(@Valid ImageSearchRequest request, Metadata metadata) {
+	public List<ImageEntity> findImageEntities(ImageSearchRequest request, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<ImageEntity> searchQuery = new SearchQueryBuilder<ImageEntity>(ImageEntity.class);
 		if (request.getDescriptiveOntologyTerms() != null) {
@@ -85,8 +87,12 @@ public class ImageService {
 
 		Page<ImageEntity> imagePage = imageRepository.findAllBySearch(searchQuery, pageReq);
 		PagingUtility.calculateMetaData(metadata, imagePage);
+		return imagePage.getContent();
+	}
 
-		List<Image> images = imagePage.map(this::convertFromEntity).getContent();
+	public List<Image> findImages(ImageSearchRequest request, Metadata metadata) {
+		List<ImageEntity> imagePage = findImageEntities(request, metadata);
+		List<Image> images = imagePage.stream().map(this::convertFromEntity).collect(Collectors.toList());
 		return images;
 	}
 
@@ -98,7 +104,7 @@ public class ImageService {
 			if (imageOption.isPresent()) {
 				image = convertFromEntity(imageOption.get());
 			} else {
-				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "imageDbId not found: " + imageDbId);
+				throw new BrAPIServerDbIdNotFoundException("image", imageDbId);
 			}
 		}
 
@@ -118,7 +124,7 @@ public class ImageService {
 
 				result = convertFromEntity(saved);
 			} else {
-				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "imageDbId not found: " + imageDbId);
+				throw new BrAPIServerDbIdNotFoundException("image", imageDbId);
 			}
 
 		}
@@ -134,7 +140,7 @@ public class ImageService {
 
 			savedEntity = imageRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "imageDbId not found: " + imageDbId);
+			throw new BrAPIServerDbIdNotFoundException("image", imageDbId);
 		}
 
 		return convertFromEntity(savedEntity);
@@ -161,6 +167,17 @@ public class ImageService {
 			}
 		}
 		return bytes;
+	}
+
+	public List<String> deleteImages(ImageSearchRequest body, Metadata metadata) {
+		List<String> deletedImageDbIds = new ArrayList<>();
+
+		if (body.getTotalParameterCount() > 0) {
+			List<ImageEntity> deletedImages = findImageEntities(body, metadata);
+			imageRepository.deleteAll(deletedImages);
+			deletedImageDbIds = deletedImages.stream().map(image -> image.getId()).collect(Collectors.toList());
+		}
+		return deletedImageDbIds;
 	}
 
 	private String constructURL(ImageEntity newEntity, String requestURL) {

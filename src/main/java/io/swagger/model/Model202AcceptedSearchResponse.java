@@ -11,7 +11,7 @@ import io.swagger.model.Model202AcceptedSearchResponseResult;
 import io.swagger.model.germ.GermplasmListResponseResult;
 
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * Model202AcceptedSearchResponse
@@ -44,7 +44,7 @@ public class Model202AcceptedSearchResponse implements BrAPIResponse<Model202Acc
     return _atContext;
   }
 
-  public void setAtContext(Context _atContext) {
+  public void set_atContext(Context _atContext) {
     this._atContext = _atContext;
   }
 

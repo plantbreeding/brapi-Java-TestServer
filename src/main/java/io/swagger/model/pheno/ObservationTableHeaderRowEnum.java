@@ -9,6 +9,8 @@ public enum ObservationTableHeaderRowEnum {
     OBSERVATIONUNITNAME("observationUnitName"),
     STUDYDBID("studyDbId"),
     STUDYNAME("studyName"),
+    LOCATIONDBID("locationDbId"),
+    LOCATIONNAME("locationName"),
     GERMPLASMDBID("germplasmDbId"),
     GERMPLASMNAME("germplasmName"),
     POSITIONCOORDINATEX("positionCoordinateX"),

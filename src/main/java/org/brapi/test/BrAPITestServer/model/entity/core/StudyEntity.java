@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
+import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationVariableEntity;
 
 @Entity
 @Table(name = "study")
@@ -27,8 +28,8 @@ public class StudyEntity extends BrAPIPrimaryEntity {
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "study_contact", joinColumns = {
 			@JoinColumn(name = "study_db_id", referencedColumnName = "id") }, inverseJoinColumns = {
-					@JoinColumn(name = "contact_db_id", referencedColumnName = "id") })
-	private List<ContactEntity> contacts;
+					@JoinColumn(name = "person_db_id", referencedColumnName = "id") })
+	private List<PersonEntity> contacts;
 	@Column
 	private String culturalPractices;
 	@OneToMany(mappedBy = "study")
@@ -39,11 +40,11 @@ public class StudyEntity extends BrAPIPrimaryEntity {
 	private Date endDate;
 	@OneToMany(mappedBy = "study")
 	private List<EnvironmentParametersEntity> environmentParameters;
-	@OneToOne(mappedBy = "study", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
 	private ExperimentalDesignEntity experimentalDesign;
-	@OneToOne(mappedBy = "study", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
 	private GrowthFacilityEntity growthFacility;
-	@OneToOne(mappedBy = "study", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
 	private StudyLastUpdateEntity lastUpdate;
 	@Column
 	private String license;
@@ -58,6 +59,11 @@ public class StudyEntity extends BrAPIPrimaryEntity {
 			@JoinColumn(name = "study_db_id", referencedColumnName = "id") }, inverseJoinColumns = {
 					@JoinColumn(name = "season_db_id", referencedColumnName = "id") })
 	private List<SeasonEntity> seasons;
+	@ManyToMany
+	@JoinTable(name = "study_variable", joinColumns = {
+			@JoinColumn(name = "study_db_id", referencedColumnName = "id") }, inverseJoinColumns = {
+					@JoinColumn(name = "variable_db_id", referencedColumnName = "id") })
+	private List<ObservationVariableEntity> observationVariables;
 	@Column
 	private Date startDate;
 	@Column
@@ -82,6 +88,15 @@ public class StudyEntity extends BrAPIPrimaryEntity {
 	private List<ObservationUnitEntity> observationUnits;
 	@OneToMany(mappedBy="study")
 	private List<ObservationEntity> observations;
+
+	
+	public List<ObservationVariableEntity> getObservationVariables() {
+		return observationVariables;
+	}
+
+	public void setObservationVariables(List<ObservationVariableEntity> observationVariables) {
+		this.observationVariables = observationVariables;
+	}
 
 	public CropEntity getCrop() {
 		return crop;
@@ -125,11 +140,11 @@ public class StudyEntity extends BrAPIPrimaryEntity {
 		this.active = active;
 	}
 
-	public List<ContactEntity> getContacts() {
+	public List<PersonEntity> getContacts() {
 		return contacts;
 	}
 
-	public void setContacts(List<ContactEntity> contacts) {
+	public void setContacts(List<PersonEntity> contacts) {
 		this.contacts = contacts;
 	}
 

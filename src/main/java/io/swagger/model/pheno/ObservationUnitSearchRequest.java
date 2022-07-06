@@ -3,96 +3,91 @@ package io.swagger.model.pheno;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.SearchRequest;
-import io.swagger.model.SearchRequestParametersPaging;
-import io.swagger.model.pheno.ObservationUnitLevelRelationship;
-
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
 
-/**
- * ObservationUnitSearchRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:22.556Z[GMT]")
-public class ObservationUnitSearchRequest extends SearchRequestParametersPaging implements SearchRequest {
+public class ObservationUnitSearchRequest extends SearchRequest {
+	@JsonProperty("commonCropNames")
+	private List<String> commonCropNames = null;
+
 	@JsonProperty("programDbIds")
-	@Valid
 	private List<String> programDbIds = null;
 
 	@JsonProperty("programNames")
-	@Valid
 	private List<String> programNames = null;
 
 	@JsonProperty("trialDbIds")
-	@Valid
 	private List<String> trialDbIds = null;
 
 	@JsonProperty("trialNames")
-	@Valid
 	private List<String> trialNames = null;
 
 	@JsonProperty("studyDbIds")
-	@Valid
 	private List<String> studyDbIds = null;
 
 	@JsonProperty("studyNames")
-	@Valid
 	private List<String> studyNames = null;
 
 	@JsonProperty("seasonDbIds")
-	@Valid
 	private List<String> seasonDbIds = null;
 
 	@JsonProperty("locationDbIds")
-	@Valid
 	private List<String> locationDbIds = null;
 
 	@JsonProperty("locationNames")
-	@Valid
 	private List<String> locationNames = null;
 
 	@JsonProperty("germplasmDbIds")
-	@Valid
 	private List<String> germplasmDbIds = null;
 
 	@JsonProperty("germplasmNames")
-	@Valid
 	private List<String> germplasmNames = null;
 
 	@JsonProperty("observationVariableDbIds")
-	@Valid
 	private List<String> observationVariableDbIds = null;
 
 	@JsonProperty("observationVariableNames")
-	@Valid
 	private List<String> observationVariableNames = null;
 
-	@JsonProperty("externalReferenceIDs")
-	@Valid
-	private List<String> externalReferenceIDs = null;
-
-	@JsonProperty("externalReferenceSources")
-	@Valid
-	private List<String> externalReferenceSources = null;
+	@JsonProperty("observationVariablePUIs")
+	private List<String> observationVariablePUIs = null;
 
 	@JsonProperty("includeObservations")
 	private Boolean includeObservations = null;
 
 	@JsonProperty("observationLevelRelationships")
-	@Valid
 	private List<ObservationUnitLevelRelationship> observationLevelRelationships = null;
 
 	@JsonProperty("observationLevels")
-	@Valid
-	private List<ObservationUnitLevelRelationship> observationLevels = null;
+	private List<ObservationUnitLevel> observationLevels = null;
 
 	@JsonProperty("observationUnitDbIds")
-	@Valid
 	private List<String> observationUnitDbIds = null;
+
+	@JsonProperty("observationUnitNames")
+	private List<String> observationUnitNames = null;
+
+	public ObservationUnitSearchRequest commonCropNames(List<String> commonCropNames) {
+		this.commonCropNames = commonCropNames;
+		return this;
+	}
+
+	public ObservationUnitSearchRequest addCommonCropNamesItem(String commonCropNamesItem) {
+		if (this.commonCropNames == null) {
+			this.commonCropNames = new ArrayList<String>();
+		}
+		this.commonCropNames.add(commonCropNamesItem);
+		return this;
+	}
+
+	public List<String> getCommonCropNames() {
+		return commonCropNames;
+	}
+
+	public void setCommonCropNames(List<String> commonCropNames) {
+		this.commonCropNames = commonCropNames;
+	}
 
 	public ObservationUnitSearchRequest seasonDbIds(List<String> seasonDbIds) {
 		this.seasonDbIds = seasonDbIds;
@@ -128,13 +123,6 @@ public class ObservationUnitSearchRequest extends SearchRequestParametersPaging 
 		return this;
 	}
 
-	/**
-	 * A program identifier to search for
-	 * 
-	 * @return programDbIds
-	 **/
-	@ApiModelProperty(example = "[\"8f5de35b\",\"0e2d4a13\"]", value = "A program identifier to search for")
-
 	public List<String> getProgramDbIds() {
 		return programDbIds;
 	}
@@ -155,13 +143,6 @@ public class ObservationUnitSearchRequest extends SearchRequestParametersPaging 
 		this.programNames.add(programNamesItem);
 		return this;
 	}
-
-	/**
-	 * A name of a program to search for
-	 * 
-	 * @return programNames
-	 **/
-	@ApiModelProperty(example = "[\"Better Breeding Program\",\"Best Breeding Program\"]", value = "A name of a program to search for")
 
 	public List<String> getProgramNames() {
 		return programNames;
@@ -184,13 +165,6 @@ public class ObservationUnitSearchRequest extends SearchRequestParametersPaging 
 		return this;
 	}
 
-	/**
-	 * The ID which uniquely identifies a trial to search for
-	 * 
-	 * @return trialDbIds
-	 **/
-	@ApiModelProperty(example = "[\"d2593dc2\",\"9431a731\"]", value = "The ID which uniquely identifies a trial to search for")
-
 	public List<String> getTrialDbIds() {
 		return trialDbIds;
 	}
@@ -211,13 +185,6 @@ public class ObservationUnitSearchRequest extends SearchRequestParametersPaging 
 		this.trialNames.add(trialNamesItem);
 		return this;
 	}
-
-	/**
-	 * The human readable name of a trial to search for
-	 * 
-	 * @return trialNames
-	 **/
-	@ApiModelProperty(example = "[\"All Yield Trials 2016\",\"Disease Resistance Study Comparison Group\"]", value = "The human readable name of a trial to search for")
 
 	public List<String> getTrialNames() {
 		return trialNames;
@@ -240,13 +207,6 @@ public class ObservationUnitSearchRequest extends SearchRequestParametersPaging 
 		return this;
 	}
 
-	/**
-	 * List of study identifiers to search for
-	 * 
-	 * @return studyDbIds
-	 **/
-	@ApiModelProperty(example = "[\"cf6c4bd4\",\"691e69d6\"]", value = "List of study identifiers to search for")
-
 	public List<String> getStudyDbIds() {
 		return studyDbIds;
 	}
@@ -267,13 +227,6 @@ public class ObservationUnitSearchRequest extends SearchRequestParametersPaging 
 		this.studyNames.add(studyNamesItem);
 		return this;
 	}
-
-	/**
-	 * List of study names to filter search results
-	 * 
-	 * @return studyNames
-	 **/
-	@ApiModelProperty(example = "[\"The First Bob Study 2017\",\"Wheat Yield Trial 246\"]", value = "List of study names to filter search results")
 
 	public List<String> getStudyNames() {
 		return studyNames;
@@ -296,13 +249,6 @@ public class ObservationUnitSearchRequest extends SearchRequestParametersPaging 
 		return this;
 	}
 
-	/**
-	 * The location ids to search for
-	 * 
-	 * @return locationDbIds
-	 **/
-	@ApiModelProperty(example = "[\"b28911cf\",\"5071d1e4\"]", value = "The location ids to search for")
-
 	public List<String> getLocationDbIds() {
 		return locationDbIds;
 	}
@@ -323,13 +269,6 @@ public class ObservationUnitSearchRequest extends SearchRequestParametersPaging 
 		this.locationNames.add(locationNamesItem);
 		return this;
 	}
-
-	/**
-	 * A human readable names to search for
-	 * 
-	 * @return locationNames
-	 **/
-	@ApiModelProperty(example = "[\"Location Alpha\",\"The Large Hadron Collider\"]", value = "A human readable names to search for")
 
 	public List<String> getLocationNames() {
 		return locationNames;
@@ -352,13 +291,6 @@ public class ObservationUnitSearchRequest extends SearchRequestParametersPaging 
 		return this;
 	}
 
-	/**
-	 * List of IDs which uniquely identify germplasm to search for
-	 * 
-	 * @return germplasmDbIds
-	 **/
-	@ApiModelProperty(example = "[\"e9c6edd7\",\"1b1df4a6\"]", value = "List of IDs which uniquely identify germplasm to search for")
-
 	public List<String> getGermplasmDbIds() {
 		return germplasmDbIds;
 	}
@@ -379,13 +311,6 @@ public class ObservationUnitSearchRequest extends SearchRequestParametersPaging 
 		this.germplasmNames.add(germplasmNamesItem);
 		return this;
 	}
-
-	/**
-	 * List of human readable names to identify germplasm to search for
-	 * 
-	 * @return germplasmNames
-	 **/
-	@ApiModelProperty(example = "[\"A0000003\",\"A0000477\"]", value = "List of human readable names to identify germplasm to search for")
 
 	public List<String> getGermplasmNames() {
 		return germplasmNames;
@@ -408,13 +333,6 @@ public class ObservationUnitSearchRequest extends SearchRequestParametersPaging 
 		return this;
 	}
 
-	/**
-	 * The DbIds of Variables to search for
-	 * 
-	 * @return observationVariableDbIds
-	 **/
-	@ApiModelProperty(example = "[\"a646187d\",\"6d23513b\"]", value = "The DbIds of Variables to search for")
-
 	public List<String> getObservationVariableDbIds() {
 		return observationVariableDbIds;
 	}
@@ -436,13 +354,6 @@ public class ObservationUnitSearchRequest extends SearchRequestParametersPaging 
 		return this;
 	}
 
-	/**
-	 * The names of Variables to search for
-	 * 
-	 * @return observationVariableNames
-	 **/
-	@ApiModelProperty(example = "[\"Plant Height in meters\",\"Wheat rust score 1-5\"]", value = "The names of Variables to search for")
-
 	public List<String> getObservationVariableNames() {
 		return observationVariableNames;
 	}
@@ -451,76 +362,31 @@ public class ObservationUnitSearchRequest extends SearchRequestParametersPaging 
 		this.observationVariableNames = observationVariableNames;
 	}
 
-	public ObservationUnitSearchRequest externalReferenceIDs(List<String> externalReferenceIDs) {
-		this.externalReferenceIDs = externalReferenceIDs;
+	public ObservationUnitSearchRequest observationVariablePUIs(List<String> observationVariablePUIs) {
+		this.observationVariablePUIs = observationVariablePUIs;
 		return this;
 	}
 
-	public ObservationUnitSearchRequest addExternalReferenceIDsItem(String externalReferenceIDsItem) {
-		if (this.externalReferenceIDs == null) {
-			this.externalReferenceIDs = new ArrayList<String>();
+	public ObservationUnitSearchRequest addObservationVariablePUIsItem(String observationVariablePUIsItem) {
+		if (this.observationVariablePUIs == null) {
+			this.observationVariablePUIs = new ArrayList<String>();
 		}
-		this.externalReferenceIDs.add(externalReferenceIDsItem);
+		this.observationVariablePUIs.add(observationVariablePUIsItem);
 		return this;
 	}
 
-	/**
-	 * List of external references for the trait to search for
-	 * 
-	 * @return externalReferenceIDs
-	 **/
-	@ApiModelProperty(example = "[\"http://purl.obolibrary.org/obo/ro.owl\",\"14a19841\"]", value = "List of external references for the trait to search for")
-
-	public List<String> getExternalReferenceIDs() {
-		return externalReferenceIDs;
+	public List<String> getObservationVariablePUIs() {
+		return observationVariablePUIs;
 	}
 
-	public void setExternalReferenceIDs(List<String> externalReferenceIDs) {
-		this.externalReferenceIDs = externalReferenceIDs;
-	}
-
-	public ObservationUnitSearchRequest externalReferenceSources(List<String> externalReferenceSources) {
-		this.externalReferenceSources = externalReferenceSources;
-		return this;
-	}
-
-	public ObservationUnitSearchRequest addExternalReferenceSourcesItem(String externalReferenceSourcesItem) {
-		if (this.externalReferenceSources == null) {
-			this.externalReferenceSources = new ArrayList<String>();
-		}
-		this.externalReferenceSources.add(externalReferenceSourcesItem);
-		return this;
-	}
-
-	/**
-	 * List of external references sources for the trait to search for
-	 * 
-	 * @return externalReferenceSources
-	 **/
-	@ApiModelProperty(example = "[\"OBO Library\",\"Field App Name\"]", value = "List of external references sources for the trait to search for")
-
-	public List<String> getExternalReferenceSources() {
-		return externalReferenceSources;
-	}
-
-	public void setExternalReferenceSources(List<String> externalReferenceSources) {
-		this.externalReferenceSources = externalReferenceSources;
+	public void setObservationVariablePUIs(List<String> observationVariablePUIs) {
+		this.observationVariablePUIs = observationVariablePUIs;
 	}
 
 	public ObservationUnitSearchRequest includeObservations(Boolean includeObservations) {
 		this.includeObservations = includeObservations;
 		return this;
 	}
-
-	/**
-	 * Use this parameter to include a list of observations embedded in each
-	 * ObservationUnit object. CAUTION - Use this parameter at your own risk. It may
-	 * return large, unpaginated lists of observation data. Only set this value to
-	 * True if you are sure you need to.
-	 * 
-	 * @return includeObservations
-	 **/
-	@ApiModelProperty(example = "false", value = "Use this parameter to include a list of observations embedded in each ObservationUnit object.   CAUTION - Use this parameter at your own risk. It may return large, unpaginated lists of observation data. Only set this value to True if you are sure you need to.")
 
 	public Boolean isIncludeObservations() {
 		return includeObservations;
@@ -545,14 +411,6 @@ public class ObservationUnitSearchRequest extends SearchRequestParametersPaging 
 		return this;
 	}
 
-	/**
-	 * Searches for values in
-	 * ObservationUnit->observationUnitPosition->observationLevelRelationships
-	 * 
-	 * @return observationLevelRelationships
-	 **/
-	@ApiModelProperty(example = "[{\"levelCode\":\"Field_1\",\"levelName\":\"field\"}]", value = "Searches for values in ObservationUnit->observationUnitPosition->observationLevelRelationships")
-	@Valid
 	public List<ObservationUnitLevelRelationship> getObservationLevelRelationships() {
 		return observationLevelRelationships;
 	}
@@ -561,33 +419,25 @@ public class ObservationUnitSearchRequest extends SearchRequestParametersPaging 
 		this.observationLevelRelationships = observationLevelRelationships;
 	}
 
-	public ObservationUnitSearchRequest observationLevels(List<ObservationUnitLevelRelationship> observationLevels) {
+	public ObservationUnitSearchRequest observationLevels(List<ObservationUnitLevel> observationLevels) {
 		this.observationLevels = observationLevels;
 		return this;
 	}
 
 	public ObservationUnitSearchRequest addObservationLevelsItem(
-			ObservationUnitLevelRelationship observationLevelsItem) {
+			ObservationUnitLevel observationLevelsItem) {
 		if (this.observationLevels == null) {
-			this.observationLevels = new ArrayList<ObservationUnitLevelRelationship>();
+			this.observationLevels = new ArrayList<ObservationUnitLevel>();
 		}
 		this.observationLevels.add(observationLevelsItem);
 		return this;
 	}
 
-	/**
-	 * Searches for values in
-	 * ObservationUnit->observationUnitPosition->observationLevel
-	 * 
-	 * @return observationLevels
-	 **/
-	@ApiModelProperty(example = "[{\"levelCode\":\"Plot_123\",\"levelName\":\"plot\"},{\"levelCode\":\"Plot_456\",\"levelName\":\"plot\"},{\"levelCode\":\"Plot_789\",\"levelName\":\"plot\"}]", value = "Searches for values in ObservationUnit->observationUnitPosition->observationLevel")
-	@Valid
-	public List<ObservationUnitLevelRelationship> getObservationLevels() {
+	public List<ObservationUnitLevel> getObservationLevels() {
 		return observationLevels;
 	}
 
-	public void setObservationLevels(List<ObservationUnitLevelRelationship> observationLevels) {
+	public void setObservationLevels(List<ObservationUnitLevel> observationLevels) {
 		this.observationLevels = observationLevels;
 	}
 
@@ -604,19 +454,33 @@ public class ObservationUnitSearchRequest extends SearchRequestParametersPaging 
 		return this;
 	}
 
-	/**
-	 * The unique id of an observation unit
-	 * 
-	 * @return observationUnitDbIds
-	 **/
-	@ApiModelProperty(example = "[\"66bab7e3\",\"0e5e7f99\"]", value = "The unique id of an observation unit")
-
 	public List<String> getObservationUnitDbIds() {
 		return observationUnitDbIds;
 	}
 
 	public void setObservationUnitDbIds(List<String> observationUnitDbIds) {
 		this.observationUnitDbIds = observationUnitDbIds;
+	}
+
+	public ObservationUnitSearchRequest observationUnitNames(List<String> observationUnitNames) {
+		this.observationUnitNames = observationUnitNames;
+		return this;
+	}
+
+	public ObservationUnitSearchRequest addObservationUnitNamesItem(String observationUnitNamesItem) {
+		if (this.observationUnitNames == null) {
+			this.observationUnitNames = new ArrayList<String>();
+		}
+		this.observationUnitNames.add(observationUnitNamesItem);
+		return this;
+	}
+
+	public List<String> getObservationUnitNames() {
+		return observationUnitNames;
+	}
+
+	public void setObservationUnitNames(List<String> observationUnitNames) {
+		this.observationUnitNames = observationUnitNames;
 	}
 
 	@Override
@@ -628,34 +492,40 @@ public class ObservationUnitSearchRequest extends SearchRequestParametersPaging 
 			return false;
 		}
 		ObservationUnitSearchRequest observationUnitSearchRequest = (ObservationUnitSearchRequest) o;
-		return Objects.equals(this.programDbIds, observationUnitSearchRequest.programDbIds)
-				&& Objects.equals(this.programNames, observationUnitSearchRequest.programNames)
-				&& Objects.equals(this.trialDbIds, observationUnitSearchRequest.trialDbIds)
-				&& Objects.equals(this.trialNames, observationUnitSearchRequest.trialNames)
-				&& Objects.equals(this.studyDbIds, observationUnitSearchRequest.studyDbIds)
-				&& Objects.equals(this.studyNames, observationUnitSearchRequest.studyNames)
-				&& Objects.equals(this.locationDbIds, observationUnitSearchRequest.locationDbIds)
-				&& Objects.equals(this.locationNames, observationUnitSearchRequest.locationNames)
+		return Objects.equals(this.commonCropNames, observationUnitSearchRequest.commonCropNames)
+				&& Objects.equals(this.seasonDbIds, observationUnitSearchRequest.seasonDbIds)
+				&& Objects.equals(this.externalReferenceIds, observationUnitSearchRequest.externalReferenceIds)
+				&& Objects.equals(this.externalReferenceSources, observationUnitSearchRequest.externalReferenceSources)
 				&& Objects.equals(this.germplasmDbIds, observationUnitSearchRequest.germplasmDbIds)
 				&& Objects.equals(this.germplasmNames, observationUnitSearchRequest.germplasmNames)
-				&& Objects.equals(this.observationVariableDbIds, observationUnitSearchRequest.observationVariableDbIds)
-				&& Objects.equals(this.observationVariableNames, observationUnitSearchRequest.observationVariableNames)
-				&& Objects.equals(this.externalReferenceIDs, observationUnitSearchRequest.externalReferenceIDs)
-				&& Objects.equals(this.externalReferenceSources, observationUnitSearchRequest.externalReferenceSources)
 				&& Objects.equals(this.includeObservations, observationUnitSearchRequest.includeObservations)
+				&& Objects.equals(this.locationDbIds, observationUnitSearchRequest.locationDbIds)
+				&& Objects.equals(this.locationNames, observationUnitSearchRequest.locationNames)
 				&& Objects.equals(this.observationLevelRelationships,
 						observationUnitSearchRequest.observationLevelRelationships)
 				&& Objects.equals(this.observationLevels, observationUnitSearchRequest.observationLevels)
 				&& Objects.equals(this.observationUnitDbIds, observationUnitSearchRequest.observationUnitDbIds)
-				&& super.equals(o);
+				&& Objects.equals(this.observationUnitNames, observationUnitSearchRequest.observationUnitNames)
+				&& Objects.equals(this.observationVariableDbIds, observationUnitSearchRequest.observationVariableDbIds)
+				&& Objects.equals(this.observationVariableNames, observationUnitSearchRequest.observationVariableNames)
+				&& Objects.equals(this.observationVariablePUIs, observationUnitSearchRequest.observationVariablePUIs)
+				&& Objects.equals(this.page, observationUnitSearchRequest.page)
+				&& Objects.equals(this.pageSize, observationUnitSearchRequest.pageSize)
+				&& Objects.equals(this.programDbIds, observationUnitSearchRequest.programDbIds)
+				&& Objects.equals(this.programNames, observationUnitSearchRequest.programNames)
+				&& Objects.equals(this.studyDbIds, observationUnitSearchRequest.studyDbIds)
+				&& Objects.equals(this.studyNames, observationUnitSearchRequest.studyNames)
+				&& Objects.equals(this.trialDbIds, observationUnitSearchRequest.trialDbIds)
+				&& Objects.equals(this.trialNames, observationUnitSearchRequest.trialNames) && super.equals(o);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(programDbIds, programNames, trialDbIds, trialNames, studyDbIds, studyNames, locationDbIds,
-				locationNames, germplasmDbIds, germplasmNames, observationVariableDbIds, observationVariableNames,
-				externalReferenceIDs, externalReferenceSources, includeObservations, observationLevelRelationships,
-				observationLevels, observationUnitDbIds, super.hashCode());
+		return Objects.hash(commonCropNames, seasonDbIds, externalReferenceIds, externalReferenceSources,
+				germplasmDbIds, germplasmNames, includeObservations, locationDbIds, locationNames,
+				observationLevelRelationships, observationLevels, observationUnitDbIds, observationUnitNames,
+				observationVariableDbIds, observationVariableNames, observationVariablePUIs, page, pageSize,
+				programDbIds, programNames, studyDbIds, studyNames, trialDbIds, trialNames, super.hashCode());
 	}
 
 	@Override
@@ -663,33 +533,35 @@ public class ObservationUnitSearchRequest extends SearchRequestParametersPaging 
 		StringBuilder sb = new StringBuilder();
 		sb.append("class ObservationUnitSearchRequest {\n");
 		sb.append("    ").append(toIndentedString(super.toString())).append("\n");
-		sb.append("    programDbIds: ").append(toIndentedString(programDbIds)).append("\n");
-		sb.append("    programNames: ").append(toIndentedString(programNames)).append("\n");
-		sb.append("    trialDbIds: ").append(toIndentedString(trialDbIds)).append("\n");
-		sb.append("    trialNames: ").append(toIndentedString(trialNames)).append("\n");
-		sb.append("    studyDbIds: ").append(toIndentedString(studyDbIds)).append("\n");
-		sb.append("    studyNames: ").append(toIndentedString(studyNames)).append("\n");
-		sb.append("    locationDbIds: ").append(toIndentedString(locationDbIds)).append("\n");
-		sb.append("    locationNames: ").append(toIndentedString(locationNames)).append("\n");
+		sb.append("    commonCropNames: ").append(toIndentedString(commonCropNames)).append("\n");
+		sb.append("    seasonDbIds: ").append(toIndentedString(seasonDbIds)).append("\n");
+		sb.append("    externalReferenceIds: ").append(toIndentedString(externalReferenceIds)).append("\n");
+		sb.append("    externalReferenceSources: ").append(toIndentedString(externalReferenceSources)).append("\n");
 		sb.append("    germplasmDbIds: ").append(toIndentedString(germplasmDbIds)).append("\n");
 		sb.append("    germplasmNames: ").append(toIndentedString(germplasmNames)).append("\n");
-		sb.append("    observationVariableDbIds: ").append(toIndentedString(observationVariableDbIds)).append("\n");
-		sb.append("    observationVariableNames: ").append(toIndentedString(observationVariableNames)).append("\n");
-		sb.append("    externalReferenceIDs: ").append(toIndentedString(externalReferenceIDs)).append("\n");
-		sb.append("    externalReferenceSources: ").append(toIndentedString(externalReferenceSources)).append("\n");
 		sb.append("    includeObservations: ").append(toIndentedString(includeObservations)).append("\n");
+		sb.append("    locationDbIds: ").append(toIndentedString(locationDbIds)).append("\n");
+		sb.append("    locationNames: ").append(toIndentedString(locationNames)).append("\n");
 		sb.append("    observationLevelRelationships: ").append(toIndentedString(observationLevelRelationships))
 				.append("\n");
 		sb.append("    observationLevels: ").append(toIndentedString(observationLevels)).append("\n");
 		sb.append("    observationUnitDbIds: ").append(toIndentedString(observationUnitDbIds)).append("\n");
+		sb.append("    observationUnitNames: ").append(toIndentedString(observationUnitNames)).append("\n");
+		sb.append("    observationVariableDbIds: ").append(toIndentedString(observationVariableDbIds)).append("\n");
+		sb.append("    observationVariableNames: ").append(toIndentedString(observationVariableNames)).append("\n");
+		sb.append("    observationVariablePUIs: ").append(toIndentedString(observationVariablePUIs)).append("\n");
+		sb.append("    page: ").append(toIndentedString(page)).append("\n");
+		sb.append("    pageSize: ").append(toIndentedString(pageSize)).append("\n");
+		sb.append("    programDbIds: ").append(toIndentedString(programDbIds)).append("\n");
+		sb.append("    programNames: ").append(toIndentedString(programNames)).append("\n");
+		sb.append("    studyDbIds: ").append(toIndentedString(studyDbIds)).append("\n");
+		sb.append("    studyNames: ").append(toIndentedString(studyNames)).append("\n");
+		sb.append("    trialDbIds: ").append(toIndentedString(trialDbIds)).append("\n");
+		sb.append("    trialNames: ").append(toIndentedString(trialNames)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";
@@ -700,42 +572,50 @@ public class ObservationUnitSearchRequest extends SearchRequestParametersPaging 
 	@Override
 	public Integer getTotalParameterCount() {
 		Integer count = 0;
-		if (this.programDbIds != null)
-			count += this.programDbIds.size();
-		if (this.programNames != null)
-			count += this.programNames.size();
-		if (this.trialDbIds != null)
-			count += this.trialDbIds.size();
-		if (this.trialNames != null)
-			count += this.trialNames.size();
-		if (this.studyDbIds != null)
-			count += this.studyDbIds.size();
-		if (this.studyNames != null)
-			count += this.studyNames.size();
-		if (this.locationDbIds != null)
-			count += this.locationDbIds.size();
-		if (this.locationNames != null)
-			count += this.locationNames.size();
+		if (this.commonCropNames != null)
+			count += this.commonCropNames.size();
+		if (this.seasonDbIds != null)
+			count += this.seasonDbIds.size();
+		if (this.externalReferenceIds != null)
+			count += this.externalReferenceIds.size();
+		if (this.externalReferenceSources != null)
+			count += this.externalReferenceSources.size();
 		if (this.germplasmDbIds != null)
 			count += this.germplasmDbIds.size();
 		if (this.germplasmNames != null)
 			count += this.germplasmNames.size();
-		if (this.observationVariableDbIds != null)
-			count += this.observationVariableDbIds.size();
-		if (this.observationVariableNames != null)
-			count += this.observationVariableNames.size();
-		if (this.externalReferenceIDs != null)
-			count += this.externalReferenceIDs.size();
-		if (this.externalReferenceSources != null)
-			count += this.externalReferenceSources.size();
 		if (this.includeObservations != null)
 			count += 1;
+		if (this.locationDbIds != null)
+			count += this.locationDbIds.size();
+		if (this.locationNames != null)
+			count += this.locationNames.size();
 		if (this.observationLevelRelationships != null)
 			count += this.observationLevelRelationships.size();
 		if (this.observationLevels != null)
 			count += this.observationLevels.size();
 		if (this.observationUnitDbIds != null)
 			count += this.observationUnitDbIds.size();
+		if (this.observationUnitNames != null)
+			count += this.observationUnitNames.size();
+		if (this.observationVariableDbIds != null)
+			count += this.observationVariableDbIds.size();
+		if (this.observationVariableNames != null)
+			count += this.observationVariableNames.size();
+		if (this.observationVariablePUIs != null)
+			count += this.observationVariablePUIs.size();
+		if (this.programDbIds != null)
+			count += this.programDbIds.size();
+		if (this.programNames != null)
+			count += this.programNames.size();
+		if (this.studyDbIds != null)
+			count += this.studyDbIds.size();
+		if (this.studyNames != null)
+			count += this.studyNames.size();
+		if (this.trialDbIds != null)
+			count += this.trialDbIds.size();
+		if (this.trialNames != null)
+			count += this.trialNames.size();
 		return count;
 	}
 }

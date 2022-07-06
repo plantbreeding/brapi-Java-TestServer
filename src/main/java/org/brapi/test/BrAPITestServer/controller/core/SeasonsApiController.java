@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -42,6 +42,7 @@ public class SeasonsApiController extends BrAPIController implements SeasonsApi 
 	public ResponseEntity<SeasonListResponse> seasonsGet(
 			@Valid @RequestParam(value = "seasonDbId", required = false) String seasonDbId,
 			@Valid @RequestParam(value = "season", required = false) String season,
+			@Valid @RequestParam(value = "seasonName", required = false) String seasonName,
 			@Valid @RequestParam(value = "year", required = false) Integer year,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
@@ -50,7 +51,7 @@ public class SeasonsApiController extends BrAPIController implements SeasonsApi 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<Season> data = seasonService.findSeasons(seasonDbId, season, year, metadata);
+		List<Season> data = seasonService.findSeasons(seasonDbId, season, seasonName, year, metadata);
 		return responseOK(new SeasonListResponse(), new SeasonListResponseResult(), data, metadata);
 	}
 

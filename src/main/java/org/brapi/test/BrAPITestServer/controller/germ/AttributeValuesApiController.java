@@ -12,6 +12,7 @@ import io.swagger.model.germ.GermplasmListResponseResult;
 import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.model.germ.GermplasmAttributeValueNewRequest;
 import io.swagger.model.germ.GermplasmAttributeValueSearchRequest;
+import io.swagger.annotations.ApiParam;
 import io.swagger.api.germ.AttributeValuesApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -31,7 +32,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -46,7 +47,8 @@ public class AttributeValuesApiController extends BrAPIController implements Att
 	private final HttpServletRequest request;
 
 	@Autowired
-	public AttributeValuesApiController(GermplasmAttributeValueService attributeValueService, SearchService searchService, HttpServletRequest request) {
+	public AttributeValuesApiController(GermplasmAttributeValueService attributeValueService,
+			SearchService searchService, HttpServletRequest request) {
 		this.attributeValueService = attributeValueService;
 		this.searchService = searchService;
 		this.request = request;
@@ -59,38 +61,46 @@ public class AttributeValuesApiController extends BrAPIController implements Att
 			@Valid @RequestParam(value = "attributeDbId", required = false) String attributeDbId,
 			@Valid @RequestParam(value = "attributeName", required = false) String attributeName,
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
+			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<GermplasmAttributeValue> data = attributeValueService.findGermplasmAttributeValues(attributeValueDbId, attributeDbId,
-				attributeName, germplasmDbId, externalReferenceID, externalReferenceSource, metadata);
-		return responseOK(new GermplasmAttributeValueListResponse(), new GermplasmAttributeValueListResponseResult(), data,
-				metadata);
+		List<GermplasmAttributeValue> data = attributeValueService.findGermplasmAttributeValues(attributeValueDbId,
+				attributeDbId, attributeName, germplasmDbId, commonCropName, programDbId, externalReferenceId, externalReferenceID,
+				externalReferenceSource, metadata);
+		return responseOK(new GermplasmAttributeValueListResponse(), new GermplasmAttributeValueListResponseResult(),
+				data, metadata);
 	}
 
 	@CrossOrigin
 	@Override
 	public ResponseEntity<GermplasmAttributeValueListResponse> attributevaluesPost(
 			@Valid @RequestBody List<GermplasmAttributeValueNewRequest> body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		List<GermplasmAttributeValue> data = attributeValueService.saveGermplasmAttributeValues(body);
-		return responseOK(new GermplasmAttributeValueListResponse(), new GermplasmAttributeValueListResponseResult(), data);
+		return responseOK(new GermplasmAttributeValueListResponse(), new GermplasmAttributeValueListResponseResult(),
+				data);
 	}
 
 	@CrossOrigin
 	@Override
 	public ResponseEntity<GermplasmAttributeValueSingleResponse> attributevaluesAttributeValueDbIdGet(
 			@PathVariable("attributeValueDbId") String attributeValueDbId,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -103,7 +113,8 @@ public class AttributeValuesApiController extends BrAPIController implements Att
 	public ResponseEntity<GermplasmAttributeValueSingleResponse> attributevaluesAttributeValueDbIdPut(
 			@PathVariable("attributeValueDbId") String attributeValueDbId,
 			@Valid @RequestBody GermplasmAttributeValueNewRequest body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -115,7 +126,8 @@ public class AttributeValuesApiController extends BrAPIController implements Att
 	@Override
 	public ResponseEntity<? extends BrAPIResponse> searchAttributevaluesPost(
 			@Valid @RequestBody GermplasmAttributeValueSearchRequest body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -126,8 +138,8 @@ public class AttributeValuesApiController extends BrAPIController implements Att
 			return responseAccepted(searchReqDbId);
 		} else {
 			List<GermplasmAttributeValue> data = attributeValueService.findGermplasmAttributeValues(body, metadata);
-			return responseOK(new GermplasmAttributeValueListResponse(), new GermplasmAttributeValueListResponseResult(), data,
-					metadata);
+			return responseOK(new GermplasmAttributeValueListResponse(),
+					new GermplasmAttributeValueListResponseResult(), data, metadata);
 		}
 	}
 
@@ -137,18 +149,20 @@ public class AttributeValuesApiController extends BrAPIController implements Att
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		SearchRequestEntity request = searchService.findById(searchResultsDbId);
 		if (request != null) {
-			GermplasmAttributeValueSearchRequest body = request.getParameters(GermplasmAttributeValueSearchRequest.class);
+			GermplasmAttributeValueSearchRequest body = request
+					.getParameters(GermplasmAttributeValueSearchRequest.class);
 			List<GermplasmAttributeValue> data = attributeValueService.findGermplasmAttributeValues(body, metadata);
-			return responseOK(new GermplasmAttributeValueListResponse(), new GermplasmAttributeValueListResponseResult(), data,
-					metadata);
-		}else {
+			return responseOK(new GermplasmAttributeValueListResponse(),
+					new GermplasmAttributeValueListResponseResult(), data, metadata);
+		} else {
 			return responseAccepted(searchResultsDbId);
 		}
 	}

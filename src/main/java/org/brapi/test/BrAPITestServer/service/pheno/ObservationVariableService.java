@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.MethodEntity;
@@ -55,37 +56,69 @@ public class ObservationVariableService {
 		this.traitService = traitService;
 	}
 
-	public List<ObservationVariable> findObservationVariables(@Valid String observationVariableDbId,
-			@Valid String traitClass, @Valid String studyDbId, @Valid String externalReferenceID,
-			@Valid String externalReferenceSource, Metadata metadata) {
+	public List<ObservationVariable> findObservationVariables(String observationVariableDbId,
+			String observationVariableName, String observationVariablePUI, String methodDbId, String methodName,
+			String methodPUI, String scaleDbId, String scaleName, String scalePUI, String traitDbId, String traitName,
+			String traitPUI, String traitClass, String ontologyDbId, String commonCropName, String programDbId,
+			String trialDbId, String studyDbId, String externalReferenceId, String externalReferenceID,
+			String externalReferenceSource, Metadata metadata) {
+
 		ObservationVariableSearchRequest request = new ObservationVariableSearchRequest();
-		if (traitClass != null)
-			request.addTraitClassesItem(traitClass);
-		if (studyDbId != null)
-			request.addStudyDbIdItem(studyDbId);
+
 		if (observationVariableDbId != null)
 			request.addObservationVariableDbIdsItem(observationVariableDbId);
-		if (externalReferenceID != null)
-			request.addExternalReferenceIDsItem(externalReferenceID);
-		if (externalReferenceSource != null)
-			request.addExternalReferenceSourcesItem(externalReferenceSource);
+		if (observationVariableName != null)
+			request.addObservationVariableNamesItem(observationVariableName);
+		if (methodDbId != null)
+			request.addMethodDbIdsItem(methodDbId);
+		if (methodName != null)
+			request.addMethodNamesItem(methodName);
+		if (methodPUI != null)
+			request.addMethodPUIsItem(methodPUI);
+		if (scaleDbId != null)
+			request.addScaleDbIdsItem(scaleDbId);
+		if (scaleName != null)
+			request.addScaleNamesItem(scaleName);
+		if (scalePUI != null)
+			request.addScalePUIsItem(scalePUI);
+		if (traitDbId != null)
+			request.addTraitDbIdsItem(traitDbId);
+		if (traitName != null)
+			request.addTraitNamesItem(traitName);
+		if (traitPUI != null)
+			request.addTraitPUIsItem(traitPUI);
+		if (traitClass != null)
+			request.addTraitClassesItem(traitClass);
+		if (ontologyDbId != null)
+			request.addOntologyDbIdsItem(ontologyDbId);
+		if (commonCropName != null)
+			request.addCommonCropNamesItem(commonCropName);
+		if (programDbId != null)
+			request.addProgramDbIdsItem(programDbId);
+		if (trialDbId != null)
+			request.addTrialDbIdsItem(trialDbId);
+		if (studyDbId != null)
+			request.addStudyDbIdsItem(studyDbId);
+
+		request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
 
 		return findObservationVariables(request, metadata);
 	}
-	
-	public List<ObservationVariable> findObservationVariables(ObservationVariableSearchRequest request,	Metadata metadata) {
+
+	public List<ObservationVariable> findObservationVariables(ObservationVariableSearchRequest request,
+			Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
-		SearchQueryBuilder<ObservationVariableEntity> searchQuery = new SearchQueryBuilder<ObservationVariableEntity>(ObservationVariableEntity.class);
+		SearchQueryBuilder<ObservationVariableEntity> searchQuery = new SearchQueryBuilder<ObservationVariableEntity>(
+				ObservationVariableEntity.class);
 		if (request.getStudyDbId() != null) {
-			searchQuery = searchQuery.join("observations", "observation")
-					.appendList(request.getStudyDbId(), "*observation.observationUnit.study.id");
+			searchQuery = searchQuery.join("observations", "observation").appendList(request.getStudyDbId(),
+					"*observation.observationUnit.study.id");
 		}
 		searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
 				.appendList(request.getMethodDbIds(), "method.id")
 				.appendList(request.getObservationVariableDbIds(), "id")
 				.appendList(request.getObservationVariableNames(), "name")
-				.appendList(request.getOntologyDbIds(), "ontology.id")
-				.appendList(request.getScaleDbIds(), "scale.id")				
+				.appendList(request.getOntologyDbIds(), "ontology.id").appendList(request.getScaleDbIds(), "scale.id")
 				.appendList(request.getTraitClasses(), "trait.traitClass")
 				.appendList(request.getTraitDbIds(), "trait.id")
 				.appendEnumList(request.getDataTypes(), "scale.dataType");
@@ -96,7 +129,8 @@ public class ObservationVariableService {
 		return observationVariables;
 	}
 
-	public List<ObservationVariable> saveObservationVariables(@Valid List<ObservationVariableNewRequest> body) throws BrAPIServerException {
+	public List<ObservationVariable> saveObservationVariables(@Valid List<ObservationVariableNewRequest> body)
+			throws BrAPIServerException {
 		List<ObservationVariable> savedObservationVariables = new ArrayList<>();
 
 		for (ObservationVariableNewRequest list : body) {
@@ -119,7 +153,7 @@ public class ObservationVariableService {
 
 			savedEntity = observationVariableRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "observationVariableDbId not found: " + observationVariableDbId);
+			throw new BrAPIServerDbIdNotFoundException("observationVariable", observationVariableDbId);
 		}
 
 		return convertFromEntity(savedEntity);
@@ -129,17 +163,19 @@ public class ObservationVariableService {
 		return convertFromEntity(getObservationVariableEntity(observationVariableDbId, HttpStatus.NOT_FOUND));
 	}
 
-	public ObservationVariableEntity getObservationVariableEntity(String observationVariableDbId) throws BrAPIServerException {
+	public ObservationVariableEntity getObservationVariableEntity(String observationVariableDbId)
+			throws BrAPIServerException {
 		return getObservationVariableEntity(observationVariableDbId, HttpStatus.NOT_FOUND);
 	}
 
-	public ObservationVariableEntity getObservationVariableEntity(String observationVariableDbId, HttpStatus errorStatus) throws BrAPIServerException {
+	public ObservationVariableEntity getObservationVariableEntity(String observationVariableDbId,
+			HttpStatus errorStatus) throws BrAPIServerException {
 		ObservationVariableEntity observationVariable = null;
 		Optional<ObservationVariableEntity> entityOpt = observationVariableRepository.findById(observationVariableDbId);
 		if (entityOpt.isPresent()) {
 			observationVariable = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(errorStatus, "observationVariableDbId not found: " + observationVariableDbId);
+			throw new BrAPIServerDbIdNotFoundException("observationVariable", observationVariableDbId);
 		}
 		return observationVariable;
 	}
@@ -154,13 +190,14 @@ public class ObservationVariableService {
 	}
 
 	public void convertFromBaseEntity(VariableBaseEntity entity, VariableBaseClass var) {
-		var.setAdditionalInfo(entity.getAdditionalInfoMap());
+		
+		UpdateUtility.convertFromEntity(entity, var);
+		
 		if (entity.getCrop() != null)
 			var.setCommonCropName(entity.getCrop().getCropName());
 		var.setContextOfUse(entity.getContextOfUse());
 		var.setDefaultValue(entity.getDefaultValue());
 		var.setDocumentationURL(entity.getDocumentationURL());
-		var.setExternalReferences(entity.getExternalReferencesMap());
 		var.setGrowthStage(entity.getGrowthStage());
 		var.setInstitution(entity.getInstitution());
 		var.setLanguage(entity.getLanguage());
@@ -174,52 +211,51 @@ public class ObservationVariableService {
 		var.setTrait(traitService.convertFromEntity(entity.getTrait()));
 	}
 
-
-	private void updateEntity(ObservationVariableEntity entity, ObservationVariableNewRequest request) throws BrAPIServerException {
+	private void updateEntity(ObservationVariableEntity entity, ObservationVariableNewRequest request)
+			throws BrAPIServerException {
 		updateBaseEntity(entity, request);
 		entity.setName(UpdateUtility.replaceField(request.getObservationVariableName(), entity.getName()));
 	}
-	
-	public void updateBaseEntity(VariableBaseEntity entity, @Valid VariableBaseClass request)
-			throws BrAPIServerException {
 
-		entity.setAdditionalInfo(UpdateUtility.replaceField(request.getAdditionalInfo(), entity.getAdditionalInfoMap()));
+	public void updateBaseEntity(VariableBaseEntity entity, VariableBaseClass request)
+			throws BrAPIServerException {
+		
+		UpdateUtility.updateEntity(request, entity);
+
 		entity.setContextOfUse(UpdateUtility.replaceField(request.getContextOfUse(), entity.getContextOfUse()));
 		entity.setDefaultValue(UpdateUtility.replaceField(request.getDefaultValue(), entity.getDefaultValue()));
 		entity.setDocumentationURL(UpdateUtility.replaceField(request.getDocumentationURL(), entity.getDocumentationURL()));
-		entity.setExternalReferences(UpdateUtility.replaceField(request.getExternalReferences(), entity.getExternalReferencesMap()));
 		entity.setGrowthStage(UpdateUtility.replaceField(request.getGrowthStage(), entity.getGrowthStage()));
 		entity.setInstitution(UpdateUtility.replaceField(request.getInstitution(), entity.getInstitution()));
 		entity.setLanguage(UpdateUtility.replaceField(request.getLanguage(), entity.getLanguage()));
 		entity.setScientist(UpdateUtility.replaceField(request.getScientist(), entity.getScientist()));
 		entity.setStatus(UpdateUtility.replaceField(request.getStatus(), entity.getStatus()));
 		entity.setSynonyms(UpdateUtility.replaceField(request.getSynonyms(), entity.getSynonyms()));
-		
+
 		Date submissionTimeStamp = entity.getSubmissionTimestamp();
-		if(request.getSubmissionTimestamp() != null) {
-			if(request.getSubmissionTimestamp().isPresent()) {
+		if (request.getSubmissionTimestamp() != null) {
+			if (request.getSubmissionTimestamp().isPresent()) {
 				submissionTimeStamp = DateUtility.toDate(request.getSubmissionTimestamp().get());
-			}else {
+			} else {
 				submissionTimeStamp = null;
 			}
 		}
 		entity.setSubmissionTimestamp(submissionTimeStamp);
 
 		ontologyService.updateOntologyReference(entity, request.getOntologyReference());
-		
-		String commonCropName = entity.getCrop() == null 
-				? UpdateUtility.replaceField(request.getCommonCropName(), null)
+
+		String commonCropName = entity.getCrop() == null ? UpdateUtility.replaceField(request.getCommonCropName(), null)
 				: UpdateUtility.replaceField(request.getCommonCropName(), entity.getCrop().getCropName());
 		CropEntity crop = cropService.getCropEntity(commonCropName);
 		entity.setCrop(crop);
-			
+
 		if (request.getMethod() != null) {
 			if (request.getMethod().isPresent()) {
 				Method requestMethod = request.getMethod().get();
 				MethodEntity methodEntity;
-				if(requestMethod.getMethodDbId() == null) {
+				if (requestMethod.getMethodDbId() == null) {
 					methodEntity = new MethodEntity();
-				}else {
+				} else {
 					methodEntity = methodService.getMethodEntity(requestMethod.getMethodDbId());
 				}
 				methodService.updateEntity(methodEntity, requestMethod);
@@ -229,14 +265,14 @@ public class ObservationVariableService {
 				entity.setMethod(null);
 			}
 		}
-		
+
 		if (request.getScale() != null) {
 			if (request.getScale().isPresent()) {
 				Scale requestScale = request.getScale().get();
 				ScaleEntity scaleEntity;
-				if(requestScale.getScaleDbId() == null) {
+				if (requestScale.getScaleDbId() == null) {
 					scaleEntity = new ScaleEntity();
-				}else {
+				} else {
 					scaleEntity = scaleService.getScaleEntity(requestScale.getScaleDbId());
 				}
 				scaleService.updateEntity(scaleEntity, requestScale);
@@ -246,14 +282,14 @@ public class ObservationVariableService {
 				entity.setScale(null);
 			}
 		}
-		
-		if (request.getTrait() != null){
+
+		if (request.getTrait() != null) {
 			if (request.getTrait().isPresent()) {
 				Trait requestTrait = request.getTrait().get();
 				TraitEntity traitEntity;
-				if(requestTrait.getTraitDbId() == null) {
+				if (requestTrait.getTraitDbId() == null) {
 					traitEntity = new TraitEntity();
-				}else {
+				} else {
 					traitEntity = traitService.getTraitEntity(requestTrait.getTraitDbId());
 				}
 				traitService.updateEntity(traitEntity, requestTrait);

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.geno.VariantEntity;
 import org.brapi.test.BrAPITestServer.repository.geno.VariantRepository;
@@ -29,13 +30,21 @@ public class VariantService {
 		this.variantRepository = variantRepository;
 	}
 
-	public List<Variant> findVariants(String variantDbId, String variantSetDbId, Metadata metadata) {
+	public List<Variant> findVariants(String variantDbId, String variantSetDbId, String referenceDbId, String referenceSetDbId,
+			String externalReferenceId, String externalReferenceSource, Metadata metadata) {
+		
 		VariantsSearchRequest request = new VariantsSearchRequest();
 		if (variantSetDbId != null)
 			request.addVariantSetDbIdsItem(variantSetDbId);
 		if (variantDbId != null)
 			request.addVariantDbIdsItem(variantDbId);
+		if (referenceDbId != null)
+			request.addReferenceDbIdsItem(referenceDbId);
+		if (referenceSetDbId != null)
+			request.addReferenceSetDbIdsItem(referenceSetDbId);
 
+		request.addExternalReferenceItem(externalReferenceId, null, externalReferenceSource);
+		
 		return findVariants(request, metadata);
 	}
 
@@ -68,7 +77,7 @@ public class VariantService {
 		if (entityOpt.isPresent()) {
 			variant = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "variantDbId not found: " + variantDbId);
+			throw new BrAPIServerDbIdNotFoundException("variant", variantDbId);
 		}
 		return variant;
 	}

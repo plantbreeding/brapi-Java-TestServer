@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -32,13 +32,19 @@ public interface PlannedCrossesApi {
 			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/plannedcrosses", produces = { "application/json" }, method = RequestMethod.GET)
-	ResponseEntity<PlannedCrossesListResponse> plannedcrossesGet(
-			@ApiParam(value = "Search for Crossing Projects with this unique id") @Valid @RequestParam(value = "plannedCrossDbId", required = false) String plannedCrossDbId,
-			@ApiParam(value = "Search for Crossing Projects with this unique id") @Valid @RequestParam(value = "crossingProjectDbId", required = false) String crossingProjectDbId,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+	ResponseEntity<PlannedCrossesListResponse> plannedCrossesGet(
+			@ApiParam(value = "crossingProjectDbId") @Valid @RequestParam(value = "crossingProjectDbId", required = false) String crossingProjectDbId,
+			@ApiParam(value = "crossingProjectName") @Valid @RequestParam(value = "crossingProjectName", required = false) String crossingProjectName,
+			@ApiParam(value = "plannedCrossDbId") @Valid @RequestParam(value = "plannedCrossDbId", required = false) String plannedCrossDbId,
+			@ApiParam(value = "plannedCrossName") @Valid @RequestParam(value = "plannedCrossName", required = false) String plannedCrossName,
+			@ApiParam(value = "status") @Valid @RequestParam(value = "status", required = false) String status,
+			@ApiParam(value = "commonCropName") @Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@ApiParam(value = "programDbId") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@ApiParam(value = "externalReferenceID") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@ApiParam(value = "externalReferenceId") @Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@ApiParam(value = "externalReferenceSource") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
 
@@ -50,7 +56,7 @@ public interface PlannedCrossesApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/plannedcrosses", produces = { "application/json" }, consumes = {
 			"application/json" }, method = RequestMethod.POST)
-	ResponseEntity<PlannedCrossesListResponse> plannedcrossesPost(
+	ResponseEntity<PlannedCrossesListResponse> plannedCrossesPost(
 			@ApiParam(value = "") @Valid @RequestBody List<PlannedCrossNewRequest> body,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
@@ -63,7 +69,7 @@ public interface PlannedCrossesApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/plannedcrosses", produces = { "application/json" }, consumes = {
 			"application/json" }, method = RequestMethod.PUT)
-	ResponseEntity<PlannedCrossesListResponse> plannedcrossesPut(
+	ResponseEntity<PlannedCrossesListResponse> plannedCrossesPut(
 			@ApiParam(value = "") @Valid @RequestBody Map<String, PlannedCrossNewRequest> body,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;

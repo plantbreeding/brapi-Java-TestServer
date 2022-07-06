@@ -3,76 +3,54 @@ package io.swagger.model.pheno;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+public class Trait extends TraitBaseClass {
+	@JsonProperty("traitDbId")
+	private String traitDbId = null;
 
-import io.swagger.annotations.ApiModelProperty;
+	public Trait traitDbId(String traitDbId) {
+		this.traitDbId = traitDbId;
+		return this;
+	}
 
-import org.springframework.validation.annotation.Validated;
+	public String getTraitDbId() {
+		return traitDbId;
+	}
 
-/**
- * Trait
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:22.556Z[GMT]")
-public class Trait extends TraitBaseClass  {
-  @JsonProperty("traitDbId")
-  private String traitDbId = null;
+	public void setTraitDbId(String traitDbId) {
+		this.traitDbId = traitDbId;
+	}
 
-  public Trait traitDbId(String traitDbId) {
-    this.traitDbId = traitDbId;
-    return this;
-  }
+	@Override
+	public boolean equals(java.lang.Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		Trait trait = (Trait) o;
+		return Objects.equals(this.traitDbId, trait.traitDbId) && super.equals(o);
+	}
 
-  /**
-   * The ID which uniquely identifies a trait
-   * @return traitDbId
-  **/
-  @ApiModelProperty(example = "9b2e34f5", value = "The ID which uniquely identifies a trait")
-  
-    public String getTraitDbId() {
-    return traitDbId;
-  }
+	@Override
+	public int hashCode() {
+		return Objects.hash(traitDbId, super.hashCode());
+	}
 
-  public void setTraitDbId(String traitDbId) {
-    this.traitDbId = traitDbId;
-  }
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("class Trait {\n");
+		sb.append("    ").append(toIndentedString(super.toString())).append("\n");
+		sb.append("    traitDbId: ").append(toIndentedString(traitDbId)).append("\n");
+		sb.append("}");
+		return sb.toString();
+	}
 
-
-  @Override
-  public boolean equals(java.lang.Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    Trait trait = (Trait) o;
-    return Objects.equals(this.traitDbId, trait.traitDbId) &&
-        super.equals(o);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(traitDbId, super.hashCode());
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class Trait {\n");
-    sb.append("    ").append(toIndentedString(super.toString())).append("\n");
-    sb.append("    traitDbId: ").append(toIndentedString(traitDbId)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(java.lang.Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+	private String toIndentedString(java.lang.Object o) {
+		if (o == null) {
+			return "null";
+		}
+		return o.toString().replace("\n", "\n    ");
+	}
 }

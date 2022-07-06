@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
@@ -37,26 +37,28 @@ public interface StudiesApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/studies", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<StudyListResponse> studiesGet(
-			@ApiParam(value = "Common name for the crop associated with this study") @Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
-			@ApiParam(value = "Filter based on study type unique identifier") @Valid @RequestParam(value = "studyType", required = false) String studyType,
-			@ApiParam(value = "Program filter to only return studies associated with given program id.") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
-			@ApiParam(value = "Filter by location") @Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
-			@ApiParam(value = "Filter by season or year") @Valid @RequestParam(value = "seasonDbId", required = false) String seasonDbId,
-			@ApiParam(value = "Filter by trial") @Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
-			@ApiParam(value = "Filter by study DbId") @Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
-			@ApiParam(value = "Filter by study name") @Valid @RequestParam(value = "studyName", required = false) String studyName,
-			@ApiParam(value = "Filter by study code") @Valid @RequestParam(value = "studyCode", required = false) String studyCode,
-			@ApiParam(value = "Filter by study PUI") @Valid @RequestParam(value = "studyPUI", required = false) String studyPUI,
-			@ApiParam(value = "Filter by germplasm DbId") @Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
-			@ApiParam(value = "Filter by observation variable DbId") @Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
-			@ApiParam(value = "Filter active status true/false.") @Valid @RequestParam(value = "active", required = false) Boolean active,
-			@ApiParam(value = "Name of the field to sort by.", allowableValues = "studyDbId, trialDbId, programDbId, locationDbId, seasonDbId, studyType, studyName, studyLocation, programName") @Valid @RequestParam(value = "sortBy", required = false) String sortBy,
-			@ApiParam(value = "Sort order direction. Ascending/Descending.", allowableValues = "asc, ASC, desc, DESC") @Valid @RequestParam(value = "sortOrder", required = false) String sortOrder,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "commonCropName") @Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@ApiParam(value = "studyType") @Valid @RequestParam(value = "studyType", required = false) String studyType,
+			@ApiParam(value = "programDbId") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@ApiParam(value = "locationDbId") @Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
+			@ApiParam(value = "seasonDbId") @Valid @RequestParam(value = "seasonDbId", required = false) String seasonDbId,
+			@ApiParam(value = "trialDbId") @Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
+			@ApiParam(value = "studyDbId") @Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@ApiParam(value = "studyName") @Valid @RequestParam(value = "studyName", required = false) String studyName,
+			@ApiParam(value = "studyCode") @Valid @RequestParam(value = "studyCode", required = false) String studyCode,
+			@ApiParam(value = "studyPUI") @Valid @RequestParam(value = "studyPUI", required = false) String studyPUI,
+			@ApiParam(value = "germplasmDbId") @Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
+			@ApiParam(value = "observationVariableDbId") @Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
+			@ApiParam(value = "active") @Valid @RequestParam(value = "active", required = false) Boolean active,
+			@ApiParam(value = "sortBy") @Valid @RequestParam(value = "sortBy", required = false) String sortBy,
+			@ApiParam(value = "sortOrder") @Valid @RequestParam(value = "sortOrder", required = false) String sortOrder,
+			@ApiParam(value = "externalReferenceId") @Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@ApiParam(value = "externalReferenceID") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@ApiParam(value = "externalReferenceSource") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Create new Studies.", nickname = "studiesPost", notes = "Create new studies  Implementation Notes  StartDate and endDate should be ISO-8601 format for dates  `studDbId` is generated by the server.", response = StudyListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Studies", })
@@ -67,7 +69,8 @@ public interface StudiesApi {
 	@RequestMapping(value = "/studies", produces = { "application/json" }, consumes = {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<StudyListResponse> studiesPost(@ApiParam(value = "") @Valid @RequestBody List<StudyNewRequest> body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the details for a specific Study", nickname = "studiesStudyDbIdGet", notes = "Retrieve the information of the study required for field data collection  An additionalInfo field was added to provide a controlled vocabulary for less common data fields.", response = StudySingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Studies", })
@@ -79,7 +82,8 @@ public interface StudiesApi {
 	@RequestMapping(value = "/studies/{studyDbId}", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<StudySingleResponse> studiesStudyDbIdGet(
 			@ApiParam(value = "Identifier of the study. Usually a number, could be alphanumeric.", required = true) @PathVariable("studyDbId") String studyDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Update an existing Study", nickname = "studiesStudyDbIdPut", notes = "Update an existing Study with new data", response = StudySingleResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Studies", })
@@ -93,7 +97,8 @@ public interface StudiesApi {
 	ResponseEntity<StudySingleResponse> studiesStudyDbIdPut(
 			@ApiParam(value = "Identifier of the study. Usually a number, could be alphanumeric.", required = true) @PathVariable("studyDbId") String studyDbId,
 			@ApiParam(value = "") @Valid @RequestBody StudyNewRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Submit a search request for Studies", nickname = "searchStudiesPost", notes = "Get list of studies StartDate and endDate should be ISO-8601 format for dates See Search Services for additional implementation details.", response = StudyListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Studies", })
@@ -106,7 +111,8 @@ public interface StudiesApi {
 			"application/json" }, method = RequestMethod.POST)
 	ResponseEntity<? extends BrAPIResponse> searchStudiesPost(
 			@ApiParam(value = "Study Search request") @Valid @RequestBody StudySearchRequest body,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the results of a Studies search request", nickname = "searchStudiesSearchResultsDbIdGet", notes = "Get list of studies  StartDate and endDate should be ISO-8601 format for dates  See Search Services for additional implementation details.", response = StudyListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Studies", })
@@ -120,8 +126,9 @@ public interface StudiesApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<? extends BrAPIResponse> searchStudiesSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 }

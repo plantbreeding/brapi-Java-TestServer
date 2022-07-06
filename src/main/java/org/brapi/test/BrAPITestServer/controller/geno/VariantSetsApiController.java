@@ -20,6 +20,7 @@ import io.swagger.model.germ.Germplasm;
 import io.swagger.model.germ.GermplasmListResponse;
 import io.swagger.model.germ.GermplasmListResponseResult;
 import io.swagger.model.germ.GermplasmSearchRequest;
+import io.swagger.annotations.ApiParam;
 import io.swagger.api.geno.VariantSetsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -42,7 +43,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -61,7 +62,8 @@ public class VariantSetsApiController extends BrAPIController implements Variant
 
 	@Autowired
 	public VariantSetsApiController(CallService callService, CallSetService callSetService,
-			VariantService variantService, VariantSetService variantSetService, SearchService searchService, HttpServletRequest request) {
+			VariantService variantService, VariantSetService variantSetService, SearchService searchService,
+			HttpServletRequest request) {
 		this.callService = callService;
 		this.callSetService = callSetService;
 		this.variantService = variantService;
@@ -90,6 +92,11 @@ public class VariantSetsApiController extends BrAPIController implements Variant
 			@Valid @RequestParam(value = "callSetDbId", required = false) String callSetDbId,
 			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
 			@Valid @RequestParam(value = "studyName", required = false) String studyName,
+			@Valid @RequestParam(value = "referenceSetDbId", required = false) String referenceSetDbId,
+			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -99,7 +106,8 @@ public class VariantSetsApiController extends BrAPIController implements Variant
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<VariantSet> data = variantSetService.findVariantSets(variantSetDbId, variantDbId, callSetDbId, studyDbId,
-				studyName, metadata);
+				studyName, referenceSetDbId, commonCropName, programDbId, externalReferenceId, externalReferenceSource,
+				metadata);
 		return responseOK(new VariantSetsListResponse(), new VariantSetsListResponseResult(), data, metadata);
 	}
 
@@ -138,8 +146,8 @@ public class VariantSetsApiController extends BrAPIController implements Variant
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<CallSet> data = callSetService.findCallSets(callSetDbId, callSetName, variantSetDbId, null, null,
-				metadata);
+		List<CallSet> data = callSetService.findCallSets(callSetDbId, callSetName, variantSetDbId, null, null, null,
+				null, metadata);
 		return responseOK(new CallSetsListResponse(), new CallSetsListResponseResult(), data, metadata);
 	}
 
@@ -169,7 +177,7 @@ public class VariantSetsApiController extends BrAPIController implements Variant
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(pageToken, pageSize);
-		List<Variant> data = variantService.findVariants(variantDbId, variantSetDbId, metadata);
+		List<Variant> data = variantService.findVariants(variantDbId, variantSetDbId, null, null, null, null, metadata);
 		return responseOK(new VariantsListResponse(), new VariantsListResponseResult(), data, metadata);
 	}
 
@@ -210,7 +218,7 @@ public class VariantSetsApiController extends BrAPIController implements Variant
 			VariantSetsSearchRequest body = request.getParameters(VariantSetsSearchRequest.class);
 			List<VariantSet> data = variantSetService.findVariantSets(body, metadata);
 			return responseOK(new VariantSetsListResponse(), new VariantSetsListResponseResult(), data, metadata);
-		}else {
+		} else {
 			return responseAccepted(searchResultsDbId);
 		}
 	}

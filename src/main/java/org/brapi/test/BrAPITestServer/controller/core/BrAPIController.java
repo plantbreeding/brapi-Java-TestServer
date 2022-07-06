@@ -20,6 +20,7 @@ import io.swagger.model.IndexPagination;
 import io.swagger.model.Metadata;
 import io.swagger.model.Model202AcceptedSearchResponse;
 import io.swagger.model.Model202AcceptedSearchResponseResult;
+import io.swagger.model.SearchRequest;
 import io.swagger.model.SearchRequestParametersPaging;
 import io.swagger.model.TokenPagination;
 
@@ -41,7 +42,7 @@ public class BrAPIController {
 		return generateMetaDataTemplate(page, pageSize);
 	}
 
-	protected Metadata generateMetaDataTemplate(SearchRequestParametersPaging request) throws BrAPIServerException {
+	protected Metadata generateMetaDataTemplate(SearchRequest request) throws BrAPIServerException {
 		return generateMetaDataTemplate(request.getPage(), request.getPageSize());
 	}
 

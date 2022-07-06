@@ -2,22 +2,12 @@ package io.swagger.model.geno;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.SearchRequest;
-import io.swagger.model.SearchRequestParametersPaging;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
 
-/**
- * ReferencesSearchRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-04-24T19:42:22.574Z[GMT]")
-public class ReferencesSearchRequest extends SearchRequestParametersPaging implements SearchRequest {
+public class ReferencesSearchRequest extends SearchRequest {
 	@JsonProperty("accessions")
-	@Valid
 	private List<String> accessions = null;
 
 	@JsonProperty("isDerived")
@@ -27,19 +17,43 @@ public class ReferencesSearchRequest extends SearchRequestParametersPaging imple
 	private Integer maxLength = null;
 
 	@JsonProperty("md5checksums")
-	@Valid
 	private List<String> md5checksums = null;
 
 	@JsonProperty("minLength")
 	private Integer minLength = null;
 
 	@JsonProperty("referenceDbIds")
-	@Valid
 	private List<String> referenceDbIds = null;
 
 	@JsonProperty("referenceSetDbIds")
-	@Valid
 	private List<String> referenceSetDbIds = null;
+
+	@JsonProperty("commonCropNames")
+	private List<String> commonCropNames = null;
+
+	@JsonProperty("germplasmDbIds")
+	private List<String> germplasmDbIds = null;
+
+	@JsonProperty("germplasmNames")
+	private List<String> germplasmNames = null;
+
+	@JsonProperty("programDbIds")
+	private List<String> programDbIds = null;
+
+	@JsonProperty("programNames")
+	private List<String> programNames = null;
+
+	@JsonProperty("studyDbIds")
+	private List<String> studyDbIds = null;
+
+	@JsonProperty("studyNames")
+	private List<String> studyNames = null;
+
+	@JsonProperty("trialDbIds")
+	private List<String> trialDbIds = null;
+
+	@JsonProperty("trialNames")
+	private List<String> trialNames = null;
 
 	public ReferencesSearchRequest accessions(List<String> accessions) {
 		this.accessions = accessions;
@@ -54,14 +68,6 @@ public class ReferencesSearchRequest extends SearchRequestParametersPaging imple
 		return this;
 	}
 
-	/**
-	 * If specified, return the references for which the `accession` matches this
-	 * string (case-sensitive, exact match).
-	 * 
-	 * @return accessions
-	 **/
-	@ApiModelProperty(example = "[\"A0009283\",\"A0006657\"]", value = "If specified, return the references for which the `accession` matches this string (case-sensitive, exact match).")
-
 	public List<String> getAccessions() {
 		return accessions;
 	}
@@ -75,17 +81,6 @@ public class ReferencesSearchRequest extends SearchRequestParametersPaging imple
 		return this;
 	}
 
-	/**
-	 * A sequence X is said to be derived from source sequence Y, if X and Y are of
-	 * the same length and the per-base sequence divergence at A/C/G/T bases is
-	 * sufficiently small. Two sequences derived from the same official sequence
-	 * share the same coordinates and annotations, and can be replaced with the
-	 * official sequence for certain use cases.
-	 * 
-	 * @return isDerived
-	 **/
-	@ApiModelProperty(value = "A sequence X is said to be derived from source sequence Y, if X and Y are of the same length and the per-base sequence divergence at A/C/G/T bases is sufficiently small. Two sequences derived from the same official sequence share the same coordinates and annotations, and can be replaced with the official sequence for certain use cases.")
-
 	public Boolean isIsDerived() {
 		return isDerived;
 	}
@@ -98,13 +93,6 @@ public class ReferencesSearchRequest extends SearchRequestParametersPaging imple
 		this.maxLength = maxLength;
 		return this;
 	}
-
-	/**
-	 * The minimum length of this reference's sequence.
-	 * 
-	 * @return maxLength
-	 **/
-	@ApiModelProperty(example = "90000", value = "The minimum length of this reference's sequence.")
 
 	public Integer getMaxLength() {
 		return maxLength;
@@ -127,14 +115,6 @@ public class ReferencesSearchRequest extends SearchRequestParametersPaging imple
 		return this;
 	}
 
-	/**
-	 * If specified, return the references for which the `md5checksum` matches this
-	 * string (case-sensitive, exact match).
-	 * 
-	 * @return md5checksums
-	 **/
-	@ApiModelProperty(example = "[\"c2365e900c81a89cf74d83dab60df146\"]", value = "If specified, return the references for which the `md5checksum` matches this string (case-sensitive, exact match).")
-
 	public List<String> getMd5checksums() {
 		return md5checksums;
 	}
@@ -147,13 +127,6 @@ public class ReferencesSearchRequest extends SearchRequestParametersPaging imple
 		this.minLength = minLength;
 		return this;
 	}
-
-	/**
-	 * The minimum length of this reference's sequence.
-	 * 
-	 * @return minLength
-	 **/
-	@ApiModelProperty(example = "4000", value = "The minimum length of this reference's sequence.")
 
 	public Integer getMinLength() {
 		return minLength;
@@ -176,13 +149,6 @@ public class ReferencesSearchRequest extends SearchRequestParametersPaging imple
 		return this;
 	}
 
-	/**
-	 * The `References` to search.
-	 * 
-	 * @return referenceDbIds
-	 **/
-	@ApiModelProperty(example = "[\"04c83ea7\",\"d0998a34\"]", value = "The `References` to search.")
-
 	public List<String> getReferenceDbIds() {
 		return referenceDbIds;
 	}
@@ -204,19 +170,201 @@ public class ReferencesSearchRequest extends SearchRequestParametersPaging imple
 		return this;
 	}
 
-	/**
-	 * The `ReferenceSets` to search.
-	 * 
-	 * @return referenceSetDbIds
-	 **/
-	@ApiModelProperty(example = "[\"32a19dd7\",\"2c182c18\"]", value = "The `ReferenceSets` to search.")
-
 	public List<String> getReferenceSetDbIds() {
 		return referenceSetDbIds;
 	}
 
 	public void setReferenceSetDbIds(List<String> referenceSetDbIds) {
 		this.referenceSetDbIds = referenceSetDbIds;
+	}
+
+	public ReferencesSearchRequest commonCropNames(List<String> commonCropNames) {
+		this.commonCropNames = commonCropNames;
+		return this;
+	}
+
+	public ReferencesSearchRequest addCommonCropNamesItem(String commonCropNamesItem) {
+		if (this.commonCropNames == null) {
+			this.commonCropNames = new ArrayList<String>();
+		}
+		this.commonCropNames.add(commonCropNamesItem);
+		return this;
+	}
+
+	public List<String> getCommonCropNames() {
+		return commonCropNames;
+	}
+
+	public void setCommonCropNames(List<String> commonCropNames) {
+		this.commonCropNames = commonCropNames;
+	}
+
+	public ReferencesSearchRequest germplasmDbIds(List<String> germplasmDbIds) {
+		this.germplasmDbIds = germplasmDbIds;
+		return this;
+	}
+
+	public ReferencesSearchRequest addGermplasmDbIdsItem(String germplasmDbIdsItem) {
+		if (this.germplasmDbIds == null) {
+			this.germplasmDbIds = new ArrayList<String>();
+		}
+		this.germplasmDbIds.add(germplasmDbIdsItem);
+		return this;
+	}
+
+	public List<String> getGermplasmDbIds() {
+		return germplasmDbIds;
+	}
+
+	public void setGermplasmDbIds(List<String> germplasmDbIds) {
+		this.germplasmDbIds = germplasmDbIds;
+	}
+
+	public ReferencesSearchRequest germplasmNames(List<String> germplasmNames) {
+		this.germplasmNames = germplasmNames;
+		return this;
+	}
+
+	public ReferencesSearchRequest addGermplasmNamesItem(String germplasmNamesItem) {
+		if (this.germplasmNames == null) {
+			this.germplasmNames = new ArrayList<String>();
+		}
+		this.germplasmNames.add(germplasmNamesItem);
+		return this;
+	}
+
+	public List<String> getGermplasmNames() {
+		return germplasmNames;
+	}
+
+	public void setGermplasmNames(List<String> germplasmNames) {
+		this.germplasmNames = germplasmNames;
+	}
+
+	public ReferencesSearchRequest programDbIds(List<String> programDbIds) {
+		this.programDbIds = programDbIds;
+		return this;
+	}
+
+	public ReferencesSearchRequest addProgramDbIdsItem(String programDbIdsItem) {
+		if (this.programDbIds == null) {
+			this.programDbIds = new ArrayList<String>();
+		}
+		this.programDbIds.add(programDbIdsItem);
+		return this;
+	}
+
+	public List<String> getProgramDbIds() {
+		return programDbIds;
+	}
+
+	public void setProgramDbIds(List<String> programDbIds) {
+		this.programDbIds = programDbIds;
+	}
+
+	public ReferencesSearchRequest programNames(List<String> programNames) {
+		this.programNames = programNames;
+		return this;
+	}
+
+	public ReferencesSearchRequest addProgramNamesItem(String programNamesItem) {
+		if (this.programNames == null) {
+			this.programNames = new ArrayList<String>();
+		}
+		this.programNames.add(programNamesItem);
+		return this;
+	}
+
+	public List<String> getProgramNames() {
+		return programNames;
+	}
+
+	public void setProgramNames(List<String> programNames) {
+		this.programNames = programNames;
+	}
+
+	public ReferencesSearchRequest studyDbIds(List<String> studyDbIds) {
+		this.studyDbIds = studyDbIds;
+		return this;
+	}
+
+	public ReferencesSearchRequest addStudyDbIdsItem(String studyDbIdsItem) {
+		if (this.studyDbIds == null) {
+			this.studyDbIds = new ArrayList<String>();
+		}
+		this.studyDbIds.add(studyDbIdsItem);
+		return this;
+	}
+
+	public List<String> getStudyDbIds() {
+		return studyDbIds;
+	}
+
+	public void setStudyDbIds(List<String> studyDbIds) {
+		this.studyDbIds = studyDbIds;
+	}
+
+	public ReferencesSearchRequest studyNames(List<String> studyNames) {
+		this.studyNames = studyNames;
+		return this;
+	}
+
+	public ReferencesSearchRequest addStudyNamesItem(String studyNamesItem) {
+		if (this.studyNames == null) {
+			this.studyNames = new ArrayList<String>();
+		}
+		this.studyNames.add(studyNamesItem);
+		return this;
+	}
+
+	public List<String> getStudyNames() {
+		return studyNames;
+	}
+
+	public void setStudyNames(List<String> studyNames) {
+		this.studyNames = studyNames;
+	}
+
+	public ReferencesSearchRequest trialDbIds(List<String> trialDbIds) {
+		this.trialDbIds = trialDbIds;
+		return this;
+	}
+
+	public ReferencesSearchRequest addTrialDbIdsItem(String trialDbIdsItem) {
+		if (this.trialDbIds == null) {
+			this.trialDbIds = new ArrayList<String>();
+		}
+		this.trialDbIds.add(trialDbIdsItem);
+		return this;
+	}
+
+	public List<String> getTrialDbIds() {
+		return trialDbIds;
+	}
+
+	public void setTrialDbIds(List<String> trialDbIds) {
+		this.trialDbIds = trialDbIds;
+	}
+
+	public ReferencesSearchRequest trialNames(List<String> trialNames) {
+		this.trialNames = trialNames;
+		return this;
+	}
+
+	public ReferencesSearchRequest addTrialNamesItem(String trialNamesItem) {
+		if (this.trialNames == null) {
+			this.trialNames = new ArrayList<String>();
+		}
+		this.trialNames.add(trialNamesItem);
+		return this;
+	}
+
+	public List<String> getTrialNames() {
+		return trialNames;
+	}
+
+	public void setTrialNames(List<String> trialNames) {
+		this.trialNames = trialNames;
 	}
 
 	@Override
@@ -229,18 +377,33 @@ public class ReferencesSearchRequest extends SearchRequestParametersPaging imple
 		}
 		ReferencesSearchRequest referencesSearchRequest = (ReferencesSearchRequest) o;
 		return Objects.equals(this.accessions, referencesSearchRequest.accessions)
+				&& Objects.equals(this.commonCropNames, referencesSearchRequest.commonCropNames)
+				&& Objects.equals(this.externalReferenceIds, referencesSearchRequest.externalReferenceIds)
+				&& Objects.equals(this.externalReferenceSources, referencesSearchRequest.externalReferenceSources)
+				&& Objects.equals(this.germplasmDbIds, referencesSearchRequest.germplasmDbIds)
+				&& Objects.equals(this.germplasmNames, referencesSearchRequest.germplasmNames)
 				&& Objects.equals(this.isDerived, referencesSearchRequest.isDerived)
 				&& Objects.equals(this.maxLength, referencesSearchRequest.maxLength)
 				&& Objects.equals(this.md5checksums, referencesSearchRequest.md5checksums)
 				&& Objects.equals(this.minLength, referencesSearchRequest.minLength)
+				&& Objects.equals(this.page, referencesSearchRequest.page)
+				&& Objects.equals(this.pageSize, referencesSearchRequest.pageSize)
+				&& Objects.equals(this.programDbIds, referencesSearchRequest.programDbIds)
+				&& Objects.equals(this.programNames, referencesSearchRequest.programNames)
 				&& Objects.equals(this.referenceDbIds, referencesSearchRequest.referenceDbIds)
-				&& Objects.equals(this.referenceSetDbIds, referencesSearchRequest.referenceSetDbIds) && super.equals(o);
+				&& Objects.equals(this.referenceSetDbIds, referencesSearchRequest.referenceSetDbIds)
+				&& Objects.equals(this.studyDbIds, referencesSearchRequest.studyDbIds)
+				&& Objects.equals(this.studyNames, referencesSearchRequest.studyNames)
+				&& Objects.equals(this.trialDbIds, referencesSearchRequest.trialDbIds)
+				&& Objects.equals(this.trialNames, referencesSearchRequest.trialNames);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(accessions, isDerived, maxLength, md5checksums, minLength, referenceDbIds,
-				referenceSetDbIds, super.hashCode());
+		return Objects.hash(accessions, commonCropNames, externalReferenceIds, externalReferenceSources, germplasmDbIds,
+				germplasmNames, isDerived, maxLength, md5checksums, minLength, page, pageSize, programDbIds,
+				programNames, referenceDbIds, referenceSetDbIds, studyDbIds, studyNames, trialDbIds, trialNames,
+				super.hashCode());
 	}
 
 	@Override
@@ -249,20 +412,29 @@ public class ReferencesSearchRequest extends SearchRequestParametersPaging imple
 		sb.append("class ReferencesSearchRequest {\n");
 		sb.append("    ").append(toIndentedString(super.toString())).append("\n");
 		sb.append("    accessions: ").append(toIndentedString(accessions)).append("\n");
+		sb.append("    commonCropNames: ").append(toIndentedString(commonCropNames)).append("\n");
+		sb.append("    externalReferenceIds: ").append(toIndentedString(externalReferenceIds)).append("\n");
+		sb.append("    externalReferenceSources: ").append(toIndentedString(externalReferenceSources)).append("\n");
+		sb.append("    germplasmDbIds: ").append(toIndentedString(germplasmDbIds)).append("\n");
+		sb.append("    germplasmNames: ").append(toIndentedString(germplasmNames)).append("\n");
 		sb.append("    isDerived: ").append(toIndentedString(isDerived)).append("\n");
 		sb.append("    maxLength: ").append(toIndentedString(maxLength)).append("\n");
 		sb.append("    md5checksums: ").append(toIndentedString(md5checksums)).append("\n");
 		sb.append("    minLength: ").append(toIndentedString(minLength)).append("\n");
+		sb.append("    page: ").append(toIndentedString(page)).append("\n");
+		sb.append("    pageSize: ").append(toIndentedString(pageSize)).append("\n");
+		sb.append("    programDbIds: ").append(toIndentedString(programDbIds)).append("\n");
+		sb.append("    programNames: ").append(toIndentedString(programNames)).append("\n");
 		sb.append("    referenceDbIds: ").append(toIndentedString(referenceDbIds)).append("\n");
 		sb.append("    referenceSetDbIds: ").append(toIndentedString(referenceSetDbIds)).append("\n");
+		sb.append("    studyDbIds: ").append(toIndentedString(studyDbIds)).append("\n");
+		sb.append("    studyNames: ").append(toIndentedString(studyNames)).append("\n");
+		sb.append("    trialDbIds: ").append(toIndentedString(trialDbIds)).append("\n");
+		sb.append("    trialNames: ").append(toIndentedString(trialNames)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";
@@ -275,6 +447,16 @@ public class ReferencesSearchRequest extends SearchRequestParametersPaging imple
 		Integer count = 0;
 		if (this.accessions != null)
 			count += this.accessions.size();
+		if (this.commonCropNames != null)
+			count += this.commonCropNames.size();
+		if (this.externalReferenceIds != null)
+			count += this.externalReferenceIds.size();
+		if (this.externalReferenceSources != null)
+			count += this.externalReferenceSources.size();
+		if (this.germplasmDbIds != null)
+			count += this.germplasmDbIds.size();
+		if (this.germplasmNames != null)
+			count += this.germplasmNames.size();
 		if (this.isDerived != null)
 			count += 1;
 		if (this.maxLength != null)
@@ -287,6 +469,18 @@ public class ReferencesSearchRequest extends SearchRequestParametersPaging imple
 			count += this.referenceDbIds.size();
 		if (this.referenceSetDbIds != null)
 			count += this.referenceSetDbIds.size();
+		if (this.programDbIds != null)
+			count += this.programDbIds.size();
+		if (this.programNames != null)
+			count += this.programNames.size();
+		if (this.trialDbIds != null)
+			count += this.trialDbIds.size();
+		if (this.trialNames != null)
+			count += this.trialNames.size();
+		if (this.studyDbIds != null)
+			count += this.studyDbIds.size();
+		if (this.studyNames != null)
+			count += this.studyNames.size();
 		return count;
 	}
 }

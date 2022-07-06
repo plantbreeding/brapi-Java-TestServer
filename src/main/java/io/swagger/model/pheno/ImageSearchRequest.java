@@ -3,41 +3,23 @@ package io.swagger.model.pheno;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.GeoJSONSearchArea;
 import io.swagger.model.SearchRequest;
-import io.swagger.model.SearchRequestParametersPaging;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.time.OffsetDateTime;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
 
-/**
- * ImageSearchRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:22.556Z[GMT]")
-public class ImageSearchRequest extends SearchRequestParametersPaging implements SearchRequest {
-	@JsonProperty("externalReferenceIDs")
-	@Valid
-	private List<String> externalReferenceIDs = null;
-
-	@JsonProperty("externalReferenceSources")
-	@Valid
-	private List<String> externalReferenceSources = null;
+public class ImageSearchRequest extends SearchRequest {
+	@JsonProperty("commonCropNames")
+	private List<String> commonCropNames = null;
 
 	@JsonProperty("descriptiveOntologyTerms")
-	@Valid
 	private List<String> descriptiveOntologyTerms = null;
 
 	@JsonProperty("imageDbIds")
-	@Valid
 	private List<String> imageDbIds = null;
 
 	@JsonProperty("imageFileNames")
-	@Valid
 	private List<String> imageFileNames = null;
 
 	@JsonProperty("imageFileSizeMax")
@@ -56,7 +38,6 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 	private GeoJSONSearchArea imageLocation = null;
 
 	@JsonProperty("imageNames")
-	@Valid
 	private List<String> imageNames = null;
 
 	@JsonProperty("imageTimeStampRangeEnd")
@@ -72,16 +53,40 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 	private Integer imageWidthMin = null;
 
 	@JsonProperty("mimeTypes")
-	@Valid
 	private List<String> mimeTypes = null;
 
 	@JsonProperty("observationDbIds")
-	@Valid
 	private List<String> observationDbIds = null;
 
 	@JsonProperty("observationUnitDbIds")
-	@Valid
 	private List<String> observationUnitDbIds = null;
+
+	@JsonProperty("programDbIds")
+	private List<String> programDbIds = null;
+
+	@JsonProperty("programNames")
+	private List<String> programNames = null;
+
+	public ImageSearchRequest commonCropNames(List<String> commonCropNames) {
+		this.commonCropNames = commonCropNames;
+		return this;
+	}
+
+	public ImageSearchRequest addCommonCropNamesItem(String commonCropNamesItem) {
+		if (this.commonCropNames == null) {
+			this.commonCropNames = new ArrayList<String>();
+		}
+		this.commonCropNames.add(commonCropNamesItem);
+		return this;
+	}
+
+	public List<String> getCommonCropNames() {
+		return commonCropNames;
+	}
+
+	public void setCommonCropNames(List<String> commonCropNames) {
+		this.commonCropNames = commonCropNames;
+	}
 
 	public ImageSearchRequest addImageDbIdsItem(String imageDbIdsItem) {
 		if (this.imageDbIds == null) {
@@ -99,62 +104,6 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 		this.imageDbIds = imageDbIds;
 	}
 
-	public ImageSearchRequest externalReferenceIDs(List<String> externalReferenceIDs) {
-		this.externalReferenceIDs = externalReferenceIDs;
-		return this;
-	}
-
-	public ImageSearchRequest addExternalReferenceIDsItem(String externalReferenceIDsItem) {
-		if (this.externalReferenceIDs == null) {
-			this.externalReferenceIDs = new ArrayList<String>();
-		}
-		this.externalReferenceIDs.add(externalReferenceIDsItem);
-		return this;
-	}
-
-	/**
-	 * List of external references for the trait to search for
-	 * 
-	 * @return externalReferenceIDs
-	 **/
-	@ApiModelProperty(example = "[\"http://purl.obolibrary.org/obo/ro.owl\",\"14a19841\"]", value = "List of external references for the trait to search for")
-
-	public List<String> getExternalReferenceIDs() {
-		return externalReferenceIDs;
-	}
-
-	public void setExternalReferenceIDs(List<String> externalReferenceIDs) {
-		this.externalReferenceIDs = externalReferenceIDs;
-	}
-
-	public ImageSearchRequest externalReferenceSources(List<String> externalReferenceSources) {
-		this.externalReferenceSources = externalReferenceSources;
-		return this;
-	}
-
-	public ImageSearchRequest addExternalReferenceSourcesItem(String externalReferenceSourcesItem) {
-		if (this.externalReferenceSources == null) {
-			this.externalReferenceSources = new ArrayList<String>();
-		}
-		this.externalReferenceSources.add(externalReferenceSourcesItem);
-		return this;
-	}
-
-	/**
-	 * List of external references sources for the trait to search for
-	 * 
-	 * @return externalReferenceSources
-	 **/
-	@ApiModelProperty(example = "[\"OBO Library\",\"Field App Name\"]", value = "List of external references sources for the trait to search for")
-
-	public List<String> getExternalReferenceSources() {
-		return externalReferenceSources;
-	}
-
-	public void setExternalReferenceSources(List<String> externalReferenceSources) {
-		this.externalReferenceSources = externalReferenceSources;
-	}
-
 	public ImageSearchRequest descriptiveOntologyTerms(List<String> descriptiveOntologyTerms) {
 		this.descriptiveOntologyTerms = descriptiveOntologyTerms;
 		return this;
@@ -167,14 +116,6 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 		this.descriptiveOntologyTerms.add(descriptiveOntologyTermsItem);
 		return this;
 	}
-
-	/**
-	 * A list of terms to formally describe the image to search for. Each item could
-	 * be a simple Tag, an Ontology reference Id, or a full ontology URL.
-	 * 
-	 * @return descriptiveOntologyTerms
-	 **/
-	@ApiModelProperty(example = "[\"doi:10.1002/0470841559\",\"Red\",\"ncbi:0300294\"]", value = "A list of terms to formally describe the image to search for. Each item could be a simple Tag, an Ontology reference Id, or a full ontology URL.")
 
 	public List<String> getDescriptiveOntologyTerms() {
 		return descriptiveOntologyTerms;
@@ -197,13 +138,6 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 		return this;
 	}
 
-	/**
-	 * Image file names to search for.
-	 * 
-	 * @return imageFileNames
-	 **/
-	@ApiModelProperty(example = "[\"image_01032019.jpg\",\"picture_field_1234.jpg\"]", value = "Image file names to search for.")
-
 	public List<String> getImageFileNames() {
 		return imageFileNames;
 	}
@@ -216,13 +150,6 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 		this.imageFileSizeMax = imageFileSizeMax;
 		return this;
 	}
-
-	/**
-	 * A maximum image file size to search for.
-	 * 
-	 * @return imageFileSizeMax
-	 **/
-	@ApiModelProperty(example = "20000000", value = "A maximum image file size to search for.")
 
 	public Integer getImageFileSizeMax() {
 		return imageFileSizeMax;
@@ -237,13 +164,6 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 		return this;
 	}
 
-	/**
-	 * A minimum image file size to search for.
-	 * 
-	 * @return imageFileSizeMin
-	 **/
-	@ApiModelProperty(example = "1000", value = "A minimum image file size to search for.")
-
 	public Integer getImageFileSizeMin() {
 		return imageFileSizeMin;
 	}
@@ -256,13 +176,6 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 		this.imageHeightMax = imageHeightMax;
 		return this;
 	}
-
-	/**
-	 * A maximum image height to search for.
-	 * 
-	 * @return imageHeightMax
-	 **/
-	@ApiModelProperty(example = "1080", value = "A maximum image height to search for.")
 
 	public Integer getImageHeightMax() {
 		return imageHeightMax;
@@ -277,13 +190,6 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 		return this;
 	}
 
-	/**
-	 * A minimum image height to search for.
-	 * 
-	 * @return imageHeightMin
-	 **/
-	@ApiModelProperty(example = "720", value = "A minimum image height to search for.")
-
 	public Integer getImageHeightMin() {
 		return imageHeightMin;
 	}
@@ -297,14 +203,6 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 		return this;
 	}
 
-	/**
-	 * Get imageLocation
-	 * 
-	 * @return imageLocation
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
 	public GeoJSONSearchArea getImageLocation() {
 		return imageLocation;
 	}
@@ -326,13 +224,6 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 		return this;
 	}
 
-	/**
-	 * Human readable names to search for.
-	 * 
-	 * @return imageNames
-	 **/
-	@ApiModelProperty(example = "[\"Image 43\",\"Tractor in field\"]", value = "Human readable names to search for.")
-
 	public List<String> getImageNames() {
 		return imageNames;
 	}
@@ -346,14 +237,6 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 		return this;
 	}
 
-	/**
-	 * The latest timestamp to search for.
-	 * 
-	 * @return imageTimeStampRangeEnd
-	 **/
-	@ApiModelProperty(value = "The latest timestamp to search for.")
-
-	@Valid
 	public OffsetDateTime getImageTimeStampRangeEnd() {
 		return imageTimeStampRangeEnd;
 	}
@@ -367,14 +250,6 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 		return this;
 	}
 
-	/**
-	 * The earliest timestamp to search for.
-	 * 
-	 * @return imageTimeStampRangeStart
-	 **/
-	@ApiModelProperty(value = "The earliest timestamp to search for.")
-
-	@Valid
 	public OffsetDateTime getImageTimeStampRangeStart() {
 		return imageTimeStampRangeStart;
 	}
@@ -388,13 +263,6 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 		return this;
 	}
 
-	/**
-	 * A maximum image width to search for.
-	 * 
-	 * @return imageWidthMax
-	 **/
-	@ApiModelProperty(example = "1920", value = "A maximum image width to search for.")
-
 	public Integer getImageWidthMax() {
 		return imageWidthMax;
 	}
@@ -407,13 +275,6 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 		this.imageWidthMin = imageWidthMin;
 		return this;
 	}
-
-	/**
-	 * A minimum image width to search for.
-	 * 
-	 * @return imageWidthMin
-	 **/
-	@ApiModelProperty(example = "1280", value = "A minimum image width to search for.")
 
 	public Integer getImageWidthMin() {
 		return imageWidthMin;
@@ -436,13 +297,6 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 		return this;
 	}
 
-	/**
-	 * A set of image file types to search for.
-	 * 
-	 * @return mimeTypes
-	 **/
-	@ApiModelProperty(example = "[\"image/jpg\",\"image/jpeg\",\"image/gif\"]", value = "A set of image file types to search for.")
-
 	public List<String> getMimeTypes() {
 		return mimeTypes;
 	}
@@ -463,13 +317,6 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 		this.observationDbIds.add(observationDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * A list of observation Ids this image is associated with to search for
-	 * 
-	 * @return observationDbIds
-	 **/
-	@ApiModelProperty(example = "[\"47326456\",\"fc9823ac\"]", value = "A list of observation Ids this image is associated with to search for")
 
 	public List<String> getObservationDbIds() {
 		return observationDbIds;
@@ -492,19 +339,54 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 		return this;
 	}
 
-	/**
-	 * A set of observation unit identifiers to search for.
-	 * 
-	 * @return observationUnitDbIds
-	 **/
-	@ApiModelProperty(example = "[\"f5e4b273\",\"328c9424\"]", value = "A set of observation unit identifiers to search for.")
-
 	public List<String> getObservationUnitDbIds() {
 		return observationUnitDbIds;
 	}
 
 	public void setObservationUnitDbIds(List<String> observationUnitDbIds) {
 		this.observationUnitDbIds = observationUnitDbIds;
+	}
+
+	public ImageSearchRequest programDbIds(List<String> programDbIds) {
+		this.programDbIds = programDbIds;
+		return this;
+	}
+
+	public ImageSearchRequest addProgramDbIdsItem(String programDbIdsItem) {
+		if (this.programDbIds == null) {
+			this.programDbIds = new ArrayList<String>();
+		}
+		this.programDbIds.add(programDbIdsItem);
+		return this;
+	}
+
+	public List<String> getProgramDbIds() {
+		return programDbIds;
+	}
+
+	public void setProgramDbIds(List<String> programDbIds) {
+		this.programDbIds = programDbIds;
+	}
+
+	public ImageSearchRequest programNames(List<String> programNames) {
+		this.programNames = programNames;
+		return this;
+	}
+
+	public ImageSearchRequest addProgramNamesItem(String programNamesItem) {
+		if (this.programNames == null) {
+			this.programNames = new ArrayList<String>();
+		}
+		this.programNames.add(programNamesItem);
+		return this;
+	}
+
+	public List<String> getProgramNames() {
+		return programNames;
+	}
+
+	public void setProgramNames(List<String> programNames) {
+		this.programNames = programNames;
 	}
 
 	@Override
@@ -516,9 +398,11 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 			return false;
 		}
 		ImageSearchRequest imageSearchRequest = (ImageSearchRequest) o;
-		return Objects.equals(this.externalReferenceIDs, imageSearchRequest.externalReferenceIDs)
-				&& Objects.equals(this.externalReferenceSources, imageSearchRequest.externalReferenceSources)
+		return Objects.equals(this.commonCropNames, imageSearchRequest.commonCropNames)
 				&& Objects.equals(this.descriptiveOntologyTerms, imageSearchRequest.descriptiveOntologyTerms)
+				&& Objects.equals(this.externalReferenceIds, imageSearchRequest.externalReferenceIds)
+				&& Objects.equals(this.externalReferenceSources, imageSearchRequest.externalReferenceSources)
+				&& Objects.equals(this.imageDbIds, imageSearchRequest.imageDbIds)
 				&& Objects.equals(this.imageFileNames, imageSearchRequest.imageFileNames)
 				&& Objects.equals(this.imageFileSizeMax, imageSearchRequest.imageFileSizeMax)
 				&& Objects.equals(this.imageFileSizeMin, imageSearchRequest.imageFileSizeMin)
@@ -533,15 +417,17 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 				&& Objects.equals(this.mimeTypes, imageSearchRequest.mimeTypes)
 				&& Objects.equals(this.observationDbIds, imageSearchRequest.observationDbIds)
 				&& Objects.equals(this.observationUnitDbIds, imageSearchRequest.observationUnitDbIds)
-				&& super.equals(o);
+				&& Objects.equals(this.programDbIds, imageSearchRequest.programDbIds)
+				&& Objects.equals(this.programNames, imageSearchRequest.programNames) && super.equals(o);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(externalReferenceIDs, externalReferenceSources, descriptiveOntologyTerms, imageFileNames,
-				imageFileSizeMax, imageFileSizeMin, imageHeightMax, imageHeightMin, imageLocation, imageNames,
-				imageTimeStampRangeEnd, imageTimeStampRangeStart, imageWidthMax, imageWidthMin, mimeTypes,
-				observationDbIds, observationUnitDbIds, super.hashCode());
+		return Objects.hash(commonCropNames, descriptiveOntologyTerms, externalReferenceIds, externalReferenceSources,
+				imageDbIds, imageFileNames, imageFileSizeMax, imageFileSizeMin, imageHeightMax, imageHeightMin,
+				imageLocation, imageNames, imageTimeStampRangeEnd, imageTimeStampRangeStart, imageWidthMax,
+				imageWidthMin, mimeTypes, observationDbIds, observationUnitDbIds, programDbIds, programNames,
+				super.hashCode());
 	}
 
 	@Override
@@ -549,9 +435,11 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 		StringBuilder sb = new StringBuilder();
 		sb.append("class ImageSearchRequest {\n");
 		sb.append("    ").append(toIndentedString(super.toString())).append("\n");
-		sb.append("    externalReferenceIDs: ").append(toIndentedString(externalReferenceIDs)).append("\n");
-		sb.append("    externalReferenceSources: ").append(toIndentedString(externalReferenceSources)).append("\n");
+		sb.append("    commonCropNames: ").append(toIndentedString(commonCropNames)).append("\n");
 		sb.append("    descriptiveOntologyTerms: ").append(toIndentedString(descriptiveOntologyTerms)).append("\n");
+		sb.append("    externalReferenceIds: ").append(toIndentedString(externalReferenceIds)).append("\n");
+		sb.append("    externalReferenceSources: ").append(toIndentedString(externalReferenceSources)).append("\n");
+		sb.append("    imageDbIds: ").append(toIndentedString(imageDbIds)).append("\n");
 		sb.append("    imageFileNames: ").append(toIndentedString(imageFileNames)).append("\n");
 		sb.append("    imageFileSizeMax: ").append(toIndentedString(imageFileSizeMax)).append("\n");
 		sb.append("    imageFileSizeMin: ").append(toIndentedString(imageFileSizeMin)).append("\n");
@@ -566,14 +454,12 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 		sb.append("    mimeTypes: ").append(toIndentedString(mimeTypes)).append("\n");
 		sb.append("    observationDbIds: ").append(toIndentedString(observationDbIds)).append("\n");
 		sb.append("    observationUnitDbIds: ").append(toIndentedString(observationUnitDbIds)).append("\n");
+		sb.append("    programDbIds: ").append(toIndentedString(programDbIds)).append("\n");
+		sb.append("    programNames: ").append(toIndentedString(programNames)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";
@@ -584,12 +470,16 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 	@Override
 	public Integer getTotalParameterCount() {
 		Integer count = 0;
-		if (this.externalReferenceIDs != null)
-			count += this.externalReferenceIDs.size();
-		if (this.externalReferenceSources != null)
-			count += this.externalReferenceSources.size();
+		if (this.commonCropNames != null)
+			count += this.commonCropNames.size();
 		if (this.descriptiveOntologyTerms != null)
 			count += this.descriptiveOntologyTerms.size();
+		if (this.externalReferenceIds != null)
+			count += this.externalReferenceIds.size();
+		if (this.externalReferenceSources != null)
+			count += this.externalReferenceSources.size();
+		if (this.imageDbIds != null)
+			count += this.imageDbIds.size();
 		if (this.imageFileNames != null)
 			count += this.imageFileNames.size();
 		if (this.imageFileSizeMax != null)
@@ -618,6 +508,10 @@ public class ImageSearchRequest extends SearchRequestParametersPaging implements
 			count += this.observationDbIds.size();
 		if (this.observationUnitDbIds != null)
 			count += this.observationUnitDbIds.size();
+		if (this.programDbIds != null)
+			count += this.programDbIds.size();
+		if (this.programNames != null)
+			count += this.programNames.size();
 		return count;
 	}
 }

@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.time.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 
 
 /**

@@ -4,18 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.LocationEntity;
 import org.brapi.test.BrAPITestServer.repository.core.LocationRepository;
 import org.brapi.test.BrAPITestServer.service.GeoJSONUtility;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
+import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Metadata;
@@ -33,17 +34,27 @@ public class LocationService {
 		this.locationRepository = locationRepository;
 	}
 
-	public List<Location> findLocations(String locationDbId, String locationType, String externalReferenceID,
-			String externalReferenceSource, Metadata metadata) {
+	public List<Location> findLocations(String locationDbId, String locationType, String locationName,
+			String parentLocationDbId, String parentLocationName, String commonCropName, String programDbId,
+			String externalReferenceId, String externalReferenceID, String externalReferenceSource, Metadata metadata) {
 		LocationSearchRequest request = new LocationSearchRequest();
-		if (locationType != null) 
-			request.addLocationTypesItem(locationType);
-		if (locationDbId != null) 
+		if (locationDbId != null)
 			request.addLocationDbIdsItem(locationDbId);
-		if (externalReferenceID != null) 
-			request.addExternalReferenceIDsItem(externalReferenceID);
-		if (externalReferenceSource != null) 
-			request.addExternalReferenceSourcesItem(externalReferenceSource);
+		if (locationType != null)
+			request.addLocationTypesItem(locationType);
+		if (locationName != null)
+			request.addLocationNamesItem(locationName);
+		if (parentLocationDbId != null)
+			request.addParentLocationDbIdsItem(parentLocationDbId);
+		if (parentLocationName != null)
+			request.addParentLocationNamesItem(parentLocationName);
+		if (commonCropName != null)
+			request.addCommonCropNamesItem(commonCropName);
+		if (programDbId != null)
+			request.addProgramDbIdsItem(programDbId);
+
+		request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
+
 		return findLocations(request, metadata);
 	}
 
@@ -53,19 +64,24 @@ public class LocationService {
 
 		if (request.getAltitudeMin() != null || request.getAltitudeMax() != null || request.getCoordinates() != null) {
 			searchQuery = searchQuery.join("coordinates.coordinates", "coordinates");
-			searchQuery = searchQuery.appendNumberRange(request.getAltitudeMin(), request.getAltitudeMax(), "*coordinates.altitude")
-			.appendGeoJSONArea(request.getCoordinates());
+			searchQuery = searchQuery
+					.appendNumberRange(request.getAltitudeMin(), request.getAltitudeMax(), "*coordinates.altitude")
+					.appendGeoJSONArea(request.getCoordinates());
 		}
 		searchQuery = searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
 				.appendList(request.getAbbreviations(), "abbreviation")
+				.appendList(request.getCommonCropNames(), "crop.cropName")
 				.appendList(request.getCountryCodes(), "countryCode")
 				.appendList(request.getCountryNames(), "countryName")
 				.appendList(request.getInstituteAddresses(), "instituteAddress")
-				.appendList(request.getInstituteNames(), "instituteName")
-				.appendList(request.getLocationDbIds(), "id")
+				.appendList(request.getInstituteNames(), "instituteName").appendList(request.getLocationDbIds(), "id")
 				.appendList(request.getLocationNames(), "locationName")
-				.appendList(request.getLocationTypes(), "locationType");
-				
+				.appendList(request.getLocationTypes(), "locationType")
+				.appendList(request.getProgramDbIds(), "program.id")
+				.appendList(request.getProgramNames(), "program.name")
+				.appendList(request.getParentLocationDbIds(), "parentLocation.id")
+				.appendList(request.getParentLocationNames(), "parentLocation.name");
+
 		Page<LocationEntity> entityPage = locationRepository.findAllBySearch(searchQuery, pageReq);
 
 		List<Location> data = entityPage.map(this::convertFromEntity).getContent();
@@ -84,7 +100,7 @@ public class LocationService {
 		if (entityOpt.isPresent()) {
 			location = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "locationDbId not found: " + locationDbId);
+			throw new BrAPIServerDbIdNotFoundException("location", locationDbId);
 		}
 		return location;
 	}
@@ -98,13 +114,13 @@ public class LocationService {
 
 			savedEntity = locationRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "locationDbId not found: " + locationDbId);
+			throw new BrAPIServerDbIdNotFoundException("location", locationDbId);
 		}
 
 		return convertFromEntity(savedEntity);
 	}
 
-	public List<Location> saveLocations(@Valid List<LocationNewRequest> body) {
+	public List<Location> saveLocations(@Valid List<LocationNewRequest> body) throws BrAPIServerException {
 		List<Location> savedLocations = new ArrayList<>();
 
 		for (LocationNewRequest list : body) {
@@ -122,7 +138,8 @@ public class LocationService {
 
 	public Location convertFromEntity(LocationEntity entity) {
 		Location location = new Location();
-		location.setAdditionalInfo(entity.getAdditionalInfoMap());
+		location = UpdateUtility.convertFromEntity(entity, location);
+
 		location.setAbbreviation(entity.getAbbreviation());
 		location.setCoordinateDescription(entity.getCoordinateDescription());
 		location.setCoordinateUncertainty(entity.getCoordinateUncertainty());
@@ -131,7 +148,6 @@ public class LocationService {
 		location.setDocumentationURL(entity.getDocumentationURL());
 		location.setEnvironmentType(entity.getEnvironmentType());
 		location.setExposure(entity.getExposure());
-		location.setExternalReferences(entity.getExternalReferencesMap());
 		location.setInstituteAddress(entity.getInstituteAddress());
 		location.setInstituteName(entity.getInstituteName());
 		location.setLocationDbId(entity.getId());
@@ -141,11 +157,15 @@ public class LocationService {
 		location.setSlope(entity.getSlope());
 		location.setTopography(entity.getTopography());
 		location.setCoordinates(GeoJSONUtility.convertFromEntity(entity.getCoordinates()));
+		if (entity.getParentLocation() != null) {
+			location.setParentLocationDbId(entity.getParentLocation().getId());
+			location.setParentLocationName(entity.getParentLocation().getLocationName());
+		}
 
 		return location;
 	}
 
-	private void updateEntity(LocationEntity entity, LocationNewRequest request) {
+	private void updateEntity(LocationEntity entity, LocationNewRequest request) throws BrAPIServerException {
 		if (request.getAdditionalInfo() != null)
 			entity.setAdditionalInfo(request.getAdditionalInfo());
 		if (request.getAbbreviation() != null)
@@ -182,6 +202,10 @@ public class LocationService {
 			entity.setTopography(request.getTopography());
 		if (request.getCoordinates() != null)
 			entity.setCoordinates(GeoJSONUtility.convertToEntity(request.getCoordinates()));
+		if (request.getParentLocationDbId() != null) {
+			LocationEntity parentLocation = getLocationEntity(request.getParentLocationDbId());
+			entity.setParentLocation(parentLocation);
+		}
 
 	}
 

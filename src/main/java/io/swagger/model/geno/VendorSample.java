@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.OntologyReference;
 
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 
 /**

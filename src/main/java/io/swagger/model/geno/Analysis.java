@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.time.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * An analysis contains an interpretation of one or several experiments. (e.g. SNVs, copy number variations, methylation status) together with information about the methodology used.

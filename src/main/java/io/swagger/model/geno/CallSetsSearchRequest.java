@@ -3,47 +3,37 @@ package io.swagger.model.geno;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.SearchRequest;
-import io.swagger.model.SearchRequestParametersPaging;
-
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
 
-/**
- * CallSetsSearchRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
-public class CallSetsSearchRequest extends SearchRequestParametersPaging implements SearchRequest {
+public class CallSetsSearchRequest extends SearchRequest {
 	@JsonProperty("germplasmDbIds")
-	@Valid
+
 	private List<String> germplasmDbIds = null;
 
 	@JsonProperty("germplasmNames")
-	@Valid
+
 	private List<String> germplasmNames = null;
 
 	@JsonProperty("callSetDbIds")
-	@Valid
+
 	private List<String> callSetDbIds = null;
 
 	@JsonProperty("callSetNames")
-	@Valid
+
 	private List<String> callSetNames = null;
 
 	@JsonProperty("sampleDbIds")
-	@Valid
+
 	private List<String> sampleDbIds = null;
 
 	@JsonProperty("sampleNames")
-	@Valid
+
 	private List<String> sampleNames = null;
 
 	@JsonProperty("variantSetDbIds")
-	@Valid
+
 	private List<String> variantSetDbIds = null;
 
 	public CallSetsSearchRequest germplasmDbIds(List<String> germplasmDbIds) {
@@ -58,13 +48,6 @@ public class CallSetsSearchRequest extends SearchRequestParametersPaging impleme
 		this.germplasmDbIds.add(germplasmDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * List of IDs which uniquely identify germplasm to search for
-	 * 
-	 * @return germplasmDbIds
-	 **/
-	@ApiModelProperty(example = "[\"e9c6edd7\",\"1b1df4a6\"]", value = "List of IDs which uniquely identify germplasm to search for")
 
 	public List<String> getGermplasmDbIds() {
 		return germplasmDbIds;
@@ -87,13 +70,6 @@ public class CallSetsSearchRequest extends SearchRequestParametersPaging impleme
 		return this;
 	}
 
-	/**
-	 * List of human readable names to identify germplasm to search for
-	 * 
-	 * @return germplasmNames
-	 **/
-	@ApiModelProperty(example = "[\"A0000003\",\"A0000477\"]", value = "List of human readable names to identify germplasm to search for")
-
 	public List<String> getGermplasmNames() {
 		return germplasmNames;
 	}
@@ -114,13 +90,6 @@ public class CallSetsSearchRequest extends SearchRequestParametersPaging impleme
 		this.callSetDbIds.add(callSetDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * Only return call sets with these DbIds (case-sensitive, exact match).
-	 * 
-	 * @return callSetDbIds
-	 **/
-	@ApiModelProperty(example = "[\"6c7486b2\",\"49c36a73\"]", value = "Only return call sets with these DbIds (case-sensitive, exact match).")
 
 	public List<String> getCallSetDbIds() {
 		return callSetDbIds;
@@ -143,13 +112,6 @@ public class CallSetsSearchRequest extends SearchRequestParametersPaging impleme
 		return this;
 	}
 
-	/**
-	 * Only return call sets with these names (case-sensitive, exact match).
-	 * 
-	 * @return callSetNames
-	 **/
-	@ApiModelProperty(example = "[\"Sample_123_DNA_Run_456\",\"Sample_789_DNA_Run_101\"]", value = "Only return call sets with these names (case-sensitive, exact match).")
-
 	public List<String> getCallSetNames() {
 		return callSetNames;
 	}
@@ -170,13 +132,6 @@ public class CallSetsSearchRequest extends SearchRequestParametersPaging impleme
 		this.sampleDbIds.add(sampleDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * Return only call sets generated from the provided Biosample IDs.
-	 * 
-	 * @return sampleDbIds
-	 **/
-	@ApiModelProperty(example = "[\"758d3f6d\",\"39c0a3f7\"]", value = "Return only call sets generated from the provided Biosample IDs.")
 
 	public List<String> getSampleDbIds() {
 		return sampleDbIds;
@@ -199,14 +154,6 @@ public class CallSetsSearchRequest extends SearchRequestParametersPaging impleme
 		return this;
 	}
 
-	/**
-	 * Return only call sets generated from the provided Biosample human readable
-	 * names.
-	 * 
-	 * @return sampleNames
-	 **/
-	@ApiModelProperty(example = "[\"Sample_123\",\"Sample_789\"]", value = "Return only call sets generated from the provided Biosample human readable names.")
-
 	public List<String> getSampleNames() {
 		return sampleNames;
 	}
@@ -227,13 +174,6 @@ public class CallSetsSearchRequest extends SearchRequestParametersPaging impleme
 		this.variantSetDbIds.add(variantSetDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * The VariantSet to search.
-	 * 
-	 * @return variantSetDbIds
-	 **/
-	@ApiModelProperty(example = "[\"8a9a8972\",\"32a2649a\"]", value = "The VariantSet to search.")
 
 	public List<String> getVariantSetDbIds() {
 		return variantSetDbIds;
@@ -283,10 +223,6 @@ public class CallSetsSearchRequest extends SearchRequestParametersPaging impleme
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";

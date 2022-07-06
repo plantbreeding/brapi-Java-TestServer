@@ -17,6 +17,14 @@ public class ExperimentalDesignEntity extends BrAPIBaseEntity {
 	@OneToOne
 	private StudyEntity study;
 
+	public StudyEntity getStudy() {
+		return study;
+	}
+
+	public void setStudy(StudyEntity study) {
+		this.study = study;
+	}
+
 	public String getPUI() {
 		return PUI;
 	}

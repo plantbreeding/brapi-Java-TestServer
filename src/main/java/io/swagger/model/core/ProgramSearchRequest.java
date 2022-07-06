@@ -1,197 +1,70 @@
 package io.swagger.model.core;
 
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.SearchRequest;
-import io.swagger.model.SearchRequestParametersPaging;
-
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
 
-/**
- * ProgramSearchRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
-public class ProgramSearchRequest extends SearchRequestParametersPaging implements SearchRequest {
-	@JsonProperty("commonCropNames")
-	@Valid
-	private List<String> commonCropNames = null;
-
-	@JsonProperty("programDbIds")
-	@Valid
-	private List<String> programDbIds = null;
-
-	@JsonProperty("programNames")
-	@Valid
-	private List<String> programNames = null;
-
-	@JsonProperty("externalReferenceIDs")
-	@Valid
-	private List<String> externalReferenceIDs = null;
-
-	@JsonProperty("externalReferenceSources")
-	@Valid
-	private List<String> externalReferenceSources = null;
-
+public class ProgramSearchRequest extends SearchRequest {
 	@JsonProperty("abbreviations")
-	@Valid
 	private List<String> abbreviations = null;
 
+	@JsonProperty("commonCropNames")
+	private List<String> commonCropNames = null;
+
 	@JsonProperty("leadPersonDbIds")
-	@Valid
 	private List<String> leadPersonDbIds = null;
 
 	@JsonProperty("leadPersonNames")
-	@Valid
 	private List<String> leadPersonNames = null;
 
 	@JsonProperty("objectives")
-	@Valid
 	private List<String> objectives = null;
 
-	public ProgramSearchRequest commonCropNames(List<String> commonCropNames) {
-		this.commonCropNames = commonCropNames;
-		return this;
-	}
+	@JsonProperty("page")
+	private Integer page = null;
 
-	public ProgramSearchRequest addCommonCropNamesItem(String commonCropNamesItem) {
-		if (this.commonCropNames == null) {
-			this.commonCropNames = new ArrayList<String>();
+	@JsonProperty("pageSize")
+	private Integer pageSize = null;
+
+	@JsonProperty("programDbIds")
+	private List<String> programDbIds = null;
+
+	@JsonProperty("programNames")
+	private List<String> programNames = null;
+
+	@JsonProperty("programTypes")
+	private List<ProgramTypesEnum> programTypes = null;
+
+	public enum ProgramTypesEnum {
+		STANARD("STANARD"), PROJECT("PROJECT");
+
+		private String value;
+
+		ProgramTypesEnum(String value) {
+			this.value = value;
 		}
-		this.commonCropNames.add(commonCropNamesItem);
-		return this;
-	}
 
-	/**
-	 * Common name for the crop which this program is for
-	 * 
-	 * @return commonCropNames
-	 **/
-	@ApiModelProperty(example = "[\"Tomatillo\",\"Paw Paw\"]", value = "Common name for the crop which this program is for")
-
-	public List<String> getCommonCropNames() {
-		return commonCropNames;
-	}
-
-	public void setCommonCropNames(List<String> commonCropNames) {
-		this.commonCropNames = commonCropNames;
-	}
-
-	public ProgramSearchRequest programDbIds(List<String> programDbIds) {
-		this.programDbIds = programDbIds;
-		return this;
-	}
-
-	public ProgramSearchRequest addProgramDbIdsItem(String programDbIdsItem) {
-		if (this.programDbIds == null) {
-			this.programDbIds = new ArrayList<String>();
+		@Override
+		@JsonValue
+		public String toString() {
+			return String.valueOf(value);
 		}
-		this.programDbIds.add(programDbIdsItem);
-		return this;
-	}
 
-	/**
-	 * A program identifier to search for
-	 * 
-	 * @return programDbIds
-	 **/
-	@ApiModelProperty(example = "[\"8f5de35b\",\"0e2d4a13\"]", value = "A program identifier to search for")
-
-	public List<String> getProgramDbIds() {
-		return programDbIds;
-	}
-
-	public void setProgramDbIds(List<String> programDbIds) {
-		this.programDbIds = programDbIds;
-	}
-
-	public ProgramSearchRequest programNames(List<String> programNames) {
-		this.programNames = programNames;
-		return this;
-	}
-
-	public ProgramSearchRequest addProgramNamesItem(String programNamesItem) {
-		if (this.programNames == null) {
-			this.programNames = new ArrayList<String>();
+		@JsonCreator
+		public static ProgramTypesEnum fromValue(String text) {
+			for (ProgramTypesEnum b : ProgramTypesEnum.values()) {
+				if (String.valueOf(b.value).equals(text)) {
+					return b;
+				}
+			}
+			return null;
 		}
-		this.programNames.add(programNamesItem);
-		return this;
-	}
-
-	/**
-	 * A name of a program to search for
-	 * 
-	 * @return programNames
-	 **/
-	@ApiModelProperty(example = "[\"Better Breeding Program\",\"Best Breeding Program\"]", value = "A name of a program to search for")
-
-	public List<String> getProgramNames() {
-		return programNames;
-	}
-
-	public void setProgramNames(List<String> programNames) {
-		this.programNames = programNames;
-	}
-
-	public ProgramSearchRequest externalReferenceIDs(List<String> externalReferenceIDs) {
-		this.externalReferenceIDs = externalReferenceIDs;
-		return this;
-	}
-
-	public ProgramSearchRequest addExternalReferenceIDsItem(String externalReferenceIDsItem) {
-		if (this.externalReferenceIDs == null) {
-			this.externalReferenceIDs = new ArrayList<String>();
-		}
-		this.externalReferenceIDs.add(externalReferenceIDsItem);
-		return this;
-	}
-
-	/**
-	 * List of external references for the trait to search for
-	 * 
-	 * @return externalReferenceIDs
-	 **/
-	@ApiModelProperty(example = "[\"http://purl.obolibrary.org/obo/ro.owl\",\"14a19841\"]", value = "List of external references for the trait to search for")
-
-	public List<String> getExternalReferenceIDs() {
-		return externalReferenceIDs;
-	}
-
-	public void setExternalReferenceIDs(List<String> externalReferenceIDs) {
-		this.externalReferenceIDs = externalReferenceIDs;
-	}
-
-	public ProgramSearchRequest externalReferenceSources(List<String> externalReferenceSources) {
-		this.externalReferenceSources = externalReferenceSources;
-		return this;
-	}
-
-	public ProgramSearchRequest addExternalReferenceSourcesItem(String externalReferenceSourcesItem) {
-		if (this.externalReferenceSources == null) {
-			this.externalReferenceSources = new ArrayList<String>();
-		}
-		this.externalReferenceSources.add(externalReferenceSourcesItem);
-		return this;
-	}
-
-	/**
-	 * List of external references sources for the trait to search for
-	 * 
-	 * @return externalReferenceSources
-	 **/
-	@ApiModelProperty(example = "[\"OBO Library\",\"Field App Name\"]", value = "List of external references sources for the trait to search for")
-
-	public List<String> getExternalReferenceSources() {
-		return externalReferenceSources;
-	}
-
-	public void setExternalReferenceSources(List<String> externalReferenceSources) {
-		this.externalReferenceSources = externalReferenceSources;
 	}
 
 	public ProgramSearchRequest abbreviations(List<String> abbreviations) {
@@ -207,19 +80,33 @@ public class ProgramSearchRequest extends SearchRequestParametersPaging implemen
 		return this;
 	}
 
-	/**
-	 * An abbreviation of a program to search for
-	 * 
-	 * @return abbreviations
-	 **/
-	@ApiModelProperty(example = "[\"P1\",\"P2\"]", value = "An abbreviation of a program to search for")
-
 	public List<String> getAbbreviations() {
 		return abbreviations;
 	}
 
 	public void setAbbreviations(List<String> abbreviations) {
 		this.abbreviations = abbreviations;
+	}
+
+	public ProgramSearchRequest commonCropNames(List<String> commonCropNames) {
+		this.commonCropNames = commonCropNames;
+		return this;
+	}
+
+	public ProgramSearchRequest addCommonCropNamesItem(String commonCropNamesItem) {
+		if (this.commonCropNames == null) {
+			this.commonCropNames = new ArrayList<String>();
+		}
+		this.commonCropNames.add(commonCropNamesItem);
+		return this;
+	}
+
+	public List<String> getCommonCropNames() {
+		return commonCropNames;
+	}
+
+	public void setCommonCropNames(List<String> commonCropNames) {
+		this.commonCropNames = commonCropNames;
 	}
 
 	public ProgramSearchRequest leadPersonDbIds(List<String> leadPersonDbIds) {
@@ -234,13 +121,6 @@ public class ProgramSearchRequest extends SearchRequestParametersPaging implemen
 		this.leadPersonDbIds.add(leadPersonDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * The person DbIds of the program leader to search for
-	 * 
-	 * @return leadPersonDbIds
-	 **/
-	@ApiModelProperty(example = "[\"d8bd96c7\",\"a2b9c8e7\"]", value = "The person DbIds of the program leader to search for")
 
 	public List<String> getLeadPersonDbIds() {
 		return leadPersonDbIds;
@@ -263,13 +143,6 @@ public class ProgramSearchRequest extends SearchRequestParametersPaging implemen
 		return this;
 	}
 
-	/**
-	 * The names of the program leader to search for
-	 * 
-	 * @return leadPersonNames
-	 **/
-	@ApiModelProperty(example = "[\"Bob Robertson\",\"Rob Robertson\"]", value = "The names of the program leader to search for")
-
 	public List<String> getLeadPersonNames() {
 		return leadPersonNames;
 	}
@@ -291,19 +164,75 @@ public class ProgramSearchRequest extends SearchRequestParametersPaging implemen
 		return this;
 	}
 
-	/**
-	 * A program objective to search for
-	 * 
-	 * @return objectives
-	 **/
-	@ApiModelProperty(example = "[\"Objective Code One\",\"This is a longer objective search query\"]", value = "A program objective to search for")
-
 	public List<String> getObjectives() {
 		return objectives;
 	}
 
 	public void setObjectives(List<String> objectives) {
 		this.objectives = objectives;
+	}
+
+	public ProgramSearchRequest programDbIds(List<String> programDbIds) {
+		this.programDbIds = programDbIds;
+		return this;
+	}
+
+	public ProgramSearchRequest addProgramDbIdsItem(String programDbIdsItem) {
+		if (this.programDbIds == null) {
+			this.programDbIds = new ArrayList<String>();
+		}
+		this.programDbIds.add(programDbIdsItem);
+		return this;
+	}
+
+	public List<String> getProgramDbIds() {
+		return programDbIds;
+	}
+
+	public void setProgramDbIds(List<String> programDbIds) {
+		this.programDbIds = programDbIds;
+	}
+
+	public ProgramSearchRequest programNames(List<String> programNames) {
+		this.programNames = programNames;
+		return this;
+	}
+
+	public ProgramSearchRequest addProgramNamesItem(String programNamesItem) {
+		if (this.programNames == null) {
+			this.programNames = new ArrayList<String>();
+		}
+		this.programNames.add(programNamesItem);
+		return this;
+	}
+
+	public List<String> getProgramNames() {
+		return programNames;
+	}
+
+	public void setProgramNames(List<String> programNames) {
+		this.programNames = programNames;
+	}
+
+	public ProgramSearchRequest programTypes(List<ProgramTypesEnum> programTypes) {
+		this.programTypes = programTypes;
+		return this;
+	}
+
+	public ProgramSearchRequest addProgramTypesItem(ProgramTypesEnum programTypesItem) {
+		if (this.programTypes == null) {
+			this.programTypes = new ArrayList<ProgramTypesEnum>();
+		}
+		this.programTypes.add(programTypesItem);
+		return this;
+	}
+
+	public List<ProgramTypesEnum> getProgramTypes() {
+		return programTypes;
+	}
+
+	public void setProgramTypes(List<ProgramTypesEnum> programTypes) {
+		this.programTypes = programTypes;
 	}
 
 	@Override
@@ -315,45 +244,48 @@ public class ProgramSearchRequest extends SearchRequestParametersPaging implemen
 			return false;
 		}
 		ProgramSearchRequest programSearchRequest = (ProgramSearchRequest) o;
-		return Objects.equals(this.commonCropNames, programSearchRequest.commonCropNames)
-				&& Objects.equals(this.programDbIds, programSearchRequest.programDbIds)
-				&& Objects.equals(this.programNames, programSearchRequest.programNames)
-				&& Objects.equals(this.externalReferenceIDs, programSearchRequest.externalReferenceIDs)
+		return Objects.equals(this.abbreviations, programSearchRequest.abbreviations)
+				&& Objects.equals(this.commonCropNames, programSearchRequest.commonCropNames)
+				&& Objects.equals(this.externalReferenceIds, programSearchRequest.externalReferenceIds)
 				&& Objects.equals(this.externalReferenceSources, programSearchRequest.externalReferenceSources)
-				&& Objects.equals(this.abbreviations, programSearchRequest.abbreviations)
 				&& Objects.equals(this.leadPersonDbIds, programSearchRequest.leadPersonDbIds)
 				&& Objects.equals(this.leadPersonNames, programSearchRequest.leadPersonNames)
-				&& Objects.equals(this.objectives, programSearchRequest.objectives) && super.equals(o);
+				&& Objects.equals(this.objectives, programSearchRequest.objectives)
+				&& Objects.equals(this.page, programSearchRequest.page)
+				&& Objects.equals(this.pageSize, programSearchRequest.pageSize)
+				&& Objects.equals(this.programDbIds, programSearchRequest.programDbIds)
+				&& Objects.equals(this.programNames, programSearchRequest.programNames)
+				&& Objects.equals(this.programTypes, programSearchRequest.programTypes);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(commonCropNames, programDbIds, programNames, externalReferenceIDs, externalReferenceSources,
-				abbreviations, leadPersonDbIds, leadPersonNames, objectives, super.hashCode());
+		return Objects.hash(abbreviations, commonCropNames, externalReferenceIds,
+				externalReferenceSources, leadPersonDbIds, leadPersonNames, objectives, page, pageSize, programDbIds,
+				programNames, programTypes);
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("class ProgramSearchRequest {\n");
-		sb.append("    ").append(toIndentedString(super.toString())).append("\n");
-		sb.append("    commonCropNames: ").append(toIndentedString(commonCropNames)).append("\n");
-		sb.append("    programDbIds: ").append(toIndentedString(programDbIds)).append("\n");
-		sb.append("    programNames: ").append(toIndentedString(programNames)).append("\n");
-		sb.append("    externalReferenceIDs: ").append(toIndentedString(externalReferenceIDs)).append("\n");
-		sb.append("    externalReferenceSources: ").append(toIndentedString(externalReferenceSources)).append("\n");
+
 		sb.append("    abbreviations: ").append(toIndentedString(abbreviations)).append("\n");
+		sb.append("    commonCropNames: ").append(toIndentedString(commonCropNames)).append("\n");
+		sb.append("    externalReferenceIds: ").append(toIndentedString(externalReferenceIds)).append("\n");
+		sb.append("    externalReferenceSources: ").append(toIndentedString(externalReferenceSources)).append("\n");
 		sb.append("    leadPersonDbIds: ").append(toIndentedString(leadPersonDbIds)).append("\n");
 		sb.append("    leadPersonNames: ").append(toIndentedString(leadPersonNames)).append("\n");
 		sb.append("    objectives: ").append(toIndentedString(objectives)).append("\n");
+		sb.append("    page: ").append(toIndentedString(page)).append("\n");
+		sb.append("    pageSize: ").append(toIndentedString(pageSize)).append("\n");
+		sb.append("    programDbIds: ").append(toIndentedString(programDbIds)).append("\n");
+		sb.append("    programNames: ").append(toIndentedString(programNames)).append("\n");
+		sb.append("    programTypes: ").append(toIndentedString(programTypes)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";
@@ -364,24 +296,26 @@ public class ProgramSearchRequest extends SearchRequestParametersPaging implemen
 	@Override
 	public Integer getTotalParameterCount() {
 		Integer count = 0;
-		if (this.commonCropNames != null)
-			count += this.commonCropNames.size();
-		if (this.programDbIds != null)
-			count += this.programDbIds.size();
-		if (this.programNames != null)
-			count += this.programNames.size();
-		if (this.externalReferenceIDs != null)
-			count += this.externalReferenceIDs.size();
-		if (this.externalReferenceSources != null)
-			count += this.externalReferenceSources.size();
 		if (this.abbreviations != null)
 			count += this.abbreviations.size();
+		if (this.commonCropNames != null)
+			count += this.commonCropNames.size();
+		if (this.externalReferenceIds != null)
+			count += this.externalReferenceIds.size();
+		if (this.externalReferenceSources != null)
+			count += this.externalReferenceSources.size();
 		if (this.leadPersonDbIds != null)
 			count += this.leadPersonDbIds.size();
 		if (this.leadPersonNames != null)
 			count += this.leadPersonNames.size();
 		if (this.objectives != null)
 			count += this.objectives.size();
+		if (this.programDbIds != null)
+			count += this.programDbIds.size();
+		if (this.programNames != null)
+			count += this.programNames.size();
+		if (this.programTypes != null)
+			count += this.programTypes.size();
 		return count;
 	}
 }

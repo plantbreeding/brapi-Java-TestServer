@@ -4,31 +4,13 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.ExternalReferences;
-import io.swagger.model.germ.CrossNewRequestCrossAttributes;
-import io.swagger.model.germ.CrossParent;
-
+import io.swagger.model.BrAPIDataModel;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.time.OffsetDateTime;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
 
-/**
- * CrossNewRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:33:36.513Z[GMT]")
-public class CrossNewRequest {
-	@JsonProperty("additionalInfo")
-	@Valid
-	private Map<String, Object> additionalInfo = null;
-
+public class CrossNewRequest extends BrAPIDataModel implements CrossInterface {
 	@JsonProperty("crossAttributes")
-	@Valid
 	private List<CrossNewRequestCrossAttributes> crossAttributes = null;
 
 	@JsonProperty("crossName")
@@ -43,9 +25,6 @@ public class CrossNewRequest {
 	@JsonProperty("crossingProjectName")
 	private String crossingProjectName = null;
 
-	@JsonProperty("externalReferences")
-	private ExternalReferences externalReferences = null;
-
 	@JsonProperty("parent1")
 	private CrossParent parent1 = null;
 
@@ -55,34 +34,43 @@ public class CrossNewRequest {
 	@JsonProperty("pollinationTimeStamp")
 	private OffsetDateTime pollinationTimeStamp = null;
 
-	public CrossNewRequest additionalInfo(Map<String, Object> additionalInfo) {
-		this.additionalInfo = additionalInfo;
+	@JsonProperty("pollinationEvents")
+	private List<CrossPollinationEvents> pollinationEvents = null;
+	
+	@JsonProperty("plannedCrossDbId")
+	private String plannedCrossDbId = null;
+	
+	@JsonProperty("plannedCrossName")
+	private String plannedCrossName = null;
+
+	public List<CrossPollinationEvents> getPollinationEvents() {
+		return pollinationEvents;
+	}
+
+	public void setPollinationEvents(List<CrossPollinationEvents> pollinationEvents) {
+		this.pollinationEvents = pollinationEvents;
+	}
+
+	public String getPlannedCrossName() {
+		return plannedCrossName;
+	}
+
+	public void setPlannedCrossName(String plannedCrossName) {
+		this.plannedCrossName = plannedCrossName;
+	}
+
+	public CrossNewRequest plannedCrossDbId(String plannedCrossDbId) {
+		this.plannedCrossDbId = plannedCrossDbId;
 		return this;
 	}
 
-	public CrossNewRequest putAdditionalInfoItem(String key, String additionalInfoItem) {
-		if (this.additionalInfo == null) {
-			this.additionalInfo = new HashMap<String, Object>();
-		}
-		this.additionalInfo.put(key, additionalInfoItem);
-		return this;
+	public String getPlannedCrossDbId() {
+		return plannedCrossDbId;
 	}
 
-	/**
-	 * Additional arbitrary info
-	 * 
-	 * @return additionalInfo
-	 **/
-	@ApiModelProperty(value = "Additional arbitrary info")
-
-	public Map<String, Object> getAdditionalInfo() {
-		return additionalInfo;
+	public void setPlannedCrossDbId(String plannedCrossDbId) {
+		this.plannedCrossDbId = plannedCrossDbId;
 	}
-
-	public void setAdditionalInfo(Map<String, Object> additionalInfo) {
-		this.additionalInfo = additionalInfo;
-	}
-
 	public CrossNewRequest crossAttributes(List<CrossNewRequestCrossAttributes> crossAttributes) {
 		this.crossAttributes = crossAttributes;
 		return this;
@@ -96,13 +84,6 @@ public class CrossNewRequest {
 		return this;
 	}
 
-	/**
-	 * Set of custom attributes associated with a cross
-	 * 
-	 * @return crossAttributes
-	 **/
-	@ApiModelProperty(value = "Set of custom attributes associated with a cross")
-	@Valid
 	public List<CrossNewRequestCrossAttributes> getCrossAttributes() {
 		return crossAttributes;
 	}
@@ -115,13 +96,6 @@ public class CrossNewRequest {
 		this.crossName = crossName;
 		return this;
 	}
-
-	/**
-	 * the human readable name for a cross
-	 * 
-	 * @return crossName
-	 **/
-	@ApiModelProperty(example = "my_Ibadan_Crosses_2018_01", value = "the human readable name for a cross")
 
 	public String getCrossName() {
 		return crossName;
@@ -136,13 +110,6 @@ public class CrossNewRequest {
 		return this;
 	}
 
-	/**
-	 * the type of cross
-	 * 
-	 * @return crossType
-	 **/
-	@ApiModelProperty(example = "BIPARENTAL", value = "the type of cross")
-
 	public CrossType getCrossType() {
 		return crossType;
 	}
@@ -155,13 +122,6 @@ public class CrossNewRequest {
 		this.crossingProjectDbId = crossingProjectDbId;
 		return this;
 	}
-
-	/**
-	 * the unique identifier for a crossing project
-	 * 
-	 * @return crossingProjectDbId
-	 **/
-	@ApiModelProperty(example = "696d7c92", value = "the unique identifier for a crossing project")
 
 	public String getCrossingProjectDbId() {
 		return crossingProjectDbId;
@@ -176,13 +136,6 @@ public class CrossNewRequest {
 		return this;
 	}
 
-	/**
-	 * the human readable name for a crossing project
-	 * 
-	 * @return crossingProjectName
-	 **/
-	@ApiModelProperty(example = "my_Ibadan_Crosses_2018", value = "the human readable name for a crossing project")
-
 	public String getCrossingProjectName() {
 		return crossingProjectName;
 	}
@@ -191,40 +144,11 @@ public class CrossNewRequest {
 		this.crossingProjectName = crossingProjectName;
 	}
 
-	public CrossNewRequest externalReferences(ExternalReferences externalReferences) {
-		this.externalReferences = externalReferences;
-		return this;
-	}
-
-	/**
-	 * Get externalReferences
-	 * 
-	 * @return externalReferences
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
-	public ExternalReferences getExternalReferences() {
-		return externalReferences;
-	}
-
-	public void setExternalReferences(ExternalReferences externalReferences) {
-		this.externalReferences = externalReferences;
-	}
-
 	public CrossNewRequest parent1(CrossParent parent1) {
 		this.parent1 = parent1;
 		return this;
 	}
 
-	/**
-	 * Get parent1
-	 * 
-	 * @return parent1
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
 	public CrossParent getParent1() {
 		return parent1;
 	}
@@ -238,14 +162,6 @@ public class CrossNewRequest {
 		return this;
 	}
 
-	/**
-	 * Get parent2
-	 * 
-	 * @return parent2
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
 	public CrossParent getParent2() {
 		return parent2;
 	}
@@ -259,14 +175,6 @@ public class CrossNewRequest {
 		return this;
 	}
 
-	/**
-	 * the timestamp when the pollination took place
-	 * 
-	 * @return pollinationTimeStamp
-	 **/
-	@ApiModelProperty(value = "the timestamp when the pollination took place")
-
-	@Valid
 	public OffsetDateTime getPollinationTimeStamp() {
 		return pollinationTimeStamp;
 	}
@@ -321,10 +229,6 @@ public class CrossNewRequest {
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";

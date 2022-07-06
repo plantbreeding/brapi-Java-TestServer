@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:22.556Z[GMT]")
@@ -37,13 +37,29 @@ public interface VariablesApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/variables", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ObservationVariableListResponse> variablesGet(
-			@ApiParam(value = "Variable's unique ID") @Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
-			@ApiParam(value = "Variable's trait class (phenological, physiological, morphological, etc.)") @Valid @RequestParam(value = "traitClass", required = false) String traitClass,
-			@ApiParam(value = "The unique ID of a studies to filter on") @Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "observationVariableDbId") @Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
+			@ApiParam(value = "observationVariableName") @Valid @RequestParam(value = "observationVariableName", required = false) String observationVariableName,
+			@ApiParam(value = "observationVariablePUI") @Valid @RequestParam(value = "observationVariablePUI", required = false) String observationVariablePUI,
+			@ApiParam(value = "methodDbId") @Valid @RequestParam(value = "methodDbId", required = false) String methodDbId,
+			@ApiParam(value = "methodName") @Valid @RequestParam(value = "methodName", required = false) String methodName,
+			@ApiParam(value = "methodPUI") @Valid @RequestParam(value = "methodPUI", required = false) String methodPUI,
+			@ApiParam(value = "scaleDbId") @Valid @RequestParam(value = "scaleDbId", required = false) String scaleDbId,
+			@ApiParam(value = "scaleName") @Valid @RequestParam(value = "scaleName", required = false) String scaleName,
+			@ApiParam(value = "scalePUI") @Valid @RequestParam(value = "scalePUI", required = false) String scalePUI,
+			@ApiParam(value = "traitDbId") @Valid @RequestParam(value = "traitDbId", required = false) String traitDbId,
+			@ApiParam(value = "traitName") @Valid @RequestParam(value = "traitName", required = false) String traitName,
+			@ApiParam(value = "traitPUI") @Valid @RequestParam(value = "traitPUI", required = false) String traitPUI,
+			@ApiParam(value = "traitClass") @Valid @RequestParam(value = "traitClass", required = false) String traitClass,
+			@ApiParam(value = "ontologyDbId") @Valid @RequestParam(value = "ontologyDbId", required = false) String ontologyDbId,
+			@ApiParam(value = "commonCropName") @Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@ApiParam(value = "programDbId") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@ApiParam(value = "trialDbId") @Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
+			@ApiParam(value = "studyDbId") @Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@ApiParam(value = "externalReferenceID") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@ApiParam(value = "externalReferenceId") @Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@ApiParam(value = "externalReferenceSource") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the details for a specific Observation Variable", nickname = "variablesObservationVariableDbIdGet", notes = "Retrieve variable details", response = ObservationVariableSingleResponse.class, authorizations = {
@@ -112,8 +128,8 @@ public interface VariablesApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<? extends BrAPIResponse> searchVariablesSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 }

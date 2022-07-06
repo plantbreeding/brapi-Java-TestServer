@@ -3,129 +3,114 @@ package io.swagger.model.pheno;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.SearchRequest;
-import io.swagger.model.SearchRequestParametersPaging;
-
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
 
-/**
- * ObservationVariableSearchRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:22.556Z[GMT]")
-public class ObservationVariableSearchRequest extends SearchRequestParametersPaging implements SearchRequest {
-	@JsonProperty("externalReferenceIDs")
-	@Valid
-	private List<String> externalReferenceIDs = null;
-
-	@JsonProperty("externalReferenceSources")
-	@Valid
-	private List<String> externalReferenceSources = null;
+public class ObservationVariableSearchRequest extends SearchRequest {
+	@JsonProperty("commonCropNames")
+	private List<String> commonCropNames = null;
 
 	@JsonProperty("dataTypes")
-	@Valid
 	private List<TraitDataType> dataTypes = null;
 
 	@JsonProperty("methodDbIds")
-	@Valid
 	private List<String> methodDbIds = null;
 
+	@JsonProperty("methodNames")
+	private List<String> methodNames = null;
+
+	@JsonProperty("methodPUIs")
+	private List<String> methodPUIs = null;
+
 	@JsonProperty("observationVariableDbIds")
-	@Valid
 	private List<String> observationVariableDbIds = null;
 
 	@JsonProperty("observationVariableNames")
-	@Valid
 	private List<String> observationVariableNames = null;
 
+	@JsonProperty("observationVariablePUIs")
+	private List<String> observationVariablePUIs = null;
+
+	@JsonProperty("observationUnitDbIds")
+	private List<String> observationUnitDbIds = null;
+
 	@JsonProperty("ontologyDbIds")
-	@Valid
 	private List<String> ontologyDbIds = null;
 
+	@JsonProperty("programDbIds")
+	private List<String> programDbIds = null;
+
+	@JsonProperty("programNames")
+	private List<String> programNames = null;
+
 	@JsonProperty("scaleDbIds")
-	@Valid
 	private List<String> scaleDbIds = null;
 
+	@JsonProperty("scaleNames")
+	private List<String> scaleNames = null;
+
+	@JsonProperty("scalePUIs")
+	private List<String> scalePUIs = null;
+
 	@JsonProperty("studyDbId")
-	@Valid
 	private List<String> studyDbId = null;
 
+	@JsonProperty("studyDbIds")
+	private List<String> studyDbIds = null;
+
+	@JsonProperty("studyNames")
+	private List<String> studyNames = null;
+
+	@JsonProperty("traitAttributePUIs")
+	private List<String> traitAttributePUIs = null;
+
+	@JsonProperty("traitAttributes")
+	private List<String> traitAttributes = null;
+
 	@JsonProperty("traitClasses")
-	@Valid
 	private List<String> traitClasses = null;
 
 	@JsonProperty("traitDbIds")
-	@Valid
 	private List<String> traitDbIds = null;
 
-	private List<String> observationUnitDbIds = null;
+	@JsonProperty("traitEntities")
+	private List<String> traitEntities = null;
 
-	public List<String> getObservationUnitDbIds() {
-		return observationUnitDbIds;
-	}
+	@JsonProperty("traitEntityPUIs")
+	private List<String> traitEntityPUIs = null;
 
-	public void setObservationUnitDbIds(List<String> observationUnitDbIds) {
-		this.observationUnitDbIds = observationUnitDbIds;
-	}
+	@JsonProperty("traitNames")
+	private List<String> traitNames = null;
 
-	public ObservationVariableSearchRequest externalReferenceIDs(List<String> externalReferenceIDs) {
-		this.externalReferenceIDs = externalReferenceIDs;
+	@JsonProperty("traitPUIs")
+	private List<String> traitPUIs = null;
+
+	@JsonProperty("trialDbIds")
+	private List<String> trialDbIds = null;
+
+	@JsonProperty("trialNames")
+	private List<String> trialNames = null;
+
+	public ObservationVariableSearchRequest commonCropNames(List<String> commonCropNames) {
+		this.commonCropNames = commonCropNames;
 		return this;
 	}
 
-	public ObservationVariableSearchRequest addExternalReferenceIDsItem(String externalReferenceIDsItem) {
-		if (this.externalReferenceIDs == null) {
-			this.externalReferenceIDs = new ArrayList<String>();
+	public ObservationVariableSearchRequest addCommonCropNamesItem(String commonCropNamesItem) {
+		if (this.commonCropNames == null) {
+			this.commonCropNames = new ArrayList<String>();
 		}
-		this.externalReferenceIDs.add(externalReferenceIDsItem);
+		this.commonCropNames.add(commonCropNamesItem);
 		return this;
 	}
 
-	/**
-	 * List of external references for the trait to search for
-	 * 
-	 * @return externalReferenceIDs
-	 **/
-	@ApiModelProperty(example = "[\"http://purl.obolibrary.org/obo/ro.owl\",\"14a19841\"]", value = "List of external references for the trait to search for")
-
-	public List<String> getExternalReferenceIDs() {
-		return externalReferenceIDs;
+	public List<String> getCommonCropNames() {
+		return commonCropNames;
 	}
 
-	public void setExternalReferenceIDs(List<String> externalReferenceIDs) {
-		this.externalReferenceIDs = externalReferenceIDs;
-	}
-
-	public ObservationVariableSearchRequest externalReferenceSources(List<String> externalReferenceSources) {
-		this.externalReferenceSources = externalReferenceSources;
-		return this;
-	}
-
-	public ObservationVariableSearchRequest addExternalReferenceSourcesItem(String externalReferenceSourcesItem) {
-		if (this.externalReferenceSources == null) {
-			this.externalReferenceSources = new ArrayList<String>();
-		}
-		this.externalReferenceSources.add(externalReferenceSourcesItem);
-		return this;
-	}
-
-	/**
-	 * List of external references sources for the trait to search for
-	 * 
-	 * @return externalReferenceSources
-	 **/
-	@ApiModelProperty(example = "[\"OBO Library\",\"Field App Name\"]", value = "List of external references sources for the trait to search for")
-
-	public List<String> getExternalReferenceSources() {
-		return externalReferenceSources;
-	}
-
-	public void setExternalReferenceSources(List<String> externalReferenceSources) {
-		this.externalReferenceSources = externalReferenceSources;
+	public void setCommonCropNames(List<String> commonCropNames) {
+		this.commonCropNames = commonCropNames;
 	}
 
 	public ObservationVariableSearchRequest dataTypes(List<TraitDataType> dataTypes) {
@@ -141,13 +126,6 @@ public class ObservationVariableSearchRequest extends SearchRequestParametersPag
 		return this;
 	}
 
-	/**
-	 * List of scale data types to filter search results
-	 * 
-	 * @return dataTypes
-	 **/
-	@ApiModelProperty(example = "[\"Numerical\",\"Ordinal\",\"Text\"]", value = "List of scale data types to filter search results")
-	@Valid
 	public List<TraitDataType> getDataTypes() {
 		return dataTypes;
 	}
@@ -169,19 +147,54 @@ public class ObservationVariableSearchRequest extends SearchRequestParametersPag
 		return this;
 	}
 
-	/**
-	 * List of methods to filter search results
-	 * 
-	 * @return methodDbIds
-	 **/
-	@ApiModelProperty(example = "[\"07e34f83\",\"d3d5517a\"]", value = "List of methods to filter search results")
-
 	public List<String> getMethodDbIds() {
 		return methodDbIds;
 	}
 
 	public void setMethodDbIds(List<String> methodDbIds) {
 		this.methodDbIds = methodDbIds;
+	}
+
+	public ObservationVariableSearchRequest methodNames(List<String> methodNames) {
+		this.methodNames = methodNames;
+		return this;
+	}
+
+	public ObservationVariableSearchRequest addMethodNamesItem(String methodNamesItem) {
+		if (this.methodNames == null) {
+			this.methodNames = new ArrayList<String>();
+		}
+		this.methodNames.add(methodNamesItem);
+		return this;
+	}
+
+	public List<String> getMethodNames() {
+		return methodNames;
+	}
+
+	public void setMethodNames(List<String> methodNames) {
+		this.methodNames = methodNames;
+	}
+
+	public ObservationVariableSearchRequest methodPUIs(List<String> methodPUIs) {
+		this.methodPUIs = methodPUIs;
+		return this;
+	}
+
+	public ObservationVariableSearchRequest addMethodPUIsItem(String methodPUIsItem) {
+		if (this.methodPUIs == null) {
+			this.methodPUIs = new ArrayList<String>();
+		}
+		this.methodPUIs.add(methodPUIsItem);
+		return this;
+	}
+
+	public List<String> getMethodPUIs() {
+		return methodPUIs;
+	}
+
+	public void setMethodPUIs(List<String> methodPUIs) {
+		this.methodPUIs = methodPUIs;
 	}
 
 	public ObservationVariableSearchRequest observationVariableDbIds(List<String> observationVariableDbIds) {
@@ -196,13 +209,6 @@ public class ObservationVariableSearchRequest extends SearchRequestParametersPag
 		this.observationVariableDbIds.add(observationVariableDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * List of observation variable IDs to search for
-	 * 
-	 * @return observationVariableDbIds
-	 **/
-	@ApiModelProperty(example = "[\"2ef15c9f\",\"318e7f7d\"]", value = "List of observation variable IDs to search for")
 
 	public List<String> getObservationVariableDbIds() {
 		return observationVariableDbIds;
@@ -225,13 +231,6 @@ public class ObservationVariableSearchRequest extends SearchRequestParametersPag
 		return this;
 	}
 
-	/**
-	 * List of human readable observation variable names to search for
-	 * 
-	 * @return observationVariableNames
-	 **/
-	@ApiModelProperty(example = "[\"Plant Height 1\",\"Root Color\"]", value = "List of human readable observation variable names to search for")
-
 	public List<String> getObservationVariableNames() {
 		return observationVariableNames;
 	}
@@ -240,6 +239,52 @@ public class ObservationVariableSearchRequest extends SearchRequestParametersPag
 		this.observationVariableNames = observationVariableNames;
 	}
 
+	public ObservationVariableSearchRequest observationVariablePUIs(List<String> observationVariablePUIs) {
+		this.observationVariablePUIs = observationVariablePUIs;
+		return this;
+	}
+
+	public ObservationVariableSearchRequest addObservationVariablePUIsItem(String observationVariablePUIsItem) {
+		if (this.observationVariablePUIs == null) {
+			this.observationVariablePUIs = new ArrayList<String>();
+		}
+		this.observationVariablePUIs.add(observationVariablePUIsItem);
+		return this;
+	}
+
+	public List<String> getObservationVariablePUIs() {
+		return observationVariablePUIs;
+	}
+
+	public void setObservationVariablePUIs(List<String> observationVariablePUIs) {
+		this.observationVariablePUIs = observationVariablePUIs;
+	}
+
+	
+	
+	public ObservationVariableSearchRequest observationUnitDbIds(List<String> observationUnitDbIds) {
+		this.observationUnitDbIds = observationUnitDbIds;
+		return this;
+	}
+
+	public ObservationVariableSearchRequest addObservationUnitDbIdsItem(String observationUnitDbId) {
+		if (this.observationUnitDbIds == null) {
+			this.observationUnitDbIds = new ArrayList<String>();
+		}
+		this.observationUnitDbIds.add(observationUnitDbId);
+		return this;
+	}
+
+	public List<String> getObservationUnitDbIds() {
+		return observationUnitDbIds;
+	}
+
+	public void setObservationUnitDbIds(List<String> observationUnitDbIds) {
+		this.observationUnitDbIds = observationUnitDbIds;
+	}
+
+	
+	
 	public ObservationVariableSearchRequest ontologyDbIds(List<String> ontologyDbIds) {
 		this.ontologyDbIds = ontologyDbIds;
 		return this;
@@ -253,19 +298,54 @@ public class ObservationVariableSearchRequest extends SearchRequestParametersPag
 		return this;
 	}
 
-	/**
-	 * List of ontology IDs to search for
-	 * 
-	 * @return ontologyDbIds
-	 **/
-	@ApiModelProperty(example = "[\"f44f7b23\",\"a26b576e\"]", value = "List of ontology IDs to search for")
-
 	public List<String> getOntologyDbIds() {
 		return ontologyDbIds;
 	}
 
 	public void setOntologyDbIds(List<String> ontologyDbIds) {
 		this.ontologyDbIds = ontologyDbIds;
+	}
+
+	public ObservationVariableSearchRequest programDbIds(List<String> programDbIds) {
+		this.programDbIds = programDbIds;
+		return this;
+	}
+
+	public ObservationVariableSearchRequest addProgramDbIdsItem(String programDbIdsItem) {
+		if (this.programDbIds == null) {
+			this.programDbIds = new ArrayList<String>();
+		}
+		this.programDbIds.add(programDbIdsItem);
+		return this;
+	}
+
+	public List<String> getProgramDbIds() {
+		return programDbIds;
+	}
+
+	public void setProgramDbIds(List<String> programDbIds) {
+		this.programDbIds = programDbIds;
+	}
+
+	public ObservationVariableSearchRequest programNames(List<String> programNames) {
+		this.programNames = programNames;
+		return this;
+	}
+
+	public ObservationVariableSearchRequest addProgramNamesItem(String programNamesItem) {
+		if (this.programNames == null) {
+			this.programNames = new ArrayList<String>();
+		}
+		this.programNames.add(programNamesItem);
+		return this;
+	}
+
+	public List<String> getProgramNames() {
+		return programNames;
+	}
+
+	public void setProgramNames(List<String> programNames) {
+		this.programNames = programNames;
 	}
 
 	public ObservationVariableSearchRequest scaleDbIds(List<String> scaleDbIds) {
@@ -281,19 +361,54 @@ public class ObservationVariableSearchRequest extends SearchRequestParametersPag
 		return this;
 	}
 
-	/**
-	 * List of scales to filter search results
-	 * 
-	 * @return scaleDbIds
-	 **/
-	@ApiModelProperty(example = "[\"a13ecffa\",\"7e1afe4f\"]", value = "List of scales to filter search results")
-
 	public List<String> getScaleDbIds() {
 		return scaleDbIds;
 	}
 
 	public void setScaleDbIds(List<String> scaleDbIds) {
 		this.scaleDbIds = scaleDbIds;
+	}
+
+	public ObservationVariableSearchRequest scaleNames(List<String> scaleNames) {
+		this.scaleNames = scaleNames;
+		return this;
+	}
+
+	public ObservationVariableSearchRequest addScaleNamesItem(String scaleNamesItem) {
+		if (this.scaleNames == null) {
+			this.scaleNames = new ArrayList<String>();
+		}
+		this.scaleNames.add(scaleNamesItem);
+		return this;
+	}
+
+	public List<String> getScaleNames() {
+		return scaleNames;
+	}
+
+	public void setScaleNames(List<String> scaleNames) {
+		this.scaleNames = scaleNames;
+	}
+
+	public ObservationVariableSearchRequest scalePUIs(List<String> scalePUIs) {
+		this.scalePUIs = scalePUIs;
+		return this;
+	}
+
+	public ObservationVariableSearchRequest addScalePUIsItem(String scalePUIsItem) {
+		if (this.scalePUIs == null) {
+			this.scalePUIs = new ArrayList<String>();
+		}
+		this.scalePUIs.add(scalePUIsItem);
+		return this;
+	}
+
+	public List<String> getScalePUIs() {
+		return scalePUIs;
+	}
+
+	public void setScalePUIs(List<String> scalePUIs) {
+		this.scalePUIs = scalePUIs;
 	}
 
 	public ObservationVariableSearchRequest studyDbId(List<String> studyDbId) {
@@ -309,19 +424,96 @@ public class ObservationVariableSearchRequest extends SearchRequestParametersPag
 		return this;
 	}
 
-	/**
-	 * The unique ID of a studies to filter on
-	 * 
-	 * @return studyDbId
-	 **/
-	@ApiModelProperty(example = "[\"5bcac0ae\",\"7f48e22d\"]", value = "The unique ID of a studies to filter on")
-
 	public List<String> getStudyDbId() {
 		return studyDbId;
 	}
 
 	public void setStudyDbId(List<String> studyDbId) {
 		this.studyDbId = studyDbId;
+	}
+
+	public ObservationVariableSearchRequest studyDbIds(List<String> studyDbIds) {
+		this.studyDbIds = studyDbIds;
+		return this;
+	}
+
+	public ObservationVariableSearchRequest addStudyDbIdsItem(String studyDbIdsItem) {
+		if (this.studyDbIds == null) {
+			this.studyDbIds = new ArrayList<String>();
+		}
+		this.studyDbIds.add(studyDbIdsItem);
+		return this;
+	}
+
+	public List<String> getStudyDbIds() {
+		return studyDbIds;
+	}
+
+	public void setStudyDbIds(List<String> studyDbIds) {
+		this.studyDbIds = studyDbIds;
+	}
+
+	public ObservationVariableSearchRequest studyNames(List<String> studyNames) {
+		this.studyNames = studyNames;
+		return this;
+	}
+
+	public ObservationVariableSearchRequest addStudyNamesItem(String studyNamesItem) {
+		if (this.studyNames == null) {
+			this.studyNames = new ArrayList<String>();
+		}
+		this.studyNames.add(studyNamesItem);
+		return this;
+	}
+
+	public List<String> getStudyNames() {
+		return studyNames;
+	}
+
+	public void setStudyNames(List<String> studyNames) {
+		this.studyNames = studyNames;
+	}
+
+	public ObservationVariableSearchRequest traitAttributePUIs(List<String> traitAttributePUIs) {
+		this.traitAttributePUIs = traitAttributePUIs;
+		return this;
+	}
+
+	public ObservationVariableSearchRequest addTraitAttributePUIsItem(String traitAttributePUIsItem) {
+		if (this.traitAttributePUIs == null) {
+			this.traitAttributePUIs = new ArrayList<String>();
+		}
+		this.traitAttributePUIs.add(traitAttributePUIsItem);
+		return this;
+	}
+
+	public List<String> getTraitAttributePUIs() {
+		return traitAttributePUIs;
+	}
+
+	public void setTraitAttributePUIs(List<String> traitAttributePUIs) {
+		this.traitAttributePUIs = traitAttributePUIs;
+	}
+
+	public ObservationVariableSearchRequest traitAttributes(List<String> traitAttributes) {
+		this.traitAttributes = traitAttributes;
+		return this;
+	}
+
+	public ObservationVariableSearchRequest addTraitAttributesItem(String traitAttributesItem) {
+		if (this.traitAttributes == null) {
+			this.traitAttributes = new ArrayList<String>();
+		}
+		this.traitAttributes.add(traitAttributesItem);
+		return this;
+	}
+
+	public List<String> getTraitAttributes() {
+		return traitAttributes;
+	}
+
+	public void setTraitAttributes(List<String> traitAttributes) {
+		this.traitAttributes = traitAttributes;
 	}
 
 	public ObservationVariableSearchRequest traitClasses(List<String> traitClasses) {
@@ -336,13 +528,6 @@ public class ObservationVariableSearchRequest extends SearchRequestParametersPag
 		this.traitClasses.add(traitClassesItem);
 		return this;
 	}
-
-	/**
-	 * List of trait classes to filter search results
-	 * 
-	 * @return traitClasses
-	 **/
-	@ApiModelProperty(example = "[\"morphological\",\"phenological\",\"agronomical\"]", value = "List of trait classes to filter search results")
 
 	public List<String> getTraitClasses() {
 		return traitClasses;
@@ -365,19 +550,138 @@ public class ObservationVariableSearchRequest extends SearchRequestParametersPag
 		return this;
 	}
 
-	/**
-	 * List of trait unique ID to filter search results
-	 * 
-	 * @return traitDbIds
-	 **/
-	@ApiModelProperty(example = "[\"ef81147b\",\"78d82fad\"]", value = "List of trait unique ID to filter search results")
-
 	public List<String> getTraitDbIds() {
 		return traitDbIds;
 	}
 
 	public void setTraitDbIds(List<String> traitDbIds) {
 		this.traitDbIds = traitDbIds;
+	}
+
+	public ObservationVariableSearchRequest traitEntities(List<String> traitEntities) {
+		this.traitEntities = traitEntities;
+		return this;
+	}
+
+	public ObservationVariableSearchRequest addTraitEntitiesItem(String traitEntitiesItem) {
+		if (this.traitEntities == null) {
+			this.traitEntities = new ArrayList<String>();
+		}
+		this.traitEntities.add(traitEntitiesItem);
+		return this;
+	}
+
+	public List<String> getTraitEntities() {
+		return traitEntities;
+	}
+
+	public void setTraitEntities(List<String> traitEntities) {
+		this.traitEntities = traitEntities;
+	}
+
+	public ObservationVariableSearchRequest traitEntityPUIs(List<String> traitEntityPUIs) {
+		this.traitEntityPUIs = traitEntityPUIs;
+		return this;
+	}
+
+	public ObservationVariableSearchRequest addTraitEntityPUIsItem(String traitEntityPUIsItem) {
+		if (this.traitEntityPUIs == null) {
+			this.traitEntityPUIs = new ArrayList<String>();
+		}
+		this.traitEntityPUIs.add(traitEntityPUIsItem);
+		return this;
+	}
+
+	public List<String> getTraitEntityPUIs() {
+		return traitEntityPUIs;
+	}
+
+	public void setTraitEntityPUIs(List<String> traitEntityPUIs) {
+		this.traitEntityPUIs = traitEntityPUIs;
+	}
+
+	public ObservationVariableSearchRequest traitNames(List<String> traitNames) {
+		this.traitNames = traitNames;
+		return this;
+	}
+
+	public ObservationVariableSearchRequest addTraitNamesItem(String traitNamesItem) {
+		if (this.traitNames == null) {
+			this.traitNames = new ArrayList<String>();
+		}
+		this.traitNames.add(traitNamesItem);
+		return this;
+	}
+
+	public List<String> getTraitNames() {
+		return traitNames;
+	}
+
+	public void setTraitNames(List<String> traitNames) {
+		this.traitNames = traitNames;
+	}
+
+	public ObservationVariableSearchRequest traitPUIs(List<String> traitPUIs) {
+		this.traitPUIs = traitPUIs;
+		return this;
+	}
+
+	public ObservationVariableSearchRequest addTraitPUIsItem(String traitPUIsItem) {
+		if (this.traitPUIs == null) {
+			this.traitPUIs = new ArrayList<String>();
+		}
+		this.traitPUIs.add(traitPUIsItem);
+		return this;
+	}
+
+	public List<String> getTraitPUIs() {
+		return traitPUIs;
+	}
+
+	public void setTraitPUIs(List<String> traitPUIs) {
+		this.traitPUIs = traitPUIs;
+	}
+
+	public ObservationVariableSearchRequest trialDbIds(List<String> trialDbIds) {
+		this.trialDbIds = trialDbIds;
+		return this;
+	}
+
+	public ObservationVariableSearchRequest addTrialDbIdsItem(String trialDbIdsItem) {
+		if (this.trialDbIds == null) {
+			this.trialDbIds = new ArrayList<String>();
+		}
+		this.trialDbIds.add(trialDbIdsItem);
+		return this;
+	}
+
+	public List<String> getTrialDbIds() {
+		return trialDbIds;
+	}
+
+	public void setTrialDbIds(List<String> trialDbIds) {
+		this.trialDbIds = trialDbIds;
+	}
+
+	public ObservationVariableSearchRequest trialNames(List<String> trialNames) {
+		this.trialNames = trialNames;
+		return this;
+	}
+
+	public ObservationVariableSearchRequest addTrialNamesItem(String trialNamesItem) {
+		if (this.trialNames == null) {
+			this.trialNames = new ArrayList<String>();
+		}
+		this.trialNames.add(trialNamesItem);
+		return this;
+	}
+
+	public List<String> getTrialNames() {
+		return trialNames;
+	}
+
+	public void setTrialNames(List<String> trialNames) {
+		this.trialNames = trialNames;
 	}
 
 	@Override
@@ -389,53 +693,92 @@ public class ObservationVariableSearchRequest extends SearchRequestParametersPag
 			return false;
 		}
 		ObservationVariableSearchRequest observationVariableSearchRequest = (ObservationVariableSearchRequest) o;
-		return Objects.equals(this.externalReferenceIDs, observationVariableSearchRequest.externalReferenceIDs)
+		return Objects.equals(this.commonCropNames, observationVariableSearchRequest.commonCropNames)
+				&& Objects.equals(this.dataTypes, observationVariableSearchRequest.dataTypes)
+				&& Objects.equals(this.externalReferenceIds, observationVariableSearchRequest.externalReferenceIds)
 				&& Objects.equals(this.externalReferenceSources,
 						observationVariableSearchRequest.externalReferenceSources)
-				&& Objects.equals(this.dataTypes, observationVariableSearchRequest.dataTypes)
 				&& Objects.equals(this.methodDbIds, observationVariableSearchRequest.methodDbIds)
+				&& Objects.equals(this.methodNames, observationVariableSearchRequest.methodNames)
+				&& Objects.equals(this.methodPUIs, observationVariableSearchRequest.methodPUIs)
 				&& Objects.equals(this.observationVariableDbIds,
 						observationVariableSearchRequest.observationVariableDbIds)
 				&& Objects.equals(this.observationVariableNames,
 						observationVariableSearchRequest.observationVariableNames)
+				&& Objects.equals(this.observationVariablePUIs,
+						observationVariableSearchRequest.observationVariablePUIs)
 				&& Objects.equals(this.ontologyDbIds, observationVariableSearchRequest.ontologyDbIds)
+				&& Objects.equals(this.page, observationVariableSearchRequest.page)
+				&& Objects.equals(this.pageSize, observationVariableSearchRequest.pageSize)
+				&& Objects.equals(this.programDbIds, observationVariableSearchRequest.programDbIds)
+				&& Objects.equals(this.programNames, observationVariableSearchRequest.programNames)
 				&& Objects.equals(this.scaleDbIds, observationVariableSearchRequest.scaleDbIds)
+				&& Objects.equals(this.scaleNames, observationVariableSearchRequest.scaleNames)
+				&& Objects.equals(this.scalePUIs, observationVariableSearchRequest.scalePUIs)
 				&& Objects.equals(this.studyDbId, observationVariableSearchRequest.studyDbId)
+				&& Objects.equals(this.studyDbIds, observationVariableSearchRequest.studyDbIds)
+				&& Objects.equals(this.studyNames, observationVariableSearchRequest.studyNames)
+				&& Objects.equals(this.traitAttributePUIs, observationVariableSearchRequest.traitAttributePUIs)
+				&& Objects.equals(this.traitAttributes, observationVariableSearchRequest.traitAttributes)
 				&& Objects.equals(this.traitClasses, observationVariableSearchRequest.traitClasses)
-				&& Objects.equals(this.traitDbIds, observationVariableSearchRequest.traitDbIds) && super.equals(o);
+				&& Objects.equals(this.traitDbIds, observationVariableSearchRequest.traitDbIds)
+				&& Objects.equals(this.traitEntities, observationVariableSearchRequest.traitEntities)
+				&& Objects.equals(this.traitEntityPUIs, observationVariableSearchRequest.traitEntityPUIs)
+				&& Objects.equals(this.traitNames, observationVariableSearchRequest.traitNames)
+				&& Objects.equals(this.traitPUIs, observationVariableSearchRequest.traitPUIs)
+				&& Objects.equals(this.trialDbIds, observationVariableSearchRequest.trialDbIds)
+				&& Objects.equals(this.trialNames, observationVariableSearchRequest.trialNames);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(externalReferenceIDs, externalReferenceSources, dataTypes, methodDbIds,
-				observationVariableDbIds, observationVariableNames, ontologyDbIds, scaleDbIds, studyDbId, traitClasses,
-				traitDbIds, super.hashCode());
+		return Objects.hash(commonCropNames, dataTypes, externalReferenceIds, externalReferenceSources, methodDbIds,
+				methodNames, methodPUIs, observationVariableDbIds, observationVariableNames, observationVariablePUIs,
+				ontologyDbIds, page, pageSize, programDbIds, programNames, scaleDbIds, scaleNames, scalePUIs, studyDbId,
+				studyDbIds, studyNames, traitAttributePUIs, traitAttributes, traitClasses, traitDbIds, traitEntities,
+				traitEntityPUIs, traitNames, traitPUIs, trialDbIds, trialNames);
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("class ObservationVariableSearchRequest {\n");
-		sb.append("    ").append(toIndentedString(super.toString())).append("\n");
-		sb.append("    externalReferenceIDs: ").append(toIndentedString(externalReferenceIDs)).append("\n");
-		sb.append("    externalReferenceSources: ").append(toIndentedString(externalReferenceSources)).append("\n");
+
+		sb.append("    commonCropNames: ").append(toIndentedString(commonCropNames)).append("\n");
 		sb.append("    dataTypes: ").append(toIndentedString(dataTypes)).append("\n");
+		sb.append("    externalReferenceIds: ").append(toIndentedString(externalReferenceIds)).append("\n");
+		sb.append("    externalReferenceSources: ").append(toIndentedString(externalReferenceSources)).append("\n");
 		sb.append("    methodDbIds: ").append(toIndentedString(methodDbIds)).append("\n");
+		sb.append("    methodNames: ").append(toIndentedString(methodNames)).append("\n");
+		sb.append("    methodPUIs: ").append(toIndentedString(methodPUIs)).append("\n");
 		sb.append("    observationVariableDbIds: ").append(toIndentedString(observationVariableDbIds)).append("\n");
 		sb.append("    observationVariableNames: ").append(toIndentedString(observationVariableNames)).append("\n");
+		sb.append("    observationVariablePUIs: ").append(toIndentedString(observationVariablePUIs)).append("\n");
 		sb.append("    ontologyDbIds: ").append(toIndentedString(ontologyDbIds)).append("\n");
+		sb.append("    page: ").append(toIndentedString(page)).append("\n");
+		sb.append("    pageSize: ").append(toIndentedString(pageSize)).append("\n");
+		sb.append("    programDbIds: ").append(toIndentedString(programDbIds)).append("\n");
+		sb.append("    programNames: ").append(toIndentedString(programNames)).append("\n");
 		sb.append("    scaleDbIds: ").append(toIndentedString(scaleDbIds)).append("\n");
+		sb.append("    scaleNames: ").append(toIndentedString(scaleNames)).append("\n");
+		sb.append("    scalePUIs: ").append(toIndentedString(scalePUIs)).append("\n");
 		sb.append("    studyDbId: ").append(toIndentedString(studyDbId)).append("\n");
+		sb.append("    studyDbIds: ").append(toIndentedString(studyDbIds)).append("\n");
+		sb.append("    studyNames: ").append(toIndentedString(studyNames)).append("\n");
+		sb.append("    traitAttributePUIs: ").append(toIndentedString(traitAttributePUIs)).append("\n");
+		sb.append("    traitAttributes: ").append(toIndentedString(traitAttributes)).append("\n");
 		sb.append("    traitClasses: ").append(toIndentedString(traitClasses)).append("\n");
 		sb.append("    traitDbIds: ").append(toIndentedString(traitDbIds)).append("\n");
+		sb.append("    traitEntities: ").append(toIndentedString(traitEntities)).append("\n");
+		sb.append("    traitEntityPUIs: ").append(toIndentedString(traitEntityPUIs)).append("\n");
+		sb.append("    traitNames: ").append(toIndentedString(traitNames)).append("\n");
+		sb.append("    traitPUIs: ").append(toIndentedString(traitPUIs)).append("\n");
+		sb.append("    trialDbIds: ").append(toIndentedString(trialDbIds)).append("\n");
+		sb.append("    trialNames: ").append(toIndentedString(trialNames)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";
@@ -446,8 +789,8 @@ public class ObservationVariableSearchRequest extends SearchRequestParametersPag
 	@Override
 	public Integer getTotalParameterCount() {
 		Integer count = 0;
-		if (this.externalReferenceIDs != null)
-			count += this.externalReferenceIDs.size();
+		if (this.externalReferenceIds != null)
+			count += this.externalReferenceIds.size();
 		if (this.externalReferenceSources != null)
 			count += this.externalReferenceSources.size();
 		if (this.dataTypes != null)

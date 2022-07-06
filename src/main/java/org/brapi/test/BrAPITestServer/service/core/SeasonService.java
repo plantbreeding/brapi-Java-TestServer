@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.SeasonEntity;
 import org.brapi.test.BrAPITestServer.repository.core.SeasonRepository;
@@ -30,13 +31,15 @@ public class SeasonService {
 		this.seasonRepository = seasonRepository;
 	}
 
-	public List<Season> findSeasons(String seasonDbId, String season, Integer year, Metadata metadata) {
+	public List<Season> findSeasons(String seasonDbId, String season, String seasonName, Integer year, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<SeasonEntity> searchQuery = new SearchQueryBuilder<SeasonEntity>(SeasonEntity.class);
 		if (seasonDbId != null)
 			searchQuery = searchQuery.appendSingle(seasonDbId, "id");
 		if (season != null)
 			searchQuery = searchQuery.appendSingle(season, "season");
+		if (seasonName != null)
+			searchQuery = searchQuery.appendSingle(seasonName, "season");
 		if (year != null)
 			searchQuery = searchQuery.appendSingle(year, "year");
 
@@ -62,7 +65,7 @@ public class SeasonService {
 		if (entityOpt.isPresent()) {
 			season = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(errorStatus, "seasonDbId not found: " + seasonDbId);
+			throw new BrAPIServerDbIdNotFoundException("season", seasonDbId);
 		}
 		return season;
 	}
@@ -76,7 +79,7 @@ public class SeasonService {
 
 			savedEntity = seasonRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "seasonDbId not found: " + seasonDbId);
+			throw new BrAPIServerDbIdNotFoundException("season", seasonDbId);
 		}
 
 		return convertFromEntity(savedEntity);

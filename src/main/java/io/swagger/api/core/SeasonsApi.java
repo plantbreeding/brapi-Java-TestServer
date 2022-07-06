@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
@@ -34,11 +34,12 @@ public interface SeasonsApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/seasons", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<SeasonListResponse> seasonsGet(
-			@ApiParam(value = "The unique identifier for a season. For backward compatibility it can be a string like '2012', '1957-2004'") @Valid @RequestParam(value = "seasonDbId", required = false) String seasonDbId,
-			@ApiParam(value = "The term to describe a given season. Example \"Spring\" OR \"May\" OR \"Planting_Time_7\".") @Valid @RequestParam(value = "season", required = false) String season,
-			@ApiParam(value = "The 4 digit year of a season. Example \"2017\"") @Valid @RequestParam(value = "year", required = false) Integer year,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "seasonDbId") @Valid @RequestParam(value = "seasonDbId", required = false) String seasonDbId,
+			@ApiParam(value = "season") @Valid @RequestParam(value = "season", required = false) String season,
+			@ApiParam(value = "seasonName") @Valid @RequestParam(value = "season", required = false) String seasonName,
+			@ApiParam(value = "year") @Valid @RequestParam(value = "year", required = false) Integer year,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
 
 	@ApiOperation(value = "POST new Seasons", nickname = "seasonsPost", notes = "Add new season entries to the database", response = SeasonListResponse.class, authorizations = {

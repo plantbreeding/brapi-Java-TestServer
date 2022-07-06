@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:33:36.513Z[GMT]")
 @Api(value = "breedingmethods", description = "the breedingmethods API")
@@ -34,7 +34,8 @@ public interface BreedingMethodsApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<BreedingMethodSingleResponse> breedingmethodsBreedingMethodDbIdGet(
 			@ApiParam(value = "Internal database identifier for a breeding method", required = true) @PathVariable("breedingMethodDbId") String breedingMethodDbId,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 	@ApiOperation(value = "Get the Breeding Methods", nickname = "breedingmethodsGet", notes = "Get the list of germplasm breeding methods available in a system.", response = BreedingMethodListResponse.class, authorizations = {
 			@Authorization(value = "AuthorizationToken") }, tags = { "Germplasm", })
@@ -44,8 +45,9 @@ public interface BreedingMethodsApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/breedingmethods", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<BreedingMethodListResponse> breedingmethodsGet(
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException;
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException;
 
 }

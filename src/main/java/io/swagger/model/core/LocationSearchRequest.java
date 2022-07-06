@@ -3,41 +3,36 @@ package io.swagger.model.core;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.GeoJSONSearchArea;
 import io.swagger.model.SearchRequest;
-import io.swagger.model.SearchRequestParametersPaging;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
 
-/**
- * LocationSearchRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
-public class LocationSearchRequest extends SearchRequestParametersPaging implements SearchRequest {
-	@JsonProperty("externalReferenceIDs")
-	@Valid
-	private List<String> externalReferenceIDs = null;
+public class LocationSearchRequest extends SearchRequest {
 
-	@JsonProperty("externalReferenceSources")
-	@Valid
-	private List<String> externalReferenceSources = null;
+	@JsonProperty("commonCropNames")
+	private List<String> commonCropNames = null;
+
+	@JsonProperty("parentLocationDbIds")
+	private List<String> parentLocationDbIds = null;
+
+	@JsonProperty("parentLocationNames")
+	private List<String> parentLocationNames = null;
+
+	@JsonProperty("programDbIds")
+	private List<String> programDbIds = null;
+
+	@JsonProperty("programNames")
+	private List<String> programNames = null;
 
 	@JsonProperty("locationDbIds")
-	@Valid
 	private List<String> locationDbIds = null;
 
 	@JsonProperty("locationNames")
-	@Valid
 	private List<String> locationNames = null;
 
 	@JsonProperty("abbreviations")
-	@Valid
 	private List<String> abbreviations = null;
 
 	@JsonProperty("altitudeMax")
@@ -50,80 +45,19 @@ public class LocationSearchRequest extends SearchRequestParametersPaging impleme
 	private GeoJSONSearchArea coordinates = null;
 
 	@JsonProperty("countryCodes")
-	@Valid
 	private List<String> countryCodes = null;
 
 	@JsonProperty("countryNames")
-	@Valid
 	private List<String> countryNames = null;
 
 	@JsonProperty("instituteAddresses")
-	@Valid
 	private List<String> instituteAddresses = null;
 
 	@JsonProperty("instituteNames")
-	@Valid
 	private List<String> instituteNames = null;
 
 	@JsonProperty("locationTypes")
-	@Valid
 	private List<String> locationTypes = null;
-
-	public LocationSearchRequest externalReferenceIDs(List<String> externalReferenceIDs) {
-		this.externalReferenceIDs = externalReferenceIDs;
-		return this;
-	}
-
-	public LocationSearchRequest addExternalReferenceIDsItem(String externalReferenceIDsItem) {
-		if (this.externalReferenceIDs == null) {
-			this.externalReferenceIDs = new ArrayList<String>();
-		}
-		this.externalReferenceIDs.add(externalReferenceIDsItem);
-		return this;
-	}
-
-	/**
-	 * List of external references for the trait to search for
-	 * 
-	 * @return externalReferenceIDs
-	 **/
-	@ApiModelProperty(example = "[\"http://purl.obolibrary.org/obo/ro.owl\",\"14a19841\"]", value = "List of external references for the trait to search for")
-
-	public List<String> getExternalReferenceIDs() {
-		return externalReferenceIDs;
-	}
-
-	public void setExternalReferenceIDs(List<String> externalReferenceIDs) {
-		this.externalReferenceIDs = externalReferenceIDs;
-	}
-
-	public LocationSearchRequest externalReferenceSources(List<String> externalReferenceSources) {
-		this.externalReferenceSources = externalReferenceSources;
-		return this;
-	}
-
-	public LocationSearchRequest addExternalReferenceSourcesItem(String externalReferenceSourcesItem) {
-		if (this.externalReferenceSources == null) {
-			this.externalReferenceSources = new ArrayList<String>();
-		}
-		this.externalReferenceSources.add(externalReferenceSourcesItem);
-		return this;
-	}
-
-	/**
-	 * List of external references sources for the trait to search for
-	 * 
-	 * @return externalReferenceSources
-	 **/
-	@ApiModelProperty(example = "[\"OBO Library\",\"Field App Name\"]", value = "List of external references sources for the trait to search for")
-
-	public List<String> getExternalReferenceSources() {
-		return externalReferenceSources;
-	}
-
-	public void setExternalReferenceSources(List<String> externalReferenceSources) {
-		this.externalReferenceSources = externalReferenceSources;
-	}
 
 	public LocationSearchRequest locationDbIds(List<String> locationDbIds) {
 		this.locationDbIds = locationDbIds;
@@ -137,13 +71,6 @@ public class LocationSearchRequest extends SearchRequestParametersPaging impleme
 		this.locationDbIds.add(locationDbIdsItem);
 		return this;
 	}
-
-	/**
-	 * The location ids to search for
-	 * 
-	 * @return locationDbIds
-	 **/
-	@ApiModelProperty(example = "[\"b28911cf\",\"5071d1e4\"]", value = "The location ids to search for")
 
 	public List<String> getLocationDbIds() {
 		return locationDbIds;
@@ -166,13 +93,6 @@ public class LocationSearchRequest extends SearchRequestParametersPaging impleme
 		return this;
 	}
 
-	/**
-	 * A human readable names to search for
-	 * 
-	 * @return locationNames
-	 **/
-	@ApiModelProperty(example = "[\"Location Alpha\",\"The Large Hadron Collider\"]", value = "A human readable names to search for")
-
 	public List<String> getLocationNames() {
 		return locationNames;
 	}
@@ -194,13 +114,6 @@ public class LocationSearchRequest extends SearchRequestParametersPaging impleme
 		return this;
 	}
 
-	/**
-	 * An abbreviation which represents this location
-	 * 
-	 * @return abbreviations
-	 **/
-	@ApiModelProperty(example = "[\"L1\",\"LHC\"]", value = "An abbreviation which represents this location")
-
 	public List<String> getAbbreviations() {
 		return abbreviations;
 	}
@@ -214,14 +127,6 @@ public class LocationSearchRequest extends SearchRequestParametersPaging impleme
 		return this;
 	}
 
-	/**
-	 * The maximum altitude to search for
-	 * 
-	 * @return altitudeMax
-	 **/
-	@ApiModelProperty(example = "200", value = "The maximum altitude to search for")
-
-	@Valid
 	public BigDecimal getAltitudeMax() {
 		return altitudeMax;
 	}
@@ -235,14 +140,6 @@ public class LocationSearchRequest extends SearchRequestParametersPaging impleme
 		return this;
 	}
 
-	/**
-	 * The minimum altitude to search for
-	 * 
-	 * @return altitudeMin
-	 **/
-	@ApiModelProperty(example = "20", value = "The minimum altitude to search for")
-
-	@Valid
 	public BigDecimal getAltitudeMin() {
 		return altitudeMin;
 	}
@@ -256,14 +153,6 @@ public class LocationSearchRequest extends SearchRequestParametersPaging impleme
 		return this;
 	}
 
-	/**
-	 * Get coordinates
-	 * 
-	 * @return coordinates
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
 	public GeoJSONSearchArea getCoordinates() {
 		return coordinates;
 	}
@@ -284,13 +173,6 @@ public class LocationSearchRequest extends SearchRequestParametersPaging impleme
 		this.countryCodes.add(countryCodesItem);
 		return this;
 	}
-
-	/**
-	 * [ISO_3166-1_alpha-3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) spec
-	 * 
-	 * @return countryCodes
-	 **/
-	@ApiModelProperty(example = "[\"USA\",\"PER\"]", value = "[ISO_3166-1_alpha-3](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3) spec")
 
 	public List<String> getCountryCodes() {
 		return countryCodes;
@@ -313,13 +195,6 @@ public class LocationSearchRequest extends SearchRequestParametersPaging impleme
 		return this;
 	}
 
-	/**
-	 * The full name of the country to search for
-	 * 
-	 * @return countryNames
-	 **/
-	@ApiModelProperty(example = "[\"United States of America\",\"Peru\"]", value = "The full name of the country to search for")
-
 	public List<String> getCountryNames() {
 		return countryNames;
 	}
@@ -340,13 +215,6 @@ public class LocationSearchRequest extends SearchRequestParametersPaging impleme
 		this.instituteAddresses.add(instituteAddressesItem);
 		return this;
 	}
-
-	/**
-	 * The street address of the institute to search for
-	 * 
-	 * @return instituteAddresses
-	 **/
-	@ApiModelProperty(example = "[\"123 Main Street\",\"456 Side Street\"]", value = "The street address of the institute to search for")
 
 	public List<String> getInstituteAddresses() {
 		return instituteAddresses;
@@ -369,13 +237,6 @@ public class LocationSearchRequest extends SearchRequestParametersPaging impleme
 		return this;
 	}
 
-	/**
-	 * The name of the institute to search for
-	 * 
-	 * @return instituteNames
-	 **/
-	@ApiModelProperty(example = "[\"The Institute\",\"The Other Institute\"]", value = "The name of the institute to search for")
-
 	public List<String> getInstituteNames() {
 		return instituteNames;
 	}
@@ -397,20 +258,117 @@ public class LocationSearchRequest extends SearchRequestParametersPaging impleme
 		return this;
 	}
 
-	/**
-	 * The type of location this represents (ex. Breeding Location, Storage
-	 * Location, etc)
-	 * 
-	 * @return locationTypes
-	 **/
-	@ApiModelProperty(example = "[\"Nursery\",\"Storage Location\"]", value = "The type of location this represents (ex. Breeding Location, Storage Location, etc)")
-
 	public List<String> getLocationTypes() {
 		return locationTypes;
 	}
 
 	public void setLocationTypes(List<String> locationTypes) {
 		this.locationTypes = locationTypes;
+	}
+
+	public LocationSearchRequest commonCropNames(List<String> commonCropNames) {
+		this.commonCropNames = commonCropNames;
+		return this;
+	}
+
+	public LocationSearchRequest addCommonCropNamesItem(String commonCropNamesItem) {
+		if (this.commonCropNames == null) {
+			this.commonCropNames = new ArrayList<String>();
+		}
+		this.commonCropNames.add(commonCropNamesItem);
+		return this;
+	}
+
+	public List<String> getCommonCropNames() {
+		return commonCropNames;
+	}
+
+	public void setCommonCropNames(List<String> commonCropNames) {
+		this.commonCropNames = commonCropNames;
+	}
+
+	public LocationSearchRequest parentLocationDbIds(List<String> parentLocationDbIds) {
+		this.parentLocationDbIds = parentLocationDbIds;
+		return this;
+	}
+
+	public LocationSearchRequest addParentLocationDbIdsItem(String parentLocationDbIdsItem) {
+		if (this.parentLocationDbIds == null) {
+			this.parentLocationDbIds = new ArrayList<String>();
+		}
+		this.parentLocationDbIds.add(parentLocationDbIdsItem);
+		return this;
+	}
+
+	public List<String> getParentLocationDbIds() {
+		return parentLocationDbIds;
+	}
+
+	public void setParentLocationDbIds(List<String> parentLocationDbIds) {
+		this.parentLocationDbIds = parentLocationDbIds;
+	}
+
+	public LocationSearchRequest parentLocationNames(List<String> parentLocationNames) {
+		this.parentLocationNames = parentLocationNames;
+		return this;
+	}
+
+	public LocationSearchRequest addParentLocationNamesItem(String parentLocationNamesItem) {
+		if (this.parentLocationNames == null) {
+			this.parentLocationNames = new ArrayList<String>();
+		}
+		this.parentLocationNames.add(parentLocationNamesItem);
+		return this;
+	}
+
+	public List<String> getParentLocationNames() {
+		return parentLocationNames;
+	}
+
+	public void setParentLocationNames(List<String> parentLocationNames) {
+		this.parentLocationNames = parentLocationNames;
+	}
+
+	public LocationSearchRequest programDbIds(List<String> programDbIds) {
+		this.programDbIds = programDbIds;
+		return this;
+	}
+
+	public LocationSearchRequest addProgramDbIdsItem(String programDbIdsItem) {
+		if (this.programDbIds == null) {
+			this.programDbIds = new ArrayList<String>();
+		}
+		this.programDbIds.add(programDbIdsItem);
+		return this;
+	}
+
+	public List<String> getProgramDbIds() {
+		return programDbIds;
+	}
+
+	public void setProgramDbIds(List<String> programDbIds) {
+		this.programDbIds = programDbIds;
+	}
+
+	public LocationSearchRequest programNames(List<String> programNames) {
+		this.programNames = programNames;
+		return this;
+	}
+
+	public LocationSearchRequest addProgramNamesItem(String programNamesItem) {
+		if (this.programNames == null) {
+			this.programNames = new ArrayList<String>();
+		}
+		this.programNames.add(programNamesItem);
+		return this;
+	}
+
+	public List<String> getProgramNames() {
+		return programNames;
+	}
+
+	public void setProgramNames(List<String> programNames) {
+		this.programNames = programNames;
 	}
 
 	@Override
@@ -422,54 +380,64 @@ public class LocationSearchRequest extends SearchRequestParametersPaging impleme
 			return false;
 		}
 		LocationSearchRequest locationSearchRequest = (LocationSearchRequest) o;
-		return Objects.equals(this.externalReferenceIDs, locationSearchRequest.externalReferenceIDs)
-				&& Objects.equals(this.externalReferenceSources, locationSearchRequest.externalReferenceSources)
-				&& Objects.equals(this.locationDbIds, locationSearchRequest.locationDbIds)
-				&& Objects.equals(this.locationNames, locationSearchRequest.locationNames)
-				&& Objects.equals(this.abbreviations, locationSearchRequest.abbreviations)
+		return Objects.equals(this.abbreviations, locationSearchRequest.abbreviations)
 				&& Objects.equals(this.altitudeMax, locationSearchRequest.altitudeMax)
 				&& Objects.equals(this.altitudeMin, locationSearchRequest.altitudeMin)
+				&& Objects.equals(this.commonCropNames, locationSearchRequest.commonCropNames)
 				&& Objects.equals(this.coordinates, locationSearchRequest.coordinates)
 				&& Objects.equals(this.countryCodes, locationSearchRequest.countryCodes)
 				&& Objects.equals(this.countryNames, locationSearchRequest.countryNames)
+				&& Objects.equals(this.externalReferenceIds, locationSearchRequest.externalReferenceIds)
+				&& Objects.equals(this.externalReferenceSources, locationSearchRequest.externalReferenceSources)
 				&& Objects.equals(this.instituteAddresses, locationSearchRequest.instituteAddresses)
 				&& Objects.equals(this.instituteNames, locationSearchRequest.instituteNames)
-				&& Objects.equals(this.locationTypes, locationSearchRequest.locationTypes) && super.equals(o);
+				&& Objects.equals(this.locationDbIds, locationSearchRequest.locationDbIds)
+				&& Objects.equals(this.locationNames, locationSearchRequest.locationNames)
+				&& Objects.equals(this.locationTypes, locationSearchRequest.locationTypes)
+				&& Objects.equals(this.page, locationSearchRequest.page)
+				&& Objects.equals(this.pageSize, locationSearchRequest.pageSize)
+				&& Objects.equals(this.parentLocationDbIds, locationSearchRequest.parentLocationDbIds)
+				&& Objects.equals(this.parentLocationNames, locationSearchRequest.parentLocationNames)
+				&& Objects.equals(this.programDbIds, locationSearchRequest.programDbIds)
+				&& Objects.equals(this.programNames, locationSearchRequest.programNames);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(externalReferenceIDs, externalReferenceSources, locationDbIds, locationNames, abbreviations,
-				altitudeMax, altitudeMin, coordinates, countryCodes, countryNames, instituteAddresses, instituteNames,
-				locationTypes, super.hashCode());
+		return Objects.hash(abbreviations, altitudeMax, altitudeMin, commonCropNames, coordinates, countryCodes,
+				countryNames, externalReferenceIds, externalReferenceSources, instituteAddresses, instituteNames,
+				locationDbIds, locationNames, locationTypes, page, pageSize, parentLocationDbIds, parentLocationNames,
+				programDbIds, programNames, super.hashCode());
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("class LocationSearchRequest {\n");
-		sb.append("    ").append(toIndentedString(super.toString())).append("\n");
-		sb.append("    externalReferenceIDs: ").append(toIndentedString(externalReferenceIDs)).append("\n");
-		sb.append("    externalReferenceSources: ").append(toIndentedString(externalReferenceSources)).append("\n");
-		sb.append("    locationDbIds: ").append(toIndentedString(locationDbIds)).append("\n");
-		sb.append("    locationNames: ").append(toIndentedString(locationNames)).append("\n");
 		sb.append("    abbreviations: ").append(toIndentedString(abbreviations)).append("\n");
 		sb.append("    altitudeMax: ").append(toIndentedString(altitudeMax)).append("\n");
 		sb.append("    altitudeMin: ").append(toIndentedString(altitudeMin)).append("\n");
+		sb.append("    commonCropNames: ").append(toIndentedString(commonCropNames)).append("\n");
 		sb.append("    coordinates: ").append(toIndentedString(coordinates)).append("\n");
 		sb.append("    countryCodes: ").append(toIndentedString(countryCodes)).append("\n");
 		sb.append("    countryNames: ").append(toIndentedString(countryNames)).append("\n");
+		sb.append("    externalReferenceIds: ").append(toIndentedString(externalReferenceIds)).append("\n");
+		sb.append("    externalReferenceSources: ").append(toIndentedString(externalReferenceSources)).append("\n");
 		sb.append("    instituteAddresses: ").append(toIndentedString(instituteAddresses)).append("\n");
 		sb.append("    instituteNames: ").append(toIndentedString(instituteNames)).append("\n");
+		sb.append("    locationDbIds: ").append(toIndentedString(locationDbIds)).append("\n");
+		sb.append("    locationNames: ").append(toIndentedString(locationNames)).append("\n");
 		sb.append("    locationTypes: ").append(toIndentedString(locationTypes)).append("\n");
+		sb.append("    page: ").append(toIndentedString(page)).append("\n");
+		sb.append("    pageSize: ").append(toIndentedString(pageSize)).append("\n");
+		sb.append("    parentLocationDbIds: ").append(toIndentedString(parentLocationDbIds)).append("\n");
+		sb.append("    parentLocationNames: ").append(toIndentedString(parentLocationNames)).append("\n");
+		sb.append("    programDbIds: ").append(toIndentedString(programDbIds)).append("\n");
+		sb.append("    programNames: ").append(toIndentedString(programNames)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";
@@ -480,8 +448,8 @@ public class LocationSearchRequest extends SearchRequestParametersPaging impleme
 	@Override
 	public Integer getTotalParameterCount() {
 		Integer count = 0;
-		if (this.externalReferenceIDs != null)
-			count += this.externalReferenceIDs.size();
+		if (this.externalReferenceIds != null)
+			count += this.externalReferenceIds.size();
 		if (this.externalReferenceSources != null)
 			count += this.externalReferenceSources.size();
 		if (this.locationDbIds != null)

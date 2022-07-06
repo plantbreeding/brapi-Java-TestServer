@@ -3,8 +3,9 @@ package org.brapi.test.BrAPITestServer.service.germ;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.germ.GermplasmAttributeValueEntity;
 import org.brapi.test.BrAPITestServer.repository.germ.GermplasmAttributeValueRepository;
@@ -37,9 +38,9 @@ public class GermplasmAttributeValueService {
 		this.germplasmService = germplasmService;
 	}
 
-	public List<GermplasmAttributeValue> findGermplasmAttributeValues(@Valid String attributeValueDbId,
-			@Valid String attributeDbId, @Valid String attributeName, @Valid String germplasmDbId,
-			@Valid String externalReferenceID, @Valid String externalReferenceSource, Metadata metadata) {
+	public List<GermplasmAttributeValue> findGermplasmAttributeValues(String attributeValueDbId, String attributeDbId,
+			String attributeName, String germplasmDbId, String commonCropName, String programDbId,
+			String externalReferenceId, String externalReferenceID, String externalReferenceSource, Metadata metadata) {
 
 		GermplasmAttributeValueSearchRequest request = new GermplasmAttributeValueSearchRequest();
 		if (attributeValueDbId != null)
@@ -50,10 +51,12 @@ public class GermplasmAttributeValueService {
 			request.addAttributeNamesItem(attributeName);
 		if (germplasmDbId != null)
 			request.addGermplasmDbIdsItem(germplasmDbId);
-		if (externalReferenceID != null)
-			request.addExternalReferenceIDsItem(externalReferenceID);
-		if (externalReferenceSource != null)
-			request.addExternalReferenceSourcesItem(externalReferenceSource);
+		if (commonCropName != null)
+			request.addCommonCropNamesItem(commonCropName);
+		if (programDbId != null)
+			request.addProgramDbIdsItem(programDbId);
+
+		request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
 
 		return findGermplasmAttributeValues(request, metadata);
 	}
@@ -80,7 +83,7 @@ public class GermplasmAttributeValueService {
 		PagingUtility.calculateMetaData(metadata, page);
 		return attributeValues;
 	}
-	
+
 	public GermplasmAttributeValue getGermplasmAttributeValue(String attributeValueDbId) throws BrAPIServerException {
 		return convertFromEntity(getGermplasmAttributeValueEntity(attributeValueDbId, HttpStatus.NOT_FOUND));
 	}
@@ -90,18 +93,17 @@ public class GermplasmAttributeValueService {
 		return getGermplasmAttributeValueEntity(attributeValueDbId, HttpStatus.BAD_REQUEST);
 	}
 
-	public GermplasmAttributeValueEntity getGermplasmAttributeValueEntity(String attributeValueDbId, HttpStatus errorStatus)
-				throws BrAPIServerException {
+	public GermplasmAttributeValueEntity getGermplasmAttributeValueEntity(String attributeValueDbId,
+			HttpStatus errorStatus) throws BrAPIServerException {
 		GermplasmAttributeValueEntity attributeValue = null;
 		Optional<GermplasmAttributeValueEntity> entityOpt = attributeValueRepository.findById(attributeValueDbId);
 		if (entityOpt.isPresent()) {
 			attributeValue = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(errorStatus, "attributeValueDbId not found: " + attributeValueDbId);
+			throw new BrAPIServerDbIdNotFoundException("germplasm attribute value", attributeValueDbId);
 		}
 		return attributeValue;
 	}
-
 
 	public List<GermplasmAttributeValue> saveGermplasmAttributeValues(
 			@Valid List<GermplasmAttributeValueNewRequest> body) throws BrAPIServerException {
@@ -120,7 +122,6 @@ public class GermplasmAttributeValueService {
 		return savedValues;
 	}
 
-
 	public GermplasmAttributeValue updateGermplasmAttributeValue(String attributeValueDbId,
 			@Valid GermplasmAttributeValueNewRequest body) throws BrAPIServerException {
 		GermplasmAttributeValueEntity savedEntity;
@@ -131,7 +132,7 @@ public class GermplasmAttributeValueService {
 
 			savedEntity = attributeValueRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "attributeValueDbId not found: " + attributeValueDbId);
+			throw new BrAPIServerDbIdNotFoundException("germplasm attribute value", attributeValueDbId);
 		}
 
 		return convertFromEntity(savedEntity);

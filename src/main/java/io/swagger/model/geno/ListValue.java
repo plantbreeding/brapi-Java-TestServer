@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * &#x60;ListValue&#x60; is a wrapper around a repeated field of values.  The JSON representation for &#x60;ListValue&#x60; is JSON array.

@@ -11,6 +11,7 @@ import io.swagger.model.germ.Germplasm;
 import io.swagger.model.germ.GermplasmListResponse;
 import io.swagger.model.germ.GermplasmListResponseResult;
 import io.swagger.model.germ.GermplasmSearchRequest;
+import io.swagger.annotations.ApiParam;
 import io.swagger.api.geno.ReferenceSetsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -30,7 +31,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -45,7 +46,8 @@ public class ReferenceSetsApiController extends BrAPIController implements Refer
 	private final HttpServletRequest request;
 
 	@Autowired
-	public ReferenceSetsApiController(ReferenceSetService referenceSetService, SearchService searchService, HttpServletRequest request) {
+	public ReferenceSetsApiController(ReferenceSetService referenceSetService, SearchService searchService,
+			HttpServletRequest request) {
 		this.referenceSetService = referenceSetService;
 		this.searchService = searchService;
 		this.request = request;
@@ -58,6 +60,12 @@ public class ReferenceSetsApiController extends BrAPIController implements Refer
 			@Valid @RequestParam(value = "accession", required = false) String accession,
 			@Valid @RequestParam(value = "assemblyPUI", required = false) String assemblyPUI,
 			@Valid @RequestParam(value = "md5checksum", required = false) String md5checksum,
+			@Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
+			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
@@ -67,7 +75,8 @@ public class ReferenceSetsApiController extends BrAPIController implements Refer
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<ReferenceSet> data = referenceSetService.findReferenceSets(referenceSetDbId, accession, assemblyPUI,
-				md5checksum, metadata);
+				md5checksum, trialDbId, studyDbId, commonCropName, programDbId, externalReferenceId,
+				externalReferenceSource, metadata);
 		return responseOK(new ReferenceSetsListResponse(), new ReferenceSetsListResponseResult(), data, metadata);
 	}
 
@@ -121,7 +130,7 @@ public class ReferenceSetsApiController extends BrAPIController implements Refer
 			ReferenceSetsSearchRequest body = request.getParameters(ReferenceSetsSearchRequest.class);
 			List<ReferenceSet> data = referenceSetService.findReferenceSets(body, metadata);
 			return responseOK(new ReferenceSetsListResponse(), new ReferenceSetsListResponseResult(), data, metadata);
-		}else {
+		} else {
 			return responseAccepted(searchResultsDbId);
 		}
 	}

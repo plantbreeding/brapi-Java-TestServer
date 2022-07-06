@@ -3,115 +3,62 @@ package io.swagger.model.core;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.SearchRequest;
-import io.swagger.model.SearchRequestParametersPaging;
-
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
 
-/**
- * PersonSearchRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
-public class PersonSearchRequest extends SearchRequestParametersPaging implements SearchRequest {
-	@JsonProperty("externalReferenceIDs")
-	@Valid
-	private List<String> externalReferenceIDs = null;
-
-	@JsonProperty("externalReferenceSources")
-	@Valid
-	private List<String> externalReferenceSources = null;
-
+public class PersonSearchRequest extends SearchRequest {
+	@JsonProperty("commonCropNames")
+	private List<String> commonCropNames = null;
 	@JsonProperty("emailAddresses")
-	@Valid
 	private List<String> emailAddresses = null;
 
 	@JsonProperty("firstNames")
-	@Valid
 	private List<String> firstNames = null;
 
 	@JsonProperty("lastNames")
-	@Valid
 	private List<String> lastNames = null;
 
 	@JsonProperty("mailingAddresses")
-	@Valid
 	private List<String> mailingAddresses = null;
 
 	@JsonProperty("middleNames")
-	@Valid
 	private List<String> middleNames = null;
 
 	@JsonProperty("personDbIds")
-	@Valid
 	private List<String> personDbIds = null;
 
 	@JsonProperty("phoneNumbers")
-	@Valid
 	private List<String> phoneNumbers = null;
 
+	@JsonProperty("programDbIds")
+	private List<String> programDbIds = null;
+
+	@JsonProperty("programNames")
+	private List<String> programNames = null;
+
 	@JsonProperty("userIDs")
-	@Valid
 	private List<String> userIDs = null;
 
-	public PersonSearchRequest externalReferenceIDs(List<String> externalReferenceIDs) {
-		this.externalReferenceIDs = externalReferenceIDs;
+	public PersonSearchRequest commonCropNames(List<String> commonCropNames) {
+		this.commonCropNames = commonCropNames;
 		return this;
 	}
 
-	public PersonSearchRequest addExternalReferenceIDsItem(String externalReferenceIDsItem) {
-		if (this.externalReferenceIDs == null) {
-			this.externalReferenceIDs = new ArrayList<String>();
+	public PersonSearchRequest addCommonCropNamesItem(String commonCropNamesItem) {
+		if (this.commonCropNames == null) {
+			this.commonCropNames = new ArrayList<String>();
 		}
-		this.externalReferenceIDs.add(externalReferenceIDsItem);
+		this.commonCropNames.add(commonCropNamesItem);
 		return this;
 	}
 
-	/**
-	 * List of external references for the trait to search for
-	 * 
-	 * @return externalReferenceIDs
-	 **/
-	@ApiModelProperty(example = "[\"http://purl.obolibrary.org/obo/ro.owl\",\"14a19841\"]", value = "List of external references for the trait to search for")
-
-	public List<String> getExternalReferenceIDs() {
-		return externalReferenceIDs;
+	public List<String> getCommonCropNames() {
+		return commonCropNames;
 	}
 
-	public void setExternalReferenceIDs(List<String> externalReferenceIDs) {
-		this.externalReferenceIDs = externalReferenceIDs;
-	}
-
-	public PersonSearchRequest externalReferenceSources(List<String> externalReferenceSources) {
-		this.externalReferenceSources = externalReferenceSources;
-		return this;
-	}
-
-	public PersonSearchRequest addExternalReferenceSourcesItem(String externalReferenceSourcesItem) {
-		if (this.externalReferenceSources == null) {
-			this.externalReferenceSources = new ArrayList<String>();
-		}
-		this.externalReferenceSources.add(externalReferenceSourcesItem);
-		return this;
-	}
-
-	/**
-	 * List of external references sources for the trait to search for
-	 * 
-	 * @return externalReferenceSources
-	 **/
-	@ApiModelProperty(example = "[\"OBO Library\",\"Field App Name\"]", value = "List of external references sources for the trait to search for")
-
-	public List<String> getExternalReferenceSources() {
-		return externalReferenceSources;
-	}
-
-	public void setExternalReferenceSources(List<String> externalReferenceSources) {
-		this.externalReferenceSources = externalReferenceSources;
+	public void setCommonCropNames(List<String> commonCropNames) {
+		this.commonCropNames = commonCropNames;
 	}
 
 	public PersonSearchRequest emailAddresses(List<String> emailAddresses) {
@@ -126,13 +73,6 @@ public class PersonSearchRequest extends SearchRequestParametersPaging implement
 		this.emailAddresses.add(emailAddressesItem);
 		return this;
 	}
-
-	/**
-	 * email address for this person
-	 * 
-	 * @return emailAddresses
-	 **/
-	@ApiModelProperty(example = "[\"bob@bob.com\",\"rob@bob.com\"]", value = "email address for this person")
 
 	public List<String> getEmailAddresses() {
 		return emailAddresses;
@@ -155,13 +95,6 @@ public class PersonSearchRequest extends SearchRequestParametersPaging implement
 		return this;
 	}
 
-	/**
-	 * Persons first name
-	 * 
-	 * @return firstNames
-	 **/
-	@ApiModelProperty(example = "[\"Bob\",\"Rob\"]", value = "Persons first name")
-
 	public List<String> getFirstNames() {
 		return firstNames;
 	}
@@ -182,13 +115,6 @@ public class PersonSearchRequest extends SearchRequestParametersPaging implement
 		this.lastNames.add(lastNamesItem);
 		return this;
 	}
-
-	/**
-	 * Persons last name
-	 * 
-	 * @return lastNames
-	 **/
-	@ApiModelProperty(example = "[\"Robertson\",\"Smith\"]", value = "Persons last name")
 
 	public List<String> getLastNames() {
 		return lastNames;
@@ -211,13 +137,6 @@ public class PersonSearchRequest extends SearchRequestParametersPaging implement
 		return this;
 	}
 
-	/**
-	 * physical address of this person
-	 * 
-	 * @return mailingAddresses
-	 **/
-	@ApiModelProperty(example = "[\"123 Main Street\",\"456 Side Street\"]", value = "physical address of this person")
-
 	public List<String> getMailingAddresses() {
 		return mailingAddresses;
 	}
@@ -238,13 +157,6 @@ public class PersonSearchRequest extends SearchRequestParametersPaging implement
 		this.middleNames.add(middleNamesItem);
 		return this;
 	}
-
-	/**
-	 * Persons middle name
-	 * 
-	 * @return middleNames
-	 **/
-	@ApiModelProperty(example = "[\"Danger\",\"Fight\"]", value = "Persons middle name")
 
 	public List<String> getMiddleNames() {
 		return middleNames;
@@ -267,13 +179,6 @@ public class PersonSearchRequest extends SearchRequestParametersPaging implement
 		return this;
 	}
 
-	/**
-	 * Unique ID for this person
-	 * 
-	 * @return personDbIds
-	 **/
-	@ApiModelProperty(example = "[\"1e7731ab\",\"bc28cff8\"]", value = "Unique ID for this person")
-
 	public List<String> getPersonDbIds() {
 		return personDbIds;
 	}
@@ -295,19 +200,54 @@ public class PersonSearchRequest extends SearchRequestParametersPaging implement
 		return this;
 	}
 
-	/**
-	 * phone number of this person
-	 * 
-	 * @return phoneNumbers
-	 **/
-	@ApiModelProperty(example = "[\"9995555555\",\"8884444444\"]", value = "phone number of this person")
-
 	public List<String> getPhoneNumbers() {
 		return phoneNumbers;
 	}
 
 	public void setPhoneNumbers(List<String> phoneNumbers) {
 		this.phoneNumbers = phoneNumbers;
+	}
+
+	public PersonSearchRequest programDbIds(List<String> programDbIds) {
+		this.programDbIds = programDbIds;
+		return this;
+	}
+
+	public PersonSearchRequest addProgramDbIdsItem(String programDbIdsItem) {
+		if (this.programDbIds == null) {
+			this.programDbIds = new ArrayList<String>();
+		}
+		this.programDbIds.add(programDbIdsItem);
+		return this;
+	}
+
+	public List<String> getProgramDbIds() {
+		return programDbIds;
+	}
+
+	public void setProgramDbIds(List<String> programDbIds) {
+		this.programDbIds = programDbIds;
+	}
+
+	public PersonSearchRequest programNames(List<String> programNames) {
+		this.programNames = programNames;
+		return this;
+	}
+
+	public PersonSearchRequest addProgramNamesItem(String programNamesItem) {
+		if (this.programNames == null) {
+			this.programNames = new ArrayList<String>();
+		}
+		this.programNames.add(programNamesItem);
+		return this;
+	}
+
+	public List<String> getProgramNames() {
+		return programNames;
+	}
+
+	public void setProgramNames(List<String> programNames) {
+		this.programNames = programNames;
 	}
 
 	public PersonSearchRequest userIDs(List<String> userIDs) {
@@ -322,14 +262,6 @@ public class PersonSearchRequest extends SearchRequestParametersPaging implement
 		this.userIDs.add(userIDsItem);
 		return this;
 	}
-
-	/**
-	 * A systems user ID associated with this person. Different from personDbId
-	 * because you could have a person who is not a user of the system.
-	 * 
-	 * @return userIDs
-	 **/
-	@ApiModelProperty(example = "[\"bob\",\"rob\"]", value = "A systems user ID associated with this person. Different from personDbId because you could have a person who is not a user of the system.")
 
 	public List<String> getUserIDs() {
 		return userIDs;
@@ -348,47 +280,53 @@ public class PersonSearchRequest extends SearchRequestParametersPaging implement
 			return false;
 		}
 		PersonSearchRequest personSearchRequest = (PersonSearchRequest) o;
-		return Objects.equals(this.externalReferenceIDs, personSearchRequest.externalReferenceIDs)
-				&& Objects.equals(this.externalReferenceSources, personSearchRequest.externalReferenceSources)
+		return Objects.equals(this.commonCropNames, personSearchRequest.commonCropNames)
 				&& Objects.equals(this.emailAddresses, personSearchRequest.emailAddresses)
+				&& Objects.equals(this.externalReferenceIds, personSearchRequest.externalReferenceIds)
+				&& Objects.equals(this.externalReferenceSources, personSearchRequest.externalReferenceSources)
 				&& Objects.equals(this.firstNames, personSearchRequest.firstNames)
 				&& Objects.equals(this.lastNames, personSearchRequest.lastNames)
 				&& Objects.equals(this.mailingAddresses, personSearchRequest.mailingAddresses)
 				&& Objects.equals(this.middleNames, personSearchRequest.middleNames)
+				&& Objects.equals(this.page, personSearchRequest.page)
+				&& Objects.equals(this.pageSize, personSearchRequest.pageSize)
 				&& Objects.equals(this.personDbIds, personSearchRequest.personDbIds)
 				&& Objects.equals(this.phoneNumbers, personSearchRequest.phoneNumbers)
-				&& Objects.equals(this.userIDs, personSearchRequest.userIDs) && super.equals(o);
+				&& Objects.equals(this.programDbIds, personSearchRequest.programDbIds)
+				&& Objects.equals(this.programNames, personSearchRequest.programNames)
+				&& Objects.equals(this.userIDs, personSearchRequest.userIDs);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(externalReferenceIDs, externalReferenceSources, emailAddresses, firstNames, lastNames,
-				mailingAddresses, middleNames, personDbIds, phoneNumbers, userIDs, super.hashCode());
+		return Objects.hash(commonCropNames, emailAddresses, externalReferenceIds, externalReferenceSources, firstNames,
+				lastNames, mailingAddresses, middleNames, page, pageSize, personDbIds, phoneNumbers, programDbIds,
+				programNames, userIDs, super.hashCode());
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("class PersonSearchRequest {\n");
-		sb.append("    ").append(toIndentedString(super.toString())).append("\n");
-		sb.append("    externalReferenceIDs: ").append(toIndentedString(externalReferenceIDs)).append("\n");
-		sb.append("    externalReferenceSources: ").append(toIndentedString(externalReferenceSources)).append("\n");
-		sb.append("    emailAddresses: ").append(toIndentedString(emailAddresses)).append("\n");
-		sb.append("    firstNames: ").append(toIndentedString(firstNames)).append("\n");
-		sb.append("    lastNames: ").append(toIndentedString(lastNames)).append("\n");
-		sb.append("    mailingAddresses: ").append(toIndentedString(mailingAddresses)).append("\n");
-		sb.append("    middleNames: ").append(toIndentedString(middleNames)).append("\n");
-		sb.append("    personDbIds: ").append(toIndentedString(personDbIds)).append("\n");
-		sb.append("    phoneNumbers: ").append(toIndentedString(phoneNumbers)).append("\n");
-		sb.append("    userIDs: ").append(toIndentedString(userIDs)).append("\n");
+	    sb.append("    commonCropNames: ").append(toIndentedString(commonCropNames)).append("\n");
+	    sb.append("    emailAddresses: ").append(toIndentedString(emailAddresses)).append("\n");
+	    sb.append("    externalReferenceIds: ").append(toIndentedString(externalReferenceIds)).append("\n");
+	    sb.append("    externalReferenceSources: ").append(toIndentedString(externalReferenceSources)).append("\n");
+	    sb.append("    firstNames: ").append(toIndentedString(firstNames)).append("\n");
+	    sb.append("    lastNames: ").append(toIndentedString(lastNames)).append("\n");
+	    sb.append("    mailingAddresses: ").append(toIndentedString(mailingAddresses)).append("\n");
+	    sb.append("    middleNames: ").append(toIndentedString(middleNames)).append("\n");
+	    sb.append("    page: ").append(toIndentedString(page)).append("\n");
+	    sb.append("    pageSize: ").append(toIndentedString(pageSize)).append("\n");
+	    sb.append("    personDbIds: ").append(toIndentedString(personDbIds)).append("\n");
+	    sb.append("    phoneNumbers: ").append(toIndentedString(phoneNumbers)).append("\n");
+	    sb.append("    programDbIds: ").append(toIndentedString(programDbIds)).append("\n");
+	    sb.append("    programNames: ").append(toIndentedString(programNames)).append("\n");
+	    sb.append("    userIDs: ").append(toIndentedString(userIDs)).append("\n");
 		sb.append("}");
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";
@@ -399,8 +337,8 @@ public class PersonSearchRequest extends SearchRequestParametersPaging implement
 	@Override
 	public Integer getTotalParameterCount() {
 		Integer count = 0;
-		if (this.externalReferenceIDs != null)
-			count += this.externalReferenceIDs.size();
+		if (this.externalReferenceIds != null)
+			count += this.externalReferenceIds.size();
 		if (this.externalReferenceSources != null)
 			count += this.externalReferenceSources.size();
 		if (this.emailAddresses != null)
@@ -419,6 +357,12 @@ public class PersonSearchRequest extends SearchRequestParametersPaging implement
 			count += this.phoneNumbers.size();
 		if (this.userIDs != null)
 			count += this.userIDs.size();
+		if (this.commonCropNames != null)
+			count += this.commonCropNames.size();
+		if (this.programDbIds != null)
+			count += this.programDbIds.size();
+		if (this.programNames != null)
+			count += this.programNames.size();
 		return count;
 	}
 }

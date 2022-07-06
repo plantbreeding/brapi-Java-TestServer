@@ -20,6 +20,8 @@ public class MethodEntity extends BrAPIPrimaryEntity implements OntologyReferenc
 	@Column
 	private String methodClass;
 	@Column
+	private String methodPUI;
+	@Column
 	private String description;
 	@Column
 	private String formula;
@@ -33,6 +35,12 @@ public class MethodEntity extends BrAPIPrimaryEntity implements OntologyReferenc
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<OntologyReferenceEntity> ontologyReference;
 
+	public String getMethodPUI() {
+		return methodPUI;
+	}
+	public void setMethodPUI(String methodPUI) {
+		this.methodPUI = methodPUI;
+	}
 	public OntologyEntity getOntology() {
 		return ontology;
 	}

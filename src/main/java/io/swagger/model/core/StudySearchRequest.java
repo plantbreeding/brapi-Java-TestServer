@@ -4,86 +4,54 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.SearchRequest;
-import io.swagger.model.SearchRequestParametersPaging;
-
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
 
-/**
- * StudySearchRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:31:52.030Z[GMT]")
-public class StudySearchRequest extends SearchRequestParametersPaging implements SearchRequest {
+public class StudySearchRequest extends SearchRequest {
 	@JsonProperty("commonCropNames")
-	@Valid
 	private List<String> commonCropNames = null;
 
 	@JsonProperty("programDbIds")
-	@Valid
 	private List<String> programDbIds = null;
 
 	@JsonProperty("programNames")
-	@Valid
 	private List<String> programNames = null;
 
 	@JsonProperty("trialDbIds")
-	@Valid
 	private List<String> trialDbIds = null;
 
 	@JsonProperty("trialNames")
-	@Valid
 	private List<String> trialNames = null;
 
 	@JsonProperty("studyDbIds")
-	@Valid
 	private List<String> studyDbIds = null;
 
 	@JsonProperty("studyNames")
-	@Valid
 	private List<String> studyNames = null;
 
 	@JsonProperty("locationDbIds")
-	@Valid
 	private List<String> locationDbIds = null;
 
 	@JsonProperty("locationNames")
-	@Valid
 	private List<String> locationNames = null;
 
 	@JsonProperty("germplasmDbIds")
-	@Valid
 	private List<String> germplasmDbIds = null;
 
 	@JsonProperty("germplasmNames")
-	@Valid
 	private List<String> germplasmNames = null;
 
 	@JsonProperty("observationVariableDbIds")
-	@Valid
 	private List<String> observationVariableDbIds = null;
 
 	@JsonProperty("observationVariableNames")
-	@Valid
 	private List<String> observationVariableNames = null;
-
-	@JsonProperty("externalReferenceIDs")
-	@Valid
-	private List<String> externalReferenceIDs = null;
-
-	@JsonProperty("externalReferenceSources")
-	@Valid
-	private List<String> externalReferenceSources = null;
 
 	@JsonProperty("active")
 	private Boolean active = null;
 
 	@JsonProperty("seasonDbIds")
-	@Valid
 	private List<String> seasonDbIds = null;
 
 	@JsonProperty("sortBy")
@@ -93,15 +61,12 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 	private SortOrder sortOrder = null;
 
 	@JsonProperty("studyCodes")
-	@Valid
 	private List<String> studyCodes = null;
 
 	@JsonProperty("studyPUIs")
-	@Valid
 	private List<String> studyPUIs = null;
 
 	@JsonProperty("studyTypes")
-	@Valid
 	private List<String> studyTypes = null;
 
 	public StudySearchRequest commonCropNames(List<String> commonCropNames) {
@@ -116,13 +81,6 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		this.commonCropNames.add(commonCropNamesItem);
 		return this;
 	}
-
-	/**
-	 * Common name for the crop which this program is for
-	 * 
-	 * @return commonCropNames
-	 **/
-	@ApiModelProperty(example = "[\"Tomatillo\",\"Paw Paw\"]", value = "Common name for the crop which this program is for")
 
 	public List<String> getCommonCropNames() {
 		return commonCropNames;
@@ -145,13 +103,6 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		return this;
 	}
 
-	/**
-	 * A program identifier to search for
-	 * 
-	 * @return programDbIds
-	 **/
-	@ApiModelProperty(example = "[\"8f5de35b\",\"0e2d4a13\"]", value = "A program identifier to search for")
-
 	public List<String> getProgramDbIds() {
 		return programDbIds;
 	}
@@ -172,13 +123,6 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		this.programNames.add(programNamesItem);
 		return this;
 	}
-
-	/**
-	 * A name of a program to search for
-	 * 
-	 * @return programNames
-	 **/
-	@ApiModelProperty(example = "[\"Better Breeding Program\",\"Best Breeding Program\"]", value = "A name of a program to search for")
 
 	public List<String> getProgramNames() {
 		return programNames;
@@ -201,13 +145,6 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		return this;
 	}
 
-	/**
-	 * The ID which uniquely identifies a trial to search for
-	 * 
-	 * @return trialDbIds
-	 **/
-	@ApiModelProperty(example = "[\"d2593dc2\",\"9431a731\"]", value = "The ID which uniquely identifies a trial to search for")
-
 	public List<String> getTrialDbIds() {
 		return trialDbIds;
 	}
@@ -228,13 +165,6 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		this.trialNames.add(trialNamesItem);
 		return this;
 	}
-
-	/**
-	 * The human readable name of a trial to search for
-	 * 
-	 * @return trialNames
-	 **/
-	@ApiModelProperty(example = "[\"All Yield Trials 2016\",\"Disease Resistance Study Comparison Group\"]", value = "The human readable name of a trial to search for")
 
 	public List<String> getTrialNames() {
 		return trialNames;
@@ -257,13 +187,6 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		return this;
 	}
 
-	/**
-	 * List of study identifiers to search for
-	 * 
-	 * @return studyDbIds
-	 **/
-	@ApiModelProperty(example = "[\"cf6c4bd4\",\"691e69d6\"]", value = "List of study identifiers to search for")
-
 	public List<String> getStudyDbIds() {
 		return studyDbIds;
 	}
@@ -284,13 +207,6 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		this.studyNames.add(studyNamesItem);
 		return this;
 	}
-
-	/**
-	 * List of study names to filter search results
-	 * 
-	 * @return studyNames
-	 **/
-	@ApiModelProperty(example = "[\"The First Bob Study 2017\",\"Wheat Yield Trial 246\"]", value = "List of study names to filter search results")
 
 	public List<String> getStudyNames() {
 		return studyNames;
@@ -313,13 +229,6 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		return this;
 	}
 
-	/**
-	 * The location ids to search for
-	 * 
-	 * @return locationDbIds
-	 **/
-	@ApiModelProperty(example = "[\"b28911cf\",\"5071d1e4\"]", value = "The location ids to search for")
-
 	public List<String> getLocationDbIds() {
 		return locationDbIds;
 	}
@@ -340,13 +249,6 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		this.locationNames.add(locationNamesItem);
 		return this;
 	}
-
-	/**
-	 * A human readable names to search for
-	 * 
-	 * @return locationNames
-	 **/
-	@ApiModelProperty(example = "[\"Location Alpha\",\"The Large Hadron Collider\"]", value = "A human readable names to search for")
 
 	public List<String> getLocationNames() {
 		return locationNames;
@@ -369,13 +271,6 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		return this;
 	}
 
-	/**
-	 * List of IDs which uniquely identify germplasm to search for
-	 * 
-	 * @return germplasmDbIds
-	 **/
-	@ApiModelProperty(example = "[\"e9c6edd7\",\"1b1df4a6\"]", value = "List of IDs which uniquely identify germplasm to search for")
-
 	public List<String> getGermplasmDbIds() {
 		return germplasmDbIds;
 	}
@@ -396,13 +291,6 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		this.germplasmNames.add(germplasmNamesItem);
 		return this;
 	}
-
-	/**
-	 * List of human readable names to identify germplasm to search for
-	 * 
-	 * @return germplasmNames
-	 **/
-	@ApiModelProperty(example = "[\"A0000003\",\"A0000477\"]", value = "List of human readable names to identify germplasm to search for")
 
 	public List<String> getGermplasmNames() {
 		return germplasmNames;
@@ -425,13 +313,6 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		return this;
 	}
 
-	/**
-	 * List of observation variable IDs to search for
-	 * 
-	 * @return observationVariableDbIds
-	 **/
-	@ApiModelProperty(example = "[\"819e508f\",\"f540b703\"]", value = "List of observation variable IDs to search for")
-
 	public List<String> getObservationVariableDbIds() {
 		return observationVariableDbIds;
 	}
@@ -453,13 +334,6 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		return this;
 	}
 
-	/**
-	 * The names of Variables to search for
-	 * 
-	 * @return observationVariableNames
-	 **/
-	@ApiModelProperty(example = "[\"Plant Height in meters\",\"Wheat rust score 1-5\"]", value = "The names of Variables to search for")
-
 	public List<String> getObservationVariableNames() {
 		return observationVariableNames;
 	}
@@ -468,73 +342,10 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		this.observationVariableNames = observationVariableNames;
 	}
 
-	public StudySearchRequest externalReferenceIDs(List<String> externalReferenceIDs) {
-		this.externalReferenceIDs = externalReferenceIDs;
-		return this;
-	}
-
-	public StudySearchRequest addExternalReferenceIDsItem(String externalReferenceIDsItem) {
-		if (this.externalReferenceIDs == null) {
-			this.externalReferenceIDs = new ArrayList<String>();
-		}
-		this.externalReferenceIDs.add(externalReferenceIDsItem);
-		return this;
-	}
-
-	/**
-	 * List of external references for the trait to search for
-	 * 
-	 * @return externalReferenceIDs
-	 **/
-	@ApiModelProperty(example = "[\"http://purl.obolibrary.org/obo/ro.owl\",\"14a19841\"]", value = "List of external references for the trait to search for")
-
-	public List<String> getExternalReferenceIDs() {
-		return externalReferenceIDs;
-	}
-
-	public void setExternalReferenceIDs(List<String> externalReferenceIDs) {
-		this.externalReferenceIDs = externalReferenceIDs;
-	}
-
-	public StudySearchRequest externalReferenceSources(List<String> externalReferenceSources) {
-		this.externalReferenceSources = externalReferenceSources;
-		return this;
-	}
-
-	public StudySearchRequest addExternalReferenceSourcesItem(String externalReferenceSourcesItem) {
-		if (this.externalReferenceSources == null) {
-			this.externalReferenceSources = new ArrayList<String>();
-		}
-		this.externalReferenceSources.add(externalReferenceSourcesItem);
-		return this;
-	}
-
-	/**
-	 * List of external references sources for the trait to search for
-	 * 
-	 * @return externalReferenceSources
-	 **/
-	@ApiModelProperty(example = "[\"OBO Library\",\"Field App Name\"]", value = "List of external references sources for the trait to search for")
-
-	public List<String> getExternalReferenceSources() {
-		return externalReferenceSources;
-	}
-
-	public void setExternalReferenceSources(List<String> externalReferenceSources) {
-		this.externalReferenceSources = externalReferenceSources;
-	}
-
 	public StudySearchRequest active(Boolean active) {
 		this.active = active;
 		return this;
 	}
-
-	/**
-	 * Is this study currently active
-	 * 
-	 * @return active
-	 **/
-	@ApiModelProperty(example = "true", value = "Is this study currently active")
 
 	public Boolean isActive() {
 		return active;
@@ -557,13 +368,6 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		return this;
 	}
 
-	/**
-	 * The ID which uniquely identifies a season
-	 * 
-	 * @return seasonDbIds
-	 **/
-	@ApiModelProperty(example = "[\"Harvest Two 2017\",\"Summer 2018\"]", value = "The ID which uniquely identifies a season")
-
 	public List<String> getSeasonDbIds() {
 		return seasonDbIds;
 	}
@@ -577,14 +381,6 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		return this;
 	}
 
-	/**
-	 * Name of one of the fields within the study object on which results can be
-	 * sorted
-	 * 
-	 * @return sortBy
-	 **/
-	@ApiModelProperty(value = "Name of one of the fields within the study object on which results can be sorted")
-
 	public SortBy getSortBy() {
 		return sortBy;
 	}
@@ -597,13 +393,6 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		this.sortOrder = sortOrder;
 		return this;
 	}
-
-	/**
-	 * Order results should be sorted. ex. \"ASC\" or \"DESC\"
-	 * 
-	 * @return sortOrder
-	 **/
-	@ApiModelProperty(value = "Order results should be sorted. ex. \"ASC\" or \"DESC\"")
 
 	public SortOrder getSortOrder() {
 		return sortOrder;
@@ -626,13 +415,6 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		return this;
 	}
 
-	/**
-	 * A short human readable code for a study
-	 * 
-	 * @return studyCodes
-	 **/
-	@ApiModelProperty(example = "[\"Grape_Yield_Spring_2018\",\"Walnut_Kenya\"]", value = "A short human readable code for a study")
-
 	public List<String> getStudyCodes() {
 		return studyCodes;
 	}
@@ -654,14 +436,6 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		return this;
 	}
 
-	/**
-	 * Permanent unique identifier associated with study data. For example, a URI or
-	 * DOI
-	 * 
-	 * @return studyPUIs
-	 **/
-	@ApiModelProperty(example = "[\"doi:10.155454/12349537312\",\"https://pui.per/d8dd35e1\"]", value = "Permanent unique identifier associated with study data. For example, a URI or DOI")
-
 	public List<String> getStudyPUIs() {
 		return studyPUIs;
 	}
@@ -682,13 +456,6 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		this.studyTypes.add(studyTypesItem);
 		return this;
 	}
-
-	/**
-	 * The type of study being performed. ex. \"Yield Trial\", etc
-	 * 
-	 * @return studyTypes
-	 **/
-	@ApiModelProperty(example = "[\"Yield Trial\",\"Disease Resistance Trial\"]", value = "The type of study being performed. ex. \"Yield Trial\", etc")
 
 	public List<String> getStudyTypes() {
 		return studyTypes;
@@ -720,7 +487,7 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 				&& Objects.equals(this.germplasmNames, studySearchRequest.germplasmNames)
 				&& Objects.equals(this.observationVariableDbIds, studySearchRequest.observationVariableDbIds)
 				&& Objects.equals(this.observationVariableNames, studySearchRequest.observationVariableNames)
-				&& Objects.equals(this.externalReferenceIDs, studySearchRequest.externalReferenceIDs)
+				&& Objects.equals(this.externalReferenceIds, studySearchRequest.externalReferenceIds)
 				&& Objects.equals(this.externalReferenceSources, studySearchRequest.externalReferenceSources)
 				&& Objects.equals(this.active, studySearchRequest.active)
 				&& Objects.equals(this.seasonDbIds, studySearchRequest.seasonDbIds)
@@ -735,7 +502,7 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 	public int hashCode() {
 		return Objects.hash(commonCropNames, programDbIds, programNames, trialDbIds, trialNames, studyDbIds, studyNames,
 				locationDbIds, locationNames, germplasmDbIds, germplasmNames, observationVariableDbIds,
-				observationVariableNames, externalReferenceIDs, externalReferenceSources, active, seasonDbIds, sortBy,
+				observationVariableNames, externalReferenceIds, externalReferenceSources, active, seasonDbIds, sortBy,
 				sortOrder, studyCodes, studyPUIs, studyTypes, super.hashCode());
 	}
 
@@ -757,7 +524,7 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		sb.append("    germplasmNames: ").append(toIndentedString(germplasmNames)).append("\n");
 		sb.append("    observationVariableDbIds: ").append(toIndentedString(observationVariableDbIds)).append("\n");
 		sb.append("    observationVariableNames: ").append(toIndentedString(observationVariableNames)).append("\n");
-		sb.append("    externalReferenceIDs: ").append(toIndentedString(externalReferenceIDs)).append("\n");
+		sb.append("    externalReferenceIDs: ").append(toIndentedString(externalReferenceIds)).append("\n");
 		sb.append("    externalReferenceSources: ").append(toIndentedString(externalReferenceSources)).append("\n");
 		sb.append("    active: ").append(toIndentedString(active)).append("\n");
 		sb.append("    seasonDbIds: ").append(toIndentedString(seasonDbIds)).append("\n");
@@ -770,10 +537,6 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";
@@ -810,8 +573,8 @@ public class StudySearchRequest extends SearchRequestParametersPaging implements
 			count += this.observationVariableDbIds.size();
 		if (this.observationVariableNames != null)
 			count += this.observationVariableNames.size();
-		if (this.externalReferenceIDs != null)
-			count += this.externalReferenceIDs.size();
+		if (this.externalReferenceIds != null)
+			count += this.externalReferenceIds.size();
 		if (this.externalReferenceSources != null)
 			count += this.externalReferenceSources.size();
 		if (this.active != null)

@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
 @Api(value = "variants", description = "the variants API")
@@ -36,10 +36,14 @@ public interface VariantsApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/variants", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<VariantsListResponse> variantsGet(
-			@ApiParam(value = "The ID of the `Variant` to be retrieved.") @Valid @RequestParam(value = "variantDbId", required = false) String variantDbId,
-			@ApiParam(value = "The ID of the `VariantSet` to be retrieved.") @Valid @RequestParam(value = "variantSetDbId", required = false) String variantSetDbId,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  Tokenized pages are for large data sets which can not be efficiently broken into indexed pages. Use the nextPageToken and prevPageToken from a prior response to construct a query and move to the next or previous page respectively. ") @Valid @RequestParam(value = "pageToken", required = false) String pageToken,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "variantDbId") @Valid @RequestParam(value = "variantDbId", required = false) String variantDbId,
+			@ApiParam(value = "variantSetDbId") @Valid @RequestParam(value = "variantSetDbId", required = false) String variantSetDbId,
+			@ApiParam(value = "referenceDbId") @Valid @RequestParam(value = "referenceDbId", required = false) String referenceDbId,
+			@ApiParam(value = "referenceSetDbId") @Valid @RequestParam(value = "referenceSetDbId", required = false) String referenceSetDbId,
+			@ApiParam(value = "externalReferenceId") @Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@ApiParam(value = "externalReferenceSource") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@ApiParam(value = "pageToken") @Valid @RequestParam(value = "pageToken", required = false) String pageToken,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 					throws BrAPIServerException;
 
@@ -53,12 +57,12 @@ public interface VariantsApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<CallsListResponse> variantsVariantDbIdCallsGet(
 			@ApiParam(value = "The ID of the `Variant` to be retrieved.", required = true) @PathVariable("variantDbId") String variantDbId,
-			@ApiParam(value = "Should homozygotes be expanded (true) or collapsed into a single occurence (false)") @Valid @RequestParam(value = "expandHomozygotes", required = false) Boolean expandHomozygotes,
-			@ApiParam(value = "The string to use as a representation for missing data") @Valid @RequestParam(value = "unknownString", required = false) String unknownString,
-			@ApiParam(value = "The string to use as a separator for phased allele calls") @Valid @RequestParam(value = "sepPhased", required = false) String sepPhased,
-			@ApiParam(value = "The string to use as a separator for unphased allele calls") @Valid @RequestParam(value = "sepUnphased", required = false) String sepUnphased,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  Tokenized pages are for large data sets which can not be efficiently broken into indexed pages. Use the nextPageToken and prevPageToken from a prior response to construct a query and move to the next or previous page respectively. ") @Valid @RequestParam(value = "pageToken", required = false) String pageToken,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "expandHomozygotes") @Valid @RequestParam(value = "expandHomozygotes", required = false) Boolean expandHomozygotes,
+			@ApiParam(value = "unknownString") @Valid @RequestParam(value = "unknownString", required = false) String unknownString,
+			@ApiParam(value = "sepPhased") @Valid @RequestParam(value = "sepPhased", required = false) String sepPhased,
+			@ApiParam(value = "sepUnphased") @Valid @RequestParam(value = "sepUnphased", required = false) String sepUnphased,
+			@ApiParam(value = "pageToken") @Valid @RequestParam(value = "pageToken", required = false) String pageToken,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
 
@@ -100,8 +104,8 @@ public interface VariantsApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<? extends BrAPIResponse> searchVariantsSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  Tokenized pages are for large data sets which can not be efficiently broken into indexed pages. Use the nextPageToken and prevPageToken from a prior response to construct a query and move to the next or previous page respectively. ") @Valid @RequestParam(value = "pageToken", required = false) String pageToken,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "pageToken") @Valid @RequestParam(value = "pageToken", required = false) String pageToken,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 					throws BrAPIServerException;
 

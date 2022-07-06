@@ -3,7 +3,9 @@ package org.brapi.test.BrAPITestServer.service.pheno;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
+
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.TraitEntity;
 import org.brapi.test.BrAPITestServer.repository.core.TraitRepository;
@@ -31,8 +33,9 @@ public class TraitService {
 		this.ontologyService = ontologyService;
 	}
 
-	public List<Trait> findTraits(@Valid String traitDbId, @Valid String observationVariableDbId,
-			@Valid String externalReferenceID, @Valid String externalReferenceSource, Metadata metadata) {
+	public List<Trait> findTraits(String traitDbId, String observationVariableDbId, String ontologyDbId,
+			String commonCropName, String programDbId, String externalReferenceId, String externalReferenceID,
+			String externalReferenceSource, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<TraitEntity> searchQuery = new SearchQueryBuilder<TraitEntity>(TraitEntity.class);
 		if (observationVariableDbId != null) {
@@ -57,7 +60,7 @@ public class TraitService {
 
 			savedEntity = saveTraitEntity(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "traitDbId not found: " + traitDbId);
+			throw new BrAPIServerDbIdNotFoundException("trait", traitDbId);
 		}
 
 		return convertFromEntity(savedEntity);
@@ -94,7 +97,7 @@ public class TraitService {
 			if (entityOpt.isPresent()) {
 				trait = entityOpt.get();
 			} else {
-				throw new BrAPIServerException(errorStatus, "traitDbId not found " + traitDbId);
+				throw new BrAPIServerDbIdNotFoundException("trait", traitDbId);
 			}
 		}
 		return trait;
@@ -102,19 +105,25 @@ public class TraitService {
 
 	public TraitEntity updateEntity(TraitEntity entity, @Valid TraitBaseClass trait) throws BrAPIServerException {
 
-		entity.setAdditionalInfo(UpdateUtility.replaceField(trait.getAdditionalInfo(), entity.getAdditionalInfoMap()));
-		entity.setAlternativeAbbreviations(UpdateUtility.replaceField(trait.getAlternativeAbbreviations(), entity.getAlternativeAbbreviations()));
+		UpdateUtility.updateEntity(trait, entity);
+		
+		entity.setAlternativeAbbreviations(
+				UpdateUtility.replaceField(trait.getAlternativeAbbreviations(), entity.getAlternativeAbbreviations()));
 		entity.setAttribute(UpdateUtility.replaceField(trait.getAttribute(), entity.getAttribute()));
+		entity.setAttributePUI(UpdateUtility.replaceField(trait.getAttributePUI(), entity.getAttributePUI()));
 		entity.setEntity(UpdateUtility.replaceField(trait.getEntity(), entity.getEntity()));
-		entity.setExternalReferences(UpdateUtility.replaceField(trait.getExternalReferences(), entity.getExternalReferencesMap()));
-		entity.setMainAbbreviation(UpdateUtility.replaceField(trait.getMainAbbreviation(), entity.getMainAbbreviation()));
+		entity.setEntityPUI(UpdateUtility.replaceField(trait.getEntityPUI(), entity.getEntityPUI()));
+		entity.setMainAbbreviation(
+				UpdateUtility.replaceField(trait.getMainAbbreviation(), entity.getMainAbbreviation()));
 		ontologyService.updateOntologyReference(entity, trait.getOntologyReference());
 		entity.setStatus(UpdateUtility.replaceField(trait.getStatus(), entity.getStatus()));
 		entity.setSynonyms(UpdateUtility.replaceField(trait.getSynonyms(), entity.getSynonyms()));
 		entity.setTraitClass(UpdateUtility.replaceField(trait.getTraitClass(), entity.getTraitClass()));
-		entity.setTraitDescription(UpdateUtility.replaceField(trait.getTraitDescription(), entity.getTraitDescription()));
+		entity.setTraitDescription(
+				UpdateUtility.replaceField(trait.getTraitDescription(), entity.getTraitDescription()));
 		entity.setTraitName(UpdateUtility.replaceField(trait.getTraitName(), entity.getTraitName()));
-		
+		entity.setTraitPUI(UpdateUtility.replaceField(trait.getTraitPUI(), entity.getTraitPUI()));
+
 		return entity;
 	}
 
@@ -122,19 +131,22 @@ public class TraitService {
 		Trait trait = null;
 		if (entity != null) {
 			trait = new Trait();
-			trait.setAdditionalInfo(entity.getAdditionalInfoMap());
+			UpdateUtility.convertFromEntity(entity, trait);
+			
 			trait.setAlternativeAbbreviations(entity.getAlternativeAbbreviations());
 			trait.setAttribute(entity.getAttribute());
+			trait.setAttributePUI(entity.getAttributePUI());
 			trait.setEntity(entity.getEntity());
-			trait.setExternalReferences(entity.getExternalReferencesMap());
+			trait.setEntityPUI(entity.getEntityPUI());
 			trait.setMainAbbreviation(entity.getMainAbbreviation());
 			trait.setOntologyReference(ontologyService.convertFromEntity(entity));
 			trait.setStatus(entity.getStatus());
 			trait.setSynonyms(entity.getSynonyms());
 			trait.setTraitClass(entity.getTraitClass());
-			trait.setTraitDbId(entity.getId());
+			trait.setTraitDbId(entity.getId()); 
 			trait.setTraitDescription(entity.getTraitDescription());
 			trait.setTraitName(entity.getTraitName());
+			trait.setTraitPUI(entity.getTraitPUI());
 		}
 		return trait;
 	}

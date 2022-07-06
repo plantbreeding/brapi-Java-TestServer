@@ -2,6 +2,7 @@ package org.brapi.test.BrAPITestServer.model.entity.core;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -13,6 +14,8 @@ import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
 
+import io.swagger.model.core.ProgramSearchRequest.ProgramTypesEnum;
+
 @Entity
 @Table(name="program")
 public class ProgramEntity extends BrAPIPrimaryEntity{
@@ -23,8 +26,12 @@ public class ProgramEntity extends BrAPIPrimaryEntity{
 	@Column
 	private String objective;
 	@Column
+	private String fundingInformation;
+	@Column
+	private ProgramTypesEnum programType;
+	@Column
 	private String documentationURL;
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	private PersonEntity leadPerson;
 	
 	@ManyToOne
@@ -39,6 +46,20 @@ public class ProgramEntity extends BrAPIPrimaryEntity{
 	@OneToMany(mappedBy="program")
 	private List<ObservationEntity> observations;
 
+	
+	
+	public String getFundingInformation() {
+		return fundingInformation;
+	}
+	public void setFundingInformation(String fundingInformation) {
+		this.fundingInformation = fundingInformation;
+	}
+	public ProgramTypesEnum getProgramType() {
+		return programType;
+	}
+	public void setProgramType(ProgramTypesEnum programType) {
+		this.programType = programType;
+	}
 	public List<StudyEntity> getStudies() {
 		return studies;
 	}

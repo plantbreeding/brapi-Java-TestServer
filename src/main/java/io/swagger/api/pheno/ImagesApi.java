@@ -7,6 +7,7 @@ package io.swagger.api.pheno;
 
 import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Model202AcceptedSearchResponse;
+import io.swagger.model.pheno.ImageDeleteResponse;
 import io.swagger.model.pheno.ImageListResponse;
 import io.swagger.model.pheno.ImageNewRequest;
 import io.swagger.model.pheno.ImageSearchRequest;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:22.556Z[GMT]")
@@ -37,15 +38,18 @@ public interface ImagesApi {
 			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
 	@RequestMapping(value = "/images", produces = { "application/json" }, method = RequestMethod.GET)
 	ResponseEntity<ImageListResponse> imagesGet(
-			@ApiParam(value = "The unique identifier for a image") @Valid @RequestParam(value = "imageDbId", required = false) String imageDbId,
-			@ApiParam(value = "The human readable name of an image") @Valid @RequestParam(value = "imageName", required = false) String imageName,
-			@ApiParam(value = "The unique identifier of the observation unit an image is portraying") @Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
-			@ApiParam(value = "The unique identifier of the observation an image is associated with") @Valid @RequestParam(value = "observationDbId", required = false) String observationDbId,
-			@ApiParam(value = "A descriptive term associated with an image") @Valid @RequestParam(value = "descriptiveOntologyTerm", required = false) String descriptiveOntologyTerm,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@ApiParam(value = "Search for Germplasm by an external reference") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "imageDbId") @Valid @RequestParam(value = "imageDbId", required = false) String imageDbId,
+			@ApiParam(value = "imageName") @Valid @RequestParam(value = "imageName", required = false) String imageName,
+			@ApiParam(value = "observationUnitDbId") @Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
+			@ApiParam(value = "observationDbId") @Valid @RequestParam(value = "observationDbId", required = false) String observationDbId,
+			@ApiParam(value = "descriptiveOntologyTerm") @Valid @RequestParam(value = "descriptiveOntologyTerm", required = false) String descriptiveOntologyTerm,
+			@ApiParam(value = "commonCropName") @Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@ApiParam(value = "programDbId") @Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@ApiParam(value = "externalReferenceId") @Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@ApiParam(value = "externalReferenceID") @Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@ApiParam(value = "externalReferenceSource") @Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
 
@@ -137,9 +141,21 @@ public interface ImagesApi {
 			"application/json" }, method = RequestMethod.GET)
 	ResponseEntity<? extends BrAPIResponse> searchImagesSearchResultsDbIdGet(
 			@ApiParam(value = "Permanent unique identifier which references the search results", required = true) @PathVariable("searchResultsDbId") String searchResultsDbId,
-			@ApiParam(value = "Used to request a specific page of data to be returned.  The page indexing starts at 0 (the first page is 'page'= 0). Default is `0`.") @Valid @RequestParam(value = "page", required = false) Integer page,
-			@ApiParam(value = "The size of the pages to be returned. Default is `1000`.") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@ApiParam(value = "page") @Valid @RequestParam(value = "page", required = false) Integer page,
+			@ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException;
+
+	@ApiOperation(value = "Submit a delete request for `Images`", notes = "Submit a delete request for `Images`", authorizations = {
+			@Authorization(value = "AuthorizationToken") }, tags = { "Images" })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = ImageDeleteResponse.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = String.class),
+			@ApiResponse(code = 401, message = "Unauthorized", response = String.class),
+			@ApiResponse(code = 403, message = "Forbidden", response = String.class) })
+	@RequestMapping(value = "/delete/images", produces = { "application/json" }, consumes = {
+			"application/json" }, method = RequestMethod.POST)
+	ResponseEntity<ImageDeleteResponse> deleteImagesPost(
+			@ApiParam(value = "HTTP HEADER - Token used for Authorization   <strong> Bearer {token_string} </strong>") @RequestHeader(value = "Authorization", required = false) String authorization,
+			@ApiParam(value = "") @Valid @RequestBody ImageSearchRequest body) throws BrAPIServerException;
 
 }

@@ -2,12 +2,12 @@ package org.brapi.test.BrAPITestServer.controller.pheno;
 
 import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
-import io.swagger.model.WSMIMEDataTypes;
-import io.swagger.model.germ.Germplasm;
-import io.swagger.model.germ.GermplasmListResponse;
-import io.swagger.model.germ.GermplasmListResponseResult;
-import io.swagger.model.germ.GermplasmSearchRequest;
+import io.swagger.model.pheno.ImageDeleteResponse;
+import io.swagger.model.pheno.ImageDeleteResponseResult;
+import io.swagger.model.pheno.ImageSearchRequest;
 import io.swagger.model.pheno.Observation;
+import io.swagger.model.pheno.ObservationDeleteResponse;
+import io.swagger.model.pheno.ObservationDeleteResponseResult;
 import io.swagger.model.pheno.ObservationListResponse;
 import io.swagger.model.pheno.ObservationListResponseResult;
 import io.swagger.model.pheno.ObservationNewRequest;
@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +50,8 @@ public class ObservationsApiController extends BrAPIController implements Observ
 	private final HttpServletRequest request;
 
 	@Autowired
-	public ObservationsApiController(ObservationService observationService, SearchService searchService, HttpServletRequest request) {
+	public ObservationsApiController(ObservationService observationService, SearchService searchService,
+			HttpServletRequest request) {
 		this.observationService = observationService;
 		this.searchService = searchService;
 		this.request = request;
@@ -66,26 +67,35 @@ public class ObservationsApiController extends BrAPIController implements Observ
 			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
 			@Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
 			@Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
-			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
 			@Valid @RequestParam(value = "seasonDbId", required = false) String seasonDbId,
+			@Valid @RequestParam(value = "observationTimeStampRangeStart", required = false) String observationTimeStampRangeStart,
+			@Valid @RequestParam(value = "observationTimeStampRangeEnd", required = false) String observationTimeStampRangeEnd,
 			@Valid @RequestParam(value = "observationUnitLevelName", required = false) String observationUnitLevelName,
 			@Valid @RequestParam(value = "observationUnitLevelOrder", required = false) String observationUnitLevelOrder,
 			@Valid @RequestParam(value = "observationUnitLevelCode", required = false) String observationUnitLevelCode,
-			@Valid @RequestParam(value = "observationTimeStampRangeStart", required = false) String observationTimeStampRangeStart,
-			@Valid @RequestParam(value = "observationTimeStampRangeEnd", required = false) String observationTimeStampRangeEnd,
+			@Valid @RequestParam(value = "observationUnitLevelRelationshipName", required = false) String observationUnitLevelRelationshipName,
+			@Valid @RequestParam(value = "observationUnitLevelRelationshipOrder", required = false) String observationUnitLevelRelationshipOrder,
+			@Valid @RequestParam(value = "observationUnitLevelRelationshipCode", required = false) String observationUnitLevelRelationshipCode,
+			@Valid @RequestParam(value = "observationUnitLevelRelationshipDbId", required = false) String observationUnitLevelRelationshipDbId,
+			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<Observation> data = observationService.findObservations(observationDbId, observationUnitDbId, germplasmDbId,
-				observationVariableDbId, studyDbId, locationDbId, trialDbId, programDbId, seasonDbId,
+		List<Observation> data = observationService.findObservations(observationDbId, observationUnitDbId,
+				germplasmDbId, observationVariableDbId, studyDbId, locationDbId, trialDbId, programDbId, seasonDbId,
 				observationUnitLevelName, observationUnitLevelOrder, observationUnitLevelCode,
-				observationTimeStampRangeStart, observationTimeStampRangeEnd, externalReferenceID,
+				observationTimeStampRangeStart, observationTimeStampRangeEnd, observationUnitLevelRelationshipName,
+				observationUnitLevelRelationshipOrder, observationUnitLevelRelationshipCode,
+				observationUnitLevelRelationshipDbId, commonCropName, externalReferenceId, externalReferenceID,
 				externalReferenceSource, metadata);
 		return responseOK(new ObservationListResponse(), new ObservationListResponseResult(), data, metadata);
 	}
@@ -94,7 +104,8 @@ public class ObservationsApiController extends BrAPIController implements Observ
 	@Override
 	public ResponseEntity<ObservationSingleResponse> observationsObservationDbIdGet(
 			@PathVariable("observationDbId") String observationDbId,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -106,7 +117,8 @@ public class ObservationsApiController extends BrAPIController implements Observ
 	@Override
 	public ResponseEntity<ObservationSingleResponse> observationsObservationDbIdPut(
 			@PathVariable("observationDbId") String observationDbId, @Valid @RequestBody ObservationNewRequest body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -118,7 +130,8 @@ public class ObservationsApiController extends BrAPIController implements Observ
 	@Override
 	public ResponseEntity<ObservationListResponse> observationsPost(
 			@Valid @RequestBody List<ObservationNewRequest> body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -130,7 +143,8 @@ public class ObservationsApiController extends BrAPIController implements Observ
 	@Override
 	public ResponseEntity<ObservationListResponse> observationsPut(
 			@Valid @RequestBody Map<String, ObservationNewRequest> body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -140,8 +154,7 @@ public class ObservationsApiController extends BrAPIController implements Observ
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity observationsTableGet(
-			@RequestHeader(value = "Accept", required = false) String accept,
+	public ResponseEntity observationsTableGet(@RequestHeader(value = "Accept", required = false) String accept,
 			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
 			@Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
@@ -154,23 +167,48 @@ public class ObservationsApiController extends BrAPIController implements Observ
 			@Valid @RequestParam(value = "searchResultsDbId", required = false) String searchResultsDbId,
 			@Valid @RequestParam(value = "observationTimeStampRangeStart", required = false) String observationTimeStampRangeStart,
 			@Valid @RequestParam(value = "observationTimeStampRangeEnd", required = false) String observationTimeStampRangeEnd,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@Valid @RequestParam(value = "observationUnitLevelName", required = false) String observationUnitLevelName,
+			@Valid @RequestParam(value = "observationUnitLevelOrder", required = false) String observationUnitLevelOrder,
+			@Valid @RequestParam(value = "observationUnitLevelCode", required = false) String observationUnitLevelCode,
+			@Valid @RequestParam(value = "observationUnitLevelRelationshipName", required = false) String observationUnitLevelRelationshipName,
+			@Valid @RequestParam(value = "observationUnitLevelRelationshipOrder", required = false) String observationUnitLevelRelationshipOrder,
+			@Valid @RequestParam(value = "observationUnitLevelRelationshipCode", required = false) String observationUnitLevelRelationshipCode,
+			@Valid @RequestParam(value = "observationUnitLevelRelationshipDbId", required = false) String observationUnitLevelRelationshipDbId,
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		String sep = "";
-		if("text/csv".equals(accept)) {
+		if ("text/csv".equals(accept)) {
 			sep = ",";
-		}else if("text/tsv".equals(accept)) {
+		} else if ("text/tsv".equals(accept)) {
 			sep = "\t";
-		}else {
+		} else {
 			validateAcceptHeader(request);
 		}
-		ObservationTable data = observationService.findObservationsTable(observationUnitDbId, germplasmDbId,
-				observationVariableDbId, studyDbId, locationDbId, trialDbId, programDbId, seasonDbId,
-				observationTimeStampRangeStart, observationTimeStampRangeEnd);
-		if(sep.isEmpty()) {
+
+		ObservationTable data;
+		if (searchResultsDbId != null) {
+			SearchRequestEntity request = searchService.findById(searchResultsDbId);
+			if (request != null) {
+				ObservationSearchRequest body = request.getParameters(ObservationSearchRequest.class);
+				data = observationService.findObservationsTable(body);
+			} else {
+				return responseAccepted(searchResultsDbId);
+			}
+		} else {
+
+			data = observationService.findObservationsTable(observationUnitDbId, germplasmDbId, observationVariableDbId,
+					studyDbId, locationDbId, trialDbId, programDbId, seasonDbId, observationLevel,
+					observationUnitLevelName, observationUnitLevelOrder, observationUnitLevelCode,
+					observationUnitLevelRelationshipName, observationUnitLevelRelationshipOrder,
+					observationUnitLevelRelationshipCode, observationUnitLevelRelationshipDbId,
+					observationTimeStampRangeStart, observationTimeStampRangeEnd, searchResultsDbId);
+		}
+
+		if (sep.isEmpty()) {
 			return responseOK(new ObservationTableResponse(), data);
-		}else {
+		} else {
 			String textTable = observationService.getObservationTableText(data, sep);
 			return new ResponseEntity<String>(textTable, HttpStatus.OK);
 		}
@@ -180,7 +218,8 @@ public class ObservationsApiController extends BrAPIController implements Observ
 	@Override
 	public ResponseEntity<? extends BrAPIResponse> searchObservationsPost(
 			@Valid @RequestBody ObservationSearchRequest body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -211,9 +250,21 @@ public class ObservationsApiController extends BrAPIController implements Observ
 			ObservationSearchRequest body = request.getParameters(ObservationSearchRequest.class);
 			List<Observation> data = observationService.findObservations(body, metadata);
 			return responseOK(new ObservationListResponse(), new ObservationListResponseResult(), data, metadata);
-		}else {
+		} else {
 			return responseAccepted(searchResultsDbId);
 		}
+	}
+
+	@Override
+	public ResponseEntity<ObservationDeleteResponse> deleteObservationsPost(
+			@RequestHeader(value = "Authorization", required = false) String authorization,
+			@Valid @RequestBody ObservationSearchRequest body) throws BrAPIServerException {
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		Metadata metadata = generateMetaDataTemplate(body);
+
+		List<String> data = observationService.deleteObservations(body, metadata);
+		return responseOK(new ObservationDeleteResponse(), new ObservationDeleteResponseResult(), data, metadata);
 	}
 
 }

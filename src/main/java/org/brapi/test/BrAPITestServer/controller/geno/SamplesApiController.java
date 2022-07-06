@@ -8,10 +8,6 @@ import io.swagger.model.geno.SampleListResponseResult;
 import io.swagger.model.geno.SampleNewRequest;
 import io.swagger.model.geno.SampleSearchRequest;
 import io.swagger.model.geno.SampleSingleResponse;
-import io.swagger.model.germ.Germplasm;
-import io.swagger.model.germ.GermplasmListResponse;
-import io.swagger.model.germ.GermplasmListResponseResult;
-import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.api.geno.SamplesApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -23,7 +19,6 @@ import org.brapi.test.BrAPITestServer.service.geno.SampleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,9 +26,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:32:53.794Z[GMT]")
 @Controller
@@ -56,28 +52,38 @@ public class SamplesApiController extends BrAPIController implements SamplesApi 
 	@Override
 	public ResponseEntity<SampleListResponse> samplesGet(
 			@Valid @RequestParam(value = "sampleDbId", required = false) String sampleDbId,
+			@Valid @RequestParam(value = "sampleName", required = false) String sampleName,
+			@Valid @RequestParam(value = "sampleGroupDbId", required = false) String sampleGroupDbId,
 			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
 			@Valid @RequestParam(value = "plateDbId", required = false) String plateDbId,
+			@Valid @RequestParam(value = "plateName", required = false) String plateName,
 			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
 			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
+			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
+			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<Sample> data = sampleService.findSamples(sampleDbId, observationUnitDbId, plateDbId, germplasmDbId,
-				studyDbId, externalReferenceID, externalReferenceSource, metadata);
+		List<Sample> data = sampleService.findSamples(sampleDbId, sampleName, sampleGroupDbId, observationUnitDbId,
+				plateDbId, plateName, germplasmDbId, studyDbId, trialDbId, commonCropName, programDbId,
+				externalReferenceId, externalReferenceID, externalReferenceSource, metadata);
 		return responseOK(new SampleListResponse(), new SampleListResponseResult(), data, metadata);
 	}
 
 	@CrossOrigin
 	@Override
 	public ResponseEntity<SampleListResponse> samplesPost(@Valid @RequestBody List<SampleNewRequest> body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -87,8 +93,21 @@ public class SamplesApiController extends BrAPIController implements SamplesApi 
 
 	@CrossOrigin
 	@Override
+	public ResponseEntity<SampleListResponse> samplesPut(@Valid @RequestBody Map<String, SampleNewRequest> body,
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
+
+		log.debug("Request: " + request.getRequestURI());
+		validateAcceptHeader(request);
+		List<Sample> data = sampleService.updateSamples(body);
+		return responseOK(new SampleListResponse(), new SampleListResponseResult(), data);
+	}
+
+	@CrossOrigin
+	@Override
 	public ResponseEntity<SampleSingleResponse> samplesSampleDbIdGet(@PathVariable("sampleDbId") String sampleDbId,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -100,7 +119,8 @@ public class SamplesApiController extends BrAPIController implements SamplesApi 
 	@Override
 	public ResponseEntity<SampleSingleResponse> samplesSampleDbIdPut(@PathVariable("sampleDbId") String sampleDbId,
 			@Valid @RequestBody SampleNewRequest body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -111,7 +131,8 @@ public class SamplesApiController extends BrAPIController implements SamplesApi 
 	@CrossOrigin
 	@Override
 	public ResponseEntity<? extends BrAPIResponse> searchSamplesPost(@Valid @RequestBody SampleSearchRequest body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -132,7 +153,8 @@ public class SamplesApiController extends BrAPIController implements SamplesApi 
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -142,7 +164,7 @@ public class SamplesApiController extends BrAPIController implements SamplesApi 
 			SampleSearchRequest body = request.getParameters(SampleSearchRequest.class);
 			List<Sample> data = sampleService.findSamples(body, metadata);
 			return responseOK(new SampleListResponse(), new SampleListResponseResult(), data, metadata);
-		}else {
+		} else {
 			return responseAccepted(searchResultsDbId);
 		}
 	}

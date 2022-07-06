@@ -5,21 +5,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.Map.Entry;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.germ.CrossEntity;
-import org.brapi.test.BrAPITestServer.model.entity.germ.CrossParentEntity;
+import org.brapi.test.BrAPITestServer.model.entity.germ.CrossPollinationEventEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.CrossingProjectEntity;
-import org.brapi.test.BrAPITestServer.model.entity.germ.GermplasmEntity;
-import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.repository.germ.CrossRepository;
 import org.brapi.test.BrAPITestServer.service.DateUtility;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
-import org.brapi.test.BrAPITestServer.service.pheno.ObservationUnitService;
+import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -27,9 +26,10 @@ import org.springframework.stereotype.Service;
 
 import io.swagger.model.Metadata;
 import io.swagger.model.germ.Cross;
+import io.swagger.model.germ.CrossInterface;
 import io.swagger.model.germ.CrossNewRequest;
 import io.swagger.model.germ.CrossNewRequestCrossAttributes;
-import io.swagger.model.germ.CrossParent;
+import io.swagger.model.germ.CrossPollinationEvents;
 import io.swagger.model.germ.PlannedCross;
 import io.swagger.model.germ.PlannedCrossNewRequest;
 
@@ -38,33 +38,36 @@ public class CrossService {
 
 	private final CrossRepository crossRepository;
 	private final CrossingProjectService crossingProjectService;
-	private final GermplasmService germplasmService;
-	private final ObservationUnitService observationUnitService;
+	private final CrossParentService crossParentService;
 
 	public CrossService(CrossRepository crossRepository, CrossingProjectService crossingProjectService,
-			GermplasmService germplasmService, ObservationUnitService observationUnitService) {
+			CrossParentService crossParentService) {
 		this.crossRepository = crossRepository;
 		this.crossingProjectService = crossingProjectService;
-		this.germplasmService = germplasmService;
-		this.observationUnitService = observationUnitService;
+		this.crossParentService = crossParentService;
 	}
 
-	public List<Cross> findCrosses(String crossDbId, String crossingProjectDbId, String externalReferenceID,
-			String externalReferenceSource, Metadata metadata) {
-		List<Cross> crosses = findCrosses(crossDbId, crossingProjectDbId, externalReferenceID, externalReferenceSource, false,
+	public List<Cross> findCrosses(String crossingProjectDbId, String crossingProjectName, String crossDbId,
+			String crossName, String commonCropName, String programDbId, String externalReferenceId,
+			String externalReferenceID, String externalReferenceSource, Metadata metadata) {
+		List<Cross> crosses = findCrossEntities(crossingProjectDbId, crossingProjectName, crossDbId, crossName, null,
+				commonCropName, programDbId, externalReferenceId, externalReferenceID, externalReferenceSource, false,
 				metadata).map(this::convertToCross).getContent();
 		return crosses;
 	}
 
-	public List<PlannedCross> findPlannedCrosses(String crossDbId, String crossingProjectDbId, String externalReferenceID,
-			String externalReferenceSource, Metadata metadata) {
-		List<PlannedCross> crosses = findCrosses(crossDbId, crossingProjectDbId, externalReferenceID, externalReferenceSource,
-				true, metadata).map(this::convertToPlanned).getContent();
+	public List<PlannedCross> findPlannedCrosses(String crossingProjectDbId, String crossingProjectName,
+			String crossDbId, String crossName, String status, String commonCropName, String programDbId,
+			String externalReferenceId, String externalReferenceID, String externalReferenceSource, Metadata metadata) {
+		List<PlannedCross> crosses = findCrossEntities(crossingProjectDbId, crossingProjectName, crossDbId, crossName, status,
+				commonCropName, programDbId, externalReferenceId, externalReferenceID, externalReferenceSource, true,
+				metadata).map(this::convertToPlanned).getContent();
 		return crosses;
 	}
 
-	public Page<CrossEntity> findCrosses(String crossDbId, String crossingProjectDbId, String externalReferenceID,
-			String externalReferenceSource, Boolean plannedCross, Metadata metadata) {
+	public Page<CrossEntity> findCrossEntities(String crossingProjectDbId, String crossingProjectName, String crossDbId,
+			String crossName, String status, String commonCropName, String programDbId, String externalReferenceId,
+			String externalReferenceID, String externalReferenceSource, Boolean plannedCross, Metadata metadata) {
 
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<CrossEntity> searchQuery = new SearchQueryBuilder<CrossEntity>(CrossEntity.class);
@@ -83,6 +86,16 @@ public class CrossService {
 		return page;
 	}
 
+	public CrossEntity getCrossEntity(String crossDbId, Boolean isPlanned) {
+		if(isPlanned == null) {
+			isPlanned = false;
+		}
+		if(crossDbId == null) {
+			crossDbId = "";
+		}
+		return crossRepository.findByIdAndPlanned(crossDbId, isPlanned);
+	}
+	
 	public List<Cross> saveCrosses(@Valid List<CrossNewRequest> body) throws BrAPIServerException {
 		List<Cross> savedValues = new ArrayList<>();
 
@@ -125,14 +138,16 @@ public class CrossService {
 				updateEntity(entity, crossEntry.getValue());
 				savedValues.add(convertToCross(crossRepository.save(entity)));
 			} else {
-				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "crossDbId not found: " + crossEntry.getKey());
+				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "The cross \"" + crossEntry.getKey()
+						+ "\" is not available in this database. \nPlease choose a different crossDbId or contact the server administrator to resolve this issue.");
 			}
 		}
 
 		return savedValues;
 	}
 
-	public List<PlannedCross> updatePlannedCrosses(@Valid Map<String, PlannedCrossNewRequest> body) throws BrAPIServerException {
+	public List<PlannedCross> updatePlannedCrosses(@Valid Map<String, PlannedCrossNewRequest> body)
+			throws BrAPIServerException {
 		List<PlannedCross> savedValues = new ArrayList<>();
 
 		for (Entry<String, PlannedCrossNewRequest> crossEntry : body.entrySet()) {
@@ -142,7 +157,8 @@ public class CrossService {
 				updateEntity(entity, crossEntry.getValue());
 				savedValues.add(convertToPlanned(crossRepository.save(entity)));
 			} else {
-				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "plannedCrossDbId not found: " + crossEntry.getKey());
+				throw new BrAPIServerException(HttpStatus.NOT_FOUND, "The planned cross \"" + crossEntry.getKey()
+						+ "\" is not available in this database. \nPlease choose a different plannedCrossDbId or contact the server administrator to resolve this issue.");
 			}
 		}
 
@@ -152,90 +168,100 @@ public class CrossService {
 	private Cross convertToCross(CrossEntity entity) {
 		Cross cross = new Cross();
 		if (entity != null) {
-			cross.setAdditionalInfo(entity.getAdditionalInfoMap());
+			UpdateUtility.convertFromEntity(entity, cross);
+			convertFromEntity(entity, cross);
 			cross.setCrossAttributes(convertFromEntity(entity.getCrossAttributes()));
 			cross.setCrossDbId(entity.getId());
-			if (entity.getCrossingProject() != null) {
-				cross.setCrossingProjectDbId(entity.getCrossingProject().getId());
-				cross.setCrossingProjectName(entity.getCrossingProject().getName());
-			}
 			cross.setCrossName(entity.getName());
-			cross.setCrossType(entity.getCrossType());
-			cross.setExternalReferences(entity.getExternalReferencesMap());
-			if (entity.getParents() != null && entity.getParents().size() >= 1)
-				cross.setParent1(convertFromEntity(entity.getParents().get(0)));
-			if (entity.getParents() != null && entity.getParents().size() >= 2)
-				cross.setParent2(convertFromEntity(entity.getParents().get(1)));
-			cross.setPollinationTimeStamp(DateUtility.toOffsetDateTime(entity.getPollinationTimeStamp()));
+			if (entity.getPollinationEvents() != null && !entity.getPollinationEvents().isEmpty()) {
+				cross.setPollinationTimeStamp(
+						DateUtility.toOffsetDateTime(entity.getPollinationEvents().get(0).getPollinationTimeStamp()));
+			}
+			if (entity.getPlannedCross() != null) {
+				cross.setPlannedCrossDbId(entity.getPlannedCross().getId());
+				cross.setPlannedCrossName(entity.getPlannedCross().getName());
+			}
+			if (entity.getPollinationEvents() != null) {
+				cross.setPollinationEvents(entity.getPollinationEvents().stream().map(eventEntity -> {
+					CrossPollinationEvents event = new CrossPollinationEvents();
+					event.setPollinationNumber(eventEntity.getPollinationNumber());
+					event.setPollinationSuccessful(eventEntity.getPollinationSuccessful());
+					event.setPollinationTimeStamp(DateUtility.toOffsetDateTime(eventEntity.getPollinationTimeStamp()));
+					return event;
+				}).collect(Collectors.toList()));
+			}
 		}
 		return cross;
 	}
 
 	private PlannedCross convertToPlanned(CrossEntity entity) {
-		PlannedCross cross = new PlannedCross();
+		PlannedCross planned = new PlannedCross();
 		if (entity != null) {
-			cross.setAdditionalInfo(entity.getAdditionalInfoMap());
-			cross.setPlannedCrossDbId(entity.getId());
-			if (entity.getCrossingProject() != null) {
-				cross.setCrossingProjectDbId(entity.getCrossingProject().getId());
-				cross.setCrossingProjectName(entity.getCrossingProject().getName());
-			}
-			cross.setPlannedCrossName(entity.getName());
-			cross.setCrossType(entity.getCrossType());
-			cross.setExternalReferences(entity.getExternalReferencesMap());
-			if (entity.getParents() != null && entity.getParents().size() >= 1)
-				cross.setParent1(convertFromEntity(entity.getParents().get(0)));
-			if (entity.getParents() != null && entity.getParents().size() >= 2)
-				cross.setParent2(convertFromEntity(entity.getParents().get(1)));
+			UpdateUtility.convertFromEntity(entity, planned);
+			convertFromEntity(entity, planned);
+			planned.setPlannedCrossDbId(entity.getId());
+			planned.setPlannedCrossName(entity.getName());
+			planned.setStatus(entity.getStatus());
 		}
-		return cross;
+		return planned;
+	}
+
+	private void convertFromEntity(CrossEntity entity, CrossInterface cross) {
+		if (entity.getCrossingProject() != null) {
+			cross.setCrossingProjectDbId(entity.getCrossingProject().getId());
+			cross.setCrossingProjectName(entity.getCrossingProject().getName());
+		}
+		cross.setCrossType(entity.getCrossType());
+
+		crossParentService.convertParentsFromEntity(entity, cross);
 	}
 
 	private void updateEntity(CrossEntity entity, CrossNewRequest cross) throws BrAPIServerException {
-		if (cross.getAdditionalInfo() != null)
-			entity.setAdditionalInfo(cross.getAdditionalInfo());
+		UpdateUtility.updateEntity(cross, entity);
+		updateBaseEntity(entity, cross);
 		if (cross.getCrossAttributes() != null)
 			entity.setCrossAttributes(convertToEntity(cross.getCrossAttributes()));
-		if (cross.getCrossingProjectDbId() != null) {
-			CrossingProjectEntity project = crossingProjectService
-					.getCrossingProjectEntity(cross.getCrossingProjectDbId());
-			entity.setCrossingProject(project);
-		}
 		if (cross.getCrossName() != null)
 			entity.setName(cross.getCrossName());
-		if (cross.getCrossType() != null)
-			entity.setCrossType(cross.getCrossType());
-		if (cross.getExternalReferences() != null)
-			entity.setExternalReferences(cross.getExternalReferences());
-		if (cross.getParent1() != null)
-			entity.addParentItem(convertToEntity(cross.getParent1(), entity));
-		if (cross.getParent2() != null)
-			entity.addParentItem(convertToEntity(cross.getParent2(), entity));
-		if (cross.getPollinationTimeStamp() != null)
-			entity.setPollinationTimeStamp(DateUtility.toDate(cross.getPollinationTimeStamp()));
+		if (cross.getPlannedCrossDbId() != null) {
+			List<CrossEntity> plannedEntity = findCrossEntities(null, null, cross.getPlannedCrossDbId(), null, null, null, null, null, null, null, true, null).getContent();
+			entity.setPlannedCross(plannedEntity.get(0));
+		}
+		if (cross.getPollinationEvents() != null) {
+			entity.setPollinationEvents(cross.getPollinationEvents().stream().map(event -> {
+				CrossPollinationEventEntity eventEntity = new CrossPollinationEventEntity();
+				eventEntity.setPollinationNumber(event.getPollinationNumber());
+				eventEntity.setPollinationSuccessful(event.isPollinationSuccessful());
+				eventEntity.setPollinationTimeStamp(DateUtility.toDate(event.getPollinationTimeStamp()));
+				return eventEntity;
+			}).collect(Collectors.toList()));
+		}
+
 		entity.setPlanned(false);
 
 	}
 
 	private void updateEntity(CrossEntity entity, PlannedCrossNewRequest cross) throws BrAPIServerException {
-		if (cross.getAdditionalInfo() != null)
-			entity.setAdditionalInfo(cross.getAdditionalInfo());
+		UpdateUtility.updateEntity(cross, entity);
+		updateBaseEntity(entity, cross);
+		if (cross.getPlannedCrossName() != null)
+			entity.setName(cross.getPlannedCrossName());
+		if (cross.getStatus() != null)
+			entity.setStatus(cross.getStatus());
+
+		entity.setPlanned(true);
+	}
+
+	private void updateBaseEntity(CrossEntity entity, CrossInterface cross) throws BrAPIServerException {
 		if (cross.getCrossingProjectDbId() != null) {
 			CrossingProjectEntity project = crossingProjectService
 					.getCrossingProjectEntity(cross.getCrossingProjectDbId());
 			entity.setCrossingProject(project);
 		}
-		if (cross.getPlannedCrossName() != null)
-			entity.setName(cross.getPlannedCrossName());
 		if (cross.getCrossType() != null)
 			entity.setCrossType(cross.getCrossType());
-		if (cross.getExternalReferences() != null)
-			entity.setExternalReferences(entity.getExternalReferences());
-		if (cross.getParent1() != null)
-			entity.addParentItem(convertToEntity(cross.getParent1(), entity));
-		if (cross.getParent2() != null)
-			entity.addParentItem(convertToEntity(cross.getParent2(), entity));
-		entity.setPlanned(true);
+
+		crossParentService.addParentsToEntity(cross, entity);
 	}
 
 	private List<CrossNewRequestCrossAttributes> convertFromEntity(List<String> entities) {
@@ -262,39 +288,5 @@ public class CrossService {
 		}
 
 		return entities;
-	}
-
-	private CrossParent convertFromEntity(CrossParentEntity entity) {
-		CrossParent parent = new CrossParent();
-		if (entity != null) {
-			if (entity.getGermplasm() != null) {
-				parent.setGermplasmDbId(entity.getGermplasm().getId());
-				parent.setGermplasmName(entity.getGermplasm().getGermplasmName());
-			}
-			if (entity.getObservationUnit() != null) {
-				parent.setObservationUnitDbId(entity.getObservationUnit().getId());
-				parent.setObservationUnitName(entity.getObservationUnit().getObservationUnitName());
-			}
-			parent.setParentType(entity.getParentType());
-		}
-		return parent;
-	}
-
-	private CrossParentEntity convertToEntity(@Valid CrossParent parent, CrossEntity cross) throws BrAPIServerException {
-		CrossParentEntity entity = new CrossParentEntity();
-		if (parent.getGermplasmDbId() != null) {
-			GermplasmEntity germ = germplasmService.getGermplasmEntity(parent.getGermplasmDbId());
-			entity.setGermplasm(germ);
-		}
-		if (parent.getObservationUnitDbId() != null) {
-			ObservationUnitEntity obsUnit = observationUnitService
-					.getObservationUnitEntity(parent.getObservationUnitDbId());
-			entity.setObservationUnit(obsUnit);
-		}
-		if (parent.getParentType() != null) {
-			entity.setParentType(parent.getParentType());
-		}
-		entity.setCross(cross);
-		return entity;
 	}
 }

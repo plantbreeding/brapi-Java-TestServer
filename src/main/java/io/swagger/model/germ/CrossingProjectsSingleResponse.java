@@ -12,7 +12,7 @@ import io.swagger.model.Metadata;
 import io.swagger.model.germ.CrossingProject;
 
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 
 /**
@@ -37,7 +37,7 @@ public class CrossingProjectsSingleResponse implements BrAPIResponse<CrossingPro
 
   
 
-  public void setAtContext(Context _atContext) {
+  public void set_atContext(Context _atContext) {
     this._atContext = _atContext;
   }
 

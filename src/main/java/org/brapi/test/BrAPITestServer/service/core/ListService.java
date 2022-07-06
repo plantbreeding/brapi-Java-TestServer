@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
+import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.ListEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.ListItemEntity;
@@ -40,8 +41,9 @@ public class ListService {
 		this.peopleService = peopleService;
 	}
 
-	public List<ListSummary> findLists(@Valid ListTypes listType, @Valid String listName, @Valid String listDbId,
-			@Valid String listSource, String externalReferenceID, String externalReferenceSource, Metadata metadata) {
+	public List<ListSummary> findLists(ListTypes listType, String listName, String listDbId, String listSource,
+			String programDbId, String commonCropName, String externalReferenceId, String externalReferenceID,
+			String externalReferenceSource, Metadata metadata) {
 		ListSearchRequest request = new ListSearchRequest();
 		if (listType != null) {
 			request.setListType(listType);
@@ -55,12 +57,14 @@ public class ListService {
 		if (listSource != null) {
 			request.addListSourcesItem(listSource);
 		}
-		if (externalReferenceID != null) {
-			request.addExternalReferenceIDsItem(externalReferenceID);
+		if (programDbId != null) {
+			request.addprogramDbIdsItem(programDbId);
 		}
-		if (externalReferenceSource != null) {
-			request.addExternalReferenceSourcesItem(externalReferenceSource);
+		if (commonCropName != null) {
+			request.addCommonCropNamesItem(commonCropName);
 		}
+		request.addExternalReferenceItem(externalReferenceId, externalReferenceID, externalReferenceSource);
+		
 		return findLists(request, metadata);
 	}
 
@@ -98,7 +102,7 @@ public class ListService {
 		if (entityOpt.isPresent()) {
 			entity = entityOpt.get();
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "ListDbId not found: " + listDbId);
+			throw new BrAPIServerDbIdNotFoundException("list", listDbId);
 		}
 
 		return convertToDetails(entity);
@@ -122,7 +126,7 @@ public class ListService {
 
 			savedEntity = listRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "ListDbId not found: " + listDbId);
+			throw new BrAPIServerDbIdNotFoundException("list", listDbId);
 		}
 
 		return convertToDetails(savedEntity);
@@ -138,7 +142,7 @@ public class ListService {
 
 			savedEntity = listRepository.save(entity);
 		} else {
-			throw new BrAPIServerException(HttpStatus.NOT_FOUND, "ListDbId not found: " + listDbId);
+			throw new BrAPIServerDbIdNotFoundException("list", listDbId);
 		}
 
 		return convertToDetails(savedEntity);

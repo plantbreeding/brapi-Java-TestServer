@@ -14,6 +14,7 @@ public class ServiceBuilder extends ArrayList<Service>{
 	private String path = "";
 	private String base = "";
 	private List<MethodsEnum> methods = new ArrayList<>();
+	private List<VersionsEnum> versions = new ArrayList<>();
 
 	public ServiceBuilder setBase(String base) {
 		this.path = base;
@@ -52,8 +53,15 @@ public class ServiceBuilder extends ArrayList<Service>{
 		return this;
 	}
 
+	public ServiceBuilder versions(VersionsEnum ... versions) {
+		this.versions = Arrays.asList(versions);
+		return this;
+	}
+
 	public ServiceBuilder build() {
-		this.add(buildService(path, methods));
+		if(path != null && !path.isEmpty() && methods != null && !methods.isEmpty()) {
+			this.add(buildService(path, methods));
+		}
 		return this;
 	}
 	public ServiceBuilder withSearch() {
@@ -65,8 +73,8 @@ public class ServiceBuilder extends ArrayList<Service>{
 	public Service buildService(String path, List<MethodsEnum> methods) {
 		Service service = new Service();
 		service.addDataTypesItem(WSMIMEDataTypes.APPLICATION_JSON);
-		service.setMethods(methods);
-		service.addVersionsItem(VersionsEnum._0);
+		service.setMethods(new ArrayList<>(methods));
+		service.setVersions(new ArrayList<>(this.versions));
 		service.setService(path);
 		return service;
 	}

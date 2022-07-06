@@ -4,36 +4,17 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import io.swagger.annotations.ApiModelProperty;
-import io.swagger.model.ExternalReferences;
-import io.swagger.model.germ.GermplasmNewRequestDonors;
-import io.swagger.model.germ.GermplasmStorageTypes;
-import io.swagger.model.germ.GermplasmNewRequestSynonyms;
-import io.swagger.model.germ.GermplasmOrigin;
-import io.swagger.model.germ.TaxonID;
+import io.swagger.model.BrAPIDataModel;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.time.LocalDate;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
 
-/**
- * GermplasmNewRequest
- */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:33:36.513Z[GMT]")
-public class GermplasmNewRequest {
+public class GermplasmNewRequest extends BrAPIDataModel {
 	@JsonProperty("accessionNumber")
 	private String accessionNumber = null;
 
 	@JsonProperty("acquisitionDate")
 	private LocalDate acquisitionDate = null;
-
-	@JsonProperty("additionalInfo")
-	@Valid
-	private Map<String, Object> additionalInfo = null;
 
 	@JsonProperty("biologicalStatusOfAccessionCode")
 	private BiologicalStatusOfAccessionCode biologicalStatusOfAccessionCode = null;
@@ -43,6 +24,9 @@ public class GermplasmNewRequest {
 
 	@JsonProperty("breedingMethodDbId")
 	private String breedingMethodDbId = null;
+	
+	@JsonProperty("breedingMethodName")
+	private String breedingMethodName = null;
 
 	@JsonProperty("collection")
 	private String collection = null;
@@ -60,11 +44,7 @@ public class GermplasmNewRequest {
 	private String documentationURL = null;
 
 	@JsonProperty("donors")
-	@Valid
 	private List<GermplasmNewRequestDonors> donors = null;
-
-	@JsonProperty("externalReferences")
-	private ExternalReferences externalReferences = null;
 
 	@JsonProperty("genus")
 	private String genus = null;
@@ -73,7 +53,6 @@ public class GermplasmNewRequest {
 	private String germplasmName = null;
 
 	@JsonProperty("germplasmOrigin")
-	@Valid
 	private List<GermplasmOrigin> germplasmOrigin = null;
 
 	@JsonProperty("germplasmPUI")
@@ -104,7 +83,6 @@ public class GermplasmNewRequest {
 	private String speciesAuthority = null;
 
 	@JsonProperty("storageTypes")
-	@Valid
 	private List<GermplasmStorageTypes> storageTypes = null;
 
 	@JsonProperty("subtaxa")
@@ -114,25 +92,23 @@ public class GermplasmNewRequest {
 	private String subtaxaAuthority = null;
 
 	@JsonProperty("synonyms")
-	@Valid
 	private List<GermplasmNewRequestSynonyms> synonyms = null;
 
 	@JsonProperty("taxonIds")
-	@Valid
 	private List<TaxonID> taxonIds = null;
+
+	public String getBreedingMethodName() {
+		return breedingMethodName;
+	}
+
+	public void setBreedingMethodName(String breedingMethodName) {
+		this.breedingMethodName = breedingMethodName;
+	}
 
 	public GermplasmNewRequest accessionNumber(String accessionNumber) {
 		this.accessionNumber = accessionNumber;
 		return this;
 	}
-
-	/**
-	 * This is the unique identifier for accessions within a genebank, and is
-	 * assigned when a sample is entered into the genebank collection
-	 * 
-	 * @return accessionNumber
-	 **/
-	@ApiModelProperty(example = "A0000003", value = "This is the unique identifier for accessions within a genebank, and is assigned when a sample is entered into the genebank collection")
 
 	public String getAccessionNumber() {
 		return accessionNumber;
@@ -147,17 +123,6 @@ public class GermplasmNewRequest {
 		return this;
 	}
 
-	/**
-	 * The date this germplasm was acquired by the genebank MCPD (v2.1) (ACQDATE)
-	 * 12. Date on which the accession entered the collection [YYYYMMDD] where YYYY
-	 * is the year, MM is the month and DD is the day. Missing data (MM or DD)
-	 * should be indicated with hyphens or \"00\" [double zero].
-	 * 
-	 * @return acquisitionDate
-	 **/
-	@ApiModelProperty(value = "The date this germplasm was acquired by the genebank   MCPD (v2.1) (ACQDATE) 12. Date on which the accession entered the collection [YYYYMMDD] where YYYY is the year, MM is the month and DD is the day. Missing data (MM or DD) should be indicated with hyphens or \"00\" [double zero].")
-
-	@Valid
 	public LocalDate getAcquisitionDate() {
 		return acquisitionDate;
 	}
@@ -166,58 +131,11 @@ public class GermplasmNewRequest {
 		this.acquisitionDate = acquisitionDate;
 	}
 
-	public GermplasmNewRequest additionalInfo(Map<String, Object> additionalInfo) {
-		this.additionalInfo = additionalInfo;
-		return this;
-	}
-
-	public GermplasmNewRequest putAdditionalInfoItem(String key, String additionalInfoItem) {
-		if (this.additionalInfo == null) {
-			this.additionalInfo = new HashMap<String, Object>();
-		}
-		this.additionalInfo.put(key, additionalInfoItem);
-		return this;
-	}
-
-	/**
-	 * Additional arbitrary info
-	 * 
-	 * @return additionalInfo
-	 **/
-	@ApiModelProperty(value = "Additional arbitrary info")
-
-	public Map<String, Object> getAdditionalInfo() {
-		return additionalInfo;
-	}
-
-	public void setAdditionalInfo(Map<String, Object> additionalInfo) {
-		this.additionalInfo = additionalInfo;
-	}
-
 	public GermplasmNewRequest biologicalStatusOfAccessionCode(
 			BiologicalStatusOfAccessionCode biologicalStatusOfAccessionCode) {
 		this.biologicalStatusOfAccessionCode = biologicalStatusOfAccessionCode;
 		return this;
 	}
-
-	/**
-	 * MCPD (v2.1) (SAMPSTAT) 19. The coding scheme proposed can be used at 3
-	 * different levels of detail: either by using the general codes such as 100,
-	 * 200, 300, 400, or by using the more specific codes such as 110, 120, etc.
-	 * 100) Wild 110) Natural 120) Semi-natural/wild 130) Semi-natural/sown 200)
-	 * Weedy 300) Traditional cultivar/landrace 400) Breeding/research material 410)
-	 * Breeders line 411) Synthetic population 412) Hybrid 413) Founder stock/base
-	 * population 414) Inbred line (parent of hybrid cultivar) 415) Segregating
-	 * population 416) Clonal selection 420) Genetic stock 421) Mutant (e.g.
-	 * induced/insertion mutants, tilling populations) 422) Cytogenetic stocks (e.g.
-	 * chromosome addition/substitution, aneuploids, amphiploids) 423) Other genetic
-	 * stocks (e.g. mapping populations) 500) Advanced or improved cultivar
-	 * (conventional breeding methods) 600) GMO (by genetic engineering) 999) Other
-	 * (Elaborate in REMARKS field)
-	 * 
-	 * @return biologicalStatusOfAccessionCode
-	 **/
-	@ApiModelProperty(example = "420", value = "MCPD (v2.1) (SAMPSTAT) 19. The coding scheme proposed can be used at 3 different levels of detail: either by using the general codes such as 100, 200, 300, 400, or by using the more specific codes such as 110, 120, etc.   100) Wild  110) Natural  120) Semi-natural/wild  130) Semi-natural/sown  200) Weedy  300) Traditional cultivar/landrace  400) Breeding/research material  410) Breeders line  411) Synthetic population  412) Hybrid  413) Founder stock/base population  414) Inbred line (parent of hybrid cultivar)  415) Segregating population  416) Clonal selection  420) Genetic stock  421) Mutant (e.g. induced/insertion mutants, tilling populations)  422) Cytogenetic stocks (e.g. chromosome addition/substitution, aneuploids,  amphiploids)  423) Other genetic stocks (e.g. mapping populations)  500) Advanced or improved cultivar (conventional breeding methods)  600) GMO (by genetic engineering)  999) Other (Elaborate in REMARKS field)")
 
 	public BiologicalStatusOfAccessionCode getBiologicalStatusOfAccessionCode() {
 		return biologicalStatusOfAccessionCode;
@@ -232,13 +150,6 @@ public class GermplasmNewRequest {
 		return this;
 	}
 
-	/**
-	 * Supplemental text description for 'biologicalStatusOfAccessionCode'
-	 * 
-	 * @return biologicalStatusOfAccessionDescription
-	 **/
-	@ApiModelProperty(example = "Genetic stock", value = "Supplemental text description for 'biologicalStatusOfAccessionCode'")
-
 	public String getBiologicalStatusOfAccessionDescription() {
 		return biologicalStatusOfAccessionDescription;
 	}
@@ -252,13 +163,6 @@ public class GermplasmNewRequest {
 		return this;
 	}
 
-	/**
-	 * The unique identifier for the breeding method used to create this germplasm
-	 * 
-	 * @return breedingMethodDbId
-	 **/
-	@ApiModelProperty(example = "ffcce7ef", value = "The unique identifier for the breeding method used to create this germplasm")
-
 	public String getBreedingMethodDbId() {
 		return breedingMethodDbId;
 	}
@@ -271,13 +175,6 @@ public class GermplasmNewRequest {
 		this.collection = collection;
 		return this;
 	}
-
-	/**
-	 * A specific panel/collection/population name this germplasm belongs to.
-	 * 
-	 * @return collection
-	 **/
-	@ApiModelProperty(example = "Rice Diversity Panel 1 (RDP1)", value = "A specific panel/collection/population name this germplasm belongs to.")
 
 	public String getCollection() {
 		return collection;
@@ -305,18 +202,6 @@ public class GermplasmNewRequest {
 		return this;
 	}
 
-	/**
-	 * 3-letter ISO 3166-1 code of the country in which the sample was originally
-	 * collected MCPD (v2.1) (ORIGCTY) 13. 3-letter ISO 3166-1 code of the country
-	 * in which the sample was originally collected (e.g. landrace, crop wild
-	 * relative, farmers variety), bred or selected (breeding lines, GMOs,
-	 * segregating populations, hybrids, modern cultivars, etc.). Note- Descriptors
-	 * 14 to 16 below should be completed accordingly only if it was \"collected\".
-	 * 
-	 * @return countryOfOriginCode
-	 **/
-	@ApiModelProperty(example = "BES", value = "3-letter ISO 3166-1 code of the country in which the sample was originally collected   MCPD (v2.1) (ORIGCTY) 13. 3-letter ISO 3166-1 code of the country in which the sample was originally collected (e.g. landrace, crop wild relative, farmers variety), bred or selected (breeding lines, GMOs, segregating populations, hybrids, modern cultivars, etc.). Note- Descriptors 14 to 16 below should be completed accordingly only if it was \"collected\".")
-
 	public String getCountryOfOriginCode() {
 		return countryOfOriginCode;
 	}
@@ -330,13 +215,6 @@ public class GermplasmNewRequest {
 		return this;
 	}
 
-	/**
-	 * Human readable name used for display purposes
-	 * 
-	 * @return defaultDisplayName
-	 **/
-	@ApiModelProperty(example = "A0000003", value = "Human readable name used for display purposes")
-
 	public String getDefaultDisplayName() {
 		return defaultDisplayName;
 	}
@@ -349,13 +227,6 @@ public class GermplasmNewRequest {
 		this.documentationURL = documentationURL;
 		return this;
 	}
-
-	/**
-	 * A URL to the human readable documentation of this object
-	 * 
-	 * @return documentationURL
-	 **/
-	@ApiModelProperty(example = "https://wiki.brapi.org", value = "A URL to the human readable documentation of this object")
 
 	public String getDocumentationURL() {
 		return documentationURL;
@@ -378,13 +249,6 @@ public class GermplasmNewRequest {
 		return this;
 	}
 
-	/**
-	 * List of donor institutes
-	 * 
-	 * @return donors
-	 **/
-	@ApiModelProperty(value = "List of donor institutes")
-	@Valid
 	public List<GermplasmNewRequestDonors> getDonors() {
 		return donors;
 	}
@@ -393,41 +257,10 @@ public class GermplasmNewRequest {
 		this.donors = donors;
 	}
 
-	public GermplasmNewRequest externalReferences(ExternalReferences externalReferences) {
-		this.externalReferences = externalReferences;
-		return this;
-	}
-
-	/**
-	 * Get externalReferences
-	 * 
-	 * @return externalReferences
-	 **/
-	@ApiModelProperty(value = "")
-
-	@Valid
-	public ExternalReferences getExternalReferences() {
-		return externalReferences;
-	}
-
-	public void setExternalReferences(ExternalReferences externalReferences) {
-		this.externalReferences = externalReferences;
-	}
-
 	public GermplasmNewRequest genus(String genus) {
 		this.genus = genus;
 		return this;
 	}
-
-	/**
-	 * Genus name for taxon. Initial uppercase letter required. MCPD (v2.1) (GENUS)
-	 * 5. Genus name for taxon. Initial uppercase letter required. MIAPPE V1.1
-	 * (DM-43) Genus - Genus name for the organism under study, according to
-	 * standard scientific nomenclature.
-	 * 
-	 * @return genus
-	 **/
-	@ApiModelProperty(example = "Aspergillus", value = "Genus name for taxon. Initial uppercase letter required.  MCPD (v2.1) (GENUS) 5. Genus name for taxon. Initial uppercase letter required.  MIAPPE V1.1 (DM-43) Genus - Genus name for the organism under study, according to standard scientific nomenclature.")
 
 	public String getGenus() {
 		return genus;
@@ -463,15 +296,6 @@ public class GermplasmNewRequest {
 		return this;
 	}
 
-	/**
-	 * Information for material (orchard, natural sites, ...). Geographic
-	 * identification of the plants from which seeds or cutting have been taken to
-	 * produce that germplasm.
-	 * 
-	 * @return germplasmOrigin
-	 **/
-	@ApiModelProperty(value = "Information for material (orchard, natural sites, ...). Geographic identification of the plants from which seeds or cutting have been taken to produce that germplasm.")
-	@Valid
 	public List<GermplasmOrigin> getGermplasmOrigin() {
 		return germplasmOrigin;
 	}
@@ -498,15 +322,6 @@ public class GermplasmNewRequest {
 		return this;
 	}
 
-	/**
-	 * Description of any process or treatment applied uniformly to the germplasm,
-	 * prior to the study itself. Can be provided as free text or as an accession
-	 * number from a suitable controlled vocabulary.
-	 * 
-	 * @return germplasmPreprocessing
-	 **/
-	@ApiModelProperty(example = "EO:0007210; transplanted from study 2351 observation unit ID: pot:894", value = "Description of any process or treatment applied uniformly to the germplasm, prior to the study itself. Can be provided as free text or as an accession number from a suitable controlled vocabulary.")
-
 	public String getGermplasmPreprocessing() {
 		return germplasmPreprocessing;
 	}
@@ -519,19 +334,6 @@ public class GermplasmNewRequest {
 		this.instituteCode = instituteCode;
 		return this;
 	}
-
-	/**
-	 * The code for the Institute that has bred the material. MCPD (v2.1) (INSTCODE)
-	 * 1. FAO WIEWS code of the institute where the accession is maintained. The
-	 * codes consist of the 3-letter ISO 3166 country code of the country where the
-	 * institute is located plus a number (e.g. PER001). The current set of
-	 * institute codes is available from http://www.fao.org/wiews. For those
-	 * institutes not yet having an FAO Code, or for those with \"obsolete\" codes,
-	 * see \"Common formatting rules (v)\".
-	 * 
-	 * @return instituteCode
-	 **/
-	@ApiModelProperty(example = "PER001", value = "The code for the Institute that has bred the material.   MCPD (v2.1) (INSTCODE) 1. FAO WIEWS code of the institute where the accession is maintained. The codes consist of the 3-letter ISO 3166 country code of the country where the institute is located plus a number (e.g. PER001). The current set of institute codes is available from http://www.fao.org/wiews. For those institutes not yet having an FAO Code, or for those with \"obsolete\" codes, see \"Common formatting rules (v)\".")
 
 	public String getInstituteCode() {
 		return instituteCode;
@@ -546,13 +348,6 @@ public class GermplasmNewRequest {
 		return this;
 	}
 
-	/**
-	 * The name of the institution which bred the material
-	 * 
-	 * @return instituteName
-	 **/
-	@ApiModelProperty(example = "The BrAPI Institute", value = "The name of the institution which bred the material")
-
 	public String getInstituteName() {
 		return instituteName;
 	}
@@ -565,13 +360,6 @@ public class GermplasmNewRequest {
 		this.pedigree = pedigree;
 		return this;
 	}
-
-	/**
-	 * The cross name and optional selection history.
-	 * 
-	 * @return pedigree
-	 **/
-	@ApiModelProperty(example = "A0000001/A0000002", value = "The cross name and optional selection history.")
 
 	public String getPedigree() {
 		return pedigree;
@@ -586,13 +374,6 @@ public class GermplasmNewRequest {
 		return this;
 	}
 
-	/**
-	 * The source of the seed
-	 * 
-	 * @return seedSource
-	 **/
-	@ApiModelProperty(example = "A0000001/A0000002", value = "The source of the seed ")
-
 	public String getSeedSource() {
 		return seedSource;
 	}
@@ -605,13 +386,6 @@ public class GermplasmNewRequest {
 		this.seedSourceDescription = seedSourceDescription;
 		return this;
 	}
-
-	/**
-	 * Description of the material source
-	 * 
-	 * @return seedSourceDescription
-	 **/
-	@ApiModelProperty(example = "Branches were collected from a 10-year-old tree growing in a progeny trial established in a loamy brown earth soil.", value = "Description of the material source")
 
 	public String getSeedSourceDescription() {
 		return seedSourceDescription;
@@ -626,17 +400,6 @@ public class GermplasmNewRequest {
 		return this;
 	}
 
-	/**
-	 * Specific epithet portion of the scientific name in lowercase letters. MCPD
-	 * (v2.1) (SPECIES) 6. Specific epithet portion of the scientific name in
-	 * lowercase letters. Only the following abbreviation is allowed: \"sp.\" MIAPPE
-	 * V1.1 (DM-44) Species - Species name (formally: specific epithet) for the
-	 * organism under study, according to standard scientific nomenclature.
-	 * 
-	 * @return species
-	 **/
-	@ApiModelProperty(example = "fructus", value = "Specific epithet portion of the scientific name in lowercase letters.  MCPD (v2.1) (SPECIES) 6. Specific epithet portion of the scientific name in lowercase letters. Only the following abbreviation is allowed: \"sp.\"   MIAPPE V1.1 (DM-44) Species - Species name (formally: specific epithet) for the organism under study, according to standard scientific nomenclature.")
-
 	public String getSpecies() {
 		return species;
 	}
@@ -649,15 +412,6 @@ public class GermplasmNewRequest {
 		this.speciesAuthority = speciesAuthority;
 		return this;
 	}
-
-	/**
-	 * The authority organization responsible for tracking and maintaining the
-	 * species name MCPD (v2.1) (SPAUTHOR) 7. Provide the authority for the species
-	 * name.
-	 * 
-	 * @return speciesAuthority
-	 **/
-	@ApiModelProperty(example = "Smith, 1822", value = "The authority organization responsible for tracking and maintaining the species name   MCPD (v2.1) (SPAUTHOR) 7. Provide the authority for the species name.")
 
 	public String getSpeciesAuthority() {
 		return speciesAuthority;
@@ -680,13 +434,6 @@ public class GermplasmNewRequest {
 		return this;
 	}
 
-	/**
-	 * The type of storage this germplasm is kept in at a genebank.
-	 * 
-	 * @return storageTypes
-	 **/
-	@ApiModelProperty(example = "[{\"code\":\"20\",\"description\":\"Field collection\"},{\"code\":\"11\",\"description\":\"Short term\"}]", value = "The type of storage this germplasm is kept in at a genebank.")
-	@Valid
 	public List<GermplasmStorageTypes> getStorageTypes() {
 		return storageTypes;
 	}
@@ -700,25 +447,6 @@ public class GermplasmNewRequest {
 		return this;
 	}
 
-	/**
-	 * Subtaxon can be used to store any additional taxonomic identifier. MCPD
-	 * (v2.1) (SUBTAXA) 8. Subtaxon can be used to store any additional taxonomic
-	 * identifier. The following abbreviations are allowed: \"subsp.\" (for
-	 * subspecies); \"convar.\" (for convariety); \"var.\" (for variety); \"f.\"
-	 * (for form); \"Group\" (for \"cultivar group\"). MIAPPE V1.1 (DM-44)
-	 * Infraspecific name - Name of any subtaxa level, including variety, crossing
-	 * name, etc. It can be used to store any additional taxonomic identifier.
-	 * Either free text description or key-value pair list format (the key is the
-	 * name of the rank and the value is the value of the rank). Ranks can be among
-	 * the following terms: subspecies, cultivar, variety, subvariety, convariety,
-	 * group, subgroup, hybrid, line, form, subform. For MCPD compliance, the
-	 * following abbreviations are allowed: subsp. (subspecies); convar.
-	 * (convariety); var. (variety); f. (form); Group (cultivar group).
-	 * 
-	 * @return subtaxa
-	 **/
-	@ApiModelProperty(example = "Aspergillus fructus A", value = "Subtaxon can be used to store any additional taxonomic identifier.  MCPD (v2.1) (SUBTAXA) 8. Subtaxon can be used to store any additional taxonomic identifier. The following abbreviations are allowed: \"subsp.\" (for subspecies); \"convar.\" (for convariety); \"var.\" (for variety); \"f.\" (for form); \"Group\" (for \"cultivar group\").  MIAPPE V1.1 (DM-44) Infraspecific name - Name of any subtaxa level, including variety, crossing name, etc. It can be used to store any additional taxonomic identifier. Either free text description or key-value pair list format (the key is the name of the rank and the value is the value of  the rank). Ranks can be among the following terms: subspecies, cultivar, variety, subvariety, convariety, group, subgroup, hybrid, line, form, subform. For MCPD compliance, the following abbreviations are allowed: subsp. (subspecies); convar. (convariety); var. (variety); f. (form); Group (cultivar group).")
-
 	public String getSubtaxa() {
 		return subtaxa;
 	}
@@ -731,15 +459,6 @@ public class GermplasmNewRequest {
 		this.subtaxaAuthority = subtaxaAuthority;
 		return this;
 	}
-
-	/**
-	 * The authority organization responsible for tracking and maintaining the
-	 * subtaxon information MCPD (v2.1) (SUBTAUTHOR) 9. Provide the subtaxon
-	 * authority at the most detailed taxonomic level.
-	 * 
-	 * @return subtaxaAuthority
-	 **/
-	@ApiModelProperty(example = "Smith, 1822", value = "The authority organization responsible for tracking and maintaining the subtaxon information  MCPD (v2.1) (SUBTAUTHOR) 9. Provide the subtaxon authority at the most detailed taxonomic level.")
 
 	public String getSubtaxaAuthority() {
 		return subtaxaAuthority;
@@ -762,13 +481,6 @@ public class GermplasmNewRequest {
 		return this;
 	}
 
-	/**
-	 * List of alternative names or IDs used to reference this germplasm
-	 * 
-	 * @return synonyms
-	 **/
-	@ApiModelProperty(value = "List of alternative names or IDs used to reference this germplasm")
-	@Valid
 	public List<GermplasmNewRequestSynonyms> getSynonyms() {
 		return synonyms;
 	}
@@ -790,17 +502,6 @@ public class GermplasmNewRequest {
 		return this;
 	}
 
-	/**
-	 * The list of IDs for this SPECIES from different sources. If present, NCBI
-	 * Taxon should be always listed as \"ncbiTaxon\" preferably with a purl. The
-	 * rank of this ID should be species. MIAPPE V1.1 (DM-42) Organism - An
-	 * identifier for the organism at the species level. Use of the NCBI taxon ID is
-	 * recommended.
-	 * 
-	 * @return taxonIds
-	 **/
-	@ApiModelProperty(value = "The list of IDs for this SPECIES from different sources. If present, NCBI Taxon should be always listed as \"ncbiTaxon\" preferably with a purl. The rank of this ID should be species.  MIAPPE V1.1 (DM-42) Organism - An identifier for the organism at the species level. Use of the NCBI taxon ID is recommended.")
-	@Valid
 	public List<TaxonID> getTaxonIds() {
 		return taxonIds;
 	}
@@ -903,10 +604,6 @@ public class GermplasmNewRequest {
 		return sb.toString();
 	}
 
-	/**
-	 * Convert the given object to string with each line indented by 4 spaces
-	 * (except the first line).
-	 */
 	private String toIndentedString(java.lang.Object o) {
 		if (o == null) {
 			return "null";

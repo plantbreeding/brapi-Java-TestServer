@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -46,23 +46,30 @@ public class ScalesApiController extends BrAPIController implements ScalesApi {
 	public ResponseEntity<ScaleListResponse> scalesGet(
 			@Valid @RequestParam(value = "scaleDbId", required = false) String scaleDbId,
 			@Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
+			@Valid @RequestParam(value = "ontologyDbId", required = false) String ontologyDbId,
+			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
 			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
 			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
 			@Valid @RequestParam(value = "page", required = false) Integer page,
 			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<Scale> data = scaleService.findScales(scaleDbId, observationVariableDbId, externalReferenceID, externalReferenceSource, metadata);
+		List<Scale> data = scaleService.findScales(scaleDbId, observationVariableDbId, ontologyDbId, commonCropName,
+				programDbId, externalReferenceId, externalReferenceID, externalReferenceSource, metadata);
 		return responseOK(new ScaleListResponse(), new ScaleListResponseResult(), data, metadata);
 	}
 
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ScaleListResponse> scalesPost(@Valid @RequestBody List<ScaleBaseClass> body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -73,7 +80,8 @@ public class ScalesApiController extends BrAPIController implements ScalesApi {
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ScaleSingleResponse> scalesScaleDbIdGet(@PathVariable("scaleDbId") String scaleDbId,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
@@ -85,7 +93,8 @@ public class ScalesApiController extends BrAPIController implements ScalesApi {
 	@Override
 	public ResponseEntity<ScaleSingleResponse> scalesScaleDbIdPut(@PathVariable("scaleDbId") String scaleDbId,
 			@Valid @RequestBody ScaleBaseClass body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
 		validateAcceptHeader(request);
