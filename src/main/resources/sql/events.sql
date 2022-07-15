@@ -1,4 +1,4 @@
-INSERT INTO event (id, event_description, event_type, event_type_db_id, study_id) VALUES('event1', 'Normal field watering', 'Watering', '4e7d691e', 'study1');
+INSERT INTO event (auth_user_id, id, event_description, event_type, event_type_db_id, study_id) VALUES('anonymousUser', 'event1', 'Normal field watering', 'Watering', '4e7d691e', 'study1');
 INSERT INTO event_entity_dates (event_entity_id, dates) VALUES('event1', '2017-06-01');
 INSERT INTO event_entity_dates (event_entity_id, dates) VALUES('event1', '2017-06-03');
 INSERT INTO event_entity_dates (event_entity_id, dates) VALUES('event1', '2017-06-05');

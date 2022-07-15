@@ -6,10 +6,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 
 @Entity
 @Table(name="reference_bases")
-public class ReferenceBasesPageEntity extends BrAPIBaseEntity {
+public class ReferenceBasesPageEntity extends BrAPIPrimaryEntity {
 	@ManyToOne
 	private ReferenceEntity reference;
 	@Column(length = 2048)

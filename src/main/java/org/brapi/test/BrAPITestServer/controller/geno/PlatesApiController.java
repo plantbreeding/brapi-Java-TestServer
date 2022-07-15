@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
@@ -51,41 +50,43 @@ public class PlatesApiController extends BrAPIController implements PlatesApi {
 	@CrossOrigin
 	@Override
 	public ResponseEntity<PlateListResponse> platesGet(
-			@Valid @RequestParam(value = "sampleDbId", required = false) String sampleDbId,
-			@Valid @RequestParam(value = "sampleName", required = false) String sampleName,
-			@Valid @RequestParam(value = "sampleGroupDbId", required = false) String sampleGroupDbId,
-			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
-			@Valid @RequestParam(value = "plateDbId", required = false) String plateDbId,
-			@Valid @RequestParam(value = "plateName", required = false) String plateName,
-			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
-			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
-			@Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
-			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
-			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
-			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
-			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "sampleDbId", required = false) String sampleDbId,
+			@RequestParam(value = "sampleName", required = false) String sampleName,
+			@RequestParam(value = "sampleGroupDbId", required = false) String sampleGroupDbId,
+			@RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
+			@RequestParam(value = "plateDbId", required = false) String plateDbId,
+			@RequestParam(value = "plateName", required = false) String plateName,
+			@RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
+			@RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@RequestParam(value = "trialDbId", required = false) String trialDbId,
+			@RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@RequestParam(value = "programDbId", required = false) String programDbId,
+			@RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<Plate> data = plateService.findPlates(sampleDbId, sampleName, sampleGroupDbId, observationUnitDbId, plateDbId,
-				plateName, germplasmDbId, studyDbId, trialDbId, commonCropName, programDbId, externalReferenceId,
-				externalReferenceID, externalReferenceSource, metadata);
+		List<Plate> data = plateService.findPlates(sampleDbId, sampleName, sampleGroupDbId, observationUnitDbId,
+				plateDbId, plateName, germplasmDbId, studyDbId, trialDbId, commonCropName, programDbId,
+				externalReferenceId, externalReferenceID, externalReferenceSource, metadata);
 		return responseOK(new PlateListResponse(), new PlateListResponseResult(), data, metadata);
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<PlateListResponse> platesPost(@Valid @RequestBody List<PlateNewRequest> body,
+	public ResponseEntity<PlateListResponse> platesPost(@RequestBody List<PlateNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		List<Plate> data = plateService.savePlates(body);
 		return responseOK(new PlateListResponse(), new PlateListResponseResult(), data);
@@ -93,11 +94,12 @@ public class PlatesApiController extends BrAPIController implements PlatesApi {
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<PlateListResponse> platesPut(@Valid @RequestBody Map<String, PlateNewRequest> body,
+	public ResponseEntity<PlateListResponse> platesPut(@RequestBody Map<String, PlateNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		List<Plate> data = plateService.updatePlates(body);
 		return responseOK(new PlateListResponse(), new PlateListResponseResult(), data);
@@ -110,6 +112,7 @@ public class PlatesApiController extends BrAPIController implements PlatesApi {
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Plate data = plateService.getPlate(plateDbId);
 		return responseOK(new PlateSingleResponse(), data);
@@ -117,11 +120,12 @@ public class PlatesApiController extends BrAPIController implements PlatesApi {
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<? extends BrAPIResponse> searchPlatesPost(@Valid @RequestBody PlateSearchRequest body,
+	public ResponseEntity<? extends BrAPIResponse> searchPlatesPost(@RequestBody PlateSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
 
@@ -138,12 +142,13 @@ public class PlatesApiController extends BrAPIController implements PlatesApi {
 	@Override
 	public ResponseEntity<? extends BrAPIResponse> searchPlatesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		SearchRequestEntity request = searchService.findById(searchResultsDbId);

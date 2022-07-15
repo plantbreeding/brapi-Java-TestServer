@@ -62,6 +62,7 @@ public class ProgramsApiController extends BrAPIController implements ProgramsAp
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<Program> data = programService.findPrograms(commonCropName, abbreviation, programName, programDbId, programType, externalReferenceId, externalReferenceID, externalReferenceSource, metadata);
@@ -75,6 +76,7 @@ public class ProgramsApiController extends BrAPIController implements ProgramsAp
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		List<Program> data = programService.savePrograms(body);
 		return responseOK(new ProgramListResponse(), new ProgramListResponseResult(), data);
@@ -87,6 +89,7 @@ public class ProgramsApiController extends BrAPIController implements ProgramsAp
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Program data = programService.getProgram(programDbId);
 		return responseOK(new ProgramSingleResponse(), data);
@@ -100,6 +103,7 @@ public class ProgramsApiController extends BrAPIController implements ProgramsAp
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		Program data = programService.updateProgram(programDbId, body);
 		return responseOK(new ProgramSingleResponse(), data);
@@ -112,6 +116,7 @@ public class ProgramsApiController extends BrAPIController implements ProgramsAp
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
 
@@ -134,6 +139,7 @@ public class ProgramsApiController extends BrAPIController implements ProgramsAp
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		SearchRequestEntity request = searchService.findById(searchResultsDbId);

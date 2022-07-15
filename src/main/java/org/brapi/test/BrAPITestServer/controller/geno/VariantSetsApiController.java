@@ -16,11 +16,6 @@ import io.swagger.model.geno.VariantSetsListResponseResult;
 import io.swagger.model.geno.VariantSetsSearchRequest;
 import io.swagger.model.geno.VariantsListResponse;
 import io.swagger.model.geno.VariantsListResponseResult;
-import io.swagger.model.germ.Germplasm;
-import io.swagger.model.germ.GermplasmListResponse;
-import io.swagger.model.germ.GermplasmListResponseResult;
-import io.swagger.model.germ.GermplasmSearchRequest;
-import io.swagger.annotations.ApiParam;
 import io.swagger.api.geno.VariantSetsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -35,7 +30,6 @@ import org.brapi.test.BrAPITestServer.service.geno.VariantSetService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -43,7 +37,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -79,6 +72,7 @@ public class VariantSetsApiController extends BrAPIController implements Variant
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		VariantSet data = variantSetService.extractVariantSet(body);
 		return responseOK(new VariantSetResponse(), data);
@@ -87,22 +81,23 @@ public class VariantSetsApiController extends BrAPIController implements Variant
 	@CrossOrigin
 	@Override
 	public ResponseEntity<VariantSetsListResponse> variantsetsGet(
-			@Valid @RequestParam(value = "variantSetDbId", required = false) String variantSetDbId,
-			@Valid @RequestParam(value = "variantDbId", required = false) String variantDbId,
-			@Valid @RequestParam(value = "callSetDbId", required = false) String callSetDbId,
-			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
-			@Valid @RequestParam(value = "studyName", required = false) String studyName,
-			@Valid @RequestParam(value = "referenceSetDbId", required = false) String referenceSetDbId,
-			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
-			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
-			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
-			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "variantSetDbId", required = false) String variantSetDbId,
+			@RequestParam(value = "variantDbId", required = false) String variantDbId,
+			@RequestParam(value = "callSetDbId", required = false) String callSetDbId,
+			@RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@RequestParam(value = "studyName", required = false) String studyName,
+			@RequestParam(value = "referenceSetDbId", required = false) String referenceSetDbId,
+			@RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@RequestParam(value = "programDbId", required = false) String programDbId,
+			@RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<VariantSet> data = variantSetService.findVariantSets(variantSetDbId, variantDbId, callSetDbId, studyDbId,
@@ -115,16 +110,17 @@ public class VariantSetsApiController extends BrAPIController implements Variant
 	@Override
 	public ResponseEntity<CallsListResponse> variantsetsVariantSetDbIdCallsGet(
 			@PathVariable("variantSetDbId") String variantSetDbId,
-			@Valid @RequestParam(value = "expandHomozygotes", required = false) Boolean expandHomozygotes,
-			@Valid @RequestParam(value = "unknownString", required = false) String unknownString,
-			@Valid @RequestParam(value = "sepPhased", required = false) String sepPhased,
-			@Valid @RequestParam(value = "sepUnphased", required = false) String sepUnphased,
-			@Valid @RequestParam(value = "pageToken", required = false) String pageToken,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "expandHomozygotes", required = false) Boolean expandHomozygotes,
+			@RequestParam(value = "unknownString", required = false) String unknownString,
+			@RequestParam(value = "sepPhased", required = false) String sepPhased,
+			@RequestParam(value = "sepUnphased", required = false) String sepUnphased,
+			@RequestParam(value = "pageToken", required = false) String pageToken,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(pageToken, pageSize);
 		CallsListResponseResult data = callService.findCalls(null, null, variantSetDbId, expandHomozygotes,
@@ -136,14 +132,15 @@ public class VariantSetsApiController extends BrAPIController implements Variant
 	@Override
 	public ResponseEntity<CallSetsListResponse> variantsetsVariantSetDbIdCallsetsGet(
 			@PathVariable("variantSetDbId") String variantSetDbId,
-			@Valid @RequestParam(value = "callSetDbId", required = false) String callSetDbId,
-			@Valid @RequestParam(value = "callSetName", required = false) String callSetName,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "callSetDbId", required = false) String callSetDbId,
+			@RequestParam(value = "callSetName", required = false) String callSetName,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<CallSet> data = callSetService.findCallSets(callSetDbId, callSetName, variantSetDbId, null, null, null,
@@ -159,6 +156,7 @@ public class VariantSetsApiController extends BrAPIController implements Variant
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		VariantSet data = variantSetService.getVariantSet(variantSetDbId);
 		return responseOK(new VariantSetResponse(), data);
@@ -168,13 +166,14 @@ public class VariantSetsApiController extends BrAPIController implements Variant
 	@Override
 	public ResponseEntity<VariantsListResponse> variantsetsVariantSetDbIdVariantsGet(
 			@PathVariable("variantSetDbId") String variantSetDbId,
-			@Valid @RequestParam(value = "variantDbId", required = false) String variantDbId,
-			@Valid @RequestParam(value = "pageToken", required = false) String pageToken,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "variantDbId", required = false) String variantDbId,
+			@RequestParam(value = "pageToken", required = false) String pageToken,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(pageToken, pageSize);
 		List<Variant> data = variantService.findVariants(variantDbId, variantSetDbId, null, null, null, null, metadata);
@@ -183,12 +182,12 @@ public class VariantSetsApiController extends BrAPIController implements Variant
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<? extends BrAPIResponse> searchVariantsetsPost(
-			@Valid @RequestBody VariantSetsSearchRequest body,
+	public ResponseEntity<? extends BrAPIResponse> searchVariantsetsPost(@RequestBody VariantSetsSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
 
@@ -205,12 +204,13 @@ public class VariantSetsApiController extends BrAPIController implements Variant
 	@Override
 	public ResponseEntity<? extends BrAPIResponse> searchVariantsetsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		SearchRequestEntity request = searchService.findById(searchResultsDbId);

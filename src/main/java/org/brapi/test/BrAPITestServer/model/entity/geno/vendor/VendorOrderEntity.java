@@ -13,13 +13,14 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 
 import io.swagger.model.geno.VendorOrderStatusResponseResult.StatusEnum;
 import io.swagger.model.geno.VendorPlateSubmissionRequest.SampleTypeEnum;
 
 @Entity
 @Table(name="vendor_order")
-public class VendorOrderEntity extends BrAPIBaseEntity{
+public class VendorOrderEntity extends BrAPIPrimaryEntity{
 	@Column
     private String clientPlateDbId;
 	@Column

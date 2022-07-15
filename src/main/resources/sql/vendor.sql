@@ -1,10 +1,10 @@
 
-INSERT INTO vendor_order(id, client_plate_barcode, client_plate_db_id, sample_type, status, status_time_stamp)	VALUES ('vendor_order1', '123456', '123456', 0, 0, '2018-01-01 00:00:00');
-INSERT INTO plate_submission (id, client_id, number_of_samples, sample_type, order_id) VALUES('plate_submission1', '123456', 16, 0, 'vendor_order1');
+INSERT INTO vendor_order(auth_user_id, id, client_plate_barcode, client_plate_db_id, sample_type, status, status_time_stamp)	VALUES ('anonymousUser', 'vendor_order1', '123456', '123456', 0, 0, '2018-01-01 00:00:00');
+INSERT INTO plate_submission (auth_user_id, id, client_id, number_of_samples, sample_type, order_id) VALUES('anonymousUser', 'plate_submission1', '123456', 16, 0, 'vendor_order1');
 UPDATE plate SET submission_id = 'plate_submission1' WHERE id = 'plate1';
 INSERT INTO vendor_order_entity_service_ids(vendor_order_entity_id, service_ids) VALUES ('vendor_order1', 'vendor_spec_platform1');
 
-INSERT INTO vendor_spec (id, contact_name, vendor_address, vendor_city, vendor_country, vendor_description, vendor_email, vendor_name, vendor_phone, vendorurl) VALUES('vendor_spec1', 'Bob Smith', '123 Street Ave', 'Townsville', 'USA', 'Example vendor used for testing', 'bsmith@brapi.org', 'Bobs Vendor', '+12345678910', 'https://brapi.org');
+INSERT INTO vendor_spec (auth_user_id, id, contact_name, vendor_address, vendor_city, vendor_country, vendor_description, vendor_email, vendor_name, vendor_phone, vendorurl) VALUES('anonymousUser', 'vendor_spec1', 'Bob Smith', '123 Street Ave', 'Townsville', 'USA', 'Example vendor used for testing', 'bsmith@brapi.org', 'Bobs Vendor', '+12345678910', 'https://brapi.org');
 
 INSERT INTO vendor_spec_requirement (id, input_format_details, max_concentration, max_volume, min_concentration, min_sample_number, min_volume, plate_orientation, sample_type_details) VALUES('vendor_spec_requirement1', 'https://brapi.org', '1000ppm', '50ml', '20ppm', '1', '2ml', 'rowFirst', 'https://brapi.org');
 INSERT INTO vendor_spec_input_format (id, input_format, vendor_spec_standard_requirement_db_id) VALUES('vsf1', 'Plate_96', 'vendor_spec_requirement1');

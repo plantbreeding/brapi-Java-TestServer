@@ -2,10 +2,6 @@ package org.brapi.test.BrAPITestServer.controller.pheno;
 
 import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
-import io.swagger.model.germ.Germplasm;
-import io.swagger.model.germ.GermplasmListResponse;
-import io.swagger.model.germ.GermplasmListResponseResult;
-import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.model.pheno.ObservationUnitListResponse;
 import io.swagger.model.pheno.ObservationUnitNewRequest;
 import io.swagger.model.pheno.ObservationUnitSearchRequest;
@@ -17,7 +13,6 @@ import io.swagger.model.pheno.ObservationLevelListResponseResult;
 import io.swagger.model.pheno.ObservationUnit;
 import io.swagger.model.pheno.ObservationUnitHierarchyLevel;
 import io.swagger.model.pheno.ObservationUnitListResponseResult;
-import io.swagger.annotations.ApiParam;
 import io.swagger.api.pheno.ObservationLevelsApi;
 import io.swagger.api.pheno.ObservationUnitsApi;
 
@@ -38,7 +33,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 
 import java.util.List;
@@ -66,32 +60,33 @@ public class ObservationUnitsApiController extends BrAPIController
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ObservationUnitListResponse> observationunitsGet(
-			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
-			@Valid @RequestParam(value = "observationUnitName", required = false) String observationUnitName,
-			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
-			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
-			@Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
-			@Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
-			@Valid @RequestParam(value = "seasonDbId", required = false) String seasonDbId,
-			@Valid @RequestParam(value = "includeObservations", required = false) Boolean includeObservations,
-			@Valid @RequestParam(value = "observationUnitLevelName", required = false) String observationUnitLevelName,
-			@Valid @RequestParam(value = "observationUnitLevelOrder", required = false) String observationUnitLevelOrder,
-			@Valid @RequestParam(value = "observationUnitLevelCode", required = false) String observationUnitLevelCode,
-			@Valid @RequestParam(value = "observationUnitLevelRelationshipName", required = false) String observationUnitLevelRelationshipName,
-			@Valid @RequestParam(value = "observationUnitLevelRelationshipOrder", required = false) String observationUnitLevelRelationshipOrder,
-			@Valid @RequestParam(value = "observationUnitLevelRelationshipCode", required = false) String observationUnitLevelRelationshipCode,
-			@Valid @RequestParam(value = "observationUnitLevelRelationshipDbId", required = false) String observationUnitLevelRelationshipDbId,
-			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
-			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
-			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
-			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
+			@RequestParam(value = "observationUnitName", required = false) String observationUnitName,
+			@RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
+			@RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@RequestParam(value = "locationDbId", required = false) String locationDbId,
+			@RequestParam(value = "trialDbId", required = false) String trialDbId,
+			@RequestParam(value = "seasonDbId", required = false) String seasonDbId,
+			@RequestParam(value = "includeObservations", required = false) Boolean includeObservations,
+			@RequestParam(value = "observationUnitLevelName", required = false) String observationUnitLevelName,
+			@RequestParam(value = "observationUnitLevelOrder", required = false) String observationUnitLevelOrder,
+			@RequestParam(value = "observationUnitLevelCode", required = false) String observationUnitLevelCode,
+			@RequestParam(value = "observationUnitLevelRelationshipName", required = false) String observationUnitLevelRelationshipName,
+			@RequestParam(value = "observationUnitLevelRelationshipOrder", required = false) String observationUnitLevelRelationshipOrder,
+			@RequestParam(value = "observationUnitLevelRelationshipCode", required = false) String observationUnitLevelRelationshipCode,
+			@RequestParam(value = "observationUnitLevelRelationshipDbId", required = false) String observationUnitLevelRelationshipDbId,
+			@RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@RequestParam(value = "programDbId", required = false) String programDbId,
+			@RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<ObservationUnit> data = observationUnitService.findObservationUnits(observationUnitDbId,
@@ -111,6 +106,7 @@ public class ObservationUnitsApiController extends BrAPIController
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		ObservationUnit data = observationUnitService.getObservationUnit(observationUnitDbId);
 		return responseOK(new ObservationUnitSingleResponse(), data);
@@ -120,11 +116,12 @@ public class ObservationUnitsApiController extends BrAPIController
 	@Override
 	public ResponseEntity<ObservationUnitSingleResponse> observationunitsObservationUnitDbIdPut(
 			@PathVariable("observationUnitDbId") String observationUnitDbId,
-			@Valid @RequestBody ObservationUnitNewRequest body,
+			@RequestBody ObservationUnitNewRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		ObservationUnit data = observationUnitService.updateObservationUnit(observationUnitDbId, body);
 		return responseOK(new ObservationUnitSingleResponse(), data);
@@ -133,11 +130,12 @@ public class ObservationUnitsApiController extends BrAPIController
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ObservationUnitListResponse> observationunitsPost(
-			@Valid @RequestBody List<ObservationUnitNewRequest> body,
+			@RequestBody List<ObservationUnitNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		List<ObservationUnit> data = observationUnitService.saveObservationUnits(body);
 		return responseOK(new ObservationUnitListResponse(), new ObservationUnitListResponseResult(), data);
@@ -146,11 +144,12 @@ public class ObservationUnitsApiController extends BrAPIController
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ObservationUnitListResponse> observationunitsPut(
-			@Valid @RequestBody Map<String, ObservationUnitNewRequest> body,
+			@RequestBody Map<String, ObservationUnitNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		List<ObservationUnit> data = observationUnitService.updateObservationUnits(body);
 		return responseOK(new ObservationUnitListResponse(), new ObservationUnitListResponseResult(), data);
@@ -159,26 +158,28 @@ public class ObservationUnitsApiController extends BrAPIController
 	@CrossOrigin
 	@Override
 	public ResponseEntity observationunitsTableGet(@RequestHeader(value = "Accept", required = false) String accept,
-			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
-			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
-			@Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
-			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
-			@Valid @RequestParam(value = "locationDbId", required = false) String locationDbId,
-			@Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
-			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
-			@Valid @RequestParam(value = "seasonDbId", required = false) String seasonDbId,
-			@Valid @RequestParam(value = "observationLevel", required = false) String observationLevel,
-			@Valid @RequestParam(value = "observationUnitLevelName", required = false) String observationUnitLevelName,
-			@Valid @RequestParam(value = "observationUnitLevelOrder", required = false) String observationUnitLevelOrder,
-			@Valid @RequestParam(value = "observationUnitLevelCode", required = false) String observationUnitLevelCode,
-			@Valid @RequestParam(value = "observationUnitLevelRelationshipName", required = false) String observationUnitLevelRelationshipName,
-			@Valid @RequestParam(value = "observationUnitLevelRelationshipOrder", required = false) String observationUnitLevelRelationshipOrder,
-			@Valid @RequestParam(value = "observationUnitLevelRelationshipCode", required = false) String observationUnitLevelRelationshipCode,
-			@Valid @RequestParam(value = "observationUnitLevelRelationshipDbId", required = false) String observationUnitLevelRelationshipDbId,
+			@RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
+			@RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
+			@RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
+			@RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@RequestParam(value = "locationDbId", required = false) String locationDbId,
+			@RequestParam(value = "trialDbId", required = false) String trialDbId,
+			@RequestParam(value = "programDbId", required = false) String programDbId,
+			@RequestParam(value = "seasonDbId", required = false) String seasonDbId,
+			@RequestParam(value = "observationLevel", required = false) String observationLevel,
+			@RequestParam(value = "observationUnitLevelName", required = false) String observationUnitLevelName,
+			@RequestParam(value = "observationUnitLevelOrder", required = false) String observationUnitLevelOrder,
+			@RequestParam(value = "observationUnitLevelCode", required = false) String observationUnitLevelCode,
+			@RequestParam(value = "observationUnitLevelRelationshipName", required = false) String observationUnitLevelRelationshipName,
+			@RequestParam(value = "observationUnitLevelRelationshipOrder", required = false) String observationUnitLevelRelationshipOrder,
+			@RequestParam(value = "observationUnitLevelRelationshipCode", required = false) String observationUnitLevelRelationshipCode,
+			@RequestParam(value = "observationUnitLevelRelationshipDbId", required = false) String observationUnitLevelRelationshipDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
+
 		String sep = "";
 		if ("text/csv".equals(accept)) {
 			sep = ",";
@@ -203,14 +204,16 @@ public class ObservationUnitsApiController extends BrAPIController
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ObservationLevelListResponse> observationlevelsGet(
-			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
-			@Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
-			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@RequestParam(value = "trialDbId", required = false) String trialDbId,
+			@RequestParam(value = "programDbId", required = false) String programDbId,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
+
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<ObservationUnitHierarchyLevel> data = observationUnitService.findObservationLevels(studyDbId, trialDbId,
@@ -221,11 +224,12 @@ public class ObservationUnitsApiController extends BrAPIController
 	@CrossOrigin
 	@Override
 	public ResponseEntity<? extends BrAPIResponse> searchObservationunitsPost(
-			@Valid @RequestBody ObservationUnitSearchRequest body,
+			@RequestBody ObservationUnitSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
 
@@ -243,12 +247,13 @@ public class ObservationUnitsApiController extends BrAPIController
 	@Override
 	public ResponseEntity<? extends BrAPIResponse> searchObservationunitsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		SearchRequestEntity request = searchService.findById(searchResultsDbId);

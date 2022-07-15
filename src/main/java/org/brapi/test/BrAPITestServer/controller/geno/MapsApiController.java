@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -46,32 +45,35 @@ public class MapsApiController extends BrAPIController implements MapsApi {
 	@CrossOrigin
 	@Override
 	public ResponseEntity<GenomeMapListResponse> mapsGet(
-			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
-			@Valid @RequestParam(value = "mapPUI", required = false) String mapPUI,
-			@Valid @RequestParam(value = "scientificName", required = false) String scientificName,
-			@Valid @RequestParam(value = "type", required = false) String type,
-			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
-			@Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
-			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@RequestParam(value = "mapPUI", required = false) String mapPUI,
+			@RequestParam(value = "scientificName", required = false) String scientificName,
+			@RequestParam(value = "type", required = false) String type,
+			@RequestParam(value = "programDbId", required = false) String programDbId,
+			@RequestParam(value = "trialDbId", required = false) String trialDbId,
+			@RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
-		List<GenomeMap> data = mapService.findMaps(commonCropName, mapPUI, scientificName, type, programDbId,
-				trialDbId, studyDbId, metadata);
+		List<GenomeMap> data = mapService.findMaps(commonCropName, mapPUI, scientificName, type, programDbId, trialDbId,
+				studyDbId, metadata);
 		return responseOK(new GenomeMapListResponse(), new GenomeMapListResponseResult(), data, metadata);
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<GenomeMapSingleResponse> mapsMapDbIdGet(
-			@PathVariable("mapDbId") String mapDbId,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+	public ResponseEntity<GenomeMapSingleResponse> mapsMapDbIdGet(@PathVariable("mapDbId") String mapDbId,
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		GenomeMap data = mapService.getMap(mapDbId);
 		return responseOK(new GenomeMapSingleResponse(), data);
@@ -79,13 +81,14 @@ public class MapsApiController extends BrAPIController implements MapsApi {
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<LinkageGroupListResponse> mapsMapDbIdLinkagegroupsGet(
-			@PathVariable("mapDbId") String mapDbId,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+	public ResponseEntity<LinkageGroupListResponse> mapsMapDbIdLinkagegroupsGet(@PathVariable("mapDbId") String mapDbId,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<LinkageGroup> data = mapService.findLinkageGroups(mapDbId, metadata);

@@ -37,7 +37,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -60,14 +59,15 @@ public class VendorApiController extends BrAPIController implements VendorApi {
 	@CrossOrigin
 	@Override
 	public ResponseEntity<VendorOrderListResponse> vendorOrdersGet(
-			@Valid @RequestParam(value = "orderId", required = false) String orderId,
-			@Valid @RequestParam(value = "submissionId", required = false) String submissionId,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "orderId", required = false) String orderId,
+			@RequestParam(value = "submissionId", required = false) String submissionId,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<VendorOrder> data = vendorSampleService.getOrders(orderId, submissionId, metadata);
@@ -77,12 +77,13 @@ public class VendorApiController extends BrAPIController implements VendorApi {
 	@CrossOrigin
 	@Override
 	public ResponseEntity<VendorPlateListResponse> vendorOrdersOrderIdPlatesGet(@PathVariable("orderId") String orderId,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<VendorPlate> data = vendorSampleService.getPlates(orderId, metadata);
@@ -92,13 +93,13 @@ public class VendorApiController extends BrAPIController implements VendorApi {
 	@CrossOrigin
 	@Override
 	public ResponseEntity<VendorResultFileListResponse> vendorOrdersOrderIdResultsGet(
-			@PathVariable("orderId") String orderId,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@PathVariable("orderId") String orderId, @RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<VendorResultFile> data = vendorSampleService.getResultFiles(orderId, metadata);
@@ -113,6 +114,7 @@ public class VendorApiController extends BrAPIController implements VendorApi {
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		VendorOrderStatusResponseResult data = vendorSampleService.getOrderStatus(orderId);
 		return responseOK(new VendorOrderStatusResponse(), data);
@@ -121,11 +123,12 @@ public class VendorApiController extends BrAPIController implements VendorApi {
 	@CrossOrigin
 	@Override
 	public ResponseEntity<VendorOrderSubmissionSingleResponse> vendorOrdersPost(
-			@Valid @RequestBody VendorOrderSubmissionRequest body,
+			@RequestBody VendorOrderSubmissionRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		VendorOrderSubmission data = vendorSampleService.saveOrder(body);
 		return responseOK(new VendorOrderSubmissionSingleResponse(), data);
@@ -134,11 +137,12 @@ public class VendorApiController extends BrAPIController implements VendorApi {
 	@CrossOrigin
 	@Override
 	public ResponseEntity<VendorPlateSubmissionIdSingleResponse> vendorPlatesPost(
-			@Valid @RequestBody VendorPlateSubmissionRequest body,
+			@RequestBody VendorPlateSubmissionRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		VendorPlateSubmissionId data = vendorSampleService.savePlates(body);
 		return responseOK(new VendorPlateSubmissionIdSingleResponse(), data);
@@ -152,6 +156,7 @@ public class VendorApiController extends BrAPIController implements VendorApi {
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		VendorPlateSubmission data = vendorSampleService.getPlateSubmission(submissionId);
 		return responseOK(new VendorPlateSubmissionSingleResponse(), data);
@@ -164,6 +169,7 @@ public class VendorApiController extends BrAPIController implements VendorApi {
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		VendorSpecification data = vendorSampleService.getVendorSpec();
 		return responseOK(new VendorSpecificationSingleResponse(), data);

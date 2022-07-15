@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Entity
 @Table(name="search")
-public class SearchRequestEntity extends BrAPIBaseEntity {
+public class SearchRequestEntity extends BrAPIPrimaryEntity {
 	@Column
 	private SearchRequestTypes requestType;
 	@Column

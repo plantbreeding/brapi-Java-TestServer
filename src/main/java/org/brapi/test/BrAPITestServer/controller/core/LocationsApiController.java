@@ -8,11 +8,6 @@ import io.swagger.model.core.LocationListResponseResult;
 import io.swagger.model.core.LocationNewRequest;
 import io.swagger.model.core.LocationSearchRequest;
 import io.swagger.model.core.LocationSingleResponse;
-import io.swagger.model.germ.Germplasm;
-import io.swagger.model.germ.GermplasmListResponse;
-import io.swagger.model.germ.GermplasmListResponseResult;
-import io.swagger.model.germ.GermplasmSearchRequest;
-import io.swagger.annotations.*;
 import io.swagger.api.core.LocationsApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
@@ -22,7 +17,6 @@ import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.core.LocationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -70,6 +64,7 @@ public class LocationsApiController extends BrAPIController implements Locations
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<Location> data = locationService.findLocations(locationDbId, locationType, locationName, parentLocationDbId, parentLocationName, commonCropName, programDbId, externalReferenceId, externalReferenceID, externalReferenceSource, metadata);
@@ -83,6 +78,7 @@ public class LocationsApiController extends BrAPIController implements Locations
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Location data = locationService.getLocation(locationDbId);
 		return responseOK(new LocationSingleResponse(), data);
@@ -96,6 +92,7 @@ public class LocationsApiController extends BrAPIController implements Locations
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		Location data = locationService.updateLocation(locationDbId, body);
 		return responseOK(new LocationSingleResponse(), data);
@@ -107,6 +104,7 @@ public class LocationsApiController extends BrAPIController implements Locations
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		List<Location> data = locationService.saveLocations(body);
 		return responseOK(new LocationListResponse(), new LocationListResponseResult(), data);
@@ -118,6 +116,7 @@ public class LocationsApiController extends BrAPIController implements Locations
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
 		String searchReqDbId = searchService.saveSearchRequest(body, SearchRequestTypes.LOCATIONS);
@@ -138,6 +137,7 @@ public class LocationsApiController extends BrAPIController implements Locations
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		SearchRequestEntity request = searchService.findById(searchResultsDbId);

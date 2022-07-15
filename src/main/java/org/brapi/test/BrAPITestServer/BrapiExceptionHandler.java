@@ -33,7 +33,8 @@ public class BrapiExceptionHandler extends ResponseEntityExceptionHandler{
 	@ExceptionHandler(value = {BrAPIServerException.class})
 	protected ResponseEntity<Object> handleBrAPIException(BrAPIServerException e, WebRequest request){
 		String message = e.getResponseMessage().replaceAll("\"", "\'");
-	    log.error(message, e);
+	    log.error(message);
+	    log.debug(message, e);
 	    return new ResponseEntity<Object>("\"" + message + "\"", e.getResponseStatus());		
 	}
 	
@@ -45,6 +46,7 @@ public class BrapiExceptionHandler extends ResponseEntityExceptionHandler{
 				+ e.getStackTrace()[2].toString() + "\n"
 				+ "...";
 	    log.error(message, e);
+	    log.debug(message, e);
 	    return new ResponseEntity<Object>("\"" + message + "\"", HttpStatus.INTERNAL_SERVER_ERROR);	
 	}
 	

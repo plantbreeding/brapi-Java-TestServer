@@ -63,19 +63,22 @@ public class CallsApiController extends BrAPIController implements CallsApi {
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(pageToken, pageSize);
-		CallsListResponseResult data = callService.findCalls(callSetDbId, variantDbId, variantSetDbId, expandHomozygotes,
-				unknownString, sepPhased, sepUnphased, metadata);
+		CallsListResponseResult data = callService.findCalls(callSetDbId, variantDbId, variantSetDbId,
+				expandHomozygotes, unknownString, sepPhased, sepUnphased, metadata);
 		return responseOK(new CallsListResponse(), data, metadata);
 	}
 
 	@CrossOrigin
 	@Override
 	public ResponseEntity<? extends BrAPIResponse> searchCallsPost(@Valid @RequestBody CallsSearchRequest body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body.getPageToken(), body.getPageSize());
 
@@ -98,6 +101,7 @@ public class CallsApiController extends BrAPIController implements CallsApi {
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(pageToken, pageSize);
 		SearchRequestEntity request = searchService.findById(searchResultsDbId);
@@ -105,16 +109,17 @@ public class CallsApiController extends BrAPIController implements CallsApi {
 			CallsSearchRequest body = request.getParameters(CallsSearchRequest.class);
 			CallsListResponseResult data = callService.findCalls(body, metadata);
 			return responseOK(new CallsListResponse(), data, metadata);
-		}else {
+		} else {
 			return responseAccepted(searchResultsDbId);
 		}
 	}
 
 	@Override
-	public ResponseEntity<CallsListResponse> callsPut(@Valid List<Call> body, String authorization)
+	public ResponseEntity<CallsListResponse> callsPut(List<Call> body, String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateEmptyMetadata();
 		CallsListResponseResult data = callService.updateCalls(body);

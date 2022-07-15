@@ -2,17 +2,12 @@ package org.brapi.test.BrAPITestServer.controller.germ;
 
 import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
-import io.swagger.model.germ.Germplasm;
 import io.swagger.model.germ.GermplasmAttributeValue;
 import io.swagger.model.germ.GermplasmAttributeValueListResponse;
 import io.swagger.model.germ.GermplasmAttributeValueListResponseResult;
 import io.swagger.model.germ.GermplasmAttributeValueSingleResponse;
-import io.swagger.model.germ.GermplasmListResponse;
-import io.swagger.model.germ.GermplasmListResponseResult;
-import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.model.germ.GermplasmAttributeValueNewRequest;
 import io.swagger.model.germ.GermplasmAttributeValueSearchRequest;
-import io.swagger.annotations.ApiParam;
 import io.swagger.api.germ.AttributeValuesApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -24,7 +19,6 @@ import org.brapi.test.BrAPITestServer.service.germ.GermplasmAttributeValueServic
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -32,7 +26,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -57,26 +50,27 @@ public class AttributeValuesApiController extends BrAPIController implements Att
 	@CrossOrigin
 	@Override
 	public ResponseEntity<GermplasmAttributeValueListResponse> attributevaluesGet(
-			@Valid @RequestParam(value = "attributeValueDbId", required = false) String attributeValueDbId,
-			@Valid @RequestParam(value = "attributeDbId", required = false) String attributeDbId,
-			@Valid @RequestParam(value = "attributeName", required = false) String attributeName,
-			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
-			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
-			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
-			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceId,
-			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "attributeValueDbId", required = false) String attributeValueDbId,
+			@RequestParam(value = "attributeDbId", required = false) String attributeDbId,
+			@RequestParam(value = "attributeName", required = false) String attributeName,
+			@RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
+			@RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@RequestParam(value = "programDbId", required = false) String programDbId,
+			@RequestParam(value = "externalReferenceID", required = false) String externalReferenceId,
+			@RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<GermplasmAttributeValue> data = attributeValueService.findGermplasmAttributeValues(attributeValueDbId,
-				attributeDbId, attributeName, germplasmDbId, commonCropName, programDbId, externalReferenceId, externalReferenceID,
-				externalReferenceSource, metadata);
+				attributeDbId, attributeName, germplasmDbId, commonCropName, programDbId, externalReferenceId,
+				externalReferenceID, externalReferenceSource, metadata);
 		return responseOK(new GermplasmAttributeValueListResponse(), new GermplasmAttributeValueListResponseResult(),
 				data, metadata);
 	}
@@ -84,11 +78,12 @@ public class AttributeValuesApiController extends BrAPIController implements Att
 	@CrossOrigin
 	@Override
 	public ResponseEntity<GermplasmAttributeValueListResponse> attributevaluesPost(
-			@Valid @RequestBody List<GermplasmAttributeValueNewRequest> body,
+			@RequestBody List<GermplasmAttributeValueNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		List<GermplasmAttributeValue> data = attributeValueService.saveGermplasmAttributeValues(body);
 		return responseOK(new GermplasmAttributeValueListResponse(), new GermplasmAttributeValueListResponseResult(),
@@ -103,6 +98,7 @@ public class AttributeValuesApiController extends BrAPIController implements Att
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		GermplasmAttributeValue data = attributeValueService.getGermplasmAttributeValue(attributeValueDbId);
 		return responseOK(new GermplasmAttributeValueSingleResponse(), data);
@@ -112,11 +108,12 @@ public class AttributeValuesApiController extends BrAPIController implements Att
 	@Override
 	public ResponseEntity<GermplasmAttributeValueSingleResponse> attributevaluesAttributeValueDbIdPut(
 			@PathVariable("attributeValueDbId") String attributeValueDbId,
-			@Valid @RequestBody GermplasmAttributeValueNewRequest body,
+			@RequestBody GermplasmAttributeValueNewRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		GermplasmAttributeValue data = attributeValueService.updateGermplasmAttributeValue(attributeValueDbId, body);
 		return responseOK(new GermplasmAttributeValueSingleResponse(), data);
@@ -125,11 +122,12 @@ public class AttributeValuesApiController extends BrAPIController implements Att
 	@CrossOrigin
 	@Override
 	public ResponseEntity<? extends BrAPIResponse> searchAttributevaluesPost(
-			@Valid @RequestBody GermplasmAttributeValueSearchRequest body,
+			@RequestBody GermplasmAttributeValueSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
 
@@ -147,12 +145,13 @@ public class AttributeValuesApiController extends BrAPIController implements Att
 	@Override
 	public ResponseEntity<? extends BrAPIResponse> searchAttributevaluesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		SearchRequestEntity request = searchService.findById(searchResultsDbId);

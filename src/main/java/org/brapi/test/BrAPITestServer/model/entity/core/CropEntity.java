@@ -8,12 +8,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
 
 @Entity
 @Table(name="crop")
-public class CropEntity extends BrAPIBaseEntity {
+public class CropEntity extends BrAPIPrimaryEntity {
 	@Column(name="crop_name")
 	private String cropName;
 	

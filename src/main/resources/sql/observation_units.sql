@@ -1,6 +1,6 @@
 
 -- unit 1
-INSERT INTO observation_unit(id, observation_unit_name, observation_unitpui, germplasm_id, cross_id, seed_lot_id, study_id) VALUES('observation_unit1', 'Plot 1', 'doi:10.12345/plot/1a9afc14', 'germplasm1', null, 'seed_lot1', 'study1');
+INSERT INTO observation_unit(auth_user_id, id, observation_unit_name, observation_unitpui, germplasm_id, cross_id, seed_lot_id, study_id) VALUES('anonymousUser', 'observation_unit1', 'Plot 1', 'doi:10.12345/plot/1a9afc14', 'germplasm1', null, 'seed_lot1', 'study1');
 INSERT INTO observation_unit_treatment (id, factor, modality, observation_unit_id) VALUES('observation_unit_treatment1', 'fertilizer', 'low fertilizer', 'observation_unit1');
 INSERT INTO geojson(id, type) VALUES ('observation_unit_geo_1', 'Point');
 INSERT INTO coordinate(id, altitude, latitude, longitude, geojson_id) VALUES ('observation_unit_coor_1', 123, 42.44423, -76.46313, 'observation_unit_geo_1');
@@ -16,7 +16,7 @@ INSERT INTO observation_unit_external_references(observation_unit_entity_id, ext
 
 
 -- unit 2
-INSERT INTO observation_unit(id, observation_unit_name, observation_unitpui, germplasm_id, cross_id, seed_lot_id, study_id) VALUES('observation_unit2', 'Plot 2', 'doi:10.12345/plot/2a9afc24', 'germplasm2', null, 'seed_lot1', 'study1');
+INSERT INTO observation_unit(auth_user_id, id, observation_unit_name, observation_unitpui, germplasm_id, cross_id, seed_lot_id, study_id) VALUES('anonymousUser', 'observation_unit2', 'Plot 2', 'doi:10.12345/plot/2a9afc24', 'germplasm2', null, 'seed_lot1', 'study1');
 INSERT INTO observation_unit_treatment (id, factor, modality, observation_unit_id) VALUES('observation_unit_treatment2', 'fertilizer', 'low fertilizer', 'observation_unit2');
 INSERT INTO geojson(id, type) VALUES ('observation_unit_geo_2', 'Point');
 INSERT INTO coordinate(id, altitude, latitude, longitude, geojson_id) VALUES ('observation_unit_coor_2', 123, 42.44423, -76.46313, 'observation_unit_geo_2');
@@ -32,7 +32,7 @@ INSERT INTO observation_unit_external_references(observation_unit_entity_id, ext
 
 
 -- unit 3
-INSERT INTO observation_unit(id, observation_unit_name, observation_unitpui, germplasm_id, cross_id, seed_lot_id, study_id) VALUES('observation_unit3', 'Plot 3', 'doi:10.12345/plot/3a9afc34', 'germplasm3', null, 'seed_lot1', 'study1');
+INSERT INTO observation_unit(auth_user_id, id, observation_unit_name, observation_unitpui, germplasm_id, cross_id, seed_lot_id, study_id) VALUES('anonymousUser', 'observation_unit3', 'Plot 3', 'doi:10.12345/plot/3a9afc34', 'germplasm3', null, 'seed_lot1', 'study1');
 INSERT INTO observation_unit_treatment (id, factor, modality, observation_unit_id) VALUES('observation_unit_treatment3', 'fertilizer', 'low fertilizer', 'observation_unit3');
 INSERT INTO geojson(id, type) VALUES ('observation_unit_geo_3', 'Point');
 INSERT INTO coordinate(id, altitude, latitude, longitude, geojson_id) VALUES ('observation_unit_coor_3', 123, 42.44423, -76.46313, 'observation_unit_geo_3');

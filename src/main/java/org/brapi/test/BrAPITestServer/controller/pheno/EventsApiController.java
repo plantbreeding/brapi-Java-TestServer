@@ -18,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -41,18 +40,19 @@ public class EventsApiController extends BrAPIController implements EventsApi {
 	@CrossOrigin
 	@Override
 	public ResponseEntity<EventsResponse> eventsGet(
-			@Valid @RequestParam(value = "eventDbId", required = false) String eventDbId,
-			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
-			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
-			@Valid @RequestParam(value = "eventType", required = false) String eventType,
-			@Valid @RequestParam(value = "dateRangeStart", required = false) String dateRangeStart,
-			@Valid @RequestParam(value = "dateRangeEnd", required = false) String dateRangeEnd,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "eventDbId", required = false) String eventDbId,
+			@RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
+			@RequestParam(value = "eventType", required = false) String eventType,
+			@RequestParam(value = "dateRangeStart", required = false) String dateRangeStart,
+			@RequestParam(value = "dateRangeEnd", required = false) String dateRangeEnd,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<Event> data = eventService.findEvents(eventDbId, studyDbId, observationUnitDbId, eventType,

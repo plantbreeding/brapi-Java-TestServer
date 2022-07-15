@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -44,20 +43,21 @@ public class MethodsApiController extends BrAPIController implements MethodsApi 
 	@CrossOrigin
 	@Override
 	public ResponseEntity<MethodListResponse> methodsGet(
-			@Valid @RequestParam(value = "methodDbId", required = false) String methodDbId,
-			@Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
-			@Valid @RequestParam(value = "ontologyDbId", required = false) String ontologyDbId,
-			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
-			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
-			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
-			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "methodDbId", required = false) String methodDbId,
+			@RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
+			@RequestParam(value = "ontologyDbId", required = false) String ontologyDbId,
+			@RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@RequestParam(value = "programDbId", required = false) String programDbId,
+			@RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<Method> data = methodService.findMethods(methodDbId, observationVariableDbId, ontologyDbId, commonCropName,
@@ -72,6 +72,7 @@ public class MethodsApiController extends BrAPIController implements MethodsApi 
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Method data = methodService.getMethod(methodDbId);
 		return responseOK(new MethodSingleResponse(), data);
@@ -80,11 +81,12 @@ public class MethodsApiController extends BrAPIController implements MethodsApi 
 	@CrossOrigin
 	@Override
 	public ResponseEntity<MethodSingleResponse> methodsMethodDbIdPut(@PathVariable("methodDbId") String methodDbId,
-			@Valid @RequestBody MethodBaseClass body,
+			@RequestBody MethodBaseClass body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		Method data = methodService.updateMethod(methodDbId, body);
 		return responseOK(new MethodSingleResponse(), data);
@@ -92,11 +94,12 @@ public class MethodsApiController extends BrAPIController implements MethodsApi 
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<MethodListResponse> methodsPost(@Valid @RequestBody List<MethodBaseClass> body,
+	public ResponseEntity<MethodListResponse> methodsPost(@RequestBody List<MethodBaseClass> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		List<Method> data = methodService.saveMethods(body);
 		return responseOK(new MethodListResponse(), new MethodListResponseResult(), data);

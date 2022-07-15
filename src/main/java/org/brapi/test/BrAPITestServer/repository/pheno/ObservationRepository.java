@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationEntity;
-import org.brapi.test.BrAPITestServer.repository.core.BrAPIRepository;
+import org.brapi.test.BrAPITestServer.repository.BrAPIRepository;
 
 public interface ObservationRepository extends BrAPIRepository<ObservationEntity, String> {
 

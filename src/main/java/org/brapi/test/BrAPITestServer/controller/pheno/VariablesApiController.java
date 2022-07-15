@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -51,33 +50,34 @@ public class VariablesApiController extends BrAPIController implements Variables
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ObservationVariableListResponse> variablesGet(
-			@Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
-			@Valid @RequestParam(value = "observationVariableName", required = false) String observationVariableName,
-			@Valid @RequestParam(value = "observationVariablePUI", required = false) String observationVariablePUI,
-			@Valid @RequestParam(value = "methodDbId", required = false) String methodDbId,
-			@Valid @RequestParam(value = "methodName", required = false) String methodName,
-			@Valid @RequestParam(value = "methodPUI", required = false) String methodPUI,
-			@Valid @RequestParam(value = "scaleDbId", required = false) String scaleDbId,
-			@Valid @RequestParam(value = "scaleName", required = false) String scaleName,
-			@Valid @RequestParam(value = "scalePUI", required = false) String scalePUI,
-			@Valid @RequestParam(value = "traitDbId", required = false) String traitDbId,
-			@Valid @RequestParam(value = "traitName", required = false) String traitName,
-			@Valid @RequestParam(value = "traitPUI", required = false) String traitPUI,
-			@Valid @RequestParam(value = "traitClass", required = false) String traitClass,
-			@Valid @RequestParam(value = "ontologyDbId", required = false) String ontologyDbId,
-			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
-			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
-			@Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
-			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
-			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
-			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
+			@RequestParam(value = "observationVariableName", required = false) String observationVariableName,
+			@RequestParam(value = "observationVariablePUI", required = false) String observationVariablePUI,
+			@RequestParam(value = "methodDbId", required = false) String methodDbId,
+			@RequestParam(value = "methodName", required = false) String methodName,
+			@RequestParam(value = "methodPUI", required = false) String methodPUI,
+			@RequestParam(value = "scaleDbId", required = false) String scaleDbId,
+			@RequestParam(value = "scaleName", required = false) String scaleName,
+			@RequestParam(value = "scalePUI", required = false) String scalePUI,
+			@RequestParam(value = "traitDbId", required = false) String traitDbId,
+			@RequestParam(value = "traitName", required = false) String traitName,
+			@RequestParam(value = "traitPUI", required = false) String traitPUI,
+			@RequestParam(value = "traitClass", required = false) String traitClass,
+			@RequestParam(value = "ontologyDbId", required = false) String ontologyDbId,
+			@RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@RequestParam(value = "programDbId", required = false) String programDbId,
+			@RequestParam(value = "trialDbId", required = false) String trialDbId,
+			@RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<ObservationVariable> data = observationVariableService.findObservationVariables(observationVariableDbId,
@@ -97,6 +97,7 @@ public class VariablesApiController extends BrAPIController implements Variables
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		ObservationVariable data = observationVariableService.getObservationVariable(observationVariableDbId);
 		return responseOK(new ObservationVariableSingleResponse(), data);
@@ -105,12 +106,13 @@ public class VariablesApiController extends BrAPIController implements Variables
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ObservationVariableSingleResponse> variablesObservationVariableDbIdPut(
-			@Valid @RequestBody ObservationVariableNewRequest body,
+			@RequestBody ObservationVariableNewRequest body,
 			@PathVariable("observationVariableDbId") String observationVariableDbId,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		ObservationVariable data = observationVariableService.updateObservationVariable(observationVariableDbId, body);
 		return responseOK(new ObservationVariableSingleResponse(), data);
@@ -119,11 +121,12 @@ public class VariablesApiController extends BrAPIController implements Variables
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ObservationVariableListResponse> variablesPost(
-			@Valid @RequestBody List<ObservationVariableNewRequest> body,
+			@RequestBody List<ObservationVariableNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		List<ObservationVariable> data = observationVariableService.saveObservationVariables(body);
 		return responseOK(new ObservationVariableListResponse(), new ObservationVariableListResponseResult(), data);
@@ -132,11 +135,12 @@ public class VariablesApiController extends BrAPIController implements Variables
 	@CrossOrigin
 	@Override
 	public ResponseEntity<? extends BrAPIResponse> searchVariablesPost(
-			@Valid @RequestBody ObservationVariableSearchRequest body,
+			@RequestBody ObservationVariableSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
 
@@ -154,12 +158,13 @@ public class VariablesApiController extends BrAPIController implements Variables
 	@Override
 	public ResponseEntity<? extends BrAPIResponse> searchVariablesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		SearchRequestEntity request = searchService.findById(searchResultsDbId);

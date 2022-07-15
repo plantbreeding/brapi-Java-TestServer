@@ -2,10 +2,6 @@ package org.brapi.test.BrAPITestServer.controller.pheno;
 
 import io.swagger.model.BrAPIResponse;
 import io.swagger.model.Metadata;
-import io.swagger.model.germ.Germplasm;
-import io.swagger.model.germ.GermplasmListResponse;
-import io.swagger.model.germ.GermplasmListResponseResult;
-import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.model.pheno.Image;
 import io.swagger.model.pheno.ImageDeleteResponse;
 import io.swagger.model.pheno.ImageDeleteResponseResult;
@@ -14,7 +10,6 @@ import io.swagger.model.pheno.ImageListResponseResult;
 import io.swagger.model.pheno.ImageNewRequest;
 import io.swagger.model.pheno.ImageSearchRequest;
 import io.swagger.model.pheno.ImageSingleResponse;
-import io.swagger.annotations.ApiParam;
 import io.swagger.api.pheno.ImagesApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -37,7 +32,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -61,22 +55,23 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ImageListResponse> imagesGet(
-			@Valid @RequestParam(value = "imageDbId", required = false) String imageDbId,
-			@Valid @RequestParam(value = "imageName", required = false) String imageName,
-			@Valid @RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
-			@Valid @RequestParam(value = "observationDbId", required = false) String observationDbId,
-			@Valid @RequestParam(value = "descriptiveOntologyTerm", required = false) String descriptiveOntologyTerm,
-			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
-			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
-			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
-			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "imageDbId", required = false) String imageDbId,
+			@RequestParam(value = "imageName", required = false) String imageName,
+			@RequestParam(value = "observationUnitDbId", required = false) String observationUnitDbId,
+			@RequestParam(value = "observationDbId", required = false) String observationDbId,
+			@RequestParam(value = "descriptiveOntologyTerm", required = false) String descriptiveOntologyTerm,
+			@RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@RequestParam(value = "programDbId", required = false) String programDbId,
+			@RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<Image> data = imageService.findImages(imageDbId, imageName, observationUnitDbId, observationDbId,
@@ -92,6 +87,7 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Image data = imageService.getImage(imageDbId);
 		return responseOK(new ImageSingleResponse(), data);
@@ -103,6 +99,10 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 			@PathVariable("imageName") String imageName,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
+
+		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
+
 		byte[] data = imageService.getImageData(imageDbId);
 		Image image = imageService.getImage(imageDbId);
 		HttpHeaders headers = new HttpHeaders();
@@ -114,11 +114,12 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ImageSingleResponse> imagesImageDbIdImageContentPut(
-			@PathVariable("imageDbId") String imageDbId, @Valid @RequestBody byte[] body,
+			@PathVariable("imageDbId") String imageDbId, @RequestBody byte[] body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		Image data = imageService.updateImageContent(imageDbId, request.getRequestURL().toString(), body);
 		return responseOK(new ImageSingleResponse(), data);
@@ -127,11 +128,12 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ImageSingleResponse> imagesImageDbIdPut(@PathVariable("imageDbId") String imageDbId,
-			@Valid @RequestBody ImageNewRequest body,
+			@RequestBody ImageNewRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		Image data = imageService.updateImage(imageDbId, body);
 		return responseOK(new ImageSingleResponse(), data);
@@ -139,11 +141,12 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<ImageListResponse> imagesPost(@Valid @RequestBody List<ImageNewRequest> body,
+	public ResponseEntity<ImageListResponse> imagesPost(@RequestBody List<ImageNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		List<Image> data = imageService.saveImages(body);
 		return responseOK(new ImageListResponse(), new ImageListResponseResult(), data);
@@ -151,11 +154,12 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<? extends BrAPIResponse> searchImagesPost(@Valid @RequestBody ImageSearchRequest body,
+	public ResponseEntity<? extends BrAPIResponse> searchImagesPost(@RequestBody ImageSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
 
@@ -172,12 +176,13 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 	@Override
 	public ResponseEntity<? extends BrAPIResponse> searchImagesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		SearchRequestEntity request = searchService.findById(searchResultsDbId);
@@ -193,8 +198,10 @@ public class ImagesApiController extends BrAPIController implements ImagesApi {
 	@Override
 	public ResponseEntity<ImageDeleteResponse> deleteImagesPost(
 			@RequestHeader(value = "Authorization", required = false) String authorization,
-			@Valid @RequestBody ImageSearchRequest body) throws BrAPIServerException {
+			@RequestBody ImageSearchRequest body) throws BrAPIServerException {
+
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
 

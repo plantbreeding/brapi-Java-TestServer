@@ -49,6 +49,7 @@ public class SeasonsApiController extends BrAPIController implements SeasonsApi 
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<Season> data = seasonService.findSeasons(seasonDbId, season, seasonName, year, metadata);
@@ -61,6 +62,7 @@ public class SeasonsApiController extends BrAPIController implements SeasonsApi 
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		List<Season> data = seasonService.saveSeasons(body);
 		return responseOK(new SeasonListResponse(), new SeasonListResponseResult(), data);
@@ -73,6 +75,7 @@ public class SeasonsApiController extends BrAPIController implements SeasonsApi 
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Season data = seasonService.getSeason(seasonDbId);
 		return responseOK(new SeasonSingleResponse(), data);
@@ -86,6 +89,7 @@ public class SeasonsApiController extends BrAPIController implements SeasonsApi 
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		Season data = seasonService.updateSeason(seasonDbId, body);
 		return responseOK(new SeasonSingleResponse(), data);

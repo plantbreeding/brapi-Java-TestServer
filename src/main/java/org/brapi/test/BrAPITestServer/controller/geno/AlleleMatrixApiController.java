@@ -68,6 +68,7 @@ public class AlleleMatrixApiController extends BrAPIController implements Allele
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateEmptyMetadata();
 
@@ -86,6 +87,7 @@ public class AlleleMatrixApiController extends BrAPIController implements Allele
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateEmptyMetadata();
 
@@ -105,6 +107,7 @@ public class AlleleMatrixApiController extends BrAPIController implements Allele
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateEmptyMetadata();
 		SearchRequestEntity request = searchService.findById(searchResultsDbId);
