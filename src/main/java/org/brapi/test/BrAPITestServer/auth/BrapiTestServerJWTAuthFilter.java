@@ -82,6 +82,7 @@ public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
 			log.error(msg);
 			res.addHeader("WWW-Authenticate", "Basic realm=\"\"");
 			res.setStatus(HttpStatus.UNAUTHORIZED.value());
+			res.setContentType("text/plain;charset=UTF-8");
 			res.getWriter().print(msg);
 			res.getWriter().flush();
 //			res.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase() + " - " + msg);
@@ -97,7 +98,7 @@ public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
 			msg +=  " - " + exception.getMessage();
 		} 
 		msg += "\nPlease go to https://brapi.org/oauth and login to generate a fresh token, or use the dummy token 'XXXX'";
-		return msg;
+		return "\"" + msg + "\"";
 	}
 
 	private AuthDetails validateToken(String token)
