@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
+import org.brapi.test.BrAPITestServer.model.entity.germ.PedigreeEdgeEntity.EdgeType;
 
 import io.swagger.model.germ.ParentType;
 
@@ -29,12 +30,8 @@ public class PedigreeNodeEntity extends BrAPIPrimaryEntity {
 	private GermplasmEntity germplasm;
 	@Column
 	private String pedigreeString;
-	@OneToMany(mappedBy = "parentNode")
-	private List<PedigreeEdgeEntity> parents;
-	@OneToMany(mappedBy = "childNode")
-	private List<PedigreeEdgeEntity> progeny;
-	@OneToMany(mappedBy = "siblingNode")
-	private List<PedigreeEdgeEntity> siblings;
+	@OneToMany(mappedBy = "thisNode", cascade = CascadeType.ALL)
+	private List<PedigreeEdgeEntity> edges = new ArrayList<>();
 
 	public CrossingProjectEntity getCrossingProject() {
 		return crossingProject;
@@ -77,71 +74,71 @@ public class PedigreeNodeEntity extends BrAPIPrimaryEntity {
 	}
 
 	public List<PedigreeEdgeEntity> getParentEdges() {
-		return parents;
+		return edges.stream().filter(e -> {
+			return e.getEdgeType() == EdgeType.parent;
+		}).collect(Collectors.toList());
 	}
 
 	public List<PedigreeNodeEntity> getParentNodes() {
-		return parents.stream().map(edge -> edge.getConncetedNode()).collect(Collectors.toList());
-	}
-
-	public void setParents(List<PedigreeEdgeEntity> parents) {
-		this.parents = parents;
+		return edges.stream().filter(e -> {
+			return e.getEdgeType() == EdgeType.parent;
+		}).map(edge -> edge.getConncetedNode()).collect(Collectors.toList());
 	}
 
 	public List<PedigreeEdgeEntity> getProgenyEdges() {
-		return progeny;
+		return edges.stream().filter(e -> {
+			return e.getEdgeType() == EdgeType.child;
+		}).collect(Collectors.toList());
 	}
 
 	public List<PedigreeNodeEntity> getProgenyNodes() {
-		return progeny.stream().map(edge -> edge.getConncetedNode()).collect(Collectors.toList());
-	}
-
-	public void setProgeny(List<PedigreeEdgeEntity> progeny) {
-		this.progeny = progeny;
+		return edges.stream().filter(e -> {
+			return e.getEdgeType() == EdgeType.child;
+		}).map(edge -> edge.getConncetedNode()).collect(Collectors.toList());
 	}
 
 	public List<PedigreeEdgeEntity> getSiblingEdges() {
-		return siblings;
+		return edges.stream().filter(e -> {
+			return e.getEdgeType() == EdgeType.sibling;
+		}).collect(Collectors.toList());
 	}
 
 	public List<PedigreeNodeEntity> getSiblingNodes() {
-		return siblings.stream().map(edge -> edge.getConncetedNode()).collect(Collectors.toList());
-	}
-
-	public void setSiblings(List<PedigreeEdgeEntity> siblings) {
-		this.siblings = siblings;
+		return edges.stream().filter(e -> {
+			return e.getEdgeType() == EdgeType.sibling;
+		}).map(edge -> edge.getConncetedNode()).collect(Collectors.toList());
 	}
 
 	public void addParent(PedigreeNodeEntity node, ParentType type) {
 		PedigreeEdgeEntity edge = new PedigreeEdgeEntity();
-		edge.setParentNode(this);
+		edge.setThisNode(this);
 		edge.setConncetedNode(node);
 		edge.setParentType(type);
-		if(getParentEdges() == null) {
-			setParents(new ArrayList<>());
-		}
-		getParentEdges().add(edge);
+		edge.setEdgeType(EdgeType.parent);
+		if(edges == null) 
+			edges = new ArrayList<>();
+		edges.add(edge);
 	}
 
 	public void addProgeny(PedigreeNodeEntity node, ParentType type) {
 		PedigreeEdgeEntity edge = new PedigreeEdgeEntity();
-		edge.setChildNode(this);
+		edge.setThisNode(this);
 		edge.setConncetedNode(node);
 		edge.setParentType(type);
-		if(getProgenyEdges() == null) {
-			setProgeny(new ArrayList<>());
-		}
-		getProgenyEdges().add(edge);
+		edge.setEdgeType(EdgeType.child);
+		if(edges == null) 
+			edges = new ArrayList<>();
+		edges.add(edge);
 	}
 
 	public void addSibling(PedigreeNodeEntity node) {
 		PedigreeEdgeEntity edge = new PedigreeEdgeEntity();
-		edge.setSiblingNode(this);
+		edge.setThisNode(this);
 		edge.setConncetedNode(node);
-		if(getSiblingEdges() == null) {
-			setSiblings(new ArrayList<>());
-		}
-		getSiblingEdges().add(edge);
+		edge.setEdgeType(EdgeType.sibling);
+		if(edges == null) 
+			edges = new ArrayList<>();
+		edges.add(edge);
 	}
 
 }

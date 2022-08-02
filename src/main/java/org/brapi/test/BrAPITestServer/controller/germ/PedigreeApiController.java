@@ -80,7 +80,8 @@ public class PedigreeApiController extends BrAPIController implements PedigreeAp
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<PedigreeNode> data = pedigreeService.findPedigree(germplasmPUI, germplasmDbId, germplasmName,
 				accessionNumber, collection, binomialName, genus, species, trialDbId, studyDbId, synonym,
-				commonCropName, programDbId, externalReferenceId, externalReferenceSource, metadata);
+				commonCropName, programDbId, externalReferenceId, externalReferenceSource, includeParents,
+				includeSiblings, includeProgeny, includeFullTree, pedigreeDepth, progenyDepth, metadata);
 		return responseOK(new PedigreeListResponse(), new PedigreeListResponseResult(), data, metadata);
 	}
 

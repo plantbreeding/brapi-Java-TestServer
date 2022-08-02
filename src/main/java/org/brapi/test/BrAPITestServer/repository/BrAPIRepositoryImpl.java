@@ -63,6 +63,10 @@ public class BrAPIRepositoryImpl<T extends BrAPIPrimaryEntity, ID extends Serial
 		}
 		return super.saveAll(entities);
 	}
+	
+	public <S extends T> void refresh(S entity) {
+		this.entityManager.refresh(entity);
+	}
 
 	private String getCurrentUserId() {
 		SecurityContext context = SecurityContextHolder.getContext();

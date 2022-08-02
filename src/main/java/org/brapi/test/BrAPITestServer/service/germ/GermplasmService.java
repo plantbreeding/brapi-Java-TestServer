@@ -188,6 +188,7 @@ public class GermplasmService {
 		Optional<GermplasmEntity> entityOpt = germplasmRepository.findById(germplasmDbId);
 		if (entityOpt.isPresent()) {
 			germplasm = entityOpt.get();
+			germplasmRepository.refresh(germplasm);
 		} else {
 			throw new BrAPIServerDbIdNotFoundException("germplasm", germplasmDbId);
 		}

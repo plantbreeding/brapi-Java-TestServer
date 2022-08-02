@@ -12,33 +12,26 @@ import io.swagger.model.germ.ParentType;
 @Table(name="pedigree_edge")
 public class PedigreeEdgeEntity extends BrAPIBaseEntity{
 	@ManyToOne
-	private PedigreeNodeEntity parentNode;
-	@ManyToOne
-	private PedigreeNodeEntity childNode;
-	@ManyToOne
-	private PedigreeNodeEntity siblingNode;
+	private PedigreeNodeEntity thisNode;
 	@ManyToOne
 	private PedigreeNodeEntity conncetedNode;
 	@Column
 	private ParentType parentType;
+	@Column
+	private EdgeType edgeType;
 	
-	public PedigreeNodeEntity getParentNode() {
-		return parentNode;
+
+	public PedigreeNodeEntity getThisNode() {
+		return thisNode;
 	}
-	public void setParentNode(PedigreeNodeEntity parentNode) {
-		this.parentNode = parentNode;
+	public void setThisNode(PedigreeNodeEntity thisNode) {
+		this.thisNode = thisNode;
 	}
-	public PedigreeNodeEntity getChildNode() {
-		return childNode;
+	public EdgeType getEdgeType() {
+		return edgeType;
 	}
-	public void setChildNode(PedigreeNodeEntity childNode) {
-		this.childNode = childNode;
-	}
-	public PedigreeNodeEntity getSiblingNode() {
-		return siblingNode;
-	}
-	public void setSiblingNode(PedigreeNodeEntity siblingNode) {
-		this.siblingNode = siblingNode;
+	public void setEdgeType(EdgeType edgeType) {
+		this.edgeType = edgeType;
 	}
 	public PedigreeNodeEntity getConncetedNode() {
 		return conncetedNode;
@@ -53,4 +46,7 @@ public class PedigreeEdgeEntity extends BrAPIBaseEntity{
 		this.parentType = parentType;
 	}
     
+	public enum EdgeType{
+		parent, child, sibling
+	}
 }

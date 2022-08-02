@@ -21,4 +21,6 @@ public interface BrAPIRepository<T extends BrAPIPrimaryEntity, ID extends Serial
 	public <S extends T> S save(S entity);
 
 	public <S extends T> List<S> saveAll(Iterable<S> entities);
+	
+	public <S extends T> void refresh(S entity);
 }

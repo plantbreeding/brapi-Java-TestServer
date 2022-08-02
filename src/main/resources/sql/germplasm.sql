@@ -61,3 +61,4 @@ INSERT INTO additional_info(id, key, value) VALUES ('germplasm_ai_3', 'dummyData
 INSERT INTO germplasm_additional_info(germplasm_entity_id, additional_info_id) VALUES ('germplasm3', 'germplasm_ai_3');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('germplasm_er_3', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO germplasm_external_references(germplasm_entity_id, external_references_id) VALUES ('germplasm3', 'germplasm_er_3');
+
