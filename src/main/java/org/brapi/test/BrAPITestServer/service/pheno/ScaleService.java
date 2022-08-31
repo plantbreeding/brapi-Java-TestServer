@@ -126,16 +126,16 @@ public class ScaleService {
 				Integer maxInt = NumberUtils.isCreatable(entity.getValidValueMax())
 						? Integer.parseInt(entity.getValidValueMax())
 						: null;
-				entity.setValidValueMax(UpdateUtility.replaceField(validValues.getMax(), maxInt).toString());
-				entity.setValidValueMax(
-						UpdateUtility.replaceField(validValues.getMaximumValue(), entity.getValidValueMax()));
+				Optional.ofNullable(UpdateUtility.replaceField(validValues.getMax(), maxInt))
+						.ifPresent(t -> entity.setValidValueMax(t.toString()));
+				entity.setValidValueMax(UpdateUtility.replaceField(validValues.getMaximumValue(), entity.getValidValueMax()));
 
 				Integer minInt = NumberUtils.isCreatable(entity.getValidValueMin())
 						? Integer.parseInt(entity.getValidValueMin())
 						: null;
-				entity.setValidValueMin(UpdateUtility.replaceField(validValues.getMin(), minInt).toString());
-				entity.setValidValueMin(
-						UpdateUtility.replaceField(validValues.getMinimumValue(), entity.getValidValueMin()));
+				Optional.ofNullable(UpdateUtility.replaceField(validValues.getMin(), minInt))
+						.ifPresent(t -> entity.setValidValueMin(t.toString()));
+				entity.setValidValueMin(UpdateUtility.replaceField(validValues.getMinimumValue(), entity.getValidValueMin()));
 
 				if (validValues.getCategories() != null) {
 					if (validValues.getCategories().isPresent()) {
