@@ -59,4 +59,4 @@ jobs:
 
       - name: Build Docker and push image
         run: |
-          docker buildx build . --file Dockerfile --tag ${{steps.vars.outputs.imageName}} --tag ${{steps.vars.outputs.streamName}} --push --platform=linux/arm64,linux/amd64
+          docker buildx build . --file Dockerfile --tag ${{steps.vars.outputs.imageName}} --tag ${{env.streamName}} --push --platform=linux/arm64,linux/amd64
