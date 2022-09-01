@@ -57,19 +57,18 @@ jobs:
         if: steps.extract_branch.outputs.branch == 'brapi-server-v2'
         run: echo ::set-output name=streamName::$(echo breedinginsight/brapi-java-server:latest)
         
-      - name: Build and push
-        uses: docker/build-push-action@v3
-        with:
-          platforms: |-
-              linux/amd64
-              linux/arm64
-          push: true
-          tags: '${{steps.vars.outputs.imageName}},${{steps.vars.outputs.streamName}}'
+#       - name: Build and push
+#         uses: docker/build-push-action@v3
+#         with:
+#           platforms: |-
+#               linux/amd64
+#               linux/arm64
+#           push: true
+#           tags: '${{steps.vars.outputs.imageName}},${{steps.vars.outputs.streamName}}'
 
-#       - name: Build Docker and push image
-#         run: |
-#           docker build . --file Dockerfile --tag ${{steps.vars.outputs.imageName}}
-#           docker push ${{steps.vars.outputs.imageName}}
+      - name: Build Docker and push image
+        run: |
+          docker buildx . --file Dockerfile --tag ${{steps.vars.outputs.imageName}} --tag ${{steps.vars.outputs.streamName}} --push --platform=linux/arm64,linux/amd64
 
 #       - name: Tag develop
 #         if: steps.extract_branch.outputs.branch == 'develop'
