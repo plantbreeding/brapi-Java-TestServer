@@ -49,39 +49,14 @@ jobs:
         
       - name: Tag develop
         if: steps.extract_branch.outputs.branch == 'develop'
-        run: echo ::set-output name=streamName::$(echo breedinginsight/brapi-java-server:develop)
+        run: echo "streamName=breedinginsight/brapi-java-server:develop" >> $GITHUB_ENV
       - name: Tag release candidate
         if: contains(github.ref, '/release/')
-        run: echo ::set-output name=streamName::$(echo breedinginsight/brapi-java-server:rc)
+        run: echo "streamName=breedinginsight/brapi-java-server:rc" >> $GITHUB_ENV
       - name: Tag latest
         if: steps.extract_branch.outputs.branch == 'brapi-server-v2'
-        run: echo ::set-output name=streamName::$(echo breedinginsight/brapi-java-server:latest)
-        
-#       - name: Build and push
-#         uses: docker/build-push-action@v3
-#         with:
-#           platforms: |-
-#               linux/amd64
-#               linux/arm64
-#           push: true
-#           tags: '${{steps.vars.outputs.imageName}},${{steps.vars.outputs.streamName}}'
+        run: echo "streamName=breedinginsight/brapi-java-server:latest" >> $GITHUB_ENV
 
       - name: Build Docker and push image
         run: |
           docker buildx build . --file Dockerfile --tag ${{steps.vars.outputs.imageName}} --tag ${{steps.vars.outputs.streamName}} --push --platform=linux/arm64,linux/amd64
-
-#       - name: Tag develop
-#         if: steps.extract_branch.outputs.branch == 'develop'
-#         run: |
-#           docker tag ${{steps.vars.outputs.imageName}} breedinginsight/brapi-java-server:develop
-#           docker push breedinginsight/brapi-java-server:develop
-#       - name: Tag release candidate
-#         if: contains(github.ref, '/release/')
-#         run: |
-#           docker tag ${{steps.vars.outputs.imageName}} breedinginsight/brapi-java-server:rc
-#           docker push breedinginsight/brapi-java-server:rc
-#       - name: Tag latest
-#         if: steps.extract_branch.outputs.branch == 'brapi-server-v2'
-#         run: |
-#           docker tag ${{steps.vars.outputs.imageName}} breedinginsight/brapi-java-server:latest
-#           docker push breedinginsight/brapi-java-server:latest
