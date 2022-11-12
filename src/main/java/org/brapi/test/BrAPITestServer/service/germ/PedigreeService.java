@@ -204,7 +204,7 @@ public class PedigreeService {
 				updateEntityWithEdges(entity, entry.getValue());
 				newEntities.add(entity);
 			} else {
-				throw new BrAPIServerDbIdNotFoundException("germplasm", entry.getKey());
+				throw new BrAPIServerDbIdNotFoundException("germplasm", entry.getKey(), HttpStatus.BAD_REQUEST);
 			}
 		}
 

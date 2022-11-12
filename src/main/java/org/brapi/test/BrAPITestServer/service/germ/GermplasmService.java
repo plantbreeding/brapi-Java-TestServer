@@ -190,7 +190,7 @@ public class GermplasmService {
 			germplasm = entityOpt.get();
 			germplasmRepository.refresh(germplasm);
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("germplasm", germplasmDbId);
+			throw new BrAPIServerDbIdNotFoundException("germplasm", germplasmDbId, errorStatus);
 		}
 		return germplasm;
 	}
@@ -222,18 +222,11 @@ public class GermplasmService {
 		return result;
 	}
 
-	public Germplasm updateGermplasm(String germplasmDbId, @Valid GermplasmNewRequest body)
+	public Germplasm updateGermplasm(String germplasmDbId, GermplasmNewRequest body)
 			throws BrAPIServerException {
-		GermplasmEntity savedEntity;
-		Optional<GermplasmEntity> entityOpt = germplasmRepository.findById(germplasmDbId);
-		if (entityOpt.isPresent()) {
-			GermplasmEntity entity = entityOpt.get();
-			updateEntity(entity, body);
-
-			savedEntity = germplasmRepository.save(entity);
-		} else {
-			throw new BrAPIServerDbIdNotFoundException("germplasm", germplasmDbId);
-		}
+		GermplasmEntity entity = getGermplasmEntity(germplasmDbId, HttpStatus.NOT_FOUND);
+		updateEntity(entity, body);
+		GermplasmEntity savedEntity = germplasmRepository.save(entity);
 
 		return convertFromEntity(savedEntity);
 	}

@@ -51,7 +51,8 @@ public class SearchService {
 				return null;
 			}
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("The search request \"" + searchResultsDbId + "\" is not available in this database. Please choose a different DbId or POST new search request.");
+			String msg = "The search request \"" + searchResultsDbId + "\" is not available in this database. Please choose a different DbId or POST new search request.";
+			throw new BrAPIServerDbIdNotFoundException(msg, HttpStatus.NOT_FOUND);
 		}
 	}
 }

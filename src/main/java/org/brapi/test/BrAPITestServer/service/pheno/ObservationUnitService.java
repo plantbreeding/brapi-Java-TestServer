@@ -270,7 +270,7 @@ public class ObservationUnitService {
 		if (entityOpt.isPresent()) {
 			observationUnit = entityOpt.get();
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("observationUnit", observationUnitDbId);
+			throw new BrAPIServerDbIdNotFoundException("observationUnit", observationUnitDbId, errorStatus);
 		}
 		return observationUnit;
 	}
@@ -303,16 +303,9 @@ public class ObservationUnitService {
 
 	public ObservationUnit updateObservationUnit(String observationUnitDbId, @Valid ObservationUnitNewRequest request)
 			throws BrAPIServerException {
-		ObservationUnitEntity savedEntity;
-		Optional<ObservationUnitEntity> entityOpt = observationUnitRepository.findById(observationUnitDbId);
-		if (entityOpt.isPresent()) {
-			ObservationUnitEntity entity = entityOpt.get();
-			updateEntity(entity, request);
-
-			savedEntity = observationUnitRepository.save(entity);
-		} else {
-			throw new BrAPIServerDbIdNotFoundException("observationUnit", observationUnitDbId);
-		}
+		ObservationUnitEntity entity = getObservationUnitEntity(observationUnitDbId, HttpStatus.NOT_FOUND);
+		updateEntity(entity, request);
+		ObservationUnitEntity savedEntity = observationUnitRepository.save(entity);
 
 		return convertFromEntity(savedEntity);
 	}
@@ -320,8 +313,8 @@ public class ObservationUnitService {
 	public List<ObservationUnitHierarchyLevel> findObservationLevels(String studyDbId, String trialDbId,
 			String programDbId, Metadata metadata) {
 
-		List<ObservationUnitLevel> allLevels = Arrays.asList(ObservationUnitHierarchyLevelEnum.values())
-				.stream().map(levelEnum -> {
+		List<ObservationUnitLevel> allLevels = Arrays.asList(ObservationUnitHierarchyLevelEnum.values()).stream()
+				.map(levelEnum -> {
 					ObservationUnitLevel rel = new ObservationUnitLevel();
 					rel.setLevelName(levelEnum);
 					return rel;
@@ -343,7 +336,7 @@ public class ObservationUnitService {
 			rel.setLevelName(lvl.getLevelName());
 			rel.setLevelOrder(lvl.getLevelOrder());
 			return rel;
-			}).collect(Collectors.toList()));
+		}).collect(Collectors.toList()));
 		levelsSearch.setObservationLevels(null);
 		List<ObservationUnit> moreUnits = findObservationUnits(levelsSearch,
 				new Metadata().pagination(new IndexPagination()));
@@ -356,7 +349,8 @@ public class ObservationUnitService {
 				.filter(unit -> unit.getObservationUnitPosition().getObservationLevel().getLevelName() != null)
 				.map(unit -> {
 					List<ObservationUnitLevel> list = new ArrayList<>();
-					for (ObservationUnitLevel level: unit.getObservationUnitPosition().getObservationLevelRelationships()) {
+					for (ObservationUnitLevel level : unit.getObservationUnitPosition()
+							.getObservationLevelRelationships()) {
 						list.add(level);
 					}
 					list.add(unit.getObservationUnitPosition().getObservationLevel());

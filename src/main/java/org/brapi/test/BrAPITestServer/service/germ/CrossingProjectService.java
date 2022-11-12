@@ -83,7 +83,7 @@ public class CrossingProjectService {
 		if (entityOpt.isPresent()) {
 			crossingProject = entityOpt.get();
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("crossing project", crossingProjectDbId);
+			throw new BrAPIServerDbIdNotFoundException("crossing project", crossingProjectDbId, errorStatus);
 		}
 		return crossingProject;
 	}
@@ -105,18 +105,11 @@ public class CrossingProjectService {
 		return savedValues;
 	}
 
-	public CrossingProject updateCrossingProject(String crossingProjectDbId, @Valid CrossingProjectNewRequest body)
+	public CrossingProject updateCrossingProject(String crossingProjectDbId, CrossingProjectNewRequest body)
 			throws BrAPIServerException {
-		CrossingProjectEntity savedEntity;
-		Optional<CrossingProjectEntity> entityOpt = crossingProjectRepository.findById(crossingProjectDbId);
-		if (entityOpt.isPresent()) {
-			CrossingProjectEntity entity = entityOpt.get();
-			updateEntity(entity, body);
-
-			savedEntity = crossingProjectRepository.save(entity);
-		} else {
-			throw new BrAPIServerDbIdNotFoundException("crossing project", crossingProjectDbId);
-		}
+		CrossingProjectEntity entity = getCrossingProjectEntity(crossingProjectDbId, HttpStatus.NOT_FOUND);
+		updateEntity(entity, body);
+		CrossingProjectEntity savedEntity = crossingProjectRepository.save(entity);
 
 		return convertFromEntity(savedEntity);
 	}

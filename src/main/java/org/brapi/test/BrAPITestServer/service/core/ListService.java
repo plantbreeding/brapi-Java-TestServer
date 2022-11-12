@@ -102,13 +102,13 @@ public class ListService {
 		if (entityOpt.isPresent()) {
 			entity = entityOpt.get();
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("list", listDbId);
+			throw new BrAPIServerDbIdNotFoundException("list", listDbId, HttpStatus.NOT_FOUND);
 		}
 
 		return convertToDetails(entity);
 	}
 
-	public ListDetails updateListItems(String listDbId, @Valid List<String> listItems) throws BrAPIServerException {
+	public ListDetails updateListItems(String listDbId, List<String> listItems) throws BrAPIServerException {
 		ListEntity savedEntity;
 		Optional<ListEntity> entityOpt = listRepository.findById(listDbId);
 		if (entityOpt.isPresent()) {
@@ -126,13 +126,13 @@ public class ListService {
 
 			savedEntity = listRepository.save(entity);
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("list", listDbId);
+			throw new BrAPIServerDbIdNotFoundException("list", listDbId, HttpStatus.NOT_FOUND);
 		}
 
 		return convertToDetails(savedEntity);
 	}
 
-	public ListDetails updateList(String listDbId, @Valid ListNewRequest list) throws BrAPIServerException {
+	public ListDetails updateList(String listDbId, ListNewRequest list) throws BrAPIServerException {
 		ListEntity savedEntity;
 		Optional<ListEntity> entityOpt = listRepository.findById(listDbId);
 		if (entityOpt.isPresent()) {
@@ -142,7 +142,7 @@ public class ListService {
 
 			savedEntity = listRepository.save(entity);
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("list", listDbId);
+			throw new BrAPIServerDbIdNotFoundException("list", listDbId, HttpStatus.NOT_FOUND);
 		}
 
 		return convertToDetails(savedEntity);

@@ -56,16 +56,9 @@ public class ScaleService {
 	}
 
 	public Scale updateScale(String scaleDbId, ScaleBaseClass body) throws BrAPIServerException {
-		ScaleEntity savedEntity;
-		Optional<ScaleEntity> entityOpt = scaleRepository.findById(scaleDbId);
-		if (entityOpt.isPresent()) {
-			ScaleEntity entity = entityOpt.get();
-			updateEntity(entity, body);
-
-			savedEntity = saveScaleEntity(entity);
-		} else {
-			throw new BrAPIServerDbIdNotFoundException("scale", scaleDbId);
-		}
+		ScaleEntity entity = getScaleEntity(scaleDbId, HttpStatus.NOT_FOUND);
+		updateEntity(entity, body);
+		ScaleEntity savedEntity = saveScaleEntity(entity);
 
 		return convertFromEntity(savedEntity);
 	}
@@ -101,7 +94,7 @@ public class ScaleService {
 			if (entityOpt.isPresent()) {
 				scale = entityOpt.get();
 			} else {
-				throw new BrAPIServerDbIdNotFoundException("scale", scaleDbId);
+				throw new BrAPIServerDbIdNotFoundException("scale", scaleDbId, errorStatus);
 			}
 		}
 		return scale;

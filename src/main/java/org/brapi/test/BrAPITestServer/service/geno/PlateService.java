@@ -21,6 +21,7 @@ import org.brapi.test.BrAPITestServer.service.core.StudyService;
 import org.brapi.test.BrAPITestServer.service.core.TrialService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Metadata;
@@ -107,16 +108,20 @@ public class PlateService {
 	}
 
 	public Plate getPlate(String plateDbId) throws BrAPIServerException {
-		return convertFromEntity(getPlateEntity(plateDbId));
+		return convertFromEntity(getPlateEntity(plateDbId, HttpStatus.NOT_FOUND));
 	}
 
 	public PlateEntity getPlateEntity(String plateDbId) throws BrAPIServerException {
+		return getPlateEntity(plateDbId, HttpStatus.BAD_REQUEST);
+	}
+
+	public PlateEntity getPlateEntity(String plateDbId, HttpStatus errorStatus) throws BrAPIServerException {
 		PlateEntity plate = null;
 		Optional<PlateEntity> entityOpt = plateRepository.findById(plateDbId);
 		if (entityOpt.isPresent()) {
 			plate = entityOpt.get();
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("plate", plateDbId);
+			throw new BrAPIServerDbIdNotFoundException("plate", plateDbId, errorStatus);
 		}
 		return plate;
 	}
@@ -138,16 +143,9 @@ public class PlateService {
 		List<Plate> savedplates = new ArrayList<>();
 
 		for (Entry<String, PlateNewRequest> entry : requests.entrySet()) {
-			PlateEntity savedEntity;
-			Optional<PlateEntity> entityOpt = plateRepository.findById(entry.getKey());
-			if (entityOpt.isPresent()) {
-				PlateEntity entity = entityOpt.get();
-				updateEntity(entity, entry.getValue());
-
-				savedEntity = plateRepository.save(entity);
-			} else {
-				throw new BrAPIServerDbIdNotFoundException("plate", entry.getKey());
-			}
+			PlateEntity entity = getPlateEntity(entry.getKey(), HttpStatus.NOT_FOUND);
+			updateEntity(entity, entry.getValue());
+			PlateEntity savedEntity = plateRepository.save(entity);
 
 			savedplates.add(convertFromEntity(savedEntity));
 		}

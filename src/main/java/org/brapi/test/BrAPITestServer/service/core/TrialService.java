@@ -106,10 +106,8 @@ public class TrialService {
 				.appendList(request.getLocationDbIds(), "*study.location.id")
 				.appendList(request.getLocationNames(), "*study.location.locationName")
 				.appendList(request.getProgramDbIds(), "program.id")
-				.appendList(request.getProgramNames(), "program.name")
-				.appendList(request.getStudyDbIds(), "*study.id")
-				.appendList(request.getStudyNames(), "*study.studyName")
-				.appendList(request.getTrialDbIds(), "id")
+				.appendList(request.getProgramNames(), "program.name").appendList(request.getStudyDbIds(), "*study.id")
+				.appendList(request.getStudyNames(), "*study.studyName").appendList(request.getTrialDbIds(), "id")
 				.appendList(request.getTrialNames(), "trialName")
 				.appendDateRange(request.getSearchDateRangeStart(), request.getSearchDateRangeEnd(), "startDate")
 				.withSort(getSortByField(request.getSortBy()), request.getSortOrder());
@@ -135,7 +133,7 @@ public class TrialService {
 		if (entityOption.isPresent()) {
 			entity = entityOption.get();
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("trial", trialDbId);
+			throw new BrAPIServerDbIdNotFoundException("trial", trialDbId, errorStatus);
 		}
 		return entity;
 	}
@@ -156,17 +154,10 @@ public class TrialService {
 		return savedTrials;
 	}
 
-	public Trial updateTrial(String trialDbId, @Valid TrialNewRequest body) throws BrAPIServerException {
-		TrialEntity savedEntity;
-		Optional<TrialEntity> entityOpt = trialRepository.findById(trialDbId);
-		if (entityOpt.isPresent()) {
-			TrialEntity entity = entityOpt.get();
-			updateEntity(entity, body);
-
-			savedEntity = trialRepository.save(entity);
-		} else {
-			throw new BrAPIServerDbIdNotFoundException("trial", trialDbId);
-		}
+	public Trial updateTrial(String trialDbId, TrialNewRequest body) throws BrAPIServerException {
+		TrialEntity entity = getTrialEntity(trialDbId, HttpStatus.NOT_FOUND);
+		updateEntity(entity, body);
+		TrialEntity savedEntity = trialRepository.save(entity);
 
 		return convertFromEntity(savedEntity);
 	}

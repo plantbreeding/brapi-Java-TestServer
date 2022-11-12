@@ -17,6 +17,7 @@ import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Metadata;
@@ -91,31 +92,28 @@ public class LocationService {
 	}
 
 	public Location getLocation(String locationDbId) throws BrAPIServerException {
-		return convertFromEntity(getLocationEntity(locationDbId));
+		return convertFromEntity(getLocationEntity(locationDbId, HttpStatus.NOT_FOUND));
 	}
 
 	public LocationEntity getLocationEntity(String locationDbId) throws BrAPIServerException {
+		return getLocationEntity(locationDbId, HttpStatus.BAD_REQUEST);
+	}
+
+	public LocationEntity getLocationEntity(String locationDbId, HttpStatus errorStatus) throws BrAPIServerException {
 		LocationEntity location = null;
 		Optional<LocationEntity> entityOpt = locationRepository.findById(locationDbId);
 		if (entityOpt.isPresent()) {
 			location = entityOpt.get();
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("location", locationDbId);
+			throw new BrAPIServerDbIdNotFoundException("location", locationDbId, errorStatus);
 		}
 		return location;
 	}
 
 	public Location updateLocation(String locationDbId, @Valid LocationNewRequest body) throws BrAPIServerException {
-		LocationEntity savedEntity;
-		Optional<LocationEntity> entityOpt = locationRepository.findById(locationDbId);
-		if (entityOpt.isPresent()) {
-			LocationEntity entity = entityOpt.get();
-			updateEntity(entity, body);
-
-			savedEntity = locationRepository.save(entity);
-		} else {
-			throw new BrAPIServerDbIdNotFoundException("location", locationDbId);
-		}
+		LocationEntity entity = getLocationEntity(locationDbId, HttpStatus.NOT_FOUND);
+		updateEntity(entity, body);
+		LocationEntity savedEntity = locationRepository.save(entity);
 
 		return convertFromEntity(savedEntity);
 	}

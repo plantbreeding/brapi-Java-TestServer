@@ -52,16 +52,9 @@ public class TraitService {
 	}
 
 	public Trait updateTrait(String traitDbId, @Valid TraitBaseClass body) throws BrAPIServerException {
-		TraitEntity savedEntity;
-		Optional<TraitEntity> entityOpt = traitRepository.findById(traitDbId);
-		if (entityOpt.isPresent()) {
-			TraitEntity entity = entityOpt.get();
-			updateEntity(entity, body);
-
-			savedEntity = saveTraitEntity(entity);
-		} else {
-			throw new BrAPIServerDbIdNotFoundException("trait", traitDbId);
-		}
+		TraitEntity entity = getTraitEntity(traitDbId, HttpStatus.NOT_FOUND);
+		updateEntity(entity, body);
+		TraitEntity savedEntity = saveTraitEntity(entity);
 
 		return convertFromEntity(savedEntity);
 	}
@@ -97,7 +90,7 @@ public class TraitService {
 			if (entityOpt.isPresent()) {
 				trait = entityOpt.get();
 			} else {
-				throw new BrAPIServerDbIdNotFoundException("trait", traitDbId);
+				throw new BrAPIServerDbIdNotFoundException("trait", traitDbId, errorStatus);
 			}
 		}
 		return trait;
@@ -106,7 +99,7 @@ public class TraitService {
 	public TraitEntity updateEntity(TraitEntity entity, @Valid TraitBaseClass trait) throws BrAPIServerException {
 
 		UpdateUtility.updateEntity(trait, entity);
-		
+
 		entity.setAlternativeAbbreviations(
 				UpdateUtility.replaceField(trait.getAlternativeAbbreviations(), entity.getAlternativeAbbreviations()));
 		entity.setAttribute(UpdateUtility.replaceField(trait.getAttribute(), entity.getAttribute()));
@@ -132,7 +125,7 @@ public class TraitService {
 		if (entity != null) {
 			trait = new Trait();
 			UpdateUtility.convertFromEntity(entity, trait);
-			
+
 			trait.setAlternativeAbbreviations(entity.getAlternativeAbbreviations());
 			trait.setAttribute(entity.getAttribute());
 			trait.setAttributePUI(entity.getAttributePUI());
@@ -143,7 +136,7 @@ public class TraitService {
 			trait.setStatus(entity.getStatus());
 			trait.setSynonyms(entity.getSynonyms());
 			trait.setTraitClass(entity.getTraitClass());
-			trait.setTraitDbId(entity.getId()); 
+			trait.setTraitDbId(entity.getId());
 			trait.setTraitDescription(entity.getTraitDescription());
 			trait.setTraitName(entity.getTraitName());
 			trait.setTraitPUI(entity.getTraitPUI());

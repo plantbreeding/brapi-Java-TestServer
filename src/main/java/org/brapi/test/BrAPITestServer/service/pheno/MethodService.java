@@ -3,7 +3,6 @@ package org.brapi.test.BrAPITestServer.service.pheno;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import jakarta.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
@@ -51,21 +50,15 @@ public class MethodService {
 		return methods;
 	}
 
-	public Method updateMethod(String methodDbId, @Valid MethodBaseClass body) throws BrAPIServerException {
-		MethodEntity savedEntity;
-		Optional<MethodEntity> entityOpt = methodRepository.findById(methodDbId);
-		if (entityOpt.isPresent()) {
-			MethodEntity entity = entityOpt.get();
-			updateEntity(entity, body);
-			savedEntity = saveMethodEntity(entity);
-		} else {
-			throw new BrAPIServerDbIdNotFoundException("method", methodDbId, "methodDbId");
-		}
+	public Method updateMethod(String methodDbId, MethodBaseClass body) throws BrAPIServerException {
+		MethodEntity entity = getMethodEntity(methodDbId, HttpStatus.NOT_FOUND);
+		updateEntity(entity, body);
+		MethodEntity savedEntity = saveMethodEntity(entity);
 
 		return convertFromEntity(savedEntity);
 	}
 
-	public List<Method> saveMethods(@Valid List<MethodBaseClass> body) throws BrAPIServerException {
+	public List<Method> saveMethods(List<MethodBaseClass> body) throws BrAPIServerException {
 		List<Method> savedMethods = new ArrayList<>();
 		for (MethodBaseClass request : body) {
 			MethodEntity newEntity = new MethodEntity();
@@ -96,7 +89,7 @@ public class MethodService {
 			if (entityOpt.isPresent()) {
 				method = entityOpt.get();
 			} else {
-				throw new BrAPIServerDbIdNotFoundException("method", methodDbId, "methodDbId");
+				throw new BrAPIServerDbIdNotFoundException("method", methodDbId, "methodDbId", errorStatus);
 			}
 		}
 		return method;

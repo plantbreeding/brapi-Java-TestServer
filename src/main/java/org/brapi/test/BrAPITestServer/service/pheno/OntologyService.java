@@ -15,6 +15,7 @@ import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Metadata;
@@ -52,14 +53,7 @@ public class OntologyService {
 	}
 
 	public Ontology getOntology(String ontologyDbId) throws BrAPIServerException {
-		OntologyEntity entity = getOntologyEntity(ontologyDbId);
-		Ontology ontology = null;
-		if (entity != null) {
-			ontology = convertFromEntity(entity);
-		} else {
-			throw new BrAPIServerDbIdNotFoundException("ontology", ontologyDbId);
-		}
-		return ontology;
+		return convertFromEntity(getOntologyEntity(ontologyDbId, HttpStatus.NOT_FOUND));
 	}
 
 	public List<Ontology> saveOntologies(List<OntologyNewRequest> body) {
@@ -75,16 +69,9 @@ public class OntologyService {
 	}
 
 	public Ontology updateOntologies(String ontologyDbId, OntologyNewRequest body) throws BrAPIServerException {
-		OntologyEntity savedEntity;
-		Optional<OntologyEntity> entityOpt = ontologyRepository.findById(ontologyDbId);
-		if (entityOpt.isPresent()) {
-			OntologyEntity entity = entityOpt.get();
-			updateEntity(entity, body);
-
-			savedEntity = ontologyRepository.save(entity);
-		} else {
-			throw new BrAPIServerDbIdNotFoundException("ontology", ontologyDbId);
-		}
+		OntologyEntity entity = getOntologyEntity(ontologyDbId, HttpStatus.NOT_FOUND);
+		updateEntity(entity, body);
+		OntologyEntity savedEntity = ontologyRepository.save(entity);
 
 		return convertFromEntity(savedEntity);
 	}
@@ -125,16 +112,22 @@ public class OntologyService {
 	}
 
 	public OntologyEntity getOntologyEntity(String ontologyDbId) throws BrAPIServerException {
-		OntologyEntity method = null;
+		return getOntologyEntity(ontologyDbId, HttpStatus.BAD_REQUEST);
+	}
+
+	public OntologyEntity getOntologyEntity(String ontologyDbId, HttpStatus errorStatus) throws BrAPIServerException {
+		OntologyEntity ontology = null;
 		if (ontologyDbId != null) {
 			Optional<OntologyEntity> entityOpt = ontologyRepository.findById(ontologyDbId);
 			if (entityOpt.isPresent()) {
-				method = entityOpt.get();
+				ontology = entityOpt.get();
 			} else {
-				throw new BrAPIServerDbIdNotFoundException("ontology", ontologyDbId);
+				throw new BrAPIServerDbIdNotFoundException("ontology", ontologyDbId, errorStatus);
 			}
+		}else {
+			throw new BrAPIServerDbIdNotFoundException("ontology", ontologyDbId, errorStatus);
 		}
-		return method;
+		return ontology;
 	}
 
 	public void updateOntologyReference(OntologyReferenceHolder entity, Optional<OntologyReference> ontologyRef)

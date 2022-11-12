@@ -103,16 +103,21 @@ public class VariantSetService {
 	}
 
 	public VariantSet getVariantSet(String variantSetDbId) throws BrAPIServerException {
-		return convertFromEntity(getVariantSetEntity(variantSetDbId));
+		return convertFromEntity(getVariantSetEntity(variantSetDbId, HttpStatus.NOT_FOUND));
 	}
 
 	public VariantSetEntity getVariantSetEntity(String variantSetDbId) throws BrAPIServerException {
+		return getVariantSetEntity(variantSetDbId, HttpStatus.BAD_REQUEST);
+	}
+
+	public VariantSetEntity getVariantSetEntity(String variantSetDbId, HttpStatus errorStatus)
+			throws BrAPIServerException {
 		VariantSetEntity variantSet = null;
 		Optional<VariantSetEntity> entityOpt = variantSetRepository.findById(variantSetDbId);
 		if (entityOpt.isPresent()) {
 			variantSet = entityOpt.get();
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("variantSet", variantSetDbId);
+			throw new BrAPIServerDbIdNotFoundException("variantSet", variantSetDbId, errorStatus);
 		}
 		return variantSet;
 	}
@@ -140,19 +145,19 @@ public class VariantSetService {
 		VariantSetMetadataFields metaDataFieldGT = new VariantSetMetadataFields();
 		metaDataFieldGT.setDataType(DataTypePrimitives.STRING);
 		metaDataFieldGT.setFieldAbbreviation("GT");
-		metaDataFieldGT.setFieldName("Genotype");		
+		metaDataFieldGT.setFieldName("Genotype");
 		variantSet.addMetadataFieldsItem(metaDataFieldGT);
 
 		VariantSetMetadataFields metaDataFieldRD = new VariantSetMetadataFields();
 		metaDataFieldRD.setDataType(DataTypePrimitives.INTEGER);
 		metaDataFieldRD.setFieldAbbreviation("RD");
-		metaDataFieldRD.setFieldName("Read Depth");		
+		metaDataFieldRD.setFieldName("Read Depth");
 		variantSet.addMetadataFieldsItem(metaDataFieldRD);
 
 		VariantSetMetadataFields metaDataFieldGL = new VariantSetMetadataFields();
 		metaDataFieldGL.setDataType(DataTypePrimitives.FLOAT);
 		metaDataFieldGL.setFieldAbbreviation("GL");
-		metaDataFieldGL.setFieldName("Genotype Likelihood");		
+		metaDataFieldGL.setFieldName("Genotype Likelihood");
 		variantSet.addMetadataFieldsItem(metaDataFieldGL);
 
 		return variantSet;

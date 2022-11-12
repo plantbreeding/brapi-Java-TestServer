@@ -44,7 +44,7 @@ public class GermplasmAttributeService {
 			String methodPUI, String scaleDbId, String scaleName, String scalePUI, String traitDbId, String traitName,
 			String traitPUI, String commonCropName, String programDbId, String externalReferenceId,
 			String externalReferenceID, String externalReferenceSource, Metadata metadata) {
-		
+
 		GermplasmAttributeSearchRequest request = new GermplasmAttributeSearchRequest();
 		if (attributeCategory != null)
 			request.addAttributeCategoriesItem(attributeCategory);
@@ -89,7 +89,7 @@ public class GermplasmAttributeService {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<GermplasmAttributeDefinitionEntity> searchQuery = new SearchQueryBuilder<GermplasmAttributeDefinitionEntity>(
 				GermplasmAttributeDefinitionEntity.class);
-		if(request.getGermplasmDbIds() != null || request.getGermplasmNames() != null) {
+		if (request.getGermplasmDbIds() != null || request.getGermplasmNames() != null) {
 			searchQuery = searchQuery.join("values", "attribValue")
 					.appendList(request.getGermplasmDbIds(), "*attribValue.germplasm.id")
 					.appendList(request.getGermplasmNames(), "*attribValue.germplasm.name");
@@ -97,8 +97,7 @@ public class GermplasmAttributeService {
 		if (request.getProgramDbIds() != null || request.getProgramNames() != null || request.getTrialDbIds() != null
 				|| request.getTrialNames() != null || request.getStudyDbIds() != null
 				|| request.getStudyNames() != null) {
-			searchQuery = searchQuery.join("values", "attribValue")
-					.join("*attribValue.germplasm", "germplasm")
+			searchQuery = searchQuery.join("values", "attribValue").join("*attribValue.germplasm", "germplasm")
 					.join("*germplasm.observationUnits", "obsunit")
 					.appendList(request.getProgramDbIds(), "*obsunit.program.id")
 					.appendList(request.getProgramNames(), "*obsunit.program.name")
@@ -107,30 +106,25 @@ public class GermplasmAttributeService {
 					.appendList(request.getStudyDbIds(), "*obsunit.study.id")
 					.appendList(request.getStudyNames(), "*obsunit.study.studyName");
 		}
-		
+
 		searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
-						.appendList(request.getAttributeDbIds(), "id")
-						.appendList(request.getAttributeNames(), "name")
-						.appendList(request.getAttributePUIs(), "attributePUI")
-						.appendList(request.getAttributeCategories(), "attributeCategory")
-						.appendEnumList(request.getDataTypes(), "datatype")
-						.appendList(request.getMethodDbIds(), "method.id")
-						.appendList(request.getMethodNames(), "method.name")
-						.appendList(request.getMethodPUIs(), "method.methodPUI")
-						.appendList(request.getScaleDbIds(), "scale.id")
-						.appendList(request.getScaleNames(), "scale.name")
-						.appendList(request.getScalePUIs(), "scale.scalePUI")
-						.appendList(request.getTraitClasses(), "trait.traitClass")
-						.appendList(request.getTraitDbIds(), "trait.id")
-						.appendList(request.getTraitNames(), "trait.name")
-						.appendList(request.getTraitPUIs(), "trait.traitPUI")
-						.appendList(request.getTraitAttributes(), "trait.attribute")
-						.appendList(request.getTraitAttributePUIs(), "trait.attributePUI")
-						.appendList(request.getTraitEntities(), "trait.entity")
-						.appendList(request.getTraitEntityPUIs(), "trait.entityPUI")
-						.appendList(request.getOntologyDbIds(), "ontology.id")
-						.appendList(request.getCommonCropNames(), "crop.crop_name");
-	
+				.appendList(request.getAttributeDbIds(), "id").appendList(request.getAttributeNames(), "name")
+				.appendList(request.getAttributePUIs(), "attributePUI")
+				.appendList(request.getAttributeCategories(), "attributeCategory")
+				.appendEnumList(request.getDataTypes(), "datatype").appendList(request.getMethodDbIds(), "method.id")
+				.appendList(request.getMethodNames(), "method.name")
+				.appendList(request.getMethodPUIs(), "method.methodPUI").appendList(request.getScaleDbIds(), "scale.id")
+				.appendList(request.getScaleNames(), "scale.name").appendList(request.getScalePUIs(), "scale.scalePUI")
+				.appendList(request.getTraitClasses(), "trait.traitClass")
+				.appendList(request.getTraitDbIds(), "trait.id").appendList(request.getTraitNames(), "trait.name")
+				.appendList(request.getTraitPUIs(), "trait.traitPUI")
+				.appendList(request.getTraitAttributes(), "trait.attribute")
+				.appendList(request.getTraitAttributePUIs(), "trait.attributePUI")
+				.appendList(request.getTraitEntities(), "trait.entity")
+				.appendList(request.getTraitEntityPUIs(), "trait.entityPUI")
+				.appendList(request.getOntologyDbIds(), "ontology.id")
+				.appendList(request.getCommonCropNames(), "crop.crop_name");
+
 		Page<GermplasmAttributeDefinitionEntity> page = attributeRepository.findAllBySearch(searchQuery, pageReq);
 		List<GermplasmAttribute> attributes = page.map(this::convertFromEntity).getContent();
 		PagingUtility.calculateMetaData(metadata, page);
@@ -153,7 +147,7 @@ public class GermplasmAttributeService {
 		if (entityOpt.isPresent()) {
 			attribute = entityOpt.get();
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("germplasm attribute", attributeDbId);
+			throw new BrAPIServerDbIdNotFoundException("germplasm attribute", attributeDbId, errorStatus);
 		}
 		return attribute;
 	}
@@ -175,18 +169,12 @@ public class GermplasmAttributeService {
 		return savedGermplasmAttributes;
 	}
 
-	public GermplasmAttribute updateGermplasmAttribute(String attributeDbId, @Valid GermplasmAttributeNewRequest body)
+	public GermplasmAttribute updateGermplasmAttribute(String attributeDbId, GermplasmAttributeNewRequest body)
 			throws BrAPIServerException {
-		GermplasmAttributeDefinitionEntity savedEntity;
-		Optional<GermplasmAttributeDefinitionEntity> entityOpt = attributeRepository.findById(attributeDbId);
-		if (entityOpt.isPresent()) {
-			GermplasmAttributeDefinitionEntity entity = entityOpt.get();
-			updateEntity(entity, body);
-
-			savedEntity = attributeRepository.save(entity);
-		} else {
-			throw new BrAPIServerDbIdNotFoundException("germplasm attribute", attributeDbId);
-		}
+		GermplasmAttributeDefinitionEntity entity = getGermplasmAttributeDefinitionEntity(attributeDbId,
+				HttpStatus.NOT_FOUND);
+		updateEntity(entity, body);
+		GermplasmAttributeDefinitionEntity savedEntity = attributeRepository.save(entity);
 
 		return convertFromEntity(savedEntity);
 	}
