@@ -119,7 +119,7 @@ public class ScaleService {
 
 		ontologyService.updateOntologyReference(entity, scale.getOntologyReference());
 
-		if (scale.getValidValues() != null) {
+		if (scale.getValidValues() != null && scale.getValidValues().isPresent()) {
 			if (scale.getValidValues().isPresent()) {
 				ScaleBaseClassValidValues validValues = scale.getValidValues().get();
 
@@ -137,7 +137,7 @@ public class ScaleService {
 						.ifPresent(t -> entity.setValidValueMin(t.toString()));
 				entity.setValidValueMin(UpdateUtility.replaceField(validValues.getMinimumValue(), entity.getValidValueMin()));
 
-				if (validValues.getCategories() != null) {
+				if (validValues.getCategories() != null && validValues.getCategories().isPresent()) {
 					if (validValues.getCategories().isPresent()) {
 						List<ScaleBaseClassValidValuesCategories> categories = validValues.getCategories().get();
 

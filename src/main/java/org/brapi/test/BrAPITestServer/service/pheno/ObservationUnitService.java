@@ -543,8 +543,10 @@ public class ObservationUnitService {
 					relationshipEntity.setLevelCode(level.getLevelCode());
 					relationshipEntity.setLevelName(level.getLevelName());
 					relationshipEntity.setLevelOrder(level.getLevelOrder());
-					ObservationUnitEntity parentEntity = getObservationUnitEntity(level.getObservationUnitDbId());
-					relationshipEntity.setObservationUnit(parentEntity);
+					if(level.getObservationUnitDbId() != null) {
+						ObservationUnitEntity parentEntity = getObservationUnitEntity(level.getObservationUnitDbId());
+						relationshipEntity.setObservationUnit(parentEntity);
+					}
 					relationshipEntity.setPosition(entity);
 				} catch (BrAPIServerException e) {
 					e.printStackTrace();
