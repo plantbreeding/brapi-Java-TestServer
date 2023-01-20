@@ -119,50 +119,46 @@ public class ScaleService {
 
 		ontologyService.updateOntologyReference(entity, scale.getOntologyReference());
 
-		if (scale.getValidValues() != null) {
-			if (scale.getValidValues().isPresent()) {
-				ScaleBaseClassValidValues validValues = scale.getValidValues().get();
+		if (scale.getValidValues() != null && scale.getValidValues().isPresent()) {
+			ScaleBaseClassValidValues validValues = scale.getValidValues().get();
 
-				Integer maxInt = NumberUtils.isCreatable(entity.getValidValueMax())
-						? Integer.parseInt(entity.getValidValueMax())
-						: null;
-				Optional.ofNullable(UpdateUtility.replaceField(validValues.getMax(), maxInt))
-						.ifPresent(t -> entity.setValidValueMax(t.toString()));
-				entity.setValidValueMax(UpdateUtility.replaceField(validValues.getMaximumValue(), entity.getValidValueMax()));
+			Integer maxInt = NumberUtils.isCreatable(entity.getValidValueMax())
+					? Integer.parseInt(entity.getValidValueMax())
+					: null;
+			Optional.ofNullable(UpdateUtility.replaceField(validValues.getMax(), maxInt))
+					.ifPresent(t -> entity.setValidValueMax(t.toString()));
+			entity.setValidValueMax(UpdateUtility.replaceField(validValues.getMaximumValue(), entity.getValidValueMax()));
 
-				Integer minInt = NumberUtils.isCreatable(entity.getValidValueMin())
-						? Integer.parseInt(entity.getValidValueMin())
-						: null;
-				Optional.ofNullable(UpdateUtility.replaceField(validValues.getMin(), minInt))
-						.ifPresent(t -> entity.setValidValueMin(t.toString()));
-				entity.setValidValueMin(UpdateUtility.replaceField(validValues.getMinimumValue(), entity.getValidValueMin()));
+			Integer minInt = NumberUtils.isCreatable(entity.getValidValueMin())
+					? Integer.parseInt(entity.getValidValueMin())
+					: null;
+			Optional.ofNullable(UpdateUtility.replaceField(validValues.getMin(), minInt))
+					.ifPresent(t -> entity.setValidValueMin(t.toString()));
+			entity.setValidValueMin(UpdateUtility.replaceField(validValues.getMinimumValue(), entity.getValidValueMin()));
 
-				if (validValues.getCategories() != null) {
-					if (validValues.getCategories().isPresent()) {
-						List<ScaleBaseClassValidValuesCategories> categories = validValues.getCategories().get();
+			if (validValues.getCategories() != null && validValues.getCategories().isPresent()) {
+				List<ScaleBaseClassValidValuesCategories> categories = validValues.getCategories().get();
 
-						if (entity.getValidValueCategories() != null) {
-							for (ScaleValidValueCategoryEntity catEntity : entity.getValidValueCategories()) {
-								catEntity.setScale(null);
-							}
-						}
-						entity.setValidValueCategories(new ArrayList<>());
-						entity.setValidValueCategories(categories.stream().map(cat -> {
-							ScaleValidValueCategoryEntity catEntity = new ScaleValidValueCategoryEntity();
-							catEntity.setLabel(cat.getLabel());
-							catEntity.setValue(cat.getValue());
-							catEntity.setScale(entity);
-							return catEntity;
-						}).collect(Collectors.toList()));
-					} else {
-						entity.setValidValueCategories(null);
+				if (entity.getValidValueCategories() != null) {
+					for (ScaleValidValueCategoryEntity catEntity : entity.getValidValueCategories()) {
+						catEntity.setScale(null);
 					}
 				}
+				entity.setValidValueCategories(new ArrayList<>());
+				entity.setValidValueCategories(categories.stream().map(cat -> {
+					ScaleValidValueCategoryEntity catEntity = new ScaleValidValueCategoryEntity();
+					catEntity.setLabel(cat.getLabel());
+					catEntity.setValue(cat.getValue());
+					catEntity.setScale(entity);
+					return catEntity;
+				}).collect(Collectors.toList()));
 			} else {
 				entity.setValidValueCategories(null);
-				entity.setValidValueMax(null);
-				entity.setValidValueMin(null);
 			}
+		} else {
+			entity.setValidValueCategories(null);
+			entity.setValidValueMax(null);
+			entity.setValidValueMin(null);
 		}
 
 		return entity;
