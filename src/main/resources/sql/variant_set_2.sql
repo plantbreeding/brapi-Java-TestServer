@@ -1,4 +1,4 @@
-INSERT INTO variantset (auth_user_id, id, variant_set_name, reference_set_id, study_id) VALUES('anonymousUser', 'variantset2', 'Dummy VariantSet 2', 'reference_set2', 'study2');
+INSERT INTO variantset (auth_user_id, id, variant_set_name, reference_set_id, study_id) VALUES('anonymousUser', 'variantset2', 'Dummy VariantSet 2', 'reference_set2', 'study3');
 
 INSERT INTO variantset_analysis (id, analysis_name, created, description, "type", updated, variant_set_id) VALUES('variantset_analysis2', 'Standard QC', '2019-11-23', 'This is a formal description of a QC methodology. Blah blah blah ...', 'QC', '2019-11-23', 'variantset2');
 INSERT INTO variant_set_analysis_entity_software (variant_set_analysis_entity_id, software) VALUES('variantset_analysis2', 'https://github.com/fake-genotyping/QC');

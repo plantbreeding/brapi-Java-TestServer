@@ -46,3 +46,24 @@ INSERT INTO additional_info(id, key, value) VALUES ('study_ai_2', 'dummyData', d
 INSERT INTO study_additional_info(study_entity_id, additional_info_id) VALUES ('study2', 'study_ai_2');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('study_er_2', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO study_external_references(study_entity_id, external_references_id) VALUES ('study2', 'study_er_2');
+
+
+--study 3
+INSERT INTO study(auth_user_id, id, active, cultural_practices, documentationurl, end_date, license, observation_units_description, start_date, study_code, study_description, study_name, studypui, study_type, location_id, trial_id, program_id, crop_id) VALUES ('anonymousUser', 'study3', true, null, 'https://brapi.org', '2023-02-02', 'https://creativecommons.org/licenses/by/4.0', null, '2023-02-02', 'Geno_2023', 'Dummy Genotyping Study', 'Dummy Genotyping Study', 'doi:10.255454/fake/32345', 'genotype','location_02', 'trial2', 'program2', '1');
+
+INSERT INTO person(auth_user_id, id, description, email_address, institute_name, first_name, last_name, mailing_address, middle_name, phone_number, userid) VALUES ('anonymousUser', 'study_contact_3', 'Breeder', 'e.breeder@brapi.org', 'Plant Science Institute', 'Eve', 'Breeder', '123 Road Street, City, State, Country, 98765', '', '+19876543210', '0000-0002-0632-8751');
+INSERT INTO study_contact (study_db_id, person_db_id) VALUES('study3', 'study_contact_3');
+INSERT INTO study_last_update (id, "timestamp", "version", study_id) VALUES('study_last_update_3', '2020-04-02T20:55:29.277Z', '2.2.3', 'study3');
+INSERT INTO study_observation_level (id, level_name, level_order, study_id) VALUES('study_observation_level_9', 'field', 0, 'study3');
+INSERT INTO study_observation_level (id, level_name, level_order, study_id) VALUES('study_observation_level_10', 'block', 1, 'study3');
+INSERT INTO study_observation_level (id, level_name, level_order, study_id) VALUES('study_observation_level_11', 'plot', 2, 'study3');
+INSERT INTO study_observation_level (id, level_name, level_order, study_id) VALUES('study_observation_level_12', 'plant', 3, 'study3');
+INSERT INTO study_season (study_db_id, season_db_id) VALUES('study3', 'spring_2012');
+INSERT INTO study_season (study_db_id, season_db_id) VALUES('study3', 'summer_2012');
+INSERT INTO study_season (study_db_id, season_db_id) VALUES('study3', 'fall_2012');
+INSERT INTO study_season (study_db_id, season_db_id) VALUES('study3', 'winter_2012');
+
+INSERT INTO additional_info(id, key, value) VALUES ('study_ai_3', 'dummyData', decode('ACED000574000454727565','hex'));
+INSERT INTO study_additional_info(study_entity_id, additional_info_id) VALUES ('study3', 'study_ai_3');
+INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('study_er_3', 'https://brapi.org/specification', 'BrAPI Doc');
+INSERT INTO study_external_references(study_entity_id, external_references_id) VALUES ('study3', 'study_er_3');
