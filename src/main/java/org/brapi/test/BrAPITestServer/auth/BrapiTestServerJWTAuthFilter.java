@@ -105,7 +105,7 @@ public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
 			throws FileNotFoundException, IOException, GeneralSecurityException {
 
 		AuthDetails userDetails = null;
-		if (token.equals("XXXX") || token.equals("YYYY")) {
+		if (token.equals("XXXX") || token.equals("YYYY") || token.equals("ZZZZ")) {
 			userDetails = validateDummyToken(token);
 		} else {
 			userDetails = validateOAuthToken(token);
@@ -122,6 +122,10 @@ public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
 		} else if (token.equals("YYYY")) {
 			details = new AuthDetails();
 			details.setUserId("dummyAdmin");
+			details.setExpirationTimestamp(Long.MAX_VALUE);
+		} else if (token.equals("ZZZZ")) {
+			details = new AuthDetails();
+			details.setUserId("anonymousUser");
 			details.setExpirationTimestamp(Long.MAX_VALUE);
 		}
 		return details;

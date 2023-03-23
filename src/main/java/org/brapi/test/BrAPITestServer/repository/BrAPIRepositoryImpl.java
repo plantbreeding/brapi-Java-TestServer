@@ -44,8 +44,9 @@ public class BrAPIRepositoryImpl<T extends BrAPIPrimaryEntity, ID extends Serial
 		Optional<T> response = super.findById(id);
 		if (response.isPresent()) {
 			String userId = getCurrentUserId();
-			if (!response.get().getAuthUserId().equals(userId)
-					&& !response.get().getAuthUserId().equals("anonymousUser")) {
+			if (!(null == response.get().getAuthUserId()
+					|| userId.equals(response.get().getAuthUserId())
+					|| "anonymousUser".equals(response.get().getAuthUserId()))) {
 				response = Optional.empty();
 			}
 		}
