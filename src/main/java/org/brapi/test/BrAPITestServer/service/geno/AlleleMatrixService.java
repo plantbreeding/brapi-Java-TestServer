@@ -11,7 +11,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.brapi.test.BrAPITestServer.model.entity.geno.CallEntity;
 import org.brapi.test.BrAPITestServer.model.entity.geno.CallSetEntity;
 import org.brapi.test.BrAPITestServer.model.entity.geno.VariantEntity;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Metadata;
@@ -22,9 +21,7 @@ import io.swagger.model.geno.AlleleMatrixPagination;
 import io.swagger.model.geno.AlleleMatrixPagination.DimensionEnum;
 import io.swagger.model.geno.AlleleMatrixSearchRequest;
 import io.swagger.model.geno.AlleleMatrixSearchRequestPagination;
-import io.swagger.model.geno.Call;
 import io.swagger.model.geno.CallSetsSearchRequest;
-import io.swagger.model.geno.CallsListResponseResult;
 import io.swagger.model.geno.CallsSearchRequest;
 import io.swagger.model.geno.DataTypePrimitives;
 import io.swagger.model.geno.VariantsSearchRequest;
@@ -43,7 +40,7 @@ public class AlleleMatrixService {
 	}
 
 	public AlleleMatrix findAlleleMatrix(Integer dimensionVariantPage, Integer dimensionVariantPageSize,
-			Integer dimensionAlleleMatrixSetPage, Integer dimensionAlleleMatrixSetPageSize, Boolean preview,
+			Integer dimensionCallSetPage, Integer dimensionCallSetPageSize, Boolean preview,
 			String dataMatrixNames, String dataMatrixAbbreviations, String positionRange, String germplasmDbId,
 			String germplasmName, String germplasmPUI, String callSetDbId, String variantDbId, String variantSetDbId,
 			Boolean expandHomozygotes, String unknownString, String sepPhased, String sepUnphased, Metadata metadata) {
@@ -58,11 +55,11 @@ public class AlleleMatrixService {
 		}
 		AlleleMatrixSearchRequestPagination callSetPage = new AlleleMatrixSearchRequestPagination()
 				.dimension(DimensionEnum.CALLSETS);
-		if (dimensionAlleleMatrixSetPage != null) {
-			callSetPage.setPage(dimensionAlleleMatrixSetPage);
+		if (dimensionCallSetPage != null) {
+			callSetPage.setPage(dimensionCallSetPage);
 		}
-		if (dimensionAlleleMatrixSetPageSize != null) {
-			callSetPage.setPageSize(dimensionAlleleMatrixSetPageSize);
+		if (dimensionCallSetPageSize != null) {
+			callSetPage.setPageSize(dimensionCallSetPageSize);
 		}
 
 		AlleleMatrixSearchRequest request = new AlleleMatrixSearchRequest();

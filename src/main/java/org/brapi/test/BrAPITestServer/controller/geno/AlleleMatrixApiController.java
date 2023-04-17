@@ -48,8 +48,8 @@ public class AlleleMatrixApiController extends BrAPIController implements Allele
 	public ResponseEntity<AlleleMatrixResponse> allelematrixGet(
 			@Valid @RequestParam(value = "dimensionVariantPage", required = false) Integer dimensionVariantPage,
 			@Valid @RequestParam(value = "dimensionVariantPageSize", required = false) Integer dimensionVariantPageSize,
-			@Valid @RequestParam(value = "dimensionAlleleMatrixSetPage", required = false) Integer dimensionAlleleMatrixSetPage,
-			@Valid @RequestParam(value = "dimensionAlleleMatrixSetPageSize", required = false) Integer dimensionAlleleMatrixSetPageSize,
+			@Valid @RequestParam(value = "dimensionCallSetPage", required = false) Integer dimensionCallSetPage,
+			@Valid @RequestParam(value = "dimensionCallSetPageSize", required = false) Integer dimensionCallSetPageSize,
 			@Valid @RequestParam(value = "preview", required = false) Boolean preview,
 			@Valid @RequestParam(value = "dataMatrixNames", required = false) String dataMatrixNames,
 			@Valid @RequestParam(value = "dataMatrixAbbreviations", required = false) String dataMatrixAbbreviations,
@@ -73,7 +73,7 @@ public class AlleleMatrixApiController extends BrAPIController implements Allele
 		Metadata metadata = generateEmptyMetadata();
 
 		AlleleMatrix data = alleleMatrixService.findAlleleMatrix(dimensionVariantPage, dimensionVariantPageSize,
-				dimensionAlleleMatrixSetPage, dimensionAlleleMatrixSetPageSize, preview, dataMatrixNames,
+				dimensionCallSetPage, dimensionCallSetPageSize, preview, dataMatrixNames,
 				dataMatrixAbbreviations, positionRange, germplasmDbId, germplasmName, germplasmPUI, callSetDbId,
 				variantDbId, variantSetDbId, expandHomozygotes, unknownString, sepPhased, sepUnphased, metadata);
 
