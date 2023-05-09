@@ -63,7 +63,7 @@ public class GenomeMapService {
 		if (entityOpt.isPresent()) {
 			map = convertFromEntity(entityOpt.get());
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("map", mapDbId);
+			throw new BrAPIServerDbIdNotFoundException("map", mapDbId, HttpStatus.NOT_FOUND);
 		}
 		return map;
 	}

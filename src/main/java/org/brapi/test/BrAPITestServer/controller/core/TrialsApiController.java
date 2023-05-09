@@ -76,6 +76,7 @@ public class TrialsApiController extends BrAPIController implements TrialsApi {
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<Trial> data = trialService.findTrials(commonCropName, contactDbId, programDbId, locationDbId,
@@ -86,11 +87,12 @@ public class TrialsApiController extends BrAPIController implements TrialsApi {
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<TrialListResponse> trialsPost(@Valid @RequestBody List<TrialNewRequest> body,
+	public ResponseEntity<TrialListResponse> trialsPost(@RequestBody List<TrialNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		List<Trial> data = trialService.saveTrials(body);
 		return responseOK(new TrialListResponse(), new TrialListResponseResult(), data);
@@ -103,6 +105,7 @@ public class TrialsApiController extends BrAPIController implements TrialsApi {
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Trial data = trialService.getTrial(trialDbId);
 		return responseOK(new TrialSingleResponse(), data);
@@ -116,6 +119,7 @@ public class TrialsApiController extends BrAPIController implements TrialsApi {
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		Trial data = trialService.updateTrial(trialDbId, body);
 		return responseOK(new TrialSingleResponse(), data);
@@ -128,6 +132,7 @@ public class TrialsApiController extends BrAPIController implements TrialsApi {
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
 
@@ -150,6 +155,7 @@ public class TrialsApiController extends BrAPIController implements TrialsApi {
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		SearchRequestEntity request = searchService.findById(searchResultsDbId);

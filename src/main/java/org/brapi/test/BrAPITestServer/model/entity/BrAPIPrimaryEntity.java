@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -27,6 +28,17 @@ public class BrAPIPrimaryEntity extends BrAPIBaseEntity {
 	@JoinTable(joinColumns = { @JoinColumn(referencedColumnName = "id") }, inverseJoinColumns = {
 			@JoinColumn(referencedColumnName = "id") })
 	private List<ExternalReferenceEntity> externalReferences;
+	
+	@Column
+	private String authUserId;
+
+	public String getAuthUserId() {
+		return authUserId;
+	}
+
+	public void setAuthUserId(String authUserId) {
+		this.authUserId = authUserId;
+	}
 
 	public List<AdditionalInfoEntity> getAdditionalInfo() {
 		return additionalInfo;

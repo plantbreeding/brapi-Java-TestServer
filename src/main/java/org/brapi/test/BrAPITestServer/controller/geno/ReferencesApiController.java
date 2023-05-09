@@ -9,11 +9,6 @@ import io.swagger.model.geno.ReferencesListResponseResult;
 import io.swagger.model.geno.ReferenceBasesResponse;
 import io.swagger.model.geno.ReferenceSingleResponse;
 import io.swagger.model.geno.ReferencesSearchRequest;
-import io.swagger.model.germ.Germplasm;
-import io.swagger.model.germ.GermplasmListResponse;
-import io.swagger.model.germ.GermplasmListResponseResult;
-import io.swagger.model.germ.GermplasmSearchRequest;
-import io.swagger.annotations.ApiParam;
 import io.swagger.api.geno.ReferencesApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -25,7 +20,6 @@ import org.brapi.test.BrAPITestServer.service.geno.ReferenceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -33,7 +27,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -58,25 +51,26 @@ public class ReferencesApiController extends BrAPIController implements Referenc
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ReferencesListResponse> referencesGet(
-			@Valid @RequestParam(value = "referenceDbId", required = false) String referenceDbId,
-			@Valid @RequestParam(value = "referenceSetDbId", required = false) String referenceSetDbId,
-			@Valid @RequestParam(value = "accession", required = false) String accession,
-			@Valid @RequestParam(value = "md5checksum", required = false) String md5checksum,
-			@Valid @RequestParam(value = "isDerived", required = false) Boolean isDerived,
-			@Valid @RequestParam(value = "minLength", required = false) Integer minLength,
-			@Valid @RequestParam(value = "maxLength", required = false) Integer maxLength,
-			@Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
-			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
-			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
-			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
-			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
-			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "referenceDbId", required = false) String referenceDbId,
+			@RequestParam(value = "referenceSetDbId", required = false) String referenceSetDbId,
+			@RequestParam(value = "accession", required = false) String accession,
+			@RequestParam(value = "md5checksum", required = false) String md5checksum,
+			@RequestParam(value = "isDerived", required = false) Boolean isDerived,
+			@RequestParam(value = "minLength", required = false) Integer minLength,
+			@RequestParam(value = "maxLength", required = false) Integer maxLength,
+			@RequestParam(value = "trialDbId", required = false) String trialDbId,
+			@RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@RequestParam(value = "programDbId", required = false) String programDbId,
+			@RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<Reference> data = referenceService.findReferences(referenceDbId, referenceSetDbId, accession, md5checksum,
@@ -89,13 +83,14 @@ public class ReferencesApiController extends BrAPIController implements Referenc
 	@Override
 	public ResponseEntity<ReferenceBasesResponse> referencesReferenceDbIdBasesGet(
 			@PathVariable("referenceDbId") String referenceDbId,
-			@Valid @RequestParam(value = "start", required = false) Integer start,
-			@Valid @RequestParam(value = "end", required = false) Integer end,
-			@Valid @RequestParam(value = "pageToken", required = false) String pageToken,
+			@RequestParam(value = "start", required = false) Integer start,
+			@RequestParam(value = "end", required = false) Integer end,
+			@RequestParam(value = "pageToken", required = false) String pageToken,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		ReferenceBases data = referenceService.getReferenceBases(referenceDbId, start, end, pageToken);
 		return responseOK(new ReferenceBasesResponse(), data);
@@ -109,6 +104,7 @@ public class ReferencesApiController extends BrAPIController implements Referenc
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Reference data = referenceService.getReference(referenceDbId);
 		return responseOK(new ReferenceSingleResponse(), data);
@@ -116,12 +112,12 @@ public class ReferencesApiController extends BrAPIController implements Referenc
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<? extends BrAPIResponse> searchReferencesPost(
-			@Valid @RequestBody ReferencesSearchRequest body,
+	public ResponseEntity<? extends BrAPIResponse> searchReferencesPost(@RequestBody ReferencesSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
 
@@ -138,12 +134,13 @@ public class ReferencesApiController extends BrAPIController implements Referenc
 	@Override
 	public ResponseEntity<? extends BrAPIResponse> searchReferencesSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		SearchRequestEntity request = searchService.findById(searchResultsDbId);

@@ -11,11 +11,6 @@ import io.swagger.model.core.ListTypes;
 import io.swagger.model.core.ListsListResponse;
 import io.swagger.model.core.ListsListResponseResult;
 import io.swagger.model.core.ListsSingleResponse;
-import io.swagger.model.germ.Germplasm;
-import io.swagger.model.germ.GermplasmListResponse;
-import io.swagger.model.germ.GermplasmListResponseResult;
-import io.swagger.model.germ.GermplasmSearchRequest;
-import io.swagger.annotations.ApiParam;
 import io.swagger.api.core.ListsApi;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
@@ -26,7 +21,6 @@ import org.brapi.test.BrAPITestServer.service.core.ListService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -75,6 +69,7 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<ListSummary> data = listService.findLists(ListTypes.fromValue(listType), listName, listDbId, listSource, programDbId, commonCropName, externalReferenceId, externalReferenceID, externalReferenceSource, metadata);
@@ -89,6 +84,7 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		ListDetails data = listService.getList(listDbId);
 		return responseOK(new ListsSingleResponse(), data);
@@ -112,6 +108,7 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		ListDetails data = listService.updateListItems(listDbId, body);
 		return responseOK(new ListResponse(), data);
@@ -125,6 +122,7 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		ListDetails data = listService.updateList(listDbId, body);
 		return responseOK(new ListsSingleResponse(), data);
@@ -136,6 +134,7 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		List<ListSummary> data = listService.saveNewList(body);
 		return responseOK(new ListsListResponse(), new ListsListResponseResult(), data);
@@ -148,6 +147,7 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
 
@@ -169,6 +169,7 @@ public class ListsApiController extends BrAPIController implements ListsApi {
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 		
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		SearchRequestEntity request = searchService.findById(searchResultsDbId);

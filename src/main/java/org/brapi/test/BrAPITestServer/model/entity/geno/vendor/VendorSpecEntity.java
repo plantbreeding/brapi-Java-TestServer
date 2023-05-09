@@ -8,10 +8,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 
 @Entity
 @Table(name="vendor_spec")
-public class VendorSpecEntity extends BrAPIBaseEntity {
+public class VendorSpecEntity extends BrAPIPrimaryEntity {
 	@Column
 	private String vendorName;
 	@Column

@@ -12,6 +12,7 @@ import org.brapi.test.BrAPITestServer.model.entity.germ.GermplasmEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.repository.germ.GermplasmRepository;
 import org.brapi.test.BrAPITestServer.repository.pheno.ObservationUnitRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.germ.CrossInterface;
@@ -112,7 +113,7 @@ public class CrossParentService {
 		if (entityOpt.isPresent()) {
 			germplasm = entityOpt.get();
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("germplasm", germplasmDbId);
+			throw new BrAPIServerDbIdNotFoundException("germplasm", germplasmDbId, HttpStatus.BAD_REQUEST);
 		}
 		return germplasm;
 	}
@@ -123,7 +124,7 @@ public class CrossParentService {
 		if (entityOpt.isPresent()) {
 			observationUnit = entityOpt.get();
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("observationUnit", observationUnitDbId);
+			throw new BrAPIServerDbIdNotFoundException("observationUnit", observationUnitDbId, HttpStatus.BAD_REQUEST);
 		}
 		return observationUnit;
 	}

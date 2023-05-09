@@ -19,6 +19,7 @@ import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import io.swagger.model.Metadata;
 import io.swagger.model.pheno.Image;
@@ -104,7 +105,7 @@ public class ImageService {
 			if (imageOption.isPresent()) {
 				image = convertFromEntity(imageOption.get());
 			} else {
-				throw new BrAPIServerDbIdNotFoundException("image", imageDbId);
+				throw new BrAPIServerDbIdNotFoundException("image", imageDbId, HttpStatus.NOT_FOUND);
 			}
 		}
 
@@ -124,14 +125,14 @@ public class ImageService {
 
 				result = convertFromEntity(saved);
 			} else {
-				throw new BrAPIServerDbIdNotFoundException("image", imageDbId);
+				throw new BrAPIServerDbIdNotFoundException("image", imageDbId, HttpStatus.NOT_FOUND);
 			}
 
 		}
 		return result;
 	}
 
-	public Image updateImage(String imageDbId, @Valid ImageNewRequest body) throws BrAPIServerException {
+	public Image updateImage(String imageDbId, ImageNewRequest body) throws BrAPIServerException {
 		ImageEntity savedEntity;
 		Optional<ImageEntity> entityOpt = imageRepository.findById(imageDbId);
 		if (entityOpt.isPresent()) {
@@ -140,7 +141,7 @@ public class ImageService {
 
 			savedEntity = imageRepository.save(entity);
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("image", imageDbId);
+			throw new BrAPIServerDbIdNotFoundException("image", imageDbId, HttpStatus.NOT_FOUND);
 		}
 
 		return convertFromEntity(savedEntity);

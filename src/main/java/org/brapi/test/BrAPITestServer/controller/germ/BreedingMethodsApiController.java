@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -41,11 +40,12 @@ public class BreedingMethodsApiController extends BrAPIController implements Bre
 	@CrossOrigin
 	@Override
 	public ResponseEntity<BreedingMethodListResponse> breedingmethodsGet(
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			 @RequestParam(value = "page", required = false) Integer page,
+			 @RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<BreedingMethod> data = breedingMethodService.findBreedingMethods(metadata);
@@ -60,6 +60,7 @@ public class BreedingMethodsApiController extends BrAPIController implements Bre
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		BreedingMethod data = breedingMethodService.getBreedingMethod(breedingMethodDbId);
 		return responseOK(new BreedingMethodSingleResponse(), data);

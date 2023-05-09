@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -44,35 +43,36 @@ public class TraitsApiController extends BrAPIController implements TraitsApi {
 	@CrossOrigin
 	@Override
 	public ResponseEntity<TraitListResponse> traitsGet(
-			@Valid @RequestParam(value = "traitDbId", required = false) String traitDbId,
-			@Valid @RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
-			@Valid @RequestParam(value = "ontologyDbId", required = false) String ontologyDbId,
-			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
-			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
-			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
-			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "traitDbId", required = false) String traitDbId,
+			@RequestParam(value = "observationVariableDbId", required = false) String observationVariableDbId,
+			@RequestParam(value = "ontologyDbId", required = false) String ontologyDbId,
+			@RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@RequestParam(value = "programDbId", required = false) String programDbId,
+			@RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<Trait> data = traitService.findTraits(traitDbId, observationVariableDbId, ontologyDbId, commonCropName,
-				programDbId, externalReferenceId, externalReferenceID,
-				externalReferenceSource, metadata);
+				programDbId, externalReferenceId, externalReferenceID, externalReferenceSource, metadata);
 		return responseOK(new TraitListResponse(), new TraitListResponseResult(), data, metadata);
 	}
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<TraitListResponse> traitsPost(@Valid @RequestBody List<TraitBaseClass> body,
+	public ResponseEntity<TraitListResponse> traitsPost(@RequestBody List<TraitBaseClass> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		List<Trait> data = traitService.saveTraits(body);
 		return responseOK(new TraitListResponse(), new TraitListResponseResult(), data);
@@ -85,6 +85,7 @@ public class TraitsApiController extends BrAPIController implements TraitsApi {
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Trait data = traitService.getTrait(traitDbId);
 		return responseOK(new TraitSingleResponse(), data);
@@ -93,11 +94,12 @@ public class TraitsApiController extends BrAPIController implements TraitsApi {
 	@CrossOrigin
 	@Override
 	public ResponseEntity<TraitSingleResponse> traitsTraitDbIdPut(@PathVariable("traitDbId") String traitDbId,
-			@Valid @RequestBody TraitBaseClass body,
+			@RequestBody TraitBaseClass body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		Trait data = traitService.updateTrait(traitDbId, body);
 		return responseOK(new TraitSingleResponse(), data);

@@ -7,11 +7,6 @@ import io.swagger.model.geno.ReferenceSetsListResponse;
 import io.swagger.model.geno.ReferenceSetsListResponseResult;
 import io.swagger.model.geno.ReferenceSetsSearchRequest;
 import io.swagger.model.geno.ReferenceSetsSingleResponse;
-import io.swagger.model.germ.Germplasm;
-import io.swagger.model.germ.GermplasmListResponse;
-import io.swagger.model.germ.GermplasmListResponseResult;
-import io.swagger.model.germ.GermplasmSearchRequest;
-import io.swagger.annotations.ApiParam;
 import io.swagger.api.geno.ReferenceSetsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -23,7 +18,6 @@ import org.brapi.test.BrAPITestServer.service.geno.ReferenceSetService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,7 +25,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -56,22 +49,23 @@ public class ReferenceSetsApiController extends BrAPIController implements Refer
 	@CrossOrigin
 	@Override
 	public ResponseEntity<ReferenceSetsListResponse> referenceSetsGet(
-			@Valid @RequestParam(value = "referenceSetDbId", required = false) String referenceSetDbId,
-			@Valid @RequestParam(value = "accession", required = false) String accession,
-			@Valid @RequestParam(value = "assemblyPUI", required = false) String assemblyPUI,
-			@Valid @RequestParam(value = "md5checksum", required = false) String md5checksum,
-			@Valid @RequestParam(value = "trialDbId", required = false) String trialDbId,
-			@Valid @RequestParam(value = "studyDbId", required = false) String studyDbId,
-			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
-			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
-			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
-			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "referenceSetDbId", required = false) String referenceSetDbId,
+			@RequestParam(value = "accession", required = false) String accession,
+			@RequestParam(value = "assemblyPUI", required = false) String assemblyPUI,
+			@RequestParam(value = "md5checksum", required = false) String md5checksum,
+			@RequestParam(value = "trialDbId", required = false) String trialDbId,
+			@RequestParam(value = "studyDbId", required = false) String studyDbId,
+			@RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@RequestParam(value = "programDbId", required = false) String programDbId,
+			@RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<ReferenceSet> data = referenceSetService.findReferenceSets(referenceSetDbId, accession, assemblyPUI,
@@ -88,6 +82,7 @@ public class ReferenceSetsApiController extends BrAPIController implements Refer
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		ReferenceSet data = referenceSetService.getReferenceSet(referenceSetDbId);
 		return responseOK(new ReferenceSetsSingleResponse(), data);
@@ -95,12 +90,12 @@ public class ReferenceSetsApiController extends BrAPIController implements Refer
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<? extends BrAPIResponse> searchReferenceSetsPost(
-			@Valid @RequestBody ReferenceSetsSearchRequest body,
+	public ResponseEntity<? extends BrAPIResponse> searchReferenceSetsPost(@RequestBody ReferenceSetsSearchRequest body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
 
@@ -117,12 +112,13 @@ public class ReferenceSetsApiController extends BrAPIController implements Refer
 	@Override
 	public ResponseEntity<? extends BrAPIResponse> searchReferenceSetsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		SearchRequestEntity request = searchService.findById(searchResultsDbId);

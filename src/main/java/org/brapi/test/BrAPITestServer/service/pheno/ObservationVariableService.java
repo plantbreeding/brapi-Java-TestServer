@@ -144,17 +144,10 @@ public class ObservationVariableService {
 	}
 
 	public ObservationVariable updateObservationVariable(String observationVariableDbId,
-			@Valid ObservationVariableNewRequest body) throws BrAPIServerException {
-		ObservationVariableEntity savedEntity;
-		Optional<ObservationVariableEntity> entityOpt = observationVariableRepository.findById(observationVariableDbId);
-		if (entityOpt.isPresent()) {
-			ObservationVariableEntity entity = entityOpt.get();
-			updateEntity(entity, body);
-
-			savedEntity = observationVariableRepository.save(entity);
-		} else {
-			throw new BrAPIServerDbIdNotFoundException("observationVariable", observationVariableDbId);
-		}
+			ObservationVariableNewRequest body) throws BrAPIServerException {
+		ObservationVariableEntity entity = getObservationVariableEntity(observationVariableDbId, HttpStatus.NOT_FOUND);
+		updateEntity(entity, body);
+		ObservationVariableEntity savedEntity = observationVariableRepository.save(entity);
 
 		return convertFromEntity(savedEntity);
 	}
@@ -175,7 +168,7 @@ public class ObservationVariableService {
 		if (entityOpt.isPresent()) {
 			observationVariable = entityOpt.get();
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("observationVariable", observationVariableDbId);
+			throw new BrAPIServerDbIdNotFoundException("observationVariable", observationVariableDbId, errorStatus);
 		}
 		return observationVariable;
 	}
@@ -190,9 +183,9 @@ public class ObservationVariableService {
 	}
 
 	public void convertFromBaseEntity(VariableBaseEntity entity, VariableBaseClass var) {
-		
+
 		UpdateUtility.convertFromEntity(entity, var);
-		
+
 		if (entity.getCrop() != null)
 			var.setCommonCropName(entity.getCrop().getCropName());
 		var.setContextOfUse(entity.getContextOfUse());
@@ -217,14 +210,14 @@ public class ObservationVariableService {
 		entity.setName(UpdateUtility.replaceField(request.getObservationVariableName(), entity.getName()));
 	}
 
-	public void updateBaseEntity(VariableBaseEntity entity, VariableBaseClass request)
-			throws BrAPIServerException {
-		
+	public void updateBaseEntity(VariableBaseEntity entity, VariableBaseClass request) throws BrAPIServerException {
+
 		UpdateUtility.updateEntity(request, entity);
 
 		entity.setContextOfUse(UpdateUtility.replaceField(request.getContextOfUse(), entity.getContextOfUse()));
 		entity.setDefaultValue(UpdateUtility.replaceField(request.getDefaultValue(), entity.getDefaultValue()));
-		entity.setDocumentationURL(UpdateUtility.replaceField(request.getDocumentationURL(), entity.getDocumentationURL()));
+		entity.setDocumentationURL(
+				UpdateUtility.replaceField(request.getDocumentationURL(), entity.getDocumentationURL()));
 		entity.setGrowthStage(UpdateUtility.replaceField(request.getGrowthStage(), entity.getGrowthStage()));
 		entity.setInstitution(UpdateUtility.replaceField(request.getInstitution(), entity.getInstitution()));
 		entity.setLanguage(UpdateUtility.replaceField(request.getLanguage(), entity.getLanguage()));

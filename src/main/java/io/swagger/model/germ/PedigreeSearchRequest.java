@@ -37,25 +37,25 @@ public class PedigreeSearchRequest extends SearchRequest {
 	private List<String> germplasmPUIs = null;
 
 	@JsonProperty("includeFullTree")
-	private Boolean includeFullTree = null;
+	private Boolean includeFullTree = false;
 
 	@JsonProperty("includeParents")
-	private Boolean includeParents = null;
+	private Boolean includeParents = true;
 
 	@JsonProperty("includeProgeny")
-	private Boolean includeProgeny = null;
+	private Boolean includeProgeny = true;
 
 	@JsonProperty("includeSiblings")
-	private Boolean includeSiblings = null;
+	private Boolean includeSiblings = false;
 
 	@JsonProperty("instituteCodes")
 	private List<String> instituteCodes = null;
 
 	@JsonProperty("pedigreeDepth")
-	private Integer pedigreeDepth = null;
+	private Integer pedigreeDepth = 1;
 
 	@JsonProperty("progenyDepth")
-	private Integer progenyDepth = null;
+	private Integer progenyDepth = 1;
 
 	@JsonProperty("programDbIds")
 	private List<String> programDbIds = null;

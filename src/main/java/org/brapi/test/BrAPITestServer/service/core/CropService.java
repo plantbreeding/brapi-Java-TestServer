@@ -10,6 +10,7 @@ import org.brapi.test.BrAPITestServer.repository.core.CropRepository;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Metadata;
@@ -56,7 +57,7 @@ public class CropService {
 			if (cropsPage.size() == 1) {
 				entity = cropsPage.get(0);
 			} else {
-				throw new BrAPIServerDbIdNotFoundException("crop name", commonCropName, "crop name");
+				throw new BrAPIServerDbIdNotFoundException("crop name", commonCropName, "crop name", HttpStatus.NOT_FOUND);
 			}
 		}
 		return entity;

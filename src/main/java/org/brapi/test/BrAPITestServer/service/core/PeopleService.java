@@ -3,7 +3,6 @@ package org.brapi.test.BrAPITestServer.service.core;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import jakarta.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
@@ -87,7 +86,7 @@ public class PeopleService {
 			if (entityOpt.isPresent()) {
 				entity = entityOpt.get();
 			} else {
-				throw new BrAPIServerDbIdNotFoundException("person", personDbId);
+				throw new BrAPIServerDbIdNotFoundException("person", personDbId, errorStatus);
 			}
 		}
 
@@ -95,16 +94,9 @@ public class PeopleService {
 	}
 
 	public Person updatePerson(String personDbId, PersonNewRequest person) throws BrAPIServerException {
-		PersonEntity savedEntity;
-		Optional<PersonEntity> entityOpt = peopleRepository.findById(personDbId);
-		if (entityOpt.isPresent()) {
-			PersonEntity entity = entityOpt.get();
-			updateEntity(entity, person);
-
-			savedEntity = peopleRepository.save(entity);
-		} else {
-			throw new BrAPIServerDbIdNotFoundException("person", personDbId);
-		}
+		PersonEntity entity = getPersonEntity(personDbId, HttpStatus.NOT_FOUND);
+		updateEntity(entity, person);
+		PersonEntity savedEntity = peopleRepository.save(entity);
 
 		return convertToPerson(savedEntity);
 	}

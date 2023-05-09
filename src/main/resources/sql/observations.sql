@@ -1,8 +1,8 @@
 -- observation 1
 INSERT INTO geojson(id, type) VALUES ('observation_geo_1', 'Point');
 INSERT INTO coordinate(id, altitude, latitude, longitude, geojson_id) VALUES ('observation_coor_1', 123, 42.41423, -76.44313, 'observation_geo_1');
-INSERT INTO observation (id, collector, observation_time_stamp, uploaded_by, value, observation_unit_id, observation_variable_id, season_id, geo_coordinates_id) VALUES('observation1', 'Bob', '2013-05-13T09:09:09.999Z', 'Bob (Field Book)', '10', 'observation_unit1', 'variable1', 'spring_2013', 'observation_geo_1');
-INSERT INTO additional_info(id, key, value) VALUES ('observation_ai_1', 'dummyData', decode('ACED000574000454727565','hex'));
+INSERT INTO observation (auth_user_id, id, collector, observation_time_stamp, uploaded_by, value, observation_unit_id, observation_variable_id, season_id, geo_coordinates_id) VALUES('anonymousUser', 'observation1', 'Bob', '2013-05-13T09:09:09.999Z', 'Bob (Field Book)', '10', 'observation_unit1', 'variable1', 'spring_2013', 'observation_geo_1');
+INSERT INTO additional_info(id, key, value) VALUES ('observation_ai_1', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
 INSERT INTO observation_additional_info(observation_entity_id, additional_info_id) VALUES ('observation1', 'observation_ai_1');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('observation_er_1', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO observation_external_references(observation_entity_id, external_references_id) VALUES ('observation1', 'observation_er_1');
@@ -10,8 +10,8 @@ INSERT INTO observation_external_references(observation_entity_id, external_refe
 -- observation 2
 INSERT INTO geojson(id, type) VALUES ('observation_geo_2', 'Point');
 INSERT INTO coordinate(id, altitude, latitude, longitude, geojson_id) VALUES ('observation_coor_2', 123, 42.42423, -76.43313, 'observation_geo_2');
-INSERT INTO observation (id, collector, observation_time_stamp, uploaded_by, value, observation_unit_id, observation_variable_id, season_id, geo_coordinates_id) VALUES('observation2', 'Bob', '2013-05-13T09:09:09.999Z', 'Bob (Field Book)', '20', 'observation_unit1', 'variable1', 'spring_2013', 'observation_geo_2');
-INSERT INTO additional_info(id, key, value) VALUES ('observation_ai_2', 'dummyData', decode('ACED000574000454727565','hex'));
+INSERT INTO observation (auth_user_id, id, collector, observation_time_stamp, uploaded_by, value, observation_unit_id, observation_variable_id, season_id, geo_coordinates_id) VALUES('anonymousUser', 'observation2', 'Bob', '2013-05-13T09:09:09.999Z', 'Bob (Field Book)', '20', 'observation_unit1', 'variable1', 'spring_2013', 'observation_geo_2');
+INSERT INTO additional_info(id, key, value) VALUES ('observation_ai_2', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
 INSERT INTO observation_additional_info(observation_entity_id, additional_info_id) VALUES ('observation2', 'observation_ai_2');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('observation_er_2', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO observation_external_references(observation_entity_id, external_references_id) VALUES ('observation2', 'observation_er_2');
@@ -19,8 +19,8 @@ INSERT INTO observation_external_references(observation_entity_id, external_refe
 -- observation 3
 INSERT INTO geojson(id, type) VALUES ('observation_geo_3', 'Point');
 INSERT INTO coordinate(id, altitude, latitude, longitude, geojson_id) VALUES ('observation_coor_3', 123, 42.43423, -76.42313, 'observation_geo_3');
-INSERT INTO observation (id, collector, observation_time_stamp, uploaded_by, value, observation_unit_id, observation_variable_id, season_id, geo_coordinates_id) VALUES('observation3', 'Bob', '2013-05-13T09:09:09.999Z', 'Bob (Field Book)', '30', 'observation_unit2', 'variable1', 'spring_2013', 'observation_geo_3');
-INSERT INTO additional_info(id, key, value) VALUES ('observation_ai_3', 'dummyData', decode('ACED000574000454727565','hex'));
+INSERT INTO observation (auth_user_id, id, collector, observation_time_stamp, uploaded_by, value, observation_unit_id, observation_variable_id, season_id, geo_coordinates_id) VALUES('anonymousUser', 'observation3', 'Bob', '2013-05-13T09:09:09.999Z', 'Bob (Field Book)', '30', 'observation_unit2', 'variable1', 'spring_2013', 'observation_geo_3');
+INSERT INTO additional_info(id, key, value) VALUES ('observation_ai_3', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
 INSERT INTO observation_additional_info(observation_entity_id, additional_info_id) VALUES ('observation3', 'observation_ai_3');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('observation_er_3', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO observation_external_references(observation_entity_id, external_references_id) VALUES ('observation3', 'observation_er_3');
@@ -28,8 +28,8 @@ INSERT INTO observation_external_references(observation_entity_id, external_refe
 -- observation 4
 INSERT INTO geojson(id, type) VALUES ('observation_geo_4', 'Point');
 INSERT INTO coordinate(id, altitude, latitude, longitude, geojson_id) VALUES ('observation_coor_4', 123, 42.44423, -76.41313, 'observation_geo_4');
-INSERT INTO observation (id, collector, observation_time_stamp, uploaded_by, value, observation_unit_id, observation_variable_id, season_id, geo_coordinates_id) VALUES('observation4', 'Bob', '2013-05-13T09:09:09.999Z', 'Bob (Field Book)', '40', 'observation_unit2', 'variable1', 'spring_2013', 'observation_geo_4');
-INSERT INTO additional_info(id, key, value) VALUES ('observation_ai_4', 'dummyData', decode('ACED000574000454727565','hex'));
+INSERT INTO observation (auth_user_id, id, collector, observation_time_stamp, uploaded_by, value, observation_unit_id, observation_variable_id, season_id, geo_coordinates_id) VALUES('anonymousUser', 'observation4', 'Bob', '2013-05-13T09:09:09.999Z', 'Bob (Field Book)', '40', 'observation_unit2', 'variable1', 'spring_2013', 'observation_geo_4');
+INSERT INTO additional_info(id, key, value) VALUES ('observation_ai_4', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
 INSERT INTO observation_additional_info(observation_entity_id, additional_info_id) VALUES ('observation4', 'observation_ai_4');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('observation_er_4', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO observation_external_references(observation_entity_id, external_references_id) VALUES ('observation4', 'observation_er_4');

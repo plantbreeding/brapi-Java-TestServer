@@ -13,6 +13,7 @@ import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
 import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import io.swagger.model.Metadata;
@@ -50,7 +51,7 @@ public class ReferenceSetService {
 			request.addTrialDbIdsItem(trialDbId);
 		if (studyDbId != null)
 			request.addStudyDbIdsItem(studyDbId);
-		
+
 		request.addExternalReferenceItem(externalReferenceId, null, externalReferenceSource);
 
 		return findReferenceSets(request, metadata);
@@ -71,16 +72,21 @@ public class ReferenceSetService {
 	}
 
 	public ReferenceSet getReferenceSet(String referenceSetDbId) throws BrAPIServerException {
-		return convertFromEntity(getReferenceSetEntity(referenceSetDbId));
+		return convertFromEntity(getReferenceSetEntity(referenceSetDbId, HttpStatus.NOT_FOUND));
 	}
 
 	public ReferenceSetEntity getReferenceSetEntity(String referenceSetDbId) throws BrAPIServerException {
+		return getReferenceSetEntity(referenceSetDbId, HttpStatus.BAD_REQUEST);
+	}
+
+	public ReferenceSetEntity getReferenceSetEntity(String referenceSetDbId, HttpStatus errorStatus)
+			throws BrAPIServerException {
 		ReferenceSetEntity referenceSet = null;
 		Optional<ReferenceSetEntity> entityOpt = referenceSetRepository.findById(referenceSetDbId);
 		if (entityOpt.isPresent()) {
 			referenceSet = entityOpt.get();
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("referenceSet", referenceSetDbId);
+			throw new BrAPIServerDbIdNotFoundException("referenceSet", referenceSetDbId, errorStatus);
 		}
 		return referenceSet;
 	}
@@ -88,7 +94,7 @@ public class ReferenceSetService {
 	private ReferenceSet convertFromEntity(ReferenceSetEntity entity) {
 		ReferenceSet refSet = new ReferenceSet();
 		UpdateUtility.convertFromEntity(entity, refSet);
-		
+
 		refSet.setAssemblyPUI(entity.getAssemblyPUI());
 		refSet.setDescription(entity.getDescription());
 		refSet.setIsDerived(entity.getIsDerived());
@@ -96,18 +102,17 @@ public class ReferenceSetService {
 		refSet.setReferenceSetDbId(entity.getId());
 		refSet.setReferenceSetName(entity.getReferenceSetName());
 		refSet.setSourceURI(entity.getSourceURI());
-		
+
 		OntologyTerm term = new OntologyTerm().term(entity.getSpeciesOntologyTerm())
 				.termURI(entity.getSpeciesOntologyTermURI());
 		refSet.setSpecies(term);
-		
+
 		if (entity.getSourceGermplasm() != null && entity.getSourceGermplasm().getAccessionNumber() != null)
 			refSet.setSourceAccessions(Arrays.asList(entity.getSourceGermplasm().getAccessionNumber()));
-		
+
 		if (entity.getSourceGermplasm() != null) {
 			if (entity.getSourceGermplasm().getAccessionNumber() != null) {
-				refSet.setSourceAccessions(
-						Arrays.asList(entity.getSourceGermplasm().getAccessionNumber()));
+				refSet.setSourceAccessions(Arrays.asList(entity.getSourceGermplasm().getAccessionNumber()));
 			}
 			refSet.setCommonCropName(entity.getSourceGermplasm().getCrop().getCropName());
 			ReferenceSourceGermplasm sourceGerm = new ReferenceSourceGermplasm();
@@ -115,7 +120,7 @@ public class ReferenceSetService {
 			sourceGerm.setGermplasmName(entity.getSourceGermplasm().getGermplasmName());
 			refSet.setSourceGermplasm(Arrays.asList(sourceGerm));
 		}
-		
+
 		return refSet;
 	}
 

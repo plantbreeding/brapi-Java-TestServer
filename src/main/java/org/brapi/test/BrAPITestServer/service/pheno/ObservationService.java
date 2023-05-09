@@ -248,7 +248,7 @@ public class ObservationService {
 		if (entityOpt.isPresent()) {
 			observation = entityOpt.get();
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("observation", observationDbId);
+			throw new BrAPIServerDbIdNotFoundException("observation", observationDbId, errorStatus);
 		}
 		return observation;
 	}
@@ -280,7 +280,7 @@ public class ObservationService {
 
 	public List<String> deleteObservations(ObservationSearchRequest body, Metadata metadata) {
 		List<String> deletedObservationDbIds = new ArrayList<>();
-		
+
 		if (body.getTotalParameterCount() > 0) {
 			List<ObservationEntity> deletedObservations = findObservationEntities(body, metadata).getContent();
 			observationRepository.deleteAll(deletedObservations);
@@ -290,18 +290,11 @@ public class ObservationService {
 		return deletedObservationDbIds;
 	}
 
-	public Observation updateObservation(String observationDbId, @Valid ObservationNewRequest request)
+	public Observation updateObservation(String observationDbId, ObservationNewRequest request)
 			throws BrAPIServerException {
-		ObservationEntity savedEntity;
-		Optional<ObservationEntity> entityOpt = observationRepository.findById(observationDbId);
-		if (entityOpt.isPresent()) {
-			ObservationEntity entity = entityOpt.get();
-			updateEntity(entity, request);
-
-			savedEntity = observationRepository.save(entity);
-		} else {
-			throw new BrAPIServerDbIdNotFoundException("observation", observationDbId);
-		}
+		ObservationEntity entity = getObservationEntity(observationDbId, HttpStatus.NOT_FOUND);
+		updateEntity(entity, request);
+		ObservationEntity savedEntity = observationRepository.save(entity);
 
 		return convertFromEntity(savedEntity);
 	}
