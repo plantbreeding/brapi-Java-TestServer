@@ -18,7 +18,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.binary.Base64;
-import org.brapi.test.BrAPITestServer.BrapiExceptionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -42,10 +41,12 @@ public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
 	private static final List<String> ADMIN_IDS = Arrays.asList("dummyAdmin", "ps664@cornell.edu");
 
 	private String oidcDiscoveryUrl;
+	private boolean authEnabled;
 
-	public BrapiTestServerJWTAuthFilter(AuthenticationManager authManager, String oidcDiscoveryUrl) {
+	public BrapiTestServerJWTAuthFilter(AuthenticationManager authManager, String oidcDiscoveryUrl, boolean authEnabled) {
 		super(authManager);
 		this.oidcDiscoveryUrl = oidcDiscoveryUrl;
+		this.authEnabled = authEnabled;
 	}
 
 	@Override
@@ -53,6 +54,26 @@ public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
 			throws IOException, ServletException {
 		String header = req.getHeader("Authorization");
 
+		//Auth disabled by config property
+		if (!authEnabled) {
+			List<GrantedAuthority> authorities = new ArrayList<>();
+			authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+			AuthDetails bypassDetails = new AuthDetails();
+			bypassDetails.setUserId("anonymousUser");
+			bypassDetails.setExpirationTimestamp(Long.MAX_VALUE);
+			bypassDetails.setRoles(new ArrayList<>());
+			bypassDetails.getRoles().add("ROLE_USER");
+			bypassDetails.getRoles().add("ROLE_ADMIN");
+			UsernamePasswordAuthenticationToken authentication = 
+					new UsernamePasswordAuthenticationToken(bypassDetails.getUserId(), null, authorities);
+			authentication.setDetails(bypassDetails);
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+			chain.doFilter(req, res);
+			return;
+		}
+		
+		
 		// Anonymous User
 		if (header == null || !header.startsWith("Bearer ")) {
 			chain.doFilter(req, res);
