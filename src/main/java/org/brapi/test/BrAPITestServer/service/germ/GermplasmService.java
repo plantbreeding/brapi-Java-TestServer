@@ -409,25 +409,25 @@ public class GermplasmService {
 		pedEntity.setPedigreeString(pedigree);
 
 		List<String> pedigreeList = Arrays.asList(pedigree.split("/"));
-		Optional<GermplasmEntity> fatherOpt = Optional.empty();
 		Optional<GermplasmEntity> motherOpt = Optional.empty();
+		Optional<GermplasmEntity> fatherOpt = Optional.empty();
 		if (pedigreeList.size() > 0) {
-			fatherOpt = Optional.ofNullable(findByUnknownIdentity(pedigreeList.get(0)));
+			motherOpt = Optional.ofNullable(findByUnknownIdentity(pedigreeList.get(0)));
 			if (pedigreeList.size() > 1) {
-				motherOpt = Optional.ofNullable(findByUnknownIdentity(pedigreeList.get(1)));
+				fatherOpt = Optional.ofNullable(findByUnknownIdentity(pedigreeList.get(1)));
 			}
 		}
-		if (fatherOpt.isPresent() && motherOpt.isPresent()) {
-			pedigreeEntityNullCheck(fatherOpt.get());
+		if (motherOpt.isPresent() && fatherOpt.isPresent()) {
 			pedigreeEntityNullCheck(motherOpt.get());
-			pedEntity.addParent(fatherOpt.get().getPedigree(), ParentType.MALE);
-			pedEntity.addParent(motherOpt.get().getPedigree(), ParentType.FEMALE);
-		} else if (fatherOpt.isPresent()) {
 			pedigreeEntityNullCheck(fatherOpt.get());
-			pedEntity.addParent(fatherOpt.get().getPedigree(), ParentType.SELF);
+			pedEntity.addParent(motherOpt.get().getPedigree(), ParentType.FEMALE);
+			pedEntity.addParent(fatherOpt.get().getPedigree(), ParentType.MALE);
 		} else if (motherOpt.isPresent()) {
 			pedigreeEntityNullCheck(motherOpt.get());
 			pedEntity.addParent(motherOpt.get().getPedigree(), ParentType.SELF);
+		} else if (fatherOpt.isPresent()) {
+			pedigreeEntityNullCheck(fatherOpt.get());
+			pedEntity.addParent(fatherOpt.get().getPedigree(), ParentType.SELF);
 		}
 	}
 
