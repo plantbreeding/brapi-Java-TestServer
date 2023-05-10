@@ -417,18 +417,20 @@ public class GermplasmService {
 				fatherOpt = Optional.ofNullable(findByUnknownIdentity(pedigreeList.get(1)));
 			}
 		}
-		if (motherOpt.isPresent() && fatherOpt.isPresent()) {
+		if (motherOpt.isPresent()) {
 			pedigreeEntityNullCheck(motherOpt.get());
-			pedigreeEntityNullCheck(fatherOpt.get());
-			pedEntity.addParent(motherOpt.get().getPedigree(), ParentType.FEMALE);
-			pedEntity.addParent(fatherOpt.get().getPedigree(), ParentType.MALE);
-		} else if (motherOpt.isPresent()) {
-			pedigreeEntityNullCheck(motherOpt.get());
-			pedEntity.addParent(motherOpt.get().getPedigree(), ParentType.SELF);
-		} else if (fatherOpt.isPresent()) {
-			pedigreeEntityNullCheck(fatherOpt.get());
-			pedEntity.addParent(fatherOpt.get().getPedigree(), ParentType.SELF);
+			PedigreeNodeEntity mother = motherOpt.get().getPedigree();
+			pedEntity.addParent(mother, ParentType.FEMALE);
+			mother.addProgeny(pedEntity, ParentType.FEMALE);
 		}
+		if (fatherOpt.isPresent()) {
+			pedigreeEntityNullCheck(fatherOpt.get());
+			PedigreeNodeEntity father = motherOpt.get().getPedigree();
+			pedEntity.addParent(father, ParentType.MALE);
+			father.addProgeny(pedEntity, ParentType.MALE);
+		}
+
+
 	}
 
 	private GermplasmEntity findByUnknownIdentity(String germplasmStr) {
