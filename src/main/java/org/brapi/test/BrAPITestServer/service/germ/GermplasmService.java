@@ -208,15 +208,17 @@ public class GermplasmService {
 		result.setGermplasmDbId(germplasm.getId());
 		result.setGermplasmName(germplasm.getGermplasmName());
 
-		List<PedigreeNodeEntity> progenyEntities = germplasm.getPedigree().getProgenyNodes();
-		for (PedigreeNodeEntity progenyNode : progenyEntities) {
-			ProgenyNodeProgeny progeny = new ProgenyNodeProgeny();
-			progeny.setGermplasmName(progenyNode.getGermplasm().getGermplasmName());
-			progeny.setGermplasmDbId(progenyNode.getGermplasm().getId());
-			if (progenyNode.getParentEdges() != null && !progenyNode.getParentEdges().isEmpty()) {
-				progeny.setParentType(progenyNode.getParentEdges().get(0).getParentType());
+		if (germplasm.getPedigree() != null) {
+			List<PedigreeNodeEntity> progenyEntities = germplasm.getPedigree().getProgenyNodes();
+			for (PedigreeNodeEntity progenyNode : progenyEntities) {
+				ProgenyNodeProgeny progeny = new ProgenyNodeProgeny();
+				progeny.setGermplasmName(progenyNode.getGermplasm().getGermplasmName());
+				progeny.setGermplasmDbId(progenyNode.getGermplasm().getId());
+				if (progenyNode.getParentEdges() != null && !progenyNode.getParentEdges().isEmpty()) {
+					progeny.setParentType(progenyNode.getParentEdges().get(0).getParentType());
+				}
+				result.getProgeny().add(progeny);
 			}
-			result.getProgeny().add(progeny);
 		}
 
 		return result;
