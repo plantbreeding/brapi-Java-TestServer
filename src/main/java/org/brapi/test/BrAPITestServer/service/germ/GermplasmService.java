@@ -425,12 +425,10 @@ public class GermplasmService {
 		}
 		if (fatherOpt.isPresent()) {
 			pedigreeEntityNullCheck(fatherOpt.get());
-			PedigreeNodeEntity father = motherOpt.get().getPedigree();
+			PedigreeNodeEntity father = fatherOpt.get().getPedigree();
 			pedEntity.addParent(father, ParentType.MALE);
 			father.addProgeny(pedEntity, ParentType.MALE);
 		}
-
-
 	}
 
 	private GermplasmEntity findByUnknownIdentity(String germplasmStr) {
