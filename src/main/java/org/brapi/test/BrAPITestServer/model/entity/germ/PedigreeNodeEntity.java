@@ -2,6 +2,7 @@ package org.brapi.test.BrAPITestServer.model.entity.germ;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
@@ -32,6 +33,23 @@ public class PedigreeNodeEntity extends BrAPIPrimaryEntity {
 	private String pedigreeString;
 	@OneToMany(mappedBy = "thisNode", cascade = CascadeType.ALL)
 	private List<PedigreeEdgeEntity> edges = new ArrayList<>();
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(germplasm);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PedigreeNodeEntity other = (PedigreeNodeEntity) obj;
+		return Objects.equals(germplasm, other.germplasm);
+	}
 
 	public CrossingProjectEntity getCrossingProject() {
 		return crossingProject;

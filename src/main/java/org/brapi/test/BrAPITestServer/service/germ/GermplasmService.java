@@ -23,7 +23,6 @@ import org.brapi.test.BrAPITestServer.model.entity.germ.PedigreeNodeEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.TaxonEntity;
 import org.brapi.test.BrAPITestServer.repository.germ.GermplasmDonorRepository;
 import org.brapi.test.BrAPITestServer.repository.germ.GermplasmRepository;
-import org.brapi.test.BrAPITestServer.repository.germ.PedigreeRepository;
 import org.brapi.test.BrAPITestServer.service.DateUtility;
 import org.brapi.test.BrAPITestServer.service.GeoJSONUtility;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
@@ -55,12 +54,6 @@ import io.swagger.model.germ.GermplasmNewRequestSynonyms;
 import io.swagger.model.germ.GermplasmOrigin;
 import io.swagger.model.germ.GermplasmSearchRequest;
 import io.swagger.model.germ.GermplasmStorageTypes;
-import io.swagger.model.germ.ParentType;
-import io.swagger.model.germ.PedigreeNode;
-import io.swagger.model.germ.PedigreeNodeParents;
-import io.swagger.model.germ.PedigreeNodeSiblings;
-import io.swagger.model.germ.ProgenyNode;
-import io.swagger.model.germ.ProgenyNodeProgeny;
 import io.swagger.model.germ.TaxonID;
 
 @Service
@@ -68,16 +61,14 @@ public class GermplasmService {
 
 	private final GermplasmRepository germplasmRepository;
 	private final GermplasmDonorRepository donorRepository;
-	private final PedigreeRepository pedigreeRepository;
 	private final BreedingMethodService breedingMethodService;
 	private final CropService cropService;
 
 	@Autowired
-	public GermplasmService(GermplasmRepository germplasmRepository, GermplasmDonorRepository donorRepository, PedigreeRepository pedigreeRepository,
+	public GermplasmService(GermplasmRepository germplasmRepository, GermplasmDonorRepository donorRepository,
 			BreedingMethodService breedingMethodService, CropService cropService) {
 		this.germplasmRepository = germplasmRepository;
 		this.donorRepository = donorRepository;
-		this.pedigreeRepository = pedigreeRepository;
 
 		this.breedingMethodService = breedingMethodService;
 		this.cropService = cropService;
@@ -196,35 +187,6 @@ public class GermplasmService {
 			throw new BrAPIServerDbIdNotFoundException("germplasm", germplasmDbId, errorStatus);
 		}
 		return germplasm;
-	}
-
-	public PedigreeNode getGermplasmPedigree(String germplasmDbId, String notation, Boolean includeSiblings)
-			throws BrAPIServerException {
-		return convertFromEntityToPedigree(getGermplasmEntity(germplasmDbId), notation, includeSiblings);
-	}
-
-	public ProgenyNode getGermplasmProgeny(String germplasmDbId) throws BrAPIServerException {
-		GermplasmEntity germplasm = getGermplasmEntity(germplasmDbId);
-
-		ProgenyNode result = new ProgenyNode();
-		result.setProgeny(new ArrayList<>());
-		result.setGermplasmDbId(germplasm.getId());
-		result.setGermplasmName(germplasm.getGermplasmName());
-
-		if (germplasm.getPedigree() != null) {
-			List<PedigreeNodeEntity> progenyEntities = germplasm.getPedigree().getProgenyNodes();
-			for (PedigreeNodeEntity progenyNode : progenyEntities) {
-				ProgenyNodeProgeny progeny = new ProgenyNodeProgeny();
-				progeny.setGermplasmName(progenyNode.getGermplasm().getGermplasmName());
-				progeny.setGermplasmDbId(progenyNode.getGermplasm().getId());
-				if (progenyNode.getParentEdges() != null && !progenyNode.getParentEdges().isEmpty()) {
-					progeny.setParentType(progenyNode.getParentEdges().get(0).getParentType());
-				}
-				result.getProgeny().add(progeny);
-			}
-		}
-
-		return result;
 	}
 
 	public Germplasm updateGermplasm(String germplasmDbId, GermplasmNewRequest body)
@@ -351,8 +313,12 @@ public class GermplasmService {
 		if (request.getInstituteCode() != null || request.getInstituteName() != null)
 			entity.setHostInstitute(request.getInstituteCode(), request.getInstituteName());
 		entity.setMlsStatus(MlsStatusEnum.EMPTY);
-		if (request.getPedigree() != null)
-			updatePedigreeEntity(request.getPedigree(), entity);
+		if (request.getPedigree() != null) {
+			if(entity.getPedigree() == null) {
+				entity.setPedigree(new PedigreeNodeEntity());
+			}
+			entity.getPedigree().setPedigreeString(request.getPedigree());
+		}
 		if (request.getSeedSource() != null)
 			entity.setSeedSource(request.getSeedSource());
 		if (request.getSeedSourceDescription() != null)
@@ -406,35 +372,7 @@ public class GermplasmService {
 		}
 	}
 
-	private void updatePedigreeEntity(String pedigree, GermplasmEntity entity) throws BrAPIServerException {
-		pedigreeEntityNullCheck(entity);
-		PedigreeNodeEntity pedEntity = entity.getPedigree();
-		pedEntity.setPedigreeString(pedigree);
-
-		List<String> pedigreeList = Arrays.asList(pedigree.split("/"));
-		Optional<GermplasmEntity> motherOpt = Optional.empty();
-		Optional<GermplasmEntity> fatherOpt = Optional.empty();
-		if (pedigreeList.size() > 0) {
-			motherOpt = Optional.ofNullable(findByUnknownIdentity(pedigreeList.get(0)));
-			if (pedigreeList.size() > 1) {
-				fatherOpt = Optional.ofNullable(findByUnknownIdentity(pedigreeList.get(1)));
-			}
-		}
-		if (motherOpt.isPresent()) {
-			pedigreeEntityNullCheck(motherOpt.get());
-			PedigreeNodeEntity mother = motherOpt.get().getPedigree();
-			pedEntity.addParent(mother, ParentType.FEMALE);
-			mother.addProgeny(pedEntity, ParentType.FEMALE);
-		}
-		if (fatherOpt.isPresent()) {
-			pedigreeEntityNullCheck(fatherOpt.get());
-			PedigreeNodeEntity father = fatherOpt.get().getPedigree();
-			pedEntity.addParent(father, ParentType.MALE);
-			father.addProgeny(pedEntity, ParentType.MALE);
-		}
-	}
-
-	private GermplasmEntity findByUnknownIdentity(String germplasmStr) {
+	public GermplasmEntity findByUnknownIdentity(String germplasmStr) {
 		List<String> germplasmList = Arrays.asList(germplasmStr);
 		Metadata metadata = new Metadata().pagination(new IndexPagination());
 
@@ -470,13 +408,6 @@ public class GermplasmService {
 		}
 
 		return null;
-	}
-
-	private void pedigreeEntityNullCheck(GermplasmEntity entity) {
-		if (entity.getPedigree() == null) {
-			entity.setPedigree(new PedigreeNodeEntity());
-			entity.getPedigree().setGermplasm(entity);
-		}
 	}
 
 	private void updateOriginEntities(List<GermplasmOrigin> origins, GermplasmEntity entity) {
@@ -540,44 +471,6 @@ public class GermplasmService {
 		taxonId.setSourceName(entity.getSourceName());
 		taxonId.setTaxonId(entity.getTaxonId());
 		return taxonId;
-	}
-
-	public PedigreeNode convertFromEntityToPedigree(GermplasmEntity germplasm, String notation,
-			Boolean includeSiblings) {
-		PedigreeNode pedigree = new PedigreeNode();
-		pedigree.setGermplasmDbId(germplasm.getId());
-		pedigree.setGermplasmName(germplasm.getGermplasmName());
-		pedigree.setParents(new ArrayList<>());
-		pedigree.setSiblings(new ArrayList<>());
-
-		if (germplasm.getPedigree() != null) {
-			PedigreeNodeEntity entity = germplasm.getPedigree();
-			if (entity.getCrossingProject() != null)
-				pedigree.setCrossingProjectDbId(entity.getCrossingProject().getId());
-			pedigree.setCrossingYear(entity.getCrossingYear());
-			pedigree.setFamilyCode(entity.getFamilyCode());
-
-			if (entity.getParentEdges() != null) {
-				pedigree.getParents().addAll(entity.getParentEdges().stream().map(edge -> {
-					PedigreeNodeParents parent = new PedigreeNodeParents();
-					parent.setGermplasmDbId(edge.getConncetedNode().getGermplasm().getId());
-					parent.setGermplasmName(edge.getConncetedNode().getGermplasm().getGermplasmName());
-					parent.setParentType(edge.getParentType());
-					return parent;
-				}).collect(Collectors.toList()));
-			}
-
-			if (includeSiblings != null && includeSiblings) {
-				List<PedigreeNodeEntity> siblingEntities = pedigreeRepository.findPedigreeSiblings(entity);
-				pedigree.setSiblings(siblingEntities.stream().map(sibNode -> {
-					PedigreeNodeSiblings progeny = new PedigreeNodeSiblings();
-					progeny.setGermplasmDbId(sibNode.getGermplasm().getId());
-					progeny.setGermplasmName(sibNode.getGermplasm().getGermplasmName());
-					return progeny;
-				}).collect(Collectors.toList()));
-			}
-		}
-		return pedigree;
 	}
 
 	private GermplasmMCPD convertFromEntityToMCPD(GermplasmEntity entity) {
