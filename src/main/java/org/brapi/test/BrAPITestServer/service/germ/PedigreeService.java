@@ -331,8 +331,9 @@ public class PedigreeService {
 					return progeny;
 				}).collect(Collectors.toList()));
 			}
-			if (entity.getSiblingEdges() != null && request.isIncludeSiblings()) {
-				node.setSiblings(entity.getSiblingNodes().stream().map(sibNode -> {
+			if (request.isIncludeSiblings()) {
+				List<PedigreeNodeEntity> siblingEntities = pedigreeRepository.findPedigreeSiblings(entity);
+				node.setSiblings(siblingEntities.stream().map(sibNode -> {
 					PedigreeNodeSiblings progeny = new PedigreeNodeSiblings();
 					progeny.setGermplasmDbId(sibNode.getGermplasm().getId());
 					progeny.setGermplasmName(sibNode.getGermplasm().getGermplasmName());
@@ -370,22 +371,19 @@ public class PedigreeService {
 		if (node.getParents() != null) {
 			for (PedigreeNodeParents parent : node.getParents()) {
 				Optional<PedigreeNodeEntity> parentNode = getPedigreeNode(parent.getGermplasmDbId());
-				if (parentNode.isPresent())
+				if (parentNode.isPresent()) {
 					entity.addParent(parentNode.get(), parent.getParentType());
+					parentNode.get().addProgeny(entity, parent.getParentType());
+			}
 			}
 		}
 		if (node.getProgeny() != null) {
 			for (PedigreeNodeParents child : node.getProgeny()) {
 				Optional<PedigreeNodeEntity> childNode = getPedigreeNode(child.getGermplasmDbId());
-				if (childNode.isPresent())
+				if (childNode.isPresent()) {
 					entity.addProgeny(childNode.get(), child.getParentType());
-			}
-		}
-		if (node.getSiblings() != null) {
-			for (PedigreeNodeSiblings sibling : node.getSiblings()) {
-				Optional<PedigreeNodeEntity> siblingNode = getPedigreeNode(sibling.getGermplasmDbId());
-				if (siblingNode.isPresent())
-					entity.addSibling(siblingNode.get());
+					childNode.get().addParent(entity, child.getParentType());
+				}
 			}
 		}
 	}

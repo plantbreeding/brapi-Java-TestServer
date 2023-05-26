@@ -23,6 +23,7 @@ import org.brapi.test.BrAPITestServer.model.entity.germ.PedigreeNodeEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.TaxonEntity;
 import org.brapi.test.BrAPITestServer.repository.germ.GermplasmDonorRepository;
 import org.brapi.test.BrAPITestServer.repository.germ.GermplasmRepository;
+import org.brapi.test.BrAPITestServer.repository.germ.PedigreeRepository;
 import org.brapi.test.BrAPITestServer.service.DateUtility;
 import org.brapi.test.BrAPITestServer.service.GeoJSONUtility;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
@@ -67,14 +68,16 @@ public class GermplasmService {
 
 	private final GermplasmRepository germplasmRepository;
 	private final GermplasmDonorRepository donorRepository;
+	private final PedigreeRepository pedigreeRepository;
 	private final BreedingMethodService breedingMethodService;
 	private final CropService cropService;
 
 	@Autowired
-	public GermplasmService(GermplasmRepository germplasmRepository, GermplasmDonorRepository donorRepository,
+	public GermplasmService(GermplasmRepository germplasmRepository, GermplasmDonorRepository donorRepository, PedigreeRepository pedigreeRepository,
 			BreedingMethodService breedingMethodService, CropService cropService) {
 		this.germplasmRepository = germplasmRepository;
 		this.donorRepository = donorRepository;
+		this.pedigreeRepository = pedigreeRepository;
 
 		this.breedingMethodService = breedingMethodService;
 		this.cropService = cropService;
@@ -564,15 +567,14 @@ public class GermplasmService {
 				}).collect(Collectors.toList()));
 			}
 
-			if (includeSiblings != null && includeSiblings && entity.getSiblingEdges() != null) {
-				for (PedigreeNodeEntity sibEntity : entity.getSiblingNodes()) {
-					if (sibEntity.getId() != entity.getId()) {
-						PedigreeNodeSiblings siblingsItem = new PedigreeNodeSiblings();
-						siblingsItem.setGermplasmName(sibEntity.getGermplasm().getGermplasmName());
-						siblingsItem.setGermplasmDbId(sibEntity.getGermplasm().getId());
-						pedigree.addSiblingsItem(siblingsItem);
-					}
-				}
+			if (includeSiblings != null && includeSiblings) {
+				List<PedigreeNodeEntity> siblingEntities = pedigreeRepository.findPedigreeSiblings(entity);
+				pedigree.setSiblings(siblingEntities.stream().map(sibNode -> {
+					PedigreeNodeSiblings progeny = new PedigreeNodeSiblings();
+					progeny.setGermplasmDbId(sibNode.getGermplasm().getId());
+					progeny.setGermplasmName(sibNode.getGermplasm().getGermplasmName());
+					return progeny;
+				}).collect(Collectors.toList()));
 			}
 		}
 		return pedigree;

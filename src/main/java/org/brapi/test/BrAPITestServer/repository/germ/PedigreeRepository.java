@@ -5,6 +5,6 @@ import java.util.List;
 import org.brapi.test.BrAPITestServer.model.entity.germ.PedigreeNodeEntity;
 import org.brapi.test.BrAPITestServer.repository.BrAPIRepository;
 
-public interface PedigreeRepository extends BrAPIRepository<PedigreeNodeEntity, String> {
+public interface PedigreeRepository extends BrAPIRepository<PedigreeNodeEntity, String>, PedigreeRepositoryCustom {
 	public List<PedigreeNodeEntity> findByGermplasm_Id(String germplasmDbId);
 }

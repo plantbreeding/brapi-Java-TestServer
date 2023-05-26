@@ -97,18 +97,6 @@ public class PedigreeNodeEntity extends BrAPIPrimaryEntity {
 		}).map(edge -> edge.getConncetedNode()).collect(Collectors.toList());
 	}
 
-	public List<PedigreeEdgeEntity> getSiblingEdges() {
-		return edges.stream().filter(e -> {
-			return e.getEdgeType() == EdgeType.sibling;
-		}).collect(Collectors.toList());
-	}
-
-	public List<PedigreeNodeEntity> getSiblingNodes() {
-		return edges.stream().filter(e -> {
-			return e.getEdgeType() == EdgeType.sibling;
-		}).map(edge -> edge.getConncetedNode()).collect(Collectors.toList());
-	}
-
 	public void addParent(PedigreeNodeEntity node, ParentType type) {
 		PedigreeEdgeEntity edge = new PedigreeEdgeEntity();
 		edge.setThisNode(this);
@@ -130,15 +118,4 @@ public class PedigreeNodeEntity extends BrAPIPrimaryEntity {
 			edges = new ArrayList<>();
 		edges.add(edge);
 	}
-
-	public void addSibling(PedigreeNodeEntity node) {
-		PedigreeEdgeEntity edge = new PedigreeEdgeEntity();
-		edge.setThisNode(this);
-		edge.setConncetedNode(node);
-		edge.setEdgeType(EdgeType.sibling);
-		if(edges == null) 
-			edges = new ArrayList<>();
-		edges.add(edge);
-	}
-
 }
