@@ -98,7 +98,7 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 		log.debug("Request: " + request.getRequestURI());
 		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
-		PedigreeNode data = pedigreeService.getGermplasmPedigree(germplasmDbId, notation, includeSiblings);
+		PedigreeNode data = pedigreeService.getGermplasmPedigree(germplasmDbId, includeSiblings);
 		return responseOK(new GermplasmPedigreeResponse(), data);
 	}
 

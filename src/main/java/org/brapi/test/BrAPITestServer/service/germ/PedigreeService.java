@@ -168,23 +168,35 @@ public class PedigreeService {
 		return node;
 	}
 
-	public PedigreeNode getGermplasmPedigree(String germplasmDbId, String notation, Boolean includeSiblings)
+	public PedigreeNode getGermplasmPedigree(String germplasmDbId, Boolean includeSiblings)
 			throws BrAPIServerException {
-		return convertFromGermplasmEntityToPedigree(germplasmService.getGermplasmEntity(germplasmDbId), notation,
-				includeSiblings);
+		if(includeSiblings == null)
+			includeSiblings = false;
+		
+		Optional<PedigreeNodeEntity> pedigreeEntityOpt = getPedigreeNode(germplasmDbId);
+		PedigreeNode result = null;
+		if(pedigreeEntityOpt.isPresent()) {
+			PedigreeSearchRequest psr = new PedigreeSearchRequest();
+			psr.setIncludeParents(true);
+			psr.setIncludeProgeny(false);
+			psr.includeSiblings(includeSiblings);
+			result = convertFromEntity(pedigreeEntityOpt.get(), psr);
+		}
+		return result;
 	}
 
 	public ProgenyNode getGermplasmProgeny(String germplasmDbId) throws BrAPIServerException {
-		GermplasmEntity germplasm = germplasmService.getGermplasmEntity(germplasmDbId);
+		Optional<PedigreeNodeEntity> pedigreeEntityOpt = getPedigreeNode(germplasmDbId);
 
-		ProgenyNode result = new ProgenyNode();
-		result.setProgeny(new ArrayList<>());
-		result.setGermplasmDbId(germplasm.getId());
-		result.setGermplasmName(germplasm.getGermplasmName());
+		ProgenyNode result = null;
+		if (pedigreeEntityOpt.isPresent()) {
+			PedigreeNodeEntity pedigreeEntity = pedigreeEntityOpt.get();
+			result = new ProgenyNode();
+			result.setProgeny(new ArrayList<>());
+			result.setGermplasmDbId(pedigreeEntity.getGermplasm().getId());
+			result.setGermplasmName(pedigreeEntity.getGermplasm().getGermplasmName());
 
-		if (germplasm.getPedigree() != null) {
-			List<PedigreeNodeEntity> progenyEntities = germplasm.getPedigree().getProgenyNodes();
-			for (PedigreeNodeEntity progenyNode : progenyEntities) {
+			for (PedigreeNodeEntity progenyNode : pedigreeEntity.getProgenyNodes()) {
 				ProgenyNodeProgeny progeny = new ProgenyNodeProgeny();
 				progeny.setGermplasmName(progenyNode.getGermplasm().getGermplasmName());
 				progeny.setGermplasmDbId(progenyNode.getGermplasm().getId());
@@ -193,6 +205,7 @@ public class PedigreeService {
 				}
 				result.getProgeny().add(progeny);
 			}
+
 		}
 
 		return result;
@@ -259,7 +272,7 @@ public class PedigreeService {
 				updatePedigreeNodes.put(germplasm.getGermplasmDbId(), convertFromGermplasmToPedigree(germplasm));
 			}
 		}
-		
+
 		savePedigreeNodes(createPedigreeNodes);
 		updatePedigreeNodes(updatePedigreeNodes);
 
@@ -485,43 +498,5 @@ public class PedigreeService {
 		}
 
 		return node;
-	}
-
-	public PedigreeNode convertFromGermplasmEntityToPedigree(GermplasmEntity germplasm, String notation,
-			Boolean includeSiblings) {
-		PedigreeNode pedigree = new PedigreeNode();
-		pedigree.setGermplasmDbId(germplasm.getId());
-		pedigree.setGermplasmName(germplasm.getGermplasmName());
-		pedigree.setParents(new ArrayList<>());
-		pedigree.setSiblings(new ArrayList<>());
-
-		if (germplasm.getPedigree() != null) {
-			PedigreeNodeEntity entity = germplasm.getPedigree();
-			if (entity.getCrossingProject() != null)
-				pedigree.setCrossingProjectDbId(entity.getCrossingProject().getId());
-			pedigree.setCrossingYear(entity.getCrossingYear());
-			pedigree.setFamilyCode(entity.getFamilyCode());
-
-			if (entity.getParentEdges() != null) {
-				pedigree.getParents().addAll(entity.getParentEdges().stream().map(edge -> {
-					PedigreeNodeParents parent = new PedigreeNodeParents();
-					parent.setGermplasmDbId(edge.getConncetedNode().getGermplasm().getId());
-					parent.setGermplasmName(edge.getConncetedNode().getGermplasm().getGermplasmName());
-					parent.setParentType(edge.getParentType());
-					return parent;
-				}).collect(Collectors.toList()));
-			}
-
-			if (includeSiblings != null && includeSiblings) {
-				List<PedigreeNodeEntity> siblingEntities = pedigreeRepository.findPedigreeSiblings(entity);
-				pedigree.setSiblings(siblingEntities.stream().map(sibNode -> {
-					PedigreeNodeSiblings progeny = new PedigreeNodeSiblings();
-					progeny.setGermplasmDbId(sibNode.getGermplasm().getId());
-					progeny.setGermplasmName(sibNode.getGermplasm().getGermplasmName());
-					return progeny;
-				}).collect(Collectors.toList()));
-			}
-		}
-		return pedigree;
 	}
 }
