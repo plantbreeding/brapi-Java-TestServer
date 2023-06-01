@@ -266,7 +266,7 @@ public class ObservationUnitService {
 	public ObservationUnitEntity getObservationUnitEntity(String observationUnitDbId, HttpStatus errorStatus)
 			throws BrAPIServerException {
 		if(observationUnitDbId == null) {
-			throw new BrAPIServerDbIdNotFoundException("observationUnit", observationUnitDbId);
+			throw new BrAPIServerDbIdNotFoundException("observationUnit", "null", errorStatus);
 		}
 		ObservationUnitEntity observationUnit = null;
 		Optional<ObservationUnitEntity> entityOpt = observationUnitRepository.findById(observationUnitDbId);
