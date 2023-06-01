@@ -265,6 +265,9 @@ public class ObservationUnitService {
 
 	public ObservationUnitEntity getObservationUnitEntity(String observationUnitDbId, HttpStatus errorStatus)
 			throws BrAPIServerException {
+		if(observationUnitDbId == null) {
+			throw new BrAPIServerDbIdNotFoundException("observationUnit", observationUnitDbId);
+		}
 		ObservationUnitEntity observationUnit = null;
 		Optional<ObservationUnitEntity> entityOpt = observationUnitRepository.findById(observationUnitDbId);
 		if (entityOpt.isPresent()) {
@@ -320,8 +323,8 @@ public class ObservationUnitService {
 	public List<ObservationUnitHierarchyLevel> findObservationLevels(String studyDbId, String trialDbId,
 			String programDbId, Metadata metadata) {
 
-		List<ObservationUnitLevel> allLevels = Arrays.asList(ObservationUnitHierarchyLevelEnum.values())
-				.stream().map(levelEnum -> {
+		List<ObservationUnitLevel> allLevels = Arrays.asList(ObservationUnitHierarchyLevelEnum.values()).stream()
+				.map(levelEnum -> {
 					ObservationUnitLevel rel = new ObservationUnitLevel();
 					rel.setLevelName(levelEnum);
 					return rel;
@@ -343,7 +346,7 @@ public class ObservationUnitService {
 			rel.setLevelName(lvl.getLevelName());
 			rel.setLevelOrder(lvl.getLevelOrder());
 			return rel;
-			}).collect(Collectors.toList()));
+		}).collect(Collectors.toList()));
 		levelsSearch.setObservationLevels(null);
 		List<ObservationUnit> moreUnits = findObservationUnits(levelsSearch,
 				new Metadata().pagination(new IndexPagination()));
@@ -356,7 +359,8 @@ public class ObservationUnitService {
 				.filter(unit -> unit.getObservationUnitPosition().getObservationLevel().getLevelName() != null)
 				.map(unit -> {
 					List<ObservationUnitLevel> list = new ArrayList<>();
-					for (ObservationUnitLevel level: unit.getObservationUnitPosition().getObservationLevelRelationships()) {
+					for (ObservationUnitLevel level : unit.getObservationUnitPosition()
+							.getObservationLevelRelationships()) {
 						list.add(level);
 					}
 					list.add(unit.getObservationUnitPosition().getObservationLevel());
@@ -543,8 +547,10 @@ public class ObservationUnitService {
 					relationshipEntity.setLevelCode(level.getLevelCode());
 					relationshipEntity.setLevelName(level.getLevelName());
 					relationshipEntity.setLevelOrder(level.getLevelOrder());
-					ObservationUnitEntity parentEntity = getObservationUnitEntity(level.getObservationUnitDbId());
-					relationshipEntity.setObservationUnit(parentEntity);
+					if (level.getObservationUnitDbId() != null) {
+						ObservationUnitEntity parentEntity = getObservationUnitEntity(level.getObservationUnitDbId());
+						relationshipEntity.setObservationUnit(parentEntity);
+					}
 					relationshipEntity.setPosition(entity);
 				} catch (BrAPIServerException e) {
 					e.printStackTrace();
