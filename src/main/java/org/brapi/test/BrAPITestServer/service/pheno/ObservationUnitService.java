@@ -238,7 +238,11 @@ public class ObservationUnitService {
 					.appendIntList(
 							request.getObservationLevelRelationships().stream().filter(r -> r.getLevelOrder() != null)
 									.map(r -> r.getLevelOrder()).collect(Collectors.toList()),
-							"*levelRelationship.levelOrder");
+							"*levelRelationship.levelOrder")
+					.appendList(
+							request.getObservationLevelRelationships().stream().filter(r -> r.getObservationUnitDbId() != null)
+									.map(r -> r.getObservationUnitDbId()).collect(Collectors.toList()),
+							"*levelRelationship.observationUnit.id");
 		}
 		searchQuery = searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
 				.appendList(request.getGermplasmDbIds(), "germplasm.id")
