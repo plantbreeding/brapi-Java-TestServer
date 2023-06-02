@@ -481,7 +481,10 @@ public class PedigreeService {
 	public PedigreeNode convertFromGermplasmToPedigree(Germplasm germplasm) {
 		PedigreeNode node = new PedigreeNode();
 
-		List<String> pedigreeList = Arrays.asList(germplasm.getPedigree().split("/"));
+		List<String> pedigreeList = new ArrayList<>();
+		if (germplasm.getPedigree() != null) {
+			pedigreeList = Arrays.asList(germplasm.getPedigree().split("/"));
+		}
 		Optional<GermplasmEntity> motherOpt = Optional.empty();
 		Optional<GermplasmEntity> fatherOpt = Optional.empty();
 		if (pedigreeList.size() > 0) {
