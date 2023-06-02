@@ -22,6 +22,7 @@ import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
 import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity.SearchRequestTypes;
 import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.germ.GermplasmService;
+import org.brapi.test.BrAPITestServer.service.germ.PedigreeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.Arrays;
 import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2020-03-20T16:33:36.513Z[GMT]")
@@ -42,13 +45,15 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 	private static final Logger log = LoggerFactory.getLogger(GermplasmApiController.class);
 
 	private final GermplasmService germplasmService;
+	private final PedigreeService pedigreeService;
 	private final SearchService searchService;
 	private final HttpServletRequest request;
 
 	@Autowired
-	public GermplasmApiController(GermplasmService germplasmService, SearchService searchService,
-			HttpServletRequest request) {
+	public GermplasmApiController(GermplasmService germplasmService, PedigreeService pedigreeService,
+			SearchService searchService, HttpServletRequest request) {
 		this.germplasmService = germplasmService;
+		this.pedigreeService = pedigreeService;
 		this.searchService = searchService;
 		this.request = request;
 	}
@@ -93,7 +98,7 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 		log.debug("Request: " + request.getRequestURI());
 		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
-		PedigreeNode data = germplasmService.getGermplasmPedigree(germplasmDbId, notation, includeSiblings);
+		PedigreeNode data = pedigreeService.getGermplasmPedigree(germplasmDbId, includeSiblings);
 		return responseOK(new GermplasmPedigreeResponse(), data);
 	}
 
@@ -107,22 +112,8 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 		log.debug("Request: " + request.getRequestURI());
 		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
-		ProgenyNode data = germplasmService.getGermplasmProgeny(germplasmDbId);
+		ProgenyNode data = pedigreeService.getGermplasmProgeny(germplasmDbId);
 		return responseOK(new GermplasmProgenyResponse(), data);
-	}
-
-	@CrossOrigin
-	@Override
-	public ResponseEntity<GermplasmSingleResponse> germplasmGermplasmDbIdPut(
-			@PathVariable("germplasmDbId") String germplasmDbId, @RequestBody GermplasmNewRequest body,
-			@RequestHeader(value = "Authorization", required = false) String authorization)
-			throws BrAPIServerException {
-
-		log.debug("Request: " + request.getRequestURI());
-		validateSecurityContext(request, "ROLE_USER");
-		validateAcceptHeader(request);
-		Germplasm data = germplasmService.updateGermplasm(germplasmDbId, body);
-		return responseOK(new GermplasmSingleResponse(), data);
 	}
 
 	@CrossOrigin
@@ -164,6 +155,21 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 
 	@CrossOrigin
 	@Override
+	public ResponseEntity<GermplasmSingleResponse> germplasmGermplasmDbIdPut(
+			@PathVariable("germplasmDbId") String germplasmDbId, @RequestBody GermplasmNewRequest body,
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
+
+		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
+		validateAcceptHeader(request);
+		Germplasm data = germplasmService.updateGermplasm(germplasmDbId, body);
+		pedigreeService.updateGermplasmPedigree(Arrays.asList(data));
+		return responseOK(new GermplasmSingleResponse(), data);
+	}
+	
+	@CrossOrigin
+	@Override
 	public ResponseEntity<GermplasmListResponse> germplasmPost(@RequestBody List<GermplasmNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
@@ -172,6 +178,7 @@ public class GermplasmApiController extends BrAPIController implements Germplasm
 		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		List<Germplasm> data = germplasmService.saveGermplasm(body);
+		pedigreeService.updateGermplasmPedigree(data);
 		return responseOK(new GermplasmListResponse(), new GermplasmListResponseResult(), data);
 	}
 

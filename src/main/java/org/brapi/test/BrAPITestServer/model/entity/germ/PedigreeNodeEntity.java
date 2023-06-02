@@ -2,6 +2,7 @@ package org.brapi.test.BrAPITestServer.model.entity.germ;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
@@ -32,6 +33,23 @@ public class PedigreeNodeEntity extends BrAPIPrimaryEntity {
 	private String pedigreeString;
 	@OneToMany(mappedBy = "thisNode", cascade = CascadeType.ALL)
 	private List<PedigreeEdgeEntity> edges = new ArrayList<>();
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(germplasm);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PedigreeNodeEntity other = (PedigreeNodeEntity) obj;
+		return Objects.equals(germplasm, other.germplasm);
+	}
 
 	public CrossingProjectEntity getCrossingProject() {
 		return crossingProject;
@@ -97,18 +115,6 @@ public class PedigreeNodeEntity extends BrAPIPrimaryEntity {
 		}).map(edge -> edge.getConncetedNode()).collect(Collectors.toList());
 	}
 
-	public List<PedigreeEdgeEntity> getSiblingEdges() {
-		return edges.stream().filter(e -> {
-			return e.getEdgeType() == EdgeType.sibling;
-		}).collect(Collectors.toList());
-	}
-
-	public List<PedigreeNodeEntity> getSiblingNodes() {
-		return edges.stream().filter(e -> {
-			return e.getEdgeType() == EdgeType.sibling;
-		}).map(edge -> edge.getConncetedNode()).collect(Collectors.toList());
-	}
-
 	public void addParent(PedigreeNodeEntity node, ParentType type) {
 		PedigreeEdgeEntity edge = new PedigreeEdgeEntity();
 		edge.setThisNode(this);
@@ -130,15 +136,4 @@ public class PedigreeNodeEntity extends BrAPIPrimaryEntity {
 			edges = new ArrayList<>();
 		edges.add(edge);
 	}
-
-	public void addSibling(PedigreeNodeEntity node) {
-		PedigreeEdgeEntity edge = new PedigreeEdgeEntity();
-		edge.setThisNode(this);
-		edge.setConncetedNode(node);
-		edge.setEdgeType(EdgeType.sibling);
-		if(edges == null) 
-			edges = new ArrayList<>();
-		edges.add(edge);
-	}
-
 }
