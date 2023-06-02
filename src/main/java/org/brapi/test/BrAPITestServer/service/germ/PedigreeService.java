@@ -168,14 +168,32 @@ public class PedigreeService {
 		return node;
 	}
 
+	public PedigreeNodeEntity findOrCreatePedigreeNode(String germplasmDbId) throws BrAPIServerException {
+		Optional<PedigreeNodeEntity> nodeOpt = getPedigreeNode(germplasmDbId);
+		PedigreeNodeEntity node;
+		if (nodeOpt.isPresent()) {
+			node = nodeOpt.get();
+		} else {
+			GermplasmEntity germplasm = germplasmService.getGermplasmEntity(germplasmDbId);
+			if (germplasm.getPedigree() != null) {
+				node = germplasm.getPedigree();
+			} else {
+				PedigreeNodeEntity newNode = new PedigreeNodeEntity();
+				newNode.setGermplasm(germplasm);
+				node = pedigreeRepository.saveAndFlush(newNode);
+			}
+		}
+		return node;
+	}
+
 	public PedigreeNode getGermplasmPedigree(String germplasmDbId, Boolean includeSiblings)
 			throws BrAPIServerException {
-		if(includeSiblings == null)
+		if (includeSiblings == null)
 			includeSiblings = false;
-		
+
 		Optional<PedigreeNodeEntity> pedigreeEntityOpt = getPedigreeNode(germplasmDbId);
 		PedigreeNode result = null;
-		if(pedigreeEntityOpt.isPresent()) {
+		if (pedigreeEntityOpt.isPresent()) {
 			PedigreeSearchRequest psr = new PedigreeSearchRequest();
 			psr.setIncludeParents(true);
 			psr.setIncludeProgeny(false);
@@ -366,17 +384,7 @@ public class PedigreeService {
 			}
 			node.setCrossingYear(entity.getCrossingYear());
 			node.setFamilyCode(entity.getFamilyCode());
-			if (entity.getPedigreeString() == null && entity.getParentEdges() != null
-					&& !entity.getParentEdges().isEmpty()) {
-				List<PedigreeNodeEntity> parents = entity.getParentNodes();
-				String pedStr = parents.get(0).getGermplasm().getGermplasmName();
-				for (int i = 1; i < parents.size(); i++) {
-					pedStr += "/" + parents.get(i).getGermplasm().getGermplasmName();
-				}
-				node.setPedigreeString(pedStr);
-			} else {
-				node.setPedigreeString(entity.getPedigreeString());
-			}
+			node.setPedigreeString(getPedigreeString(entity));
 			if (entity.getParentEdges() != null && request.isIncludeParents()) {
 				node.setParents(entity.getParentEdges().stream().map(edge -> {
 					PedigreeNodeParents parent = new PedigreeNodeParents();
@@ -407,6 +415,20 @@ public class PedigreeService {
 		}
 		return node;
 	}
+	
+	static public String getPedigreeString(PedigreeNodeEntity entity) {
+		if (entity.getPedigreeString() == null && entity.getParentEdges() != null
+				&& !entity.getParentEdges().isEmpty()) {
+			List<PedigreeNodeEntity> parents = entity.getParentNodes();
+			String pedStr = parents.get(0).getGermplasm().getGermplasmName();
+			for (int i = 1; i < parents.size(); i++) {
+				pedStr += "/" + parents.get(i).getGermplasm().getGermplasmName();
+			}
+			return pedStr;
+		} else {
+			return entity.getPedigreeString();
+		}
+	}
 
 	private void updateEntity(PedigreeNodeEntity entity, PedigreeNode node) throws BrAPIServerException {
 		UpdateUtility.updateEntity(node, entity);
@@ -416,7 +438,7 @@ public class PedigreeService {
 		if (node.getFamilyCode() != null)
 			entity.setFamilyCode(node.getFamilyCode());
 		if (node.getPedigreeString() != null)
-			entity.setPedigreeString(null);
+			entity.setPedigreeString(node.getPedigreeString());
 
 		if (node.getCrossingProjectDbId() != null) {
 			CrossingProjectEntity crossingProject = crossingProjectService
@@ -434,29 +456,23 @@ public class PedigreeService {
 		updateEntity(entity, node);
 		if (node.getParents() != null) {
 			for (PedigreeNodeParents parentNode : node.getParents()) {
-				Optional<PedigreeNodeEntity> parentEntityOpt = getPedigreeNode(parentNode.getGermplasmDbId());
-				if (parentEntityOpt.isPresent()) {
-					PedigreeNodeEntity parentEntity = parentEntityOpt.get();
-					if (!entity.getParentNodes().contains(parentEntity)) {
-						entity.addParent(parentEntity, parentNode.getParentType());
-					}
-					if (!parentEntity.getProgenyNodes().contains(entity)) {
-						parentEntity.addProgeny(entity, parentNode.getParentType());
-					}
+				PedigreeNodeEntity parentEntity = findOrCreatePedigreeNode(parentNode.getGermplasmDbId());
+				if (!entity.getParentNodes().contains(parentEntity)) {
+					entity.addParent(parentEntity, parentNode.getParentType());
+				}
+				if (!parentEntity.getProgenyNodes().contains(entity)) {
+					parentEntity.addProgeny(entity, parentNode.getParentType());
 				}
 			}
 		}
 		if (node.getProgeny() != null) {
 			for (PedigreeNodeParents childNode : node.getProgeny()) {
-				Optional<PedigreeNodeEntity> childEntityOpt = getPedigreeNode(childNode.getGermplasmDbId());
-				if (childEntityOpt.isPresent()) {
-					PedigreeNodeEntity childEntity = childEntityOpt.get();
-					if (!entity.getProgenyNodes().contains(childEntity)) {
-						entity.addProgeny(childEntity, childNode.getParentType());
-					}
-					if (!childEntity.getParentNodes().contains(entity)) {
-						childEntity.addParent(entity, childNode.getParentType());
-					}
+				PedigreeNodeEntity childEntity = findOrCreatePedigreeNode(childNode.getGermplasmDbId());
+				if (!entity.getProgenyNodes().contains(childEntity)) {
+					entity.addProgeny(childEntity, childNode.getParentType());
+				}
+				if (!childEntity.getParentNodes().contains(entity)) {
+					childEntity.addParent(entity, childNode.getParentType());
 				}
 			}
 		}

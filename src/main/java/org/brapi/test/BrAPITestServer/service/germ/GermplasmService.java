@@ -247,7 +247,8 @@ public class GermplasmService {
 			germ.setInstituteName(entity.getHostInstitute().getInstituteName());
 		}
 		if (entity.getPedigree() != null)
-			germ.setPedigree(entity.getPedigree().getPedigreeString());
+			germ.setPedigree(PedigreeService.getPedigreeString(entity.getPedigree()));
+		
 		germ.setSeedSource(entity.getSeedSource());
 		germ.setSeedSourceDescription(entity.getSeedSourceDescription());
 		germ.setSpecies(entity.getSpecies());
