@@ -512,7 +512,7 @@ public class PedigreeService {
 			PedigreeNodeParents father = new PedigreeNodeParents();
 			father.setGermplasmDbId(fatherOpt.get().getId());
 			father.setGermplasmName(fatherOpt.get().getGermplasmName());
-			father.setParentType(ParentType.FEMALE);
+			father.setParentType(ParentType.MALE);
 			node.addParentsItem(father);
 		}
 
