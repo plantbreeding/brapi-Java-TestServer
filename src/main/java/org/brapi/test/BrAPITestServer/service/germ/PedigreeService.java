@@ -15,6 +15,8 @@ import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundExceptio
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.germ.CrossingProjectEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.GermplasmEntity;
+import org.brapi.test.BrAPITestServer.model.entity.germ.PedigreeEdgeEntity;
+import org.brapi.test.BrAPITestServer.model.entity.germ.PedigreeEdgeEntity.EdgeType;
 import org.brapi.test.BrAPITestServer.model.entity.germ.PedigreeNodeEntity;
 import org.brapi.test.BrAPITestServer.repository.germ.PedigreeRepository;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
@@ -415,14 +417,31 @@ public class PedigreeService {
 		}
 		return node;
 	}
-	
+
 	static public String getPedigreeString(PedigreeNodeEntity entity) {
-		if (entity.getPedigreeString() == null && entity.getParentEdges() != null
-				&& !entity.getParentEdges().isEmpty()) {
-			List<PedigreeNodeEntity> parents = entity.getParentNodes();
-			String pedStr = parents.get(0).getGermplasm().getGermplasmName();
-			for (int i = 1; i < parents.size(); i++) {
-				pedStr += "/" + parents.get(i).getGermplasm().getGermplasmName();
+		if (entity.getPedigreeString() == null || entity.getPedigreeString().isEmpty()) {
+			String pedStr = "";
+			if (entity.getParentEdges() != null && !entity.getParentEdges().isEmpty()) {
+				Optional<PedigreeNodeEntity> mother = entity.getParentEdges().stream()
+						.filter(parentEdge -> {return ParentType.FEMALE == parentEdge.getParentType();})
+						.map(PedigreeEdgeEntity::getConncetedNode)
+						.findFirst();
+				Optional<PedigreeNodeEntity> father = entity.getParentEdges().stream()
+						.filter(parentEdge -> {return ParentType.MALE == parentEdge.getParentType();})
+						.map(PedigreeEdgeEntity::getConncetedNode)
+						.findFirst();
+				
+				if(mother.isPresent()) {
+					pedStr += mother.get().getGermplasm().getGermplasmName() + "/";
+				}else {
+					pedStr += "Unknown/";
+				}
+				
+				if(father.isPresent()) {
+					pedStr += father.get().getGermplasm().getGermplasmName();
+				}else {
+					pedStr += "Unknown";
+				}
 			}
 			return pedStr;
 		} else {
@@ -431,6 +450,11 @@ public class PedigreeService {
 	}
 
 	private void updateEntity(PedigreeNodeEntity entity, PedigreeNode node) throws BrAPIServerException {
+		if (node.getGermplasmDbId() != null && entity.getGermplasm() == null) {
+			GermplasmEntity germplasm = germplasmService.getGermplasmEntity(node.getGermplasmDbId());
+			entity.setGermplasm(germplasm);
+		}
+		
 		UpdateUtility.updateEntity(node, entity);
 
 		if (node.getCrossingYear() != null)
@@ -444,10 +468,6 @@ public class PedigreeService {
 			CrossingProjectEntity crossingProject = crossingProjectService
 					.getCrossingProjectEntity(node.getCrossingProjectDbId());
 			entity.setCrossingProject(crossingProject);
-		}
-		if (node.getGermplasmDbId() != null) {
-			GermplasmEntity germplasm = germplasmService.getGermplasmEntity(node.getGermplasmDbId());
-			entity.setGermplasm(germplasm);
 		}
 	}
 
@@ -494,12 +514,15 @@ public class PedigreeService {
 			}
 		}
 
+		node.setAdditionalInfo(germplasm.getAdditionalInfo());
 		node.setBreedingMethodDbId(germplasm.getBreedingMethodDbId());
 		node.setBreedingMethodName(germplasm.getBreedingMethodName());
 		node.setDefaultDisplayName(germplasm.getDefaultDisplayName());
+		node.setExternalReferences(germplasm.getExternalReferences());
 		node.setGermplasmDbId(germplasm.getGermplasmDbId());
 		node.setGermplasmName(germplasm.getGermplasmName());
 		node.setGermplasmPUI(germplasm.getGermplasmPUI());
+		node.setPedigreeString(germplasm.getPedigree());
 
 		if (motherOpt.isPresent()) {
 			PedigreeNodeParents mother = new PedigreeNodeParents();
