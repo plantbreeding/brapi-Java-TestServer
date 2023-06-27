@@ -47,7 +47,7 @@ public class BreedingMethodService {
 		if (entityOpt.isPresent()) {
 			breedingMethodEntity = entityOpt.get();
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("breedingMethod", breedingMethodDbId);
+			throw new BrAPIServerDbIdNotFoundException("breedingMethod", breedingMethodDbId, errorStatus);
 		}
 		return breedingMethodEntity;
 	}

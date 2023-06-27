@@ -5,10 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 
 @Entity
 @Table(name="breeding_method")
-public class BreedingMethodEntity extends BrAPIBaseEntity {
+public class BreedingMethodEntity extends BrAPIPrimaryEntity {
 	@Column
     private String abbreviation;
     @Column

@@ -42,6 +42,7 @@ public class CommonCropNamesApiController extends BrAPIController implements Com
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		validateAcceptHeader(request);
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		log.debug("Request: " + request.getRequestURI());
 
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);

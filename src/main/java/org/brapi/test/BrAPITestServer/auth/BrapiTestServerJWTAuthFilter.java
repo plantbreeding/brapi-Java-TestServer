@@ -18,7 +18,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Value;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,20 +30,23 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.JWTVerifier;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
-	private static final List<String> USER_IDS = Arrays.asList("dummy", "dummyAdmin", "113212610256718182401");
-	private static final List<String> ADMIN_IDS = Arrays.asList("dummyAdmin", "113212610256718182401");
+	private static final Logger log = LoggerFactory.getLogger(BrapiTestServerJWTAuthFilter.class);
+	private static final List<String> ADMIN_IDS = Arrays.asList("dummyAdmin", "ps664@cornell.edu");
 
 	private String oidcDiscoveryUrl;
-	
-	public BrapiTestServerJWTAuthFilter(AuthenticationManager authManager, String oidcDiscoveryUrl) {
+	private boolean authEnabled;
+
+	public BrapiTestServerJWTAuthFilter(AuthenticationManager authManager, String oidcDiscoveryUrl, boolean authEnabled) {
 		super(authManager);
 		this.oidcDiscoveryUrl = oidcDiscoveryUrl;
+		this.authEnabled = authEnabled;
 	}
 
 	@Override
@@ -50,84 +54,123 @@ public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
 			throws IOException, ServletException {
 		String header = req.getHeader("Authorization");
 
+		//Auth disabled by config property
+		if (!authEnabled) {
+			List<GrantedAuthority> authorities = new ArrayList<>();
+			authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+			AuthDetails bypassDetails = new AuthDetails();
+			bypassDetails.setUserId("anonymousUser");
+			bypassDetails.setExpirationTimestamp(Long.MAX_VALUE);
+			bypassDetails.setRoles(new ArrayList<>());
+			bypassDetails.getRoles().add("ROLE_USER");
+			bypassDetails.getRoles().add("ROLE_ADMIN");
+			UsernamePasswordAuthenticationToken authentication = 
+					new UsernamePasswordAuthenticationToken(bypassDetails.getUserId(), null, authorities);
+			authentication.setDetails(bypassDetails);
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+			chain.doFilter(req, res);
+			return;
+		}
+		
+		
+		// Anonymous User
 		if (header == null || !header.startsWith("Bearer ")) {
 			chain.doFilter(req, res);
 			return;
 		}
 
+		// Token Available
 		try {
-			String userId = checkAuthentication(req);
-			if (userId != null) {
-				List<GrantedAuthority> authorities = getAuthorities(userId);
-				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userId,
-						null, authorities);
+			String token = header.replaceFirst("Bearer ", "");
+			AuthDetails userDetails = validateToken(token);
+
+			if (userDetails != null) {
+				List<GrantedAuthority> authorities = getAuthorities(userDetails);
+				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+						userDetails.getUserId(), null, authorities);
+				authentication.setDetails(userDetails);
 
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			} else {
 				throw new GeneralSecurityException("Auth Error");
 			}
+
+			chain.doFilter(req, res);
+
 		} catch (GeneralSecurityException e) {
+			String msg = determineExceptionCause(e);
+			log.error(msg);
 			res.addHeader("WWW-Authenticate", "Basic realm=\"\"");
-			res.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
+			res.setStatus(HttpStatus.UNAUTHORIZED.value());
+			res.setContentType("text/plain;charset=UTF-8");
+			res.getWriter().print(msg);
+			res.getWriter().flush();
+//			res.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase() + " - " + msg);
 		}
-		chain.doFilter(req, res);
 	}
 
-	private String checkAuthentication(HttpServletRequest req)
+	private String determineExceptionCause(GeneralSecurityException e) {
+		String msg = HttpStatus.UNAUTHORIZED.toString() + " - ";
+		Throwable exception = e;
+		msg += exception.getMessage();
+		while (exception.getCause() != null){
+			exception = exception.getCause();
+			msg +=  " - " + exception.getMessage();
+		} 
+		msg += "\nPlease go to https://brapi.org/oauth and login to generate a fresh token, or use the dummy token 'XXXX'";
+		return "\"" + msg + "\"";
+	}
+
+	private AuthDetails validateToken(String token)
 			throws FileNotFoundException, IOException, GeneralSecurityException {
-		String userId = checkDummyAuthentication(req);
-		if (userId == null) {
-			userId = validateOAuthToken(req);
+
+		AuthDetails userDetails = null;
+		if (token.equals("XXXX") || token.equals("YYYY") || token.equals("ZZZZ")) {
+			userDetails = validateDummyToken(token);
+		} else {
+			userDetails = validateOAuthToken(token);
 		}
-		return userId;
+		return userDetails;
 	}
 
-	private List<GrantedAuthority> getAuthorities(String userId) {
-		List<GrantedAuthority> auth = new ArrayList<>();
-		if (userId != null) {
-			if (USER_IDS.contains(userId)) {
-				GrantedAuthority user = new SimpleGrantedAuthority("USER");
-				auth.add(user);
-			}
-			if (ADMIN_IDS.contains(userId)) {
-				GrantedAuthority admin = new SimpleGrantedAuthority("ADMIN");
-				auth.add(admin);
-			}
+	private AuthDetails validateDummyToken(String token) {
+		AuthDetails details = null;
+		if (token.equals("XXXX")) {
+			details = new AuthDetails();
+			details.setUserId("dummy");
+			details.setExpirationTimestamp(Long.MAX_VALUE);
+		} else if (token.equals("YYYY")) {
+			details = new AuthDetails();
+			details.setUserId("dummyAdmin");
+			details.setExpirationTimestamp(Long.MAX_VALUE);
+		} else if (token.equals("ZZZZ")) {
+			details = new AuthDetails();
+			details.setUserId("anonymousUser");
+			details.setExpirationTimestamp(Long.MAX_VALUE);
 		}
-		return auth;
+		return details;
 	}
 
-	private String validateOAuthToken(HttpServletRequest request) {
+	private AuthDetails validateOAuthToken(String token) throws GeneralSecurityException {
 		try {
-			String token = request.getHeader("Authorization");
-			if (token != null) {
-				token = token.replaceFirst("Bearer ", "");
-				RSAPublicKey pubKey = getPublicKey(oidcDiscoveryUrl);
-								
-				Algorithm algorithm = Algorithm.RSA256(pubKey, null);
-				JWTVerifier verifier = JWT.require(algorithm)
-						.withIssuer("https://auth.brapi.org/auth/realms/brapi")
-						.build(); 
-				DecodedJWT jwt = verifier.verify(token);
-				return jwt.getClaim("email").asString();
-			}
-			return null;
-		} catch (Exception e) {
-			return null;
-		}
-	}
+			token = token.replaceFirst("Bearer ", "");
+			RSAPublicKey pubKey = getPublicKey(oidcDiscoveryUrl);
 
-	private String checkDummyAuthentication(HttpServletRequest request) {
-		String token = request.getHeader("Authorization");
-		if (token != null) {
-			if (token.equals("Bearer XXXX")) {
-				return "dummy";
-			} else if (token.equals("Bearer YYYY")) {
-				return "dummyAdmin";
-			}
-			return null;
+			Algorithm algorithm = Algorithm.RSA256(pubKey, null);
+			JWTVerifier verifier = JWT.require(algorithm).withIssuer("https://auth.brapi.org/auth/realms/brapi")
+					.build();
+			DecodedJWT jwt = verifier.verify(token);
+
+			AuthDetails details = new AuthDetails();
+			details.setUserId(jwt.getClaim("email").asString());
+			details.setExpirationTimestamp(jwt.getExpiresAt());
+			return details;
+		} catch (JWTVerificationException e) {
+			throw new GeneralSecurityException("Invalid JWT", e);
+		} catch (Exception e) {
+			throw new GeneralSecurityException("JWT Verification Process Failed", e);
 		}
-		return null;
 	}
 
 	private RSAPublicKey getPublicKey(String discoveryURL) {
@@ -136,33 +179,34 @@ public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
 			String jwksURL = discovery.findValue("jwks_uri").asText();
 			JsonNode jwks = (new ObjectMapper()).readTree(new URL(jwksURL));
 			String keyVal = jwks.findValue("keys").get(0).findValue("x5c").get(0).asText();
-			//keyVal = "-----BEGIN CERTIFICATE-----\n" + keyVal + "\n-----END CERTIFICATE-----";
-			
-//			byte[] encoded = Base64.decodeBase64(keyVal);
-//			
-//            KeyFactory kf = KeyFactory.getInstance("RSA");
-//		    RSAPublicKey pubKey = (RSAPublicKey) kf.generatePublic(new X509EncodedKeySpec(encoded));
-//			
-//			return pubKey;		    
-			
+
 			String certb64 = keyVal;
 			byte[] certder = Base64.decodeBase64(certb64);
 			InputStream certstream = new ByteArrayInputStream(certder);
 			Certificate cert = CertificateFactory.getInstance("X.509").generateCertificate(certstream);
 			RSAPublicKey pubKey = (RSAPublicKey) cert.getPublicKey();
-			return pubKey;	
+			return pubKey;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
-//		} catch (InvalidKeySpecException e) {
-//			e.printStackTrace();
-//			return null;
-//		} catch (NoSuchAlgorithmException e) {
-//			e.printStackTrace();
-//			return null;
 		} catch (CertificateException e) {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	private List<GrantedAuthority> getAuthorities(AuthDetails userDetails) {
+		List<GrantedAuthority> auth = new ArrayList<>();
+		if (userDetails != null) {
+			GrantedAuthority user = new SimpleGrantedAuthority("ROLE_USER");
+			auth.add(user);
+			userDetails.addRole("ROLE_USER");
+			if (ADMIN_IDS.contains(userDetails.getUserId())) {
+				GrantedAuthority admin = new SimpleGrantedAuthority("ROLE_ADMIN");
+				auth.add(admin);
+				userDetails.addRole("ROLE_ADMIN");
+			}
+		}
+		return auth;
 	}
 }

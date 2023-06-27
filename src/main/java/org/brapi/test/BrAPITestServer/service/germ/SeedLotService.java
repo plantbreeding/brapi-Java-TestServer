@@ -101,7 +101,7 @@ public class SeedLotService {
 		if (entityOpt.isPresent()) {
 			seedLot = entityOpt.get();
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("seed lot", seedLotDbId);
+			throw new BrAPIServerDbIdNotFoundException("seed lot", seedLotDbId, errorStatus);
 		}
 		return seedLot;
 	}
@@ -120,16 +120,9 @@ public class SeedLotService {
 	}
 
 	public SeedLot updateSeedLot(String seedLotDbId, @Valid SeedLotNewRequest body) throws BrAPIServerException {
-		SeedLotEntity savedEntity;
-		Optional<SeedLotEntity> entityOpt = seedLotRepository.findById(seedLotDbId);
-		if (entityOpt.isPresent()) {
-			SeedLotEntity entity = entityOpt.get();
-			updateEntity(entity, body);
-
-			savedEntity = seedLotRepository.save(entity);
-		} else {
-			throw new BrAPIServerDbIdNotFoundException("seed lot", seedLotDbId);
-		}
+		SeedLotEntity entity = getSeedLotEntity(seedLotDbId, HttpStatus.NOT_FOUND);
+		updateEntity(entity, body);
+		SeedLotEntity savedEntity = seedLotRepository.save(entity);
 
 		return convertFromEntity(savedEntity);
 	}
@@ -167,7 +160,7 @@ public class SeedLotService {
 			searchQuery = searchQuery.appendSingle(commonCropName, "toSeedLot.program.crop.crop_name");
 		if (programDbId != null)
 			searchQuery = searchQuery.appendSingle(programDbId, "toSeedLot.program.id");
-		
+
 		if (externalReferenceID != null && externalReferenceSource != null)
 			searchQuery = searchQuery.withExRefs(Arrays.asList(externalReferenceID),
 					Arrays.asList(externalReferenceSource));

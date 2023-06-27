@@ -2,17 +2,21 @@ package org.brapi.test.BrAPITestServer.controller.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.brapi.test.BrAPITestServer.auth.AuthDetails;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.exceptions.InvalidPagingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import com.google.common.collect.Sets;
 
 import io.swagger.model.BrAPIResponse;
 import io.swagger.model.BrAPIResponseResult;
@@ -21,7 +25,8 @@ import io.swagger.model.Metadata;
 import io.swagger.model.Model202AcceptedSearchResponse;
 import io.swagger.model.Model202AcceptedSearchResponseResult;
 import io.swagger.model.SearchRequest;
-import io.swagger.model.SearchRequestParametersPaging;
+import io.swagger.model.Status;
+import io.swagger.model.Status.MessageTypeEnum;
 import io.swagger.model.TokenPagination;
 
 public class BrAPIController {
@@ -87,7 +92,8 @@ public class BrAPIController {
 	protected Metadata generateEmptyMetadata() {
 		Metadata metaData = new Metadata();
 		metaData.setDatafiles(new ArrayList<>());
-		metaData.setStatus(new ArrayList<>());
+		metaData.setStatus(getStatusMessages());
+		
 		IndexPagination pagination = new IndexPagination();
 		pagination.setCurrentPage(0);
 		pagination.setPageSize(0);
@@ -96,6 +102,21 @@ public class BrAPIController {
 		
 		metaData.setPagination(pagination);
 		return metaData;
+	}
+
+	private List<Status> getStatusMessages() {
+		List<Status> statusList = new ArrayList<>();
+		
+		SecurityContext context = SecurityContextHolder.getContext();
+		if(context.getAuthentication().getDetails() != null && context.getAuthentication().getDetails() instanceof AuthDetails) {
+			AuthDetails auth = (AuthDetails) context.getAuthentication().getDetails();
+			Status expStatus = new Status();
+			expStatus.setMessageType(MessageTypeEnum.WARNING);
+			expStatus.setMessage("User token expires at " + auth.getExpirationTimestamp());
+			statusList.add(expStatus);
+		}
+		
+		return statusList;
 	}
 
 	protected Metadata generateEmptyMetadataToken() {
@@ -123,6 +144,27 @@ public class BrAPIController {
 						"Client is requesting a response other than \"application/json\"");
 			}
 		}
+	}
+	
+	protected void validateSecurityContext(HttpServletRequest request, String...acceptableRoles) throws BrAPIServerException {
+
+		SecurityContext context = SecurityContextHolder.getContext();
+		
+		Set<String> acceptableRolesSet = Sets.newHashSet(acceptableRoles);
+		Set<String> userRolesSet = context.getAuthentication().getAuthorities().stream().map(auth -> auth.getAuthority()).collect(Collectors.toSet());
+		
+		acceptableRolesSet.retainAll(userRolesSet);
+		
+		if(acceptableRolesSet.isEmpty()) {
+			String username = "";
+			if(context.getAuthentication().getPrincipal() != null) { 
+				username = context.getAuthentication().getPrincipal().toString();
+			}
+			
+			throw new BrAPIServerException(HttpStatus.FORBIDDEN, "The user \""+ username 
+					+"\" does not have sufficient privileges to access the endpoint \""+ request.getMethod() + " " + request.getRequestURI() +"\"");
+		}
+		
 	}
 
 	public <R, T extends BrAPIResponse<R>> ResponseEntity<T> responseOK(T response, R result) {

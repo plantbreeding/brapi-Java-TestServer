@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
@@ -42,21 +41,22 @@ public class CrossesApiController extends BrAPIController implements CrossesApi 
 	@CrossOrigin
 	@Override
 	public ResponseEntity<CrossesListResponse> crossesGet(
-			@Valid @RequestParam(value = "crossingProjectDbId", required = false) String crossingProjectDbId,
-			@Valid @RequestParam(value = "crossingProjectName", required = false) String crossingProjectName,
-			@Valid @RequestParam(value = "crossDbId", required = false) String crossDbId,
-			@Valid @RequestParam(value = "crossName", required = false) String crossName,
-			@Valid @RequestParam(value = "commonCropName", required = false) String commonCropName,
-			@Valid @RequestParam(value = "programDbId", required = false) String programDbId,
-			@Valid @RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
-			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
-			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "crossingProjectDbId", required = false) String crossingProjectDbId,
+			@RequestParam(value = "crossingProjectName", required = false) String crossingProjectName,
+			@RequestParam(value = "crossDbId", required = false) String crossDbId,
+			@RequestParam(value = "crossName", required = false) String crossName,
+			@RequestParam(value = "commonCropName", required = false) String commonCropName,
+			@RequestParam(value = "programDbId", required = false) String programDbId,
+			@RequestParam(value = "externalReferenceID", required = false) String externalReferenceID,
+			@RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<Cross> data = crossService.findCrosses(crossingProjectDbId, crossingProjectName, crossDbId, crossName,
@@ -67,11 +67,12 @@ public class CrossesApiController extends BrAPIController implements CrossesApi 
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<CrossesListResponse> crossesPost(@Valid @RequestBody List<CrossNewRequest> body,
+	public ResponseEntity<CrossesListResponse> crossesPost(@RequestBody List<CrossNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		List<Cross> data = crossService.saveCrosses(body);
 		return responseOK(new CrossesListResponse(), new CrossesListResponseResult(), data);
@@ -79,11 +80,12 @@ public class CrossesApiController extends BrAPIController implements CrossesApi 
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<CrossesListResponse> crossesPut(@Valid @RequestBody Map<String, CrossNewRequest> body,
+	public ResponseEntity<CrossesListResponse> crossesPut(@RequestBody Map<String, CrossNewRequest> body,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		List<Cross> data = crossService.updateCrosses(body);
 		return responseOK(new CrossesListResponse(), new CrossesListResponseResult(), data);

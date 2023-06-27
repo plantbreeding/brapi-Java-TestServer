@@ -9,11 +9,6 @@ import io.swagger.model.geno.CallSetsListResponseResult;
 import io.swagger.model.geno.CallSetsSearchRequest;
 import io.swagger.model.geno.CallsListResponse;
 import io.swagger.model.geno.CallsListResponseResult;
-import io.swagger.model.germ.Germplasm;
-import io.swagger.model.germ.GermplasmListResponse;
-import io.swagger.model.germ.GermplasmListResponseResult;
-import io.swagger.model.germ.GermplasmSearchRequest;
-import io.swagger.annotations.ApiParam;
 import io.swagger.api.geno.CallSetsApi;
 
 import org.brapi.test.BrAPITestServer.controller.core.BrAPIController;
@@ -26,7 +21,6 @@ import org.brapi.test.BrAPITestServer.service.geno.CallSetService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -34,7 +28,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
-import jakarta.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -50,7 +43,8 @@ public class CallSetsApiController extends BrAPIController implements CallSetsAp
 	private final HttpServletRequest request;
 
 	@Autowired
-	public CallSetsApiController(CallSetService callSetService, CallService callService, SearchService searchService, HttpServletRequest request) {
+	public CallSetsApiController(CallSetService callSetService, CallService callService, SearchService searchService,
+			HttpServletRequest request) {
 		this.callSetService = callSetService;
 		this.callService = callService;
 		this.searchService = searchService;
@@ -61,16 +55,17 @@ public class CallSetsApiController extends BrAPIController implements CallSetsAp
 	@Override
 	public ResponseEntity<CallsListResponse> callsetsCallSetDbIdCallsGet(
 			@PathVariable("callSetDbId") String callSetDbId,
-			@Valid @RequestParam(value = "expandHomozygotes", required = false) Boolean expandHomozygotes,
-			@Valid @RequestParam(value = "unknownString", required = false) String unknownString,
-			@Valid @RequestParam(value = "sepPhased", required = false) String sepPhased,
-			@Valid @RequestParam(value = "sepUnphased", required = false) String sepUnphased,
-			@Valid @RequestParam(value = "pageToken", required = false) String pageToken,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "expandHomozygotes", required = false) Boolean expandHomozygotes,
+			@RequestParam(value = "unknownString", required = false) String unknownString,
+			@RequestParam(value = "sepPhased", required = false) String sepPhased,
+			@RequestParam(value = "sepUnphased", required = false) String sepUnphased,
+			@RequestParam(value = "pageToken", required = false) String pageToken,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(pageToken, pageSize);
 		CallsListResponseResult data = callService.findCalls(callSetDbId, null, null, expandHomozygotes, unknownString,
@@ -85,6 +80,7 @@ public class CallSetsApiController extends BrAPIController implements CallSetsAp
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		CallSet data = callSetService.getCallSet(callSetDbId);
 		return responseOK(new CallSetResponse(), data);
@@ -93,18 +89,20 @@ public class CallSetsApiController extends BrAPIController implements CallSetsAp
 	@CrossOrigin
 	@Override
 	public ResponseEntity<CallSetsListResponse> callsetsGet(
-			@Valid @RequestParam(value = "callSetDbId", required = false) String callSetDbId,
-			@Valid @RequestParam(value = "callSetName", required = false) String callSetName,
-			@Valid @RequestParam(value = "variantSetDbId", required = false) String variantSetDbId,
-			@Valid @RequestParam(value = "sampleDbId", required = false) String sampleDbId,
-			@Valid @RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
-			@Valid @RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
-			@Valid @RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+			@RequestParam(value = "callSetDbId", required = false) String callSetDbId,
+			@RequestParam(value = "callSetName", required = false) String callSetName,
+			@RequestParam(value = "variantSetDbId", required = false) String variantSetDbId,
+			@RequestParam(value = "sampleDbId", required = false) String sampleDbId,
+			@RequestParam(value = "germplasmDbId", required = false) String germplasmDbId,
+			@RequestParam(value = "externalReferenceId", required = false) String externalReferenceId,
+			@RequestParam(value = "externalReferenceSource", required = false) String externalReferenceSource,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<CallSet> data = callSetService.findCallSets(callSetDbId, callSetName, variantSetDbId, sampleDbId,
@@ -114,10 +112,12 @@ public class CallSetsApiController extends BrAPIController implements CallSetsAp
 
 	@CrossOrigin
 	@Override
-	public ResponseEntity<? extends BrAPIResponse> searchCallsetsPost(@Valid @RequestBody CallSetsSearchRequest body,
-			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
+	public ResponseEntity<? extends BrAPIResponse> searchCallsetsPost(@RequestBody CallSetsSearchRequest body,
+			@RequestHeader(value = "Authorization", required = false) String authorization)
+			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
 
@@ -134,12 +134,13 @@ public class CallSetsApiController extends BrAPIController implements CallSetsAp
 	@Override
 	public ResponseEntity<? extends BrAPIResponse> searchCallsetsSearchResultsDbIdGet(
 			@PathVariable("searchResultsDbId") String searchResultsDbId,
-			@Valid @RequestParam(value = "page", required = false) Integer page,
-			@Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestHeader(value = "Authorization", required = false) String authorization)
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		SearchRequestEntity request = searchService.findById(searchResultsDbId);
@@ -147,7 +148,7 @@ public class CallSetsApiController extends BrAPIController implements CallSetsAp
 			CallSetsSearchRequest body = request.getParameters(CallSetsSearchRequest.class);
 			List<CallSet> data = callSetService.findCallSets(body, metadata);
 			return responseOK(new CallSetsListResponse(), new CallSetsListResponseResult(), data, metadata);
-		}else {
+		} else {
 			return responseAccepted(searchResultsDbId);
 		}
 	}

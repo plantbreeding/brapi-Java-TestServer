@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.brapi.test.BrAPITestServer.model.entity.core.PersonEntity;
+import org.brapi.test.BrAPITestServer.repository.BrAPIRepository;
 import org.springframework.data.repository.query.Param;
 
 public interface PeopleRepository extends BrAPIRepository<PersonEntity, String>{

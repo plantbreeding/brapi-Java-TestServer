@@ -1,6 +1,6 @@
 
 -- germplasm1
-INSERT INTO germplasm (id, accession_number, acquisition_date, acquisition_source_code, biological_status_of_accession_code, collection, country_of_origin_code, default_display_name, documentationurl, genus, germplasm_name, germplasmpui, germplasm_preprocessing, mls_status, seed_source, seed_source_description, species, species_authority, subtaxa, subtaxa_authority, breeding_method_id, crop_id) VALUES('germplasm1', 'A0000001', '2000-04-09', 2, 2, 'Fake Foods Collection', 'USA', 'Fantastico', 'https://wiki.brapi.org', 'Aspergillus', 'Tomatillo Fantastico', 'doi:10.12345/A0000001', 'EO:0007210; transplanted from study 2351 observation unit ID: pot:894', 0, 'Root Stock', 'Branches were collected from a 10-year-old tree growing in a progeny trial established in a loamy brown earth soil.', 'fructus', 'Smith, 1822', 'Aspergillus fructus A', 'Smith, 1822', 'breeding_method1', '1');
+INSERT INTO germplasm (auth_user_id, id, accession_number, acquisition_date, acquisition_source_code, biological_status_of_accession_code, collection, country_of_origin_code, default_display_name, documentationurl, genus, germplasm_name, germplasmpui, germplasm_preprocessing, mls_status, seed_source, seed_source_description, species, species_authority, subtaxa, subtaxa_authority, breeding_method_id, crop_id) VALUES('anonymousUser', 'germplasm1', 'A0000001', '2000-04-09', 2, 2, 'Fake Foods Collection', 'USA', 'Fantastico', 'https://wiki.brapi.org', 'Aspergillus', 'Tomatillo Fantastico', 'doi:10.12345/A0000001', 'EO:0007210; transplanted from study 2351 observation unit ID: pot:894', 0, 'Root Stock', 'Branches were collected from a 10-year-old tree growing in a progeny trial established in a loamy brown earth soil.', 'fructus', 'Smith, 1822', 'Aspergillus fructus A', 'Smith, 1822', 'breeding_method1', '1');
 
 INSERT INTO germplasm_donor (id, donor_accession_number, donor_institute_code, donor_institute_name, germplasmpui, germplasm_id) VALUES('germplasm_donor1', 'A1111111', 'USA999', 'BrAPI Science Institute', 'doi:10.12345/A1111111', 'germplasm1');
 INSERT INTO geojson(id, type) VALUES ('germplasm_origin_geo_1', 'Point');
@@ -15,13 +15,13 @@ INSERT INTO germplasm_entity_type_of_germplasm_storage_code (germplasm_entity_id
 INSERT INTO germplasm_synonym (id, synonym, "type", germplasm_id) VALUES('germplasm_synonym1', 'Variety 123', 'Pre-Code', 'germplasm1');
 INSERT INTO germplasm_taxon (id, source_name, taxon_id, germplasm_id) VALUES('germplasm_taxon1', 'NCBI', '2026747', 'germplasm1');
 
-INSERT INTO additional_info(id, key, value) VALUES ('germplasm_ai_1', 'dummyData', decode('ACED000574000454727565','hex'));
+INSERT INTO additional_info(id, key, value) VALUES ('germplasm_ai_1', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
 INSERT INTO germplasm_additional_info(germplasm_entity_id, additional_info_id) VALUES ('germplasm1', 'germplasm_ai_1');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('germplasm_er_1', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO germplasm_external_references(germplasm_entity_id, external_references_id) VALUES ('germplasm1', 'germplasm_er_1');
 
 --germplasm2
-INSERT INTO germplasm (id, accession_number, acquisition_date, acquisition_source_code, biological_status_of_accession_code, collection, country_of_origin_code, default_display_name, documentationurl, genus, germplasm_name, germplasmpui, germplasm_preprocessing, mls_status, seed_source, seed_source_description, species, species_authority, subtaxa, subtaxa_authority, breeding_method_id, crop_id) VALUES('germplasm2', 'A0000002', '2000-04-09', 2, 2, 'Fake Foods Collection', 'USA', 'Fantastico', 'https://wiki.brapi.org', 'Aspergillus', 'Tomatillo Fantastico', 'doi:10.12345/A0000002', 'EO:0007210; transplanted from study 2351 observation unit ID: pot:894', 0, 'Root Stock', 'Branches were collected from a 10-year-old tree growing in a progeny trial established in a loamy brown earth soil.', 'fructus', 'Smith, 1822', 'Aspergillus fructus A', 'Smith, 1822', 'breeding_method1', '1');
+INSERT INTO germplasm (auth_user_id, id, accession_number, acquisition_date, acquisition_source_code, biological_status_of_accession_code, collection, country_of_origin_code, default_display_name, documentationurl, genus, germplasm_name, germplasmpui, germplasm_preprocessing, mls_status, seed_source, seed_source_description, species, species_authority, subtaxa, subtaxa_authority, breeding_method_id, crop_id) VALUES('anonymousUser', 'germplasm2', 'A0000002', '2000-04-09', 2, 2, 'Fake Foods Collection', 'USA', 'Fantastico', 'https://wiki.brapi.org', 'Aspergillus', 'Tomatillo Fantastico', 'doi:10.12345/A0000002', 'EO:0007210; transplanted from study 2351 observation unit ID: pot:894', 0, 'Root Stock', 'Branches were collected from a 10-year-old tree growing in a progeny trial established in a loamy brown earth soil.', 'fructus', 'Smith, 1822', 'Aspergillus fructus A', 'Smith, 1822', 'breeding_method1', '1');
 
 INSERT INTO germplasm_donor (id, donor_accession_number, donor_institute_code, donor_institute_name, germplasmpui, germplasm_id) VALUES('germplasm_donor2', 'A2222222', 'USA999', 'BrAPI Science Institute', 'doi:10.12345/A2222222', 'germplasm2');
 INSERT INTO geojson(id, type) VALUES ('germplasm_origin_geo_2', 'Point');
@@ -36,13 +36,13 @@ INSERT INTO germplasm_entity_type_of_germplasm_storage_code (germplasm_entity_id
 INSERT INTO germplasm_synonym (id, synonym, "type", germplasm_id) VALUES('germplasm_synonym2', 'Variety 234', 'Pre-Code', 'germplasm2');
 INSERT INTO germplasm_taxon (id, source_name, taxon_id, germplasm_id) VALUES('germplasm_taxon2', 'NCBI', '2026747', 'germplasm2');
 
-INSERT INTO additional_info(id, key, value) VALUES ('germplasm_ai_2', 'dummyData', decode('ACED000574000454727565','hex'));
+INSERT INTO additional_info(id, key, value) VALUES ('germplasm_ai_2', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
 INSERT INTO germplasm_additional_info(germplasm_entity_id, additional_info_id) VALUES ('germplasm2', 'germplasm_ai_2');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('germplasm_er_2', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO germplasm_external_references(germplasm_entity_id, external_references_id) VALUES ('germplasm2', 'germplasm_er_2');
 
 -- germplasm3
-INSERT INTO germplasm (id, accession_number, acquisition_date, acquisition_source_code, biological_status_of_accession_code, collection, country_of_origin_code, default_display_name, documentationurl, genus, germplasm_name, germplasmpui, germplasm_preprocessing, mls_status, seed_source, seed_source_description, species, species_authority, subtaxa, subtaxa_authority, breeding_method_id, crop_id) VALUES('germplasm3', 'A0000003', '2000-04-09', 2, 2, 'Fake Foods Collection', 'USA', 'Fantastico', 'https://wiki.brapi.org', 'Aspergillus', 'Tomatillo Fantastico', 'doi:10.12345/A0000003', 'EO:0007210; transplanted from study 2351 observation unit ID: pot:894', 0, 'Root Stock', 'Branches were collected from a 10-year-old tree growing in a progeny trial established in a loamy brown earth soil.', 'fructus', 'Smith, 1822', 'Aspergillus fructus A', 'Smith, 1822', 'breeding_method1', '1');
+INSERT INTO germplasm (auth_user_id, id, accession_number, acquisition_date, acquisition_source_code, biological_status_of_accession_code, collection, country_of_origin_code, default_display_name, documentationurl, genus, germplasm_name, germplasmpui, germplasm_preprocessing, mls_status, seed_source, seed_source_description, species, species_authority, subtaxa, subtaxa_authority, breeding_method_id, crop_id) VALUES('anonymousUser', 'germplasm3', 'A0000003', '2000-04-09', 2, 2, 'Fake Foods Collection', 'USA', 'Fantastico', 'https://wiki.brapi.org', 'Aspergillus', 'Tomatillo Fantastico', 'doi:10.12345/A0000003', 'EO:0007210; transplanted from study 2351 observation unit ID: pot:894', 0, 'Root Stock', 'Branches were collected from a 10-year-old tree growing in a progeny trial established in a loamy brown earth soil.', 'fructus', 'Smith, 1822', 'Aspergillus fructus A', 'Smith, 1822', 'breeding_method1', '1');
 
 INSERT INTO germplasm_donor (id, donor_accession_number, donor_institute_code, donor_institute_name, germplasmpui, germplasm_id) VALUES('germplasm_donor3', 'A3333333', 'USA999', 'BrAPI Science Institute', 'doi:10.12345/A3333333', 'germplasm3');
 INSERT INTO geojson(id, type) VALUES ('germplasm_origin_geo_3', 'Point');
@@ -57,7 +57,8 @@ INSERT INTO germplasm_entity_type_of_germplasm_storage_code (germplasm_entity_id
 INSERT INTO germplasm_synonym (id, synonym, "type", germplasm_id) VALUES('germplasm_synonym3', 'Variety 345', 'Pre-Code', 'germplasm3');
 INSERT INTO germplasm_taxon (id, source_name, taxon_id, germplasm_id) VALUES('germplasm_taxon3', 'NCBI', '2026747', 'germplasm3');
 
-INSERT INTO additional_info(id, key, value) VALUES ('germplasm_ai_3', 'dummyData', decode('ACED000574000454727565','hex'));
+INSERT INTO additional_info(id, key, value) VALUES ('germplasm_ai_3', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
 INSERT INTO germplasm_additional_info(germplasm_entity_id, additional_info_id) VALUES ('germplasm3', 'germplasm_ai_3');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('germplasm_er_3', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO germplasm_external_references(germplasm_entity_id, external_references_id) VALUES ('germplasm3', 'germplasm_er_3');
+

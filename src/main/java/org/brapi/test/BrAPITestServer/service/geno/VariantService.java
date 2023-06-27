@@ -30,9 +30,9 @@ public class VariantService {
 		this.variantRepository = variantRepository;
 	}
 
-	public List<Variant> findVariants(String variantDbId, String variantSetDbId, String referenceDbId, String referenceSetDbId,
-			String externalReferenceId, String externalReferenceSource, Metadata metadata) {
-		
+	public List<Variant> findVariants(String variantDbId, String variantSetDbId, String referenceDbId,
+			String referenceSetDbId, String externalReferenceId, String externalReferenceSource, Metadata metadata) {
+
 		VariantsSearchRequest request = new VariantsSearchRequest();
 		if (variantSetDbId != null)
 			request.addVariantSetDbIdsItem(variantSetDbId);
@@ -44,20 +44,21 @@ public class VariantService {
 			request.addReferenceSetDbIdsItem(referenceSetDbId);
 
 		request.addExternalReferenceItem(externalReferenceId, null, externalReferenceSource);
-		
+
 		return findVariants(request, metadata);
 	}
 
 	public List<Variant> findVariants(VariantsSearchRequest request, Metadata metadata) {
-		return findVariantEntities(request, metadata).stream().map(this::convertFromEntity).collect(Collectors.toList());
+		return findVariantEntities(request, metadata).stream().map(this::convertFromEntity)
+				.collect(Collectors.toList());
 	}
 
 	public List<VariantEntity> findVariantEntities(VariantsSearchRequest request, Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<VariantEntity> searchQuery = new SearchQueryBuilder<VariantEntity>(VariantEntity.class);
 		if (request.getCallSetDbIds() != null && !request.getCallSetDbIds().isEmpty()) {
-			searchQuery = searchQuery.join("variantSet.callSets", "callSet")
-					.appendList(request.getCallSetDbIds(), "*callSet.id");
+			searchQuery = searchQuery.join("variantSet.callSets", "callSet").appendList(request.getCallSetDbIds(),
+					"*callSet.id");
 		}
 		searchQuery = searchQuery.appendList(request.getVariantSetDbIds(), "variantSet.id")
 				.appendList(request.getVariantDbIds(), "id");
@@ -68,16 +69,20 @@ public class VariantService {
 	}
 
 	public Variant getVariant(String variantDbId) throws BrAPIServerException {
-		return convertFromEntity(getVariantEntity(variantDbId));
+		return convertFromEntity(getVariantEntity(variantDbId, HttpStatus.NOT_FOUND));
 	}
 
 	public VariantEntity getVariantEntity(String variantDbId) throws BrAPIServerException {
+		return getVariantEntity(variantDbId, HttpStatus.BAD_REQUEST);
+	}
+
+	public VariantEntity getVariantEntity(String variantDbId, HttpStatus errorStatus) throws BrAPIServerException {
 		VariantEntity variant = null;
 		Optional<VariantEntity> entityOpt = variantRepository.findById(variantDbId);
 		if (entityOpt.isPresent()) {
 			variant = entityOpt.get();
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("variant", variantDbId);
+			throw new BrAPIServerDbIdNotFoundException("variant", variantDbId, errorStatus);
 		}
 		return variant;
 	}

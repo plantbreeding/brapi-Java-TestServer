@@ -1,6 +1,6 @@
 package org.brapi.test.BrAPITestServer;
 
-import org.brapi.test.BrAPITestServer.repository.core.BrAPIRepositoryImpl;
+import org.brapi.test.BrAPITestServer.repository.BrAPIRepositoryImpl;
 import org.brapi.test.BrAPITestServer.serializer.CustomDateSerializer;
 import org.brapi.test.BrAPITestServer.serializer.CustomGeoJSONDeserializer;
 import org.brapi.test.BrAPITestServer.serializer.CustomGermplasmStorageTypesDeserializer;

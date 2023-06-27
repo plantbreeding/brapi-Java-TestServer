@@ -90,16 +90,21 @@ public class ReferenceService {
 	}
 
 	public Reference getReference(String referenceDbId) throws BrAPIServerException {
-		return convertFromEntity(getReferenceEntity(referenceDbId));
+		return convertFromEntity(getReferenceEntity(referenceDbId, HttpStatus.NOT_FOUND));
 	}
 
 	public ReferenceEntity getReferenceEntity(String referenceDbId) throws BrAPIServerException {
+		return getReferenceEntity(referenceDbId, HttpStatus.BAD_REQUEST);
+	}
+
+	public ReferenceEntity getReferenceEntity(String referenceDbId, HttpStatus errorStatus)
+			throws BrAPIServerException {
 		ReferenceEntity reference = null;
 		Optional<ReferenceEntity> entityOpt = referenceRepository.findById(referenceDbId);
 		if (entityOpt.isPresent()) {
 			reference = entityOpt.get();
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("reference", referenceDbId);
+			throw new BrAPIServerDbIdNotFoundException("reference", referenceDbId, errorStatus);
 		}
 		return reference;
 	}

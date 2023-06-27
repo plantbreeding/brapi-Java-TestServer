@@ -4,7 +4,7 @@
 This server implements all BrAPI calls. It is backed by a custom database with dummy data.
 
 * BrAPI V1 Base URL (v1.0, v1.1, v1.2, v1.3): [test-server.brapi.org/brapi/v1/](https://test-server.brapi.org/brapi/v1/)
-* BrAPI V2 Base URL (v2.0): [test-server.brapi.org/brapi/v2/](https://test-server.brapi.org/brapi/v2/)
+* BrAPI V2 Base URL (v2.0, v2.1): [test-server.brapi.org/brapi/v2/](https://test-server.brapi.org/brapi/v2/)
 
 Use [/calls](https://test-server.brapi.org/brapi/v1/call) (V1) or [/serverinfo](https://test-server.brapi.org/brapi/v2/serverinfo) (V2) to check the available endpoints.
 

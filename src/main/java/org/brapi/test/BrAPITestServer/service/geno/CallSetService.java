@@ -85,7 +85,7 @@ public class CallSetService {
 		if (entityOpt.isPresent()) {
 			callSet = entityOpt.get();
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("callSet", callSetDbId);
+			throw new BrAPIServerDbIdNotFoundException("callSet", callSetDbId, errorStatus);
 		}
 		return callSet;
 	}

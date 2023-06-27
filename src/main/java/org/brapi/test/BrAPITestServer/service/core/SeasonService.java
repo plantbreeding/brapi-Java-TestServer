@@ -31,7 +31,8 @@ public class SeasonService {
 		this.seasonRepository = seasonRepository;
 	}
 
-	public List<Season> findSeasons(String seasonDbId, String season, String seasonName, Integer year, Metadata metadata) {
+	public List<Season> findSeasons(String seasonDbId, String season, String seasonName, Integer year,
+			Metadata metadata) {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<SeasonEntity> searchQuery = new SearchQueryBuilder<SeasonEntity>(SeasonEntity.class);
 		if (seasonDbId != null)
@@ -65,22 +66,15 @@ public class SeasonService {
 		if (entityOpt.isPresent()) {
 			season = entityOpt.get();
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("season", seasonDbId);
+			throw new BrAPIServerDbIdNotFoundException("season", seasonDbId, errorStatus);
 		}
 		return season;
 	}
 
-	public Season updateSeason(String seasonDbId, @Valid Season body) throws BrAPIServerException {
-		SeasonEntity savedEntity;
-		Optional<SeasonEntity> entityOpt = seasonRepository.findById(seasonDbId);
-		if (entityOpt.isPresent()) {
-			SeasonEntity entity = entityOpt.get();
-			updateEntity(entity, body);
-
-			savedEntity = seasonRepository.save(entity);
-		} else {
-			throw new BrAPIServerDbIdNotFoundException("season", seasonDbId);
-		}
+	public Season updateSeason(String seasonDbId, Season body) throws BrAPIServerException {
+		SeasonEntity entity = getSeasonEntity(seasonDbId, HttpStatus.NOT_FOUND);
+		updateEntity(entity, body);
+		SeasonEntity savedEntity = seasonRepository.save(entity);
 
 		return convertFromEntity(savedEntity);
 	}

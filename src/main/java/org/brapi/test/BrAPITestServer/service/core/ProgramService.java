@@ -66,11 +66,8 @@ public class ProgramService {
 				.appendList(request.getLeadPersonDbIds(), "leadPerson.id")
 				.appendNamesList(request.getLeadPersonNames(), "leadPerson.firstName", "leadPerson.middleName",
 						"leadPerson.lastName")
-				.appendList(request.getObjectives(), "objective")
-				.appendList(request.getProgramDbIds(), "id")
-				.appendList(request.getProgramNames(), "name")
-				.appendEnumList(request.getProgramTypes(), "programType");
-		
+				.appendList(request.getObjectives(), "objective").appendList(request.getProgramDbIds(), "id")
+				.appendList(request.getProgramNames(), "name").appendEnumList(request.getProgramTypes(), "programType");
 
 		Page<ProgramEntity> page = programRepository.findAllBySearch(searchQuery, pageReq);
 		List<Program> programs = page.map(this::convertFromEntity).getContent();
@@ -92,22 +89,15 @@ public class ProgramService {
 		if (entityOpt.isPresent()) {
 			program = entityOpt.get();
 		} else {
-			throw new BrAPIServerDbIdNotFoundException("program", programDbId);
+			throw new BrAPIServerDbIdNotFoundException("program", programDbId, errorStatus);
 		}
 		return program;
 	}
 
 	public Program updateProgram(String programDbId, ProgramNewRequest body) throws BrAPIServerException {
-		ProgramEntity savedEntity;
-		Optional<ProgramEntity> entityOpt = programRepository.findById(programDbId);
-		if (entityOpt.isPresent()) {
-			ProgramEntity entity = entityOpt.get();
-			updateEntity(entity, body);
-
-			savedEntity = programRepository.save(entity);
-		} else {
-			throw new BrAPIServerDbIdNotFoundException("program", programDbId);
-		}
+		ProgramEntity entity = getProgramEntity(programDbId, HttpStatus.NOT_FOUND);
+		updateEntity(entity, body);
+		ProgramEntity savedEntity = programRepository.save(entity);
 
 		return convertFromEntity(savedEntity);
 	}
@@ -144,7 +134,7 @@ public class ProgramService {
 			program.setLeadPersonDbId(entity.getLeadPerson().getId());
 			program.setLeadPersonName(entity.getLeadPerson().getName());
 		}
-		
+
 		return program;
 	}
 
@@ -152,11 +142,13 @@ public class ProgramService {
 		entity = UpdateUtility.updateEntity(request, entity);
 
 		entity.setAbbreviation(UpdateUtility.replaceField(request.getAbbreviation(), entity.getAbbreviation()));
-		entity.setDocumentationURL(UpdateUtility.replaceField(request.getDocumentationURL(), entity.getDocumentationURL()));
+		entity.setDocumentationURL(
+				UpdateUtility.replaceField(request.getDocumentationURL(), entity.getDocumentationURL()));
 		entity.setObjective(UpdateUtility.replaceField(request.getObjective(), entity.getObjective()));
 		entity.setName(UpdateUtility.replaceField(request.getProgramName(), entity.getName()));
 		entity.setProgramType(UpdateUtility.replaceField(request.getProgramType(), entity.getProgramType()));
-		entity.setFundingInformation(UpdateUtility.replaceField(request.getFundingInformation(), entity.getFundingInformation()));
+		entity.setFundingInformation(
+				UpdateUtility.replaceField(request.getFundingInformation(), entity.getFundingInformation()));
 
 		String commonCropName = entity.getCrop() == null ? UpdateUtility.replaceField(request.getCommonCropName(), null)
 				: UpdateUtility.replaceField(request.getCommonCropName(), entity.getCrop().getCropName());

@@ -6,10 +6,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 
 @Entity
 @Table(name="germplasm_donor")
-public class DonorEntity extends BrAPIBaseEntity{
+public class DonorEntity extends BrAPIPrimaryEntity{
 	@ManyToOne
 	private GermplasmEntity germplasm;
 	@Column

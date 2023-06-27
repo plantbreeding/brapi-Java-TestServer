@@ -10,11 +10,6 @@ import io.swagger.model.core.StudySearchRequest;
 import io.swagger.model.core.StudySingleResponse;
 import io.swagger.model.core.StudyTypesResponse;
 import io.swagger.model.core.StudyTypesResponseResult;
-import io.swagger.model.germ.Germplasm;
-import io.swagger.model.germ.GermplasmListResponse;
-import io.swagger.model.germ.GermplasmListResponseResult;
-import io.swagger.model.germ.GermplasmSearchRequest;
-import io.swagger.annotations.ApiParam;
 import io.swagger.api.core.StudiesApi;
 import io.swagger.api.core.StudytypesApi;
 
@@ -25,7 +20,6 @@ import org.brapi.test.BrAPITestServer.service.SearchService;
 import org.brapi.test.BrAPITestServer.service.core.StudyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -82,6 +76,7 @@ public class StudiesApiController extends BrAPIController implements StudiesApi,
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<Study> data = studyService.findStudies(commonCropName, studyType, programDbId, locationDbId, seasonDbId,
@@ -97,6 +92,7 @@ public class StudiesApiController extends BrAPIController implements StudiesApi,
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		List<Study> data = studyService.saveStudies(body);
 		return responseOK(new StudyListResponse(), new StudyListResponseResult(), data);
@@ -109,6 +105,7 @@ public class StudiesApiController extends BrAPIController implements StudiesApi,
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Study data = studyService.getStudy(studyDbId);
 		return responseOK(new StudySingleResponse(), data);
@@ -122,6 +119,7 @@ public class StudiesApiController extends BrAPIController implements StudiesApi,
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		Study data = studyService.updateStudy(studyDbId, body);
 		return responseOK(new StudySingleResponse(), data);
@@ -134,6 +132,7 @@ public class StudiesApiController extends BrAPIController implements StudiesApi,
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
 
@@ -156,6 +155,7 @@ public class StudiesApiController extends BrAPIController implements StudiesApi,
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		SearchRequestEntity request = searchService.findById(searchResultsDbId);
@@ -163,7 +163,7 @@ public class StudiesApiController extends BrAPIController implements StudiesApi,
 			StudySearchRequest body = request.getParameters(StudySearchRequest.class);
 			List<Study> data = studyService.findStudies(body, metadata);
 			return responseOK(new StudyListResponse(), new StudyListResponseResult(), data, metadata);
-		}else {
+		} else {
 			return responseAccepted(searchResultsDbId);
 		}
 	}
@@ -177,6 +177,7 @@ public class StudiesApiController extends BrAPIController implements StudiesApi,
 			throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<String> data = studyService.getStudyTypes(metadata);

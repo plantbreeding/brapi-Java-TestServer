@@ -5,10 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 
 @Entity
 @Table(name="season")
-public class SeasonEntity extends BrAPIBaseEntity{
+public class SeasonEntity extends BrAPIPrimaryEntity{
 	@Column
 	private String season;
 	@Column

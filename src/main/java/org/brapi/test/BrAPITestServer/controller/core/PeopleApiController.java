@@ -62,6 +62,7 @@ public class PeopleApiController extends BrAPIController implements PeopleApi {
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		List<Person> data = peopleService.findPeople(firstName, lastName, personDbId, userID, commonCropName, programDbId, externalReferenceId, externalReferenceID, externalReferenceSource, metadata);
@@ -75,6 +76,7 @@ public class PeopleApiController extends BrAPIController implements PeopleApi {
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Person data = peopleService.getPerson(personDbId);
 		return responseOK(new PersonSingleResponse(), data);
@@ -88,6 +90,7 @@ public class PeopleApiController extends BrAPIController implements PeopleApi {
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		Person data = peopleService.updatePerson(personDbId, body);
 		return responseOK(new PersonSingleResponse(), data);
@@ -99,6 +102,7 @@ public class PeopleApiController extends BrAPIController implements PeopleApi {
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_USER");
 		validateAcceptHeader(request);
 		List<Person> data = peopleService.savePeople(body);
 		return responseOK(new PersonListResponse(), new PersonListResponseResult(), data);
@@ -110,6 +114,7 @@ public class PeopleApiController extends BrAPIController implements PeopleApi {
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 		
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(body);
 
@@ -131,6 +136,7 @@ public class PeopleApiController extends BrAPIController implements PeopleApi {
 			@RequestHeader(value = "Authorization", required = false) String authorization) throws BrAPIServerException {
 
 		log.debug("Request: " + request.getRequestURI());
+		validateSecurityContext(request, "ROLE_ANONYMOUS", "ROLE_USER");
 		validateAcceptHeader(request);
 		Metadata metadata = generateMetaDataTemplate(page, pageSize);
 		SearchRequestEntity request = searchService.findById(searchResultsDbId);
