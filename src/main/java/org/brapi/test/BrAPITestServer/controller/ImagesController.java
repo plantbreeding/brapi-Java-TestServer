@@ -2,7 +2,7 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.ImageService;
@@ -80,7 +80,7 @@ public class ImagesController extends BrAPIController implements ImagesApi {
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<ImageResponse> imagesImageDbIdImagecontentPut(@PathVariable("imageDbId") String imageDbId,
 			@Valid @RequestBody byte[] imageData, String authorization) throws BrAPIServerException {
@@ -93,7 +93,7 @@ public class ImagesController extends BrAPIController implements ImagesApi {
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<ImageResponse> imagesImageDbIdPut(@PathVariable("imageDbId") String imageDbId,
 			@Valid @RequestBody NewImageRequest request, String authorization) throws BrAPIServerException {
@@ -106,7 +106,7 @@ public class ImagesController extends BrAPIController implements ImagesApi {
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<ImageResponse> imagesPost(@Valid @RequestBody NewImageRequest request, String authorization)
 			throws BrAPIServerException {

@@ -2,7 +2,7 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.PeopleService;
@@ -64,7 +64,7 @@ public class PeopleController extends BrAPIController implements PeopleApi {
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<PersonResponse> peoplePersonDbIdPut(@PathVariable("personDbId") String personDbId, @Valid @RequestBody NewPersonRequest body,
 			String authorization) throws BrAPIServerException {
@@ -78,7 +78,7 @@ public class PeopleController extends BrAPIController implements PeopleApi {
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<PersonResponse> peoplePost(@Valid @RequestBody NewPersonRequest body, String authorization)
 			throws BrAPIServerException {

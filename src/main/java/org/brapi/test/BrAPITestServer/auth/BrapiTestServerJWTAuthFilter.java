@@ -1,47 +1,52 @@
 package org.brapi.test.BrAPITestServer.auth;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.security.GeneralSecurityException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.auth.openidconnect.IdToken.Payload;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.http.apache.ApacheHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.auth0.jwt.interfaces.JWTVerifier;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
-	private static Logger logger = LoggerFactory.getLogger(BrapiTestServerJWTAuthFilter.class);
-	private static final JsonFactory jacksonFactory = new JacksonFactory();
+	private static final Logger log = LoggerFactory.getLogger(BrapiTestServerJWTAuthFilter.class);
+	private static final List<String> ADMIN_IDS = Arrays.asList("dummyAdmin", "ps664@cornell.edu");
 
-	private static final List<String> USER_IDS = Arrays.asList("dummy", "dummyAdmin", "113212610256718182401");
-	private static final List<String> ADMIN_IDS = Arrays.asList("dummyAdmin", "113212610256718182401");
+	private String oidcDiscoveryUrl;
+	private boolean authEnabled;
 
-	public BrapiTestServerJWTAuthFilter(AuthenticationManager authManager,
-			AuthenticationEntryPoint authenticationEntryPoint) {
-		super(authManager, authenticationEntryPoint);
+	public BrapiTestServerJWTAuthFilter(AuthenticationManager authManager, String oidcDiscoveryUrl, boolean authEnabled) {
+		super(authManager);
+		this.oidcDiscoveryUrl = oidcDiscoveryUrl;
+		this.authEnabled = authEnabled;
 	}
 
 	@Override
@@ -49,101 +54,159 @@ public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
 			throws IOException, ServletException {
 		String header = req.getHeader("Authorization");
 
-		if (header == null) {
-			// Auth header missing, so skip authorization because this is a test server
+		//Auth disabled by config property
+		if (!authEnabled) {
+			List<GrantedAuthority> authorities = new ArrayList<>();
+			authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+			AuthDetails bypassDetails = new AuthDetails();
+			bypassDetails.setUserId("anonymousUser");
+			bypassDetails.setExpirationTimestamp(Long.MAX_VALUE);
+			bypassDetails.setRoles(new ArrayList<>());
+			bypassDetails.getRoles().add("ROLE_USER");
+			bypassDetails.getRoles().add("ROLE_ADMIN");
+			UsernamePasswordAuthenticationToken authentication = 
+					new UsernamePasswordAuthenticationToken(bypassDetails.getUserId(), null, authorities);
+			authentication.setDetails(bypassDetails);
+			SecurityContextHolder.getContext().setAuthentication(authentication);
 			chain.doFilter(req, res);
 			return;
-		} else {
-			// Auth header present, check it
-			try {
-				if (header.startsWith("Bearer ")) {
-					String userId = checkAuthentication(req);
-					if (userId != null) {
-						List<GrantedAuthority> authorities = getAuthorities(userId);
-						UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userId,
-								null, authorities);
-
-						SecurityContextHolder.getContext().setAuthentication(authentication);
-					} else {
-						throw new BadCredentialsException("Bad Credentials");
-					}
-				}
-			} catch (AuthenticationException failed) {
-				failed.printStackTrace();
-				this.getAuthenticationEntryPoint().commence(req, res, failed);
-				return;
-			}
+		}
+		
+		
+		// Anonymous User
+		if (header == null || !header.startsWith("Bearer ")) {
+			chain.doFilter(req, res);
+			return;
 		}
 
-		chain.doFilter(req, res);
-	}
-
-	private String checkAuthentication(HttpServletRequest req) {
-		String userId = null;
+		// Token Available
 		try {
-			userId = checkDummyAuthentication(req);
-			if (userId == null) {
-				checkGoogleAuthentication(req);
+			String token = header.replaceFirst("Bearer ", "");
+			AuthDetails userDetails = validateToken(token);
+
+			if (userDetails != null) {
+				List<GrantedAuthority> authorities = getAuthorities(userDetails);
+				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+						userDetails.getUserId(), null, authorities);
+				authentication.setDetails(userDetails);
+
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+			} else {
+				throw new GeneralSecurityException("Auth Error");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			userId = null;
-			throw new BadCredentialsException("Bad Credentials");
+
+			chain.doFilter(req, res);
+
+		} catch (GeneralSecurityException e) {
+			String msg = determineExceptionCause(e);
+			log.error(msg);
+			res.addHeader("WWW-Authenticate", "Basic realm=\"\"");
+			res.setStatus(HttpStatus.UNAUTHORIZED.value());
+			res.setContentType("text/plain;charset=UTF-8");
+			res.getWriter().print(msg);
+			res.getWriter().flush();
+//			res.sendError(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED.getReasonPhrase() + " - " + msg);
 		}
-		return userId;
 	}
 
-	private List<GrantedAuthority> getAuthorities(String userId) {
+	private String determineExceptionCause(GeneralSecurityException e) {
+		String msg = HttpStatus.UNAUTHORIZED.toString() + " - ";
+		Throwable exception = e;
+		msg += exception.getMessage();
+		while (exception.getCause() != null){
+			exception = exception.getCause();
+			msg +=  " - " + exception.getMessage();
+		} 
+		msg += "\nPlease go to https://brapi.org/oauth and login to generate a fresh token, or use the dummy token 'XXXX'";
+		return "\"" + msg + "\"";
+	}
+
+	private AuthDetails validateToken(String token)
+			throws FileNotFoundException, IOException, GeneralSecurityException {
+
+		AuthDetails userDetails = null;
+		if (token.equals("XXXX") || token.equals("YYYY") || token.equals("ZZZZ")) {
+			userDetails = validateDummyToken(token);
+		} else {
+			userDetails = validateOAuthToken(token);
+		}
+		return userDetails;
+	}
+
+	private AuthDetails validateDummyToken(String token) {
+		AuthDetails details = null;
+		if (token.equals("XXXX")) {
+			details = new AuthDetails();
+			details.setUserId("dummy");
+			details.setExpirationTimestamp(Long.MAX_VALUE);
+		} else if (token.equals("YYYY")) {
+			details = new AuthDetails();
+			details.setUserId("dummyAdmin");
+			details.setExpirationTimestamp(Long.MAX_VALUE);
+		} else if (token.equals("ZZZZ")) {
+			details = new AuthDetails();
+			details.setUserId("anonymousUser");
+			details.setExpirationTimestamp(Long.MAX_VALUE);
+		}
+		return details;
+	}
+
+	private AuthDetails validateOAuthToken(String token) throws GeneralSecurityException {
+		try {
+			token = token.replaceFirst("Bearer ", "");
+			RSAPublicKey pubKey = getPublicKey(oidcDiscoveryUrl);
+
+			Algorithm algorithm = Algorithm.RSA256(pubKey, null);
+			JWTVerifier verifier = JWT.require(algorithm).withIssuer("https://auth.brapi.org/auth/realms/brapi")
+					.build();
+			DecodedJWT jwt = verifier.verify(token);
+
+			AuthDetails details = new AuthDetails();
+			details.setUserId(jwt.getClaim("email").asString());
+			details.setExpirationTimestamp(jwt.getExpiresAt());
+			return details;
+		} catch (JWTVerificationException e) {
+			throw new GeneralSecurityException("Invalid JWT", e);
+		} catch (Exception e) {
+			throw new GeneralSecurityException("JWT Verification Process Failed", e);
+		}
+	}
+
+	private RSAPublicKey getPublicKey(String discoveryURL) {
+		try {
+			JsonNode discovery = (new ObjectMapper()).readTree(new URL(discoveryURL));
+			String jwksURL = discovery.findValue("jwks_uri").asText();
+			JsonNode jwks = (new ObjectMapper()).readTree(new URL(jwksURL));
+			String keyVal = jwks.findValue("keys").get(0).findValue("x5c").get(0).asText();
+
+			String certb64 = keyVal;
+			byte[] certder = Base64.decodeBase64(certb64);
+			InputStream certstream = new ByteArrayInputStream(certder);
+			Certificate cert = CertificateFactory.getInstance("X.509").generateCertificate(certstream);
+			RSAPublicKey pubKey = (RSAPublicKey) cert.getPublicKey();
+			return pubKey;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		} catch (CertificateException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private List<GrantedAuthority> getAuthorities(AuthDetails userDetails) {
 		List<GrantedAuthority> auth = new ArrayList<>();
-		if (userId != null) {
-			if (USER_IDS.contains(userId)) {
-				GrantedAuthority user = new SimpleGrantedAuthority("USER");
-				auth.add(user);
-			}
-			if (ADMIN_IDS.contains(userId)) {
-				GrantedAuthority admin = new SimpleGrantedAuthority("ADMIN");
+		if (userDetails != null) {
+			GrantedAuthority user = new SimpleGrantedAuthority("ROLE_USER");
+			auth.add(user);
+			userDetails.addRole("ROLE_USER");
+			if (ADMIN_IDS.contains(userDetails.getUserId())) {
+				GrantedAuthority admin = new SimpleGrantedAuthority("ROLE_ADMIN");
 				auth.add(admin);
+				userDetails.addRole("ROLE_ADMIN");
 			}
 		}
 		return auth;
-	}
-
-	private String checkGoogleAuthentication(HttpServletRequest request)
-			throws FileNotFoundException, IOException, GeneralSecurityException {
-		String token = request.getHeader("Authorization");
-		if (token != null) {
-			HttpTransport transport = new ApacheHttpTransport();
-			GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jacksonFactory)
-					.setAudience(Collections
-							.singletonList("408930718026-1m4t6slfmp8c0vu0a4s0sp4ujvv3vqfa.apps.googleusercontent.com"))
-					// Or, if multiple clients access the backend:
-					// .setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
-					.build();
-
-			GoogleIdToken idToken = verifier.verify(token.replace("Bearer ", ""));
-			if (idToken != null) {
-				Payload payload = idToken.getPayload();
-
-				// Print user identifier
-				String userId = payload.getSubject();
-				System.out.println("User ID: " + userId);
-				return userId;
-			}
-			return null;
-		}
-		return null;
-	}
-
-	private String checkDummyAuthentication(HttpServletRequest request) {
-		String token = request.getHeader("Authorization");
-		if (token != null) {
-			if (token.equals("Bearer XXXX")) {
-				return "dummy";
-			} else if (token.equals("Bearer YYYY")) {
-				return "dummyAdmin";
-			}
-			return null;
-		}
-		return null;
 	}
 }

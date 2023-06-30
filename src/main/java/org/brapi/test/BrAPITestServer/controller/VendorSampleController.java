@@ -2,7 +2,7 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.VendorSampleService;
@@ -114,7 +114,7 @@ public class VendorSampleController extends BrAPIController implements VendorApi
 		return new ResponseEntity<VendorOrderStatusResponse>(response, HttpStatus.OK);
 	}
 
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@CrossOrigin
 	@Override
 	public ResponseEntity<VendorOrderResponse> vendorOrdersPost(@Valid @RequestBody VendorOrderRequest body, String authorization)
@@ -129,7 +129,7 @@ public class VendorSampleController extends BrAPIController implements VendorApi
 		return new ResponseEntity<VendorOrderResponse>(response, HttpStatus.OK);
 	}
 
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@CrossOrigin
 	@Override
 	public ResponseEntity<VendorPlateResponse> vendorPlatesPost(@Valid @RequestBody VendorPlatesSubmissionRequest request, String authorization)

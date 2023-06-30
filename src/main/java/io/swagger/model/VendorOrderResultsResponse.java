@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.Metadata;
 import io.swagger.model.VendorOrderResultsResponseResult;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * VendorOrderResultsResponse

@@ -8,8 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.zip.ZipInputStream;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.StudyService;
@@ -217,7 +217,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 
 	@Deprecated
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<ObservationUnitPositionsResponse> studiesStudyDbIdLayoutPut(@PathVariable("studyDbId") String studyDbId,
 			@Valid @RequestBody StudyLayoutRequest studyLayoutRequest, String authorization) throws BrAPIServerException {
@@ -240,7 +240,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<ObservationUnitPositionsResponse> studiesStudyDbIdLayoutsPut(@PathVariable("studyDbId") String studyDbId,
 			@Valid @RequestBody StudyLayoutRequest studyLayoutRequest, String authorization) throws BrAPIServerException {
@@ -276,7 +276,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<NewObservationDbIdsResponse> studiesStudyDbIdObservationsPut(@PathVariable("studyDbId") String studyDbId,
 			@Valid @RequestBody NewObservationsRequest newObservations, String authorization) throws BrAPIServerException {
@@ -306,7 +306,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 
 	@Deprecated
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<NewObservationUnitDbIdsResponse> studiesStudyDbIdObservationunitsPost(@PathVariable("studyDbId") String studyDbId,
 			@NotNull @Valid String format, @Valid @RequestBody NewObservationsRequestWrapperDeprecated request, String authorization)
@@ -327,7 +327,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<NewObservationUnitDbIdsResponse> studiesStudyDbIdObservationunitsPut(@PathVariable("studyDbId") String studyDbId,
 			@Valid @RequestBody ArrayList<NewObservationUnitRequest> request, String authorization) throws BrAPIServerException {
@@ -346,7 +346,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<NewObservationUnitDbIdsResponse> studiesStudyDbIdObservationunitsZipPost(@PathVariable("studyDbId") String studyDbId,
 			@Valid @RequestBody Object body, String authorization) throws BrAPIServerException {
@@ -420,7 +420,7 @@ public class StudyController extends BrAPIController implements SeasonsApi, Obse
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<NewObservationDbIdsResponse> studiesStudyDbIdTablePost(@PathVariable("studyDbId") String studyDbId,
 			@Valid @RequestBody NewObservationsTableRequest request, String authorization) throws BrAPIServerException {

@@ -9,7 +9,7 @@ import java.util.List;
 import java.time.OffsetDateTime;
 import org.brapi.test.BrAPITestServer.service.DateUtility;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * PhenotypesSearchRequest

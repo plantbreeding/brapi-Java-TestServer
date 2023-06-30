@@ -3,7 +3,7 @@ package org.brapi.test.BrAPITestServer.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.ListService;
@@ -67,7 +67,7 @@ public class ListsController extends BrAPIController implements ListsApi {
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<ListResponse> listsListDbIdItemsPost(@PathVariable("listDbId") String listDbId, @Valid @RequestBody ArrayList<String> body,
 			String authorization) throws BrAPIServerException {
@@ -81,7 +81,7 @@ public class ListsController extends BrAPIController implements ListsApi {
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<ListResponse> listsListDbIdPut(@PathVariable("listDbId") String listDbId, @Valid @RequestBody NewListRequest body,
 			String authorization) throws BrAPIServerException {
@@ -95,7 +95,7 @@ public class ListsController extends BrAPIController implements ListsApi {
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<ListResponse> listsPost(@Valid @RequestBody NewListRequest body, String authorization)
 			throws BrAPIServerException {

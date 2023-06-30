@@ -13,3 +13,6 @@ spring.jpa.show-sql=false
 spring.mvc.dispatch-options-request=true
 
 app.baseurl=http://localhost:8080/brapi/v1
+
+security.oidc_discovery_url=https://example.com/auth/.well-known/openid-configuration
+security.enabled=true

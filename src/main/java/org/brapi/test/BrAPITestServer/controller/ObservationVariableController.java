@@ -2,7 +2,7 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.ObservationVariableService;
@@ -156,7 +156,7 @@ public class ObservationVariableController extends BrAPIController
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<ScaleResponse> scalesPost(@Valid @RequestBody NewScaleRequest body, String authorization)
 			throws BrAPIServerException {
@@ -181,7 +181,7 @@ public class ObservationVariableController extends BrAPIController
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<ScaleResponse> scalesScaleDbIdPut(@PathVariable("scaleDbId") String scaleDbId,
 			@Valid @RequestBody NewScaleRequest body, String authorization) throws BrAPIServerException {
@@ -223,7 +223,7 @@ public class ObservationVariableController extends BrAPIController
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<MethodResponse> methodsMethodDbIdPut(@PathVariable("methodDbId") String methodDbId,
 			@Valid @RequestBody NewMethodRequest body, String authorization) throws BrAPIServerException {
@@ -236,7 +236,7 @@ public class ObservationVariableController extends BrAPIController
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<MethodResponse> methodsPost(@Valid @RequestBody NewMethodRequest body, String authorization)
 			throws BrAPIServerException {
@@ -265,7 +265,7 @@ public class ObservationVariableController extends BrAPIController
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<TraitResponse> traitsPost(@Valid @RequestBody NewTraitRequest body, String authorization)
 			throws BrAPIServerException {
@@ -291,7 +291,7 @@ public class ObservationVariableController extends BrAPIController
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<TraitResponse> traitsTraitDbIdPut(@PathVariable("traitDbId") String traitDbId,
 			@Valid @RequestBody NewTraitRequest body, String authorization) throws BrAPIServerException {

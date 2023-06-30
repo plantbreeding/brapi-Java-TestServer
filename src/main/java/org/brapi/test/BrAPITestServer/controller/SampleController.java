@@ -2,7 +2,7 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.SampleService;
@@ -37,7 +37,7 @@ public class SampleController extends BrAPIController implements SamplesApi, Sam
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<NewSampleDbId> samplesPut(@Valid @RequestBody Sample sample, String authorization)
 			throws BrAPIServerException {

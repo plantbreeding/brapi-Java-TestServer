@@ -2,7 +2,7 @@ package org.brapi.test.BrAPITestServer.controller;
 
 import java.util.List;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.service.DateUtility;
@@ -41,7 +41,7 @@ public class PhenotypeController extends BrAPIController implements PhenotypesAp
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMIN')")
+	@PreAuthorize("hasAuthority('ROLE_USER')")
 	@Override
 	public ResponseEntity<NewObservationDbIdsResponse> phenotypesPost(@Valid @RequestBody PhenotypesRequest request,
 			@Valid WSMIMEDataTypes format, String authorization) throws BrAPIServerException {

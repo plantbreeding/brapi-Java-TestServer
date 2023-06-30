@@ -8,7 +8,7 @@ import io.swagger.model.OntologyReference;
 import io.swagger.model.TraitDataType;
 import io.swagger.model.ValidValues;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * Scale metadata
