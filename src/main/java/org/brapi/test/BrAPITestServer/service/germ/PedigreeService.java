@@ -486,10 +486,10 @@ public class PedigreeService {
 		if (node.getParents() != null) {
 			
 			List<String> edgeIdsToDelete = new ArrayList<>(); 
-			edgeIdsToDelete.addAll(entity.getParentEdges().stream().map(e -> e.getId()).toList());
+			edgeIdsToDelete.addAll(entity.getParentEdges().stream().map(e -> e.getId()).collect(Collectors.toList()));
 			edgeIdsToDelete.addAll(entity.getParentNodes().stream().flatMap(parent -> parent.getProgenyEdges().stream())
 					.filter(childEdge -> childEdge.getConncetedNode().equals(entity))
-					.map(e -> e.getId()).toList());
+					.map(e -> e.getId()).collect(Collectors.toList()));
 
 			pedigreeEdgeRepository.deleteAllByIdInBatch(edgeIdsToDelete);
 			pedigreeEdgeRepository.flush();
@@ -503,10 +503,10 @@ public class PedigreeService {
 		if (node.getProgeny() != null) {
 			
 			List<String> edgeIdsToDelete = new ArrayList<>(); 
-			edgeIdsToDelete.addAll(entity.getProgenyEdges().stream().map(e -> e.getId()).toList());
+			edgeIdsToDelete.addAll(entity.getProgenyEdges().stream().map(e -> e.getId()).collect(Collectors.toList()));
 			edgeIdsToDelete.addAll(entity.getProgenyNodes().stream().flatMap(progeny -> progeny.getParentEdges().stream())
 					.filter(parentEdge -> parentEdge.getConncetedNode().equals(entity))
-					.map(e -> e.getId()).toList());
+					.map(e -> e.getId()).collect(Collectors.toList()));
 
 			pedigreeEdgeRepository.deleteAllByIdInBatch(edgeIdsToDelete);
 			pedigreeEdgeRepository.flush();
