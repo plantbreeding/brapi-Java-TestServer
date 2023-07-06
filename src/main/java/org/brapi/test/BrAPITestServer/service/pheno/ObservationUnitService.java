@@ -238,7 +238,11 @@ public class ObservationUnitService {
 					.appendIntList(
 							request.getObservationLevelRelationships().stream().filter(r -> r.getLevelOrder() != null)
 									.map(r -> r.getLevelOrder()).collect(Collectors.toList()),
-							"*levelRelationship.levelOrder");
+							"*levelRelationship.levelOrder")
+					.appendList(
+							request.getObservationLevelRelationships().stream().filter(r -> r.getObservationUnitDbId() != null)
+									.map(r -> r.getObservationUnitDbId()).collect(Collectors.toList()),
+							"*levelRelationship.observationUnit.id");
 		}
 		searchQuery = searchQuery.withExRefs(request.getExternalReferenceIDs(), request.getExternalReferenceSources())
 				.appendList(request.getGermplasmDbIds(), "germplasm.id")
@@ -265,6 +269,9 @@ public class ObservationUnitService {
 
 	public ObservationUnitEntity getObservationUnitEntity(String observationUnitDbId, HttpStatus errorStatus)
 			throws BrAPIServerException {
+		if(observationUnitDbId == null) {
+			throw new BrAPIServerDbIdNotFoundException("observationUnit", "null", errorStatus);
+		}
 		ObservationUnitEntity observationUnit = null;
 		Optional<ObservationUnitEntity> entityOpt = observationUnitRepository.findById(observationUnitDbId);
 		if (entityOpt.isPresent()) {
@@ -537,7 +544,7 @@ public class ObservationUnitService {
 					relationshipEntity.setLevelCode(level.getLevelCode());
 					relationshipEntity.setLevelName(level.getLevelName());
 					relationshipEntity.setLevelOrder(level.getLevelOrder());
-					if(level.getObservationUnitDbId() != null) {
+					if (level.getObservationUnitDbId() != null) {
 						ObservationUnitEntity parentEntity = getObservationUnitEntity(level.getObservationUnitDbId());
 						relationshipEntity.setObservationUnit(parentEntity);
 					}

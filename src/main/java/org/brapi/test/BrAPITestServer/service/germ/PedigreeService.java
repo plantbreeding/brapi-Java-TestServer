@@ -18,6 +18,7 @@ import org.brapi.test.BrAPITestServer.model.entity.germ.GermplasmEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.PedigreeEdgeEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.PedigreeEdgeEntity.EdgeType;
 import org.brapi.test.BrAPITestServer.model.entity.germ.PedigreeNodeEntity;
+import org.brapi.test.BrAPITestServer.repository.germ.PedigreeEdgeRepository;
 import org.brapi.test.BrAPITestServer.repository.germ.PedigreeRepository;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
@@ -45,13 +46,15 @@ public class PedigreeService {
 	private static final Logger log = LoggerFactory.getLogger(PedigreeService.class);
 
 	private final PedigreeRepository pedigreeRepository;
+	private final PedigreeEdgeRepository pedigreeEdgeRepository;
 	private final CrossingProjectService crossingProjectService;
 	private final GermplasmService germplasmService;
 
 	@Autowired
-	public PedigreeService(PedigreeRepository pedigreeRepository, CrossingProjectService crossingProjectService,
-			GermplasmService germplasmService) {
+	public PedigreeService(PedigreeRepository pedigreeRepository, PedigreeEdgeRepository pedigreeEdgeRepository,
+			CrossingProjectService crossingProjectService, GermplasmService germplasmService) {
 		this.pedigreeRepository = pedigreeRepository;
+		this.pedigreeEdgeRepository = pedigreeEdgeRepository;
 		this.crossingProjectService = crossingProjectService;
 		this.germplasmService = germplasmService;
 	}
@@ -284,12 +287,15 @@ public class PedigreeService {
 	public void updateGermplasmPedigree(List<Germplasm> data) throws BrAPIServerException {
 		List<PedigreeNode> createPedigreeNodes = new ArrayList<>();
 		Map<String, PedigreeNode> updatePedigreeNodes = new HashMap<>();
+
+		Map<String, PedigreeNodeEntity> nodesByGermplasm = getExistingPedigreeNodes(
+				data.stream().map(p -> p.getGermplasmDbId()).collect(Collectors.toList()));
+
 		for (Germplasm germplasm : data) {
-			GermplasmEntity germplasmEntity = germplasmService.getGermplasmEntity(germplasm.getGermplasmDbId());
-			if (germplasmEntity.getPedigree() == null) {
-				createPedigreeNodes.add(convertFromGermplasmToPedigree(germplasm));
-			} else {
+			if (nodesByGermplasm.containsKey(germplasm.getGermplasmDbId())) {
 				updatePedigreeNodes.put(germplasm.getGermplasmDbId(), convertFromGermplasmToPedigree(germplasm));
+			} else {
+				createPedigreeNodes.add(convertFromGermplasmToPedigree(germplasm));
 			}
 		}
 
@@ -299,18 +305,23 @@ public class PedigreeService {
 	}
 
 	private Map<String, PedigreeNodeEntity> getExistingPedigreeNodes(List<String> germplasmDbIds) {
-		PedigreeSearchRequest searchReq = new PedigreeSearchRequest();
-		searchReq.setGermplasmDbIds(germplasmDbIds);
-		searchReq.setIncludeParents(false);
-		searchReq.setIncludeProgeny(false);
-		searchReq.setIncludeSiblings(false);
-
-		List<PedigreeNodeEntity> nodeEntities = findPedigreeEntities(searchReq, null);
 		Map<String, PedigreeNodeEntity> nodesByGermplasm = new HashMap<>();
 
-		for (PedigreeNodeEntity nodeEntity : nodeEntities) {
-			if (nodeEntity.getGermplasm() != null && nodeEntity.getGermplasm().getId() != null) {
-				nodesByGermplasm.put(nodeEntity.getGermplasm().getId(), nodeEntity);
+		if (null != germplasmDbIds && !germplasmDbIds.isEmpty()) {
+			PedigreeSearchRequest searchReq = new PedigreeSearchRequest();
+			searchReq.setGermplasmDbIds(germplasmDbIds);
+			searchReq.setIncludeParents(false);
+			searchReq.setIncludeProgeny(false);
+			searchReq.setIncludeSiblings(false);
+			searchReq.setPedigreeDepth(0);
+			searchReq.setProgenyDepth(0);
+
+			List<PedigreeNodeEntity> nodeEntities = findPedigreeEntities(searchReq, null);
+
+			for (PedigreeNodeEntity nodeEntity : nodeEntities) {
+				if (nodeEntity.getGermplasm() != null && nodeEntity.getGermplasm().getId() != null) {
+					nodesByGermplasm.put(nodeEntity.getGermplasm().getId(), nodeEntity);
+				}
 			}
 		}
 
@@ -422,24 +433,22 @@ public class PedigreeService {
 		if (entity.getPedigreeString() == null || entity.getPedigreeString().isEmpty()) {
 			String pedStr = "";
 			if (entity.getParentEdges() != null && !entity.getParentEdges().isEmpty()) {
-				Optional<PedigreeNodeEntity> mother = entity.getParentEdges().stream()
-						.filter(parentEdge -> {return ParentType.FEMALE == parentEdge.getParentType();})
-						.map(PedigreeEdgeEntity::getConncetedNode)
-						.findFirst();
-				Optional<PedigreeNodeEntity> father = entity.getParentEdges().stream()
-						.filter(parentEdge -> {return ParentType.MALE == parentEdge.getParentType();})
-						.map(PedigreeEdgeEntity::getConncetedNode)
-						.findFirst();
-				
-				if(mother.isPresent()) {
+				Optional<PedigreeNodeEntity> mother = entity.getParentEdges().stream().filter(parentEdge -> {
+					return ParentType.FEMALE == parentEdge.getParentType();
+				}).map(PedigreeEdgeEntity::getConncetedNode).findFirst();
+				Optional<PedigreeNodeEntity> father = entity.getParentEdges().stream().filter(parentEdge -> {
+					return ParentType.MALE == parentEdge.getParentType();
+				}).map(PedigreeEdgeEntity::getConncetedNode).findFirst();
+
+				if (mother.isPresent()) {
 					pedStr += mother.get().getGermplasm().getGermplasmName() + "/";
-				}else {
+				} else {
 					pedStr += "Unknown/";
 				}
-				
-				if(father.isPresent()) {
+
+				if (father.isPresent()) {
 					pedStr += father.get().getGermplasm().getGermplasmName();
-				}else {
+				} else {
 					pedStr += "Unknown";
 				}
 			}
@@ -454,7 +463,7 @@ public class PedigreeService {
 			GermplasmEntity germplasm = germplasmService.getGermplasmEntity(node.getGermplasmDbId());
 			entity.setGermplasm(germplasm);
 		}
-		
+
 		UpdateUtility.updateEntity(node, entity);
 
 		if (node.getCrossingYear() != null)
@@ -475,25 +484,37 @@ public class PedigreeService {
 		UpdateUtility.updateEntity(node, entity);
 		updateEntity(entity, node);
 		if (node.getParents() != null) {
+			
+			List<String> edgeIdsToDelete = new ArrayList<>(); 
+			edgeIdsToDelete.addAll(entity.getParentEdges().stream().map(e -> e.getId()).collect(Collectors.toList()));
+			edgeIdsToDelete.addAll(entity.getParentNodes().stream().flatMap(parent -> parent.getProgenyEdges().stream())
+					.filter(childEdge -> childEdge.getConncetedNode().equals(entity))
+					.map(e -> e.getId()).collect(Collectors.toList()));
+
+			pedigreeEdgeRepository.deleteAllByIdInBatch(edgeIdsToDelete);
+			pedigreeEdgeRepository.flush();
+
 			for (PedigreeNodeParents parentNode : node.getParents()) {
 				PedigreeNodeEntity parentEntity = findOrCreatePedigreeNode(parentNode.getGermplasmDbId());
-				if (!entity.getParentNodes().contains(parentEntity)) {
-					entity.addParent(parentEntity, parentNode.getParentType());
-				}
-				if (!parentEntity.getProgenyNodes().contains(entity)) {
-					parentEntity.addProgeny(entity, parentNode.getParentType());
-				}
+				entity.addParent(parentEntity, parentNode.getParentType());
+				parentEntity.addProgeny(entity, parentNode.getParentType());
 			}
 		}
 		if (node.getProgeny() != null) {
+			
+			List<String> edgeIdsToDelete = new ArrayList<>(); 
+			edgeIdsToDelete.addAll(entity.getProgenyEdges().stream().map(e -> e.getId()).collect(Collectors.toList()));
+			edgeIdsToDelete.addAll(entity.getProgenyNodes().stream().flatMap(progeny -> progeny.getParentEdges().stream())
+					.filter(parentEdge -> parentEdge.getConncetedNode().equals(entity))
+					.map(e -> e.getId()).collect(Collectors.toList()));
+
+			pedigreeEdgeRepository.deleteAllByIdInBatch(edgeIdsToDelete);
+			pedigreeEdgeRepository.flush();
+
 			for (PedigreeNodeParents childNode : node.getProgeny()) {
 				PedigreeNodeEntity childEntity = findOrCreatePedigreeNode(childNode.getGermplasmDbId());
-				if (!entity.getProgenyNodes().contains(childEntity)) {
-					entity.addProgeny(childEntity, childNode.getParentType());
-				}
-				if (!childEntity.getParentNodes().contains(entity)) {
-					childEntity.addParent(entity, childNode.getParentType());
-				}
+				entity.addProgeny(childEntity, childNode.getParentType());
+				childEntity.addParent(entity, childNode.getParentType());
 			}
 		}
 	}

@@ -5,12 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
+
 import io.swagger.model.germ.ParentType;
 
 @Entity
 @Table(name="pedigree_edge")
-public class PedigreeEdgeEntity extends BrAPIBaseEntity{
+public class PedigreeEdgeEntity extends BrAPIPrimaryEntity{
 	@ManyToOne
 	private PedigreeNodeEntity thisNode;
 	@ManyToOne

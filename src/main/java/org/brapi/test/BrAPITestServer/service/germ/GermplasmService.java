@@ -193,7 +193,7 @@ public class GermplasmService {
 			throws BrAPIServerException {
 		GermplasmEntity entity = getGermplasmEntity(germplasmDbId, HttpStatus.NOT_FOUND);
 		updateEntity(entity, body);
-		GermplasmEntity savedEntity = germplasmRepository.save(entity);
+		GermplasmEntity savedEntity = germplasmRepository.saveAndFlush(entity);
 
 		return convertFromEntity(savedEntity);
 	}
@@ -204,7 +204,7 @@ public class GermplasmService {
 		for (GermplasmNewRequest germplasm : body) {
 			GermplasmEntity entity = new GermplasmEntity();
 			updateEntity(entity, germplasm);
-			GermplasmEntity savedEntity = germplasmRepository.save(entity);
+			GermplasmEntity savedEntity = germplasmRepository.saveAndFlush(entity);
 			savedGermplasm.add(convertFromEntity(savedEntity));
 		}
 
