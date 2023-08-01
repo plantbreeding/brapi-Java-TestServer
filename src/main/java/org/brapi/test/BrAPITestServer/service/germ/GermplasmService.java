@@ -198,17 +198,19 @@ public class GermplasmService {
 		return convertFromEntity(savedEntity);
 	}
 
+	// TODO: evaluate performance!
 	public List<Germplasm> saveGermplasm(@Valid List<GermplasmNewRequest> body) throws BrAPIServerException {
-		List<Germplasm> savedGermplasm = new ArrayList<>();
-
+		List<GermplasmEntity> toSave = new ArrayList<>();
 		for (GermplasmNewRequest germplasm : body) {
 			GermplasmEntity entity = new GermplasmEntity();
-			updateEntity(entity, germplasm);
-			GermplasmEntity savedEntity = germplasmRepository.saveAndFlush(entity);
-			savedGermplasm.add(convertFromEntity(savedEntity));
+			updateEntity(entity, germplasm);  // TODO: does updateEntity need to hit the database?
+			toSave.add(entity);
 		}
-
-		return savedGermplasm;
+		// Save batch.
+		return germplasmRepository.saveAllAndFlush(toSave)
+				.stream()
+				.map(this::convertFromEntity)
+				.collect(Collectors.toList());
 	}
 
 	private Germplasm convertFromEntity(GermplasmEntity entity) {
@@ -280,13 +282,17 @@ public class GermplasmService {
 		if (request.getBiologicalStatusOfAccessionCode() != null)
 			entity.setBiologicalStatusOfAccessionCode(request.getBiologicalStatusOfAccessionCode());
 		if (request.getBreedingMethodDbId() != null) {
-			BreedingMethodEntity method = breedingMethodService
-					.getBreedingMethodEntity(request.getBreedingMethodDbId());
+			// TODO: the DbId is all we need to insert.
+			BreedingMethodEntity method = new BreedingMethodEntity();
+			method.setId(request.getBreedingMethodDbId());
+//					breedingMethodService
+//					.getBreedingMethodEntity(request.getBreedingMethodDbId());
 			entity.setBreedingMethod(method);
 		}
 		if (request.getCollection() != null)
 			entity.setCollection(request.getCollection());
 		if (request.getCommonCropName() != null) {
+			// TODO: can we drop or batch?
 			CropEntity crop = cropService.findCropEntity(request.getCommonCropName());
 			if (crop == null) {
 				crop = cropService.saveCropEntity(request.getCommonCropName());

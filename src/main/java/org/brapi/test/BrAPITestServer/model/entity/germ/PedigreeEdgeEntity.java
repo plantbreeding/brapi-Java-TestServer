@@ -1,16 +1,18 @@
 package org.brapi.test.BrAPITestServer.model.entity.germ;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 
 import io.swagger.model.germ.ParentType;
 
 @Entity
-@Table(name="pedigree_edge")
+@Table(name="pedigree_edge",
+		indexes = {
+			@Index(name = "pedigree_edge_connceted_node_id", columnList = "connceted_node_id"),
+			@Index(name = "pedigree_edge_this_node_id", columnList = "this_node_id"),
+		}
+)
 public class PedigreeEdgeEntity extends BrAPIPrimaryEntity{
 	@ManyToOne
 	private PedigreeNodeEntity thisNode;

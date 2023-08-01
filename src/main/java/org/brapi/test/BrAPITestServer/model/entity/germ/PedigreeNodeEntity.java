@@ -5,13 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.PedigreeEdgeEntity.EdgeType;
@@ -19,7 +13,11 @@ import org.brapi.test.BrAPITestServer.model.entity.germ.PedigreeEdgeEntity.EdgeT
 import io.swagger.model.germ.ParentType;
 
 @Entity
-@Table(name = "pedigree_node")
+@Table(name = "pedigree_node",
+		indexes = {
+			@Index(name = "pedigree_node_germplasm_id", columnList = "germplasm_id"),
+		}
+)
 public class PedigreeNodeEntity extends BrAPIPrimaryEntity {
 	@ManyToOne
 	private CrossingProjectEntity crossingProject;
