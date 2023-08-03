@@ -20,7 +20,7 @@ public class PedigreeEdgeEntity extends BrAPIPrimaryEntity{
 	private ParentType parentType;
 	@Column
 	private EdgeType edgeType;
-
+	
 
 	public PedigreeNodeEntity getThisNode() {
 		return thisNode;
@@ -46,7 +46,7 @@ public class PedigreeEdgeEntity extends BrAPIPrimaryEntity{
 	public void setParentType(ParentType parentType) {
 		this.parentType = parentType;
 	}
-
+    
 	public enum EdgeType{
 		parent, child, sibling
 	}

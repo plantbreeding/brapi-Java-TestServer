@@ -121,7 +121,7 @@ public class PedigreeNodeEntity extends BrAPIPrimaryEntity {
 		edge.setConncetedNode(node);
 		edge.setParentType(type);
 		edge.setEdgeType(EdgeType.parent);
-		if(edges == null)
+		if(edges == null) 
 			edges = new ArrayList<>();
 		edges.add(edge);
 	}
@@ -132,7 +132,7 @@ public class PedigreeNodeEntity extends BrAPIPrimaryEntity {
 		edge.setConncetedNode(node);
 		edge.setParentType(type);
 		edge.setEdgeType(EdgeType.child);
-		if(edges == null)
+		if(edges == null) 
 			edges = new ArrayList<>();
 		edges.add(edge);
 	}
