@@ -308,5 +308,7 @@ public class StudyEntity extends BrAPIPrimaryEntity {
 		this.trial = trial;
 		if (trial.getProgram() != null)
 			setProgram(trial.getProgram());
+		if (trial.getCrop() != null)
+			setCrop(trial.getCrop());
 	}
 }

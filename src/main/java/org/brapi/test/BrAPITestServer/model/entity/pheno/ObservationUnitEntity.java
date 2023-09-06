@@ -75,6 +75,8 @@ public class ObservationUnitEntity extends BrAPIPrimaryEntity {
 		this.trial = trial;
 		if (trial.getProgram() != null)
 			setProgram(trial.getProgram());
+		if (trial.getCrop() != null)
+			setCrop(trial.getCrop());
 	}
 	public StudyEntity getStudy() {
 		return study;
@@ -83,6 +85,8 @@ public class ObservationUnitEntity extends BrAPIPrimaryEntity {
 		this.study = study;
 		if (study.getTrial() != null)
 			setTrial(study.getTrial());
+		if (study.getCrop() != null)
+			setCrop(study.getCrop());
 	}
 	public GermplasmEntity getGermplasm() {
 		return germplasm;

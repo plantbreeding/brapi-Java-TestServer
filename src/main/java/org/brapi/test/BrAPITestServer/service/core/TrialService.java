@@ -195,7 +195,8 @@ public class TrialService {
 			if (entity.getProgram().getCrop() != null) {
 				trial.setCommonCropName(entity.getProgram().getCrop().getCropName());
 			}
-		} else if (entity.getCrop() != null) {
+		}
+		if (entity.getCrop() != null) {
 			trial.setCommonCropName(entity.getCrop().getCropName());
 		}
 
