@@ -3,15 +3,7 @@ package org.brapi.test.BrAPITestServer.model.entity.core;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationEntity;
@@ -44,9 +36,9 @@ public class TrialEntity extends BrAPIPrimaryEntity {
 	@Column
 	private String trialPUI;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CropEntity crop;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ProgramEntity program;
 	
 	@OneToMany(mappedBy = "trial")

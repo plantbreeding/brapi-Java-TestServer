@@ -224,6 +224,11 @@ public class SearchQueryBuilder<T> {
 		return this;
 	}
 
+	public SearchQueryBuilder<T> leftJoinFetch(String join, String name) {
+		this.selectClause += "LEFT JOIN FETCH " + entityPrefix(join) + " " + paramFilter(name) + " ";
+		return this;
+	}
+
 	private String entityPrefix(String field) {
 		if (field.startsWith("*")) {
 			return field.substring(1);

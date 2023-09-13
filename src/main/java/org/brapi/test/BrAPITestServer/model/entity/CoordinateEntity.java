@@ -1,10 +1,7 @@
 package org.brapi.test.BrAPITestServer.model.entity;
 
 import java.math.BigDecimal;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="coordinate")
@@ -15,7 +12,7 @@ public class CoordinateEntity extends BrAPIBaseEntity{
 	private BigDecimal latitude;
 	@Column(precision = 9, scale = 6)
 	private BigDecimal altitude;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private GeoJSONEntity geoJSON;
 	
 	public GeoJSONEntity getGeoJSON() {

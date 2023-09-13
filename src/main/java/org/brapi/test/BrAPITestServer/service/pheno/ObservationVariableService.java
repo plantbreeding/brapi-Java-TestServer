@@ -1,20 +1,21 @@
 package org.brapi.test.BrAPITestServer.service.pheno;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+
 import jakarta.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
+import org.brapi.test.BrAPITestServer.model.entity.AdditionalInfoEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.ExternalReferenceEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
-import org.brapi.test.BrAPITestServer.model.entity.pheno.MethodEntity;
-import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationVariableEntity;
-import org.brapi.test.BrAPITestServer.model.entity.pheno.ScaleEntity;
-import org.brapi.test.BrAPITestServer.model.entity.pheno.TraitEntity;
-import org.brapi.test.BrAPITestServer.model.entity.pheno.VariableBaseEntity;
+import org.brapi.test.BrAPITestServer.model.entity.pheno.*;
+import org.brapi.test.BrAPITestServer.repository.core.TraitRepository;
+import org.brapi.test.BrAPITestServer.repository.pheno.MethodRepository;
 import org.brapi.test.BrAPITestServer.repository.pheno.ObservationVariableRepository;
+import org.brapi.test.BrAPITestServer.repository.pheno.ScaleRepository;
 import org.brapi.test.BrAPITestServer.service.DateUtility;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
@@ -22,6 +23,7 @@ import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.brapi.test.BrAPITestServer.service.core.CropService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,9 @@ import io.swagger.model.pheno.VariableBaseClass;
 @Service
 public class ObservationVariableService {
 	private final ObservationVariableRepository observationVariableRepository;
+	private final MethodRepository methodRepository;
+	private final ScaleRepository scaleRepository;
+	private final TraitRepository traitRepository;
 	private final CropService cropService;
 	private final OntologyService ontologyService;
 	private final MethodService methodService;
@@ -46,9 +51,12 @@ public class ObservationVariableService {
 
 	@Autowired
 	public ObservationVariableService(ObservationVariableRepository observationVariableRepository,
-			OntologyService ontologyService, CropService cropService, MethodService methodService,
-			ScaleService scaleService, TraitService traitService) {
+									  OntologyService ontologyService, CropService cropService, MethodService methodService,
+									  ScaleService scaleService, TraitService traitService, MethodRepository methodRepository, ScaleRepository scaleRepository, TraitRepository traitRepository) {
 		this.observationVariableRepository = observationVariableRepository;
+		this.methodRepository = methodRepository;
+		this.scaleRepository = scaleRepository;
+		this.traitRepository = traitRepository;
 		this.ontologyService = ontologyService;
 		this.cropService = cropService;
 		this.methodService = methodService;
@@ -110,6 +118,12 @@ public class ObservationVariableService {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<ObservationVariableEntity> searchQuery = new SearchQueryBuilder<ObservationVariableEntity>(
 				ObservationVariableEntity.class);
+		searchQuery.leftJoinFetch("contextOfUse", "contextOfUse")
+				   .leftJoinFetch("crop", "varCrop")
+				   .leftJoinFetch("method", "varMethod")
+				   .leftJoinFetch("ontology", "varOntology")
+				   .leftJoinFetch("scale", "varScale")
+				   .leftJoinFetch("trait", "varTrait");
 		if (request.getStudyDbId() != null) {
 			searchQuery = searchQuery.join("observations", "observation").appendList(request.getStudyDbId(),
 					"*observation.observationUnit.study.id");
@@ -123,10 +137,156 @@ public class ObservationVariableService {
 				.appendList(request.getTraitDbIds(), "trait.id")
 				.appendEnumList(request.getDataTypes(), "scale.dataType");
 
+		System.out.println("Starting search: " + new Date());
 		Page<ObservationVariableEntity> page = observationVariableRepository.findAllBySearch(searchQuery, pageReq);
+		System.out.println("Search complete: " + new Date());
+		System.out.println("fetching var xrefs: " + new Date());
+		observationVariableRepository.fetchXrefs(page, ObservationVariableEntity.class);
+		System.out.println("done fetching var xrefs: " + new Date());
+		System.out.println("fetching var additionalInfo: " + new Date());
+		observationVariableRepository.fetchAdditionalInfo(page, ObservationVariableEntity.class);
+		System.out.println("done fetching var additionalInfo: " + new Date());
+		System.out.println("fetching var synonyms: " + new Date());
+		fetchSynonyms(page);
+		System.out.println("done fetching var synonyms: " + new Date());
+		System.out.println("fetching method xrefs: " + new Date());
+		fetchMethodXrefs(page);
+		System.out.println("done fetching method xrefs: " + new Date());
+		System.out.println("fetching method additionalInfo: " + new Date());
+		fetchMethodAdditionalInfo(page);
+		System.out.println("done fetching method additionalInfo: " + new Date());
+		System.out.println("fetching scale xrefs: " + new Date());
+		fetchScaleXrefs(page);
+		System.out.println("done fetching scale xrefs: " + new Date());
+		System.out.println("fetching scale additionalInfo: " + new Date());
+		fetchScaleAdditionalInfo(page);
+		System.out.println("done fetching scale additionalInfo: " + new Date());
+		System.out.println("fetching scale valid value categories: " + new Date());
+		fetchScaleValidValueCategories(page);
+		System.out.println("done fetching scale valid value categories: " + new Date());
+		System.out.println("fetching trait xrefs: " + new Date());
+		fetchTraitXrefs(page);
+		System.out.println("done fetching trait xrefs: " + new Date());
+		System.out.println("fetching trait additionalInfo: " + new Date());
+		fetchTraitAdditionalInfo(page);
+		System.out.println("done fetching trait additionalInfo: " + new Date());
+
+		System.out.println(new Date() + ": converting "+page.getSize()+" entities");
 		List<ObservationVariable> observationVariables = page.map(this::convertFromEntity).getContent();
+		System.out.println(new Date() + ": done converting entities");
 		PagingUtility.calculateMetaData(metadata, page);
 		return observationVariables;
+	}
+
+	public void fetchSynonyms(Page<ObservationVariableEntity> page) {
+		SearchQueryBuilder<ObservationVariableEntity> searchQuery = new SearchQueryBuilder<>(ObservationVariableEntity.class);
+		searchQuery.leftJoinFetch("synonyms", "synonyms")
+				   .appendList(page.stream().map(BrAPIBaseEntity::getId).collect(Collectors.toList()), "id");
+
+		Page<ObservationVariableEntity> synonyms = observationVariableRepository.findAllBySearch(searchQuery, PageRequest.of(0, page.getSize()));
+
+		Map<String, List<String>> synonymsByVar = new HashMap<>();
+		synonyms.forEach(entity -> synonymsByVar.put(entity.getId(), entity.getSynonyms()));
+
+		page.forEach(entity -> entity.setSynonyms(synonymsByVar.get(entity.getMethod().getId())));
+	}
+
+	public void fetchMethodXrefs(Page<ObservationVariableEntity> page) {
+		SearchQueryBuilder<MethodEntity> searchQuery = new SearchQueryBuilder<>(MethodEntity.class);
+		searchQuery.leftJoinFetch("externalReferences", "externalReferences")
+				   .join("variables", "variables")
+				   .appendList(page.stream().map(BrAPIBaseEntity::getId).collect(Collectors.toList()), "*variables.id");
+
+		Page<MethodEntity> xrefs = methodRepository.findAllBySearch(searchQuery, PageRequest.of(0, page.getSize()));
+
+		Map<String, List<ExternalReferenceEntity>> xrefByEntity = new HashMap<>();
+		xrefs.forEach(entity -> xrefByEntity.put(entity.getId(), entity.getExternalReferences()));
+
+		page.forEach(entity -> entity.getMethod().setExternalReferences(xrefByEntity.get(entity.getMethod().getId())));
+	}
+
+	public void fetchMethodAdditionalInfo(Page<ObservationVariableEntity> page) {
+		SearchQueryBuilder<MethodEntity> searchQuery = new SearchQueryBuilder<>(MethodEntity.class);
+		searchQuery.leftJoinFetch("additionalInfo", "additionalInfo")
+				   .join("variables", "variables")
+				   .appendList(page.stream().map(BrAPIBaseEntity::getId).collect(Collectors.toList()), "*variables.id");
+
+		Page<MethodEntity> additionalInfo = methodRepository.findAllBySearch(searchQuery, PageRequest.of(0, page.getSize()));
+
+		Map<String, List<AdditionalInfoEntity>> infoByEntity = new HashMap<>();
+		additionalInfo.forEach(entity -> infoByEntity.put(entity.getId(), entity.getAdditionalInfo()));
+
+		page.forEach(entity -> entity.getMethod().setAdditionalInfo(infoByEntity.get(entity.getId())));
+	}
+
+	public void fetchScaleXrefs(Page<ObservationVariableEntity> page) {
+		SearchQueryBuilder<ScaleEntity> searchQuery = new SearchQueryBuilder<>(ScaleEntity.class);
+		searchQuery.leftJoinFetch("externalReferences", "externalReferences")
+				   .join("variables", "variables")
+				   .appendList(page.stream().map(BrAPIBaseEntity::getId).collect(Collectors.toList()), "*variables.id");
+
+		Page<ScaleEntity> xrefs = scaleRepository.findAllBySearch(searchQuery, PageRequest.of(0, page.getSize()));
+
+		Map<String, List<ExternalReferenceEntity>> xrefByEntity = new HashMap<>();
+		xrefs.forEach(entity -> xrefByEntity.put(entity.getId(), entity.getExternalReferences()));
+
+		page.forEach(entity -> entity.getScale().setExternalReferences(xrefByEntity.get(entity.getMethod().getId())));
+	}
+
+	public void fetchScaleAdditionalInfo(Page<ObservationVariableEntity> page) {
+		SearchQueryBuilder<ScaleEntity> searchQuery = new SearchQueryBuilder<>(ScaleEntity.class);
+		searchQuery.leftJoinFetch("additionalInfo", "additionalInfo")
+				   .join("variables", "variables")
+				   .appendList(page.stream().map(BrAPIBaseEntity::getId).collect(Collectors.toList()), "*variables.id");
+
+		Page<ScaleEntity> additionalInfo = scaleRepository.findAllBySearch(searchQuery, PageRequest.of(0, page.getSize()));
+
+		Map<String, List<AdditionalInfoEntity>> infoByEntity = new HashMap<>();
+		additionalInfo.forEach(entity -> infoByEntity.put(entity.getId(), entity.getAdditionalInfo()));
+
+		page.forEach(entity -> entity.getScale().setAdditionalInfo(infoByEntity.get(entity.getId())));
+	}
+
+	public void fetchScaleValidValueCategories(Page<ObservationVariableEntity> page) {
+		SearchQueryBuilder<ScaleEntity> searchQuery = new SearchQueryBuilder<>(ScaleEntity.class);
+		searchQuery.leftJoinFetch("validValueCategories", "validValueCategories")
+				   .join("variables", "variables")
+				   .appendList(page.stream().map(BrAPIBaseEntity::getId).collect(Collectors.toList()), "*variables.id");
+
+		Page<ScaleEntity> validValueCategories = scaleRepository.findAllBySearch(searchQuery, PageRequest.of(0, page.getSize()));
+
+		Map<String, List<ScaleValidValueCategoryEntity>> infoByEntity = new HashMap<>();
+		validValueCategories.forEach(entity -> infoByEntity.put(entity.getId(), entity.getValidValueCategories()));
+
+		page.forEach(entity -> entity.getScale().setValidValueCategories(infoByEntity.get(entity.getId())));
+	}
+
+	public void fetchTraitXrefs(Page<ObservationVariableEntity> page) {
+		SearchQueryBuilder<TraitEntity> searchQuery = new SearchQueryBuilder<>(TraitEntity.class);
+		searchQuery.leftJoinFetch("externalReferences", "externalReferences")
+				   .join("variables", "variables")
+				   .appendList(page.stream().map(BrAPIBaseEntity::getId).collect(Collectors.toList()), "*variables.id");
+
+		Page<TraitEntity> xrefs = traitRepository.findAllBySearch(searchQuery, PageRequest.of(0, page.getSize()));
+
+		Map<String, List<ExternalReferenceEntity>> xrefByEntity = new HashMap<>();
+		xrefs.forEach(entity -> xrefByEntity.put(entity.getId(), entity.getExternalReferences()));
+
+		page.forEach(entity -> entity.getTrait().setExternalReferences(xrefByEntity.get(entity.getMethod().getId())));
+	}
+
+	public void fetchTraitAdditionalInfo(Page<ObservationVariableEntity> page) {
+		SearchQueryBuilder<TraitEntity> searchQuery = new SearchQueryBuilder<>(TraitEntity.class);
+		searchQuery.leftJoinFetch("additionalInfo", "additionalInfo")
+				   .join("variables", "variables")
+				   .appendList(page.stream().map(BrAPIBaseEntity::getId).collect(Collectors.toList()), "*variables.id");
+
+		Page<TraitEntity> additionalInfo = traitRepository.findAllBySearch(searchQuery, PageRequest.of(0, page.getSize()));
+
+		Map<String, List<AdditionalInfoEntity>> infoByEntity = new HashMap<>();
+		additionalInfo.forEach(entity -> infoByEntity.put(entity.getId(), entity.getAdditionalInfo()));
+
+		page.forEach(entity -> entity.getTrait().setAdditionalInfo(infoByEntity.get(entity.getId())));
 	}
 
 	public List<ObservationVariable> saveObservationVariables(@Valid List<ObservationVariableNewRequest> body)
@@ -174,6 +334,7 @@ public class ObservationVariableService {
 	}
 
 	private ObservationVariable convertFromEntity(ObservationVariableEntity entity) {
+		System.out.println(new Date() + ": converting variable: " + entity.getId());
 		ObservationVariable var = new ObservationVariable();
 		convertFromBaseEntity(entity, var);
 		var.setObservationVariableName(entity.getName());

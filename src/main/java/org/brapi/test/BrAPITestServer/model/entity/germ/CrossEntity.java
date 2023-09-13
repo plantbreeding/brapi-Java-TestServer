@@ -4,14 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 
@@ -23,13 +16,13 @@ import io.swagger.model.germ.PlannedCrossNewRequest.PlannedCrossStatusEnum;
 public class CrossEntity extends BrAPIPrimaryEntity {
 	@Column
     private CrossType crossType;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private CrossingProjectEntity crossingProject;
     @Column
     private String name;
     @Column
     private PlannedCrossStatusEnum status;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private CrossEntity plannedCross;
     @OneToMany(mappedBy = "cross", cascade = CascadeType.ALL)
     private List<CrossParentEntity> parents;

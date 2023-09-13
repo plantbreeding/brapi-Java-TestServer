@@ -1,16 +1,13 @@
 package org.brapi.test.BrAPITestServer.model.entity.pheno;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 
 @Entity
 @Table(name="scale_valid_value_category")
 public class ScaleValidValueCategoryEntity extends BrAPIBaseEntity{
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ScaleEntity scale;
 	@Column
 	private String label;

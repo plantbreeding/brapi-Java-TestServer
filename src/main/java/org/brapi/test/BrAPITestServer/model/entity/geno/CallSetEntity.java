@@ -4,14 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 
@@ -22,7 +15,7 @@ public class CallSetEntity extends BrAPIPrimaryEntity {
 	private String callSetName;
 	@Column
 	private Date created;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private SampleEntity sample;
 	@Column
 	private Date updated;

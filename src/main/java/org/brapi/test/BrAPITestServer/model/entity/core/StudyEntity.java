@@ -3,16 +3,7 @@ package org.brapi.test.BrAPITestServer.model.entity.core;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationEntity;
@@ -40,15 +31,15 @@ public class StudyEntity extends BrAPIPrimaryEntity {
 	private Date endDate;
 	@OneToMany(mappedBy = "study")
 	private List<EnvironmentParametersEntity> environmentParameters;
-	@OneToOne(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private ExperimentalDesignEntity experimentalDesign;
-	@OneToOne(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private GrowthFacilityEntity growthFacility;
-	@OneToOne(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(mappedBy = "study", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private StudyLastUpdateEntity lastUpdate;
 	@Column
 	private String license;
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	private LocationEntity location;
 	@OneToMany(mappedBy = "study")
 	private List<ObservationLevelEntity> observationLevels;
@@ -77,11 +68,11 @@ public class StudyEntity extends BrAPIPrimaryEntity {
 	@Column
 	private String studyType;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CropEntity crop;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ProgramEntity program;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private TrialEntity trial;
 
 	@OneToMany(mappedBy="study")

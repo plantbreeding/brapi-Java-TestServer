@@ -2,11 +2,7 @@ package org.brapi.test.BrAPITestServer.model.entity.pheno;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 
@@ -31,7 +27,7 @@ public class EventParameterEntity extends BrAPIBaseEntity {
 	private String valueDescription;
 	@ElementCollection
 	private List<String> valuesByDate;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private EventEntity event;
 
 	public String getCode() {

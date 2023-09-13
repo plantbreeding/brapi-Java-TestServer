@@ -1,9 +1,6 @@
 package org.brapi.test.BrAPITestServer.model.entity.pheno;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 
@@ -18,9 +15,9 @@ public class ObservationUnitLevelRelationshipEntity extends BrAPIBaseEntity {
 	private ObservationUnitHierarchyLevelEnum levelName;
 	@Column
 	private Integer levelOrder;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ObservationUnitEntity observationUnit;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ObservationUnitPositionEntity position;
 	
 	public ObservationUnitEntity getObservationUnit() {

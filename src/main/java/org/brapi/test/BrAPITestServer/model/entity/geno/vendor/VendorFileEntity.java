@@ -2,14 +2,7 @@ package org.brapi.test.BrAPITestServer.model.entity.geno.vendor;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 import org.brapi.test.BrAPITestServer.model.entity.geno.SampleEntity;
@@ -25,7 +18,7 @@ public class VendorFileEntity extends BrAPIBaseEntity {
 	private String md5sum;
 	@Column
 	private String fileType;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private VendorOrderEntity order;
 	@ManyToMany(cascade= CascadeType.ALL)
 	@JoinTable(name = "vendor_file_sample", joinColumns = {

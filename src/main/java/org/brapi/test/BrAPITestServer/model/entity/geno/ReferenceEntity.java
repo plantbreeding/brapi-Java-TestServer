@@ -1,10 +1,8 @@
 package org.brapi.test.BrAPITestServer.model.entity.geno;
 
 import java.math.BigDecimal;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 
 
@@ -17,7 +15,7 @@ public class ReferenceEntity extends BrAPIPrimaryEntity {
 	private String md5checksum;
 	@Column
 	private String referenceName;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ReferenceSetEntity referenceSet;
 	@Column
 	private BigDecimal sourceDivergence;

@@ -1,9 +1,6 @@
 package org.brapi.test.BrAPITestServer.model.entity.geno;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.GermplasmEntity;
@@ -21,7 +18,7 @@ public class ReferenceSetEntity extends BrAPIPrimaryEntity  {
 	private String md5checksum;
 	@Column
 	private String referenceSetName;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private GermplasmEntity sourceGermplasm;
 	@Column
 	private String sourceURI;

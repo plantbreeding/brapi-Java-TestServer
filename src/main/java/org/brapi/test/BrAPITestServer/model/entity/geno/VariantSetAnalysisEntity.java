@@ -3,17 +3,14 @@ package org.brapi.test.BrAPITestServer.model.entity.geno;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 
 @Entity
 @Table(name = "variantset_analysis")
 public class VariantSetAnalysisEntity extends BrAPIBaseEntity {
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private VariantSetEntity variantSet;
 	@Column
 	private String analysisName;

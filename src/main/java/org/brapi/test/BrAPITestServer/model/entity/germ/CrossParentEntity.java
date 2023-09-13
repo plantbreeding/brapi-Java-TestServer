@@ -1,9 +1,6 @@
 package org.brapi.test.BrAPITestServer.model.entity.germ;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
@@ -13,15 +10,15 @@ import io.swagger.model.germ.ParentType;
 @Entity
 @Table(name="cross_parent")
 public class CrossParentEntity extends BrAPIBaseEntity {
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private GermplasmEntity germplasm;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ObservationUnitEntity observationUnit;
 	@Column
 	private ParentType parentType;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CrossEntity cross;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CrossingProjectEntity crossingProject;
 	
 	public CrossingProjectEntity getCrossingProject() {

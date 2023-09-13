@@ -5,13 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.PedigreeEdgeEntity.EdgeType;
@@ -21,13 +15,13 @@ import io.swagger.model.germ.ParentType;
 @Entity
 @Table(name = "pedigree_node")
 public class PedigreeNodeEntity extends BrAPIPrimaryEntity {
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CrossingProjectEntity crossingProject;
 	@Column
 	private Integer crossingYear;
 	@Column
 	private String familyCode;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private GermplasmEntity germplasm;
 	@Column
 	private String pedigreeString;
