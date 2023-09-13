@@ -11,3 +11,6 @@ CREATE INDEX CONCURRENTLY IF NOT EXISTS "germplasm_additional_info_germplasm_ent
 CREATE INDEX CONCURRENTLY IF NOT EXISTS "germplasm_external_references_germplasm_entity_id" ON germplasm_external_references (germplasm_entity_id);
 CREATE INDEX CONCURRENTLY IF NOT EXISTS "germplasm_synonym_germplasm_id" ON germplasm_synonym (germplasm_id);
 CREATE INDEX CONCURRENTLY IF NOT EXISTS "germplasm_taxon_germplasm_id" ON germplasm_taxon (germplasm_id);
+-- Indexes to improve read performance for Experiment and Observation operations.
+CREATE INDEX CONCURRENTLY IF NOT EXISTS "pedigree_node_additional_info_pedigree_node_entity_id" ON pedigree_node_additional_info (pedigree_node_entity_id);
+CREATE INDEX CONCURRENTLY IF NOT EXISTS "observation_unit_position_observation_unit_id" ON observation_unit_position (observation_unit_id);
