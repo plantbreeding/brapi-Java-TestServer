@@ -31,6 +31,8 @@ import org.brapi.test.BrAPITestServer.service.core.TrialService;
 import org.brapi.test.BrAPITestServer.service.germ.CrossService;
 import org.brapi.test.BrAPITestServer.service.germ.GermplasmService;
 import org.brapi.test.BrAPITestServer.service.germ.SeedLotService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -60,6 +62,8 @@ import javax.persistence.TypedQuery;
 
 @Service
 public class ObservationUnitService {
+
+	private static final Logger log = LoggerFactory.getLogger(ObservationUnitService.class);
 	private final ObservationUnitRepository observationUnitRepository;
 
 	private final EntityManager entityManager;
@@ -197,23 +201,17 @@ public class ObservationUnitService {
 		boolean includeObservations = request.isIncludeObservations() != null && request.isIncludeObservations();
 
 		if(includeObservations) {
-			System.out.println("Fetching observations for OUs");
+			log.debug("Fetching observations for OUs");
 			for(ObservationUnitEntity entity : page) {
-				System.out.println("Fetching observations for OU: " + entity.getId());
+				log.trace("Fetching observations for OU: " + entity.getId());
 				entity.getObservations();
 			}
 		}
 
-		System.out.println(new Date() + ": converting "+page.getSize()+" entities");
+		log.debug(new Date() + ": converting "+page.getSize()+" entities");
 		List<ObservationUnit> observationUnits = page.map(observationUnitEntity -> this.convertFromEntity(observationUnitEntity, includeObservations)).getContent();
-		System.out.println(new Date() + ": done converting entities");
+		log.debug(new Date() + ": done converting entities");
 		PagingUtility.calculateMetaData(metadata, page);
-
-//		if (request.isIncludeObservations() == null || !request.isIncludeObservations()) {
-//			for (ObservationUnit ou : observationUnits) {
-//				ou.setObservations(null);
-//			}
-//		}
 
 		return observationUnits;
 	}
@@ -289,19 +287,13 @@ public class ObservationUnitService {
 				.appendList(request.getStudyNames(), "study.studyName").appendList(request.getTrialDbIds(), "trial.id")
 				.appendList(request.getTrialNames(), "trial.trailName");
 
-		System.out.println("Starting search: " + new Date());
+		log.debug("Starting search: " + new Date());
 		Page<ObservationUnitEntity> page = observationUnitRepository.findAllBySearch(searchQuery, pageReq);
-		System.out.println("Search complete: " + new Date());
+		log.debug("Search complete: " + new Date());
 
-		System.out.println("fetching OU xrefs: " + new Date());
 		observationUnitRepository.fetchXrefs(page, ObservationUnitEntity.class);
-		System.out.println("done fetching OU xrefs: " + new Date());
-		System.out.println("fetching OU treatments: " + new Date());
 		fetchTreatments(page);
-		System.out.println("done fetching OU treatments: " + new Date());
-		System.out.println("fetching OU position levels: " + new Date());
 		fetchObsUnitLevelRelationships(page);
-		System.out.println("done fetching OU position levels: " + new Date());
 		return page;
 	}
 
@@ -332,7 +324,11 @@ public class ObservationUnitService {
 		positions.forEach(ou -> positionByOu.put(ou.getId(), ou.getPosition()));
 
 		page.forEach(ou -> {
-			ou.getPosition().setObservationLevelRelationships(positionByOu.get(ou.getId()).getObservationLevelRelationships());
+			if(ou.getPosition() != null) {
+				ou.getPosition()
+				  .setObservationLevelRelationships(positionByOu.get(ou.getId())
+																.getObservationLevelRelationships());
+			}
 		});
 	}
 
@@ -455,7 +451,7 @@ public class ObservationUnitService {
 	}
 
 	private ObservationUnit convertFromEntity(ObservationUnitEntity entity, boolean convertObservations) {
-		System.out.println(new Date() + ": converting ou: " + entity.getId());
+		log.trace(new Date() + ": converting ou: " + entity.getId());
 		ObservationUnit unit = new ObservationUnit();
 		UpdateUtility.convertFromEntity(entity, unit);
 

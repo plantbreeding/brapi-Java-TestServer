@@ -21,6 +21,8 @@ import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
 import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.brapi.test.BrAPITestServer.service.core.CropService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,6 +41,8 @@ import io.swagger.model.pheno.VariableBaseClass;
 
 @Service
 public class ObservationVariableService {
+
+	private static final Logger log = LoggerFactory.getLogger(ObservationVariableService.class);
 	private final ObservationVariableRepository observationVariableRepository;
 	private final MethodRepository methodRepository;
 	private final ScaleRepository scaleRepository;
@@ -137,43 +141,23 @@ public class ObservationVariableService {
 				.appendList(request.getTraitDbIds(), "trait.id")
 				.appendEnumList(request.getDataTypes(), "scale.dataType");
 
-		System.out.println("Starting search: " + new Date());
+		log.debug("Starting variable search: " + new Date());
 		Page<ObservationVariableEntity> page = observationVariableRepository.findAllBySearch(searchQuery, pageReq);
-		System.out.println("Search complete: " + new Date());
-		System.out.println("fetching var xrefs: " + new Date());
+		log.debug("Search variable complete: " + new Date());
 		observationVariableRepository.fetchXrefs(page, ObservationVariableEntity.class);
-		System.out.println("done fetching var xrefs: " + new Date());
-		System.out.println("fetching var additionalInfo: " + new Date());
 		observationVariableRepository.fetchAdditionalInfo(page, ObservationVariableEntity.class);
-		System.out.println("done fetching var additionalInfo: " + new Date());
-		System.out.println("fetching var synonyms: " + new Date());
 		fetchSynonyms(page);
-		System.out.println("done fetching var synonyms: " + new Date());
-		System.out.println("fetching method xrefs: " + new Date());
 		fetchMethodXrefs(page);
-		System.out.println("done fetching method xrefs: " + new Date());
-		System.out.println("fetching method additionalInfo: " + new Date());
 		fetchMethodAdditionalInfo(page);
-		System.out.println("done fetching method additionalInfo: " + new Date());
-		System.out.println("fetching scale xrefs: " + new Date());
 		fetchScaleXrefs(page);
-		System.out.println("done fetching scale xrefs: " + new Date());
-		System.out.println("fetching scale additionalInfo: " + new Date());
 		fetchScaleAdditionalInfo(page);
-		System.out.println("done fetching scale additionalInfo: " + new Date());
-		System.out.println("fetching scale valid value categories: " + new Date());
 		fetchScaleValidValueCategories(page);
-		System.out.println("done fetching scale valid value categories: " + new Date());
-		System.out.println("fetching trait xrefs: " + new Date());
 		fetchTraitXrefs(page);
-		System.out.println("done fetching trait xrefs: " + new Date());
-		System.out.println("fetching trait additionalInfo: " + new Date());
 		fetchTraitAdditionalInfo(page);
-		System.out.println("done fetching trait additionalInfo: " + new Date());
 
-		System.out.println(new Date() + ": converting "+page.getSize()+" entities");
+		log.debug(new Date() + ": converting "+page.getSize()+" entities");
 		List<ObservationVariable> observationVariables = page.map(this::convertFromEntity).getContent();
-		System.out.println(new Date() + ": done converting entities");
+		log.debug(new Date() + ": done converting entities");
 		PagingUtility.calculateMetaData(metadata, page);
 		return observationVariables;
 	}
@@ -334,7 +318,7 @@ public class ObservationVariableService {
 	}
 
 	private ObservationVariable convertFromEntity(ObservationVariableEntity entity) {
-		System.out.println(new Date() + ": converting variable: " + entity.getId());
+		log.trace(new Date() + ": converting variable: " + entity.getId());
 		ObservationVariable var = new ObservationVariable();
 		convertFromBaseEntity(entity, var);
 		var.setObservationVariableName(entity.getName());

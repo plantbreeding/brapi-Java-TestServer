@@ -21,6 +21,8 @@ import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
 import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.brapi.test.BrAPITestServer.service.core.SeasonService;
 import org.brapi.test.BrAPITestServer.service.core.StudyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +42,8 @@ import io.swagger.model.pheno.ObservationUnitLevelRelationship;
 
 @Service
 public class ObservationService {
+
+	private static final Logger log = LoggerFactory.getLogger(ObservationService.class);
 
 	private final ObservationRepository observationRepository;
 	private final SeasonService seasonService;
@@ -170,9 +174,9 @@ public class ObservationService {
 
 	public List<Observation> findObservations(@Valid ObservationSearchRequest request, Metadata metadata) {
 		Page<ObservationEntity> page = findObservationEntities(request, metadata);
-		System.out.println(new Date() + ": converting "+page.getSize()+" entities");
+		log.debug(new Date() + ": converting "+page.getSize()+" entities");
 		List<Observation> observations = page.map(this::convertFromEntity).getContent();
-		System.out.println(new Date() + ": done converting entities");
+		log.debug(new Date() + ": done converting entities");
 		PagingUtility.calculateMetaData(metadata, page);
 		return observations;
 	}
@@ -250,13 +254,11 @@ public class ObservationService {
 				.appendList(request.getStudyDbIds(), "study.id").appendList(request.getStudyNames(), "study.studyName")
 				.appendList(request.getTrialDbIds(), "trial.id").appendList(request.getTrialNames(), "trial.trialName");
 
-		System.out.println(new Date() + ": starting search");
+		log.debug(new Date() + ": starting search");
 		Page<ObservationEntity> page = observationRepository.findAllBySearch(searchQuery, pageReq);
-		System.out.println(new Date() + ": search complete");
+		log.debug(new Date() + ": search complete");
 
-		System.out.println("fetching Obs xrefs: " + new Date());
 		observationRepository.fetchXrefs(page, ObservationEntity.class);
-		System.out.println("done fetching Obs xrefs: " + new Date());
 		return page;
 	}
 
@@ -327,7 +329,7 @@ public class ObservationService {
 	}
 
 	public Observation convertFromEntity(ObservationEntity entity) {
-		System.out.println(new Date() + ": converting obs: " + entity.getId());
+		log.trace(new Date() + ": converting obs: " + entity.getId());
 		Observation observation = new Observation();
 		if (entity != null) {
 			UpdateUtility.convertFromEntity(entity, observation);
