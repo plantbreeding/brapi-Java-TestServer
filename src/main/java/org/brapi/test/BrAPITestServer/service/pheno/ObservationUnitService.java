@@ -208,9 +208,9 @@ public class ObservationUnitService {
 			}
 		}
 
-		log.debug(new Date() + ": converting "+page.getSize()+" entities");
+		log.debug("converting "+page.getSize()+" entities");
 		List<ObservationUnit> observationUnits = page.map(observationUnitEntity -> this.convertFromEntity(observationUnitEntity, includeObservations)).getContent();
-		log.debug(new Date() + ": done converting entities");
+		log.debug("done converting entities");
 		PagingUtility.calculateMetaData(metadata, page);
 
 		return observationUnits;
@@ -287,13 +287,15 @@ public class ObservationUnitService {
 				.appendList(request.getStudyNames(), "study.studyName").appendList(request.getTrialDbIds(), "trial.id")
 				.appendList(request.getTrialNames(), "trial.trailName");
 
-		log.debug("Starting search: " + new Date());
+		log.debug("Starting search");
 		Page<ObservationUnitEntity> page = observationUnitRepository.findAllBySearch(searchQuery, pageReq);
-		log.debug("Search complete: " + new Date());
+		log.debug("Search complete");
 
-		observationUnitRepository.fetchXrefs(page, ObservationUnitEntity.class);
-		fetchTreatments(page);
-		fetchObsUnitLevelRelationships(page);
+		if(!page.isEmpty()) {
+			observationUnitRepository.fetchXrefs(page, ObservationUnitEntity.class);
+			fetchTreatments(page);
+			fetchObsUnitLevelRelationships(page);
+		}
 		return page;
 	}
 
@@ -451,7 +453,7 @@ public class ObservationUnitService {
 	}
 
 	private ObservationUnit convertFromEntity(ObservationUnitEntity entity, boolean convertObservations) {
-		log.trace(new Date() + ": converting ou: " + entity.getId());
+		log.trace("converting ou: " + entity.getId());
 		ObservationUnit unit = new ObservationUnit();
 		UpdateUtility.convertFromEntity(entity, unit);
 

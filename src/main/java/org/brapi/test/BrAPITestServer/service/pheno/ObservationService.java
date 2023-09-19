@@ -174,9 +174,9 @@ public class ObservationService {
 
 	public List<Observation> findObservations(@Valid ObservationSearchRequest request, Metadata metadata) {
 		Page<ObservationEntity> page = findObservationEntities(request, metadata);
-		log.debug(new Date() + ": converting "+page.getSize()+" entities");
+		log.debug("converting "+page.getSize()+" entities");
 		List<Observation> observations = page.map(this::convertFromEntity).getContent();
-		log.debug(new Date() + ": done converting entities");
+		log.debug("done converting entities");
 		PagingUtility.calculateMetaData(metadata, page);
 		return observations;
 	}
@@ -254,11 +254,13 @@ public class ObservationService {
 				.appendList(request.getStudyDbIds(), "study.id").appendList(request.getStudyNames(), "study.studyName")
 				.appendList(request.getTrialDbIds(), "trial.id").appendList(request.getTrialNames(), "trial.trialName");
 
-		log.debug(new Date() + ": starting search");
+		log.debug("starting search");
 		Page<ObservationEntity> page = observationRepository.findAllBySearch(searchQuery, pageReq);
-		log.debug(new Date() + ": search complete");
+		log.debug("search complete");
 
-		observationRepository.fetchXrefs(page, ObservationEntity.class);
+		if(!page.isEmpty()) {
+			observationRepository.fetchXrefs(page, ObservationEntity.class);
+		}
 		return page;
 	}
 
@@ -329,7 +331,7 @@ public class ObservationService {
 	}
 
 	public Observation convertFromEntity(ObservationEntity entity) {
-		log.trace(new Date() + ": converting obs: " + entity.getId());
+		log.trace("converting obs: " + entity.getId());
 		Observation observation = new Observation();
 		if (entity != null) {
 			UpdateUtility.convertFromEntity(entity, observation);

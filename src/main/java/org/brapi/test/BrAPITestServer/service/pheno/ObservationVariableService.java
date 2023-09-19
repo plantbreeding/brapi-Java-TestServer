@@ -144,16 +144,18 @@ public class ObservationVariableService {
 		log.debug("Starting variable search: " + new Date());
 		Page<ObservationVariableEntity> page = observationVariableRepository.findAllBySearch(searchQuery, pageReq);
 		log.debug("Search variable complete: " + new Date());
-		observationVariableRepository.fetchXrefs(page, ObservationVariableEntity.class);
-		observationVariableRepository.fetchAdditionalInfo(page, ObservationVariableEntity.class);
-		fetchSynonyms(page);
-		fetchMethodXrefs(page);
-		fetchMethodAdditionalInfo(page);
-		fetchScaleXrefs(page);
-		fetchScaleAdditionalInfo(page);
-		fetchScaleValidValueCategories(page);
-		fetchTraitXrefs(page);
-		fetchTraitAdditionalInfo(page);
+		if(!page.isEmpty()) {
+			observationVariableRepository.fetchXrefs(page, ObservationVariableEntity.class);
+			observationVariableRepository.fetchAdditionalInfo(page, ObservationVariableEntity.class);
+			fetchSynonyms(page);
+			fetchMethodXrefs(page);
+			fetchMethodAdditionalInfo(page);
+			fetchScaleXrefs(page);
+			fetchScaleAdditionalInfo(page);
+			fetchScaleValidValueCategories(page);
+			fetchTraitXrefs(page);
+			fetchTraitAdditionalInfo(page);
+		}
 
 		log.debug(new Date() + ": converting "+page.getSize()+" entities");
 		List<ObservationVariable> observationVariables = page.map(this::convertFromEntity).getContent();
