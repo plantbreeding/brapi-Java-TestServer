@@ -57,17 +57,11 @@ import io.swagger.model.pheno.ObservationUnitTable;
 import io.swagger.model.pheno.ObservationVariable;
 import io.swagger.model.pheno.ObservationVariableSearchRequest;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-
 @Service
 public class ObservationUnitService {
 
 	private static final Logger log = LoggerFactory.getLogger(ObservationUnitService.class);
 	private final ObservationUnitRepository observationUnitRepository;
-
-	private final EntityManager entityManager;
-
 	private final GermplasmService germplasmService;
 	private final CrossService crossService;
 	private final ObservationService observationService;
@@ -81,9 +75,8 @@ public class ObservationUnitService {
 	public ObservationUnitService(ObservationUnitRepository observationUnitRepository, StudyService studyService,
 			TrialService trialService, ProgramService programService, ObservationService observationService,
 			GermplasmService germplasmService, SeedLotService seedLotService, CrossService crossService,
-			ObservationVariableService observationVariableService, EntityManager entityManager) {
+			ObservationVariableService observationVariableService) {
 		this.observationUnitRepository = observationUnitRepository;
-		this.entityManager = entityManager;
 
 		this.studyService = studyService;
 		this.trialService = trialService;

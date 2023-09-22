@@ -141,9 +141,9 @@ public class ObservationVariableService {
 				.appendList(request.getTraitDbIds(), "trait.id")
 				.appendEnumList(request.getDataTypes(), "scale.dataType");
 
-		log.debug("Starting variable search: " + new Date());
+		log.debug("Starting variable search");
 		Page<ObservationVariableEntity> page = observationVariableRepository.findAllBySearch(searchQuery, pageReq);
-		log.debug("Search variable complete: " + new Date());
+		log.debug("Variable search complete");
 		if(!page.isEmpty()) {
 			observationVariableRepository.fetchXrefs(page, ObservationVariableEntity.class);
 			observationVariableRepository.fetchAdditionalInfo(page, ObservationVariableEntity.class);
@@ -157,9 +157,9 @@ public class ObservationVariableService {
 			fetchTraitAdditionalInfo(page);
 		}
 
-		log.debug(new Date() + ": converting "+page.getSize()+" entities");
+		log.debug("converting "+page.getSize()+" entities");
 		List<ObservationVariable> observationVariables = page.map(this::convertFromEntity).getContent();
-		log.debug(new Date() + ": done converting entities");
+		log.debug("done converting entities");
 		PagingUtility.calculateMetaData(metadata, page);
 		return observationVariables;
 	}
@@ -320,7 +320,7 @@ public class ObservationVariableService {
 	}
 
 	private ObservationVariable convertFromEntity(ObservationVariableEntity entity) {
-		log.trace(new Date() + ": converting variable: " + entity.getId());
+		log.trace("converting variable: " + entity.getId());
 		ObservationVariable var = new ObservationVariable();
 		convertFromBaseEntity(entity, var);
 		var.setObservationVariableName(entity.getName());
