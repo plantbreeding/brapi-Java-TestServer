@@ -1,16 +1,13 @@
 package org.brapi.test.BrAPITestServer.model.entity.pheno;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 
 @Entity
 @Table(name="trait_abbreviation")
 public class TraitAbbreviationEntity extends BrAPIBaseEntity{
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private TraitEntity trait;
 	@Column
 	private String abbreviation;

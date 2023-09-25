@@ -3,12 +3,7 @@ package org.brapi.test.BrAPITestServer.model.entity.geno;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
@@ -41,13 +36,13 @@ public class PlateEntity extends BrAPIPrimaryEntity{
     private Date statusTimeStamp;
 	@OneToMany(mappedBy="plate", cascade = CascadeType.ALL)
     private List<SampleEntity> samples;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private VendorPlateSubmissionEntity submission;	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ProgramEntity program;		
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private TrialEntity trial;		
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private StudyEntity study;	
 	
 	public String getPlateBarcode() {

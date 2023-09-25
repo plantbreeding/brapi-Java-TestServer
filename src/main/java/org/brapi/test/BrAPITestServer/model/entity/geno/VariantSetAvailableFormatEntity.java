@@ -1,9 +1,6 @@
 package org.brapi.test.BrAPITestServer.model.entity.geno;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 
@@ -15,7 +12,7 @@ import io.swagger.model.geno.GenoFileDataFormatEnum;
 @Entity
 @Table(name = "variantset_format")
 public class VariantSetAvailableFormatEntity extends BrAPIBaseEntity {
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private VariantSetEntity variantSet;
 	@Column
 	private GenoFileDataFormatEnum dataFormat;

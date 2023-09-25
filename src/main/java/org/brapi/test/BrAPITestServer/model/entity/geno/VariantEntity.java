@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 
 @Entity
@@ -32,7 +29,7 @@ public class VariantEntity extends BrAPIPrimaryEntity {
 	private Boolean filtersPassed;
 	@Column
 	private String referenceBases;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ReferenceSetEntity referenceSet;
 	@Column(name = "variantStart")
 	private Integer start;
@@ -42,7 +39,7 @@ public class VariantEntity extends BrAPIPrimaryEntity {
 	private Date updated;
 	@Column
 	private String variantName;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private VariantSetEntity variantSet;
 	@Column
 	private String variantType;

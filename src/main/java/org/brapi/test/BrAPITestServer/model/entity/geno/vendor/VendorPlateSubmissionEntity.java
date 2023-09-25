@@ -2,12 +2,7 @@ package org.brapi.test.BrAPITestServer.model.entity.geno.vendor;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
@@ -27,7 +22,7 @@ public class VendorPlateSubmissionEntity extends BrAPIPrimaryEntity{
 	private SampleTypeEnum sampleType;
 	@OneToMany(mappedBy="submission", cascade = CascadeType.ALL)
     private List<PlateEntity> plates;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private VendorOrderEntity order;
 	
 	

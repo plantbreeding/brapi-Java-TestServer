@@ -2,11 +2,7 @@ package org.brapi.test.BrAPITestServer.model.entity.geno;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.ProgramEntity;
@@ -22,15 +18,15 @@ public class SampleEntity extends BrAPIPrimaryEntity{
 	private Integer plateColumn; 
 	@Column
 	private String concentration;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ObservationUnitEntity observationUnit;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ProgramEntity program;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private TrialEntity trial;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private StudyEntity study;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private PlateEntity plate;
 	@Column
 	private String plateRow; 
@@ -50,7 +46,7 @@ public class SampleEntity extends BrAPIPrimaryEntity{
 	private String sampleType;
 	@Column
 	private String takenBy;
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	private TaxonEntity taxonId;
 	@Column
 	private String tissueType;

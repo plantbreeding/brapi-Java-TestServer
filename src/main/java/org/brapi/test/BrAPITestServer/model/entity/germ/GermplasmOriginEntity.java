@@ -1,11 +1,6 @@
 package org.brapi.test.BrAPITestServer.model.entity.germ;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 import org.brapi.test.BrAPITestServer.model.entity.GeoJSONEntity;
@@ -15,9 +10,9 @@ import org.brapi.test.BrAPITestServer.model.entity.GeoJSONEntity;
 public class GermplasmOriginEntity extends BrAPIBaseEntity{
 	@Column
 	private String coordinateUncertainty;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private GeoJSONEntity coordinates;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private GermplasmEntity germplasm;
 	
 	public GermplasmEntity getGermplasm() {

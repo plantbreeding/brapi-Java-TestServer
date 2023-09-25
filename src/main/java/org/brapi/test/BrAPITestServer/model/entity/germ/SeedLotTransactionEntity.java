@@ -3,10 +3,7 @@ package org.brapi.test.BrAPITestServer.model.entity.germ;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 
@@ -15,9 +12,9 @@ import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 public class SeedLotTransactionEntity extends BrAPIPrimaryEntity {
 	@Column
 	private BigDecimal amount;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private SeedLotEntity toSeedLot;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private SeedLotEntity fromSeedLot;
 	@Column
 	private String description;

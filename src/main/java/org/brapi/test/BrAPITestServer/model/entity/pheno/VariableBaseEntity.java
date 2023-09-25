@@ -3,15 +3,7 @@ package org.brapi.test.BrAPITestServer.model.entity.pheno;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
@@ -20,7 +12,7 @@ import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class VariableBaseEntity extends BrAPIPrimaryEntity implements OntologyReferenceHolder {
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CropEntity crop;
 	@ElementCollection
 	private List<String> contextOfUse;
@@ -34,11 +26,11 @@ public class VariableBaseEntity extends BrAPIPrimaryEntity implements OntologyRe
 	private String institution;
 	@Column
 	private String language;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private MethodEntity method;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private OntologyEntity ontology;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ScaleEntity scale;
 	@Column
 	private String scientist;
@@ -48,7 +40,7 @@ public class VariableBaseEntity extends BrAPIPrimaryEntity implements OntologyRe
 	private Date submissionTimestamp;
 	@ElementCollection
 	private List<String> synonyms;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private TraitEntity trait;
 	@JoinTable
 	@OneToMany(cascade = CascadeType.ALL)

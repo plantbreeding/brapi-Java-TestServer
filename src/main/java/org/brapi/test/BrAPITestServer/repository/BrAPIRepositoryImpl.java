@@ -1,25 +1,26 @@
 package org.brapi.test.BrAPITestServer.repository;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
-
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-
+import org.brapi.test.BrAPITestServer.model.entity.AdditionalInfoEntity;
+import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
+import org.brapi.test.BrAPITestServer.model.entity.ExternalReferenceEntity;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
+import org.hibernate.jpa.QueryHints;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import java.io.Serializable;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 public class BrAPIRepositoryImpl<T extends BrAPIPrimaryEntity, ID extends Serializable>
 		extends SimpleJpaRepository<T, ID> implements BrAPIRepository<T, ID> {
@@ -69,6 +70,32 @@ public class BrAPIRepositoryImpl<T extends BrAPIPrimaryEntity, ID extends Serial
 		this.entityManager.refresh(entity);
 	}
 
+	public void fetchXrefs(Page<T> page, Class<T> searchClass) {
+		SearchQueryBuilder<T> searchQuery = new SearchQueryBuilder<T>(searchClass);
+		searchQuery.leftJoinFetch("externalReferences", "externalReferences")
+				   .appendList(page.stream().map(BrAPIBaseEntity::getId).collect(Collectors.toList()), "id");
+
+		Page<T> xrefs = findAllBySearch(searchQuery, PageRequest.of(0, page.getSize()));
+
+		Map<String, List<ExternalReferenceEntity>> xrefByEntity = new HashMap<>();
+		xrefs.forEach(entity -> xrefByEntity.put(entity.getId(), entity.getExternalReferences()));
+
+		page.forEach(entity -> entity.setExternalReferences(xrefByEntity.get(entity.getId())));
+	}
+
+	public void fetchAdditionalInfo(Page<T> page, Class<T> searchClass) {
+		SearchQueryBuilder<T> searchQuery = new SearchQueryBuilder<T>(searchClass);
+		searchQuery.leftJoinFetch("additionalInfo", "additionalInfo")
+				   .appendList(page.stream().map(BrAPIBaseEntity::getId).collect(Collectors.toList()), "id");
+
+		Page<T> additionalInfo = findAllBySearch(searchQuery, PageRequest.of(0, page.getSize()));
+
+		Map<String, List<AdditionalInfoEntity>> infoByEntity = new HashMap<>();
+		additionalInfo.forEach(entity -> infoByEntity.put(entity.getId(), entity.getAdditionalInfo()));
+
+		page.forEach(entity -> entity.setAdditionalInfo(infoByEntity.get(entity.getId())));
+	}
+
 	private String getCurrentUserId() {
 		SecurityContext context = SecurityContextHolder.getContext();
 		String userId = "";
@@ -99,6 +126,7 @@ public class BrAPIRepositoryImpl<T extends BrAPIPrimaryEntity, ID extends Serial
 
 	private List<T> getPagedContent(SearchQueryBuilder<T> searchQuery, Pageable pageReq) {
 		TypedQuery<T> query = entityManager.createQuery(searchQuery.getQuery(), searchQuery.getClazz());
+		query.setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false);
 
 		for (Entry<String, Object> entry : searchQuery.getParams().entrySet()) {
 			query.setParameter(entry.getKey(), entry.getValue());
@@ -114,6 +142,7 @@ public class BrAPIRepositoryImpl<T extends BrAPIPrimaryEntity, ID extends Serial
 	private Long getTotalCount(SearchQueryBuilder<T> searchQuery) {
 		String countQueryStr = searchQuery.getQuery()
 				.replaceFirst("(select|Select|SELECT)( distinct)? ([^\\s]*) ", "select count($2 $3) ")
+			    .replaceAll("LEFT JOIN FETCH", "LEFT JOIN")
 				.replaceFirst("(order by|Order By|ORDER BY) .*", "");
 
 		TypedQuery<Long> query = entityManager.createQuery(countQueryStr, Long.class);

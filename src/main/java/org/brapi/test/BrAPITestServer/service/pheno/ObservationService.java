@@ -1,9 +1,6 @@
 package org.brapi.test.BrAPITestServer.service.pheno;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
@@ -24,6 +21,8 @@ import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
 import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.brapi.test.BrAPITestServer.service.core.SeasonService;
 import org.brapi.test.BrAPITestServer.service.core.StudyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +42,8 @@ import io.swagger.model.pheno.ObservationUnitLevelRelationship;
 
 @Service
 public class ObservationService {
+
+	private static final Logger log = LoggerFactory.getLogger(ObservationService.class);
 
 	private final ObservationRepository observationRepository;
 	private final SeasonService seasonService;
@@ -173,7 +174,9 @@ public class ObservationService {
 
 	public List<Observation> findObservations(@Valid ObservationSearchRequest request, Metadata metadata) {
 		Page<ObservationEntity> page = findObservationEntities(request, metadata);
+		log.debug("converting "+page.getSize()+" entities");
 		List<Observation> observations = page.map(this::convertFromEntity).getContent();
+		log.debug("done converting entities");
 		PagingUtility.calculateMetaData(metadata, page);
 		return observations;
 	}
@@ -182,6 +185,28 @@ public class ObservationService {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<ObservationEntity> searchQuery = new SearchQueryBuilder<ObservationEntity>(
 				ObservationEntity.class);
+		searchQuery
+				.leftJoinFetch("additionalInfo", "additionalInfo")
+				.leftJoinFetch("observationVariable", "observationVariable")
+				.leftJoinFetch("*observationVariable.crop", "varCrop")
+				.leftJoinFetch("*observationVariable.method", "varMethod")
+				.leftJoinFetch("*observationVariable.ontology", "varOntology")
+				.leftJoinFetch("*observationVariable.scale", "varScale")
+				.leftJoinFetch("*observationVariable.trait", "varTrait")
+				.leftJoinFetch("season", "season")
+				.leftJoinFetch("program", "program")
+				.leftJoinFetch("trial", "trial")
+				.leftJoinFetch("geoCoordinates", "geoCoordinates")
+				.leftJoinFetch("observationUnit", "observationUnit")
+				.leftJoinFetch("*observationUnit.position", "position")
+				.leftJoinFetch("*position.geoCoordinates", "ouGeoCoordinates")
+				.leftJoinFetch("*observationUnit.germplasm", "ouGermplasm")
+				.leftJoinFetch("*ouGermplasm.pedigree", "pedigree")
+				.leftJoinFetch("*observationUnit.study", "ouStudy")
+				.leftJoinFetch("study", "study")
+				.leftJoinFetch("*study.experimentalDesign", "experimentalDesign")
+				.leftJoinFetch("*study.growthFacility", "growthFacility")
+				.leftJoinFetch("*study.lastUpdate", "lastUpdate");
 		if (request.getObservationLevels() != null) {
 			searchQuery = searchQuery
 					.appendEnumList(
@@ -229,7 +254,13 @@ public class ObservationService {
 				.appendList(request.getStudyDbIds(), "study.id").appendList(request.getStudyNames(), "study.studyName")
 				.appendList(request.getTrialDbIds(), "trial.id").appendList(request.getTrialNames(), "trial.trialName");
 
+		log.debug("starting search");
 		Page<ObservationEntity> page = observationRepository.findAllBySearch(searchQuery, pageReq);
+		log.debug("search complete");
+
+		if(!page.isEmpty()) {
+			observationRepository.fetchXrefs(page, ObservationEntity.class);
+		}
 		return page;
 	}
 
@@ -300,6 +331,7 @@ public class ObservationService {
 	}
 
 	public Observation convertFromEntity(ObservationEntity entity) {
+		log.trace("converting obs: " + entity.getId());
 		Observation observation = new Observation();
 		if (entity != null) {
 			UpdateUtility.convertFromEntity(entity, observation);

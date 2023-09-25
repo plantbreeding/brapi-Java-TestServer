@@ -2,18 +2,14 @@ package org.brapi.test.BrAPITestServer.model.entity.geno;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 
 @Entity
 @Table(name="linkageGroup")
 public class LinkageGroupEntity extends BrAPIPrimaryEntity{
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private GenomeMapEntity genomeMap;
 	@Column
 	private String linkageGroupName; 

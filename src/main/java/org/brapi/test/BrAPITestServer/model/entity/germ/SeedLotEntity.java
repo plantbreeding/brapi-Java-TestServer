@@ -4,11 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.LocationEntity;
@@ -23,9 +19,9 @@ public class SeedLotEntity extends BrAPIPrimaryEntity {
 	private Date createdDate;
 	@Column
 	private Date lastUpdated;
-	@ManyToOne 
+	@ManyToOne (fetch = FetchType.LAZY)
 	private LocationEntity location;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ProgramEntity program;
 	@Column
 	private String description;

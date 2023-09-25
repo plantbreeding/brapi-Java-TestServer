@@ -1,16 +1,13 @@
 package org.brapi.test.BrAPITestServer.model.entity.geno;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 
 @Entity
 @Table(name="allele_call")
 public class CallEntity extends BrAPIPrimaryEntity {
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CallSetEntity callSet;
 	@Column
 	private String genotype;
@@ -20,7 +17,7 @@ public class CallEntity extends BrAPIPrimaryEntity {
 	private Double genotypeLikelihood;
 	@Column 
 	private String phaseSet;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private VariantEntity variant;
 
 	public CallEntity() {

@@ -21,7 +21,7 @@ public class ServerInfoService {
 		 return new ServiceBuilder()
 				.versions(VersionsEnum.V20, VersionsEnum.V21)
 				//CORE
-				.setBase("serviceinfo").GET().build()
+				.setBase("serverinfo").GET().build()
 				.setBase("commoncropnames").GET().build()
 				.setBase("lists").GET().POST().addPath("{listDbId}").GET().PUT().withSearch()
 				.setBase("locations").GET().POST().addPath("{locationDbId}").GET().PUT().withSearch()

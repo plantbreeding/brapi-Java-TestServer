@@ -2,13 +2,7 @@ package org.brapi.test.BrAPITestServer.model.entity.pheno;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
@@ -22,29 +16,29 @@ import org.brapi.test.BrAPITestServer.model.entity.germ.SeedLotEntity;
 @Entity
 @Table(name = "observation_unit")
 public class ObservationUnitEntity extends BrAPIPrimaryEntity {
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CrossEntity cross;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private GermplasmEntity germplasm;
 	@Column
 	private String observationUnitName;
 	@Column
 	private String observationUnitPUI;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private SeedLotEntity seedLot;
 	@OneToMany(mappedBy="observationUnit", cascade=CascadeType.ALL)
 	private List<TreatmentEntity> treatments;
-	@OneToOne(mappedBy="observationUnit", cascade=CascadeType.ALL)
+	@OneToOne(mappedBy="observationUnit", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
 	private ObservationUnitPositionEntity position;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CropEntity crop;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ProgramEntity program;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private TrialEntity trial;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private StudyEntity study;
-	@OneToMany(mappedBy="observationUnit", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="observationUnit", cascade=CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<ObservationEntity> observations;
 	
 	

@@ -2,14 +2,8 @@ package org.brapi.test.BrAPITestServer.model.entity.pheno;
 
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.StudyEntity;
 
@@ -29,7 +23,7 @@ public class EventEntity extends BrAPIPrimaryEntity {
 	@ManyToMany
 	@JoinTable
 	private List<ObservationUnitEntity> observationUnits;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private StudyEntity study;
 
 	public List<Date> getDates() {
