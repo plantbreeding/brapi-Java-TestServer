@@ -1,11 +1,6 @@
 package org.brapi.test.BrAPITestServer.model.entity.core;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.GeoJSONEntity;
@@ -19,7 +14,7 @@ public class LocationEntity extends BrAPIPrimaryEntity{
 	private String coordinateDescription;
 	@Column
 	private String coordinateUncertainty;
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private GeoJSONEntity coordinates;
 	@Column
 	private String countryCode;
@@ -45,11 +40,11 @@ public class LocationEntity extends BrAPIPrimaryEntity{
 	private String slope;
 	@Column
 	private String topography;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CropEntity crop;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ProgramEntity program;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private LocationEntity parentLocation;
 
 	public LocationEntity getParentLocation() {

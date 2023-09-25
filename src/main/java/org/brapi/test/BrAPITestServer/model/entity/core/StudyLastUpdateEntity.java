@@ -2,10 +2,7 @@ package org.brapi.test.BrAPITestServer.model.entity.core;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 
@@ -16,7 +13,7 @@ public class StudyLastUpdateEntity extends BrAPIBaseEntity {
 	private Date timestamp;
 	@Column
 	private String version;
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	private StudyEntity study;
 
 	public StudyEntity getStudy() {

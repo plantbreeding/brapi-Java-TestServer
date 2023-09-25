@@ -3,12 +3,7 @@ package org.brapi.test.BrAPITestServer.model.entity.core;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 
@@ -32,7 +27,7 @@ public class ListEntity extends BrAPIPrimaryEntity {
 	@Column
 	private ListTypes listType;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private PersonEntity listOwnerPerson;
 	@OneToMany(mappedBy="list", cascade = CascadeType.ALL)
 	private List<ListItemEntity> data;

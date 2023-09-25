@@ -4,16 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.SearchRequestEntity;
@@ -40,13 +31,13 @@ public class GermplasmEntity extends BrAPIPrimaryEntity {
 	private List<GermplasmAttributeValueEntity> attributes;
 	@Column
 	private BiologicalStatusOfAccessionCode biologicalStatusOfAccessionCode;
-	@ManyToOne(cascade = CascadeType.DETACH)
+	@ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
 	private BreedingMethodEntity breedingMethod;
 	@Column
 	private String collection;
 	@Column
 	private String countryOfOriginCode;
-	@ManyToOne(cascade = CascadeType.DETACH)
+	@ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
 	private CropEntity crop;
 	@Column
 	private String defaultDisplayName;
@@ -68,7 +59,7 @@ public class GermplasmEntity extends BrAPIPrimaryEntity {
 	private List<GermplasmInstituteEntity> institutes;
 	@Column
 	private MlsStatusEnum mlsStatus;
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "germplasm")
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "germplasm", fetch = FetchType.LAZY)
 	private PedigreeNodeEntity pedigree;
 	@ManyToMany
 	@JoinTable

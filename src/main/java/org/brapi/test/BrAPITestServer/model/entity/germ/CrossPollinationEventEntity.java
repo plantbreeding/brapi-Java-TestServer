@@ -2,10 +2,7 @@ package org.brapi.test.BrAPITestServer.model.entity.germ;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 
@@ -18,7 +15,7 @@ public class CrossPollinationEventEntity extends BrAPIBaseEntity {
 	private Boolean pollinationSuccessful = null;
 	@Column
 	private Date pollinationTimeStamp = null;
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CrossEntity cross;
 
 	public CrossEntity getCross() {

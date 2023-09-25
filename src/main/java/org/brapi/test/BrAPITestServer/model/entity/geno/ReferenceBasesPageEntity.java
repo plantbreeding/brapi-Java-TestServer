@@ -1,9 +1,6 @@
 package org.brapi.test.BrAPITestServer.model.entity.geno;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
@@ -11,7 +8,7 @@ import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 @Entity
 @Table(name="reference_bases")
 public class ReferenceBasesPageEntity extends BrAPIPrimaryEntity {
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private ReferenceEntity reference;
 	@Column(length = 2048)
 	private String bases;

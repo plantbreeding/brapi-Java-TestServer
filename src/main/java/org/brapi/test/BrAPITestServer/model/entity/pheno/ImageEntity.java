@@ -3,15 +3,7 @@ package org.brapi.test.BrAPITestServer.model.entity.pheno;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.GeoJSONEntity;
@@ -21,7 +13,7 @@ import org.brapi.test.BrAPITestServer.model.entity.GeoJSONEntity;
 public class ImageEntity extends BrAPIPrimaryEntity {
 	@Column
 	private byte[] imageData;
-	@ManyToOne(cascade = CascadeType.DETACH)
+	@ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
 	private ObservationUnitEntity observationUnit;
 	@Column
 	private String name;
@@ -48,7 +40,7 @@ public class ImageEntity extends BrAPIPrimaryEntity {
 	private String copyright;
 	@Column
 	private Date timeStamp;
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private GeoJSONEntity coordinates;
 
 	public List<String> getDescriptiveOntologyTerms() {

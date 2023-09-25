@@ -2,13 +2,7 @@ package org.brapi.test.BrAPITestServer.model.entity.core;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationEntity;
@@ -31,10 +25,10 @@ public class ProgramEntity extends BrAPIPrimaryEntity{
 	private ProgramTypesEnum programType;
 	@Column
 	private String documentationURL;
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private PersonEntity leadPerson;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private CropEntity crop;
 	
 	@OneToMany(mappedBy="program")

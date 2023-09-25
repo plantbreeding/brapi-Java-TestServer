@@ -1,9 +1,6 @@
 package org.brapi.test.BrAPITestServer.model.entity.core;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 
@@ -14,7 +11,7 @@ public class ExperimentalDesignEntity extends BrAPIBaseEntity {
 	private String PUI;
 	@Column
 	private String description;
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	private StudyEntity study;
 
 	public StudyEntity getStudy() {
