@@ -489,14 +489,16 @@ public class ObservationUnitService {
 					unit.setProgramName(entity.getStudy().getTrial().getProgram().getName());
 				}
 			}
-		} else if (entity.getTrial() != null) {
+		} 
+		if (entity.getTrial() != null) {
 			unit.setTrialDbId(entity.getTrial().getId());
 			unit.setTrialName(entity.getTrial().getTrialName());
 			if (entity.getTrial().getProgram() != null) {
 				unit.setProgramDbId(entity.getTrial().getProgram().getId());
 				unit.setProgramName(entity.getTrial().getProgram().getName());
 			}
-		} else if (entity.getProgram() != null) {
+		} 
+		if (entity.getProgram() != null) {
 			unit.setProgramDbId(entity.getProgram().getId());
 			unit.setProgramName(entity.getProgram().getName());
 		}
