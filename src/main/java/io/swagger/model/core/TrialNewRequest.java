@@ -8,9 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.ExternalReferences;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.time.LocalDate;
 import org.springframework.validation.annotation.Validated;
 import jakarta.validation.Valid;
@@ -26,7 +24,7 @@ public class TrialNewRequest   {
 
   @JsonProperty("additionalInfo")
   @Valid
-  private Map<String, Object> additionalInfo = null;
+  private Object additionalInfo = null;
 
   @JsonProperty("commonCropName")
   private String commonCropName = null;
@@ -89,16 +87,8 @@ public class TrialNewRequest   {
     this.active = active;
   }
 
-  public TrialNewRequest additionalInfo(Map<String, Object> additionalInfo) {
+  public TrialNewRequest additionalInfo(Object additionalInfo) {
     this.additionalInfo = additionalInfo;
-    return this;
-  }
-
-  public TrialNewRequest putAdditionalInfoItem(String key, String additionalInfoItem) {
-    if (this.additionalInfo == null) {
-      this.additionalInfo = new HashMap<String, Object>();
-    }
-    this.additionalInfo.put(key, additionalInfoItem);
     return this;
   }
 
@@ -108,11 +98,11 @@ public class TrialNewRequest   {
   **/
   @ApiModelProperty(value = "Additional arbitrary info")
   
-    public Map<String, Object> getAdditionalInfo() {
+    public Object getAdditionalInfo() {
     return additionalInfo;
   }
 
-  public void setAdditionalInfo(Map<String, Object> additionalInfo) {
+  public void setAdditionalInfo(Object additionalInfo) {
     this.additionalInfo = additionalInfo;
   }
 

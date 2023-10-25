@@ -8,29 +8,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public abstract class BrAPIDataModel {
 
 	@JsonProperty("additionalInfo")
-	protected Map<String, Object> additionalInfo = null;
+	protected Object additionalInfo = null;
 
 	@JsonProperty("externalReferences")
 	protected ExternalReferences externalReferences = null;
 
-	final public BrAPIDataModel additionalInfo(Map<String, Object> additionalInfo) {
+	final public BrAPIDataModel additionalInfo(Object additionalInfo) {
 		this.additionalInfo = additionalInfo;
 		return this;
 	}
 
-	final public BrAPIDataModel putAdditionalInfoItem(String key, String additionalInfoItem) {
-		if (this.additionalInfo == null) {
-			this.additionalInfo = new HashMap<String, Object>();
-		}
-		this.additionalInfo.put(key, additionalInfoItem);
-		return this;
-	}
-
-	final public Map<String, Object> getAdditionalInfo() {
+	final public Object getAdditionalInfo() {
 		return additionalInfo;
 	}
 
-	final public void setAdditionalInfo(Map<String, Object> additionalInfo) {
+	final public void setAdditionalInfo(Object additionalInfo) {
 		this.additionalInfo = additionalInfo;
 	}
 	

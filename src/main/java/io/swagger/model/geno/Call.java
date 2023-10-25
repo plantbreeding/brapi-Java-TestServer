@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class Call {
 	@JsonProperty("additionalInfo")
-	private Map<String, Object> additionalInfo = null;
+	private Object additionalInfo = null;
 
 	@JsonProperty("callSetDbId")
 	private String callSetDbId = null;
@@ -79,24 +79,16 @@ public class Call {
 		return this;
 	}
 	
-	public Call additionalInfo(Map<String, Object> additionalInfo) {
+	public Call additionalInfo(Object additionalInfo) {
 		this.additionalInfo = additionalInfo;
 		return this;
 	}
 
-	public Call putAdditionalInfoItem(String key, String additionalInfoItem) {
-		if (this.additionalInfo == null) {
-			this.additionalInfo = new HashMap<String, Object>();
-		}
-		this.additionalInfo.put(key, additionalInfoItem);
-		return this;
-	}
-
-	public Map<String, Object> getAdditionalInfo() {
+	public Object getAdditionalInfo() {
 		return additionalInfo;
 	}
 
-	public void setAdditionalInfo(Map<String, Object> additionalInfo) {
+	public void setAdditionalInfo(Object additionalInfo) {
 		this.additionalInfo = additionalInfo;
 	}
 

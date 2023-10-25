@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.ExternalReferences;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.validation.annotation.Validated;
 import jakarta.validation.Valid;
 
@@ -20,7 +18,7 @@ import jakarta.validation.Valid;
 public class PersonNewRequest   {
   @JsonProperty("additionalInfo")
   @Valid
-  private Map<String, Object> additionalInfo = null;
+  private Object additionalInfo = null;
 
   @JsonProperty("description")
   private String description = null;
@@ -49,16 +47,8 @@ public class PersonNewRequest   {
   @JsonProperty("userID")
   private String userID = null;
 
-  public PersonNewRequest additionalInfo(Map<String, Object> additionalInfo) {
+  public PersonNewRequest additionalInfo(Object additionalInfo) {
     this.additionalInfo = additionalInfo;
-    return this;
-  }
-
-  public PersonNewRequest putAdditionalInfoItem(String key, String additionalInfoItem) {
-    if (this.additionalInfo == null) {
-      this.additionalInfo = new HashMap<String, Object>();
-    }
-    this.additionalInfo.put(key, additionalInfoItem);
     return this;
   }
 
@@ -68,11 +58,11 @@ public class PersonNewRequest   {
   **/
   @ApiModelProperty(value = "Additional arbitrary info")
   
-    public Map<String, Object> getAdditionalInfo() {
+    public Object getAdditionalInfo() {
     return additionalInfo;
   }
 
-  public void setAdditionalInfo(Map<String, Object> additionalInfo) {
+  public void setAdditionalInfo(Object additionalInfo) {
     this.additionalInfo = additionalInfo;
   }
 

@@ -20,7 +20,7 @@ import jakarta.validation.Valid;
 public class GenomeMap   {
   @JsonProperty("additionalInfo")
   @Valid
-  private Map<String, Object> additionalInfo = null;
+  private Object additionalInfo = null;
 
   @JsonProperty("comments")
   private String comments = null;
@@ -58,16 +58,8 @@ public class GenomeMap   {
   @JsonProperty("unit")
   private String unit = null;
 
-  public GenomeMap additionalInfo(Map<String, Object> additionalInfo) {
+  public GenomeMap additionalInfo(Object additionalInfo) {
     this.additionalInfo = additionalInfo;
-    return this;
-  }
-
-  public GenomeMap putAdditionalInfoItem(String key, String additionalInfoItem) {
-    if (this.additionalInfo == null) {
-      this.additionalInfo = new HashMap<String, Object>();
-    }
-    this.additionalInfo.put(key, additionalInfoItem);
     return this;
   }
 
@@ -77,11 +69,11 @@ public class GenomeMap   {
   **/
   @ApiModelProperty(value = "Additional arbitrary info")
   
-    public Map<String, Object> getAdditionalInfo() {
+    public Object getAdditionalInfo() {
     return additionalInfo;
   }
 
-  public void setAdditionalInfo(Map<String, Object> additionalInfo) {
+  public void setAdditionalInfo(Object additionalInfo) {
     this.additionalInfo = additionalInfo;
   }
 

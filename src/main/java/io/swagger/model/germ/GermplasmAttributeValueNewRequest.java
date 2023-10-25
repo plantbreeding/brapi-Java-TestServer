@@ -20,7 +20,7 @@ import jakarta.validation.Valid;
 public class GermplasmAttributeValueNewRequest {
 	@JsonProperty("additionalInfo")
 	@Valid
-	private Map<String, Object> additionalInfo = null;
+	private Object additionalInfo = null;
 
 	@JsonProperty("attributeDbId")
 	private String attributeDbId = null;
@@ -43,16 +43,8 @@ public class GermplasmAttributeValueNewRequest {
 	@JsonProperty("value")
 	private String value = null;
 
-	public GermplasmAttributeValueNewRequest additionalInfo(Map<String, Object> additionalInfo) {
+	public GermplasmAttributeValueNewRequest additionalInfo(Object additionalInfo) {
 		this.additionalInfo = additionalInfo;
-		return this;
-	}
-
-	public GermplasmAttributeValueNewRequest putAdditionalInfoItem(String key, String additionalInfoItem) {
-		if (this.additionalInfo == null) {
-			this.additionalInfo = new HashMap<String, Object>();
-		}
-		this.additionalInfo.put(key, additionalInfoItem);
 		return this;
 	}
 
@@ -63,11 +55,11 @@ public class GermplasmAttributeValueNewRequest {
 	 **/
 	@ApiModelProperty(value = "Additional arbitrary info")
 
-	public Map<String, Object> getAdditionalInfo() {
+	public Object getAdditionalInfo() {
 		return additionalInfo;
 	}
 
-	public void setAdditionalInfo(Map<String, Object> additionalInfo) {
+	public void setAdditionalInfo(Object additionalInfo) {
 		this.additionalInfo = additionalInfo;
 	}
 
