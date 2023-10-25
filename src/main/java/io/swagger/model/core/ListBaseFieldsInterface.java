@@ -1,6 +1,5 @@
 package io.swagger.model.core;
 
-import java.util.Map;
 import java.time.OffsetDateTime;
 
 import io.swagger.model.ExternalReferences;

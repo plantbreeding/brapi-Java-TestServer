@@ -1,13 +1,12 @@
 package org.brapi.test.BrAPITestServer.model.entity;
 
-import java.util.*;
-import java.util.Map.Entry;
-
-import javax.persistence.*;
-
 import io.swagger.model.ExternalReferences;
 import io.swagger.model.ExternalReferencesInner;
 import org.brapi.test.BrAPITestServer.converter.JsonbConverter;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @MappedSuperclass
 public class BrAPIPrimaryEntity extends BrAPIBaseEntity {

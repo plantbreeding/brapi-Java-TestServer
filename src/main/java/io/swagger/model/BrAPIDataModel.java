@@ -1,8 +1,5 @@
 package io.swagger.model;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public abstract class BrAPIDataModel {

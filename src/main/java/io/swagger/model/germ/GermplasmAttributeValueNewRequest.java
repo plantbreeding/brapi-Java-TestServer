@@ -1,16 +1,13 @@
 package io.swagger.model.germ;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.ExternalReferences;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.time.OffsetDateTime;
-import org.springframework.validation.annotation.Validated;
 import jakarta.validation.Valid;
+import org.springframework.validation.annotation.Validated;
+
+import java.time.OffsetDateTime;
+import java.util.Objects;
 
 /**
  * GermplasmAttributeValueNewRequest

@@ -1,14 +1,12 @@
 package io.swagger.model.geno;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.HashMap;
-import java.util.Map;
-import org.springframework.validation.annotation.Validated;
 import jakarta.validation.Valid;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.Objects;
 
 /**
  * a Linkage Group is the BrAPI generic term for a named section of a map. A Linkage Group can represent a Chromosome, Scaffold, or Linkage Group.
