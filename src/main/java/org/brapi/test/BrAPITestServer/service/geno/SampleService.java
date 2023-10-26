@@ -168,7 +168,7 @@ public class SampleService {
 
 	private Sample convertFromEntity(SampleEntity entity) {
 		Sample sample = new Sample();
-		sample.setAdditionalInfo(entity.getAdditionalInfoMap());
+		sample.setAdditionalInfo(entity.getAdditionalInfo());
 		sample.setColumn(entity.getPlateColumn());
 		sample.setExternalReferences(entity.getExternalReferencesMap());
 

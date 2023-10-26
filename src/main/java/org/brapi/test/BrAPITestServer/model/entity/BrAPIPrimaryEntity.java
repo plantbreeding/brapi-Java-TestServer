@@ -32,14 +32,11 @@ public class BrAPIPrimaryEntity extends BrAPIBaseEntity {
 		this.authUserId = authUserId;
 	}
 
-	public Object getAdditionalInfoMap() {
-		// TODO: update to store additionalInfo in a single row as JSONB.
+	public Object getAdditionalInfo() {
 		return this.additionalInfo;
 	}
 
-	// TODO: rename to setAdditionalInfoMap?
 	public void setAdditionalInfo(Object info) {
-		// TODO: update to store additionalInfo in a single row as JSONB.
 		this.additionalInfo = info;
 	}
 

@@ -196,7 +196,7 @@ public class ListService {
 		base.setListOwnerName(entity.getListOwnerName());
 		base.setListSource(entity.getListSource());
 		base.setListType(entity.getListType());
-		base.setAdditionalInfo(entity.getAdditionalInfoMap());
+		base.setAdditionalInfo(entity.getAdditionalInfo());
 		base.setExternalReferences(entity.getExternalReferencesMap());
 
 		if (entity.getListOwnerPerson() != null) {

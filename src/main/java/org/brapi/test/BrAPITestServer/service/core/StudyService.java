@@ -305,7 +305,7 @@ public class StudyService {
 		Study study = new Study();
 
 		study.setActive(entity.isActive());
-		study.setAdditionalInfo(entity.getAdditionalInfoMap());
+		study.setAdditionalInfo(entity.getAdditionalInfo());
 
 		if (entity.getContacts() != null) {
 			study.setContacts(entity.getContacts().stream().map(this.peopleService::convertToContact)

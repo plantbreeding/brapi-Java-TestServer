@@ -1,10 +1,9 @@
 package org.brapi.test.BrAPITestServer.service;
 
-import java.util.Optional;
-
+import io.swagger.model.BrAPIDataModel;
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 
-import io.swagger.model.BrAPIDataModel;
+import java.util.Optional;
 
 public class UpdateUtility {
 
@@ -29,7 +28,7 @@ public class UpdateUtility {
 	}
 
 	public static <T extends BrAPIDataModel> T convertFromEntity(BrAPIPrimaryEntity entity, T model) {
-		model.setAdditionalInfo(entity.getAdditionalInfoMap());
+		model.setAdditionalInfo(entity.getAdditionalInfo());
 		model.setExternalReferences(entity.getExternalReferencesMap());
 		return model;
 	}
