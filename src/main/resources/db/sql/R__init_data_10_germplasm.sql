@@ -15,8 +15,6 @@ INSERT INTO germplasm_entity_type_of_germplasm_storage_code (germplasm_entity_id
 INSERT INTO germplasm_synonym (id, synonym, "type", germplasm_id) VALUES('germplasm_synonym1', 'Variety 123', 'Pre-Code', 'germplasm1');
 INSERT INTO germplasm_taxon (id, source_name, taxon_id, germplasm_id) VALUES('germplasm_taxon1', 'NCBI', '2026747', 'germplasm1');
 
-INSERT INTO additional_info(id, key, value) VALUES ('germplasm_ai_1', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
-INSERT INTO germplasm_additional_info(germplasm_entity_id, additional_info_id) VALUES ('germplasm1', 'germplasm_ai_1');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('germplasm_er_1', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO germplasm_external_references(germplasm_entity_id, external_references_id) VALUES ('germplasm1', 'germplasm_er_1');
 
@@ -36,8 +34,6 @@ INSERT INTO germplasm_entity_type_of_germplasm_storage_code (germplasm_entity_id
 INSERT INTO germplasm_synonym (id, synonym, "type", germplasm_id) VALUES('germplasm_synonym2', 'Variety 234', 'Pre-Code', 'germplasm2');
 INSERT INTO germplasm_taxon (id, source_name, taxon_id, germplasm_id) VALUES('germplasm_taxon2', 'NCBI', '2026747', 'germplasm2');
 
-INSERT INTO additional_info(id, key, value) VALUES ('germplasm_ai_2', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
-INSERT INTO germplasm_additional_info(germplasm_entity_id, additional_info_id) VALUES ('germplasm2', 'germplasm_ai_2');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('germplasm_er_2', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO germplasm_external_references(germplasm_entity_id, external_references_id) VALUES ('germplasm2', 'germplasm_er_2');
 
@@ -57,8 +53,6 @@ INSERT INTO germplasm_entity_type_of_germplasm_storage_code (germplasm_entity_id
 INSERT INTO germplasm_synonym (id, synonym, "type", germplasm_id) VALUES('germplasm_synonym3', 'Variety 345', 'Pre-Code', 'germplasm3');
 INSERT INTO germplasm_taxon (id, source_name, taxon_id, germplasm_id) VALUES('germplasm_taxon3', 'NCBI', '2026747', 'germplasm3');
 
-INSERT INTO additional_info(id, key, value) VALUES ('germplasm_ai_3', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
-INSERT INTO germplasm_additional_info(germplasm_entity_id, additional_info_id) VALUES ('germplasm3', 'germplasm_ai_3');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('germplasm_er_3', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO germplasm_external_references(germplasm_entity_id, external_references_id) VALUES ('germplasm3', 'germplasm_er_3');
 

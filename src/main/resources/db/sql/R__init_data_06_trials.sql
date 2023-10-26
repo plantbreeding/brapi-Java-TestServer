@@ -5,8 +5,6 @@ INSERT INTO person(auth_user_id, id, description, email_address, institute_name,
 INSERT INTO trial_contact (trial_db_id, person_db_id) VALUES('trial1', 'trial_contact_1');
 INSERT INTO trial_dataset_authorship (id, datasetpui, license, public_release_date, submission_date, trial_id) VALUES('trial_dataset_authorship_1', 'doi:10.15454/fake/12345', 'https://creativecommons.org/licenses/by/4.0', '2014-09-01', '2014-01-01', 'trial1');
 INSERT INTO trial_publication(id, publicationpui, publication_reference, trial_id) VALUES('trial_publication_1', 'doi:10.15454/fake/12345', 'https://brapi.org/publication', 'trial1');
-INSERT INTO additional_info(id, key, value) VALUES ('trial_ai_1', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
-INSERT INTO trial_additional_info(trial_entity_id, additional_info_id) VALUES ('trial1', 'trial_ai_1');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('trial_er_1', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO trial_external_references(trial_entity_id, external_references_id) VALUES ('trial1', 'trial_er_1');
 
@@ -16,8 +14,6 @@ INSERT INTO person(auth_user_id, id, description, email_address, institute_name,
 INSERT INTO trial_contact (trial_db_id, person_db_id) VALUES('trial2', 'trial_contact_2');
 INSERT INTO trial_dataset_authorship (id, datasetpui, license, public_release_date, submission_date, trial_id) VALUES('trial_dataset_authorship_2', 'doi:10.25454/fake/22345', 'https://creativecommons.org/licenses/by/4.0', '2014-09-02', '2014-02-02', 'trial2');
 INSERT INTO trial_publication(id, publicationpui, publication_reference, trial_id) VALUES('trial_publication_2', 'doi:10.25454/fake/22345', 'https://brapi.org/publication', 'trial2');
-INSERT INTO additional_info(id, key, value) VALUES ('trial_ai_2', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
-INSERT INTO trial_additional_info(trial_entity_id, additional_info_id) VALUES ('trial2', 'trial_ai_2');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('trial_er_2', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO trial_external_references(trial_entity_id, external_references_id) VALUES ('trial2', 'trial_er_2');
 
@@ -27,8 +23,6 @@ INSERT INTO person(auth_user_id, id, description, email_address, institute_name,
 INSERT INTO trial_contact (trial_db_id, person_db_id) VALUES('trial3', 'trial_contact_3');
 INSERT INTO trial_dataset_authorship (id, datasetpui, license, public_release_date, submission_date, trial_id) VALUES('trial_dataset_authorship_3', 'doi:10.35454/fake/32345', 'https://creativecommons.org/licenses/by/4.0', '2014-09-03', '2014-03-03', 'trial3');
 INSERT INTO trial_publication(id, publicationpui, publication_reference, trial_id) VALUES('trial_publication_3', 'doi:10.35454/fake/32345', 'https://brapi.org/publication', 'trial3');
-INSERT INTO additional_info(id, key, value) VALUES ('trial_ai_3', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
-INSERT INTO trial_additional_info(trial_entity_id, additional_info_id) VALUES ('trial3', 'trial_ai_3');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('trial_er_3', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO trial_external_references(trial_entity_id, external_references_id) VALUES ('trial3', 'trial_er_3');
 

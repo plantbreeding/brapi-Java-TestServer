@@ -12,8 +12,6 @@ INSERT INTO variable_base_entity_context_of_use (variable_base_entity_id, contex
 INSERT INTO variable_base_entity_synonyms (variable_base_entity_id, synonyms) VALUES('attribute1', 'Maize Height');
 INSERT INTO variable_base_entity_synonyms (variable_base_entity_id, synonyms) VALUES('attribute1', 'Stalk Height');
 INSERT INTO variable_base_entity_synonyms (variable_base_entity_id, synonyms) VALUES('attribute1', 'Corn Height');
-INSERT INTO additional_info(id, key, value) VALUES ('attribute_ai_1', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
-INSERT INTO variable_base_entity_additional_info(variable_base_entity_id, additional_info_id) VALUES ('attribute1', 'attribute_ai_1');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('attribute_er_1', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO variable_base_entity_external_references(variable_base_entity_id, external_references_id) VALUES ('attribute1', 'attribute_er_1');
 
@@ -29,8 +27,6 @@ INSERT INTO variable_base_entity_context_of_use (variable_base_entity_id, contex
 INSERT INTO variable_base_entity_synonyms (variable_base_entity_id, synonyms) VALUES('attribute2', 'Maize Height');
 INSERT INTO variable_base_entity_synonyms (variable_base_entity_id, synonyms) VALUES('attribute2', 'Stalk Height');
 INSERT INTO variable_base_entity_synonyms (variable_base_entity_id, synonyms) VALUES('attribute2', 'Corn Height');
-INSERT INTO additional_info(id, key, value) VALUES ('attribute_ai_2', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
-INSERT INTO variable_base_entity_additional_info(variable_base_entity_id, additional_info_id) VALUES ('attribute2', 'attribute_ai_2');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('attribute_er_2', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO variable_base_entity_external_references(variable_base_entity_id, external_references_id) VALUES ('attribute2', 'attribute_er_2');
 

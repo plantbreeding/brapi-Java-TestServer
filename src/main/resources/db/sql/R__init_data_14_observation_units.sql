@@ -9,8 +9,6 @@ INSERT INTO observation_unit_level (id, level_code, level_name, level_order, pos
 INSERT INTO observation_unit_level (id, level_code, level_name, level_order, position_id, observation_unit_id)VALUES('observation_unit_level2', 'rep1', 3, 2, 'observation_unit_position1', null);
 INSERT INTO observation_unit_level (id, level_code, level_name, level_order, position_id, observation_unit_id)VALUES('observation_unit_level3', 'block1', 4, 3, 'observation_unit_position1', null);
 
-INSERT INTO additional_info(id, key, value) VALUES ('observation_unit_ai_1', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
-INSERT INTO observation_unit_additional_info(observation_unit_entity_id, additional_info_id) VALUES ('observation_unit1', 'observation_unit_ai_1');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('observation_unit_er_1', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO observation_unit_external_references(observation_unit_entity_id, external_references_id) VALUES ('observation_unit1', 'observation_unit_er_1');
 
@@ -25,8 +23,6 @@ INSERT INTO observation_unit_level (id, level_code, level_name, level_order, pos
 INSERT INTO observation_unit_level (id, level_code, level_name, level_order, position_id, observation_unit_id)VALUES('observation_unit_level5', 'rep1', 3, 2, 'observation_unit_position2', null);
 INSERT INTO observation_unit_level (id, level_code, level_name, level_order, position_id, observation_unit_id)VALUES('observation_unit_level6', 'block2', 4, 3, 'observation_unit_position2', null);
 
-INSERT INTO additional_info(id, key, value) VALUES ('observation_unit_ai_2', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
-INSERT INTO observation_unit_additional_info(observation_unit_entity_id, additional_info_id) VALUES ('observation_unit2', 'observation_unit_ai_2');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('observation_unit_er_2', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO observation_unit_external_references(observation_unit_entity_id, external_references_id) VALUES ('observation_unit2', 'observation_unit_er_2');
 
@@ -41,7 +37,5 @@ INSERT INTO observation_unit_level (id, level_code, level_name, level_order, pos
 INSERT INTO observation_unit_level (id, level_code, level_name, level_order, position_id, observation_unit_id)VALUES('observation_unit_level8', 'rep2', 3, 2, 'observation_unit_position3', null);
 INSERT INTO observation_unit_level (id, level_code, level_name, level_order, position_id, observation_unit_id)VALUES('observation_unit_level9', 'block1', 4, 3, 'observation_unit_position3', null);
 
-INSERT INTO additional_info(id, key, value) VALUES ('observation_unit_ai_3', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
-INSERT INTO observation_unit_additional_info(observation_unit_entity_id, additional_info_id) VALUES ('observation_unit3', 'observation_unit_ai_3');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('observation_unit_er_3', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO observation_unit_external_references(observation_unit_entity_id, external_references_id) VALUES ('observation_unit3', 'observation_unit_er_3');

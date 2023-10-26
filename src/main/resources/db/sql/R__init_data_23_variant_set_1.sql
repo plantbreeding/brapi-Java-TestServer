@@ -5,8 +5,6 @@ INSERT INTO variant_set_analysis_entity_software (variant_set_analysis_entity_id
 INSERT INTO variantset_format (id, data_format, file_format, fileurl, variant_set_id) VALUES('variantset_format1', 4, 0, 'https://test-server.brapi.org/brapi/v2/allelematrix?variantSetDbId=variantset1', 'variantset1');
 INSERT INTO variantset_format (id, data_format, file_format, fileurl, variant_set_id) VALUES('variantset_format2', 2, 2, 'https://test-server.brapi.org/brapi/v2/docs/variantset_1_Hapmap.tsv', 'variantset1');
 INSERT INTO variantset_format (id, data_format, file_format, fileurl, variant_set_id) VALUES('variantset_format3', 1, 2, 'https://test-server.brapi.org/brapi/v2/docs/variantset_1_VCF.vcf', 'variantset1');
-INSERT INTO additional_info(id, key, value) VALUES('variantset_ai_1', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
-INSERT INTO variantset_additional_info(variant_set_entity_id, additional_info_id) VALUES('variantset1', 'variantset_ai_1');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES('variantset_er_1', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO variantset_external_references(variant_set_entity_id, external_references_id) VALUES('variantset1', 'variantset_er_1');
 
