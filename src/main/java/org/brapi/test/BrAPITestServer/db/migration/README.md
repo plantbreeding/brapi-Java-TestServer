@@ -1,0 +1,3 @@
+Java-based migrations in this directory that inherit `org.flywaydb.core.api.migration.BaseJavaMigration` will be run by
+flyway as long as `classpath:org/brapi/test/BrAPITestServer/db/migration` is included in `spring.flyway.locations` in `application.properties`.
+See the [flyway Java-based migration guide](https://documentation.red-gate.com/flyway/flyway-cli-and-api/tutorials/tutorial-java-based-migrations).

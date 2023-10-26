@@ -34,7 +34,9 @@ Use [/calls](https://test-server.brapi.org/brapi/v1/call) (V1) or [/serverinfo](
 
 ## DataBase
 
-The database is created automatically at run time thanks to Java Spring Data and Hibernate. All dummy data is loaded from the SQL files in the `/resources/sql` directory. Additional SQL files may be added, but they must be explicitly listed in the `application.properties` file to be loaded automatically.
+The database is created automatically at run time by [flyway](https://documentation.red-gate.com/flyway).
+SQL-based migrations under `src/main/resources/db/migration` or `src/main/resources/db/sql`, and Java-based migrations under `src/main/java/org/brapi/test/BrAPITestServer/db/migration` will be run.
+The `src/main/resources/db/migration` directory is for schema changes, while `src/main/resources/db/sql` is for dummy data. Modify `spring.flyway.locations` in `application.properties` to change what flyway runs.
 
 When running in Docker, you can edit or add dummy data by adding the volume `-v /<Local_Path_To_SQL>/:/home/brapi/sql` to your docker command. 
 
