@@ -27,6 +27,9 @@ public class JsonbConverter implements AttributeConverter<Object, String> {
     @Override
     public Object convertToEntityAttribute(String dbData) {
         try {
+            if (dbData == null) {
+                return null;
+            }
             return mapper.readValue(dbData, Object.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
