@@ -2,6 +2,7 @@ server.port = 8080
 server.servlet.context-path=/brapi/v2
 
 spring.datasource.url=jdbc:postgresql://EXAMPLE:5432/EXAMPLE
+spring.datasource.hikari.data-source-properties.stringtype=unspecified
 spring.datasource.username=EXAMPLE
 spring.datasource.password=EXAMPLE
 
