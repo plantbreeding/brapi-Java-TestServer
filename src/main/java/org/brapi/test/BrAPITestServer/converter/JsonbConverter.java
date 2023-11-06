@@ -17,7 +17,6 @@ public class JsonbConverter implements AttributeConverter<Object, String> {
     @Override
     public String convertToDatabaseColumn(Object jsonb) {
         try {
-            log.debug(mapper.writeValueAsString(jsonb));
             return mapper.writeValueAsString(jsonb);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
