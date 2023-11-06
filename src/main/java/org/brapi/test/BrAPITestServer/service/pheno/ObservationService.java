@@ -1,11 +1,8 @@
 package org.brapi.test.BrAPITestServer.service.pheno;
 
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
-
+import io.swagger.model.Metadata;
+import io.swagger.model.pheno.*;
 import jakarta.validation.Valid;
-
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.core.SeasonEntity;
@@ -14,11 +11,7 @@ import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
 import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationVariableEntity;
 import org.brapi.test.BrAPITestServer.repository.pheno.ObservationRepository;
-import org.brapi.test.BrAPITestServer.service.DateUtility;
-import org.brapi.test.BrAPITestServer.service.GeoJSONUtility;
-import org.brapi.test.BrAPITestServer.service.PagingUtility;
-import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
-import org.brapi.test.BrAPITestServer.service.UpdateUtility;
+import org.brapi.test.BrAPITestServer.service.*;
 import org.brapi.test.BrAPITestServer.service.core.SeasonService;
 import org.brapi.test.BrAPITestServer.service.core.StudyService;
 import org.slf4j.Logger;
@@ -29,16 +22,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import io.swagger.model.Metadata;
-import io.swagger.model.pheno.Observation;
-import io.swagger.model.pheno.ObservationNewRequest;
-import io.swagger.model.pheno.ObservationSearchRequest;
-import io.swagger.model.pheno.ObservationTable;
-import io.swagger.model.pheno.ObservationTableHeaderRowEnum;
-import io.swagger.model.pheno.ObservationTableObservationVariables;
-import io.swagger.model.pheno.ObservationUnitHierarchyLevelEnum;
-import io.swagger.model.pheno.ObservationUnitLevel;
-import io.swagger.model.pheno.ObservationUnitLevelRelationship;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ObservationService {
