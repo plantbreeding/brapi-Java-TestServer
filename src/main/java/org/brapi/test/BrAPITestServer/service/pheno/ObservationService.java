@@ -174,9 +174,7 @@ public class ObservationService {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<ObservationEntity> searchQuery = new SearchQueryBuilder<ObservationEntity>(
 				ObservationEntity.class);
-		searchQuery
-				.leftJoinFetch("additionalInfo", "additionalInfo")
-				.leftJoinFetch("observationVariable", "observationVariable")
+		searchQuery.leftJoinFetch("observationVariable", "observationVariable")
 				.leftJoinFetch("*observationVariable.crop", "varCrop")
 				.leftJoinFetch("*observationVariable.method", "varMethod")
 				.leftJoinFetch("*observationVariable.ontology", "varOntology")

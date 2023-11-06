@@ -195,8 +195,7 @@ public class ObservationUnitService {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<ObservationUnitEntity> searchQuery = new SearchQueryBuilder<ObservationUnitEntity>(
 				ObservationUnitEntity.class);
-		searchQuery.leftJoinFetch("additionalInfo", "additionalInfo")
-				   .leftJoinFetch("germplasm", "germplasm")
+		searchQuery.leftJoinFetch("germplasm", "germplasm")
 				   .leftJoinFetch("*germplasm.pedigree", "pedigree")
 				   .leftJoinFetch("cross", "cross")
 				   .leftJoinFetch("position", "position")
