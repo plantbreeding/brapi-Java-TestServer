@@ -1,0 +1,11 @@
+version: "1"
+rules:
+  - base: develop
+    upstream: plantbreeding:brapi-server-v2
+    mergeMethod: merge
+    assignees:
+      - nickpalladino
+      - mlm483
+      - dmeidlin
+      - davedrp
+label: "upstream-merge"
