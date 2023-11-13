@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.ExternalReferences;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.time.OffsetDateTime;
 import org.springframework.validation.annotation.Validated;
 import jakarta.validation.Valid;
@@ -19,7 +17,7 @@ import jakarta.validation.Valid;
 public class ListBaseFields implements ListBaseFieldsInterface  {
   @JsonProperty("additionalInfo")
   @Valid
-  private Map<String, Object> additionalInfo = null;
+  private Object additionalInfo = null;
 
   @JsonProperty("dateCreated")
   private OffsetDateTime dateCreated = null;
@@ -51,30 +49,23 @@ public class ListBaseFields implements ListBaseFieldsInterface  {
   @JsonProperty("listType")
   private ListTypes listType = null;
 
-  public ListBaseFields additionalInfo(Map<String, Object> additionalInfo) {
+  public ListBaseFields additionalInfo(Object additionalInfo) {
     this.additionalInfo = additionalInfo;
-    return this;
-  }
-
-  public ListBaseFields putAdditionalInfoItem(String key, String additionalInfoItem) {
-    if (this.additionalInfo == null) {
-      this.additionalInfo = new HashMap<String, Object>();
-    }
-    this.additionalInfo.put(key, additionalInfoItem);
     return this;
   }
 
   /**
    * Additional arbitrary info
+   *
    * @return additionalInfo
-  **/
+   **/
   @ApiModelProperty(example = "{}", value = "Additional arbitrary info")
   
-    public Map<String, Object> getAdditionalInfo() {
+    public Object getAdditionalInfo() {
     return additionalInfo;
   }
 
-  public void setAdditionalInfo(Map<String, Object> additionalInfo) {
+  public void setAdditionalInfo(Object additionalInfo) {
     this.additionalInfo = additionalInfo;
   }
 

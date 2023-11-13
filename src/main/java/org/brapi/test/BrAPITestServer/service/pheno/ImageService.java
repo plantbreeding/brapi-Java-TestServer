@@ -241,7 +241,7 @@ public class ImageService {
 
 	private Image convertFromEntity(ImageEntity entity) {
 		Image img = new Image();
-		img.setAdditionalInfo(entity.getAdditionalInfoMap());
+		img.setAdditionalInfo(entity.getAdditionalInfo());
 		img.setCopyright(entity.getCopyright());
 		img.setDescription(entity.getDescription());
 		img.setDescriptiveOntologyTerms(entity.getDescriptiveOntologyTerms());

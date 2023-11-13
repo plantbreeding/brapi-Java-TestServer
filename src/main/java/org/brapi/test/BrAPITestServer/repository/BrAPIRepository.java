@@ -25,6 +25,4 @@ public interface BrAPIRepository<T extends BrAPIPrimaryEntity, ID extends Serial
 	public <S extends T> void refresh(S entity);
 
 	public void fetchXrefs(Page<T> page, Class<T> searchClass);
-
-	public void fetchAdditionalInfo(Page<T> page, Class<T> searchClass);
 }

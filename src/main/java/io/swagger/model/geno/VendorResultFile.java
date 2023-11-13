@@ -1,16 +1,13 @@
 package io.swagger.model.geno;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-
 import io.swagger.annotations.ApiModelProperty;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.springframework.validation.annotation.Validated;
 import jakarta.validation.Valid;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -21,7 +18,7 @@ import jakarta.validation.Valid;
 public class VendorResultFile   {
   @JsonProperty("additionalInfo")
   @Valid
-  private Map<String, Object> additionalInfo = null;
+  private Object additionalInfo = null;
 
   @JsonProperty("clientSampleIds")
   @Valid
@@ -39,16 +36,8 @@ public class VendorResultFile   {
   @JsonProperty("md5sum")
   private String md5sum = null;
 
-  public VendorResultFile additionalInfo(Map<String, Object> additionalInfo) {
+  public VendorResultFile additionalInfo(Object additionalInfo) {
     this.additionalInfo = additionalInfo;
-    return this;
-  }
-
-  public VendorResultFile putAdditionalInfoItem(String key, String additionalInfoItem) {
-    if (this.additionalInfo == null) {
-      this.additionalInfo = new HashMap<String, Object>();
-    }
-    this.additionalInfo.put(key, additionalInfoItem);
     return this;
   }
 
@@ -58,11 +47,11 @@ public class VendorResultFile   {
   **/
   @ApiModelProperty(value = "Additional arbitrary info")
   
-    public Map<String, Object> getAdditionalInfo() {
+    public Object getAdditionalInfo() {
     return additionalInfo;
   }
 
-  public void setAdditionalInfo(Map<String, Object> additionalInfo) {
+  public void setAdditionalInfo(Object additionalInfo) {
     this.additionalInfo = additionalInfo;
   }
 

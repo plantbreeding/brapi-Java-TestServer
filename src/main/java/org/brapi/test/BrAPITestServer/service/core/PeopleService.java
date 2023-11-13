@@ -155,7 +155,7 @@ public class PeopleService {
 	private Person convertToPerson(PersonEntity entity) {
 		Person person = new Person();
 
-		person.setAdditionalInfo(entity.getAdditionalInfoMap());
+		person.setAdditionalInfo(entity.getAdditionalInfo());
 		person.setDescription(entity.getDescription());
 		person.setEmailAddress(entity.getEmailAddress());
 		person.setExternalReferences(entity.getExternalReferencesMap());

@@ -295,8 +295,6 @@ public class StudyService {
 		if (body.getTrialDbId() != null) {
 			TrialEntity trial = trialService.getTrialEntity(body.getTrialDbId());
 			entity.setTrial(trial);
-			entity.setProgram(trial.getProgram());
-			entity.setCrop(trial.getCrop());
 		} else if (body.getCommonCropName() != null) {
 			CropEntity crop = cropService.getCropEntity(body.getCommonCropName());
 			entity.setCrop(crop);
@@ -307,7 +305,7 @@ public class StudyService {
 		Study study = new Study();
 
 		study.setActive(entity.isActive());
-		study.setAdditionalInfo(entity.getAdditionalInfoMap());
+		study.setAdditionalInfo(entity.getAdditionalInfo());
 
 		if (entity.getContacts() != null) {
 			study.setContacts(entity.getContacts().stream().map(this.peopleService::convertToContact)
@@ -374,11 +372,13 @@ public class StudyService {
 					study.setCommonCropName(entity.getTrial().getProgram().getCrop().getCropName());
 				}
 			}
-		} else if (entity.getProgram() != null) {
+		} 
+		if (entity.getProgram() != null) {
 			if (entity.getProgram().getCrop() != null) {
 				study.setCommonCropName(entity.getProgram().getCrop().getCropName());
 			}
-		} else if (entity.getCrop() != null) {
+		} 
+		if (entity.getCrop() != null) {
 			study.setCommonCropName(entity.getCrop().getCropName());
 		}
 

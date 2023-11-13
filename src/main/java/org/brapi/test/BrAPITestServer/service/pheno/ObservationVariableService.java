@@ -7,7 +7,6 @@ import jakarta.validation.Valid;
 
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
-import org.brapi.test.BrAPITestServer.model.entity.AdditionalInfoEntity;
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ExternalReferenceEntity;
 import org.brapi.test.BrAPITestServer.model.entity.core.CropEntity;
@@ -146,15 +145,11 @@ public class ObservationVariableService {
 		log.debug("Variable search complete");
 		if(!page.isEmpty()) {
 			observationVariableRepository.fetchXrefs(page, ObservationVariableEntity.class);
-			observationVariableRepository.fetchAdditionalInfo(page, ObservationVariableEntity.class);
 			fetchSynonyms(page);
 			fetchMethodXrefs(page);
-			fetchMethodAdditionalInfo(page);
 			fetchScaleXrefs(page);
-			fetchScaleAdditionalInfo(page);
 			fetchScaleValidValueCategories(page);
 			fetchTraitXrefs(page);
-			fetchTraitAdditionalInfo(page);
 		}
 
 		log.debug("converting "+page.getSize()+" entities");
@@ -191,20 +186,6 @@ public class ObservationVariableService {
 		page.forEach(entity -> entity.getMethod().setExternalReferences(xrefByEntity.get(entity.getMethod().getId())));
 	}
 
-	public void fetchMethodAdditionalInfo(Page<ObservationVariableEntity> page) {
-		SearchQueryBuilder<MethodEntity> searchQuery = new SearchQueryBuilder<>(MethodEntity.class);
-		searchQuery.leftJoinFetch("additionalInfo", "additionalInfo")
-				   .join("variables", "variables")
-				   .appendList(page.stream().map(BrAPIBaseEntity::getId).collect(Collectors.toList()), "*variables.id");
-
-		Page<MethodEntity> additionalInfo = methodRepository.findAllBySearch(searchQuery, PageRequest.of(0, page.getSize()));
-
-		Map<String, List<AdditionalInfoEntity>> infoByEntity = new HashMap<>();
-		additionalInfo.forEach(entity -> infoByEntity.put(entity.getId(), entity.getAdditionalInfo()));
-
-		page.forEach(entity -> entity.getMethod().setAdditionalInfo(infoByEntity.get(entity.getId())));
-	}
-
 	public void fetchScaleXrefs(Page<ObservationVariableEntity> page) {
 		SearchQueryBuilder<ScaleEntity> searchQuery = new SearchQueryBuilder<>(ScaleEntity.class);
 		searchQuery.leftJoinFetch("externalReferences", "externalReferences")
@@ -217,20 +198,6 @@ public class ObservationVariableService {
 		xrefs.forEach(entity -> xrefByEntity.put(entity.getId(), entity.getExternalReferences()));
 
 		page.forEach(entity -> entity.getScale().setExternalReferences(xrefByEntity.get(entity.getMethod().getId())));
-	}
-
-	public void fetchScaleAdditionalInfo(Page<ObservationVariableEntity> page) {
-		SearchQueryBuilder<ScaleEntity> searchQuery = new SearchQueryBuilder<>(ScaleEntity.class);
-		searchQuery.leftJoinFetch("additionalInfo", "additionalInfo")
-				   .join("variables", "variables")
-				   .appendList(page.stream().map(BrAPIBaseEntity::getId).collect(Collectors.toList()), "*variables.id");
-
-		Page<ScaleEntity> additionalInfo = scaleRepository.findAllBySearch(searchQuery, PageRequest.of(0, page.getSize()));
-
-		Map<String, List<AdditionalInfoEntity>> infoByEntity = new HashMap<>();
-		additionalInfo.forEach(entity -> infoByEntity.put(entity.getId(), entity.getAdditionalInfo()));
-
-		page.forEach(entity -> entity.getScale().setAdditionalInfo(infoByEntity.get(entity.getId())));
 	}
 
 	public void fetchScaleValidValueCategories(Page<ObservationVariableEntity> page) {
@@ -259,20 +226,6 @@ public class ObservationVariableService {
 		xrefs.forEach(entity -> xrefByEntity.put(entity.getId(), entity.getExternalReferences()));
 
 		page.forEach(entity -> entity.getTrait().setExternalReferences(xrefByEntity.get(entity.getMethod().getId())));
-	}
-
-	public void fetchTraitAdditionalInfo(Page<ObservationVariableEntity> page) {
-		SearchQueryBuilder<TraitEntity> searchQuery = new SearchQueryBuilder<>(TraitEntity.class);
-		searchQuery.leftJoinFetch("additionalInfo", "additionalInfo")
-				   .join("variables", "variables")
-				   .appendList(page.stream().map(BrAPIBaseEntity::getId).collect(Collectors.toList()), "*variables.id");
-
-		Page<TraitEntity> additionalInfo = traitRepository.findAllBySearch(searchQuery, PageRequest.of(0, page.getSize()));
-
-		Map<String, List<AdditionalInfoEntity>> infoByEntity = new HashMap<>();
-		additionalInfo.forEach(entity -> infoByEntity.put(entity.getId(), entity.getAdditionalInfo()));
-
-		page.forEach(entity -> entity.getTrait().setAdditionalInfo(infoByEntity.get(entity.getId())));
 	}
 
 	public List<ObservationVariable> saveObservationVariables(@Valid List<ObservationVariableNewRequest> body)

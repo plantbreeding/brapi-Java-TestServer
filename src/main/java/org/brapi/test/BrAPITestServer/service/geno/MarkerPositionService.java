@@ -54,7 +54,7 @@ public class MarkerPositionService {
 
 	private MarkerPosition convertFromEntity(MarkerPositionEntity entity) {
 		MarkerPosition position = new MarkerPosition();
-		position.setAdditionalInfo(entity.getAdditionalInfoMap());
+		position.setAdditionalInfo(entity.getAdditionalInfo());
 		if (entity.getLinkageGroup() != null) {
 			position.setLinkageGroupName(entity.getLinkageGroup().getLinkageGroupName());
 			if (entity.getLinkageGroup().getGenomeMap() != null) {

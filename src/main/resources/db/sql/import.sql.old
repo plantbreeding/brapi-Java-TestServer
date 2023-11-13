@@ -161,25 +161,6 @@ INSERT INTO trial_contact (trial_db_id, contact_db_id) VALUES ('102', '3');
 INSERT INTO trial_contact (trial_db_id, contact_db_id) VALUES ('103', '1');
 INSERT INTO trial_contact (trial_db_id, contact_db_id) VALUES ('103', '2');
 
-INSERT INTO trial_additional_info (id, trial_db_id, key, value) VALUES ('1', '101', 'publications', 'pmid:239823988');
-INSERT INTO trial_additional_info (id, trial_db_id, key, value) VALUES ('2', '101', 'publications', 'pmid:210494013');
-INSERT INTO trial_additional_info (id, trial_db_id, key, value) VALUES ('3', '101', 'publications', 'doi:10.2345/GEZG3T23535');
-INSERT INTO trial_additional_info (id, trial_db_id, key, value) VALUES ('4', '102', 'publications', 'pmid:245684568');
-INSERT INTO trial_additional_info (id, trial_db_id, key, value) VALUES ('5', '102', 'publications', 'pmid:345966399');
-INSERT INTO trial_additional_info (id, trial_db_id, key, value) VALUES ('6', '101', 'donorName', 'Donor1');
-INSERT INTO trial_additional_info (id, trial_db_id, key, value) VALUES ('7', '101', 'specialProject', 'Project1');
-INSERT INTO trial_additional_info (id, trial_db_id, key, value) VALUES ('8', '103', 'donorName', 'Donor2');
-INSERT INTO trial_additional_info (id, trial_db_id, key, value) VALUES ('9', '103', 'collaborator', 'NationalPartner1');
-INSERT INTO trial_additional_info (id, trial_db_id, key, value) VALUES ('10', '103', 'fundingUSD', '300000');
-INSERT INTO trial_additional_info (id, trial_db_id, key, value) VALUES ('11', '104', 'donorName', 'Donor1');
-INSERT INTO trial_additional_info (id, trial_db_id, key, value) VALUES ('12', '104', 'specialProject', 'Project2');
-INSERT INTO trial_additional_info (id, trial_db_id, key, value) VALUES ('13', '107', 'specialProject', 'Project2');
-INSERT INTO trial_additional_info (id, trial_db_id, key, value) VALUES ('14', '107', 'fundingUSD', '1000000');
-INSERT INTO trial_additional_info (id, trial_db_id, key, value) VALUES ('15', '108', 'donorName', 'Donor1');
-INSERT INTO trial_additional_info (id, trial_db_id, key, value) VALUES ('16', '108', 'collaborator', 'NationalPartner1');
-INSERT INTO trial_additional_info (id, trial_db_id, key, value) VALUES ('17', '109', 'fundingUSD', '500000');
-INSERT INTO trial_additional_info (id, trial_db_id, key, value) VALUES ('18', '109', 'specialProject', 'Project1');
-
 INSERT INTO study_type (id, name, description) VALUES ('1', 'Crossing Nursery', 'Description for Nursery study type');
 INSERT INTO study_type (id, name, description) VALUES ('2', 'Yield study', 'Description for yield study type');
 INSERT INTO study_type (id, name, description) VALUES ('3', 'Genotype', 'Description for Genotyping study type');
@@ -200,10 +181,6 @@ INSERT INTO study_contact (study_db_id, contact_db_id) VALUES ('1001', '2');
 INSERT INTO study_contact (study_db_id, contact_db_id) VALUES ('1002', '2');
 INSERT INTO study_contact (study_db_id, contact_db_id) VALUES ('1003', '3');
 INSERT INTO study_contact (study_db_id, contact_db_id) VALUES ('1003', '4');
-
-INSERT INTO study_additional_info (id, study_db_id, key, value) VALUES ('1', '1001', 'studyObjective', 'Increase yield');
-INSERT INTO study_additional_info (id, study_db_id, key, value) VALUES ('2', '1002', 'publications', 'pmid:24039865287545');
-INSERT INTO study_additional_info (id, study_db_id, key, value) VALUES ('3', '1002', 'publications', 'pmid:23643517318968');
 
 INSERT INTO data_link (id, study_db_id, name, type, url) VALUES ('1', '1001', 'image-archive12.zip', 'Image archive', 'http://data.inra.fr/archive/multi-spect-flowering.zip');
 INSERT INTO data_link (id, study_db_id, name, type, url) VALUES ('2', '1001', 'image-archive13.zip', 'Image archive', 'http://data.inra.fr/archive/biomass-img.zip');

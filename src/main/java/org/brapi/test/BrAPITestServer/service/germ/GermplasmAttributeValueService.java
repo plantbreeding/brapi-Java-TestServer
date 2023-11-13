@@ -135,7 +135,7 @@ public class GermplasmAttributeValueService {
 	private GermplasmAttributeValue convertFromEntity(GermplasmAttributeValueEntity entity) {
 		GermplasmAttributeValue value = new GermplasmAttributeValue();
 
-		value.setAdditionalInfo(entity.getAdditionalInfoMap());
+		value.setAdditionalInfo(entity.getAdditionalInfo());
 		if (entity.getAttribute() != null) {
 			value.setAttributeDbId(entity.getAttribute().getId());
 			value.setAttributeName(entity.getAttribute().getName());

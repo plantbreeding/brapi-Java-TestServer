@@ -1,6 +1,5 @@
 package org.brapi.test.BrAPITestServer.repository;
 
-import org.brapi.test.BrAPITestServer.model.entity.AdditionalInfoEntity;
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIPrimaryEntity;
 import org.brapi.test.BrAPITestServer.model.entity.ExternalReferenceEntity;
@@ -81,19 +80,6 @@ public class BrAPIRepositoryImpl<T extends BrAPIPrimaryEntity, ID extends Serial
 		xrefs.forEach(entity -> xrefByEntity.put(entity.getId(), entity.getExternalReferences()));
 
 		page.forEach(entity -> entity.setExternalReferences(xrefByEntity.get(entity.getId())));
-	}
-
-	public void fetchAdditionalInfo(Page<T> page, Class<T> searchClass) {
-		SearchQueryBuilder<T> searchQuery = new SearchQueryBuilder<T>(searchClass);
-		searchQuery.leftJoinFetch("additionalInfo", "additionalInfo")
-				   .appendList(page.stream().map(BrAPIBaseEntity::getId).collect(Collectors.toList()), "id");
-
-		Page<T> additionalInfo = findAllBySearch(searchQuery, PageRequest.of(0, page.getSize()));
-
-		Map<String, List<AdditionalInfoEntity>> infoByEntity = new HashMap<>();
-		additionalInfo.forEach(entity -> infoByEntity.put(entity.getId(), entity.getAdditionalInfo()));
-
-		page.forEach(entity -> entity.setAdditionalInfo(infoByEntity.get(entity.getId())));
 	}
 
 	private String getCurrentUserId() {

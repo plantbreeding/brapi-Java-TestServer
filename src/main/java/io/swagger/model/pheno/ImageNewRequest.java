@@ -1,21 +1,17 @@
 package io.swagger.model.pheno;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.ExternalReferences;
 import io.swagger.model.GeoJSON;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.time.OffsetDateTime;
-import org.springframework.validation.annotation.Validated;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
+import org.springframework.validation.annotation.Validated;
+
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -26,7 +22,7 @@ import jakarta.validation.constraints.Pattern;
 public class ImageNewRequest   {
   @JsonProperty("additionalInfo")
   @Valid
-  private Map<String, Object> additionalInfo = null;
+  private Object additionalInfo = null;
 
   @JsonProperty("copyright")
   private String copyright = null;
@@ -75,16 +71,8 @@ public class ImageNewRequest   {
   @JsonProperty("observationUnitDbId")
   private String observationUnitDbId = null;
 
-  public ImageNewRequest additionalInfo(Map<String, Object> additionalInfo) {
+  public ImageNewRequest additionalInfo(Object additionalInfo) {
     this.additionalInfo = additionalInfo;
-    return this;
-  }
-
-  public ImageNewRequest putAdditionalInfoItem(String key, String additionalInfoItem) {
-    if (this.additionalInfo == null) {
-      this.additionalInfo = new HashMap<String, Object>();
-    }
-    this.additionalInfo.put(key, additionalInfoItem);
     return this;
   }
 
@@ -94,11 +82,11 @@ public class ImageNewRequest   {
   **/
   @ApiModelProperty(value = "")
   
-    public Map<String, Object> getAdditionalInfo() {
+    public Object getAdditionalInfo() {
     return additionalInfo;
   }
 
-  public void setAdditionalInfo(Map<String, Object> additionalInfo) {
+  public void setAdditionalInfo(Object additionalInfo) {
     this.additionalInfo = additionalInfo;
   }
 

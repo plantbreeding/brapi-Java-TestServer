@@ -1,11 +1,9 @@
 package org.brapi.test.BrAPITestServer.service.pheno;
 
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
-
+import io.swagger.model.IndexPagination;
+import io.swagger.model.Metadata;
+import io.swagger.model.pheno.*;
 import jakarta.validation.Valid;
-
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerDbIdNotFoundException;
 import org.brapi.test.BrAPITestServer.exceptions.BrAPIServerException;
 import org.brapi.test.BrAPITestServer.model.entity.BrAPIBaseEntity;
@@ -15,11 +13,7 @@ import org.brapi.test.BrAPITestServer.model.entity.core.TrialEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.CrossEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.GermplasmEntity;
 import org.brapi.test.BrAPITestServer.model.entity.germ.SeedLotEntity;
-import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationEntity;
-import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitEntity;
-import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitLevelRelationshipEntity;
-import org.brapi.test.BrAPITestServer.model.entity.pheno.ObservationUnitPositionEntity;
-import org.brapi.test.BrAPITestServer.model.entity.pheno.TreatmentEntity;
+import org.brapi.test.BrAPITestServer.model.entity.pheno.*;
 import org.brapi.test.BrAPITestServer.repository.pheno.ObservationUnitRepository;
 import org.brapi.test.BrAPITestServer.service.GeoJSONUtility;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
@@ -40,22 +34,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import io.swagger.model.IndexPagination;
-import io.swagger.model.Metadata;
-import io.swagger.model.pheno.ObservationTableHeaderRowEnum;
-import io.swagger.model.pheno.ObservationTableObservationVariables;
-import io.swagger.model.pheno.ObservationTreatment;
-import io.swagger.model.pheno.ObservationUnit;
-import io.swagger.model.pheno.ObservationUnitHierarchyLevel;
-import io.swagger.model.pheno.ObservationUnitHierarchyLevelEnum;
-import io.swagger.model.pheno.ObservationUnitLevel;
-import io.swagger.model.pheno.ObservationUnitLevelRelationship;
-import io.swagger.model.pheno.ObservationUnitNewRequest;
-import io.swagger.model.pheno.ObservationUnitPosition;
-import io.swagger.model.pheno.ObservationUnitSearchRequest;
-import io.swagger.model.pheno.ObservationUnitTable;
-import io.swagger.model.pheno.ObservationVariable;
-import io.swagger.model.pheno.ObservationVariableSearchRequest;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 @Service
 public class ObservationUnitService {
@@ -214,8 +195,7 @@ public class ObservationUnitService {
 		Pageable pageReq = PagingUtility.getPageRequest(metadata);
 		SearchQueryBuilder<ObservationUnitEntity> searchQuery = new SearchQueryBuilder<ObservationUnitEntity>(
 				ObservationUnitEntity.class);
-		searchQuery.leftJoinFetch("additionalInfo", "additionalInfo")
-				   .leftJoinFetch("germplasm", "germplasm")
+		searchQuery.leftJoinFetch("germplasm", "germplasm")
 				   .leftJoinFetch("*germplasm.pedigree", "pedigree")
 				   .leftJoinFetch("cross", "cross")
 				   .leftJoinFetch("position", "position")
@@ -489,14 +469,16 @@ public class ObservationUnitService {
 					unit.setProgramName(entity.getStudy().getTrial().getProgram().getName());
 				}
 			}
-		} else if (entity.getTrial() != null) {
+		} 
+		if (entity.getTrial() != null) {
 			unit.setTrialDbId(entity.getTrial().getId());
 			unit.setTrialName(entity.getTrial().getTrialName());
 			if (entity.getTrial().getProgram() != null) {
 				unit.setProgramDbId(entity.getTrial().getProgram().getId());
 				unit.setProgramName(entity.getTrial().getProgram().getName());
 			}
-		} else if (entity.getProgram() != null) {
+		} 
+		if (entity.getProgram() != null) {
 			unit.setProgramDbId(entity.getProgram().getId());
 			unit.setProgramName(entity.getProgram().getName());
 		}

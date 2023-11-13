@@ -1,17 +1,13 @@
 package io.swagger.model.geno;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.model.ExternalReferences;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.time.OffsetDateTime;
-import org.springframework.validation.annotation.Validated;
 import jakarta.validation.Valid;
+import org.springframework.validation.annotation.Validated;
+
+import java.time.OffsetDateTime;
+import java.util.Objects;
 
 
 /**
@@ -22,7 +18,7 @@ import jakarta.validation.Valid;
 public class SampleNewRequest   {
   @JsonProperty("additionalInfo")
   @Valid
-  private Map<String, Object> additionalInfo = null;
+  private Object additionalInfo = null;
 
   @JsonProperty("column")
   private Integer column = null;
@@ -84,16 +80,8 @@ public class SampleNewRequest   {
   @JsonProperty("well")
   private String well = null;
 
-  public SampleNewRequest additionalInfo(Map<String, Object> additionalInfo) {
+  public SampleNewRequest additionalInfo(Object additionalInfo) {
     this.additionalInfo = additionalInfo;
-    return this;
-  }
-
-  public SampleNewRequest putAdditionalInfoItem(String key, String additionalInfoItem) {
-    if (this.additionalInfo == null) {
-      this.additionalInfo = new HashMap<String, Object>();
-    }
-    this.additionalInfo.put(key, additionalInfoItem);
     return this;
   }
 
@@ -103,11 +91,11 @@ public class SampleNewRequest   {
   **/
   @ApiModelProperty(value = "Additional arbitrary info")
   
-    public Map<String, Object> getAdditionalInfo() {
+    public Object getAdditionalInfo() {
     return additionalInfo;
   }
 
-  public void setAdditionalInfo(Map<String, Object> additionalInfo) {
+  public void setAdditionalInfo(Object additionalInfo) {
     this.additionalInfo = additionalInfo;
   }
 

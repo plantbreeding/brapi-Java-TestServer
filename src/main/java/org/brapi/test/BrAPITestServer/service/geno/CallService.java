@@ -13,7 +13,6 @@ import org.brapi.test.BrAPITestServer.model.entity.geno.CallEntity;
 import org.brapi.test.BrAPITestServer.repository.geno.CallRepository;
 import org.brapi.test.BrAPITestServer.service.PagingUtility;
 import org.brapi.test.BrAPITestServer.service.SearchQueryBuilder;
-import org.brapi.test.BrAPITestServer.service.UpdateUtility;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -26,7 +25,6 @@ import io.swagger.model.geno.CallsListResponseResult;
 import io.swagger.model.geno.CallsSearchRequest;
 import io.swagger.model.geno.DataTypePrimitives;
 import io.swagger.model.geno.ListValue;
-import jakarta.validation.Valid;
 
 @Service
 public class CallService {
@@ -103,7 +101,7 @@ public class CallService {
 
 	private Call convertFromEntityWithFormatting(CallEntity entity, CallsSearchRequest request) {
 		Call call = new Call();
-		call.setAdditionalInfo(entity.getAdditionalInfoMap());
+		call.setAdditionalInfo(entity.getAdditionalInfo());
 		if (entity.getCallSet() != null) {
 			call.setCallSetDbId(entity.getCallSet().getId());
 			call.setCallSetName(entity.getCallSet().getCallSetName());

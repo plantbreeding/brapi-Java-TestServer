@@ -165,7 +165,7 @@ public class TrialService {
 	private Trial convertFromEntity(TrialEntity entity) {
 		Trial trial = new Trial();
 		trial.setActive(entity.isActive());
-		trial.setAdditionalInfo(entity.getAdditionalInfoMap());
+		trial.setAdditionalInfo(entity.getAdditionalInfo());
 		trial.setDocumentationURL(entity.getDocumentationURL());
 		trial.setEndDate(DateUtility.toLocalDate(entity.getEndDate()));
 		trial.setExternalReferences(entity.getExternalReferencesMap());
@@ -195,7 +195,8 @@ public class TrialService {
 			if (entity.getProgram().getCrop() != null) {
 				trial.setCommonCropName(entity.getProgram().getCrop().getCropName());
 			}
-		} else if (entity.getCrop() != null) {
+		}
+		if (entity.getCrop() != null) {
 			trial.setCommonCropName(entity.getCrop().getCropName());
 		}
 

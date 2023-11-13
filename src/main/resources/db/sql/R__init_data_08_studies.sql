@@ -17,8 +17,6 @@ INSERT INTO study_season (study_db_id, season_db_id) VALUES('study1', 'summer_20
 INSERT INTO study_season (study_db_id, season_db_id) VALUES('study1', 'fall_2013');
 INSERT INTO study_season (study_db_id, season_db_id) VALUES('study1', 'winter_2013');
 
-INSERT INTO additional_info(id, key, value) VALUES ('study_ai_1', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
-INSERT INTO study_additional_info(study_entity_id, additional_info_id) VALUES ('study1', 'study_ai_1');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('study_er_1', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO study_external_references(study_entity_id, external_references_id) VALUES ('study1', 'study_er_1');
 
@@ -42,8 +40,6 @@ INSERT INTO study_season (study_db_id, season_db_id) VALUES('study2', 'summer_20
 INSERT INTO study_season (study_db_id, season_db_id) VALUES('study2', 'fall_2012');
 INSERT INTO study_season (study_db_id, season_db_id) VALUES('study2', 'winter_2012');
 
-INSERT INTO additional_info(id, key, value) VALUES ('study_ai_2', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
-INSERT INTO study_additional_info(study_entity_id, additional_info_id) VALUES ('study2', 'study_ai_2');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('study_er_2', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO study_external_references(study_entity_id, external_references_id) VALUES ('study2', 'study_er_2');
 
@@ -63,7 +59,5 @@ INSERT INTO study_season (study_db_id, season_db_id) VALUES('study3', 'summer_20
 INSERT INTO study_season (study_db_id, season_db_id) VALUES('study3', 'fall_2012');
 INSERT INTO study_season (study_db_id, season_db_id) VALUES('study3', 'winter_2012');
 
-INSERT INTO additional_info(id, key, value) VALUES ('study_ai_3', 'dummyData', decode('aced0005737200116A6176612E6C616E672E426F6F6C65616ECD207280d59cfaee0200015a000576616C7565787001','hex'));
-INSERT INTO study_additional_info(study_entity_id, additional_info_id) VALUES ('study3', 'study_ai_3');
 INSERT INTO external_reference(id, external_reference_id, external_reference_source) VALUES ('study_er_3', 'https://brapi.org/specification', 'BrAPI Doc');
 INSERT INTO study_external_references(study_entity_id, external_references_id) VALUES ('study3', 'study_er_3');

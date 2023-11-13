@@ -89,7 +89,7 @@ public class VariantService {
 
 	private Variant convertFromEntity(VariantEntity entity) {
 		Variant variant = new Variant();
-		variant.setAdditionalInfo(entity.getAdditionalInfoMap());
+		variant.setAdditionalInfo(entity.getAdditionalInfo());
 		variant.setAlternateBases(entity.getAlternateBases());
 		variant.setCiend(entity.getCiend());
 		variant.setCipos(entity.getCipos());

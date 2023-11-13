@@ -92,7 +92,7 @@ public class CallSetService {
 
 	private CallSet convertFromEntity(CallSetEntity entity) {
 		CallSet callSet = new CallSet();
-		callSet.setAdditionalInfo(entity.getAdditionalInfoMap());
+		callSet.setAdditionalInfo(entity.getAdditionalInfo());
 		callSet.setCallSetDbId(entity.getId());
 		callSet.setCallSetName(entity.getCallSetName());
 		callSet.setCreated(DateUtility.toOffsetDateTime(entity.getCreated()));

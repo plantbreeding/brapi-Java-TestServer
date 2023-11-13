@@ -81,7 +81,7 @@ public class GenomeMapService {
 
 	private GenomeMap convertFromEntity(GenomeMapEntity entity) {
 		GenomeMap map = new GenomeMap();
-		map.setAdditionalInfo(entity.getAdditionalInfoMap());
+		map.setAdditionalInfo(entity.getAdditionalInfo());
 		map.setComments(entity.getComments());
 		if (entity.getCrop() != null)
 			map.setCommonCropName(entity.getCrop().getCropName());
@@ -104,7 +104,7 @@ public class GenomeMapService {
 
 	private LinkageGroup convertFromEntity(LinkageGroupEntity entity) {
 		LinkageGroup group = new LinkageGroup();
-		group.setAdditionalInfo(entity.getAdditionalInfoMap());
+		group.setAdditionalInfo(entity.getAdditionalInfo());
 		group.setLinkageGroupName(entity.getLinkageGroupName());
 		group.setMarkerCount(entity.getMarkers().size());
 		group.setMaxPosition(entity.getMaxMarkerPosition());

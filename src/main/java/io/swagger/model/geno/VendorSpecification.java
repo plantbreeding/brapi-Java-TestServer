@@ -1,16 +1,13 @@
 package io.swagger.model.geno;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-
 import io.swagger.annotations.ApiModelProperty;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.springframework.validation.annotation.Validated;
 import jakarta.validation.Valid;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * VendorSpecification
@@ -20,7 +17,7 @@ import jakarta.validation.Valid;
 public class VendorSpecification   {
   @JsonProperty("additionalInfo")
   @Valid
-  private Map<String, Object> additionalInfo = null;
+  private Object additionalInfo = null;
 
   @JsonProperty("services")
   @Valid
@@ -29,16 +26,8 @@ public class VendorSpecification   {
   @JsonProperty("vendorContact")
   private VendorContact vendorContact = null;
 
-  public VendorSpecification additionalInfo(Map<String, Object> additionalInfo) {
+  public VendorSpecification additionalInfo(Object additionalInfo) {
     this.additionalInfo = additionalInfo;
-    return this;
-  }
-
-  public VendorSpecification putAdditionalInfoItem(String key, Object additionalInfoItem) {
-    if (this.additionalInfo == null) {
-      this.additionalInfo = new HashMap<String, Object>();
-    }
-    this.additionalInfo.put(key, additionalInfoItem);
     return this;
   }
 
@@ -48,11 +37,11 @@ public class VendorSpecification   {
   **/
   @ApiModelProperty(value = "Additional arbitrary information specific to a particular Vendor. Look for the Vendors specific API documentation for more details")
   
-    public Map<String, Object> getAdditionalInfo() {
+    public Object getAdditionalInfo() {
     return additionalInfo;
   }
 
-  public void setAdditionalInfo(Map<String, Object> additionalInfo) {
+  public void setAdditionalInfo(Object additionalInfo) {
     this.additionalInfo = additionalInfo;
   }
 
