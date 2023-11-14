@@ -3229,7 +3229,7 @@ CREATE INDEX program_external_references_program_entity_id ON public.program_ext
 --
 
 ALTER TABLE ONLY public.trial_external_references
-    ADD CONSTRAINT fk155y3dfx5kbikdaea1ev83f2q FOREIGN KEY (trial_entity_id) REFERENCES public.trial(id);
+    ADD CONSTRAINT fk155y3dfx5kbikdaea1ev83f2q FOREIGN KEY (trial_entity_id) REFERENCES public.trial(id) ON DELETE CASCADE;
 
 
 --
@@ -3237,7 +3237,7 @@ ALTER TABLE ONLY public.trial_external_references
 --
 
 ALTER TABLE ONLY public.vendor_order_external_references
-    ADD CONSTRAINT fk16n0vjl5dqid2b3q1q7jv2jrp FOREIGN KEY (vendor_order_entity_id) REFERENCES public.vendor_order(id);
+    ADD CONSTRAINT fk16n0vjl5dqid2b3q1q7jv2jrp FOREIGN KEY (vendor_order_entity_id) REFERENCES public.vendor_order(id) ON DELETE CASCADE;
 
 
 --
@@ -3245,7 +3245,7 @@ ALTER TABLE ONLY public.vendor_order_external_references
 --
 
 ALTER TABLE ONLY public.linkage_group_external_references
-    ADD CONSTRAINT fk16nwhdphvsrkfo7ldgnsiikq4 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fk16nwhdphvsrkfo7ldgnsiikq4 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -3325,7 +3325,7 @@ ALTER TABLE ONLY public.cross_pollination_event
 --
 
 ALTER TABLE ONLY public.allele_call_external_references
-    ADD CONSTRAINT fk21j9fleiujdbdh1le1qxgvu76 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fk21j9fleiujdbdh1le1qxgvu76 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -3349,7 +3349,7 @@ ALTER TABLE ONLY public.event_observation_units
 --
 
 ALTER TABLE ONLY public.trait_external_references
-    ADD CONSTRAINT fk26xyvg9wub4k3iv7519mi4fm6 FOREIGN KEY (trait_entity_id) REFERENCES public.trait(id);
+    ADD CONSTRAINT fk26xyvg9wub4k3iv7519mi4fm6 FOREIGN KEY (trait_entity_id) REFERENCES public.trait(id) ON DELETE CASCADE;
 
 
 --
@@ -3365,7 +3365,7 @@ ALTER TABLE ONLY public.seed_lot_content_mixture
 --
 
 ALTER TABLE ONLY public.germplasm_attribute_value_external_references
-    ADD CONSTRAINT fk2c187mbrv5ib1a0cpdq82i2aw FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fk2c187mbrv5ib1a0cpdq82i2aw FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -3373,7 +3373,7 @@ ALTER TABLE ONLY public.germplasm_attribute_value_external_references
 --
 
 ALTER TABLE ONLY public.plate_external_references
-    ADD CONSTRAINT fk2k8s555m1pytepl5wq7ajgyu FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fk2k8s555m1pytepl5wq7ajgyu FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -3389,7 +3389,7 @@ ALTER TABLE ONLY public.observation_unit_position
 --
 
 ALTER TABLE ONLY public.linkage_group_external_references
-    ADD CONSTRAINT fk2ngce8lv4jokyjhp72idxc4wp FOREIGN KEY (linkage_group_entity_id) REFERENCES public.linkage_group(id);
+    ADD CONSTRAINT fk2ngce8lv4jokyjhp72idxc4wp FOREIGN KEY (linkage_group_entity_id) REFERENCES public.linkage_group(id) ON DELETE CASCADE;
 
 
 --
@@ -3429,7 +3429,7 @@ ALTER TABLE ONLY public.cross_parent
 --
 
 ALTER TABLE ONLY public.image_external_references
-    ADD CONSTRAINT fk33bdd9xb6yxr8bnvov4shkx5a FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fk33bdd9xb6yxr8bnvov4shkx5a FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -3445,7 +3445,7 @@ ALTER TABLE ONLY public.event_observation_units
 --
 
 ALTER TABLE ONLY public.germplasm_donor_external_references
-    ADD CONSTRAINT fk3hdirn24cor15lmm3syjj9pag FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fk3hdirn24cor15lmm3syjj9pag FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -3461,7 +3461,7 @@ ALTER TABLE ONLY public.trial_publication
 --
 
 ALTER TABLE ONLY public.crop_external_references
-    ADD CONSTRAINT fk3nlkk7gvg1523b3lbsy2q1eec FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fk3nlkk7gvg1523b3lbsy2q1eec FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -3469,7 +3469,7 @@ ALTER TABLE ONLY public.crop_external_references
 --
 
 ALTER TABLE ONLY public.marker_position_external_references
-    ADD CONSTRAINT fk3pnhmjxx9bqp3rl5lo3pgos1g FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fk3pnhmjxx9bqp3rl5lo3pgos1g FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -3501,7 +3501,7 @@ ALTER TABLE ONLY public.germplasm_attribute_value
 --
 
 ALTER TABLE ONLY public.marker_position_external_references
-    ADD CONSTRAINT fk4akvkw4j7xa9xc3cwa8cr60if FOREIGN KEY (marker_position_entity_id) REFERENCES public.marker_position(id);
+    ADD CONSTRAINT fk4akvkw4j7xa9xc3cwa8cr60if FOREIGN KEY (marker_position_entity_id) REFERENCES public.marker_position(id) ON DELETE CASCADE;
 
 
 --
@@ -3517,7 +3517,7 @@ ALTER TABLE ONLY public.cross_entity
 --
 
 ALTER TABLE ONLY public.plate_submission_external_references
-    ADD CONSTRAINT fk4jlk3xi2ifr0b4jna9w4eu22u FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fk4jlk3xi2ifr0b4jna9w4eu22u FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -3541,7 +3541,7 @@ ALTER TABLE ONLY public.variable_base_entity_ontology_reference
 --
 
 ALTER TABLE ONLY public.plate_submission_external_references
-    ADD CONSTRAINT fk4qkh6qsuqtjrp8hj73kn6h0su FOREIGN KEY (vendor_plate_submission_entity_id) REFERENCES public.plate_submission(id);
+    ADD CONSTRAINT fk4qkh6qsuqtjrp8hj73kn6h0su FOREIGN KEY (vendor_plate_submission_entity_id) REFERENCES public.plate_submission(id) ON DELETE CASCADE;
 
 
 --
@@ -3557,7 +3557,7 @@ ALTER TABLE ONLY public.variable_base_entity
 --
 
 ALTER TABLE ONLY public.genome_map_external_references
-    ADD CONSTRAINT fk59wyewdtq53rnxkn55grh1nin FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fk59wyewdtq53rnxkn55grh1nin FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -3565,7 +3565,7 @@ ALTER TABLE ONLY public.genome_map_external_references
 --
 
 ALTER TABLE ONLY public.location_external_references
-    ADD CONSTRAINT fk5bqkr4t3ly4sxsx13i76iw55f FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fk5bqkr4t3ly4sxsx13i76iw55f FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -3589,7 +3589,7 @@ ALTER TABLE ONLY public.pedigree_edge
 --
 
 ALTER TABLE ONLY public.reference_external_references
-    ADD CONSTRAINT fk5nv26mmefckw1a3tilk3jvd58 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fk5nv26mmefckw1a3tilk3jvd58 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -3605,7 +3605,7 @@ ALTER TABLE ONLY public.allele_call
 --
 
 ALTER TABLE ONLY public.method_external_references
-    ADD CONSTRAINT fk5sxdvhf5m5gvh04f4f1vubgh8 FOREIGN KEY (method_entity_id) REFERENCES public.method(id);
+    ADD CONSTRAINT fk5sxdvhf5m5gvh04f4f1vubgh8 FOREIGN KEY (method_entity_id) REFERENCES public.method(id) ON DELETE CASCADE;
 
 
 --
@@ -3621,7 +3621,7 @@ ALTER TABLE ONLY public.observation_unit
 --
 
 ALTER TABLE ONLY public.ontology_external_references
-    ADD CONSTRAINT fk60ha4xhme1qcj9qlef16x5uf4 FOREIGN KEY (ontology_entity_id) REFERENCES public.ontology(id);
+    ADD CONSTRAINT fk60ha4xhme1qcj9qlef16x5uf4 FOREIGN KEY (ontology_entity_id) REFERENCES public.ontology(id) ON DELETE CASCADE;
 
 
 --
@@ -3629,7 +3629,7 @@ ALTER TABLE ONLY public.ontology_external_references
 --
 
 ALTER TABLE ONLY public.variable_base_entity_external_references
-    ADD CONSTRAINT fk61jsniwx483plyg24f7avmtbf FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fk61jsniwx483plyg24f7avmtbf FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -3685,7 +3685,7 @@ ALTER TABLE ONLY public.location
 --
 
 ALTER TABLE ONLY public.location_external_references
-    ADD CONSTRAINT fk74i4il2jg8ce0gi8evy3m9qto FOREIGN KEY (location_entity_id) REFERENCES public.location(id);
+    ADD CONSTRAINT fk74i4il2jg8ce0gi8evy3m9qto FOREIGN KEY (location_entity_id) REFERENCES public.location(id) ON DELETE CASCADE;
 
 
 --
@@ -3693,7 +3693,7 @@ ALTER TABLE ONLY public.location_external_references
 --
 
 ALTER TABLE ONLY public.observation_external_references
-    ADD CONSTRAINT fk7bawm29wrk4oska2qqc9pv01p FOREIGN KEY (observation_entity_id) REFERENCES public.observation(id);
+    ADD CONSTRAINT fk7bawm29wrk4oska2qqc9pv01p FOREIGN KEY (observation_entity_id) REFERENCES public.observation(id) ON DELETE CASCADE;
 
 
 --
@@ -3717,7 +3717,7 @@ ALTER TABLE ONLY public.event_param
 --
 
 ALTER TABLE ONLY public.plate_external_references
-    ADD CONSTRAINT fk7waq4smg9jdsn9v87ovfn0irl FOREIGN KEY (plate_entity_id) REFERENCES public.plate(id);
+    ADD CONSTRAINT fk7waq4smg9jdsn9v87ovfn0irl FOREIGN KEY (plate_entity_id) REFERENCES public.plate(id) ON DELETE CASCADE;
 
 
 --
@@ -3733,7 +3733,7 @@ ALTER TABLE ONLY public.program
 --
 
 ALTER TABLE ONLY public.trait_external_references
-    ADD CONSTRAINT fk83qwc6no22xekj3qoky28fjr FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fk83qwc6no22xekj3qoky28fjr FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -3741,7 +3741,7 @@ ALTER TABLE ONLY public.trait_external_references
 --
 
 ALTER TABLE ONLY public.pedigree_edge_external_references
-    ADD CONSTRAINT fk89dwa6f22etyvwsl2r3hc56cj FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fk89dwa6f22etyvwsl2r3hc56cj FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -3757,7 +3757,7 @@ ALTER TABLE ONLY public.pedigree_edge
 --
 
 ALTER TABLE ONLY public.pedigree_edge_external_references
-    ADD CONSTRAINT fk8b66j4ff2axcsuosr5erotn8e FOREIGN KEY (pedigree_edge_entity_id) REFERENCES public.pedigree_edge(id);
+    ADD CONSTRAINT fk8b66j4ff2axcsuosr5erotn8e FOREIGN KEY (pedigree_edge_entity_id) REFERENCES public.pedigree_edge(id) ON DELETE CASCADE;
 
 
 --
@@ -3805,7 +3805,7 @@ ALTER TABLE ONLY public.observation_unit_treatment
 --
 
 ALTER TABLE ONLY public.germplasm_donor_external_references
-    ADD CONSTRAINT fk9au08uldnexgd3f00hvq2rg8k FOREIGN KEY (donor_entity_id) REFERENCES public.germplasm_donor(id);
+    ADD CONSTRAINT fk9au08uldnexgd3f00hvq2rg8k FOREIGN KEY (donor_entity_id) REFERENCES public.germplasm_donor(id) ON DELETE CASCADE;
 
 
 --
@@ -3821,7 +3821,7 @@ ALTER TABLE ONLY public.variant_entity_ciend
 --
 
 ALTER TABLE ONLY public.reference_set_external_references
-    ADD CONSTRAINT fk9fslipqtjg4u9xj1wsx1tc1va FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fk9fslipqtjg4u9xj1wsx1tc1va FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -3837,7 +3837,7 @@ ALTER TABLE ONLY public.germplasm_origin
 --
 
 ALTER TABLE ONLY public.program_external_references
-    ADD CONSTRAINT fk9k5htwyl0rrhadlr2bvtb4ewh FOREIGN KEY (program_entity_id) REFERENCES public.program(id);
+    ADD CONSTRAINT fk9k5htwyl0rrhadlr2bvtb4ewh FOREIGN KEY (program_entity_id) REFERENCES public.program(id) ON DELETE CASCADE;
 
 
 --
@@ -3853,7 +3853,7 @@ ALTER TABLE ONLY public.location
 --
 
 ALTER TABLE ONLY public.crossing_project_external_references
-    ADD CONSTRAINT fk9t5w8cd5pxjih4ipygqcs6rwo FOREIGN KEY (crossing_project_entity_id) REFERENCES public.crossing_project(id);
+    ADD CONSTRAINT fk9t5w8cd5pxjih4ipygqcs6rwo FOREIGN KEY (crossing_project_entity_id) REFERENCES public.crossing_project(id) ON DELETE CASCADE;
 
 
 --
@@ -3957,7 +3957,7 @@ ALTER TABLE ONLY public.variable_base_entity
 --
 
 ALTER TABLE ONLY public.ontology_external_references
-    ADD CONSTRAINT fkajcue8iujp37clk05ly7huxus FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkajcue8iujp37clk05ly7huxus FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -3965,7 +3965,7 @@ ALTER TABLE ONLY public.ontology_external_references
 --
 
 ALTER TABLE ONLY public.search_external_references
-    ADD CONSTRAINT fkasoj2adq9bhxyymm4cpukjhnw FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkasoj2adq9bhxyymm4cpukjhnw FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -3981,7 +3981,7 @@ ALTER TABLE ONLY public.event
 --
 
 ALTER TABLE ONLY public.crop_external_references
-    ADD CONSTRAINT fkbin2gayn9sl8khd07gf1tv0j FOREIGN KEY (crop_entity_id) REFERENCES public.crop(id);
+    ADD CONSTRAINT fkbin2gayn9sl8khd07gf1tv0j FOREIGN KEY (crop_entity_id) REFERENCES public.crop(id) ON DELETE CASCADE;
 
 
 --
@@ -3989,7 +3989,7 @@ ALTER TABLE ONLY public.crop_external_references
 --
 
 ALTER TABLE ONLY public.reference_set_external_references
-    ADD CONSTRAINT fkbk2b1k68f0drytr6pkncudxoh FOREIGN KEY (reference_set_entity_id) REFERENCES public.reference_set(id);
+    ADD CONSTRAINT fkbk2b1k68f0drytr6pkncudxoh FOREIGN KEY (reference_set_entity_id) REFERENCES public.reference_set(id) ON DELETE CASCADE;
 
 
 --
@@ -3997,7 +3997,7 @@ ALTER TABLE ONLY public.reference_set_external_references
 --
 
 ALTER TABLE ONLY public.breeding_method_external_references
-    ADD CONSTRAINT fkboc2lii67kdtey1frkcsatps6 FOREIGN KEY (breeding_method_entity_id) REFERENCES public.breeding_method(id);
+    ADD CONSTRAINT fkboc2lii67kdtey1frkcsatps6 FOREIGN KEY (breeding_method_entity_id) REFERENCES public.breeding_method(id) ON DELETE CASCADE;
 
 
 --
@@ -4013,7 +4013,7 @@ ALTER TABLE ONLY public.trial_contact
 --
 
 ALTER TABLE ONLY public.sample_external_references
-    ADD CONSTRAINT fkbqjbcfol1ok5eci7kq2tyjx17 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkbqjbcfol1ok5eci7kq2tyjx17 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -4045,7 +4045,7 @@ ALTER TABLE ONLY public.seed_lot_content_mixture
 --
 
 ALTER TABLE ONLY public.vendor_spec_external_references
-    ADD CONSTRAINT fkc3usn08w7ld6ii26stfy3acwn FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkc3usn08w7ld6ii26stfy3acwn FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -4069,7 +4069,7 @@ ALTER TABLE ONLY public.seed_lot
 --
 
 ALTER TABLE ONLY public.seed_lot_external_references
-    ADD CONSTRAINT fkcbgmrnalhithf1ba1usguxia3 FOREIGN KEY (seed_lot_entity_id) REFERENCES public.seed_lot(id);
+    ADD CONSTRAINT fkcbgmrnalhithf1ba1usguxia3 FOREIGN KEY (seed_lot_entity_id) REFERENCES public.seed_lot(id) ON DELETE CASCADE;
 
 
 --
@@ -4093,7 +4093,7 @@ ALTER TABLE ONLY public.study
 --
 
 ALTER TABLE ONLY public.variantset_external_references
-    ADD CONSTRAINT fkckhrweboc7ktl0e7obei7731f FOREIGN KEY (variant_set_entity_id) REFERENCES public.variantset(id);
+    ADD CONSTRAINT fkckhrweboc7ktl0e7obei7731f FOREIGN KEY (variant_set_entity_id) REFERENCES public.variantset(id) ON DELETE CASCADE;
 
 
 --
@@ -4101,7 +4101,7 @@ ALTER TABLE ONLY public.variantset_external_references
 --
 
 ALTER TABLE ONLY public.seed_lot_transaction_external_references
-    ADD CONSTRAINT fkcmeans75yxjouc0a6t2ahsl6g FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkcmeans75yxjouc0a6t2ahsl6g FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -4109,7 +4109,7 @@ ALTER TABLE ONLY public.seed_lot_transaction_external_references
 --
 
 ALTER TABLE ONLY public.callset_external_references
-    ADD CONSTRAINT fkcmhdlkwcanmd21p8gepoi0n0u FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkcmhdlkwcanmd21p8gepoi0n0u FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -4125,7 +4125,7 @@ ALTER TABLE ONLY public.observation
 --
 
 ALTER TABLE ONLY public.germplasm_external_references
-    ADD CONSTRAINT fkd0ih09ntorrw8erucyh5m6sp2 FOREIGN KEY (germplasm_entity_id) REFERENCES public.germplasm(id);
+    ADD CONSTRAINT fkd0ih09ntorrw8erucyh5m6sp2 FOREIGN KEY (germplasm_entity_id) REFERENCES public.germplasm(id) ON DELETE CASCADE;
 
 
 --
@@ -4165,7 +4165,7 @@ ALTER TABLE ONLY public.study_variable
 --
 
 ALTER TABLE ONLY public.sample_external_references
-    ADD CONSTRAINT fkdjnhuxmo83frqm5o5bbkbnyxq FOREIGN KEY (sample_entity_id) REFERENCES public.sample(id);
+    ADD CONSTRAINT fkdjnhuxmo83frqm5o5bbkbnyxq FOREIGN KEY (sample_entity_id) REFERENCES public.sample(id) ON DELETE CASCADE;
 
 
 --
@@ -4173,7 +4173,7 @@ ALTER TABLE ONLY public.sample_external_references
 --
 
 ALTER TABLE ONLY public.variant_external_references
-    ADD CONSTRAINT fkdnw738um7f4ikcxp1iq4jsbw6 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkdnw738um7f4ikcxp1iq4jsbw6 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -4189,7 +4189,7 @@ ALTER TABLE ONLY public.vendor_file_sample
 --
 
 ALTER TABLE ONLY public.event_external_references
-    ADD CONSTRAINT fke6ojv2849d07tagl2eslcujg9 FOREIGN KEY (event_entity_id) REFERENCES public.event(id);
+    ADD CONSTRAINT fke6ojv2849d07tagl2eslcujg9 FOREIGN KEY (event_entity_id) REFERENCES public.event(id) ON DELETE CASCADE;
 
 
 --
@@ -4197,7 +4197,7 @@ ALTER TABLE ONLY public.event_external_references
 --
 
 ALTER TABLE ONLY public.observation_unit_external_references
-    ADD CONSTRAINT fkel9v1egnbmp20dpbkt1831ljq FOREIGN KEY (observation_unit_entity_id) REFERENCES public.observation_unit(id);
+    ADD CONSTRAINT fkel9v1egnbmp20dpbkt1831ljq FOREIGN KEY (observation_unit_entity_id) REFERENCES public.observation_unit(id) ON DELETE CASCADE;
 
 
 --
@@ -4237,7 +4237,7 @@ ALTER TABLE ONLY public.observation
 --
 
 ALTER TABLE ONLY public.observation_unit_external_references
-    ADD CONSTRAINT fkf3v8fqkjowvjos0ssmm2w8l30 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkf3v8fqkjowvjos0ssmm2w8l30 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -4245,7 +4245,7 @@ ALTER TABLE ONLY public.observation_unit_external_references
 --
 
 ALTER TABLE ONLY public.reference_bases_external_references
-    ADD CONSTRAINT fkf6sny2j9k3hugyrp6iut22oo FOREIGN KEY (reference_bases_page_entity_id) REFERENCES public.reference_bases(id);
+    ADD CONSTRAINT fkf6sny2j9k3hugyrp6iut22oo FOREIGN KEY (reference_bases_page_entity_id) REFERENCES public.reference_bases(id) ON DELETE CASCADE;
 
 
 --
@@ -4253,7 +4253,7 @@ ALTER TABLE ONLY public.reference_bases_external_references
 --
 
 ALTER TABLE ONLY public.crossing_project_external_references
-    ADD CONSTRAINT fkfckwn44o1i8htq592o0s8hgac FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkfckwn44o1i8htq592o0s8hgac FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -4261,7 +4261,7 @@ ALTER TABLE ONLY public.crossing_project_external_references
 --
 
 ALTER TABLE ONLY public.pedigree_node_external_references
-    ADD CONSTRAINT fkfg0jmv1958u8qmsd796xft78w FOREIGN KEY (pedigree_node_entity_id) REFERENCES public.pedigree_node(id);
+    ADD CONSTRAINT fkfg0jmv1958u8qmsd796xft78w FOREIGN KEY (pedigree_node_entity_id) REFERENCES public.pedigree_node(id) ON DELETE CASCADE;
 
 
 --
@@ -4277,7 +4277,7 @@ ALTER TABLE ONLY public.program
 --
 
 ALTER TABLE ONLY public.season_external_references
-    ADD CONSTRAINT fkfpgrbaopdh4pg1x0v785g8kl9 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkfpgrbaopdh4pg1x0v785g8kl9 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -4301,7 +4301,7 @@ ALTER TABLE ONLY public.scale
 --
 
 ALTER TABLE ONLY public.person_external_references
-    ADD CONSTRAINT fkfxl2xseolst0sb8pci7o7yxy FOREIGN KEY (person_entity_id) REFERENCES public.person(id);
+    ADD CONSTRAINT fkfxl2xseolst0sb8pci7o7yxy FOREIGN KEY (person_entity_id) REFERENCES public.person(id) ON DELETE CASCADE;
 
 
 --
@@ -4325,7 +4325,7 @@ ALTER TABLE ONLY public.trial
 --
 
 ALTER TABLE ONLY public.variant_external_references
-    ADD CONSTRAINT fkgoibfri9bvwfh4jd8snqwcw5u FOREIGN KEY (variant_entity_id) REFERENCES public.variant(id);
+    ADD CONSTRAINT fkgoibfri9bvwfh4jd8snqwcw5u FOREIGN KEY (variant_entity_id) REFERENCES public.variant(id) ON DELETE CASCADE;
 
 
 --
@@ -4429,7 +4429,7 @@ ALTER TABLE ONLY public.study_environment_parameter
 --
 
 ALTER TABLE ONLY public.vendor_spec_external_references
-    ADD CONSTRAINT fkhnqmgqyaofwey1vm3ly1kr46k FOREIGN KEY (vendor_spec_entity_id) REFERENCES public.vendor_spec(id);
+    ADD CONSTRAINT fkhnqmgqyaofwey1vm3ly1kr46k FOREIGN KEY (vendor_spec_entity_id) REFERENCES public.vendor_spec(id) ON DELETE CASCADE;
 
 
 --
@@ -4501,7 +4501,7 @@ ALTER TABLE ONLY public.trait_ontology_reference
 --
 
 ALTER TABLE ONLY public.germplasm_attribute_value_external_references
-    ADD CONSTRAINT fki9jmov5fpss3lmix8fvknrp84 FOREIGN KEY (germplasm_attribute_value_entity_id) REFERENCES public.germplasm_attribute_value(id);
+    ADD CONSTRAINT fki9jmov5fpss3lmix8fvknrp84 FOREIGN KEY (germplasm_attribute_value_entity_id) REFERENCES public.germplasm_attribute_value(id) ON DELETE CASCADE;
 
 
 --
@@ -4509,7 +4509,7 @@ ALTER TABLE ONLY public.germplasm_attribute_value_external_references
 --
 
 ALTER TABLE ONLY public.germplasm_external_references
-    ADD CONSTRAINT fkibd3k0wfmkkjf2budoeothsub FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkibd3k0wfmkkjf2budoeothsub FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -4525,7 +4525,7 @@ ALTER TABLE ONLY public.germplasm
 --
 
 ALTER TABLE ONLY public.event_external_references
-    ADD CONSTRAINT fkig2468c6y0c60t4e0coso0ap2 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkig2468c6y0c60t4e0coso0ap2 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -4565,7 +4565,7 @@ ALTER TABLE ONLY public.scale_valid_value_category
 --
 
 ALTER TABLE ONLY public.seed_lot_transaction_external_references
-    ADD CONSTRAINT fkjsg1potilwjdyt0uk3jmx5nv0 FOREIGN KEY (seed_lot_transaction_entity_id) REFERENCES public.seed_lot_transaction(id);
+    ADD CONSTRAINT fkjsg1potilwjdyt0uk3jmx5nv0 FOREIGN KEY (seed_lot_transaction_entity_id) REFERENCES public.seed_lot_transaction(id) ON DELETE CASCADE;
 
 
 --
@@ -4573,7 +4573,7 @@ ALTER TABLE ONLY public.seed_lot_transaction_external_references
 --
 
 ALTER TABLE ONLY public.cross_entity_external_references
-    ADD CONSTRAINT fkjumsck59h4jv2ph2fhwfmbi2d FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkjumsck59h4jv2ph2fhwfmbi2d FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -4621,7 +4621,7 @@ ALTER TABLE ONLY public.sample
 --
 
 ALTER TABLE ONLY public.search_external_references
-    ADD CONSTRAINT fkkkrkct3cg8r8tdjpdagavq98l FOREIGN KEY (search_request_entity_id) REFERENCES public.search(id);
+    ADD CONSTRAINT fkkkrkct3cg8r8tdjpdagavq98l FOREIGN KEY (search_request_entity_id) REFERENCES public.search(id) ON DELETE CASCADE;
 
 
 --
@@ -4629,7 +4629,7 @@ ALTER TABLE ONLY public.search_external_references
 --
 
 ALTER TABLE ONLY public.genome_map_external_references
-    ADD CONSTRAINT fkklkrodon3modvk940abdpec5w FOREIGN KEY (genome_map_entity_id) REFERENCES public.genome_map(id);
+    ADD CONSTRAINT fkklkrodon3modvk940abdpec5w FOREIGN KEY (genome_map_entity_id) REFERENCES public.genome_map(id) ON DELETE CASCADE;
 
 
 --
@@ -4661,7 +4661,7 @@ ALTER TABLE ONLY public.plate
 --
 
 ALTER TABLE ONLY public.scale_external_references
-    ADD CONSTRAINT fkl6qe8r2q05fnm5qdkpn694ii5 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkl6qe8r2q05fnm5qdkpn694ii5 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -4669,7 +4669,7 @@ ALTER TABLE ONLY public.scale_external_references
 --
 
 ALTER TABLE ONLY public.method_external_references
-    ADD CONSTRAINT fkl88hj87dhueu846uo3qpqq4kt FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkl88hj87dhueu846uo3qpqq4kt FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -4677,7 +4677,7 @@ ALTER TABLE ONLY public.method_external_references
 --
 
 ALTER TABLE ONLY public.list_external_references
-    ADD CONSTRAINT fkl9fy5r4gkrlqm2woq1rh896vy FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkl9fy5r4gkrlqm2woq1rh896vy FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -4701,7 +4701,7 @@ ALTER TABLE ONLY public.study_contact
 --
 
 ALTER TABLE ONLY public.cross_entity_external_references
-    ADD CONSTRAINT fklk5hdqw7j3kqrpxivdt9yk05o FOREIGN KEY (cross_entity_id) REFERENCES public.cross_entity(id);
+    ADD CONSTRAINT fklk5hdqw7j3kqrpxivdt9yk05o FOREIGN KEY (cross_entity_id) REFERENCES public.cross_entity(id) ON DELETE CASCADE;
 
 
 --
@@ -4725,7 +4725,7 @@ ALTER TABLE ONLY public.callset_variant_sets
 --
 
 ALTER TABLE ONLY public.person_external_references
-    ADD CONSTRAINT fklwdf8wu424ly5u7umqsn20tnc FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fklwdf8wu424ly5u7umqsn20tnc FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -4741,7 +4741,7 @@ ALTER TABLE ONLY public.ontology_entity_documentation_links
 --
 
 ALTER TABLE ONLY public.seed_lot_external_references
-    ADD CONSTRAINT fkm5uee4kohmp1o1lrv9v9ah0d4 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkm5uee4kohmp1o1lrv9v9ah0d4 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -4749,7 +4749,7 @@ ALTER TABLE ONLY public.seed_lot_external_references
 --
 
 ALTER TABLE ONLY public.vendor_order_external_references
-    ADD CONSTRAINT fkm75b25x59xcl6u06ovhqd4ag1 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkm75b25x59xcl6u06ovhqd4ag1 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -4789,7 +4789,7 @@ ALTER TABLE ONLY public.variantset
 --
 
 ALTER TABLE ONLY public.program_external_references
-    ADD CONSTRAINT fkn3popdlu288xgpk4wdokwqhhi FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkn3popdlu288xgpk4wdokwqhhi FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -4821,7 +4821,7 @@ ALTER TABLE ONLY public.cross_parent
 --
 
 ALTER TABLE ONLY public.reference_bases_external_references
-    ADD CONSTRAINT fkndb5wyyy87tyaa9g6k0rkxbf3 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkndb5wyyy87tyaa9g6k0rkxbf3 FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -4957,7 +4957,7 @@ ALTER TABLE ONLY public.plate_submission
 --
 
 ALTER TABLE ONLY public.scale_external_references
-    ADD CONSTRAINT fkp6jdfm8j68sdcffih55dq6ypb FOREIGN KEY (scale_entity_id) REFERENCES public.scale(id);
+    ADD CONSTRAINT fkp6jdfm8j68sdcffih55dq6ypb FOREIGN KEY (scale_entity_id) REFERENCES public.scale(id) ON DELETE CASCADE;
 
 
 --
@@ -4965,7 +4965,7 @@ ALTER TABLE ONLY public.scale_external_references
 --
 
 ALTER TABLE ONLY public.breeding_method_external_references
-    ADD CONSTRAINT fkpm6iyumy3nlcpp2ja4djklvge FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkpm6iyumy3nlcpp2ja4djklvge FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -4989,7 +4989,7 @@ ALTER TABLE ONLY public.reference
 --
 
 ALTER TABLE ONLY public.list_external_references
-    ADD CONSTRAINT fkpumhc5eurjfeva73tg03qo5s4 FOREIGN KEY (list_entity_id) REFERENCES public.list(id);
+    ADD CONSTRAINT fkpumhc5eurjfeva73tg03qo5s4 FOREIGN KEY (list_entity_id) REFERENCES public.list(id) ON DELETE CASCADE;
 
 
 --
@@ -5013,7 +5013,7 @@ ALTER TABLE ONLY public.study_observation_level
 --
 
 ALTER TABLE ONLY public.callset_external_references
-    ADD CONSTRAINT fkq8ectsigj1r23lx3isjwrxqml FOREIGN KEY (call_set_entity_id) REFERENCES public.callset(id);
+    ADD CONSTRAINT fkq8ectsigj1r23lx3isjwrxqml FOREIGN KEY (call_set_entity_id) REFERENCES public.callset(id) ON DELETE CASCADE;
 
 
 --
@@ -5021,7 +5021,7 @@ ALTER TABLE ONLY public.callset_external_references
 --
 
 ALTER TABLE ONLY public.trial_external_references
-    ADD CONSTRAINT fkq93pukjnqegcdixpqb54jdjbl FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkq93pukjnqegcdixpqb54jdjbl FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -5045,7 +5045,7 @@ ALTER TABLE ONLY public.image
 --
 
 ALTER TABLE ONLY public.study_external_references
-    ADD CONSTRAINT fkqpn1n6famc9dkaf5bjalj914d FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkqpn1n6famc9dkaf5bjalj914d FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -5077,7 +5077,7 @@ ALTER TABLE ONLY public.plate
 --
 
 ALTER TABLE ONLY public.reference_external_references
-    ADD CONSTRAINT fkr0nxjwbpehkbp8vfg3xyql5vy FOREIGN KEY (reference_entity_id) REFERENCES public.reference(id);
+    ADD CONSTRAINT fkr0nxjwbpehkbp8vfg3xyql5vy FOREIGN KEY (reference_entity_id) REFERENCES public.reference(id) ON DELETE CASCADE;
 
 
 --
@@ -5109,7 +5109,7 @@ ALTER TABLE ONLY public.trait_synonym
 --
 
 ALTER TABLE ONLY public.observation_external_references
-    ADD CONSTRAINT fkrfoobkjhj680bao4o0o1f96ke FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fkrfoobkjhj680bao4o0o1f96ke FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -5141,7 +5141,7 @@ ALTER TABLE ONLY public.location
 --
 
 ALTER TABLE ONLY public.allele_call_external_references
-    ADD CONSTRAINT fks1ixxwy7h24uq46yj7tfuc0o4 FOREIGN KEY (call_entity_id) REFERENCES public.allele_call(id);
+    ADD CONSTRAINT fks1ixxwy7h24uq46yj7tfuc0o4 FOREIGN KEY (call_entity_id) REFERENCES public.allele_call(id) ON DELETE CASCADE;
 
 
 --
@@ -5149,7 +5149,7 @@ ALTER TABLE ONLY public.allele_call_external_references
 --
 
 ALTER TABLE ONLY public.variantset_external_references
-    ADD CONSTRAINT fks1o96o9fb86ulu0el5om4nkmd FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fks1o96o9fb86ulu0el5om4nkmd FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -5173,7 +5173,7 @@ ALTER TABLE ONLY public.study
 --
 
 ALTER TABLE ONLY public.study_external_references
-    ADD CONSTRAINT fksj8raswfnpyuh1fwf8yfu53qk FOREIGN KEY (study_entity_id) REFERENCES public.study(id);
+    ADD CONSTRAINT fksj8raswfnpyuh1fwf8yfu53qk FOREIGN KEY (study_entity_id) REFERENCES public.study(id) ON DELETE CASCADE;
 
 
 --
@@ -5181,7 +5181,7 @@ ALTER TABLE ONLY public.study_external_references
 --
 
 ALTER TABLE ONLY public.pedigree_node_external_references
-    ADD CONSTRAINT fksoj94vfgyng2d5bhwkautd8nl FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id);
+    ADD CONSTRAINT fksoj94vfgyng2d5bhwkautd8nl FOREIGN KEY (external_references_id) REFERENCES public.external_reference(id) ON DELETE CASCADE;
 
 
 --
@@ -5213,7 +5213,7 @@ ALTER TABLE ONLY public.variable_base_entity
 --
 
 ALTER TABLE ONLY public.image_external_references
-    ADD CONSTRAINT fkt3uy354jynflg06911dxjlu1i FOREIGN KEY (image_entity_id) REFERENCES public.image(id);
+    ADD CONSTRAINT fkt3uy354jynflg06911dxjlu1i FOREIGN KEY (image_entity_id) REFERENCES public.image(id) ON DELETE CASCADE;
 
 
 --
@@ -5229,7 +5229,7 @@ ALTER TABLE ONLY public.germplasm_entity_type_of_germplasm_storage_code
 --
 
 ALTER TABLE ONLY public.season_external_references
-    ADD CONSTRAINT fktd03hbghqblpq7ril3on0tbvk FOREIGN KEY (season_entity_id) REFERENCES public.season(id);
+    ADD CONSTRAINT fktd03hbghqblpq7ril3on0tbvk FOREIGN KEY (season_entity_id) REFERENCES public.season(id) ON DELETE CASCADE;
 
 
 --
