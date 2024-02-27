@@ -158,7 +158,7 @@ public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
 			RSAPublicKey pubKey = getPublicKey(oidcDiscoveryUrl);
 
 			Algorithm algorithm = Algorithm.RSA256(pubKey, null);
-			JWTVerifier verifier = JWT.require(algorithm).withIssuer("https://auth.brapi.org/auth/realms/brapi")
+			JWTVerifier verifier = JWT.require(algorithm).withIssuer("https://auth.brapi.org/realms/brapi")
 					.build();
 			DecodedJWT jwt = verifier.verify(token);
 
