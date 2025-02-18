@@ -15,7 +15,7 @@ public class PagingUtility {
 	public static void calculateMetaData(Metadata metaData) {
 		int totalCount = metaData.getPagination().getTotalCount();
 		int pageSize = metaData.getPagination().getPageSize();
-		metaData.getPagination().setTotalPages((totalCount / pageSize) + Integer.signum( totalCount % pageSize));
+		metaData.getPagination().setTotalPages((totalCount / pageSize) + Integer.signum(totalCount % pageSize));
 	}
 
 	public static Pageable getPageRequest(Metadata metaData) {
@@ -52,26 +52,28 @@ public class PagingUtility {
 		if (metaData.getPagination() == null) {
 			metaData.setPagination(new IndexPagination());
 		}
-		// metaData.getPagination().setPageSize(page.getNumberOfElements());
-		metaData.getPagination().setCurrentPage(page.getNumber());
-		metaData.getPagination().setTotalCount((int) page.getTotalElements());
-		metaData.getPagination().setTotalPages((int) page.getTotalPages());
+		if (page != null) {
+			metaData.getPagination().setPageSize(page.getNumberOfElements());
+			metaData.getPagination().setCurrentPage(page.getNumber());
+			metaData.getPagination().setTotalCount((int) page.getTotalElements());
+			metaData.getPagination().setTotalPages((int) page.getTotalPages());
+		}
 	}
 
 	public static <T> List<T> paginateSimpleList(List<T> list, Metadata metadata) {
 		if (list != null && metadata != null) {
 			metadata.getPagination().setTotalCount(list.size());
 			calculateMetaData(metadata);
-			
+
 			List<T> subList = new ArrayList<>();
 			int fromIndex = metadata.getPagination().getCurrentPage() * metadata.getPagination().getPageSize();
 			int toIndex = fromIndex + metadata.getPagination().getPageSize();
-			if(fromIndex < list.size()) {
+			if (fromIndex < list.size()) {
 				if (toIndex >= list.size()) {
 					toIndex = list.size();
 				}
 				subList = list.subList(fromIndex, toIndex);
-			}			
+			}
 			return subList;
 		}
 		return list;
