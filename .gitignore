@@ -5,3 +5,5 @@ target
 .settings
 .dbeaver-data-sources.xml
 /bin/
+.idea/
+brapi-Java-TestServer.iml

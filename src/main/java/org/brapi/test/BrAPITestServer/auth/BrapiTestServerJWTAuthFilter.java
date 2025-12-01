@@ -13,6 +13,8 @@ import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -182,8 +184,14 @@ public class BrapiTestServerJWTAuthFilter extends BasicAuthenticationFilter {
 		try {
 			JsonNode discovery = (new ObjectMapper()).readTree(new URL(discoveryURL));
 			String jwksURL = discovery.findValue("jwks_uri").asText();
-			JsonNode jwks = (new ObjectMapper()).readTree(new URL(jwksURL));
-			String keyVal = jwks.findValue("keys").get(0).findValue("x5c").get(0).asText();
+			ArrayNode jwks = (new ObjectMapper()).readTree(new URL(jwksURL)).withArray("keys");
+            String keyVal = null;
+            for(JsonNode jwk: jwks){
+                String algo = jwk.findValue("alg").asText();
+                if(algo.equals("RS256")){
+                    keyVal = jwk.findValue("x5c").get(0).asText();
+                }
+            }
 
 			String certb64 = keyVal;
 			byte[] certder = Base64.decodeBase64(certb64);
