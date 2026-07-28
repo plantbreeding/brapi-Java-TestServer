@@ -36,5 +36,5 @@ services:
       - /home/jenkins/brapi.org/brapi-test-server/17-2:/var/lib/postgresql/data
 networks:
     default:
-        external:
-            name: brapi_net
+        name: brapi_net
+        external: true
